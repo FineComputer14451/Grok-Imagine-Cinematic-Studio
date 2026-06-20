@@ -1,8 +1,8 @@
-name: Cinematic Multi-Agent Workflow CI (v3.5)
+name: Cinematic Multi-Agent Workflow CI (v3.6)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, v3.6-imagine-video-1.5-native ]
     paths:
       - '**.md'
       - 'agents/**'
@@ -57,7 +57,7 @@ jobs:
         run: pip install pyflakes --quiet
 
       # ============================================================
-      # ROLE CARD & AGENT VALIDATION (Robust)
+      # ROLE CARD & AGENT VALIDATION (v3.6)
       # ============================================================
       - name: Role Card & Agent Validation
         run: |
@@ -73,12 +73,12 @@ jobs:
             exit 1
           fi
 
-          # Basic structure check on Role Cards
+          # Basic structure check on Role Cards (v3.6 compatible)
           STRUCTURE_ISSUES=0
           for card in $(find references/agents -name "*.md" ! -name "*INDEX*" -type f); do
             name=$(basename "$card" .md)
-            if ! grep -q "Core Mission" "$card" || ! grep -q "v3.5" "$card"; then
-              echo "⚠️  $name: Missing 'Core Mission' or v3.5 section"
+            if ! grep -q "Core Mission" "$card" || ! grep -qE 'v3\.(5|6)' "$card"; then
+              echo "⚠️  $name: Missing 'Core Mission' or v3.5/v3.6 section"
               STRUCTURE_ISSUES=$((STRUCTURE_ISSUES+1))
             fi
           done
@@ -89,22 +89,22 @@ jobs:
             echo "✅ All Role Cards have basic required sections"
           fi
 
-          # Version tag check (non-blocking in standard mode)
+          # Version tag check (updated for v3.6)
           VERSION_ISSUES=0
           for dir in agents references/agents .grok/skills; do
             if [ -d "$dir" ]; then
               for f in $(find "$dir" -name "*.md" -o -name "*.txt" 2>/dev/null); do
-                if ! grep -qE 'v3\.(4|5)' "$f" 2>/dev/null; then
+                if ! grep -qE 'v3\.(5|6)' "$f" 2>/dev/null; then
                   VERSION_ISSUES=$((VERSION_ISSUES+1))
                 fi
               done
             fi
           done
-          echo "🔖 Files missing v3.4/v3.5 tag: $VERSION_ISSUES"
+          echo "🔖 Files missing v3.5/v3.6 tag: $VERSION_ISSUES"
 
           # Documentation check (advisory)
           DOC_WARNINGS=0
-          for doc in README.md Quick_Start_Guide.md CHANGELOG.md; do
+          for doc in README.md Quick_Start_Guide.md CHANGELOG.md MASTER_PROMPT_v3.6.md; do
             if [ ! -f "$doc" ]; then
               echo "⚠️  Missing documentation: $doc"
               DOC_WARNINGS=$((DOC_WARNINGS+1))
@@ -143,7 +143,7 @@ jobs:
           echo "🐍 Checking Python files..."
           python -m py_compile tools/cinematic_studio_cli.py web_ui/app.py 2>/dev/null || echo "⚠️  Python check completed with warnings"
 
-          for f in MASTER_PROMPT_v3.5.md tools/cinematic_studio_cli.py web_ui/app.py; do
+          for f in MASTER_PROMPT_v3.6.md tools/cinematic_studio_cli.py web_ui/app.py; do
             if [ -f "$f" ]; then
               echo "✅ $f present"
             else
@@ -158,5 +158,5 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "## 🎬 Cinematic CI Results" >> $GITHUB_STEP_SUMMARY
+          echo "## 🎬 Cinematic CI Results (v3.6)" >> $GITHUB_STEP_SUMMARY
           echo "Validation completed successfully." >> $GITHUB_STEP_SUMMARY
