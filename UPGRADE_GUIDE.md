@@ -1,106 +1,144 @@
 # Grok Imagine Cinematic Studio — UPGRADE GUIDE
 
-**From v3.4 → v3.5 (Skill Update)**
+**From v3.5 → v3.6 "Odyssey Native"**
 
-**Date:** June 2026
+**Date:** June 20, 2026
+
+**Focus:** Full native integration with **Grok Imagine Video 1.5** + Grok 4.3 Full optimizations
 
 ---
 
 ## Overview
 
-This guide helps you upgrade your Grok Imagine Cinematic Studio setup from **v3.4** to the new **v3.5** skill version. The v3.5 update significantly expands the system from 20 to **22 specialized agents**, introduces a complete Role Card system, and improves activation workflows.
+This guide helps you upgrade from **v3.5** to **v3.6 "Odyssey Native"**. The v3.6 update brings the biggest leap in cinematic quality since the studio’s launch by adding deep, native support for **Grok Imagine Video 1.5** (image-to-video with one-pass synchronized audio, improved physics, and low-degradation chaining).
 
 ---
 
-## What’s New in v3.5
+## What’s New in v3.6
 
-### 1. Agent Expansion (20 → 22)
-Two powerful new agents have been added:
+### 1. Grok Imagine Video 1.5 Native Integration (Major)
+- Full support for native image-to-video generation
+- **One-pass synchronized native audio** (lip-synced dialogue + SFX + ambience + music cues)
+- Dramatically improved motion physics, weight, and consistency
+- Reduced quality loss on video extension and stitching
 
-| New Agent | Role |
-|-----------|------|
-| **Production Designer / Set Decorator v3.5** | Environment DNA, Prop Memory Bank, world-building consistency, and set continuity |
-| **Localization & Subtitle Specialist v3.5** | Cultural adaptation, SDH subtitles, multi-language support, and tone preservation |
+### 2. New Core Protocols
+- **`VIDEO_PIPELINE_SPEC`** — Locked variable in every Production Bible
+  - `model="grok-imagine-video-1.5"`
+  - `resolution="720p"` (or 480p)
+  - Preferred clip length 6–15s (optimal 8–12s)
+  - `native_audio=true`
+  - `extend_from_last=true` / `stitch_to_previous=true`
+- **`AUDIO_MOMENTUM_VECTOR`** — New handoff protocol (carries dialogue state, SFX timing, emotional tone of audio, music cue points)
+- **`reference_image_id` propagation** + 1.5 fidelity scoring in Identity Lock & Continuity systems
 
-### 2. Complete Role Card System
-- Every agent now has an **authoritative v3.5 Role Card** (detailed `.txt` + quick `.md` summary)
-- Located in `references/agents/`
-- Each card includes: Core Mission, v3.5 Upgrades, Sophisticated Elements (DNA systems), Decision Framework, Output Format, and Activation Command
+### 3. New Quality Metrics
+Director’s Notes now include two new scores:
+- **Audio-Visual Sync Fidelity** (1–10)
+- **Physics Realism** (1–10)
 
-### 3. Improved Activation System
-- New comprehensive **Agent Activation Instructions** section
-- Full table of all 22 activation commands
-- Powerful new patterns: `ACTIVATE ONLY ...`, mode commands (`MAXIMUM_CONSISTENCY_MODE`, `HIGH_ACTION_MODE`, etc.)
-- Better organization with grouped agent categories
+### 4. Agent Upgrades (All Core Agents to v3.6)
+Every major agent has been updated with 1.5-specific:
+- Prompt schemas and decision frameworks
+- Handoff packets (now include AUDIO_MOMENTUM_VECTOR and reference_image_id)
+- Output formats
+- Activation commands and power modes
 
-### 4. Documentation Overhaul
-New and updated files:
-- `Agent_Role_Definitions.md` — Clean single-page overview of all 22 agents
-- `Quick_Start_Guide.md` — Completely updated with 22-agent workflow
-- `CHANGELOG.md` — New v3.5 Skill Update entry
-- `UPGRADE_GUIDE.md` — This file (you’re reading it)
+**Key updated agents include:**
+- Studio Director & Mega Production Architect (1.5 pipeline leadership + VIDEO_PIPELINE_SPEC)
+- Imagine Prompt Master (full 1.5 Native Prompt Schema + Sound Layer syntax)
+- Director of Photography (1.5 camera moves with physics descriptors)
+- Sequence Director & Cinematic Sequence Extender (native 1.5 chaining + AUDIO_MOMENTUM_VECTOR)
+- Identity Lock Specialist & Continuity Guardian (reference_image_id + 1.5 fidelity + physics drift detection)
+- Performance & Emotion Director (micro-expressions synced to 1.5 audio beats)
+- Sonic Architect (one-pass native audio + AUDIO_MOMENTUM_VECTOR creation)
+- Workflow & Quota Optimizer (per-second 1.5 video pricing + Fast mode optimization)
+
+### 5. New Activation Commands
+- `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
+- `GENERATE_NATIVE_AUDIO_SEQUENCE`
+- `STITCH_WITH_AUDIO_SYNC`
+- `1.5 NATIVE CHAINING`
+- `1.5 PHYSICS-AWARE CAMERA MOVES`
+- `1.5 AUDIO-SYNCED MICRO-EXPRESSIONS`
+
+### 6. Documentation Updates
+- `MASTER_PROMPT_v3.6.md` (new main activation prompt)
+- `README.md` (fully updated)
+- `RELEASE_NOTES_v3.6.md` (new)
+- `AGENT_INDEX.md` (updated with 1.5 examples)
+- All core Role Cards in `references/agents/` upgraded to v3.6 content (clean filenames)
 
 ---
 
 ## Migration Steps
 
-### Step 1: Update Your Skill
-Replace your current `grok-imagine-cinematic-studio` skill with the latest v3.5 version (or let the system auto-update if using the latest Grok build).
+### Step 1: Switch to the v3.6 Branch (Recommended)
+```bash
+git checkout main
+```
+Or simply use the latest `MASTER_PROMPT_v3.6.md` in a new chat.
 
 ### Step 2: Activate the New Studio
-Run this command in a new chat:
+In a new Grok 4.3 Full chat, paste `MASTER_PROMPT_v3.6.md` and type:
 ```
-Activate Grok Imagine Cinematic Studio v3.5
+Activate Grok Imagine Cinematic Studio v3.6
 ```
 
-### Step 3: Update Your Workflows (Recommended)
-- Replace old activation commands with the new standardized ones (see table in `SKILL.md`)
-- Start using the new specialists:
-  - `ACTIVATE PRODUCTION_DESIGNER` for environment work
-  - `ACTIVATE LOCALIZATION_SPECIALIST` for subtitles and cultural adaptation
+Or use the powerful new mode:
+```
+ACTIVATE IMAGINE_VIDEO_1.5_FULL
+```
+
+### Step 3: Update Existing Projects (Recommended)
+For ongoing projects:
+1. Say: `"Update Project Bible to v3.6 standards"`
+2. Re-activate key agents (especially Imagine Prompt Master, Sonic Architect, Cinematic Sequence Extender)
+3. Add `VIDEO_PIPELINE_SPEC` to your existing Bible
+4. Run `RUN QA REVIEW` with focus on 1.5 audio-visual sync and physics
 
 ### Step 4: Explore the New Role Cards
-Browse `references/agents/` to see the full v3.5 Role Cards for every agent. These are now the authoritative source for each specialist’s capabilities.
+Browse `references/agents/` — all major cards now contain dedicated **v3.6 / 1.5 Integration** sections with updated protocols, decision frameworks, and output formats.
 
-### Step 5: Update Existing Projects (Optional but Recommended)
-For ongoing projects:
-1. Say: `"Update Project Bible to v3.5 standards"`
-2. Re-activate key agents with the new commands
-3. Run `RUN QA REVIEW` to ensure continuity with the new system
+### Step 5: Start Using 1.5-Specific Features
+- Use `VIDEO_PIPELINE_SPEC` in every new Production Bible
+- Include `AUDIO_MOMENTUM_VECTOR` in handoffs for long sequences
+- Activate `Sonic Architect v3.6` early when native audio is important
+- Use new Director’s Notes metrics to evaluate 1.5 quality
 
 ---
 
 ## Breaking Changes
 
-- Old activation commands like `ACTIVATE KEY_ART` have been standardized to `ACTIVATE KEY_ART_DESIGNER`
-- The system now defaults to **22 agents** (previously 20)
-- Some v3.4 Role Cards have been significantly expanded in v3.5
+- Old activation commands remain supported, but new 1.5-specific commands are strongly recommended for best results.
+- The system now defaults to **v3.6 behavior** when using `MASTER_PROMPT_v3.6.md`.
+- Some prompt structures have been optimized for 1.5 (slightly different emphasis on motion/physics/audio layers).
 
-**No breaking changes** to core functionality — all previous workflows will continue to work.
+**No breaking changes** to core functionality — all previous v3.5 workflows continue to work.
 
 ---
 
-## Recommended New Workflow
+## Recommended New Workflow (v3.6)
 
-After upgrading, we recommend adopting this pattern:
-
-1. **Primary Activation** — Always start with `Activate Grok Imagine Cinematic Studio v3.5`
-2. **Use Specialist Commands** — Activate specific agents only when needed
-3. **Reference Role Cards** — Check `references/agents/[agent-name].md` for exact capabilities
-4. **Use New Patterns** — Try `ACTIVATE ONLY ...` and mode commands for focused work
+1. **Primary Activation** — Start with `Activate Grok Imagine Cinematic Studio v3.6` or `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
+2. **Use VIDEO_PIPELINE_SPEC** — Define your 1.5 parameters early in the Bible
+3. **Activate Sonic Architect early** when native audio is important
+4. **Reference updated Role Cards** in `references/agents/` for 1.5-specific guidance
+5. **Use new handoff protocols** — Include AUDIO_MOMENTUM_VECTOR and reference_image_id
 
 ---
 
 ## Need Help?
 
-- See `Quick_Start_Guide.md` for the full updated workflow
-- See `Agent_Role_Definitions.md` for a clean overview of all 22 agents
-- See `SKILL.md` for the complete activation command table
+- See `MASTER_PROMPT_v3.6.md` for the complete v3.6 activation prompt
+- See `RELEASE_NOTES_v3.6.md` for the full changelog
+- See `AGENT_INDEX.md` for updated activation examples and 1.5 power commands
+- See individual Role Cards in `references/agents/` for detailed 1.5 integration notes
 
 ---
 
-**Welcome to Grok Imagine Cinematic Studio v3.5!**
+**Welcome to Grok Imagine Cinematic Studio v3.6 "Odyssey Native"!**
 
-The system is now more powerful, better organized, and ready for professional cinematic productions.
+This release brings native 1.5 video + audio capabilities that dramatically raise the bar for cinematic quality and emotional impact.
 
-*Upgrade completed — June 2026*
+*Upgrade completed — June 20, 2026*
