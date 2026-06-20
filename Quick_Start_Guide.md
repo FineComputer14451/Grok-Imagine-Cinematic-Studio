@@ -1,6 +1,6 @@
-# Grok Imagine Cinematic Studio v3.5 — Quick Start Guide
+# Grok Imagine Cinematic Studio v3.6 — Quick Start Guide
 
-**Version:** 2.1 | **Last Updated:** June 2, 2026
+**Version:** 3.0 | **Last Updated:** June 20, 2026
 
 ---
 
@@ -9,7 +9,7 @@
 ### Activate the Full Studio (Recommended)
 
 ```
-Activate Grok Imagine Cinematic Studio v3.5
+Activate Grok Imagine Cinematic Studio v3.6
 ```
 
 or
@@ -18,7 +18,7 @@ or
 start cinematic production
 ```
 
-This loads the complete **22-agent suite** (with v4.0 personalities) and begins a professional collaborative cinematic production workflow.
+This loads the complete **v3.6 "Odyssey Native"** system with full native Grok Imagine Video 1.5 support (image-to-video + one-pass synchronized audio).
 
 ### Start a New Project
 
@@ -36,27 +36,29 @@ Full production mode
 
 ## 2. How to Use Individual Specialists
 
-You can activate any agent directly at any time:
+You can activate any agent directly:
 
-| Specialist                              | Activation Command                  | Best For                              |
-|-----------------------------------------|-------------------------------------|---------------------------------------|
-| **Studio Director**                     | `ACTIVATE STUDIO_DIRECTOR`          | Overall direction & orchestration     |
-| **Mega Production Architect**           | `ACTIVATE MEGA_PRODUCTION_ARCHITECT`| Full Production Bible creation        |
-| **Identity Lock Specialist**            | `ACTIVATE IDENTITY_LOCK`            | Character consistency & DNA           |
-| **Imagine Prompt Master**               | `ACTIVATE IMAGINE_PROMPT_MASTER`    | High-quality prompt engineering       |
-| **Director of Photography (DoP)**       | `ACTIVATE DOP`                      | Lighting, camera, visual language     |
-| **Performance & Emotion Director**      | `ACTIVATE PERFORMANCE_EMOTION`      | Micro-expressions & emotional acting  |
-| **Cinematic Sequence Extender**         | `ACTIVATE SEQUENCE_EXTENDER`        | Long-form sequence expansion          |
-| **Continuity & Consistency Guardian**   | `ACTIVATE CONTINUITY_GUARDIAN`      | Timeline & prop consistency           |
-| **Quality Assurance Guardian**          | `ACTIVATE QA_GUARDIAN`              | Final 16-point QA review              |
-| **ErosForge NSFW Director**             | `ACTIVATE EROSFORGE`                | Artistic R-rated / erotic scenes      |
-| **Key Art & Poster Designer**           | `ACTIVATE KEY_ART_DESIGNER`         | Posters, thumbnails, marketing visuals|
-| **Trailer & Teaser Director**           | `ACTIVATE TRAILER_DIRECTOR`         | Trailers, teasers, highlight reels    |
-| **Production Designer**                 | `ACTIVATE PRODUCTION_DESIGNER`      | Environments, props, world-building   |
-| **Sonic Architect**                     | `ACTIVATE SONIC_ARCHITECT`          | Native audio & sound design           |
-| **Foley Sound Design Specialist**       | `ACTIVATE FOLEY_SPECIALIST`         | Realistic foley & hard effects        |
-| **Stunt & Action Choreographer**        | `ACTIVATE STUNT_CHOREOGRAPHER`      | Fights, chases, stunts                |
-| **VFX & SFX Supervisor**                | `ACTIVATE VFX_SFX_SUPERVISOR`       | Creatures, destruction, particles     |
+| Specialist                              | Activation Command                  | Best For                                      |
+|-----------------------------------------|-------------------------------------|-----------------------------------------------|
+| **Studio Director**                     | `ACTIVATE STUDIO_DIRECTOR`          | Overall direction & orchestration             |
+| **Mega Production Architect**           | `ACTIVATE MEGA_PRODUCTION_ARCHITECT`| Full Production Bible + execution roadmap     |
+| **Identity Lock Specialist**            | `ACTIVATE IDENTITY_LOCK`            | Character consistency & DNA                   |
+| **Imagine Prompt Master**               | `ACTIVATE IMAGINE_PROMPT_MASTER`    | High-quality prompt engineering (1.5 native)  |
+| **Director of Photography (DoP)**       | `ACTIVATE DOP`                      | Lighting, camera, visual language             |
+| **Performance & Emotion Director**      | `ACTIVATE PERFORMANCE_EMOTION`      | Micro-expressions & emotional acting          |
+| **Sequence Director**                   | `ACTIVATE SEQUENCE_DIRECTOR`        | Long-form sequencing & 1.5 chaining           |
+| **Cinematic Sequence Extender**         | `ACTIVATE SEQUENCE_EXTENDER`        | Long-form sequence expansion (60–180s+)       |
+| **Continuity & Consistency Guardian**   | `ACTIVATE CONTINUITY_GUARDIAN`      | Timeline & prop consistency                   |
+| **Quality Assurance Guardian**          | `ACTIVATE QA_GUARDIAN`              | Final 16-point QA review                      |
+| **ErosForge NSFW Director**             | `ACTIVATE EROSFORGE`                | Artistic R-rated / erotic scenes              |
+| **Key Art & Poster Designer**           | `ACTIVATE KEY_ART_DESIGNER`         | Posters, thumbnails, marketing visuals        |
+| **Trailer & Teaser Director**           | `ACTIVATE TRAILER_DIRECTOR`         | Trailers, teasers, highlight reels            |
+| **Production Designer**                 | `ACTIVATE PRODUCTION_DESIGNER`      | Environments, props, world-building           |
+| **Sonic Architect**                     | `ACTIVATE SONIC_ARCHITECT`          | Native audio & sound design                   |
+| **Foley Sound Design Specialist**       | `ACTIVATE FOLEY_SPECIALIST`         | Realistic foley & hard effects                |
+| **Stunt & Action Choreographer**        | `ACTIVATE STUNT_CHOREOGRAPHER`      | Fights, chases, stunts                        |
+| **VFX & SFX Supervisor**                | `ACTIVATE VFX_SFX_SUPERVISOR`       | Creatures, destruction, particles             |
+| **Workflow & Quota Optimizer**          | `ACTIVATE WORKFLOW_OPTIMIZER`       | Real-time quota & efficiency management       |
 
 **Tip:** You can also use natural language, for example:
 - "Create key art for this scene"
@@ -65,17 +67,17 @@ You can activate any agent directly at any time:
 
 ---
 
-## 3. Recommended Production Workflow
+## 3. Recommended Production Workflow (v3.6)
 
 ### Phase 1: Activation & Planning
 1. **Activate the Full Studio**  
-   `Activate Grok Imagine Cinematic Studio v3.5`
+   `Activate Grok Imagine Cinematic Studio v3.6`
 
 2. **Start a New Project**  
    Provide title, logline, genre, tone, target length, and key characters.
 
 3. **Generate & Lock the Production Bible**  
-   Let the Mega Production Architect create it, then review and lock key variables.
+   Include `VIDEO_PIPELINE_SPEC` for 1.5 native settings.
 
 ### Phase 2: Pre-Production
 4. **Generate Reference Materials** (Recommended)  
@@ -89,7 +91,7 @@ You can activate any agent directly at any time:
 ### Phase 3: Production
 6. **Execute Scenes / Sequences**  
    - Single scenes: Describe clearly  
-   - Long sequences: Use `START FULL SEQUENCE` or `ACTIVATE SEQUENCE_EXTENDER`
+   - Long sequences: Use `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER`
 
 7. **Collaborate Mid-Production**  
    Activate specialists as needed (Stunts, VFX, Sound, etc.).
@@ -111,53 +113,56 @@ You can activate any agent directly at any time:
 ---
 
 **Pro Tip:** You can combine steps in one message:  
-> `"Activate Grok Imagine Cinematic Studio v3.5, start new project called 'Neon Eclipse Heist', generate the full Production Bible, and create the first sequence."`
+> `"Activate Grok Imagine Cinematic Studio v3.6, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
 
 ---
 
-## 4. Pro Tips for Best Results
+## 4. Pro Tips for Best Results (v3.6)
 
 - **Be specific** — Include genre, tone, emotional goals, character details, and references.
-- **Use the Project Bible** — It maintains locked variables across the entire production.
+- **Use the Project Bible** — Include `VIDEO_PIPELINE_SPEC` for 1.5 native settings.
 - **Activate specialists early** when you need focused work (trailers, key art, stunts, etc.).
 - **Let agents collaborate** — Full studio mode automatically coordinates between specialists.
 - **Use “Director’s Cut”** after important generations for refined versions.
-- **Monitor quota** — The Workflow Quota Optimizer will warn you on heavy tasks.
-- **Reference Role Cards** — Check `references/agents/[Agent].md` for each agent’s exact capabilities and protocols.
+- **Monitor quota** — The Workflow Quota Optimizer now supports per-second 1.5 video pricing.
+- **Reference Role Cards** — Check `references/agents/[Agent].md` for each agent’s exact capabilities.
+- **Use Skill Files** — Many agents now have enhanced skill files in `.grok/skills/` for deeper integration.
 
 ---
 
 ## 5. Quick Reference Commands
 
-| Command                                           | Result                              |
-|---------------------------------------------------|-------------------------------------|
-| `Activate Grok Imagine Cinematic Studio v3.5`     | Load full 22-agent studio           |
-| `Start new project`                               | Begin fresh production              |
-| `GENERATE DIRECTOR'S CUT`                         | Refined version with notes          |
-| `SHOW STUDIO DASHBOARD`                           | Current project status              |
-| `RUN QA REVIEW`                                   | Full 16-point quality check         |
-| `Exit cinematic studio`                           | Leave studio mode                   |
+| Command                                           | Result                                      |
+|---------------------------------------------------|---------------------------------------------|
+| `Activate Grok Imagine Cinematic Studio v3.6`     | Load full v3.6 studio (1.5 native support)  |
+| `Start new project`                               | Begin fresh production                      |
+| `GENERATE DIRECTOR'S CUT`                         | Refined version with notes                  |
+| `SHOW STUDIO DASHBOARD`                           | Current project status                      |
+| `RUN QA REVIEW`                                   | Full 16-point quality check                 |
+| `ACTIVATE EROSFORGE`                              | Enable NSFW specialist mode                 |
+| `Exit cinematic studio`                           | Leave studio mode                           |
 
 ---
 
 ## 6. Available Supporting Resources
 
-| Resource                        | Location                              | Purpose                                      |
-|---------------------------------|---------------------------------------|----------------------------------------------|
-| **Role Cards (Authoritative)**  | `references/agents/`                  | 22 full Role Cards with protocols & frameworks |
-| **Agent Index**                 | `references/agents/AGENT_INDEX.md`    | Quick reference table for all agents         |
-| **Master Prompt**               | `MASTER_PROMPT_v3.5.md`               | Complete master prompt for new chats         |
-| **Production Bible Template**   | `Project_Bible_Template.md`           | Professional Production Bible template       |
-| **Examples**                    | `examples/`                           | 13 ready-to-use Production Bible templates   |
-| **CLI Toolkit**                 | `tools/cinematic_studio_cli.py`       | Memory, Bible generation, PDF reports        |
-| **Web UI**                      | `web_ui/app.py`                       | Streamlit interface with Memory management   |
+| Resource                        | Location                              | Purpose                                           |
+|---------------------------------|---------------------------------------|---------------------------------------------------|
+| **Role Cards (Authoritative)**  | `references/agents/`                  | Full Role Cards with v3.6 protocols               |
+| **Agent Index**                 | `references/agents/AGENT_INDEX.md`    | Quick reference table for all agents              |
+| **Master Prompt**               | `MASTER_PROMPT_v3.6.md`               | Complete master prompt for new chats              |
+| **Skill Files**                 | `.grok/skills/`                       | Enhanced agent capabilities & integration         |
+| **Production Bible Template**   | `Project_Bible_Template.md`           | Professional Production Bible template            |
+| **Examples**                    | `examples/`                           | Ready-to-use Production Bible templates           |
+| **CLI Toolkit**                 | `tools/cinematic_studio_cli.py`       | Memory, Bible generation, PDF reports             |
+| **Web UI**                      | `web_ui/app.py`                       | Streamlit interface with Memory management        |
 
 ---
 
-**You are now ready to create professional cinematic productions with a full 22-agent AI studio.**
+**You are now ready to create professional cinematic productions with full native Grok Imagine Video 1.5 support.**
 
-Just say **"Activate Grok Imagine Cinematic Studio v3.5"** and begin. 🎥
+Just say **"Activate Grok Imagine Cinematic Studio v3.6"** and begin. 🎥
 
 ---
 
-*Built with Grok Imagine Cinematic Studio v3.5 — June 2026*
+*Built with Grok Imagine Cinematic Studio v3.6 "Odyssey Native" — June 2026*
