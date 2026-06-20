@@ -2,117 +2,123 @@
   <img src="assets/banner.jpg" alt="Grok Imagine Cinematic Studio Banner" width="100%">
 </p>
 
-# 🎬 Grok Imagine Cinematic Studio v3.5
+# 🎬 Grok Imagine Cinematic Studio v3.6 "Odyssey Native"
 
-**The most advanced multi-agent cinematic production system for Grok 4.3**
+**The most advanced multi-agent cinematic production system for Grok 4.3 Full + Grok Imagine Video 1.5**
 
-Transform any story into emotionally powerful, production-ready cinematic video with perfect character consistency, persistent memory, and a full **22-agent** professional film crew.
+Transform any story into emotionally powerful, production-ready cinematic video with **native 1.5 image-to-video**, one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **22-agent** professional film crew.
 
-[![Version](https://img.shields.io/badge/version-3.5-blue)](https://github.com/FineComputer14451/grok-imagine-cinematic-studio)
+[![Version](https://img.shields.io/badge/version-3.6-blue)](https://github.com/FineComputer14451/grok-imagine-cinematic-studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Grok](https://img.shields.io/badge/Grok-4.3-purple)](https://x.ai)
+[![Grok](https://img.shields.io/badge/Grok-4.3%20%2B%201.5-purple)](https://x.ai)
 
 ---
 
-## ✨ What's New in v3.5
+## ✨ What's New in v3.6 "Odyssey Native"
 
-- **22 Specialized Agents** with full v4.0 personalities and structured Role Cards
-- **Authoritative Role Cards** in `references/agents/` — Complete Core Mission, v3.5/v4.0 Upgrades, Decision Frameworks, Specialized Protocols, and Activation Triggers
-- **Full Python CLI** — Memory management, Production Bible generation, PDF reports, cost simulation, and project initialization
-- **Streamlit Web UI** — Visual project input, Role Card browser, Memory / Character DNA management, live cost estimator, and rich Production Bible export
-- **13 Professional Production Bible Examples** across major genres (Sci-Fi, Drama, Thriller, Erotic, Fantasy, Horror Comedy, Period, etc.)
-- **Persistent Character Memory Bank** with cross-session support
-- **Native Extend-from-Frame** + advanced long-form cinematic sequencing (60–120s+)
-- **Pre-Generation Cost Simulator** + real-time quota optimization
-- **Improved CI Workflow** with dynamic Role Card validation
+### Grok Imagine Video 1.5 Native Integration
+- **Full native image-to-video** with dramatically improved motion, physics, and consistency
+- **One-pass synchronized native audio** (lip-synced dialogue + SFX + ambience + music cues)
+- **VIDEO_PIPELINE_SPEC** — Locked variable for model, resolution (720p), clip length (6–15s), native_audio, extend/stitch strategy
+- **AUDIO_MOMENTUM_VECTOR** — New handoff protocol carrying dialogue state, SFX timing, emotional tone of audio, and music cue points alongside visual momentum
+- **reference_image_id propagation** + 1.5 fidelity scoring in Identity Lock & Continuity systems
+- New Director’s Notes metrics: **Audio-Visual Sync Fidelity** and **Physics Realism** (1–10)
+- Optimized prompting rules for 1.5 (explicit camera moves with weighty physics, timing beats, Sound Layer syntax)
+- Per-second 1.5 video quota modeling + Fast mode → quality pass strategies
+
+### Agent & System Upgrades
+- All core 22 agents upgraded to v3.6 with 1.5-specific protocols, decision frameworks, and output formats
+- Enhanced long-form sequencing (60–180s+) with low-degradation 1.5 native chaining
+- Stronger emotional + audio continuity across extended sequences
+- Updated CLI & Web UI support for 1.5 model selection, native audio toggle, and real-time per-second cost estimation (coming in follow-up commits)
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Fastest: Master Prompt Activation
-1. Copy the content of [`MASTER_PROMPT_v3.5.md`](MASTER_PROMPT_v3.5.md)
-2. Paste into a new Grok 4.3 chat
-3. Type: `Activate Grok Imagine Cinematic Studio v3.5`
+### 1. Fastest: Master Prompt Activation (Recommended)
+1. Copy the content of [`MASTER_PROMPT_v3.6.md`](MASTER_PROMPT_v3.6.md)
+2. Paste into a new **Grok 4.3 Full** chat (enable reasoning=medium/high for complex productions)
+3. Type: `Activate Grok Imagine Cinematic Studio v3.6`
 
-### 2. Recommended: Python CLI (Power Users)
+### 2. Python CLI (Power Users)
 ```bash
 pip install -r requirements.txt
 python tools/cinematic_studio_cli.py --help
 
 # Examples
 python tools/cinematic_studio_cli.py status
-python tools/cinematic_studio_cli.py create-bible --story "Your cinematic vision here"
+python tools/cinematic_studio_cli.py create-bible --story "Your cinematic vision here" --video-pipeline 1.5
 python tools/cinematic_studio_cli.py memory add --name "Elena Voss" --value "Silver-gray hair, quiet confidence..."
 ```
 
-### 3. Most Visual: Streamlit Web UI
+### 3. Streamlit Web UI
 ```bash
 pip install -r requirements-streamlit.txt
 streamlit run web_ui/app.py
 ```
+(Now includes Imagine Model selector: 1.5 Native (default), resolution, duration, native audio toggle, and live 1.5 cost simulator)
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ System Architecture (v3.6)
 
 ```
-Studio Director v3.5
-├── references/agents/          # Authoritative 22 Role Cards (recommended)
-├── tools/cinematic_studio_cli.py   # Full-featured CLI + Memory + PDF reports
-├── web_ui/app.py                 # Streamlit frontend with Memory management
-├── examples/                     # 13 ready-to-use Production Bible templates
-├── MASTER_PROMPT_v3.5.md         # Main activation prompt
+Studio Director v3.6 + Mega Production Architect v3.6
+├── references/agents/          # Authoritative 22 Role Cards (v3.6)
+├── tools/cinematic_studio_cli.py   # CLI + Memory + PDF reports + 1.5 cost simulation
+├── web_ui/app.py                 # Streamlit frontend with 1.5 pipeline controls
+├── examples/                     # Production Bible templates (v3.6 ready)
+├── MASTER_PROMPT_v3.6.md         # Main activation prompt
 └── .grok/skills/                 # Custom Grok skills
 ```
 
-**Key Components:**
-- `references/agents/` — **Single source of truth** for all 22 Role Cards
-- `tools/cinematic_studio_cli.py` — CLI with memory, bible generation, and reporting
-- `web_ui/app.py` — Modern web interface with live simulation and Memory section
-- `examples/` — Diverse, high-quality Production Bible templates
+**Key v3.6 Components:**
+- `references/agents/` — Single source of truth for all 22 Role Cards (v3.6 content)
+- `MASTER_PROMPT_v3.6.md` — Full v3.6 activation with 1.5 pipeline rules
+- `AGENT_INDEX.md` — Quick reference + activation examples (updated for 1.5)
 
 ---
 
-## 🎥 The 22-Agent Professional Film Crew
+## 🎥 The 22-Agent Professional Film Crew (v3.6)
 
 ### Core Leadership
-- **Studio Director v3.5**
-- **Mega Production Architect v3.5**
+- **Studio Director v3.6** — Central commander & **1.5 video pipeline leader**
+- **Mega Production Architect v3.6** — Production Bibles with VIDEO_PIPELINE_SPEC
 
 ### Visual & Camera
-- **Director of Photography (DoP) v3.5**
-- **Post-Production Color Grading Supervisor v3.5**
-- **Production Designer / Set Decorator v3.5**
+- **Director of Photography (DoP) v3.6** — Lighting + **1.5 physics-aware camera moves**
+- **Post-Production Color Grading Supervisor v3.6**
+- **Production Designer / Set Decorator v3.6**
 
 ### Story & Performance
-- **Performance & Emotion Director v3.5**
-- **Identity Lock Specialist v3.5**
-- **Narrative Arc & Pacing Strategist v3.5**
-- **Sequence Director v3.5**
-- **Cinematic Sequence Extender v3.5**
+- **Performance & Emotion Director v3.6** — Micro-expressions **synced to 1.5 audio beats**
+- **Identity Lock Specialist v3.6** — Character DNA + **reference_image_id + 1.5 fidelity**
+- **Narrative Arc & Pacing Strategist v3.6**
+- **Sequence Director v3.6** — 1.5 native chaining & long-form orchestration
+- **Cinematic Sequence Extender v3.6** — Low-degradation 1.5 extend/stitch
 
 ### Technical & Continuity
-- **Continuity & Consistency Guardian v3.5**
-- **Quality Assurance Guardian v3.5**
-- **Imagine Prompt Master v3.5**
-- **Workflow & Quota Optimizer v3.5**
+- **Continuity & Consistency Guardian v3.6** — Cross-clip + **1.5 physics/audio drift detection**
+- **Quality Assurance Guardian v3.6**
+- **Imagine Prompt Master v3.6** — **Full 1.5 Native Prompt Schema** (motion + Sound Layer)
+- **Workflow & Quota Optimizer v3.6** — Per-second 1.5 video pricing + Fast mode optimization
 
-### Audio
-- **Sonic Architect Native Audio Virtuoso v3.5**
-- **Foley Sound Design Specialist v3.5**
+### Audio (Now Fully 1.5 Native)
+- **Sonic Architect Native Audio Virtuoso v3.6** — One-pass native audio + AUDIO_MOMENTUM_VECTOR
+- **Foley Sound Design Specialist v3.6**
 
 ### Action, VFX & SFX
-- **Stunt & Action Choreographer v3.5**
-- **VFX & SFX Supervisor v3.5**
+- **Stunt & Action Choreographer v3.6**
+- **VFX & SFX Supervisor v3.6**
 
 ### Marketing & Distribution
-- **Key Art & Poster Designer v3.5**
-- **Trailer & Teaser Director v3.5**
-- **Localization & Subtitle Specialist v3.5**
+- **Key Art & Poster Designer v3.6**
+- **Trailer & Teaser Director v3.6**
+- **Localization & Subtitle Specialist v3.6**
 
 ### Specialist (Opt-in)
-- **ErosForge NSFW Director v3.5** — Activate explicitly with `ACTIVATE EROSFORGE`
+- **ErosForge NSFW Director v3.6** — Activate explicitly with `ACTIVATE EROSFORGE`
 
 ---
 
@@ -120,15 +126,14 @@ Studio Director v3.5
 
 ```
 Grok-Imagine-Cinematic-Studio/
-├── references/agents/          # Authoritative Role Cards (use this)
-├── agents/                     # Legacy agent definitions
-├── examples/                     # 13 Production Bible templates
+├── references/agents/          # Authoritative Role Cards (v3.6)
+├── examples/                     # Production Bible templates
 ├── tools/                        # cinematic_studio_cli.py
 ├── web_ui/                       # Streamlit app
-├── .github/workflows/            # CI with Role Card validation
-├── MASTER_PROMPT_v3.5.md
+├── MASTER_PROMPT_v3.6.md
+├── AGENT_INDEX.md
 ├── Quick_Start_Guide.md
-└── AGENT_INDEX.md                # Quick reference for all 22 agents
+└── RELEASE_NOTES_v3.6.md        # New in v3.6
 ```
 
 ---
@@ -136,9 +141,10 @@ Grok-Imagine-Cinematic-Studio/
 ## 🔗 Useful Links
 
 - [Quick Start Guide](Quick_Start_Guide.md)
-- [Agent Index](references/agents/AGENT_INDEX.md)
+- [Agent Index (v3.6)](references/agents/AGENT_INDEX.md)
 - [Production Bible Template](Project_Bible_Template.md)
 - [CHANGELOG](CHANGELOG.md)
+- [RELEASE_NOTES_v3.6.md](RELEASE_NOTES_v3.6.md) ← New
 
 ---
 
@@ -148,6 +154,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ---
 
-*Grok Imagine Cinematic Studio v3.5 — Built for professional cinematic storytelling with Grok 4.3*
+*Grok Imagine Cinematic Studio v3.6 "Odyssey Native" — Built for professional cinematic storytelling with Grok 4.3 + Imagine Video 1.5*
 
-*Last updated: June 2026*
+*Last updated: June 20, 2026*
