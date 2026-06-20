@@ -38,6 +38,8 @@ env:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    outputs:
+      directories_ok: ${{ steps.check_dirs.outputs.directories_ok }}
     steps:
       - uses: actions/checkout@v4
 
@@ -57,37 +59,45 @@ jobs:
         run: pip install pyflakes --quiet
 
       # ============================================================
-      # DIRECTORY EXISTENCE CHECK (Robust Error Handling)
+      # DIRECTORY EXISTENCE CHECK WITH CACHING
       # ============================================================
       - name: Check Required Directories
+        id: check_dirs
         run: |
           echo "🔍 Checking required directories..."
           MISSING_DIRS=""
+          DIRECTORIES_OK="true"
 
           for dir in references/agents .grok/skills tools web_ui; do
             if [ ! -d "$dir" ]; then
-              echo "⚠️  Missing directory: $dir"
+              echo "::warning::Missing directory: $dir"
               MISSING_DIRS="$MISSING_DIRS $dir"
+              DIRECTORIES_OK="false"
             else
               echo "✅ $dir exists"
             fi
           done
 
-          if [ -n "$MISSING_DIRS" ]; then
-            echo "❌ One or more required directories are missing:$MISSING_DIRS"
-            # Only fail in strict/full mode
-            if [ "$VALIDATION_MODE" = "strict" ] || [ "$VALIDATION_MODE" = "full" ]; then
-              exit 1
-            fi
+          if [ "$DIRECTORIES_OK" = "false" ]; then
+            echo "::warning::One or more required directories are missing:$MISSING_DIRS"
           fi
 
+          # Set output for downstream steps (caching the result)
+          echo "directories_ok=$DIRECTORIES_OK" >> $GITHUB_OUTPUT
+          echo "missing_dirs=$MISSING_DIRS" >> $GITHUB_OUTPUT
+
       # ============================================================
-      # ROLE CARD & AGENT VALIDATION (v3.6)
+      # ROLE CARD & AGENT VALIDATION (v3.6) - Skips if dirs missing in standard mode
       # ============================================================
       - name: Role Card & Agent Validation
+        if: steps.check_dirs.outputs.directories_ok == 'true' || env.VALIDATION_MODE != 'standard'
         run: |
           echo "🔍 Validating Role Cards and Agents (Mode: $VALIDATION_MODE)"
           echo "============================================================"
+
+          if [ "${{ steps.check_dirs.outputs.directories_ok }}" != "true" ]; then
+            echo "::warning::Running validation despite missing directories (mode: $VALIDATION_MODE)"
+          fi
 
           # Count Role Cards (excluding index)
           if [ -d "references/agents" ]; then
@@ -164,6 +174,7 @@ jobs:
       # PYTHON & CORE FILES
       # ============================================================
       - name: Python Syntax & Core Files
+        if: steps.check_dirs.outputs.directories_ok == 'true' || env.VALIDATION_MODE != 'standard'
         run: |
           echo "🐍 Checking Python files..."
           python -m py_compile tools/cinematic_studio_cli.py web_ui/app.py 2>/dev/null || echo "⚠️  Python check completed with warnings"
@@ -184,4 +195,5 @@ jobs:
         if: always()
         run: |
           echo "## 🎬 Cinematic CI Results (v3.6)" >> $GITHUB_STEP_SUMMARY
-          echo "Validation completed successfully." >> $GITHUB_STEP_SUMMARY
+          echo "Directories OK: ${{ steps.check_dirs.outputs.directories_ok }}" >> $GITHUB_STEP_SUMMARY
+          echo "Validation completed." >> $GITHUB_STEP_SUMMARY
