@@ -57,6 +57,31 @@ jobs:
         run: pip install pyflakes --quiet
 
       # ============================================================
+      # DIRECTORY EXISTENCE CHECK (Robust Error Handling)
+      # ============================================================
+      - name: Check Required Directories
+        run: |
+          echo "🔍 Checking required directories..."
+          MISSING_DIRS=""
+
+          for dir in references/agents .grok/skills tools web_ui; do
+            if [ ! -d "$dir" ]; then
+              echo "⚠️  Missing directory: $dir"
+              MISSING_DIRS="$MISSING_DIRS $dir"
+            else
+              echo "✅ $dir exists"
+            fi
+          done
+
+          if [ -n "$MISSING_DIRS" ]; then
+            echo "❌ One or more required directories are missing:$MISSING_DIRS"
+            # Only fail in strict/full mode
+            if [ "$VALIDATION_MODE" = "strict" ] || [ "$VALIDATION_MODE" = "full" ]; then
+              exit 1
+            fi
+          fi
+
+      # ============================================================
       # ROLE CARD & AGENT VALIDATION (v3.6)
       # ============================================================
       - name: Role Card & Agent Validation
@@ -89,7 +114,7 @@ jobs:
             echo "✅ All Role Cards have basic required sections"
           fi
 
-          # Version tag check (updated for v3.6)
+          # Version tag check (updated for v3.6) with directory existence guard
           VERSION_ISSUES=0
           for dir in agents references/agents .grok/skills; do
             if [ -d "$dir" ]; then
