@@ -1,1 +1,0 @@
-The content of the new file is in /home/workdir/artifacts/MASTER_PROMPT_v3.6.md but since the tool expects the content string, I need to provide it. Wait, the argument is content as string.
