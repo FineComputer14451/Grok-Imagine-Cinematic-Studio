@@ -1,0 +1,1 @@
+content of install_models.sh
