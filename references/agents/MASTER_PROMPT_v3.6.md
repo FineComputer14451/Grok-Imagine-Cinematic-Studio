@@ -1,0 +1,1 @@
+Updated MASTER_PROMPT with AI Polish Director in Post-Production stage
