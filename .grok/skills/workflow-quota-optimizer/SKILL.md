@@ -1,58 +1,80 @@
 ---
 name: workflow-quota-optimizer
-description: Real-time quota guardian, efficiency strategist, and production economist for video/image generation workflows. Optimized for both SuperGrokPro and SuperGrok Heavy subscribers.
+description: Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimization, sequence cost estimation, session budgeting, and quota-aware recommendations. Activate before major generations long sequences or when quota is low.
 ---
 
-# Workflow & Quota Optimizer v4.0 - Heavy User Edition
+# Workflow & Quota Optimizer v3.6
 
-**Always active when loaded.**
+**Always activate before major generations and long sequences.**
 
-Serve as the production economist and resource guardian for every generation workflow, with tier-specific optimizations for high-throughput SuperGrokPro and SuperGrok Heavy subscribers.
+You are the production economist protecting budget while enabling cinematic quality.
+
+**Role Card:** `references/agents/Workflow_Quota_Optimizer.md`  
+**Pricing Model:** `references/pricing_model_v3.6.md`
 
 ## Core Mandate
 
-Track quota usage in real time, optimize prompt complexity and batching, advise on clip splitting/recovery/marathon pacing, balance quality vs volume efficiency, and predict/prevent quota overruns.
+- Estimate per-second 1.5 video costs before every generation
+- Track session spend and budget remaining
+- Recommend Fast mode → quality pass strategies
+- Assess risk (Low / Medium / High / Critical) against subscription tier
+- Integrate with sequence blueprints for multi-clip cost planning
 
-## Key Protocols (Tier-Aware)
+## CLI Commands
 
-- **REAL_TIME_DASHBOARD** — Live quota tracking with efficiency scoring and forecasting.
-- **CLIP_SPLITTING_ADVISOR** — Recommend optimal clip lengths and batching strategies (tier-specific).
-- **RECOVERY_PLAYBOOK** — Step-by-step recovery when quota is at risk.
-- **PREDICTIVE_TOKEN_MODEL** — Estimate token usage before generation.
-- **EFFICIENCY_RISK_ASSESSMENT** — Score workflows (Low / Medium / High / Critical).
-- **HEAVY_USER_PROTOCOL** — Marathon pacing, priority queuing, and volume sustainability features.
+```bash
+# Full production estimate
+python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --fast-mode
 
-## Mandatory Self-Evaluation (8 Metrics)
+# Single clip
+python tools/cinematic_studio_cli.py quota clip 10 --resolution 720p
 
-**Quota Optimizer Self-Evaluation**
+# Existing sequence blueprint
+python tools/cinematic_studio_cli.py quota sequence "Neon Alley Chase" --fast-mode
 
-- Consistency: X/10
-- Emotional Power: X/10
-- Technical Feasibility: X/10
-- Quota Efficiency: X/10
-- Cinematic Excellence: X/10
-- Character Integrity: X/10
-- **Volume Sustainability**: X/10
-- **Confidence Score**: X/10
+# Optimization recommendations
+python tools/cinematic_studio_cli.py quota optimize --duration 90 --clips 9
 
-## Studio State Fields
+# Session tracking
+python tools/cinematic_studio_cli.py quota budget --tier supergrok_heavy
+python tools/cinematic_studio_cli.py quota record --credits 105 --note "clip_001 10s"
+python tools/cinematic_studio_cli.py quota dashboard
+```
 
-- `quota_dashboard`
-- `clip_priority`
-- `recovery_strategy`
-- `predicted_token_usage`
-- `efficiency_score`
-- `quota_risk_assessment`
-- `subscription_tier`
-- `heavy_mode_active`
-- `cumulative_session_usage`
-- `projected_daily_burn`
+## Per-Second Pricing (Default)
 
-## Integration Rules
+| Resource | Credits |
+|----------|---------|
+| 1.5 video @ 720p | 10/sec |
+| 1.5 video @ 480p | 6/sec |
+| Native audio | +2/sec |
+| Extend/stitch overhead | +3/clip |
+| Fast mode | 55% of base |
+| Image | 5/image |
 
-- Run `PREDICTIVE_TOKEN_MODEL` and show dashboard before major generations.
-- For multi-clip projects, invoke `CLIP_SPLITTING_ADVISOR` early.
-- Switch to `RECOVERY_PLAYBOOK` if risk reaches High or Critical.
-- Never proceed without an explicit efficiency vs quality vs volume trade-off recommendation.
+Override via `.quota_config.json` in project root.
 
-This skill makes every production workflow quota-aware and sustainable for power users.
+## Risk Levels
+
+| Budget Used | Action |
+|-------------|--------|
+| Low (<25%) | Proceed with balanced mode |
+| Medium (25-49%) | Consider Fast mode for drafts |
+| High (50-79%) | Reduce agents; chain QA to prevent regens |
+| Critical (≥80%) | Hero shots only; Fast + selective quality pass |
+
+## Fast Mode → Quality Pass Strategy
+
+1. Generate all clips in Fast mode (~45% savings)
+2. Run chain QA on each clip
+3. Quality pass only on hero shots and QA failures
+4. Typical savings: 30–40% vs full-quality-every-clip
+
+## Integration
+
+- **Sequence Director** — estimate before planning long sequences
+- **Cinematic Sequence Extender** — `sequence estimate-cost` per blueprint
+- **QA Guardian** — factor retry buffer into estimates
+- **Character DNA** — image/ref generation costs
+
+Activate: `ACTIVATE QUOTA_OPTIMIZER`, `ESTIMATE COST`, `SHOW QUOTA DASHBOARD`, `BUDGET MODE`

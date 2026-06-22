@@ -6,9 +6,9 @@
 
 **The most advanced multi-agent cinematic production system for Grok 4.3 Full + Grok Imagine Video 1.5**
 
-Transform any story into emotionally powerful, production-ready cinematic video with **native 1.5 image-to-video**, one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **22-agent** professional film crew.
+Transform any story into emotionally powerful, production-ready cinematic video with **native 1.5 image-to-video**, one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
-[![Version](https://img.shields.io/badge/version-3.6-blue)](https://github.com/FineComputer14451/grok-imagine-cinematic-studio)
+[![Version](https://img.shields.io/badge/version-3.6.1-blue)](https://github.com/FineComputer14451/grok-imagine-cinematic-studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Grok](https://img.shields.io/badge/Grok-4.3%20%2B%201.5-purple)](https://x.ai)
 
@@ -26,11 +26,17 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 - Optimized prompting rules for 1.5 (explicit camera moves with weighty physics, timing beats, Sound Layer syntax)
 - Per-second 1.5 video quota modeling + Fast mode → quality pass strategies
 
+### v3.6.1 Production Pipelines (New)
+- **Character DNA pipeline** — `dna` CLI commands, Identity Lock handoff, prompt injection
+- **Long-form sequence chain** — `sequence` CLI, 10-point chain QA gates, 1.5 extend/stitch protocols
+- **Quota orchestration** — `quota` CLI, per-second 1.5 pricing, session budgeting, Fast mode optimization
+- **AI Polish Director** — final delivery upscale via `ai-video-upscaler` skill
+
 ### Agent & System Upgrades
-- All core 22 agents upgraded to v3.6 with 1.5-specific protocols, decision frameworks, and output formats
+- All core agents upgraded to v3.6 with 1.5-specific protocols, decision frameworks, and output formats
 - Enhanced long-form sequencing (60–180s+) with low-degradation 1.5 native chaining
 - Stronger emotional + audio continuity across extended sequences
-- Updated CLI & Web UI support for 1.5 model selection, native audio toggle, and real-time per-second cost estimation
+- Updated CLI & Web UI with DNA, sequence, and quota tooling + live per-second cost estimation
 
 ---
 
@@ -48,8 +54,10 @@ python tools/cinematic_studio_cli.py --help
 
 # Examples
 python tools/cinematic_studio_cli.py status
-python tools/cinematic_studio_cli.py create-bible --story "Your cinematic vision here" --video-pipeline 1.5
-python tools/cinematic_studio_cli.py memory add --name "Elena Voss" --value "Silver-gray hair, quiet confidence..."
+python tools/cinematic_studio_cli.py create-bible "Your Project Title"
+python tools/cinematic_studio_cli.py dna init "Elena Voss" --core "..." --facial "..."
+python tools/cinematic_studio_cli.py sequence init "Neon Alley Chase" --duration 90
+python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --fast-mode
 ```
 
 ### 3. Streamlit Web UI
@@ -65,8 +73,9 @@ streamlit run web_ui/app.py
 
 ```
 Studio Director v3.6 + Mega Production Architect v3.6
-├── references/agents/          # Authoritative 22 Role Cards (v3.6)
-├── tools/cinematic_studio_cli.py   # CLI + Memory + PDF reports + 1.5 cost simulation
+├── references/agents/          # Authoritative Role Cards (v3.6)
+├── tools/                      # CLI libraries: character_dna, sequence_chain, quota_optimizer
+├── tools/cinematic_studio_cli.py   # CLI: dna, sequence, quota + memory + PDF
 ├── web_ui/app.py                 # Streamlit frontend with 1.5 pipeline controls
 ├── examples/                     # Production Bible templates (v3.6 ready)
 ├── MASTER_PROMPT_v3.6.md         # Main activation prompt
@@ -74,13 +83,13 @@ Studio Director v3.6 + Mega Production Architect v3.6
 ```
 
 **Key v3.6 Components:**
-- `references/agents/` — Single source of truth for all 22 Role Cards (v3.6 content)
+- `references/agents/` — Single source of truth for all Role Cards (v3.6 content)
 - `MASTER_PROMPT_v3.6.md` — Full v3.6 activation with 1.5 pipeline rules
 - `AGENT_INDEX.md` — Quick reference + activation examples (updated for 1.5)
 
 ---
 
-## 🎥 The 22-Agent Professional Film Crew (v3.6)
+## 🎥 The 23-Agent Professional Film Crew (v3.6)
 
 ### Core Leadership
 - **Studio Director v3.6** — Central commander & **1.5 video pipeline leader**
@@ -92,6 +101,7 @@ Studio Director v3.6 + Mega Production Architect v3.6
 - **Production Designer / Set Decorator v3.6**
 
 ### Story & Performance
+- **Character DNA Extractor v3.6** — Forensic DNA extraction → Identity Lock handoff
 - **Performance & Emotion Director v3.6** — Micro-expressions **synced to 1.5 audio beats**
 - **Identity Lock Specialist v3.6** — Character DNA + **reference_image_id + 1.5 fidelity**
 - **Narrative Arc & Pacing Strategist v3.6**
@@ -116,6 +126,9 @@ Studio Director v3.6 + Mega Production Architect v3.6
 - **Key Art & Poster Designer v3.6**
 - **Trailer & Teaser Director v3.6**
 - **Localization & Subtitle Specialist v3.6**
+
+### Post-Production & Delivery
+- **AI Polish Director v3.6** — Final upscale + face restoration (`ai-video-upscaler`)
 
 ### Specialist (Opt-in)
 - **ErosForge NSFW Director v3.6** — Activate explicitly with `ACTIVATE EROSFORGE`

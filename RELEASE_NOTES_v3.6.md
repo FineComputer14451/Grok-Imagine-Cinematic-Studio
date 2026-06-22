@@ -1,7 +1,20 @@
 # RELEASE NOTES — Grok Imagine Cinematic Studio v3.6 "Odyssey Native"
 
 **Release Date:** June 20, 2026  
+**Latest Patch:** v3.6.1 (June 22, 2026)  
 **Focus:** Full native integration with **Grok Imagine Video 1.5** + Grok 4.3 Full optimizations + Complete Skill Layer
+
+---
+
+## v3.6.1 Patch (June 22, 2026)
+
+- **AI Polish Director** (23rd agent) + `ai-video-upscaler` skill
+- **Character DNA pipeline** — `dna` CLI + `character-dna-extractor` skill
+- **Sequence chain** — `sequence` CLI + 10-point chain QA for 1.5 extend/stitch
+- **Quota orchestration** — `quota` CLI + per-second 1.5 pricing model
+- CLI/Web UI/README aligned to 23 agents and v3.6.1
+
+See `CHANGELOG.md` for full details.
 
 ---
 

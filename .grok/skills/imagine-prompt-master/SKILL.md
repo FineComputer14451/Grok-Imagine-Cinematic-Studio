@@ -26,10 +26,29 @@ Translate emotional and narrative intent into technical prompt language.
 ## Key Protocols
 
 - **ULTIMATE_TEMPLATE_APPLICATION** — Always use the full layered template.
+- **CHARACTER_DNA_INJECTION** — Prepend locked DNA blocks from Identity Lock before every character prompt.
 - **NEGATIVE_PROMPT_GENERATION** — Create comprehensive negative prompts.
 - **MULTI_REFERENCE_WEIGHTING** — Properly weight and manage reference images.
 - **REFINEMENT_ITERATION_WORKFLOW** — Draft → Generate → Evaluate → Targeted Fix → Lock → Polish.
 - **META_PROMPT_OPTIMIZATION** — Generate optimized prompts from rough ideas.
+
+## Character DNA Injection (Required for recurring characters)
+
+Before crafting any prompt featuring a locked character, inject DNA:
+
+```bash
+python tools/cinematic_studio_cli.py dna inject --name "Character Name" --mode cinematic
+python tools/cinematic_studio_cli.py dna inject --name "Character Name" --mode video_1.5 --base "scene description here"
+```
+
+Injection modes:
+- `compact` — token-efficient single shots
+- `cinematic` — full scene prompts (default)
+- `close_up` — portrait / micro-expression
+- `sequence_starter` — first frame of chained sequence
+- `video_1.5` — native 1.5 with reference_image_id and drift prevention
+
+The `[CHARACTER_DNA:NAME_vX]` variable block must appear verbatim at the top of the final prompt. Never paraphrase locked anchors.
 
 ## Mandatory Self-Evaluation (7 Metrics)
 

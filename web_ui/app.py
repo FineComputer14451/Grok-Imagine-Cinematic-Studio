@@ -1,15 +1,55 @@
 #!/usr/bin/env python3
 """
-Grok Imagine Cinematic Studio — Streamlit Web UI v3.5.5
-Aligned with 22-Agent System + Role Card Integration
+Grok Imagine Cinematic Studio — Streamlit Web UI v3.6.1
+Aligned with 23-Agent System + DNA / Sequence / Quota Pipelines
 """
 
 import streamlit as st
 from datetime import datetime
 import json
 import os
+import sys
 from pathlib import Path
 from openai import OpenAI
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
+try:
+    from character_dna import (
+        build_prompt_blocks,
+        create_dna_scaffold,
+        list_characters,
+        lock_to_identity_bank,
+        save_character_dna,
+    )
+    from sequence_chain import (
+        add_clip_to_sequence,
+        build_extend_prompt,
+        create_clip,
+        create_sequence_scaffold,
+        find_sequence,
+        get_clip,
+        list_sequences,
+        load_sequence,
+        save_sequence,
+        update_sequence_health,
+    )
+    from quota_optimizer import (
+        assess_budget_risk,
+        estimate_production,
+        estimate_sequence_cost,
+        get_optimization_recommendations,
+        quota_dashboard,
+        record_spend,
+        set_budget,
+    )
+    DNA_AVAILABLE = True
+    SEQ_AVAILABLE = True
+    QUOTA_AVAILABLE = True
+except ImportError:
+    DNA_AVAILABLE = False
+    SEQ_AVAILABLE = False
+    QUOTA_AVAILABLE = False
 
 # ===================== CONFIG =====================
 AGENTS_DIR = Path("../references/agents")
@@ -24,7 +64,7 @@ def get_grok_client():
 
 # ===================== PAGE SETUP =====================
 st.set_page_config(
-    page_title="Grok Imagine Cinematic Studio v3.5",
+    page_title="Grok Imagine Cinematic Studio v3.6",
     page_icon="🎥",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -46,18 +86,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ===================== HEADER =====================
-st.title("🎥 Grok Imagine Cinematic Studio v3.5")
-st.markdown("**22-Agent Professional Cinematic Production System** • Powered by Grok 4.3 + Full Role Cards")
+st.title("🎥 Grok Imagine Cinematic Studio v3.6")
+st.markdown("**23-Agent Professional Cinematic Production System** • DNA + Sequence + Quota Pipelines")
 
 # ===================== SIDEBAR =====================
 with st.sidebar:
     st.header("🎬 Production Crew")
-    st.success("✅ 22 Agents + Role Cards Active")
+    st.success("✅ 23 Agents + Role Cards Active")
 
     # Full Agent List
-    with st.expander("View All 22 Agents", expanded=True):
+    with st.expander("View All 23 Agents", expanded=True):
         agents = [
-            "Studio Director", "Mega Production Architect",
+            "Studio Director", "Mega Production Architect", "Character DNA Extractor",
             "Director of Photography", "Post-Production Color Grading Supervisor", "Production Designer / Set Decorator",
             "Performance & Emotion Director", "Identity Lock Specialist", "Narrative Arc & Pacing Strategist",
             "Sequence Director", "Cinematic Sequence Extender",
@@ -66,7 +106,8 @@ with st.sidebar:
             "Sonic Architect Native Audio Virtuoso", "Foley Sound Design Specialist",
             "Stunt & Action Choreographer", "VFX & SFX Supervisor",
             "Key Art & Poster Designer", "Trailer & Teaser Director",
-            "Localization & Subtitle Specialist", "ErosForge NSFW Director (opt-in)"
+            "Localization & Subtitle Specialist",
+            "AI Polish Director", "ErosForge NSFW Director (opt-in)"
         ]
         for agent in agents:
             st.markdown(f"• {agent}")
@@ -84,37 +125,52 @@ with st.sidebar:
     else:
         st.warning("references/agents/ not found")
 
-    # Memory / Character DNA Section
-    st.subheader("🧠 Memory / Character DNA")
-    
-    # Initialize memory in session state
+    # Character DNA Section
+    st.subheader("🧬 Character DNA")
+    if DNA_AVAILABLE:
+        with st.expander("Create DNA Profile", expanded=False):
+            dna_name = st.text_input("Character Name", placeholder="Elena Voss", key="dna_name")
+            dna_core = st.text_area("Core Identity", placeholder="Late 30s, silver-gray hair, quiet confidence...", height=60, key="dna_core")
+            dna_facial = st.text_area("Facial DNA", placeholder="Hazel eyes, subtle crow's feet, defined cheekbones...", height=60, key="dna_facial")
+            dna_hair = st.text_input("Hair & Grooming", placeholder="Silver-gray bob, side-parted", key="dna_hair")
+            if st.button("💾 Save DNA Profile", use_container_width=True, key="dna_save"):
+                if dna_name and dna_core and dna_facial:
+                    dna = create_dna_scaffold(dna_name, core_identity=dna_core, facial_dna=dna_facial, hair_grooming=dna_hair, source="web-ui")
+                    save_character_dna(dna)
+                    st.success(f"✅ DNA saved: characters/{dna['slug']}/")
+                    st.rerun()
+                else:
+                    st.warning("Name, Core Identity, and Facial DNA are required")
+
+        chars = list_characters()
+        if chars:
+            with st.expander(f"Locked Characters ({len(chars)})", expanded=True):
+                for c in chars:
+                    col_a, col_b = st.columns([3, 1])
+                    col_a.markdown(f"**{c['name']}** `{c['status']}`")
+                    if col_b.button("🔒", key=f"lock_{c['slug']}", help="Lock to Identity Bank"):
+                        from character_dna import find_character_dna, load_character_dna
+                        path = find_character_dna(c["name"])
+                        if path:
+                            lock_to_identity_bank(load_character_dna(path))
+                            st.success(f"Locked {c['name']}")
+                            st.rerun()
+        else:
+            st.caption("No DNA profiles yet.")
+    else:
+        st.caption("Character DNA module unavailable.")
+
+    # Legacy memory
+    st.subheader("🧠 Quick Memory")
     if "memory" not in st.session_state:
         st.session_state.memory = {}
-    
-    with st.expander("Add New Memory Entry", expanded=False):
-        mem_name = st.text_input("Name / Character", placeholder="Elena Voss or PROJECT_THEME")
-        mem_value = st.text_area("Description / DNA", placeholder="Silver-gray hair, quiet confidence, recently exploring desire...", height=80)
-        
-        if st.button("💾 Save Memory Entry", use_container_width=True):
+    with st.expander("Add Memory Entry", expanded=False):
+        mem_name = st.text_input("Name", placeholder="PROJECT_THEME", key="mem_name")
+        mem_value = st.text_area("Value", height=60, key="mem_value")
+        if st.button("💾 Save", use_container_width=True, key="mem_save"):
             if mem_name and mem_value:
                 st.session_state.memory[mem_name] = mem_value
-                st.success(f"✅ Saved: {mem_name}")
                 st.rerun()
-            else:
-                st.warning("Please provide both Name and Description")
-    
-    # Display existing memory
-    if st.session_state.memory:
-        with st.expander(f"📋 Saved Entries ({len(st.session_state.memory)})", expanded=True):
-            for name, value in st.session_state.memory.items():
-                st.markdown(f"**{name}**")
-                st.caption(value[:150] + "..." if len(value) > 150 else value)
-            
-            if st.button("🗑️ Clear All Memory", use_container_width=True):
-                st.session_state.memory = {}
-                st.rerun()
-    else:
-        st.caption("No memory entries yet. Add characters, themes, or project variables above.")
 
     st.divider()
 
@@ -125,14 +181,75 @@ with st.sidebar:
         ["Denis Villeneuve", "Christopher Nolan", "David Fincher", "Roger Deakins", "Zack Snyder", "Default"])
     duration = st.slider("Duration (seconds)", 15, 180, 60, step=5)
     complexity = st.select_slider("Complexity", ["Low", "Medium", "High", "Extreme"])
+    fast_mode = st.checkbox("Fast Mode", value=False, key="fast_mode")
+    tier = st.selectbox("Subscription", ["supergrok_pro", "supergrok_heavy", "custom"], key="quota_tier")
 
-    # Live Cost Simulator
-    st.subheader("💰 Live Cost Estimate")
-    multipliers = {"Low": 1, "Medium": 2, "High": 4, "Extreme": 7}
-    est_cost = round(duration * multipliers[complexity] * 0.85, 2)
-    col1, col2 = st.columns(2)
-    col1.metric("Est. Cost", f"${est_cost}")
-    col2.metric("Tokens", f"{int(est_cost * 1250):,}")
+    # Live Quota Estimator (1.5 per-second)
+    st.subheader("💰 Quota Estimate (1.5)")
+    if QUOTA_AVAILABLE:
+        est = estimate_production(
+            duration,
+            complexity=complexity.lower(),
+            fast_mode=fast_mode,
+        )
+        dash = quota_dashboard()
+        risk = assess_budget_risk(est, tier=tier, budget_remaining=dash.get("budget_remaining"))
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Credits", f"{est['credits_low']:.0f}–{est['credits_high']:.0f}")
+        col2.metric("USD", f"${est['usd_low']}–${est['usd_high']}")
+        col3.metric("Risk", risk["risk_level"].title())
+        st.caption(f"Clips: ~{est['clip_count']} | Tokens: ~{est['estimated_tokens']:,}")
+        if st.button("Set Budget Tier", key="set_tier"):
+            set_budget(tier=tier)
+            st.success(f"Tier set: {tier}")
+    else:
+        st.caption("Quota module unavailable.")
+
+# ===================== SEQUENCE CHAIN =====================
+if SEQ_AVAILABLE:
+    seqs = list_sequences()
+    with st.expander("🎬 Long-Form Sequence (1.5 Extend/Stitch)", expanded=False):
+        if st.button("➕ New Sequence", key="seq_new_btn"):
+            st.session_state.show_seq_form = True
+        if st.session_state.get("show_seq_form"):
+            seq_name = st.text_input("Sequence Name", key="seq_name")
+            seq_dur = st.number_input("Target Duration (s)", 30, 180, 60, key="seq_dur")
+            if st.button("Create Sequence", key="seq_create"):
+                if seq_name:
+                    seq = create_sequence_scaffold(seq_name, target_duration=seq_dur)
+                    save_sequence(seq)
+                    st.session_state.show_seq_form = False
+                    st.success(f"Created: sequences/{seq['slug']}/")
+                    st.rerun()
+        if seqs:
+            sel_seq = st.selectbox("Sequence", [s["name"] for s in seqs], key="sel_seq")
+            seq_path = find_sequence(sel_seq)
+            if seq_path:
+                seq_data = load_sequence(seq_path)
+                clips = seq_data.get("clips", [])
+                st.caption(f"Health: {seq_data.get('sequence_health_score', '—')} | Chain QA: {seq_data.get('chain_qa_status', 'pending')} | Clips: {len(clips)}")
+                if clips:
+                    last = clips[-1]
+                    next_beat = st.text_input("Next Beat", key="seq_beat", placeholder="She turns into the alley...")
+                    if st.button("Generate Extend Prompt", key="seq_extend") and next_beat:
+                        st.code(build_extend_prompt(seq_data, last, next_beat), language="markdown")
+
+# ===================== CHARACTER DNA INJECTION =====================
+if DNA_AVAILABLE:
+    chars = list_characters()
+    if chars:
+        with st.expander("🧬 Character DNA Prompt Injection", expanded=False):
+            inj_char = st.selectbox("Character", [c["name"] for c in chars], key="inj_char")
+            inj_mode = st.selectbox("Mode", ["cinematic", "compact", "close_up", "sequence_starter", "video_1.5"], key="inj_mode")
+            inj_base = st.text_area("Base Prompt (optional)", height=80, key="inj_base")
+            if st.button("Generate Injection Block", key="inj_gen"):
+                from character_dna import find_character_dna, inject_into_prompt, load_character_dna
+                try:
+                    result = inject_into_prompt(inj_base, inj_char, inj_mode)
+                    st.code(result, language="markdown")
+                except FileNotFoundError:
+                    dna = load_character_dna(find_character_dna(inj_char))
+                    st.code(build_prompt_blocks(dna)[inj_mode], language="markdown")
 
 # ===================== MAIN AREA =====================
 st.header("📝 Project Brief")
@@ -148,7 +265,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("🚀 Generate Master Prompt", use_container_width=True):
         if story:
-            prompt = f"""# Grok Imagine Cinematic Studio v3.5 — ACTIVATED
+            prompt = f"""# Grok Imagine Cinematic Studio v3.6.1 — ACTIVATED
 
 **Project:** {story[:120]}...
 **Genre:** {genre}
@@ -156,7 +273,7 @@ with col1:
 **Duration:** {duration}s | **Complexity:** {complexity}
 **Date:** {datetime.now().strftime('%Y-%m-%d %H:%M')}
 
-You are now running the full **22-agent** Grok Imagine Cinematic Studio v3.5 with Role Cards loaded from `references/agents/`.
+You are now running the full **23-agent** Grok Imagine Cinematic Studio v3.6 with Role Cards loaded from `references/agents/`.
 
 Please begin by confirming activation and building a detailed Production Bible.
 """
@@ -168,7 +285,7 @@ Please begin by confirming activation and building a detailed Production Bible.
 with col2:
     if st.button("🎬 Simulate Full Production", use_container_width=True):
         if story:
-            with st.spinner("Engaging all 22 agents..."):
+            with st.spinner("Engaging all 23 agents..."):
                 import time
                 progress = st.progress(0)
                 for i in range(100):
@@ -232,7 +349,8 @@ with col3:
                 "director_signature": director,
                 "target_duration_seconds": duration,
                 "complexity": complexity,
-                "total_agents": 22,
+                "total_agents": 23,
+                "version": "3.6.1",
                 "role_cards_source": "references/agents/",
                 "locked_variables": {
                     "PROJECT_TITLE": story[:60],
@@ -254,7 +372,6 @@ with col3:
                     "Polish & Delivery (Audio + Marketing + QA)"
                 ],
                 "created": datetime.now().isoformat(),
-                "version": "3.5.5",
                 "status": "Ready for production",
                 "notes": "Generated via Grok Imagine Cinematic Studio Web UI. Use CLI for advanced memory & PDF reports."
             }
@@ -288,7 +405,7 @@ if st.button("✨ Generate Prompt with Real Grok 4.3", use_container_width=True)
                     response = client.chat.completions.create(
                         model="grok-4.3",
                         messages=[
-                            {"role": "system", "content": "You are an expert cinematic prompt engineer for the 22-agent Grok Imagine Cinematic Studio."},
+                            {"role": "system", "content": "You are an expert cinematic prompt engineer for the 23-agent Grok Imagine Cinematic Studio v3.6."},
                             {"role": "user", "content": f"Create a detailed cinematic prompt for: {story}. Include lighting, camera work, mood, and visual style."}
                         ],
                         max_tokens=850,
@@ -301,4 +418,4 @@ if st.button("✨ Generate Prompt with Real Grok 4.3", use_container_width=True)
 
 # Footer
 st.divider()
-st.caption("Grok Imagine Cinematic Studio v3.5.5 • 22 Agents + Role Cards • Live Grok 4.3 API • June 2026")
+st.caption("Grok Imagine Cinematic Studio v3.6.1 • 23 Agents • DNA/Sequence/Quota • June 2026")

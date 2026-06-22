@@ -2,6 +2,36 @@
 
 All notable changes to Grok Imagine Cinematic Studio will be documented in this file.
 
+## [3.6.1] - 2026-06-21
+
+### Added
+- **Character DNA pipeline** — `tools/character_dna.py` library with scaffold, handoff, lock, and prompt injection
+- **`character-dna-extractor` skill** — extraction template, handoff/inject scripts, Identity Lock integration
+- **CLI `dna` commands** — `init`, `save`, `list`, `show`, `handoff`, `lock`, `inject`
+- **Web UI Character DNA panel** — create profiles, lock to Identity Bank, generate injection blocks
+- **Long-form sequence pipeline** — `tools/sequence_chain.py` with 1.5 extend/stitch handoffs and 10-point chain QA
+- **CLI `sequence` commands** — `init`, `add-clip`, `handoff`, `extend-prompt`, `qa`, `health`
+- **Extend/stitch protocol docs** — `extend_stitch_protocol_v3.6.md` + `chain_qa_checklist.md`
+- **Quota orchestration** — `tools/quota_optimizer.py` with per-second 1.5 pricing, session tracking, risk assessment
+- **CLI `quota` commands** — `estimate`, `clip`, `sequence`, `dashboard`, `budget`, `record`, `optimize`
+- **Sequence cost integration** — `sequence estimate-cost` + `quota sequence`
+- **Web UI quota panel** — live 1.5 per-second estimator with risk level and tier selection
+- **AI Polish Director** — 23rd agent for final post-production upscale, face restoration, and delivery polish
+- **`ai-video-upscaler` skill** with GPU Real-ESRGAN path, async batch processing, pure-Python fallback, and model installer
+- Post-production pipeline: QA Go → Color Grade → AI Polish Director → Studio Director sign-off
+- New preset #9 in `references/agents/AGENT_INDEX.md`: Final Delivery Polish
+
+### Changed
+- `AGENTS.md` restored and updated for v3.6 with AI Polish Director section
+- `MASTER_PROMPT_v3.6.md` updated to 23 agents with post-production activation commands
+- `grok-imagine-cinematic-studio` skill updated to reference 23-agent suite
+- `Quick_Start_Guide.md` Phase 4 now includes final delivery polish step
+
+### Fixed
+- Restored stub placeholder content in `AGENTS.md`, `references/agents/AGENT_INDEX.md`, and `references/agents/MASTER_PROMPT_v3.6.md`
+
+---
+
 ## [3.5.1] - 2026-06-02
 
 ### Added

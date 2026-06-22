@@ -100,14 +100,17 @@ You can activate any agent directly:
 8. **Run QA Review**  
    `RUN QA REVIEW` or let the Quality Assurance Guardian evaluate outputs.
 
-9. **Request Director’s Cut** (if needed)  
+9. **Final Delivery Polish** (after QA Go)  
+   `ACTIVATE AI_POLISH_DIRECTOR` or `RUN FINAL POLISH PASS` — upscales 720p clips to delivery resolution with optional face restoration via the `ai-video-upscaler` skill.
+
+10. **Request Director’s Cut** (if needed)  
    `GENERATE DIRECTOR'S CUT`
 
 ### Phase 5: Delivery
-10. **Generate Marketing Assets**  
+11. **Generate Marketing Assets**  
     `ACTIVATE KEY_ART_DESIGNER` + `ACTIVATE TRAILER_DIRECTOR`
 
-11. **Localize** (if needed)  
+12. **Localize** (if needed)  
     `ACTIVATE LOCALIZATION_SPECIALIST`
 
 ---

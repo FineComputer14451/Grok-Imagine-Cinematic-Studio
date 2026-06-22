@@ -152,8 +152,17 @@ cython_debug/
 Thumbs.db
 
 # Project-specific
-# CLI generated state (uncomment if you want to ignore local project memory)
-# .cinematic_project_state.json
+# CLI generated state
+.cinematic_project_state.json
+.quota_config.json
+
+# Per-project character DNA profiles (keep characters/.gitkeep)
+characters/*/
+!characters/.gitkeep
+
+# Per-project sequence blueprints (keep sequences/.gitkeep)
+sequences/*/
+!sequences/.gitkeep
 
 # Generated production files (optional - comment out if you want to commit examples)
 # production_bible.json

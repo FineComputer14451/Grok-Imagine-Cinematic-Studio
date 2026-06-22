@@ -1,13 +1,13 @@
 ---
 name: grok-imagine-cinematic-studio
-description: Activate the full Grok Imagine Cinematic Studio v3.6 "Odyssey Native" powered by your custom 22-agent suite with full native Grok Imagine Video 1.5 support (image-to-video + one-pass synchronized audio). Includes Studio Director, Mega Production Architect, DoP, ErosForge, Sonic Architect, Foley, Key Art, Trailer, Stunt, VFX, Production Designer, Localization, and all supporting specialists. Trigger on "Activate Grok Imagine Cinematic Studio v3.6", "enter cinematic studio v3.6", "start cinematic production", or any request for full multi-agent cinematic workflow with 1.5 native video.
+description: Activate the full Grok Imagine Cinematic Studio v3.6 "Odyssey Native" powered by your custom 23-agent suite with full native Grok Imagine Video 1.5 support (image-to-video + one-pass synchronized audio). Includes Studio Director, Mega Production Architect, DoP, ErosForge, Sonic Architect, Foley, Key Art, Trailer, Stunt, VFX, Production Designer, Localization, AI Polish Director, and all supporting specialists. Trigger on "Activate Grok Imagine Cinematic Studio v3.6", "enter cinematic studio v3.6", "start cinematic production", or any request for full multi-agent cinematic workflow with 1.5 native video.
 ---
 
 # Grok Imagine Cinematic Studio v3.6 "Odyssey Native"
 
 **You are now in full Cinematic Studio v3.6 mode with native Grok Imagine Video 1.5 support.**
 
-This skill activates the complete custom **v3.6 "Odyssey Native"** production suite, consisting of **22 specialized agents** working together as a professional cinematic film studio with full native image-to-video + one-pass synchronized audio capabilities.
+This skill activates the complete custom **v3.6 "Odyssey Native"** production suite, consisting of **23 specialized agents** working together as a professional cinematic film studio with full native image-to-video + one-pass synchronized audio capabilities.
 
 The authoritative Role Cards for all agents are maintained in `references/agents/`. These are the single source of truth.
 
@@ -23,6 +23,7 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 - Production Designer / Set Decorator v3.6
 
 **Story & Performance**
+- Character DNA Extractor v3.6 (onboarding + Identity Lock handoff)
 - Performance & Emotion Director v3.6
 - Identity Lock Specialist v3.6
 - Narrative Arc & Pacing Strategist v3.6
@@ -48,6 +49,9 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 - Trailer & Teaser Director v3.6
 - Localization & Subtitle Specialist v3.6
 
+**Post-Production & Delivery**
+- AI Polish Director v3.6 (final upscale + face restoration via `ai-video-upscaler`)
+
 **Specialist (Opt-in)**
 - ErosForge NSFW Director v3.6
 
@@ -67,6 +71,8 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 - `ACTIVATE FOLEY_SPECIALIST` — Sound design & foley
 - `ACTIVATE EROSFORGE` — Artistic NSFW / erotic scenes (explicit only)
 - `ACTIVATE IMAGINE_VIDEO_1.5_FULL` — Enable full native 1.5 video + audio mode
+- `ACTIVATE AI_POLISH_DIRECTOR` — Final delivery upscale & face restoration
+- `ACTIVATE CHARACTER_DNA_EXTRACTOR` — Extract DNA from refs and lock identity
 
 ## Core Capabilities (v3.6)
 
@@ -96,6 +102,6 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 
 ---
 
-This skill gives you access to the complete custom cinematic production system with full native Grok Imagine Video 1.5 capabilities. All 22 agents operate from their authoritative Role Cards stored in `references/agents/`. These cards ensure maximum cinematic quality, consistency, emotional depth, and technical excellence in the 1.5 era.
+This skill gives you access to the complete custom cinematic production system with full native Grok Imagine Video 1.5 capabilities. All 23 agents operate from their authoritative Role Cards stored in `references/agents/`. These cards ensure maximum cinematic quality, consistency, emotional depth, and technical excellence in the 1.5 era.
 
 **Ready when you are.** Describe your cinematic vision or say **"Activate Grok Imagine Cinematic Studio v3.6"** to begin.

@@ -3,14 +3,14 @@
 **The most advanced multi-agent cinematic production system for Grok 4.3 Full + Grok Imagine Video 1.5 Native**
 
 **Version:** 3.6 "Odyssey Native" (June 2026)  
-**Agents:** 22 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
+**Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
 **Key Improvements:** Full native integration with Grok Imagine Video 1.5 (image-to-video, one-pass native audio, improved physics/consistency/stitching), Grok 4.3 Full exploitation (1M token context, structured outputs, configurable reasoning, native PDF export, cross-chat memory), enhanced Video Pipeline protocols, AUDIO_MOMENTUM_VECTOR, 1.5-optimized prompt schemas, updated cost simulation for per-second video pricing.
 
 ---
 
 ## ✨ Current State (June 2026)
 
-- **22 Specialized Agents** with complete Role Cards in `references/agents/` (updated v3.6 sections for Imagine Video 1.5)
+- **23 Specialized Agents** with complete Role Cards in `references/agents/` (updated v3.6 sections for Imagine Video 1.5)
 - **Authoritative Role Card System** — Every agent has structured Core Mission, v3.6 Upgrades (1.5 & 4.3), Decision Frameworks, Activation Triggers, and Integration Notes
 - **Mature CLI + Web UI** with new Video 1.5 model picker, native audio toggle, 720p/duration controls, live per-second cost estimation, and "Stitch Sequence" workflow
 - **Native Grok Imagine Video 1.5 Pipeline** — Image-to-video with reference image fidelity, explicit motion/camera prompts, one-pass synchronized audio (dialogue lip-sync + SFX + ambience + music), seamless extend & stitch with minimal quality loss, Fast mode support
@@ -52,10 +52,11 @@ Then choose your workflow:
 - `STITCH_WITH_AUDIO_SYNC`
 - `EXPORT_BIBLE_PDF` (uses Grok 4.3 native PDF)
 - `IMPORT_MEMORY_FROM_CHAT [chat_url]`
+- `ACTIVATE AI_POLISH_DIRECTOR` / `RUN FINAL POLISH PASS` (post-QA upscale & face restoration)
 
 ---
 
-## 🧠 22-Agent Professional Film Crew (v3.6 Upgrades)
+## 🧠 23-Agent Professional Film Crew (v3.6 Upgrades)
 
 ### Core Leadership
 - **Studio Director v3.6** — Central production commander & visionary leader (now directs 1.5 video pipeline decisions)
@@ -91,6 +92,9 @@ Then choose your workflow:
 - **Key Art & Poster Designer v3.6** — Theatrical key art, posters & marketing visuals (1.5 keyframe extraction)
 - **Trailer & Teaser Director v3.6** — High-impact 15–60s trailers & emotional hook crafting (with native audio)
 - **Localization & Subtitle Specialist v3.6** — Cultural adaptation, SDH subtitles & multi-language support (synced to 1.5 audio)
+
+### Post-Production & Delivery
+- **AI Polish Director v3.6** — Final delivery polish specialist (720p → 1080p/4K upscale, face restoration, artifact cleanup via `ai-video-upscaler` skill; activate after QA Go + color grade)
 
 ### Specialist (Opt-in)
 - **ErosForge NSFW Director v3.6** — Adult/R-rated content specialist (1.5-optimized erotic motion + synced intimate audio; activate explicitly with `ACTIVATE EROSFORGE`)
@@ -165,6 +169,6 @@ This version is optimized for Grok 4.3 Full chats and native Grok Imagine Video 
 - Generate or load a Production Bible with Video Pipeline Spec
 - Create first keyframe/reference image
 - Use Imagine Prompt Master + Sequence Director to build 1.5 sequences with native audio
-- Extend, stitch, QA, and export
+- Extend, stitch, QA, polish (AI Polish Director), and export
 
 Welcome to the next level of cinematic AI production. 🎥✨
