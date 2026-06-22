@@ -76,6 +76,17 @@ from nsfw_orchestrator import (  # noqa: E402
     save_batch,
     suggest_retry,
 )
+from nsfw_sequence_extender import (  # noqa: E402
+    TENSION_PROFILES,
+    build_nsfw_extend_prompt,
+    build_prompt_chain,
+    evaluate_nsfw_chain_qa,
+    nsfw_sequence_to_markdown,
+    plan_nsfw_extension,
+    run_nsfw_chain_qa_scaffold,
+    save_nsfw_sequence,
+    suggest_camera_pacing,
+)
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
@@ -107,8 +118,11 @@ app.add_typer(quota_app, name="quota")
 models_app = typer.Typer(help="Grok Build and xAI model registry")
 app.add_typer(models_app, name="models")
 
-nsfw_app = typer.Typer(help="Quota-aware NSFW batch planning, i2v decisions, and daily reports")
+nsfw_app = typer.Typer(help="Quota-aware NSFW batch planning, sequence extension, and daily reports")
 app.add_typer(nsfw_app, name="nsfw")
+
+extend_app = typer.Typer(help="Sensual sequence extension 30-120s+ from reference frame or short clip")
+nsfw_app.add_typer(extend_app, name="extend")
 
 console = Console()
 
@@ -1223,6 +1237,198 @@ def nsfw_report(
             console.print(f"  • {r}")
     if report.get("output_path"):
         console.print(f"\n[green]Report saved:[/green] {report['output_path']}")
+
+
+# ============================================================
+# NSFW SEQUENCE EXTENDER COMMANDS
+# ============================================================
+
+def _load_nsfw_sequence(name: str) -> dict:
+    path = find_sequence(name)
+    if not path:
+        console.print(f"[red]Sequence not found:[/red] {name}")
+        raise typer.Exit(1)
+    return load_sequence(path)
+
+
+@extend_app.command("plan")
+def nsfw_extend_plan(
+    title: str = typer.Argument(..., help="Sequence title"),
+    duration: int = typer.Option(90, "--duration", "-d", help="Target duration 30-120+ seconds"),
+    profile: str = typer.Option("passionate", "--profile", "-p", help="slow_burn / passionate / intense"),
+    source: str = typer.Option("reference_frame", "--source", help="reference_frame or short_clip"),
+    reference: str = typer.Option("", "--reference", "-r", help="Reference frame or clip description"),
+    beat: list[str] = typer.Option(None, "--beat", "-b", help="Custom beat override (in order)"),
+    color_grade: str = typer.Option("warm amber intimacy, soft highlight roll-off", "--color-grade"),
+    atmosphere: str = typer.Option("candlelit interior, haze, practical warmth", "--atmosphere"),
+    output: str = typer.Option(None, "--output", "-o", help="Save markdown plan"),
+):
+    """Plan NSFW sensual extension with prompt chain and tension curve."""
+    if profile not in TENSION_PROFILES:
+        console.print(f"[red]Unknown profile. Choose:[/red] {', '.join(TENSION_PROFILES)}")
+        raise typer.Exit(1)
+
+    seq = plan_nsfw_extension(
+        title,
+        target_duration=duration,
+        source_type=source,
+        reference_description=reference,
+        tension_profile=profile,
+        custom_beats=beat,
+        color_grade=color_grade,
+        atmosphere=atmosphere,
+    )
+    path = save_nsfw_sequence(seq)
+    md = nsfw_sequence_to_markdown(seq)
+    est = seq.get("cost_estimate", {})
+
+    table = Table(title=f"🎬 NSFW Extension — {title}", box=box.ROUNDED)
+    table.add_column("Metric", style="cyan")
+    table.add_column("Value", style="white")
+    table.add_row("Profile", TENSION_PROFILES[profile]["label"])
+    table.add_row("Source", source)
+    table.add_row("Clips", str(len(seq.get("clips", []))))
+    table.add_row("Duration", f"{duration}s target")
+    table.add_row("Credits", f"{est.get('credits_low', '?')}–{est.get('credits_high', '?')}")
+    table.add_row("Saved", str(path))
+    console.print(table)
+
+    ext = seq.get("nsfw_extension", {})
+    console.print("\n[bold]Tension curve:[/bold]")
+    for point in ext.get("tension_curve", []):
+        console.print(f"  t={point['t']}s — {point['phase']} ({point['tension']:.0%})")
+
+    if output:
+        Path(output).write_text(md)
+        console.print(f"\n[green]Plan:[/green] {output}")
+    else:
+        console.print(Markdown(md[:4000] + ("..." if len(md) > 4000 else "")))
+
+
+@extend_app.command("chain")
+def nsfw_extend_chain(
+    sequence_name: str = typer.Argument(..., help="Sequence slug or name"),
+    output: str = typer.Option(None, "--output", "-o"),
+):
+    """Export ready-to-use Grok Imagine prompt chain."""
+    seq = _load_nsfw_sequence(sequence_name)
+    chain = build_prompt_chain(seq)
+    if not chain:
+        console.print("[yellow]No prompt chain. Run: nsfw extend plan[/yellow]")
+        raise typer.Exit(1)
+
+    for item in chain:
+        console.print(Panel(
+            item.get("prompt", ""),
+            title=f"{item['clip_id']} — {item.get('phase', '')} ({item.get('extend_mode', '')})",
+            border_style="magenta",
+        ))
+        for instr in item.get("extend_instructions", []):
+            console.print(f"  [dim]→ {instr}[/dim]")
+
+    if output:
+        Path(output).write_text(json.dumps(chain, indent=2))
+        console.print(f"\n[green]Chain JSON:[/green] {output}")
+
+
+@extend_app.command("prompt")
+def nsfw_extend_prompt_cmd(
+    sequence_name: str = typer.Argument(..., help="Sequence slug or name"),
+    clip: str = typer.Option(..., "--clip", "-c", help="Clip ID to build/regenerate prompt for"),
+):
+    """Build extend-from-frame prompt for a specific clip."""
+    seq = _load_nsfw_sequence(sequence_name)
+    target = get_clip(seq, clip)
+    if not target:
+        console.print(f"[red]Clip not found:[/red] {clip}")
+        raise typer.Exit(1)
+
+    idx = target.get("index", 0)
+    if idx == 0:
+        prompt = target.get("prompt", "")
+        console.print(Panel(prompt, title=f"{clip} — opening clip", border_style="magenta"))
+        return
+
+    prev = seq["clips"][idx - 1]
+    beat = target.get("nsfw_beat", {"beat_summary": "Continue intimate sequence", "phase": "contact"})
+    prompt = build_nsfw_extend_prompt(seq, prev, beat)
+    target["prompt"] = prompt
+    save_nsfw_sequence(seq)
+    console.print(Panel(prompt, title=f"{clip} — extend from {prev['clip_id']}", border_style="magenta"))
+
+
+@extend_app.command("camera")
+def nsfw_extend_camera(
+    phase: str = typer.Option("contact", "--phase", help="Erotic phase name"),
+    duration: float = typer.Option(10.0, "--duration", "-d"),
+):
+    """Suggest camera movement and pacing for erotic impact."""
+    beat = {"phase": phase, "duration_seconds": duration}
+    cam = suggest_camera_pacing(beat)
+
+    console.print(Panel(
+        f"Primary: [bold]{cam['primary_move']}[/bold]\n"
+        f"Alternates: {', '.join(cam.get('alternate_moves', []))}\n"
+        f"Lens: {cam['lens']}\n"
+        f"Framing: {cam['framing']}\n"
+        f"Pacing: {cam['pacing_note']}\n"
+        f"Tension: {cam['tension_level']:.0%} | Motion: {cam['motion_intensity']}\n\n"
+        f"Timing beats:\n" + "\n".join(f"  t={t['t']:.1f}s: {t['action']}" for t in cam.get("timing_beats", [])),
+        title=f"Camera & Pacing — {phase}",
+        border_style="cyan",
+    ))
+
+
+@extend_app.command("qa")
+def nsfw_extend_qa(
+    sequence_name: str = typer.Argument(..., help="Sequence slug or name"),
+    clip: str = typer.Option(..., "--clip", "-c"),
+    scores: str = typer.Option(None, "--scores", help='JSON scores e.g. {"hand_finger_integrity":8,...}'),
+):
+    """NSFW chain QA scaffold or evaluation (artifact-aware)."""
+    seq = _load_nsfw_sequence(sequence_name)
+    target = get_clip(seq, clip)
+    if not target:
+        console.print(f"[red]Clip not found:[/red] {clip}")
+        raise typer.Exit(1)
+
+    if scores:
+        result = evaluate_nsfw_chain_qa(target, json.loads(scores))
+        target["nsfw_chain_qa"] = result
+        save_nsfw_sequence(seq)
+    else:
+        result = run_nsfw_chain_qa_scaffold(target)
+
+    table = Table(title=f"NSFW Chain QA — {clip}", box=box.SIMPLE)
+    table.add_column("Check", style="cyan")
+    table.add_column("Score", style="white")
+    table.add_column("Pass", style="green")
+    for key, check in result.get("nsfw_checks", {}).items():
+        score = check.get("score", "—")
+        passed = check.get("pass", "—")
+        crit = " [critical]" if check.get("critical") else ""
+        table.add_row(check.get("label", key) + crit, str(score), str(passed))
+
+    console.print(table)
+    if result.get("weighted_score") is not None:
+        console.print(f"\n[bold]Decision:[/bold] {result['decision']} (score: {result['weighted_score']})")
+    if result.get("artifact_fixes"):
+        console.print("\n[bold]Artifact fixes:[/bold]")
+        for fix in result["artifact_fixes"]:
+            console.print(f"  • {fix}")
+
+
+@extend_app.command("export")
+def nsfw_extend_export(
+    sequence_name: str = typer.Argument(..., help="Sequence slug or name"),
+    output: str = typer.Option(None, "--output", "-o"),
+):
+    """Export full extension plan markdown."""
+    seq = _load_nsfw_sequence(sequence_name)
+    md = nsfw_sequence_to_markdown(seq)
+    out = output or f"sequences/{seq['slug']}/extension_plan.md"
+    Path(out).write_text(md)
+    console.print(f"[green]Exported:[/green] {out}")
 
 
 @app.command(name="report")

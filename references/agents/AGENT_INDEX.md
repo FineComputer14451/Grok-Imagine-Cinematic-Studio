@@ -23,6 +23,7 @@ Quick-start activation patterns for the workflows you use most often.
 | 7 | **Key Art + Marketing** | Theatrical key art and posters | Key Art & Poster Designer<br>Studio Director<br>Director of Photography | `ACTIVATE ONLY Key Art & Poster Designer, Studio Director, Director of Photography` | Excellent for covers and marketing |
 | 8 | **Quota-Efficient Large Batch** | Maximize quality while controlling usage | Workflow & Quota Optimizer<br>Studio Director<br>Imagine Prompt Master | `ACTIVATE ONLY Workflow & Quota Optimizer, Studio Director, Imagine Prompt Master` | Activate first on big sessions |
 | 10 | **NSFW Quota Batch (Heavy)** | Erotic image+video batches under Heavy limits | NSFW Quota Orchestrator<br>ErosForge NSFW Director<br>Workflow & Quota Optimizer<br>Identity Lock Specialist | `ACTIVATE EROSFORGE` then `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` | Hero-first scheduling, i2v decisions, daily reports |
+| 11 | **NSFW Sequence Extension** | Extend reference frame/clip to 30–120s+ sensual sequence | NSFW Sequence Extender<br>Cinematic Sequence Extender<br>ErosForge NSFW Director<br>Identity Lock Specialist | `ACTIVATE EROSFORGE` then `ACTIVATE NSFW_SEQUENCE_EXTENDER` | Prompt chains, extend-from-frame, erotic pacing, artifact QA |
 | 9 | **Final Delivery Polish** | Upscale + face restore for delivery | AI Polish Director<br>Quality Assurance Guardian<br>Studio Director | `ACTIVATE ONLY AI Polish Director, Quality Assurance Guardian, Studio Director` | Run after QA Go + color grade |
 
 ---
@@ -91,6 +92,21 @@ python tools/cinematic_studio_cli.py nsfw report --output artifacts/nsfw_daily_r
 ```
 
 Skill: `.grok/skills/nsfw-quota-orchestrator/`
+
+## NSFW Sequence Extension (v1.0)
+
+Extend reference frames or short clips into 30–120+ second sensual sequences.
+
+```bash
+python tools/cinematic_studio_cli.py nsfw extend plan "Candlelit Embrace" --duration 90 --profile passionate \
+  --reference "Silk robe, candlelit bedroom, warm amber, identity locked"
+python tools/cinematic_studio_cli.py nsfw extend chain "candlelit-embrace"
+python tools/cinematic_studio_cli.py nsfw extend prompt "candlelit-embrace" --clip clip_003
+python tools/cinematic_studio_cli.py nsfw extend camera --phase escalation
+python tools/cinematic_studio_cli.py nsfw extend qa "candlelit-embrace" --clip clip_002
+```
+
+Skill: `.grok/skills/nsfw-sequence-extender/`
 
 ## Long-Form Sequence Pipeline (v3.6)
 

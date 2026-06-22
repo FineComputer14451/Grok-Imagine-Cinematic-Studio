@@ -157,6 +157,15 @@ Full playbook: `references/retry_variation_playbook.md`
 
 Below threshold → run retry playbook before spending more credits.
 
+## Sequence Extension
+
+For long-form 30–120s+ sensual sequences, use `nsfw-sequence-extender` after batch planning:
+
+```bash
+python tools/cinematic_studio_cli.py nsfw extend plan "Act 2" --duration 90 --reference "locked reference still"
+python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9
+```
+
 ## References
 
 - `references/batch_priority_tiers.md` — tier definitions and budget allocation

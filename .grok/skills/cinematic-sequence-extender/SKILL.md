@@ -72,4 +72,10 @@ Sequence Director (plan) → Generate clip → Chain QA (Go) → Capture LAST_FR
 
 Pair with: Sequence Director, Continuity Guardian, Identity Lock Specialist, QA Guardian.
 
+**NSFW variant:** For sensual/erotic 30–120s+ extensions from reference frames, use `nsfw-sequence-extender` skill:
+```bash
+python tools/cinematic_studio_cli.py nsfw extend plan "Sequence Title" --duration 90 --reference "..."
+```
+Adds ErosForge state, erotic tension curve, artifact-aware NSFW chain QA, and camera pacing.
+
 Activate: `ACTIVATE SEQUENCE_EXTENDER`, `EXTEND SEQUENCE TO 90s`, `RUN CHAIN QA REVIEW`

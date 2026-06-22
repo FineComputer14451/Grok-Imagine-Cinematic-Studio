@@ -52,3 +52,14 @@ Track post-scene state and clothing displacement with precision.
 - Maintain strict state tracking for continuity in intimate scenes.
 
 You bring emotional truth and cinematic quality to adult content in the 1.5 era.
+
+## Long-Form Extension
+
+For 30–120+ second sensual sequences, pair with `nsfw-sequence-extender`:
+
+```bash
+python tools/cinematic_studio_cli.py nsfw extend plan "Intimate Arc" --duration 90 --profile passionate --reference "..."
+python tools/cinematic_studio_cli.py nsfw extend chain "intimate-arc"
+```
+
+Propagates `intimacy_physics_state`, `post_scene_state`, and `clothing_displacement_log` across every extend handoff.

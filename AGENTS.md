@@ -153,6 +153,7 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 | **Custom Agents**           | `custom-grok-cinematic-agent`              | Drafting or customizing bespoke cinematic production agents / role cards |
 | **Quota & Efficiency**      | `workflow-quota-optimizer`                 | Long-form generation sessions, cost/quota management, production planning |
 | **NSFW Batch Orchestration**| `nsfw-quota-orchestrator`                    | Quota-aware erotic image+video batches on Heavy, i2v decisions, daily reports (with ErosForge) |
+| **NSFW Sequence Extension** | `nsfw-sequence-extender`                     | Sensual 30–120s+ extension from reference/clip, prompt chains, erotic pacing, artifact QA (with ErosForge) |
 | **GitHub Management**       | `github-repo-manager`                      | Create repo, push, PRs, issues, file operations on GitHub |
 | **Video / Audio**           | `ffmpeg`                                   | Trimming, merging, subtitles, compression, GIFs, storyboards |
 | **Documents**               | `pdf`, `docx`, `pptx`, `xlsx`              | Professional document or presentation creation |

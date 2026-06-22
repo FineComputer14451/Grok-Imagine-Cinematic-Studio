@@ -2,6 +2,21 @@
 
 All notable changes to Grok Imagine Cinematic Studio will be documented in this file.
 
+## [3.6.4] - 2026-06-21
+
+### Added
+- **NSFW Sequence Extender** — `tools/nsfw_sequence_extender.py` for 30–120s+ sensual extension
+- **`nsfw-sequence-extender` skill** — erotic pacing curve, camera vocabulary, artifact QA, extend protocol
+- **CLI `nsfw extend`** — `plan`, `chain`, `prompt`, `camera`, `qa`, `export`
+- Prompt chain + extension_plan.md output per sequence in `sequences/<slug>/`
+- NSFW chain QA (8 checks) for hands, skin, fabric, explicit zones, intimate physics
+- AGENT_INDEX preset #11 for NSFW Sequence Extension
+
+### Changed
+- `cinematic-sequence-extender`, `erosforge-nsfw-director`, `nsfw-quota-orchestrator` skills updated with integration notes
+
+---
+
 ## [3.6.3] - 2026-06-21
 
 ### Added
