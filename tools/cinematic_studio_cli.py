@@ -64,6 +64,18 @@ from models import (  # noqa: E402
     resolve_chat_model,
     resolve_video_model,
 )
+from nsfw_orchestrator import (  # noqa: E402
+    batch_to_markdown,
+    decide_generation_mode,
+    generate_daily_report,
+    get_next_shots,
+    list_batches,
+    load_batch,
+    plan_batch,
+    record_shot_result,
+    save_batch,
+    suggest_retry,
+)
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
@@ -94,6 +106,9 @@ app.add_typer(quota_app, name="quota")
 
 models_app = typer.Typer(help="Grok Build and xAI model registry")
 app.add_typer(models_app, name="models")
+
+nsfw_app = typer.Typer(help="Quota-aware NSFW batch planning, i2v decisions, and daily reports")
+app.add_typer(nsfw_app, name="nsfw")
 
 console = Console()
 
@@ -981,6 +996,234 @@ def quota_optimize(
         color = {"critical": "red", "high": "yellow", "medium": "cyan", "low": "dim"}.get(r["priority"], "white")
         console.print(f"  [{color}][{r['priority']}][/{color}] {r['action']}")
         console.print(f"    [dim]Savings: {r['savings']}[/dim]")
+
+# ============================================================
+# NSFW QUOTA ORCHESTRATOR COMMANDS
+# ============================================================
+
+def _parse_inline_shot(spec: str) -> dict:
+    """Parse tier:description or tier:motion:description."""
+    parts = spec.split(":", 2)
+    if len(parts) == 2:
+        tier, desc = parts
+        motion = "medium"
+    elif len(parts) == 3:
+        tier, motion, desc = parts
+    else:
+        tier, motion, desc = "support", "medium", spec
+    return {
+        "tier": tier.strip(),
+        "description": desc.strip(),
+        "motion_complexity": motion.strip(),
+    }
+
+
+@nsfw_app.command("plan")
+def nsfw_plan(
+    title: str = typer.Argument(..., help="Batch title"),
+    file: str = typer.Option(None, "--file", "-f", help="JSON shot list"),
+    shot: list[str] = typer.Option(None, "--shot", "-s", help="Inline shot: tier:description or tier:motion:description"),
+    budget: float = typer.Option(None, "--budget", "-b", help="Session budget in credits"),
+    tier: str = typer.Option("supergrok_heavy", "--tier", "-t"),
+    fast_mode: bool = typer.Option(False, "--fast-mode"),
+    output: str = typer.Option(None, "--output", "-o", help="Save markdown plan"),
+):
+    """Plan a prioritized NSFW batch under Heavy subscription limits."""
+    shots: list[dict] = []
+    if file:
+        shots = json.loads(Path(file).read_text())
+    if shot:
+        for spec in shot:
+            shots.append(_parse_inline_shot(spec))
+    if not shots:
+        console.print("[red]Provide --file or at least one --shot[/red]")
+        raise typer.Exit(1)
+
+    batch = plan_batch(title, shots, tier=tier, budget_credits=budget, fast_mode=fast_mode)
+    path = save_batch(batch)
+    md = batch_to_markdown(batch)
+
+    table = Table(title=f"🔞 NSFW Batch — {title}", box=box.ROUNDED)
+    table.add_column("Metric", style="cyan")
+    table.add_column("Value", style="white")
+    table.add_row("Batch ID", batch["batch_id"])
+    table.add_row("Budget", f"{batch['budget_credits']} credits")
+    table.add_row("Scheduled", f"{batch['shots_scheduled']}/{batch['shots_total']} shots")
+    table.add_row("Credits", f"{batch['scheduled_credits']} (+{batch['retry_reserve_credits']} reserve)")
+    table.add_row("Risk", batch["risk"]["risk_level"])
+    table.add_row("Saved", str(path))
+    console.print(table)
+
+    if output:
+        Path(output).write_text(md)
+        console.print(f"[green]Plan written:[/green] {output}")
+    else:
+        console.print(Markdown(md))
+
+
+@nsfw_app.command("list")
+def nsfw_list():
+    """List NSFW production batches."""
+    batches = list_batches()
+    if not batches:
+        console.print("[dim]No NSFW batches yet.[/dim]")
+        return
+    table = Table(title="🔞 NSFW Batches", box=box.SIMPLE)
+    table.add_column("ID", style="cyan")
+    table.add_column("Title", style="white")
+    table.add_column("Status", style="green")
+    table.add_column("Path", style="dim")
+    for b in batches:
+        table.add_row(b["batch_id"], b.get("title", ""), b.get("status", ""), b.get("path", ""))
+    console.print(table)
+
+
+@nsfw_app.command("next")
+def nsfw_next(
+    batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+    count: int = typer.Option(3, "--count", "-n"),
+):
+    """Get next priority shots with mode decisions and cost estimates."""
+    batch = load_batch(batch_name)
+    shots = get_next_shots(batch, count=count)
+    if not shots:
+        console.print("[yellow]No pending shots in batch.[/yellow]")
+        return
+
+    table = Table(title=f"▶ Next Shots — {batch['title']}", box=box.ROUNDED)
+    table.add_column("#", style="dim")
+    table.add_column("Shot", style="cyan")
+    table.add_column("Tier", style="magenta")
+    table.add_column("Mode", style="green")
+    table.add_column("Credits", style="yellow")
+    table.add_column("Description", style="white", max_width=40)
+    for i, s in enumerate(shots, 1):
+        table.add_row(
+            str(i),
+            s["shot_id"],
+            s.get("tier", ""),
+            s.get("decision", {}).get("mode", s.get("recommended_mode", "")),
+            str(s.get("cost_estimate", {}).get("credits", "?")),
+            (s.get("description", "")[:40] + "...") if len(s.get("description", "")) > 40 else s.get("description", ""),
+        )
+    console.print(table)
+    for s in shots:
+        reasons = s.get("decision", {}).get("reasons", [])
+        if reasons:
+            console.print(f"  [dim]{s['shot_id']}:[/dim] {reasons[0]}")
+
+
+@nsfw_app.command("decide")
+def nsfw_decide(
+    shot_id: str = typer.Argument(..., help="Shot ID for decision context"),
+    shot_tier: str = typer.Option("support", "--tier", help="Shot tier"),
+    motion: str = typer.Option("medium", "--motion", help="low / medium / high"),
+    has_ref: bool = typer.Option(False, "--has-ref", help="Approved reference image exists"),
+    explicit: str = typer.Option("moderate", "--explicit", help="suggestive / moderate / explicit"),
+    duration: float = typer.Option(10.0, "--duration", "-d"),
+):
+    """Recommend image_prompt vs image_to_video vs video_prompt."""
+    shot = {
+        "shot_id": shot_id,
+        "tier": shot_tier,
+        "motion_complexity": motion,
+        "has_reference": has_ref,
+        "explicit_level": explicit,
+        "duration_seconds": duration,
+        "consistency_required": True,
+    }
+    state = quota_load_state()
+    quota = state.get("quota", {})
+    decision = decide_generation_mode(
+        shot,
+        budget_remaining=quota.get("budget_remaining"),
+    )
+
+    console.print(Panel(
+        f"Shot: {shot_id}\n"
+        f"Mode: [bold green]{decision['mode']}[/bold green] (confidence {decision['confidence']:.0%})\n"
+        f"Reasons:\n" + "\n".join(f"  • {r}" for r in decision["reasons"]) +
+        (f"\nFollow-up: {decision['follow_up']}" if decision.get("follow_up") else ""),
+        title="I2V Decision",
+        border_style="magenta",
+    ))
+
+
+@nsfw_app.command("retry")
+def nsfw_retry(
+    shot_id: str = typer.Argument(..., help="Failed shot ID"),
+    reason: str = typer.Option("physics_failure", "--reason", "-r", help="Failure reason key"),
+    score: float = typer.Option(None, "--score", help="QA score received"),
+    attempts: int = typer.Option(0, "--attempts", help="Prior attempt count"),
+    shot_tier: str = typer.Option("key_explicit", "--tier"),
+):
+    """Suggest retry strategy after insufficient quality."""
+    shot = {"shot_id": shot_id, "tier": shot_tier, "duration_seconds": 10, "recommended_mode": "image_to_video"}
+    plan = suggest_retry(shot, failure_reason=reason, quality_score=score, attempts=attempts)
+
+    color = "green" if plan["action"] == "retry" else "yellow"
+    console.print(Panel(
+        f"Action: [{color}]{plan['action']}[/{color}]\n"
+        f"Failure: {plan.get('failure_reason', reason)}\n"
+        f"Extra credits est.: {plan.get('estimated_extra_credits', 0)}\n\n"
+        f"Suggestions:\n" + "\n".join(f"  • {a}" for a in plan.get("suggestions", [])) +
+        ("\n\nVariations:\n" + "\n".join(f"  • {v}" for v in plan.get("variation_hints", [])) if plan.get("variation_hints") else ""),
+        title=f"Retry Plan — {shot_id}",
+        border_style="yellow",
+    ))
+
+
+@nsfw_app.command("record")
+def nsfw_record(
+    batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+    shot_id: str = typer.Argument(..., help="Shot ID"),
+    score: float = typer.Option(..., "--score", help="QA quality score 1-10"),
+    credits: float = typer.Option(..., "--credits", help="Credits spent"),
+    failure_reason: str = typer.Option(None, "--reason", help="Failure reason if QA fail"),
+    notes: str = typer.Option("", "--note", "-n"),
+):
+    """Record shot result — updates batch, quota tracker, and daily log."""
+    batch = load_batch(batch_name)
+    result = record_shot_result(
+        batch, shot_id,
+        quality_score=score,
+        credits_spent=credits,
+        failure_reason=failure_reason,
+        notes=notes,
+    )
+    status = "[green]PASS[/green]" if result["qa_pass"] else "[red]FAIL[/red]"
+    console.print(f"{status} {shot_id} — score {score}/10, {credits} credits")
+    if not result["qa_pass"] and result["shot"].get("retry_plan"):
+        console.print("[dim]Run: nsfw retry {shot_id} --reason ...[/dim]".format(shot_id=shot_id))
+
+
+@nsfw_app.command("report")
+def nsfw_report(
+    report_date: str = typer.Option(None, "--date", help="YYYY-MM-DD (default today)"),
+    output: str = typer.Option(None, "--output", "-o", help="Write markdown report"),
+):
+    """Generate daily NSFW production report (quota vs quality)."""
+    out_path = Path(output) if output else None
+    report = generate_daily_report(report_date, output_path=out_path)
+
+    table = Table(title=f"📊 NSFW Daily Report — {report['report_date']}", box=box.ROUNDED)
+    table.add_column("Metric", style="cyan")
+    table.add_column("Value", style="white")
+    table.add_row("Tier", report["tier_label"])
+    table.add_row("Credits Today", f"{report['credits_used_today']} / {report['daily_soft_cap']} ({report['daily_cap_pct']}%)")
+    table.add_row("Shots", f"{report['shots_completed']} done | {report['shots_passed']} pass | {report['shots_failed']} fail")
+    table.add_row("Pass Rate", f"{report['pass_rate_pct']}%")
+    table.add_row("Avg Quality", f"{report['avg_quality_score']}/10")
+    table.add_row("Quality/Credit", str(report["quality_per_credit"]))
+    console.print(table)
+
+    if report.get("recommendations"):
+        console.print("\n[bold]Recommendations:[/bold]")
+        for r in report["recommendations"]:
+            console.print(f"  • {r}")
+    if report.get("output_path"):
+        console.print(f"\n[green]Report saved:[/green] {report['output_path']}")
+
 
 @app.command(name="report")
 def report(

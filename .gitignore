@@ -164,6 +164,10 @@ characters/*/
 sequences/*/
 !sequences/.gitkeep
 
+# NSFW batch plans (keep nsfw_batches/.gitkeep)
+nsfw_batches/*/
+!nsfw_batches/.gitkeep
+
 # Generated production files (optional - comment out if you want to commit examples)
 # production_bible.json
 # *.pdf

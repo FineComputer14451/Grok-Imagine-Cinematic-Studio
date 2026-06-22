@@ -2,6 +2,16 @@
 
 All notable changes to Grok Imagine Cinematic Studio will be documented in this file.
 
+## [3.6.3] - 2026-06-21
+
+### Added
+- **NSFW Quota Orchestrator** — `tools/nsfw_orchestrator.py` with batch planning, i2v decisions, retry strategies, daily reports
+- **`nsfw-quota-orchestrator` skill** — references, `plan_batch.py` script, Workflow Quota Optimizer integration
+- **CLI `nsfw` commands** — `plan`, `list`, `next`, `decide`, `retry`, `record`, `report`
+- AGENT_INDEX preset #10 for NSFW Quota Batch (Heavy)
+
+---
+
 ## [3.6.2] - 2026-06-21
 
 ### Added

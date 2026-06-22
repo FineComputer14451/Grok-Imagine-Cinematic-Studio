@@ -22,6 +22,7 @@ Quick-start activation patterns for the workflows you use most often.
 | 6 | **Full Production Kickoff** | Start complete multi-scene project | Studio Director<br>Workflow & Quota Optimizer<br>Imagine Prompt Master<br>Identity Lock Specialist | `ACTIVATE ONLY Studio Director, Workflow & Quota Optimizer, Imagine Prompt Master, Identity Lock Specialist` | Add specialists as needed |
 | 7 | **Key Art + Marketing** | Theatrical key art and posters | Key Art & Poster Designer<br>Studio Director<br>Director of Photography | `ACTIVATE ONLY Key Art & Poster Designer, Studio Director, Director of Photography` | Excellent for covers and marketing |
 | 8 | **Quota-Efficient Large Batch** | Maximize quality while controlling usage | Workflow & Quota Optimizer<br>Studio Director<br>Imagine Prompt Master | `ACTIVATE ONLY Workflow & Quota Optimizer, Studio Director, Imagine Prompt Master` | Activate first on big sessions |
+| 10 | **NSFW Quota Batch (Heavy)** | Erotic image+video batches under Heavy limits | NSFW Quota Orchestrator<br>ErosForge NSFW Director<br>Workflow & Quota Optimizer<br>Identity Lock Specialist | `ACTIVATE EROSFORGE` then `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` | Hero-first scheduling, i2v decisions, daily reports |
 | 9 | **Final Delivery Polish** | Upscale + face restore for delivery | AI Polish Director<br>Quality Assurance Guardian<br>Studio Director | `ACTIVATE ONLY AI Polish Director, Quality Assurance Guardian, Studio Director` | Run after QA Go + color grade |
 
 ---
@@ -76,6 +77,20 @@ python tools/cinematic_studio_cli.py quota budget --tier supergrok_heavy
 ```
 
 Reference: `.grok/skills/workflow-quota-optimizer/references/pricing_model_v3.6.md`
+
+## NSFW Quota Orchestrator (v1.0)
+
+Quota-aware batch planning for erotic image + video under SuperGrok Heavy.
+
+```bash
+python tools/cinematic_studio_cli.py nsfw plan "Act 2 Sequence" --shot "hero:Embrace, golden hour" --shot "key_explicit:Slow reveal:high"
+python tools/cinematic_studio_cli.py nsfw next "act-2-sequence" --count 3
+python tools/cinematic_studio_cli.py nsfw decide shot_001 --tier hero --motion high --has-ref
+python tools/cinematic_studio_cli.py nsfw record "act-2-sequence" shot_001 --score 8.5 --credits 92
+python tools/cinematic_studio_cli.py nsfw report --output artifacts/nsfw_daily_report.md
+```
+
+Skill: `.grok/skills/nsfw-quota-orchestrator/`
 
 ## Long-Form Sequence Pipeline (v3.6)
 

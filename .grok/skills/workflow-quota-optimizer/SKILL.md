@@ -76,5 +76,13 @@ Override via `.quota_config.json` in project root.
 - **Cinematic Sequence Extender** — `sequence estimate-cost` per blueprint
 - **QA Guardian** — factor retry buffer into estimates
 - **Character DNA** — image/ref generation costs
+- **NSFW Quota Orchestrator** — batch planning, i2v decisions, daily NSFW reports (`nsfw-quota-orchestrator` skill)
+
+```bash
+# NSFW batch uses same quota tracker
+python tools/cinematic_studio_cli.py quota budget --tier supergrok_heavy
+python tools/cinematic_studio_cli.py nsfw plan "Session" --budget 800 --file shots.json
+python tools/cinematic_studio_cli.py nsfw report
+```
 
 Activate: `ACTIVATE QUOTA_OPTIMIZER`, `ESTIMATE COST`, `SHOW QUOTA DASHBOARD`, `BUDGET MODE`
