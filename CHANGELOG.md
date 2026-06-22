@@ -2,6 +2,21 @@
 
 All notable changes to Grok Imagine Cinematic Studio will be documented in this file.
 
+## [3.6.2] - 2026-06-21
+
+### Added
+- **`tools/models.py`** — canonical Grok Build CLI, xAI chat, and Imagine model registry
+- **`references/MODELS_v3.6.md`** — model selection guide and slug reference
+- **CLI `models list`** — display all current Grok Build and xAI model slugs
+- **`--chat-model` / `--video-model`** on `generate-prompt` and quota commands
+
+### Changed
+- **Quota optimizer** — xAI USD pricing ($0.08/sec for 1.5, $0.05/sec for 1.0, $0.02–$0.05/image)
+- **Web UI** — Imagine video model selector, xAI chat model picker (`grok-4.3` / `grok-build-0.1`)
+- **Docs** — README, MASTER_PROMPT, AGENTS.md, pricing_model_v3.6.md aligned to Grok Build models
+
+---
+
 ## [3.6.1] - 2026-06-21
 
 ### Added

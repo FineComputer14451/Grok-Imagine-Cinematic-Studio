@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio v3.6
 
-**The most advanced multi-agent cinematic production system for Grok 4.3 Full + Grok Imagine Video 1.5 Native**
+**The most advanced multi-agent cinematic production system for Grok Build + Grok 4.3 + Grok Imagine Video 1.5 Native**
 
 **Version:** 3.6 "Odyssey Native" (June 2026)  
 **Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
@@ -14,7 +14,7 @@
 - **Authoritative Role Card System** — Every agent has structured Core Mission, v3.6 Upgrades (1.5 & 4.3), Decision Frameworks, Activation Triggers, and Integration Notes
 - **Mature CLI + Web UI** with new Video 1.5 model picker, native audio toggle, 720p/duration controls, live per-second cost estimation, and "Stitch Sequence" workflow
 - **Native Grok Imagine Video 1.5 Pipeline** — Image-to-video with reference image fidelity, explicit motion/camera prompts, one-pass synchronized audio (dialogue lip-sync + SFX + ambience + music), seamless extend & stitch with minimal quality loss, Fast mode support
-- **Grok 4.3 Full Optimizations** — Leverages 1M context for full Production Bible + memory banks in one shot, structured JSON handoffs, native PDF Bible export, configurable reasoning (medium/high for complex sequences), cross-chat memory import
+- **Grok Build + Grok 4.3 Optimizations** — Grok Build CLI (`grok-composer-2.5-fast`, `grok-build` fork); API chat (`grok-4.3` for 1M context orchestration, `grok-build-0.1` for agentic/coding); structured JSON handoffs, native PDF Bible export, configurable reasoning (medium/high for complex sequences)
 - All previous v3.5 features retained and enhanced: Persistent Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + new AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop (now includes Audio-Visual Sync Fidelity & Physics Realism)
 
 ---
@@ -23,7 +23,8 @@
 
 ### Method 1: CLI (Recommended for Power Users)
 ```bash
-python tools/cinematic_studio_cli.py generate-prompt --story "Your story here" --signature "villeneuve" --model imagine-video-1.5
+python tools/cinematic_studio_cli.py models list
+python tools/cinematic_studio_cli.py generate-prompt "Your story here" --signature villeneuve --chat-model grok-4.3 --video-model 1.5
 python tools/cinematic_studio_cli.py create-bible --title "Project Name" --genre "Sci-Fi" --video-pipeline 1.5
 ```
 
@@ -36,7 +37,7 @@ streamlit run web_ui/app.py
 
 ### Method 3: Full Activation Prompt (Classic — Updated for v3.6)
 1. Copy this entire prompt (or the new `MASTER_PROMPT_v3.6.md`)
-2. Paste into a **new Grok 4.3 Full** chat (enable reasoning=medium or high for complex productions)
+2. Paste into a **new Grok 4.3** or **Grok Build** chat (enable reasoning=medium or high for complex productions)
 3. Type: `Activate Grok Imagine Cinematic Studio v3.6`
 
 Then choose your workflow:
@@ -141,12 +142,22 @@ Every agent (and the full crew) evaluates using:
 6. Character Integrity
 7. **Audio-Visual Sync Fidelity & Physics Realism** (new v3.6 metric — critical for 1.5)
 
-### 6. Grok 4.3 Full Exploitation
+### 6. Grok Build & xAI Model Registry
+Canonical slugs in `tools/models.py` and `references/MODELS_v3.6.md`:
+
+| Layer | Default Slug | Use Case |
+|-------|--------------|----------|
+| Grok Build CLI | `grok-composer-2.5-fast` | Creative orchestration |
+| Grok Build fork | `grok-build` | Code, skills, repo tooling |
+| xAI Chat | `grok-4.3` | 1M context, Production Bibles |
+| xAI Build API | `grok-build-0.1` | Agentic workflows, automation |
+| Imagine Video | `grok-imagine-video-1.5` | Native audio ($0.08/sec) |
+| Imagine Image | `grok-imagine-image` | Reference stills ($0.02/image) |
+
 - Prefer structured outputs / JSON for handoffs and bibles when complex
-- Use 1M context window for loading full memory banks + entire Production Bible in one context
+- Use `grok-4.3` 1M context for full memory banks + Production Bible in one shot
 - `EXPORT_BIBLE_PDF` for professional deliverables
 - Configurable reasoning (set to "medium" for most productions, "high" for intricate emotional/audio timing)
-- Cross-chat memory import supported via CLI/UI
 
 ### 7. Grok Imagine Video 1.5 Native Prompting Rules (Critical)
 When crafting prompts for Imagine Prompt Master or direct generation:
@@ -163,7 +174,7 @@ When crafting prompts for Imagine Prompt Master or direct generation:
 
 Type `Activate Grok Imagine Cinematic Studio v3.6` to begin.
 
-This version is optimized for Grok 4.3 Full chats and native Grok Imagine Video 1.5 generations on grok.com/imagine, mobile apps, and API.
+This version is optimized for Grok Build, Grok 4.3, and native Grok Imagine Video 1.5 on grok.com/imagine, mobile apps, and API.
 
 **Next Steps after activation:**
 - Generate or load a Production Bible with Video Pipeline Spec

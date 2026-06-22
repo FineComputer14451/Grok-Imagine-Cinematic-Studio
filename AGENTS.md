@@ -157,6 +157,25 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 | **Documents**               | `pdf`, `docx`, `pptx`, `xlsx`              | Professional document or presentation creation |
 | **Memory**                  | `memory-edit`                              | User shares personal facts/preferences worth remembering or updating |
 
+## Grok Build & xAI Model Registry
+
+Canonical slugs live in `tools/models.py` and `references/MODELS_v3.6.md`. List via:
+
+```bash
+python tools/cinematic_studio_cli.py models list
+```
+
+| Layer | Default Slug | When to Use |
+|-------|--------------|-------------|
+| Grok Build CLI | `grok-composer-2.5-fast` | Default agent orchestration |
+| Grok Build fork | `grok-build` | Code, skills, repo tooling |
+| xAI Chat API | `grok-4.3` | Cinematic orchestration, 1M context |
+| xAI Build API | `grok-build-0.1` | Agentic/coding automation |
+| Imagine Video | `grok-imagine-video-1.5` | Native audio video ($0.08/sec) |
+| Imagine Image | `grok-imagine-image` | Reference stills ($0.02/image) |
+
+Local config: `~/.grok/config.toml` sets `fork_secondary_model = "grok-build"`.
+
 ## Project-Specific Notes
 
 - Primary ongoing project: **Grok Imagine Cinematic Studio** (v3.6) and related custom skills.

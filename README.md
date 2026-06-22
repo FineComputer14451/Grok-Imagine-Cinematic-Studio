@@ -4,13 +4,13 @@
 
 # 🎬 Grok Imagine Cinematic Studio v3.6 "Odyssey Native"
 
-**The most advanced multi-agent cinematic production system for Grok 4.3 Full + Grok Imagine Video 1.5**
+**The most advanced multi-agent cinematic production system for Grok Build + Grok 4.3 + Grok Imagine Video 1.5**
 
 Transform any story into emotionally powerful, production-ready cinematic video with **native 1.5 image-to-video**, one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
 [![Version](https://img.shields.io/badge/version-3.6.1-blue)](https://github.com/FineComputer14451/grok-imagine-cinematic-studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Grok](https://img.shields.io/badge/Grok-4.3%20%2B%201.5-purple)](https://x.ai)
+[![Grok](https://img.shields.io/badge/Grok-Build%20%2B%204.3%20%2B%201.5-purple)](https://x.ai)
 
 ---
 
@@ -24,7 +24,8 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 - **reference_image_id propagation** + 1.5 fidelity scoring in Identity Lock & Continuity systems
 - New Director’s Notes metrics: **Audio-Visual Sync Fidelity** and **Physics Realism** (1–10)
 - Optimized prompting rules for 1.5 (explicit camera moves with weighty physics, timing beats, Sound Layer syntax)
-- Per-second 1.5 video quota modeling + Fast mode → quality pass strategies
+- Per-second xAI pricing ($0.08/sec for 1.5) + Fast mode → quality pass strategies
+- **Model registry** — `tools/models.py`, `models list` CLI, Grok Build + xAI slug reference
 
 ### v3.6.1 Production Pipelines (New)
 - **Character DNA pipeline** — `dna` CLI commands, Identity Lock handoff, prompt injection
@@ -44,7 +45,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 
 ### 1. Fastest: Master Prompt Activation (Recommended)
 1. Copy the content of [`MASTER_PROMPT_v3.6.md`](MASTER_PROMPT_v3.6.md)
-2. Paste into a new **Grok 4.3 Full** chat (enable reasoning=medium/high for complex productions)
+2. Paste into a new **Grok 4.3** or **Grok Build** chat (enable reasoning=medium/high for complex productions)
 3. Type: `Activate Grok Imagine Cinematic Studio v3.6`
 
 ### 2. Python CLI (Power Users)
@@ -57,7 +58,9 @@ python tools/cinematic_studio_cli.py status
 python tools/cinematic_studio_cli.py create-bible "Your Project Title"
 python tools/cinematic_studio_cli.py dna init "Elena Voss" --core "..." --facial "..."
 python tools/cinematic_studio_cli.py sequence init "Neon Alley Chase" --duration 90
+python tools/cinematic_studio_cli.py models list
 python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --fast-mode
+python tools/cinematic_studio_cli.py generate-prompt "Your story" --chat-model grok-4.3 --video-model 1.5
 ```
 
 ### 3. Streamlit Web UI
@@ -65,7 +68,7 @@ python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --fa
 pip install -r requirements-streamlit.txt
 streamlit run web_ui/app.py
 ```
-(Now includes Imagine Model selector: 1.5 Native (default), resolution, duration, native audio toggle, and live 1.5 cost simulator)
+(Imagine video model selector, xAI chat model picker (`grok-4.3` / `grok-build-0.1`), live per-second cost simulator)
 
 ---
 
@@ -167,6 +170,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6 "Odyssey Native" — Built for professional cinematic storytelling with Grok 4.3 + Imagine Video 1.5*
+*Grok Imagine Cinematic Studio v3.6 "Odyssey Native" — Built for Grok Build, Grok 4.3, and Imagine Video 1.5*
 
 *Last updated: June 20, 2026*

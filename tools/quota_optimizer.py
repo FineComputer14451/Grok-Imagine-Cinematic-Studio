@@ -15,25 +15,41 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = "1.0"
+from models import (
+    DEFAULT_IMAGINE_IMAGE_MODEL,
+    DEFAULT_IMAGINE_VIDEO_MODEL,
+    USD_PER_CREDIT,
+    image_usd_per_image,
+    resolve_image_model,
+    resolve_video_model,
+    usd_to_credits,
+    video_usd_per_second,
+)
+
+SCHEMA_VERSION = "1.1"
 PROJECT_STATE_FILE = Path(".cinematic_project_state.json")
 QUOTA_CONFIG_FILE = Path(".quota_config.json")
 
-# Estimated pricing model (configurable via .quota_config.json)
-# Credits are abstract units; usd_per_credit is illustrative.
+# xAI Imagine pricing (June 2026) — configurable via .quota_config.json
+# Credits derived from USD at usd_per_credit ($0.01/credit).
 DEFAULT_PRICING = {
-    "imagine_video_1.5": {
-        "720p": {"credits_per_second": 10},
-        "480p": {"credits_per_second": 6},
+    "imagine_video": {
+        "grok-imagine-video-1.5": {"usd_per_second": 0.080},
+        "grok-imagine-video": {"usd_per_second": 0.050},
     },
-    "imagine_image": {"credits_per_image": 5},
+    "imagine_image": {
+        "grok-imagine-image": {"usd_per_image": 0.02},
+        "grok-imagine-image-quality": {"usd_per_image": 0.05},
+    },
+    "default_video_model": DEFAULT_IMAGINE_VIDEO_MODEL,
+    "default_image_model": DEFAULT_IMAGINE_IMAGE_MODEL,
     "fast_mode_multiplier": 0.55,
     "quality_pass_multiplier": 1.0,
-    "native_audio_surcharge_per_second": 2,
+    "native_audio_surcharge_per_second": 0,
     "extend_stitch_overhead_per_clip": 3,
     "chain_qa_retry_probability": 0.2,
     "retry_buffer": 1.15,
-    "usd_per_credit": 0.01,
+    "usd_per_credit": USD_PER_CREDIT,
 }
 
 SUBSCRIPTION_TIERS: dict[str, dict[str, Any]] = {
@@ -117,43 +133,63 @@ def ensure_quota_state(state: dict[str, Any]) -> dict[str, Any]:
     return state["quota"]
 
 
+def _video_rate_usd(p: dict[str, Any], video_model: str) -> float:
+    slug = resolve_video_model(video_model)
+    rates = p.get("imagine_video", DEFAULT_PRICING["imagine_video"])
+    if slug in rates:
+        return rates[slug]["usd_per_second"]
+    return video_usd_per_second(slug)
+
+
+def _image_rate_usd(p: dict[str, Any], image_model: str) -> float:
+    slug = resolve_image_model(image_model)
+    rates = p.get("imagine_image", DEFAULT_PRICING["imagine_image"])
+    if slug in rates:
+        return rates[slug]["usd_per_image"]
+    return image_usd_per_image(slug)
+
+
 def estimate_clip_cost(
     duration_seconds: float,
     *,
     resolution: str = "720p",
+    video_model: str | None = None,
     fast_mode: bool = False,
     native_audio: bool = True,
     quality_pass: bool = False,
     retries: int = 1,
     pricing: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Estimate cost for a single 1.5 video clip."""
+    """Estimate cost for a single Imagine video clip (xAI per-second pricing)."""
     p = pricing or load_pricing_config()
-    rates = p["imagine_video_1.5"].get(resolution, p["imagine_video_1.5"]["720p"])
-    base = rates["credits_per_second"] * duration_seconds
+    slug = resolve_video_model(video_model or p.get("default_video_model"))
+    usd_per_sec = _video_rate_usd(p, slug)
+    base_usd = usd_per_sec * duration_seconds
 
     if fast_mode:
-        base *= p["fast_mode_multiplier"]
+        base_usd *= p["fast_mode_multiplier"]
     if quality_pass and fast_mode:
-        base += rates["credits_per_second"] * duration_seconds * p["quality_pass_multiplier"]
-    if native_audio:
-        base += p["native_audio_surcharge_per_second"] * duration_seconds
+        base_usd += usd_per_sec * duration_seconds * p["quality_pass_multiplier"]
+    if native_audio and p.get("native_audio_surcharge_per_second", 0):
+        base_usd += p["native_audio_surcharge_per_second"] * duration_seconds * p["usd_per_credit"]
 
-    base *= retries
-    buffered = base * p["retry_buffer"]
+    base_usd *= retries
+    buffered_usd = base_usd * p["retry_buffer"]
+    usd_per = p["usd_per_credit"]
 
-    usd = buffered * p["usd_per_credit"]
     return {
         "duration_seconds": duration_seconds,
         "resolution": resolution,
+        "video_model": slug,
+        "usd_per_second": usd_per_sec,
         "fast_mode": fast_mode,
         "native_audio": native_audio,
         "quality_pass": quality_pass,
         "retries": retries,
-        "credits_low": round(base, 1),
-        "credits_high": round(buffered, 1),
-        "usd_low": round(base * p["usd_per_credit"], 2),
-        "usd_high": round(usd, 2),
+        "credits_low": usd_to_credits(base_usd),
+        "credits_high": usd_to_credits(buffered_usd),
+        "usd_low": round(base_usd, 2),
+        "usd_high": round(buffered_usd, 2),
     }
 
 
@@ -161,14 +197,16 @@ def estimate_sequence_cost(
     clips: list[dict[str, Any]],
     *,
     resolution: str = "720p",
+    video_model: str | None = None,
     fast_mode: bool = False,
     native_audio: bool = True,
     quality_pass: bool = False,
     include_qa_retries: bool = True,
     pricing: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Estimate cost for a multi-clip 1.5 sequence with extend/stitch overhead."""
+    """Estimate cost for a multi-clip sequence with extend/stitch overhead."""
     p = pricing or load_pricing_config()
+    slug = resolve_video_model(video_model or p.get("default_video_model"))
     per_clip: list[dict[str, Any]] = []
     total_low = 0.0
     total_high = 0.0
@@ -182,6 +220,7 @@ def estimate_sequence_cost(
         est = estimate_clip_cost(
             dur,
             resolution=resolution,
+            video_model=slug,
             fast_mode=fast_mode,
             native_audio=native_audio,
             quality_pass=quality_pass,
@@ -199,6 +238,7 @@ def estimate_sequence_cost(
     usd_per = p["usd_per_credit"]
     return {
         "clip_count": len(clips),
+        "video_model": slug,
         "total_duration_seconds": sum(c.get("duration_seconds", 10) for c in clips),
         "credits_low": round(total_low, 1),
         "credits_high": round(total_high, 1),
@@ -217,6 +257,8 @@ def estimate_production(
     clip_count: int | None = None,
     avg_clip_duration: float = 10.0,
     resolution: str = "720p",
+    video_model: str | None = None,
+    image_model: str | None = None,
     fast_mode: bool = False,
     native_audio: bool = True,
     quality_pass: bool = False,
@@ -237,6 +279,7 @@ def estimate_production(
     seq = estimate_sequence_cost(
         clips,
         resolution=resolution,
+        video_model=video_model,
         fast_mode=fast_mode,
         native_audio=native_audio,
         quality_pass=quality_pass,
@@ -245,7 +288,8 @@ def estimate_production(
 
     complexity_mult = COMPLEXITY_MULTIPLIERS.get(complexity.lower(), 1.15)
     agent_overhead = AGENT_OVERHEAD_CREDITS.get(agent_mode, 15)
-    image_cost = num_images * p["imagine_image"]["credits_per_image"]
+    img_slug = resolve_image_model(image_model or p.get("default_image_model"))
+    image_cost = usd_to_credits(num_images * _image_rate_usd(p, img_slug))
 
     credits_low = seq["credits_low"] * complexity_mult + agent_overhead + image_cost
     credits_high = seq["credits_high"] * complexity_mult + agent_overhead + image_cost
@@ -254,6 +298,8 @@ def estimate_production(
         "target_duration_seconds": target_duration_seconds,
         "clip_count": clip_count,
         "avg_clip_duration": avg_clip_duration,
+        "video_model": seq.get("video_model"),
+        "image_model": img_slug,
         "complexity": complexity,
         "agent_mode": agent_mode,
         "num_images": num_images,

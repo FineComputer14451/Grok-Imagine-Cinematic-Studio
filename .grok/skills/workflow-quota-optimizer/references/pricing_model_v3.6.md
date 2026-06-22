@@ -1,21 +1,64 @@
-# Pricing Model v3.6 — Grok Imagine Video 1.5
+# Pricing Model v3.6 — xAI Imagine & Grok Build
 
-Estimated per-second credit model for quota planning. Override via `.quota_config.json` in project root.
+Official xAI per-second/per-image pricing for quota planning. Canonical registry: `tools/models.py` and `references/MODELS_v3.6.md`.
+
+Override via `.quota_config.json` in project root.
 
 ---
 
-## Default Rates (Credits)
+## xAI Imagine Rates (USD)
+
+| Model | Rate |
+|-------|------|
+| `grok-imagine-video-1.5` | **$0.080 / second** |
+| `grok-imagine-video` | $0.050 / second |
+| `grok-imagine-image` | $0.02 / image |
+| `grok-imagine-image-quality` | $0.05 / image |
+
+Native audio is included in 1.5 per-second pricing (no surcharge).
+
+---
+
+## Credit Conversion
+
+Quota dashboard uses abstract credits for subscription tier compatibility:
+
+| Unit | Value |
+|------|-------|
+| 1 credit | $0.01 |
+| 1.5 video (10s) | 80 credits ($0.80) |
+| 1.0 video (10s) | 50 credits ($0.50) |
+| Standard image | 2 credits ($0.02) |
+| Quality image | 5 credits ($0.05) |
+
+---
+
+## Production Overhead (Configurable)
 
 | Resource | Rate |
 |----------|------|
-| Video 1.5 @ 720p | 10 credits/second |
-| Video 1.5 @ 480p | 6 credits/second |
-| Native audio surcharge | +2 credits/second |
-| Image generation | 5 credits/image |
 | Extend/stitch overhead | +3 credits/clip (after clip 1) |
 | Fast mode | 55% of base rate |
 | Quality pass (after fast) | +100% of base for hero shots |
 | Retry buffer | ×1.15 on estimates |
+
+---
+
+## xAI Chat Models (Agent Orchestration)
+
+| Model | Input / 1M | Output / 1M | Context |
+|-------|------------|-------------|---------|
+| `grok-4.3` | $1.25 | $2.50 | 1M |
+| `grok-build-0.1` | $1.00 | $2.00 | 256k |
+
+## Grok Build CLI
+
+| Model | Role |
+|-------|------|
+| `grok-composer-2.5-fast` | Default agent |
+| `grok-build` | Fork secondary (coding) |
+
+---
 
 ## Subscription Tiers
 
@@ -37,11 +80,13 @@ Estimated per-second credit model for quota planning. Override via `.quota_confi
 ## CLI
 
 ```bash
-python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9
+python tools/cinematic_studio_cli.py models list
+python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --video-model 1.5
+python tools/cinematic_studio_cli.py quota clip 10 --video-model grok-imagine-video
 python tools/cinematic_studio_cli.py quota sequence "Neon Alley Chase"
 python tools/cinematic_studio_cli.py quota dashboard
 python tools/cinematic_studio_cli.py quota budget --tier supergrok_heavy
-python tools/cinematic_studio_cli.py quota record --credits 105 --note "clip_001 10s 720p"
+python tools/cinematic_studio_cli.py quota record --credits 80 --note "clip_001 10s 1.5"
 python tools/cinematic_studio_cli.py quota optimize --duration 90 --clips 9 --fast-mode
 ```
 
@@ -56,10 +101,15 @@ python tools/cinematic_studio_cli.py quota optimize --duration 90 --clips 9 --fa
 
 ```json
 {
-  "imagine_video_1.5": {
-    "720p": {"credits_per_second": 10},
-    "480p": {"credits_per_second": 6}
+  "imagine_video": {
+    "grok-imagine-video-1.5": {"usd_per_second": 0.08},
+    "grok-imagine-video": {"usd_per_second": 0.05}
   },
+  "imagine_image": {
+    "grok-imagine-image": {"usd_per_image": 0.02},
+    "grok-imagine-image-quality": {"usd_per_image": 0.05}
+  },
+  "default_video_model": "grok-imagine-video-1.5",
   "fast_mode_multiplier": 0.55,
   "usd_per_credit": 0.01
 }

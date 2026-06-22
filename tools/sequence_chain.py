@@ -15,12 +15,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from models import DEFAULT_IMAGINE_VIDEO_MODEL
+
 SCHEMA_VERSION = "1.0"
 SEQUENCES_DIR = Path("sequences")
 PROJECT_STATE_FILE = Path(".cinematic_project_state.json")
 
 DEFAULT_PIPELINE = {
-    "model": "grok-imagine-video-1.5",
+    "model": DEFAULT_IMAGINE_VIDEO_MODEL,
     "resolution": "720p",
     "native_audio": True,
     "clip_length_preferred": "8-12s",

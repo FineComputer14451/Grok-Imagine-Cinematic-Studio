@@ -52,6 +52,18 @@ from quota_optimizer import (  # noqa: E402
     record_spend,
     set_budget,
 )
+from models import (  # noqa: E402
+    DEFAULT_GROK_BUILD_MODEL,
+    DEFAULT_IMAGINE_VIDEO_MODEL,
+    DEFAULT_XAI_CHAT_MODEL,
+    GROK_BUILD_CLI_MODELS,
+    GROK_BUILD_FORK_MODEL,
+    IMAGINE_IMAGE_MODELS,
+    IMAGINE_VIDEO_MODELS,
+    XAI_CHAT_MODELS,
+    resolve_chat_model,
+    resolve_video_model,
+)
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
@@ -79,6 +91,9 @@ app.add_typer(seq_app, name="sequence")
 
 quota_app = typer.Typer(help="Per-second 1.5 quota estimation, budgeting, and optimization")
 app.add_typer(quota_app, name="quota")
+
+models_app = typer.Typer(help="Grok Build and xAI model registry")
+app.add_typer(models_app, name="models")
 
 console = Console()
 
@@ -231,22 +246,53 @@ def show_role_card(
     content = card_path.read_text()
     console.print(Panel(Markdown(content[:3000]), title=f"📋 {card_path.stem}", border_style="blue", expand=False))
 
+@models_app.command("list")
+def models_list():
+    """List Grok Build CLI, xAI chat, and Imagine model slugs."""
+    table = Table(title="🤖 Grok Build & xAI Model Registry", box=box.ROUNDED)
+    table.add_column("Category", style="bold cyan", no_wrap=True)
+    table.add_column("Slug", style="green")
+    table.add_column("Label / Rate", style="white")
+
+    table.add_row("Grok Build CLI (default)", DEFAULT_GROK_BUILD_MODEL, GROK_BUILD_CLI_MODELS[DEFAULT_GROK_BUILD_MODEL]["label"])
+    table.add_row("Grok Build CLI (fork)", GROK_BUILD_FORK_MODEL, GROK_BUILD_CLI_MODELS[GROK_BUILD_FORK_MODEL]["label"])
+    for slug, info in XAI_CHAT_MODELS.items():
+        default = " (default)" if info.get("default") else ""
+        table.add_row("xAI Chat", slug + default, f"{info['label']} — ${info['input_usd_per_1m']}/${info['output_usd_per_1m']} per 1M")
+    for slug, info in IMAGINE_VIDEO_MODELS.items():
+        default = " (default)" if info.get("default") else ""
+        table.add_row("Imagine Video", slug + default, f"{info['label']} — ${info['usd_per_second']}/sec")
+    for slug, info in IMAGINE_IMAGE_MODELS.items():
+        default = " (default)" if info.get("default") else ""
+        table.add_row("Imagine Image", slug + default, f"{info['label']} — ${info['usd_per_image']}/image")
+
+    console.print(table)
+    console.print("\n[dim]Full registry: references/MODELS_v3.6.md[/dim]")
+
 @app.command(name="generate-prompt")
 def generate_prompt(
     story: str = typer.Argument(..., help="Your story, scene, or project description"),
     signature: str = typer.Option("default", "--signature", "-s", help="Director style"),
+    chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.3, grok-build-0.1)"),
+    video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "--model", "-m", help="Imagine video model slug or alias"),
     output: str = typer.Option(None, "--output", "-o", help="Save to file")
 ):
     """Generate a high-quality ready-to-paste prompt"""
     sig_text = DIRECTOR_SIGNATURES.get(signature.lower(), DIRECTOR_SIGNATURES["default"])
+    chat_slug = resolve_chat_model(chat_model)
+    video_slug = resolve_video_model(video_model)
 
     prompt = f"""# Grok Imagine Cinematic Studio v3.6.1 — ACTIVATED
 
 **Project:** {story}
 **Director Signature:** {sig_text}
+**Chat Model:** {chat_slug}
+**Video Pipeline:** {video_slug}
 **Date:** {datetime.now().strftime('%Y-%m-%d %H:%M')}
 
 You are now running the full **23-agent** Grok Imagine Cinematic Studio v3.6 with complete Role Cards loaded from `references/agents/`.
+
+[VIDEO_PIPELINE_SPEC: model="{video_slug}", resolution="720p", clip_length="8-12s preferred", native_audio=true]
 
 Please begin by:
 1. Confirming activation
@@ -766,6 +812,7 @@ def quota_estimate(
     clips: int = typer.Option(None, "--clips", "-n"),
     clip_duration: float = typer.Option(10.0, "--clip-duration"),
     resolution: str = typer.Option("720p", "--resolution", "-r"),
+    video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "-m", help="Imagine video model slug or alias"),
     complexity: str = typer.Option("medium", "--complexity", "-c"),
     fast_mode: bool = typer.Option(False, "--fast-mode"),
     quality_pass: bool = typer.Option(False, "--quality-pass"),
@@ -773,12 +820,13 @@ def quota_estimate(
     images: int = typer.Option(0, "--images", "-i"),
     agent_mode: str = typer.Option("standard", "--agents", help="minimal / standard / full_studio"),
 ):
-    """Estimate production cost with per-second 1.5 pricing."""
+    """Estimate production cost with xAI per-second Imagine pricing."""
     est = estimate_production(
         duration,
         clip_count=clips,
         avg_clip_duration=clip_duration,
         resolution=resolution,
+        video_model=video_model,
         fast_mode=fast_mode,
         quality_pass=quality_pass,
         native_audio=native_audio,
@@ -790,10 +838,11 @@ def quota_estimate(
     quota = state.get("quota", {})
     risk = assess_budget_risk(est, tier=quota.get("tier", "supergrok_pro"), budget_remaining=quota.get("budget_remaining"))
 
-    table = Table(title="💰 Quota Estimate — Imagine Video 1.5", box=box.ROUNDED)
+    table = Table(title="💰 Quota Estimate — Imagine Video", box=box.ROUNDED)
     table.add_column("Metric", style="cyan")
     table.add_column("Value", style="white")
     table.add_row("Target Duration", f"{duration}s")
+    table.add_row("Video Model", est.get("video_model", video_model))
     table.add_row("Clips", str(est["clip_count"]))
     table.add_row("Avg Clip", f"{est['avg_clip_duration']}s")
     table.add_row("Resolution", resolution)
@@ -809,12 +858,20 @@ def quota_estimate(
 def quota_clip(
     duration: float = typer.Argument(..., help="Clip duration in seconds"),
     resolution: str = typer.Option("720p", "--resolution", "-r"),
+    video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "-m"),
     fast_mode: bool = typer.Option(False, "--fast-mode"),
     quality_pass: bool = typer.Option(False, "--quality-pass"),
 ):
-    """Estimate cost for a single 1.5 clip."""
-    est = estimate_clip_cost(duration, resolution=resolution, fast_mode=fast_mode, quality_pass=quality_pass)
+    """Estimate cost for a single Imagine video clip."""
+    est = estimate_clip_cost(
+        duration,
+        resolution=resolution,
+        video_model=video_model,
+        fast_mode=fast_mode,
+        quality_pass=quality_pass,
+    )
     console.print(Panel(
+        f"Model: {est.get('video_model', video_model)} (${est.get('usd_per_second', '?')}/sec)\n"
         f"Duration: {duration}s @ {resolution}\n"
         f"Credits: {est['credits_low']} – {est['credits_high']}\n"
         f"USD: ${est['usd_low']} – ${est['usd_high']}",
