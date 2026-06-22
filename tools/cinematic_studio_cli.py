@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Grok Imagine Cinematic Studio CLI v3.6.1 — Enhanced Edition
+Grok Imagine Cinematic Studio CLI v3.6.4 — Enhanced Edition
 Professional multi-agent cinematic production toolkit with Role Card integration
 """
 
@@ -214,7 +214,7 @@ def save_project_state(state: dict):
 def status():
     """Show current studio status"""
     console.print(Panel.fit(
-        "[bold cyan]🎥 Grok Imagine Cinematic Studio v3.6.1[/bold cyan]\n"
+        "[bold cyan]🎥 Grok Imagine Cinematic Studio v3.6.4[/bold cyan]\n"
         "[green]Status:[/green] Enhanced CLI Active\n"
         "[green]Agents:[/green] 23 Online\n"
         "[green]Role Cards:[/green] Loaded from references/agents/\n"
@@ -226,7 +226,7 @@ def status():
 @app.command()
 def version():
     """Show CLI version"""
-    console.print("[bold]cinematic-studio[/bold] v3.6.1 (June 2026)")
+    console.print("[bold]cinematic-studio[/bold] v3.6.4 (June 2026)")
 
 @app.command(name="list-agents")
 def list_agents():
@@ -311,7 +311,7 @@ def generate_prompt(
     chat_slug = resolve_chat_model(chat_model)
     video_slug = resolve_video_model(video_model)
 
-    prompt = f"""# Grok Imagine Cinematic Studio v3.6.1 — ACTIVATED
+    prompt = f"""# Grok Imagine Cinematic Studio v3.6.4 — ACTIVATED
 
 **Project:** {story}
 **Director Signature:** {sig_text}
@@ -387,7 +387,7 @@ def create_bible(
         "target_duration_seconds": 60,
         "complexity": "Medium",
         "total_agents": 23,
-        "version": "3.6.1",
+        "version": "3.6.4",
         "role_cards_source": str(AGENTS_DIR) if AGENTS_DIR.exists() else "Not found",
         "locked_variables": {
             "PROJECT_TITLE": title,

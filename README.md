@@ -8,7 +8,7 @@
 
 Transform any story into emotionally powerful, production-ready cinematic video with **native 1.5 image-to-video**, one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
-[![Version](https://img.shields.io/badge/version-3.6.1-blue)](https://github.com/FineComputer14451/grok-imagine-cinematic-studio)
+[![Version](https://img.shields.io/badge/version-3.6.4-blue)](https://github.com/FineComputer14451/grok-imagine-cinematic-studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Grok](https://img.shields.io/badge/Grok-Build%20%2B%204.3%20%2B%201.5-purple)](https://x.ai)
 
@@ -27,11 +27,14 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 - Per-second xAI pricing ($0.08/sec for 1.5) + Fast mode → quality pass strategies
 - **Model registry** — `tools/models.py`, `models list` CLI, Grok Build + xAI slug reference
 
-### v3.6.1 Production Pipelines (New)
+### v3.6.1–3.6.4 Production Pipelines
 - **Character DNA pipeline** — `dna` CLI commands, Identity Lock handoff, prompt injection
 - **Long-form sequence chain** — `sequence` CLI, 10-point chain QA gates, 1.5 extend/stitch protocols
-- **Quota orchestration** — `quota` CLI, per-second 1.5 pricing, session budgeting, Fast mode optimization
+- **Quota orchestration** — `quota` CLI, xAI per-second pricing, session budgeting, Fast mode optimization
 - **AI Polish Director** — final delivery upscale via `ai-video-upscaler` skill
+- **Model registry** (v3.6.2) — `tools/models.py`, Grok Build + xAI slug reference
+- **NSFW Quota Orchestrator** (v3.6.3) — Heavy batch planning, i2v decisions, daily reports
+- **NSFW Sequence Extender** (v3.6.4) — 30–120s+ sensual extension, prompt chains, erotic pacing, artifact QA
 
 ### Agent & System Upgrades
 - All core agents upgraded to v3.6 with 1.5-specific protocols, decision frameworks, and output formats
@@ -61,6 +64,8 @@ python tools/cinematic_studio_cli.py sequence init "Neon Alley Chase" --duration
 python tools/cinematic_studio_cli.py models list
 python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --fast-mode
 python tools/cinematic_studio_cli.py generate-prompt "Your story" --chat-model grok-4.3 --video-model 1.5
+python tools/cinematic_studio_cli.py nsfw extend plan "Intimate Sequence" --duration 90 --profile passionate --reference "..."
+python tools/cinematic_studio_cli.py nsfw plan "Hero Session" --shot "hero:Cover frame" --budget 800
 ```
 
 ### 3. Streamlit Web UI
@@ -77,8 +82,9 @@ streamlit run web_ui/app.py
 ```
 Studio Director v3.6 + Mega Production Architect v3.6
 ├── references/agents/          # Authoritative Role Cards (v3.6)
-├── tools/                      # CLI libraries: character_dna, sequence_chain, quota_optimizer
-├── tools/cinematic_studio_cli.py   # CLI: dna, sequence, quota + memory + PDF
+├── tools/                      # character_dna, sequence_chain, quota_optimizer, nsfw_*
+├── tools/cinematic_studio_cli.py   # CLI: dna, sequence, quota, nsfw, models
+├── references/MODELS_v3.6.md   # Grok Build + xAI model registry
 ├── web_ui/app.py                 # Streamlit frontend with 1.5 pipeline controls
 ├── examples/                     # Production Bible templates (v3.6 ready)
 ├── MASTER_PROMPT_v3.6.md         # Main activation prompt
@@ -172,4 +178,4 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 *Grok Imagine Cinematic Studio v3.6 "Odyssey Native" — Built for Grok Build, Grok 4.3, and Imagine Video 1.5*
 
-*Last updated: June 20, 2026*
+*Last updated: June 21, 2026 — v3.6.4*

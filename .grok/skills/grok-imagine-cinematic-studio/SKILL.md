@@ -73,8 +73,10 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 - `ACTIVATE IMAGINE_VIDEO_1.5_FULL` — Enable full native 1.5 video + audio mode
 - `ACTIVATE AI_POLISH_DIRECTOR` — Final delivery upscale & face restoration
 - `ACTIVATE CHARACTER_DNA_EXTRACTOR` — Extract DNA from refs and lock identity
+- `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` — Heavy batch planning + daily quota reports (with ErosForge)
+- `ACTIVATE NSFW_SEQUENCE_EXTENDER` — 30–120s+ sensual extension, prompt chains, erotic pacing
 
-## Core Capabilities (v3.6)
+## Core Capabilities (v3.6.4)
 
 - Full Project Bible with `VIDEO_PIPELINE_SPEC` (1.5 native settings)
 - **Native Grok Imagine Video 1.5** support (image-to-video + one-pass synchronized audio)
@@ -85,8 +87,9 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 - Director’s Notes + Director's Cut Mode
 - Persistent Character Memory Bank (cross-session)
 - Advanced Multi-Reference + `reference_image_id` propagation
-- NSFW support via ErosForge (explicit activation only)
-- Quota-aware production with per-second 1.5 video pricing
+- NSFW support via ErosForge + `nsfw-quota-orchestrator` + `nsfw-sequence-extender` (explicit activation)
+- Quota-aware production with xAI per-second pricing (`workflow-quota-optimizer`)
+- Grok Build model registry (`tools/models.py`, `references/MODELS_v3.6.md`)
 - Authoritative Role Cards in `references/agents/`
 - Complete skill layer in `.grok/skills/`
 

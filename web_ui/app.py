@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Grok Imagine Cinematic Studio — Streamlit Web UI v3.6.1
+Grok Imagine Cinematic Studio — Streamlit Web UI v3.6.4
 Aligned with 23-Agent System + DNA / Sequence / Quota Pipelines
 """
 
@@ -286,7 +286,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("🚀 Generate Master Prompt", use_container_width=True):
         if story:
-            prompt = f"""# Grok Imagine Cinematic Studio v3.6.1 — ACTIVATED
+            prompt = f"""# Grok Imagine Cinematic Studio v3.6.4 — ACTIVATED
 
 **Project:** {story[:120]}...
 **Genre:** {genre}
@@ -371,7 +371,7 @@ with col3:
                 "target_duration_seconds": duration,
                 "complexity": complexity,
                 "total_agents": 23,
-                "version": "3.6.1",
+                "version": "3.6.4",
                 "role_cards_source": "references/agents/",
                 "locked_variables": {
                     "PROJECT_TITLE": story[:60],
@@ -450,4 +450,4 @@ if st.button("✨ Generate Prompt with xAI API", use_container_width=True):
 
 # Footer
 st.divider()
-st.caption("Grok Imagine Cinematic Studio v3.6.1 • 23 Agents • DNA/Sequence/Quota • June 2026")
+st.caption("Grok Imagine Cinematic Studio v3.6.4 • 23 Agents • DNA/Sequence/Quota/NSFW • June 2026")

@@ -4,6 +4,10 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [3.6.4] - 2026-06-21
 
+### Changed
+- README, MASTER_PROMPT, RELEASE_NOTES, CLI, and Web UI aligned to v3.6.4
+- `workflow-quota-optimizer` and `grok-imagine-cinematic-studio` skills updated with current pricing and NSFW pipelines
+
 ### Added
 - **NSFW Sequence Extender** — `tools/nsfw_sequence_extender.py` for 30–120s+ sensual extension
 - **`nsfw-sequence-extender` skill** — erotic pacing curve, camera vocabulary, artifact QA, extend protocol

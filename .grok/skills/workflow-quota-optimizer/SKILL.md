@@ -41,18 +41,18 @@ python tools/cinematic_studio_cli.py quota record --credits 105 --note "clip_001
 python tools/cinematic_studio_cli.py quota dashboard
 ```
 
-## Per-Second Pricing (Default)
+## Per-Second Pricing (xAI June 2026)
 
-| Resource | Credits |
-|----------|---------|
-| 1.5 video @ 720p | 10/sec |
-| 1.5 video @ 480p | 6/sec |
-| Native audio | +2/sec |
-| Extend/stitch overhead | +3/clip |
-| Fast mode | 55% of base |
-| Image | 5/image |
+| Resource | USD | Credits |
+|----------|-----|---------|
+| 1.5 video | $0.08/sec | 8/sec |
+| 1.0 video | $0.05/sec | 5/sec |
+| Image standard | $0.02 | 2 |
+| Image quality | $0.05 | 5 |
+| Extend/stitch overhead | — | +3/clip |
+| Fast mode | — | 55% of base |
 
-Override via `.quota_config.json` in project root.
+Override via `.quota_config.json`. Full registry: `references/MODELS_v3.6.md`
 
 ## Risk Levels
 

@@ -1,10 +1,17 @@
 # RELEASE NOTES — Grok Imagine Cinematic Studio v3.6 "Odyssey Native"
 
 **Release Date:** June 20, 2026  
-**Latest Patch:** v3.6.1 (June 22, 2026)  
-**Focus:** Full native integration with **Grok Imagine Video 1.5** + Grok 4.3 Full optimizations + Complete Skill Layer
+**Latest Patch:** v3.6.4 (June 21, 2026)  
+**Focus:** Full native integration with **Grok Imagine Video 1.5** + Grok Build model registry + NSFW production pipelines
 
 ---
+
+## v3.6.4 Patch (June 21, 2026)
+
+- **NSFW Sequence Extender** — 30–120s+ sensual extension, prompt chains, erotic pacing, artifact QA
+- **NSFW Quota Orchestrator** — Heavy batch planning, i2v decisions, daily reports
+- **Model registry** (v3.6.2) — `tools/models.py`, xAI USD pricing alignment
+- Docs, CLI, Web UI version strings aligned to v3.6.4
 
 ## v3.6.1 Patch (June 22, 2026)
 
