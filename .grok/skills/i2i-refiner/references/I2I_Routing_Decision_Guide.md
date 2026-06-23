@@ -18,6 +18,22 @@
 
 ---
 
+## Visual Flowchart (Mermaid)
+
+```mermaid
+graph TD
+    A[Analyze Shot / Prompt] --> B{Contains Explicit Content?}
+    B -->|Yes<br/>Genitals / Fluids / Ahegao / Erotic| C[Use i2i-refiner<br/>Full NSFW Protocol]
+    B -->|No| D[Use i2i-cinematic-refiner<br/>Clean Cinematic Polish]
+    C --> E[Pass DNA Anchors + NSFW Notes]
+    D --> F[Pass DNA Anchors]
+    E --> G[Quality Assurance Guardian]
+    F --> G
+    G --> H[Continue Pipeline]
+```
+
+---
+
 ## Routing Rules (For Agents)
 
 ### Studio Director & Mega Production Architect
