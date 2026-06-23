@@ -15,11 +15,22 @@
 
 **Strong Recommendation:** Bias toward the **lower half** of these ranges for close-up explicit, ahegao, or heavy fluid shots. Higher Composition strength only when pose stability is at risk.
 
-**Optional 4-Pass Mode (Extreme Close-ups / Problem Frames):**
-1. Composition (0.60-0.70)
-2. Anatomy Lock (0.32-0.40)
-3. Fluid & Skin Detail (0.20-0.28)
-4. Final Expression & Cinematic Polish (0.10-0.18)
+**4-Pass Mode (Recommended for Difficult Explicit Frames)**
+
+Use this when working with:
+- Heavy fluids / creampie scenes
+- Extreme close-ups on genitals or face
+- Complex ahegao or intense expressions
+- Previous 3-pass results had artifacts
+
+| Pass                        | Strength Range     | Focus                                      |
+|-----------------------------|--------------------|--------------------------------------------|
+| 1. Composition Lock         | 0.55 – 0.68        | Pose + major forms                         |
+| 2. Anatomy Lock             | 0.30 – 0.40        | Genitals, hands, facial structure          |
+| 3. Fluids + Skin Detail     | 0.20 – 0.30        | Fluids, sheen, pores, micro-texture        |
+| 4. Expression + Final Polish| 0.10 – 0.20        | Micro-expressions + cinematic look         |
+
+**Activation:** `ACTIVATE I2I REFINER — 4-pass mode`
 
 ---
 
@@ -96,6 +107,7 @@ If any fail → run another low-strength Detail or Polish pass with stronger pro
 ACTIVATE I2I REFINER on this keyframe with full NSFW protocol
 ACTIVATE I2I REFINER — protect anatomy and fluids, lower mid-pass strength
 I2I REFINER — ahegao close-up, heavy fluids, use strong protective additives
+ACTIVATE I2I REFINER — 4-pass mode
 ```
 
 ---
