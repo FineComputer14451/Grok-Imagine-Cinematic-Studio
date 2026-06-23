@@ -48,19 +48,14 @@ Start from Imagine Prompt Master output and append:
 
 For Grok `edit_image` calls, translate desired strength into clear descriptive language in the prompt.
 
-### Integration Chain
-Typical flow:
-1. Character DNA Extractor / Identity Lock Specialist (if new characters)
-2. I2I Cinematic Refiner (multi-pass refinement)
-3. Director of Photography (if lighting notes needed)
-4. Cinematic Sequence Extender / Studio Director
-5. Quality Assurance Guardian
+### Workflow Integration & Optimization
+See the full **I2I Workflow Optimization Guide** (`references/I2I_Workflow_Optimization_Guide.md`) for advanced techniques including:
+- Pre-i2i Composition Lock pass (recommended for complex shots)
+- When to escalate to `i2i-refiner` for explicit content
+- 4-Pass Mode (NSFW only)
+- Curated prompt additive strategies
 
-After refinement, output:
-- Refined image asset(s)
-- I2I Pass Report (passes, strengths, consistency score 1-10)
-- Updated prompt block for downstream agents
-- Next recommended activation
+**Escalation Rule:** If explicit/intimate content appears (genitals, fluids, ahegao, etc.), switch to or recommend `i2i-refiner` instead.
 
 ## Output Format
 Always end with:
@@ -71,10 +66,9 @@ Assets: [list]
 Next Recommended: ACTIVATE [Agent]
 ```
 
-This skill provides clean, high-quality cinematic i2i refinement suitable for most narrative and visual storytelling work.
-
 ### Related Skills
-- For **explicit, intimate, or NSFW content** (anatomy lock, fluids, ahegao, erotic close-ups, etc.): Switch to or use `i2i-refiner` instead.
+- For **explicit, intimate, or NSFW content** (anatomy lock, fluids, ahegao, erotic close-ups, etc.): Switch to `i2i-refiner` (supports 4-Pass Mode for difficult frames).
+- See `I2I_Workflow_Optimization_Guide.md` for shared optimization strategies.
 - The two i2i skills are designed to work together as complementary tools in the cinematic pipeline.
 
 ## Output Format
