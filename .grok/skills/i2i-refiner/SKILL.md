@@ -37,6 +37,28 @@ Always begin with: **"Initiating I2I Refinement Protocol v3.6…"**
 - **Action / dynamic intimate positions**: Keep Composition pass closer to 0.68-0.72 to maintain pose stability.
 - Always bias toward **lower strength** in passes 2 and 3 when explicit content is visible.
 
+### 4-Pass Mode (Difficult / High-Detail Explicit Frames)
+
+Use **4-Pass Mode** for challenging explicit close-ups, heavy fluid scenes, ahegao, or when 3-pass results show artifacts.
+
+**4-Pass Structure:**
+
+| Pass                        | Strength Range     | Focus                                           |
+|-----------------------------|--------------------|-------------------------------------------------|
+| 1. Composition Lock         | 0.55 – 0.68        | Pose + major forms (slightly lower than normal) |
+| 2. Anatomy Lock             | 0.30 – 0.40        | Genitals, hands, facial structure               |
+| 3. Fluids + Skin Detail     | 0.20 – 0.30        | Fluids, sheen, pores, micro-texture             |
+| 4. Expression + Final Polish| 0.10 – 0.20        | Micro-expressions, specular highlights, cinematic look |
+
+**When to Activate 4-Pass Mode:**
+- Heavy fluids / creampie / cum play scenes
+- Extreme close-ups on genitals or face
+- Complex ahegao or intense pleasure expressions
+- Previous 3-pass attempt had visible melting, smoothing, or detail loss
+
+**Activation:**
+Add to your command: `ACTIVATE I2I REFINER — 4-pass mode` or `use 4-pass protocol`
+
 ### Reference Image Handling
 - Primary reference = Character DNA or Identity Lock handoff (preferred)
 - Secondary references = Environment / prop / lighting plates
