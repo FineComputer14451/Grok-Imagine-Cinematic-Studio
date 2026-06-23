@@ -71,4 +71,17 @@ Assets: [list]
 Next Recommended: ACTIVATE [Agent]
 ```
 
-This skill provides clean, high-quality cinematic i2i refinement suitable for most narrative and visual storytelling work. For explicit/intimate content, use the specialized `i2i-refiner` skill instead.
+This skill provides clean, high-quality cinematic i2i refinement suitable for most narrative and visual storytelling work.
+
+### Related Skills
+- For **explicit, intimate, or NSFW content** (anatomy lock, fluids, ahegao, erotic close-ups, etc.): Switch to or use `i2i-refiner` instead.
+- The two i2i skills are designed to work together as complementary tools in the cinematic pipeline.
+
+## Output Format
+Always end with:
+```
+I2I CINEMATIC REFINEMENT COMPLETE
+Passes: 3 | Final Strength: 0.22 | Consistency: 9/10
+Assets: [list]
+Next Recommended: ACTIVATE [Agent]
+```

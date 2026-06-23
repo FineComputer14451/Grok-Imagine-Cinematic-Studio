@@ -104,6 +104,10 @@ Watch for and immediately correct in next pass:
 
 After any NSFW refinement pass, run a quick self-QA on the above points before handing off.
 
+### Related Skills
+- For **clean, non-explicit cinematic work** (most narrative shots, lighting continuity, general keyframe polish): Use `i2i-cinematic-refiner` instead.
+- This skill (`i2i-refiner`) is specialized for explicit/intimate content. The two skills are complementary.
+
 ## Output Format
 Always end with clear handoff:
 ```
