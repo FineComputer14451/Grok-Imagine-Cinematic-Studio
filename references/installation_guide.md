@@ -3,6 +3,12 @@
 ## Recommended: One-Command Installation
 
 ```bash
+bash <(curl -sL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/main/scripts/cinematic_studio.sh) install
+```
+
+Legacy alias (same behavior):
+
+```bash
 bash <(curl -sL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/main/scripts/install_cinematic_studio.sh)
 ```
 
@@ -13,10 +19,17 @@ After running:
 ## Updating
 
 ```bash
-bash <(curl -sL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/main/scripts/update_cinematic_studio.sh)
+bash <(curl -sL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/main/scripts/cinematic_studio.sh) update
 ```
 
 ## Verification
+
+```bash
+./scripts/cinematic_studio.sh verify          # core skills (7)
+./scripts/cinematic_studio.sh verify --all    # full manifest (30; install syncs any bundle gaps from GitHub)
+```
+
+Legacy wrapper:
 
 ```bash
 ./scripts/verify_cinematic_studio.sh

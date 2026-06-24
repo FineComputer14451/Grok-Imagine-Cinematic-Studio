@@ -1,0 +1,33 @@
+# Grok Imagine Cinematic Studio v3.6.4 — skill manifest
+# One skill per line. Append " # core" for skills required by verify.
+
+grok-imagine-cinematic-studio # core
+ai-video-upscaler # core
+cinematic-sequence-extender # core
+studio-director # core
+quality-assurance-guardian # core
+identity-lock-specialist # core
+workflow-quota-optimizer # core
+character-dna-extractor
+continuity-consistency-guardian
+director-of-photography
+director-of-photography-v3-3
+erosforge-nsfw-director
+foley-sound-design-specialist
+i2i-cinematic-refiner
+i2i-refiner
+imagine-prompt-master
+key-art-poster-designer
+localization-subtitle-specialist
+mega-production-architect
+narrative-arc-pacing-strategist
+nsfw-quota-orchestrator
+nsfw-sequence-extender
+performance-emotion-director
+post-production-color-grading-supervisor
+production-designer-set-decorator
+sequence-director
+sonic-architect-native-audio-virtuoso
+stunt-action-choreographer
+trailer-teaser-director
+vfx-sfx-supervisor

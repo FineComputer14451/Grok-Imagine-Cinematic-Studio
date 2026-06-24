@@ -17,6 +17,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!scripts/lib/
 lib64/
 parts/
 sdist/
@@ -30,6 +31,7 @@ MANIFEST
 
 # PyInstaller
 *.manifest
+!scripts/required_skills.manifest
 *.spec
 
 # Installer logs
