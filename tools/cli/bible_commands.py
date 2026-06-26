@@ -76,7 +76,10 @@ def register(app: typer.Typer) -> None:
         table.add_row("Credits", f"{estimate['credits_low']} – {estimate['credits_high']}")
         table.add_row("Est. USD", f"${estimate['usd_low']} – ${estimate['usd_high']}")
         table.add_row("Est. Tokens", f"~{estimate['estimated_tokens']:,}")
-        table.add_row("Risk", f"[{risk['risk_level']}]{risk['risk_level']}[/]")
+        risk_colors = {"low": "green", "medium": "yellow", "high": "orange1", "critical": "red"}
+        risk_level = risk["risk_level"]
+        risk_color = risk_colors.get(risk_level, "white")
+        table.add_row("Risk", f"[{risk_color}]{risk_level}[/{risk_color}]")
         console.print(table)
         console.print("[dim]Use 'quota optimize' for savings recommendations[/dim]")
 

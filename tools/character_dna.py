@@ -17,10 +17,10 @@ from typing import Any
 
 from models import build_video_pipeline_spec
 from project_state import load_project_state, save_project_state
+from studio_paths import CHARACTERS_DIR
 
 SCHEMA_VERSION = "1.0"
 STUDIO_AGENT_VERSION = "v3.6"
-CHARACTERS_DIR = Path("characters")
 
 PROMPT_MODES = ("compact", "cinematic", "close_up", "sequence_starter", "video_1.5")
 

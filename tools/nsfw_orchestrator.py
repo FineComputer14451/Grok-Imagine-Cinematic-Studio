@@ -23,9 +23,9 @@ from quota_optimizer import (
     load_pricing_config,
     record_spend,
 )
+from studio_paths import NSFW_BATCHES_DIR as BATCHES_DIR
 
 SCHEMA_VERSION = "1.0"
-BATCHES_DIR = Path("nsfw_batches")
 
 SHOT_TIERS: dict[str, dict[str, Any]] = {
     "hero": {

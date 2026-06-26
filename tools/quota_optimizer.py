@@ -27,9 +27,9 @@ from models import (
 )
 
 from project_state import default_quota_state, load_project_state, save_project_state
+from studio_paths import QUOTA_CONFIG_FILE
 
 SCHEMA_VERSION = "1.1"
-QUOTA_CONFIG_FILE = Path(".quota_config.json")
 
 # xAI Imagine pricing (June 2026) — configurable via .quota_config.json
 # Credits derived from USD at usd_per_credit ($0.01/credit).

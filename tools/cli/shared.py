@@ -6,8 +6,9 @@ from pathlib import Path
 
 from rich.console import Console
 
+from studio_paths import AGENTS_DIR, STUDIO_ROOT
+
 STUDIO_VERSION = "3.6.5"
-AGENTS_DIR = Path("references/agents")
 console = Console()
 
 DIRECTOR_SIGNATURES = {

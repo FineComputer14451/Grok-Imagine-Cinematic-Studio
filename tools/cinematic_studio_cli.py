@@ -4,6 +4,7 @@ Grok Imagine Cinematic Studio CLI v3.6.5 — Enhanced Edition
 Professional multi-agent cinematic production toolkit with Role Card integration
 """
 
+import os
 import sys
 import typer
 import json
@@ -11,6 +12,9 @@ from pathlib import Path
 from datetime import datetime
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from studio_paths import STUDIO_ROOT  # noqa: E402
+
+os.chdir(STUDIO_ROOT)
 from character_dna import (  # noqa: E402
     PROMPT_MODES,
     build_handoff_packet,
@@ -54,7 +58,7 @@ from quota_optimizer import (  # noqa: E402
 )
 from cli.bible_commands import register as register_bible_commands  # noqa: E402
 from cli.models_commands import models_app  # noqa: E402
-from cli.shared import STUDIO_VERSION, console  # noqa: E402
+from cli.shared import AGENTS_DIR, STUDIO_VERSION, console  # noqa: E402
 from cli.studio_commands import register as register_studio_commands  # noqa: E402
 from nsfw_orchestrator import (  # noqa: E402
     batch_to_markdown,
@@ -1105,7 +1109,8 @@ def report(
     pdf.ln(10)
 
     pdf.set_font("Helvetica", size=12)
-    pdf.cell(0, 8, f"Project: {project.get('title', 'Untitled')}", ln=True)
+    project_title = project.get("project_title") or project.get("title", "Untitled")
+    pdf.cell(0, 8, f"Project: {project_title}", ln=True)
     pdf.cell(0, 8, f"Genre: {project.get('genre', 'N/A')}", ln=True)
     pdf.cell(0, 8, f"Date: {datetime.now().strftime('%Y-%m-%d')}", ln=True)
     pdf.ln(5)
@@ -1130,7 +1135,7 @@ def validate():
 
     core_files = ["MASTER_PROMPT_v3.6.md", "README.md", "Quick_Start_Guide.md"]
     for f in core_files:
-        if Path(f).exists():
+        if (STUDIO_ROOT / f).exists():
             console.print(f"[green]✅ {f} present[/green]")
         else:
             console.print(f"[yellow]⚠️  {f} missing[/yellow]")

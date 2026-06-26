@@ -18,10 +18,10 @@ from models import (
     build_video_pipeline_spec,
     model_stack_summary,
 )
+from studio_paths import PROJECT_STATE_FILE
 
 SCHEMA_VERSION = "1.0"
 QUOTA_SCHEMA_VERSION = "1.1"
-PROJECT_STATE_FILE = Path(".cinematic_project_state.json")
 
 
 def _now_iso() -> str:
@@ -54,16 +54,32 @@ def default_project_state() -> dict[str, Any]:
     }
 
 
+def _merge_dict_field(
+    merged: dict[str, Any],
+    key: str,
+    default_val: Any,
+) -> None:
+    """Repair missing, null, or wrongly-typed dict fields from legacy state files."""
+    if isinstance(merged.get(key), dict):
+        return
+    merged[key] = dict(default_val) if isinstance(default_val, dict) else {}
+
+
 def _merge_defaults(state: dict[str, Any], defaults: dict[str, Any]) -> dict[str, Any]:
-    """Fill missing top-level keys when loading legacy state files."""
+    """Fill missing top-level keys and normalize legacy null/wrong types."""
     merged = dict(state)
     for key, default_val in defaults.items():
         if key not in merged:
             merged[key] = default_val
-    if not merged.get("quota"):
+    for key in ("characters", "identity_lock", "locked_variables"):
+        _merge_dict_field(merged, key, defaults.get(key, {}))
+    if not isinstance(merged.get("quota"), dict):
         merged["quota"] = default_quota_state()
-    if merged.get("identity_lock") is None:
-        merged["identity_lock"] = {}
+    else:
+        quota_defaults = default_quota_state()
+        for key, default_val in quota_defaults.items():
+            if key not in merged["quota"]:
+                merged["quota"][key] = default_val
     return merged
 
 

@@ -20,9 +20,9 @@ from models import (
     build_video_pipeline_spec,
     model_stack_summary,
 )
+from studio_paths import SEQUENCES_DIR
 
 SCHEMA_VERSION = "1.0"
-SEQUENCES_DIR = Path("sequences")
 
 DEFAULT_PIPELINE = {
     "model": DEFAULT_IMAGINE_VIDEO_MODEL,
