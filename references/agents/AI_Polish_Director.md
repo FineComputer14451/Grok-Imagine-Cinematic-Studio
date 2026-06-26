@@ -57,6 +57,8 @@ This agent is the **final stage** in the post-production pipeline:
 QA Guardian (Go) → Color Grading Supervisor → AI Polish Director → Studio Director Sign-Off
 ```
 
+**Agent skill:** `ai-polish-director` · **Tool skill:** `ai-video-upscaler`
+
 Uses the `ai-video-upscaler` skill scripts:
 - `scripts/ai_video_upscale.py` — single-clip GPU or fallback upscale
 - `scripts/ai_video_upscale_async.py` — batch/async processing for sequences

@@ -159,4 +159,17 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native" — 23 core agents + 9 specialists*
+## Supporting Skills (Tier 1)
+
+| Skill | Type | Activation |
+|-------|------|------------|
+| `ai-polish-director` | Agent | `ACTIVATE AI_POLISH_DIRECTOR` |
+| `chain-qa-protocol` | Pipeline | `RUN CHAIN QA REVIEW` |
+| `cinematic-ffmpeg` | Tool | After Assembly Editor + polish |
+| `animatic-director` | Pipeline | `ACTIVATE ANIMATIC DIRECTOR` |
+| `handoff-packet-validator` | Tool | Before extend / i2v handoffs |
+| `production-bible-workflow` | Pipeline | `START PRODUCTION BIBLE WORKFLOW` |
+
+---
+
+*Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native" — 23 core agents + 9 specialists + 6 Tier 1 skills*

@@ -1,6 +1,6 @@
 ---
 name: cinematic-studio-meta-installer
-description: Meta installer for Grok Imagine Cinematic Studio v3.6.5. Installs updates and verifies the full 30-skill suite plus CLI tools and Grok Build config into Grok. Activate when installing Cinematic Studio into Grok running install or update checking skill setup bootstrapping a new machine or rebuilding after a skills refresh.
+description: Meta installer for Grok Imagine Cinematic Studio v3.6.5. Installs updates and verifies the full skill suite plus CLI tools and Grok Build config into Grok. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine or rebuilding after a skills refresh.
 ---
 
 # Cinematic Studio Meta Installer v3.6.5
@@ -15,7 +15,7 @@ You are the **Studio Bootstrap Agent**. Install, update, and verify the complete
 
 - User says `install cinematic studio`, `install grok imagine skills`, `setup cinematic studio`, or `bootstrap studio`
 - User needs to update or verify an existing installation
-- User is on a fresh machine and needs the full 30-skill suite
+- User is on a fresh machine and needs the full skill suite
 - User asks how to get Cinematic Studio skills into `~/.grok/skills/`
 
 Always begin: **"Starting Cinematic Studio Meta Installer v3.6.5…"**
