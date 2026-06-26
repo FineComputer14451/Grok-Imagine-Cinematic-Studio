@@ -1,7 +1,7 @@
 {
-  "plugins": [
-    {
-      "name": "grok-imagine-cinematic-studio",
+  "version": 1,
+  "plugins": {
+    "grok-imagine-cinematic-studio": {
       "components": {
         "skills": [
           {
@@ -135,5 +135,5 @@
         ]
       }
     }
-  ]
+  }
 }

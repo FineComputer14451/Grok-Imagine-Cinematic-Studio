@@ -82,17 +82,16 @@ def write_plugin_manifest(manifest: dict) -> None:
 def build_index() -> dict:
     marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
     plugins = marketplace.get("plugins", [])
-    records = []
+    records: dict[str, dict] = {}
     skills = discover_skills()
     for entry in plugins:
         if not isinstance(entry, dict):
             continue
-        record = {
-            "name": entry.get("name"),
-            "components": {"skills": skills},
-        }
-        records.append(record)
-    return {"plugins": records}
+        plugin_name = entry.get("name")
+        if not isinstance(plugin_name, str) or not plugin_name:
+            continue
+        records[plugin_name] = {"components": {"skills": skills}}
+    return {"version": 1, "plugins": records}
 
 
 def main() -> int:
