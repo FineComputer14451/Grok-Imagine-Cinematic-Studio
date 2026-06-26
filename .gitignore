@@ -178,6 +178,14 @@ sequences/*/
 nsfw_batches/*/
 !nsfw_batches/.gitkeep
 
+# SFW batch plans (keep sfw_batches/.gitkeep)
+sfw_batches/*/
+!sfw_batches/.gitkeep
+
+# Imagine job artifacts and reference uploads
+artifacts/jobs/
+artifacts/references/
+
 # Generated production files (optional - comment out if you want to commit examples)
 # production_bible.json
 # *.pdf

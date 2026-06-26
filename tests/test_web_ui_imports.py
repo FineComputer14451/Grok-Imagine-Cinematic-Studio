@@ -28,9 +28,9 @@ def test_session_helpers() -> None:
 
 
 def test_page_modules_import() -> None:
-    from pages import dashboard, dna, nsfw, production, quota, sequences, settings, tools
+    from pages import dashboard, dna, imagine, nsfw, production, quota, sequences, settings, tools
 
-    for mod in (dashboard, production, dna, sequences, quota, settings, tools, nsfw):
+    for mod in (dashboard, production, dna, sequences, imagine, quota, settings, tools, nsfw):
         assert callable(mod.render)
 
 
@@ -51,6 +51,14 @@ def test_nsfw_runtime_imports() -> None:
     assert callable(nr.list_batches)
 
 
+def test_imagine_runtime_imports() -> None:
+    from lib import imagine_runtime as ir
+
+    assert callable(ir.plan_and_save_sfw_batch)
+    assert callable(ir.add_reference_plate)
+    assert callable(ir.dry_run_active)
+
+
 def test_dashboard_uses_shared_builder() -> None:
     from lib import runtime as rt
 
@@ -67,5 +75,6 @@ if __name__ == "__main__":
     test_page_modules_import()
     test_bootstrap_reexports()
     test_nsfw_runtime_imports()
+    test_imagine_runtime_imports()
     test_dashboard_uses_shared_builder()
     print("All smoke tests passed")

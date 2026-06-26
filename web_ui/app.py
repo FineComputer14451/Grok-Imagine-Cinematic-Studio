@@ -10,7 +10,7 @@ import streamlit as st
 from lib import runtime as rt
 from lib import session as sess
 from lib.styles import apply_styles
-from pages import dashboard, dna, nsfw, production, quota, sequences, settings, tools
+from pages import dashboard, dna, imagine, nsfw, production, quota, sequences, settings, tools
 
 sess.init_session_defaults()
 
@@ -32,6 +32,7 @@ pages = [
     st.Page(production.render, title="Production", icon="📝", url_path="production"),
     st.Page(dna.render, title="DNA & Memory", icon="🧬", url_path="dna"),
     st.Page(sequences.render, title="Sequences", icon="🎬", url_path="sequences"),
+    st.Page(imagine.render, title="Imagine", icon="✨", url_path="imagine"),
     st.Page(quota.render, title="Quota", icon="💰", url_path="quota"),
     st.Page(tools.render, title="Tools", icon="🛠️", url_path="tools"),
     st.Page(settings.render, title="Settings", icon="⚙️", url_path="settings"),

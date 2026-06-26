@@ -14,8 +14,10 @@ from rich.text import Text
 
 from character_dna import list_characters
 from models import model_stack_summary, verify_model_compatibility
+from imagine_jobs import job_summary, list_jobs
 from nsfw_orchestrator import list_batches
 from project_state import load_project_state
+from sfw_orchestrator import list_batches as list_sfw_batches
 from quota_optimizer import assess_budget_risk, quota_dashboard
 from sequence_chain import list_sequences
 from studio_health import count_skills
@@ -53,6 +55,9 @@ def build_studio_dashboard() -> dict[str, Any]:
     sequences = list_sequences()
     characters = list_characters()
     batches = list_batches()
+    sfw_batches = list_sfw_batches()
+    imagine_summary = job_summary()
+    recent_jobs = list_jobs(limit=8)
     role_cards = list_role_card_files()
     identity_locked = sum(1 for c in characters if c.get("status") == "locked")
 
@@ -89,10 +94,16 @@ def build_studio_dashboard() -> dict[str, Any]:
             "characters": len(characters),
             "identity_locked": identity_locked,
             "nsfw_batches": len(batches),
+            "sfw_batches": len(sfw_batches),
+            "imagine_jobs": imagine_summary["total"],
+            "reference_assets": imagine_summary["reference_assets"],
         },
+        "imagine_jobs": imagine_summary,
         "sequences": sequences[:8],
         "characters": characters[:8],
         "nsfw_batches": batches[:5],
+        "sfw_batches": sfw_batches[:5],
+        "recent_jobs": recent_jobs,
     }
 
 
@@ -171,6 +182,9 @@ def _production_summary(snapshot: dict[str, Any]) -> Table:
     table.add_row("DNA Profiles", str(prod["characters"]))
     table.add_row("Identity Locked", str(prod["identity_locked"]))
     table.add_row("NSFW Batches", str(prod["nsfw_batches"]))
+    table.add_row("SFW Batches", str(prod.get("sfw_batches", 0)))
+    table.add_row("Imagine Jobs", str(prod.get("imagine_jobs", 0)))
+    table.add_row("Reference Assets", str(prod.get("reference_assets", 0)))
     return table
 
 
@@ -240,14 +254,33 @@ def _nsfw_table(snapshot: dict[str, Any]) -> Table | None:
     return table
 
 
+def _jobs_table(snapshot: dict[str, Any]) -> Table | None:
+    rows = snapshot.get("recent_jobs", [])
+    if not rows:
+        return None
+    table = Table(title="Imagine Jobs", box=box.SIMPLE, expand=True)
+    table.add_column("ID", style="cyan")
+    table.add_column("Type")
+    table.add_column("Status")
+    table.add_column("Sequence", style="dim")
+    for j in rows:
+        table.add_row(
+            j.get("job_id", "?")[:20],
+            j.get("job_type", ""),
+            j.get("status", ""),
+            j.get("sequence_slug") or "—",
+        )
+    return table
+
+
 def _quick_actions_panel() -> Panel:
     actions = (
         "[bold]Quick commands[/bold]\n"
         "  dashboard          — refresh this view\n"
+        "  imagine list       — generation job queue\n"
+        "  sfw plan           — SFW batch planner\n"
+        "  sequence run       — submit clip to Imagine\n"
         "  quota dashboard    — quota detail\n"
-        "  sequence list      — all sequences\n"
-        "  dna list           — character DNA\n"
-        "  quota estimate -d 60 — session cost\n"
         "  validate           — workspace health"
     )
     return Panel(actions, border_style="dim", box=box.SIMPLE)
@@ -270,6 +303,9 @@ def dashboard_renderables(snapshot: dict[str, Any], *, compact: bool = False) ->
         nsfw = _nsfw_table(snapshot)
         if nsfw:
             parts.append(nsfw)
+        jobs = _jobs_table(snapshot)
+        if jobs:
+            parts.append(jobs)
         if snapshot["quota"].get("recent_history"):
             hist = Table(title="📜 Recent Spend", box=box.SIMPLE, show_header=False)
             hist.add_column("When", style="dim")

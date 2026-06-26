@@ -16,8 +16,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from cli.bible_commands import register as register_bible_commands  # noqa: E402
 from cli.dna_commands import register as register_dna_commands  # noqa: E402
 from cli.models_commands import models_app  # noqa: E402
+from cli.imagine_commands import register as register_imagine_commands  # noqa: E402
 from cli.nsfw_commands import register as register_nsfw_commands  # noqa: E402
 from cli.quota_commands import register as register_quota_commands  # noqa: E402
+from cli.sfw_commands import register as register_sfw_commands  # noqa: E402
 from cli.report_commands import register as register_report_commands  # noqa: E402
 from cli.sequence_commands import register as register_sequence_commands  # noqa: E402
 from cli.studio_commands import register as register_studio_commands  # noqa: E402
@@ -34,12 +36,16 @@ seq_app = typer.Typer(help="Long-form 1.5 extend/stitch sequencing, handoffs, an
 quota_app = typer.Typer(help="Per-second 1.5 quota estimation, budgeting, and optimization")
 nsfw_app = typer.Typer(help="Quota-aware NSFW batch planning, sequence extension, and daily reports")
 extend_app = typer.Typer(help="Sensual sequence extension 30-120s+ from reference frame or short clip")
+sfw_app = typer.Typer(help="SFW batch planning with hero-first tiers and Reference Curator routing")
+imagine_app = typer.Typer(help="Imagine API jobs — submit, poll, and track generation queue")
 
 app.add_typer(dna_app, name="dna")
 app.add_typer(seq_app, name="sequence")
 app.add_typer(quota_app, name="quota")
 app.add_typer(models_app, name="models")
 app.add_typer(nsfw_app, name="nsfw")
+app.add_typer(sfw_app, name="sfw")
+app.add_typer(imagine_app, name="imagine")
 nsfw_app.add_typer(extend_app, name="extend")
 
 register_studio_commands(app)
@@ -48,6 +54,8 @@ register_dna_commands(dna_app)
 register_sequence_commands(seq_app)
 register_quota_commands(quota_app)
 register_nsfw_commands(nsfw_app, extend_app)
+register_sfw_commands(sfw_app)
+register_imagine_commands(imagine_app)
 register_report_commands(app)
 
 if __name__ == "__main__":

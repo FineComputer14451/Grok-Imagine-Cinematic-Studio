@@ -191,12 +191,20 @@
             "description": "Character DNA workflow — extract, save, lock identity, and inject prompt blocks for Grok Imagine consistency."
           },
           {
+            "name": "imagine",
+            "description": "Submit and track Imagine API generation jobs, reference plates, and sequence clip runs with chain QA gates."
+          },
+          {
             "name": "nsfw",
             "description": "Activate ErosForge NSFW pipeline with quota-aware batch planning, model routing, chain QA, and sensual sequence extensi…"
           },
           {
             "name": "quota",
             "description": "Estimate production credits, assess budget risk, and get quota optimization recommendations for Imagine Video 1.5."
+          },
+          {
+            "name": "sfw",
+            "description": "Plan SFW multi-shot batches with hero-first tiers, Reference Curator model routing, and quota-aware scheduling."
           },
           {
             "name": "validate",

@@ -12,6 +12,7 @@ from rich.panel import Panel
 from rich.table import Table
 
 from quota_optimizer import estimate_sequence_cost
+from imagine_client import is_dry_run
 from sequence_chain import (
     CHAIN_QA_CHECKS,
     add_clip_to_sequence,
@@ -25,6 +26,7 @@ from sequence_chain import (
     sequence_to_markdown,
     update_sequence_health,
 )
+from sequence_runner import run_sequence_clip
 
 from cli.helpers import assess_risk_from_state, require_clip, require_sequence, require_sequence_bundle
 from cli.shared import console
@@ -201,6 +203,58 @@ def register(app: typer.Typer) -> None:
             title=f"💰 {seq['sequence_name']}",
             border_style="green",
         ))
+
+    @app.command("run")
+    def seq_run(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c", help="Clip ID to generate"),
+        dry_run: bool = typer.Option(False, "--dry-run", help="Force mock generation (no API key)"),
+        no_poll: bool = typer.Option(False, "--no-poll", help="Submit only; do not poll video job"),
+    ):
+        """Submit clip to Imagine API, poll job, run chain QA, update sequence health."""
+        seq = require_sequence(name)
+        require_clip(seq, clip)
+
+        use_dry = dry_run or is_dry_run()
+        if use_dry:
+            console.print("[dim]Dry-run mode — mock URLs and auto chain QA[/dim]")
+
+        try:
+            result = run_sequence_clip(
+                seq,
+                clip,
+                dry_run=use_dry,
+                poll=not no_poll,
+            )
+        except RuntimeError as exc:
+            console.print(f"[red]Blocked:[/red] {exc}")
+            raise typer.Exit(1) from exc
+        except Exception as exc:
+            console.print(f"[red]Run failed:[/red] {exc}")
+            raise typer.Exit(1) from exc
+
+        decision_color = {
+            "go": "green",
+            "conditional_go": "yellow",
+            "no_go": "red",
+            "awaiting_scores": "dim",
+            "pending": "dim",
+        }.get(result.get("chain_qa", {}).get("decision", ""), "white")
+
+        console.print(Panel(
+            f"Job: {result['job_id']}\n"
+            f"Clip: {result['clip_id']} → {result['status']}\n"
+            f"URL: {result.get('result_url') or '—'}\n"
+            f"Chain QA: [{decision_color}]{result.get('chain_qa', {}).get('decision', 'pending')}[/{decision_color}] "
+            f"(score: {result.get('chain_qa', {}).get('weighted_score', 'N/A')})\n"
+            f"Sequence health: {result.get('sequence_health')} | Status: {result.get('chain_qa_status')}",
+            title=f"Sequence Run — {seq['sequence_name']}",
+            border_style="green" if result["status"] == "approved" else "yellow",
+        ))
+        if result.get("chain_qa", {}).get("decision") == "no_go":
+            console.print("[red]Extend blocked — resolve chain QA failures before next clip[/red]")
+            raise typer.Exit(2)
+
 
     @app.command("health")
     def seq_health(name: str = typer.Argument(..., help="Sequence name or slug")):
