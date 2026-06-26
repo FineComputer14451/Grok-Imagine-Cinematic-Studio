@@ -1,1 +1,0 @@
-Full updated Role Card from references/agents/Identity_Lock_Specialist_v3.5.md

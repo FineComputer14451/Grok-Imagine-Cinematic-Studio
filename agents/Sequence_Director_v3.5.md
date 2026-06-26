@@ -1,1 +1,0 @@
-Full updated Role Card from references/agents/Sequence_Director_v3.5.md

@@ -1,1 +1,0 @@
-Updated Role Card content from references/agents/Studio_Director_v3.5.md (full content to be inserted)

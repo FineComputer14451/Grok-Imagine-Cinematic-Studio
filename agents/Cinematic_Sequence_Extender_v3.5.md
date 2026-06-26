@@ -1,1 +1,0 @@
-Full updated Role Card from references/agents/Cinematic_Sequence_Extender_v3.5.md

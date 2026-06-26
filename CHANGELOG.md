@@ -7,6 +7,14 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Added
 - **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, and `scripts/generate_plugin_index.py` for `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio`
 
+### Removed
+- **Deprecated `agents/`** — legacy v3.4/v3.5 stubs; canonical Role Cards remain in `references/agents/`
+- **Stale skill mirrors** — duplicate Role Cards and v3.5 prompts under `grok-imagine-cinematic-studio/references/`
+- **Duplicate `references/agents/MASTER_PROMPT_v3.6.md`** — root `MASTER_PROMPT_v3.6.md` is canonical
+
+### Changed
+- Moved `REPOSITORY_STRUCTURE.md` and `Example_Production_Bible_Example.md` into `docs/archive/` and `examples/`
+
 ---
 
 ## [3.6.5] - 2026-06-24
