@@ -18,8 +18,8 @@ from typing import Any
 from models import (
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
-    IMAGINE_IMAGE_MODELS,
     USD_PER_CREDIT,
+    imagine_image_pricing_table,
     imagine_video_pricing_table,
     image_usd_per_image,
     resolve_image_model,
@@ -37,10 +37,7 @@ SCHEMA_VERSION = "1.1"
 # Credits derived from USD at usd_per_credit ($0.01/credit).
 DEFAULT_PRICING = {
     "imagine_video": imagine_video_pricing_table(),
-    "imagine_image": {
-        slug: {"usd_per_image": info["usd_per_image"]}
-        for slug, info in IMAGINE_IMAGE_MODELS.items()
-    },
+    "imagine_image": imagine_image_pricing_table(),
     "default_video_model": DEFAULT_IMAGINE_VIDEO_MODEL,
     "default_image_model": DEFAULT_IMAGINE_IMAGE_MODEL,
     "fast_mode_multiplier": 0.55,

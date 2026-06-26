@@ -1,0 +1,51 @@
+"""Tests for Imagine image model registry and alias resolution."""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
+
+from models import (  # noqa: E402
+    DEFAULT_IMAGINE_IMAGE_MODEL,
+    IMAGINE_IMAGE_MODELS,
+    imagine_image_pricing_table,
+    resolve_image_model,
+    verify_model_compatibility,
+)
+
+
+def test_default_image_model() -> None:
+    assert DEFAULT_IMAGINE_IMAGE_MODEL == "grok-imagine-image"
+
+
+def test_xai_api_aliases_resolve() -> None:
+    assert resolve_image_model("grok-imagine-image-2026-03-02") == "grok-imagine-image"
+    assert resolve_image_model("image") == "grok-imagine-image"
+    assert resolve_image_model("grok-imagine-image-pro") == "grok-imagine-image-quality"
+    assert resolve_image_model("grok-imagine-image-quality-latest") == "grok-imagine-image-quality"
+    assert resolve_image_model("grok-imagine-image-quality-20260403") == "grok-imagine-image-quality"
+    assert resolve_image_model("pro") == "grok-imagine-image-quality"
+    assert resolve_image_model("quality") == "grok-imagine-image-quality"
+
+
+def test_pricing_table_matches_registry() -> None:
+    table = imagine_image_pricing_table()
+    assert set(table) == set(IMAGINE_IMAGE_MODELS)
+    for slug, rates in table.items():
+        assert rates["usd_per_image"] == IMAGINE_IMAGE_MODELS[slug]["usd_per_image"]
+
+
+def test_model_compatibility() -> None:
+    result = verify_model_compatibility()
+    assert result["compatible"], result["issues"]
+
+
+if __name__ == "__main__":
+    test_default_image_model()
+    test_xai_api_aliases_resolve()
+    test_pricing_table_matches_registry()
+    test_model_compatibility()
+    print("All image model tests passed")

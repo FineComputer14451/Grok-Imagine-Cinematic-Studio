@@ -56,10 +56,18 @@ fork_secondary_model = "grok-build"
 
 ## Grok Imagine Image
 
-| Slug | Cost |
-|------|------|
-| `grok-imagine-image` | $0.02 / image |
-| `grok-imagine-image-quality` | $0.05 / image |
+| Slug | Cost | Modalities |
+|------|------|------------|
+| `grok-imagine-image` | $0.02 / image | text, image → image |
+| `grok-imagine-image-quality` | $0.05 / image | text, image → image |
+
+**Standard aliases (xAI API):** `grok-imagine-image-2026-03-02`  
+**Standard aliases (studio shorthand):** `imagine-image`, `image`
+
+**Quality aliases (xAI API):** `grok-imagine-image-quality-20260403`, `grok-imagine-image-quality-latest`, `grok-imagine-image-pro`  
+**Quality aliases (studio shorthand):** `imagine-image-quality`, `image-quality`, `quality`, `pro`
+
+**Regions:** `us-east-1`, `eu-west-1`, `us-west-2` (both models)
 
 ---
 
@@ -68,7 +76,8 @@ fork_secondary_model = "grok-build"
 `tools/models.py` exposes:
 - `build_video_pipeline_spec(model)` — locked `VIDEO_PIPELINE_SPEC` string
 - `model_stack_summary(chat_model, video_model)` — bible/CLI model stack dict
-- `resolve_chat_model()` / `resolve_video_model()` — alias normalization
+- `resolve_chat_model()` / `resolve_video_model()` / `resolve_image_model()` — alias normalization
+- `imagine_video_pricing_table()` / `imagine_image_pricing_table()` — quota optimizer sync
 
 ## CLI
 

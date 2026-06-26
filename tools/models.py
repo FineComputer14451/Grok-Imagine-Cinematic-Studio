@@ -95,14 +95,32 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
     "grok-imagine-image": {
         "label": "Imagine Image",
         "usd_per_image": 0.02,
+        "modalities": "text, image → image",
+        "version_date": "2026-03-02",
+        "regions": ["us-east-1", "eu-west-1", "us-west-2"],
         "default": True,
-        "aliases": ["imagine-image", "image"],
+        "aliases": [
+            "grok-imagine-image-2026-03-02",
+            "imagine-image",
+            "image",
+        ],
     },
     "grok-imagine-image-quality": {
         "label": "Imagine Image Quality",
         "usd_per_image": 0.05,
+        "modalities": "text, image → image",
+        "version_date": "2026-04-03",
+        "regions": ["us-east-1", "eu-west-1", "us-west-2"],
         "default": False,
-        "aliases": ["imagine-image-quality", "image-quality", "quality"],
+        "aliases": [
+            "grok-imagine-image-quality-20260403",
+            "grok-imagine-image-quality-latest",
+            "grok-imagine-image-pro",
+            "imagine-image-quality",
+            "image-quality",
+            "quality",
+            "pro",
+        ],
     },
 }
 
@@ -233,6 +251,12 @@ def verify_model_compatibility() -> dict[str, Any]:
         issues.append("Alias grok-imagine-video-1.5-preview must resolve to grok-imagine-video-1.5")
     if resolve_video_model("grok-imagine-video-1.5-2026-05-30") != "grok-imagine-video-1.5":
         issues.append("Alias grok-imagine-video-1.5-2026-05-30 must resolve to grok-imagine-video-1.5")
+    if resolve_image_model("grok-imagine-image-2026-03-02") != "grok-imagine-image":
+        issues.append("Alias grok-imagine-image-2026-03-02 must resolve to grok-imagine-image")
+    if resolve_image_model("grok-imagine-image-pro") != "grok-imagine-image-quality":
+        issues.append("Alias grok-imagine-image-pro must resolve to grok-imagine-image-quality")
+    if resolve_image_model("grok-imagine-image-quality-latest") != "grok-imagine-image-quality":
+        issues.append("Alias grok-imagine-image-quality-latest must resolve to grok-imagine-image-quality")
 
     spec = build_video_pipeline_spec()
     if "grok-imagine-video-1.5" not in spec:
@@ -259,6 +283,19 @@ def imagine_video_pricing_table() -> dict[str, dict[str, float]]:
 def list_video_model_aliases() -> dict[str, list[str]]:
     """Canonical slug → all accepted aliases (studio + xAI API)."""
     return {slug: list(info.get("aliases", [])) for slug, info in IMAGINE_VIDEO_MODELS.items()}
+
+
+def imagine_image_pricing_table() -> dict[str, dict[str, float]]:
+    """USD/image rates keyed by canonical image slug (for quota optimizer sync)."""
+    return {
+        slug: {"usd_per_image": info["usd_per_image"]}
+        for slug, info in IMAGINE_IMAGE_MODELS.items()
+    }
+
+
+def list_image_model_aliases() -> dict[str, list[str]]:
+    """Canonical slug → all accepted aliases (studio + xAI API)."""
+    return {slug: list(info.get("aliases", [])) for slug, info in IMAGINE_IMAGE_MODELS.items()}
 
 
 def list_all_models() -> dict[str, Any]:
