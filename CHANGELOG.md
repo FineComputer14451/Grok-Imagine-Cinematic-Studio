@@ -2,6 +2,13 @@
 
 All notable changes to Grok Imagine Cinematic Studio will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, and `scripts/generate_plugin_index.py` for `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio`
+
+---
+
 ## [3.6.5] - 2026-06-24
 
 ### Added

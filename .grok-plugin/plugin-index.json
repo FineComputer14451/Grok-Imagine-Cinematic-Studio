@@ -1,0 +1,139 @@
+{
+  "plugins": [
+    {
+      "name": "grok-imagine-cinematic-studio",
+      "components": {
+        "skills": [
+          {
+            "name": "ai-video-upscaler",
+            "description": "AI video upscaling and face restoration for cinematic delivery. Upscale Grok Imagine 720p clips to 1080p or 4K with Rea…"
+          },
+          {
+            "name": "character-dna-extractor",
+            "description": "Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference…"
+          },
+          {
+            "name": "cinematic-sequence-extender",
+            "description": "Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native 1.5 extend/stitch,…"
+          },
+          {
+            "name": "cinematic-studio-meta-installer",
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.6.5. Installs updates and verifies the full 30-skill suite plus CLI…"
+          },
+          {
+            "name": "continuity-consistency-guardian",
+            "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual prop environmental and emotional continuity across…"
+          },
+          {
+            "name": "director-of-photography",
+            "description": "Visual language architect and cinematic lens master. Designs lighting motivation, camera choreography, lens choices, an…"
+          },
+          {
+            "name": "director-of-photography-v3-3",
+            "description": "Visual language architect and cinematic lens master. Defines camera moves, framing, lens choices, and translates emotio…"
+          },
+          {
+            "name": "erosforge-nsfw-director",
+            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper 1.5…"
+          },
+          {
+            "name": "foley-sound-design-specialist",
+            "description": "Hyper-realistic foley and immersive soundscape specialist. Designs detailed, physically accurate sound effects and envi…"
+          },
+          {
+            "name": "github-repo-manager",
+            "description": "Expert GitHub repository manager and DevOps agent for complex AI multi-agent projects. Handles full git lifecycle, bran…"
+          },
+          {
+            "name": "grok-imagine-cinematic-studio",
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.6 \"Odyssey Native\" powered by your custom 23-agent suite with full n…"
+          },
+          {
+            "name": "i2i-cinematic-refiner",
+            "description": "General-purpose Image-to-Image cinematic refinement specialist for Grok Imagine productions. Handles multi-pass refinem…"
+          },
+          {
+            "name": "i2i-refiner",
+            "description": "Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows,…"
+          },
+          {
+            "name": "identity-lock-specialist",
+            "description": "Guardian of character consistency and visual identity. Maintains Character DNA Bible, tracks character drift, enforces…"
+          },
+          {
+            "name": "imagine-prompt-master",
+            "description": "Master cinematic prompt engineer and Grok Imagine specialist. Crafts precise, high-quality prompts using the Ultimate T…"
+          },
+          {
+            "name": "key-art-poster-designer",
+            "description": "Theatrical key art, poster, and marketing visual specialist. Creates emotionally powerful single images that capture th…"
+          },
+          {
+            "name": "localization-subtitle-specialist",
+            "description": "Cultural adaptation, SDH subtitles, and multi-language support specialist. Ensures emotional tone, cultural nuance, and…"
+          },
+          {
+            "name": "mega-production-architect",
+            "description": "All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates…"
+          },
+          {
+            "name": "narrative-arc-pacing-strategist",
+            "description": "Story rhythm master and emotional architect. Designs three-act structure, pacing heatmap, tension/release curves, and e…"
+          },
+          {
+            "name": "nsfw-quota-orchestrator",
+            "description": "Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans and executes batches of erotic image and video gene…"
+          },
+          {
+            "name": "nsfw-sequence-extender",
+            "description": "NSFW sensual sequence extension from reference frame or short clip to 30-120+ seconds. Plans erotic tension curves, Gro…"
+          },
+          {
+            "name": "performance-emotion-director",
+            "description": "Emotional architect and micro-expression specialist. Designs actor performance, emotional evolution, body language, and…"
+          },
+          {
+            "name": "post-production-color-grading-supervisor",
+            "description": "Final visual polish and color harmony master. Recommends LUTs, tracks visual motifs, ensures color continuity, and perf…"
+          },
+          {
+            "name": "production-designer-set-decorator",
+            "description": "Environment DNA, prop memory bank, and world-building specialist. Designs detailed, consistent environments and prop sy…"
+          },
+          {
+            "name": "quality-assurance-guardian",
+            "description": "Final quality gatekeeper and production quality commander. Runs mandatory 16-point weighted reviews plus 10-point chain…"
+          },
+          {
+            "name": "sequence-director",
+            "description": "Master of long-form cinematic sequencing and structural flow. Breaks stories into optimal clips and orchestrates seamle…"
+          },
+          {
+            "name": "sonic-architect-native-audio-virtuoso",
+            "description": "Sound design visionary and native audio synthesis master. Creates perfectly synchronized, cinema-grade audio with multi…"
+          },
+          {
+            "name": "studio-director",
+            "description": "Central production commander and visionary Studio Director. Orchestrates the entire cinematic pipeline, activates other…"
+          },
+          {
+            "name": "stunt-action-choreographer",
+            "description": "Professional stunt, fight, and high-impact action design specialist. Creates safe, visually powerful, and emotionally g…"
+          },
+          {
+            "name": "trailer-teaser-director",
+            "description": "High-impact trailer and teaser specialist. Crafts emotionally powerful 15–60s trailers and teasers with native audio, o…"
+          },
+          {
+            "name": "vfx-sfx-supervisor",
+            "description": "Particle systems, creatures, destruction, and practical-to-VFX transition specialist. Designs high-quality visual effec…"
+          },
+          {
+            "name": "workflow-quota-optimizer",
+            "description": "Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimi…"
+          }
+        ]
+      }
+    }
+  ]
+}

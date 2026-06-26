@@ -69,7 +69,28 @@ python tools/cinematic_studio_cli.py nsfw extend plan "Intimate Sequence" --dura
 python tools/cinematic_studio_cli.py nsfw plan "Hero Session" --shot "hero:Cover frame" --budget 800
 ```
 
-### 3. Streamlit Web UI
+### 3. Grok Build Plugin Marketplace (Recommended for Grok CLI)
+Install the full **32-skill** suite as a Grok plugin:
+
+```bash
+# Add this repo as a marketplace source
+grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio
+
+# Install the cinematic studio plugin
+grok plugin install grok-imagine-cinematic-studio --trust
+
+# Optional: refresh after updates
+grok plugin marketplace update
+grok plugin update grok-imagine-cinematic-studio
+```
+
+Catalog lives in `.grok-plugin/marketplace.json`. Regenerate the component index after skill changes:
+
+```bash
+python3 scripts/generate_plugin_index.py
+```
+
+### 4. Streamlit Web UI
 ```bash
 pip install -r requirements-streamlit.txt
 streamlit run web_ui/app.py
