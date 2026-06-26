@@ -154,6 +154,13 @@ cython_debug/
 Thumbs.db
 
 # Project-specific
+# Build release zips (regenerate via scripts/build_*.sh)
+grok-imagine-cinematic-studio-*.zip
+
+# Generated outputs
+artifacts/*
+!artifacts/.gitkeep
+
 # CLI generated state
 .cinematic_project_state.json
 .quota_config.json

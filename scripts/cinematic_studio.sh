@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Grok Imagine Cinematic Studio v3.6.4 — unified installer entry point
+# Grok Imagine Cinematic Studio v3.6.5 — meta installer entry point
 # https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio
 #
 # Usage:
@@ -61,20 +61,7 @@ cmd_install() {
     echo "================================================"
     echo ""
 
-    local tmp_zip="/tmp/cinematic-studio-v${CINEMATIC_STUDIO_VERSION}.zip"
-    local tmp_extract="/tmp/cinematic-extract-$$"
-
-    cinematic_studio_download_bundle "$tmp_zip"
-    local dl_status=$?
-    if [[ $dl_status -eq 0 ]]; then
-        cinematic_studio_extract_bundle "$tmp_zip" "$tmp_extract"
-        cinematic_studio_install_from_extract "$tmp_extract"
-        rm -rf "$tmp_zip" "$tmp_extract"
-    elif [[ $dl_status -ne 2 ]]; then
-        exit 1
-    fi
-
-    cinematic_studio_sync_missing_skills
+    cinematic_studio_apply_release_bundle
     cinematic_studio_print_next_steps
 }
 
@@ -94,20 +81,8 @@ cmd_update() {
     mkdir -p "$backup_dir"
     cp -r "$SKILLS_DIR/"* "$backup_dir/" 2>/dev/null || true
 
-    local tmp_zip="/tmp/cinematic-studio-v${CINEMATIC_STUDIO_VERSION}.zip"
-    local tmp_extract="/tmp/cinematic-extract-$$"
+    cinematic_studio_apply_release_bundle
 
-    cinematic_studio_download_bundle "$tmp_zip"
-    local dl_status=$?
-    if [[ $dl_status -eq 0 ]]; then
-        cinematic_studio_extract_bundle "$tmp_zip" "$tmp_extract"
-        cinematic_studio_install_from_extract "$tmp_extract"
-        rm -rf "$tmp_zip" "$tmp_extract"
-    elif [[ $dl_status -ne 2 ]]; then
-        exit 1
-    fi
-
-    cinematic_studio_sync_missing_skills
     echo ""
     echo "✅ Update complete!"
     echo "Backup saved to: $backup_dir"

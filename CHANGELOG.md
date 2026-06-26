@@ -2,6 +2,30 @@
 
 All notable changes to Grok Imagine Cinematic Studio will be documented in this file.
 
+## [3.6.5] - 2026-06-24
+
+### Added
+- **`verify_model_compatibility()`** and **`models verify`** CLI — validates Grok 4.3 + Imagine 1.5 + Grok Build registry
+- **`references/agents/Mega_Production_Architect.md`** — v3.6 Role Card with model stack
+- **`config/grok-build.example.toml`** — Grok Build fork configuration template
+- Restored full **`references/agents/AGENT_INDEX.md`** with model compatibility table and 11 activation presets
+
+### Changed
+- **`tools/project_state.py`** — canonical `load_project_state` / `save_project_state`; removed duplicate loaders from CLI, `character_dna`, and `quota_optimizer` (legacy files auto-merge missing keys)
+- **`tools/cli/`** — extracted `models_commands`, `bible_commands`, `studio_commands`, and `production` builders; main CLI slimmed down
+- **Model stack wiring** — `build_video_pipeline_spec()` and `model_stack_summary()` in `tools/models.py` for consistent Grok 4.3 / Grok Build / Imagine 1.5 usage
+- **CLI** — `status`, `create-bible`, `cost-simulate`, and `generate-prompt` embed model stack + `VIDEO_PIPELINE_SPEC`; agents list aligned to v3.6
+- **Web UI** — master prompt, Production Bible export, and xAI API calls include chat/video models and 1.5 pipeline spec
+- **`character_dna.py` / `sequence_chain.py`** — scaffolds and handoffs embed `model_stack` + `VIDEO_PIPELINE_SPEC`
+- **Role Cards** — Imagine Prompt Master, Sequence Director, Cinematic Sequence Extender, Workflow Quota Optimizer updated for v3.6 models
+- **Skills** — `imagine-prompt-master`, `mega-production-architect` aligned to 1.5 native schema
+- **Installer verify** — `cinematic_studio.sh verify` runs `models verify`
+- **Quick Start Guide** — model stack section (§0)
+- **Studio Director Role Card** — model layer table for Grok Build, Grok 4.3, and Imagine 1.5
+- **Project Bible template** — v3.6 model stack and `VIDEO_PIPELINE_SPEC` section
+
+---
+
 ## [3.6.4] - 2026-06-21
 
 ### Changed

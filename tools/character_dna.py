@@ -15,9 +15,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from models import build_video_pipeline_spec
+from project_state import load_project_state, save_project_state
+
 SCHEMA_VERSION = "1.0"
+STUDIO_AGENT_VERSION = "v3.6"
 CHARACTERS_DIR = Path("characters")
-PROJECT_STATE_FILE = Path(".cinematic_project_state.json")
 
 PROMPT_MODES = ("compact", "cinematic", "close_up", "sequence_starter", "video_1.5")
 
@@ -72,6 +75,8 @@ def create_dna_scaffold(
         "cinematic_viability_score": None,
         "nsfw_notes": nsfw_notes,
         "identity_lock_status": "pending",
+        "studio_agent_version": STUDIO_AGENT_VERSION,
+        "video_pipeline_spec": build_video_pipeline_spec(),
     }
 
 
@@ -215,8 +220,9 @@ def build_handoff_packet(dna: dict[str, Any]) -> dict[str, Any]:
         "packet_type": "identity_lock_handoff",
         "schema_version": SCHEMA_VERSION,
         "created_at": _now_iso(),
-        "source_agent": "Character DNA Extractor v3.5",
-        "target_agent": "Identity Lock Specialist v3.5",
+        "source_agent": f"Character DNA Extractor {STUDIO_AGENT_VERSION}",
+        "target_agent": f"Identity Lock Specialist {STUDIO_AGENT_VERSION}",
+        "video_pipeline_spec": build_video_pipeline_spec(),
         "character_name": dna["character_name"],
         "slug": dna["slug"],
         "last_dna_version": dna.get("version", 1),
@@ -275,18 +281,6 @@ def find_character_dna(name_or_slug: str, *, characters_root: Path | None = None
         if data.get("character_name", "").lower() == name_or_slug.lower():
             return dna_file
     return None
-
-
-def load_project_state(state_file: Path | None = None) -> dict[str, Any]:
-    path = state_file or PROJECT_STATE_FILE
-    if path.exists():
-        return json.loads(path.read_text())
-    return {"project": None, "characters": {}, "identity_lock": {}, "locked_variables": {}}
-
-
-def save_project_state(state: dict[str, Any], state_file: Path | None = None) -> None:
-    path = state_file or PROJECT_STATE_FILE
-    path.write_text(json.dumps(state, indent=2))
 
 
 def lock_to_identity_bank(

@@ -8,7 +8,7 @@
 
 Transform any story into emotionally powerful, production-ready cinematic video with **native 1.5 image-to-video**, one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
-[![Version](https://img.shields.io/badge/version-3.6.4-blue)](https://github.com/FineComputer14451/grok-imagine-cinematic-studio)
+[![Version](https://img.shields.io/badge/version-3.6.5-blue)](https://github.com/FineComputer14451/grok-imagine-cinematic-studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Grok](https://img.shields.io/badge/Grok-Build%20%2B%204.3%20%2B%201.5-purple)](https://x.ai)
 
@@ -62,6 +62,7 @@ python tools/cinematic_studio_cli.py create-bible "Your Project Title"
 python tools/cinematic_studio_cli.py dna init "Elena Voss" --core "..." --facial "..."
 python tools/cinematic_studio_cli.py sequence init "Neon Alley Chase" --duration 90
 python tools/cinematic_studio_cli.py models list
+python tools/cinematic_studio_cli.py models verify
 python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --fast-mode
 python tools/cinematic_studio_cli.py generate-prompt "Your story" --chat-model grok-4.3 --video-model 1.5
 python tools/cinematic_studio_cli.py nsfw extend plan "Intimate Sequence" --duration 90 --profile passionate --reference "..."

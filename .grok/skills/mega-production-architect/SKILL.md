@@ -12,11 +12,23 @@ description: All-in-one cinematic super-agent that transforms any idea into a co
 - Full studio activation (automatic) or `ACTIVATE MEGA_PRODUCTION_ARCHITECT`
 - User needs a complete Production Bible, shot list, and execution roadmap in one pass
 
+## Model Stack (Required in Every Bible)
+
+| Layer | Slug |
+|-------|------|
+| Grok Build CLI | `grok-composer-2.5-fast` (+ fork `grok-build`) |
+| xAI Chat | `grok-4.3` |
+| xAI Build | `grok-build-0.1` |
+| Imagine Video | `grok-imagine-video-1.5` |
+| Imagine Image | `grok-imagine-image` |
+
 ## VIDEO_PIPELINE_SPEC (Required in Every Bible)
 
 ```
 [VIDEO_PIPELINE_SPEC: model="grok-imagine-video-1.5", resolution="720p", clip_length="8-12s preferred", native_audio=true, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]
 ```
+
+Generate via: `python tools/cinematic_studio_cli.py models verify`
 
 ## Workflow
 

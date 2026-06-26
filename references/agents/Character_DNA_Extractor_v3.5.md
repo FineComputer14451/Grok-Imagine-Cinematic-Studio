@@ -2,7 +2,7 @@
 
 **Custom Agent Role Card**  
 *Generated: June 02, 2026 via custom-grok-cinematic-agent skill*  
-*Fully compatible with Grok Imagine Cinematic Studio v3.5 22-agent suite & MASTER_PROMPT protocols*
+*Fully compatible with Grok Imagine Cinematic Studio v3.6 (23 agents) — Grok 4.3 + Imagine 1.5 + Grok Build*
 
 ---
 

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-Grok Imagine Cinematic Studio — Streamlit Web UI v3.6.4
+Grok Imagine Cinematic Studio — Streamlit Web UI v3.6.5
 Aligned with 23-Agent System + DNA / Sequence / Quota Pipelines
 """
 
 import streamlit as st
-from datetime import datetime
 import json
 import os
 import sys
@@ -13,14 +12,24 @@ from pathlib import Path
 from openai import OpenAI
 
 ROOT = Path(__file__).resolve().parent.parent
+os.chdir(ROOT)
 sys.path.insert(0, str(ROOT / "tools"))
+
+try:
+    from cli.production import build_activation_prompt, build_production_bible, production_context
+    PRODUCTION_AVAILABLE = True
+except ImportError:
+    PRODUCTION_AVAILABLE = False
+
 try:
     from character_dna import (
         build_prompt_blocks,
         create_dna_scaffold,
         list_characters,
+        load_project_state,
         lock_to_identity_bank,
         save_character_dna,
+        save_project_state,
     )
     from sequence_chain import (
         add_clip_to_sequence,
@@ -48,7 +57,6 @@ try:
         DEFAULT_XAI_CHAT_MODEL,
         IMAGINE_VIDEO_MODELS,
         XAI_CHAT_MODELS,
-        resolve_chat_model,
     )
     DNA_AVAILABLE = True
     SEQ_AVAILABLE = True
@@ -61,9 +69,11 @@ except ImportError:
     MODELS_AVAILABLE = False
     DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video-1.5"
     DEFAULT_XAI_CHAT_MODEL = "grok-4.3"
+    IMAGINE_VIDEO_MODELS = {}
+    XAI_CHAT_MODELS = {}
 
 # ===================== CONFIG =====================
-AGENTS_DIR = Path("../references/agents")
+AGENTS_DIR = ROOT / "references" / "agents"
 
 def get_grok_client():
     api_key = os.getenv("XAI_API_KEY")
@@ -171,17 +181,35 @@ with st.sidebar:
     else:
         st.caption("Character DNA module unavailable.")
 
-    # Legacy memory
     st.subheader("🧠 Quick Memory")
-    if "memory" not in st.session_state:
-        st.session_state.memory = {}
-    with st.expander("Add Memory Entry", expanded=False):
-        mem_name = st.text_input("Name", placeholder="PROJECT_THEME", key="mem_name")
-        mem_value = st.text_area("Value", height=60, key="mem_value")
-        if st.button("💾 Save", use_container_width=True, key="mem_save"):
-            if mem_name and mem_value:
-                st.session_state.memory[mem_name] = mem_value
-                st.rerun()
+    if DNA_AVAILABLE:
+        with st.expander("Add Memory Entry", expanded=False):
+            mem_name = st.text_input("Name", placeholder="PROJECT_THEME", key="mem_name")
+            mem_value = st.text_area("Value", height=60, key="mem_value")
+            if st.button("💾 Save", use_container_width=True, key="mem_save"):
+                if mem_name and mem_value:
+                    state = load_project_state()
+                    state.setdefault("characters", {})
+                    state["characters"][mem_name] = mem_value
+                    save_project_state(state)
+                    st.success(f"Saved: {mem_name}")
+                    st.rerun()
+                else:
+                    st.warning("Name and value are required")
+
+        memory_entries = {
+            k: v for k, v in load_project_state().get("characters", {}).items()
+            if isinstance(v, str)
+        }
+        if memory_entries:
+            with st.expander(f"Saved Entries ({len(memory_entries)})", expanded=False):
+                for name, value in memory_entries.items():
+                    preview = value[:80] + ("…" if len(value) > 80 else "")
+                    st.markdown(f"**{name}** — {preview}")
+        else:
+            st.caption("No entries yet — persisted in `.cinematic_project_state.json` (CLI-compatible).")
+    else:
+        st.caption("Project state module unavailable.")
 
     st.divider()
 
@@ -286,39 +314,29 @@ col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("🚀 Generate Master Prompt", use_container_width=True):
         if story:
-            prompt = f"""# Grok Imagine Cinematic Studio v3.6.4 — ACTIVATED
-
-**Project:** {story[:120]}...
-**Genre:** {genre}
-**Director Signature:** {director}
-**Duration:** {duration}s | **Complexity:** {complexity}
-**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M')}
-
-You are now running the full **23-agent** Grok Imagine Cinematic Studio v3.6 with Role Cards loaded from `references/agents/`.
-
-Please begin by confirming activation and building a detailed Production Bible.
-"""
+            if PRODUCTION_AVAILABLE:
+                prompt = build_activation_prompt(
+                    f"{story[:120]}...",
+                    director=director,
+                    genre=genre,
+                    duration=duration,
+                    complexity=complexity,
+                    chat_model=st.session_state.get("chat_model", DEFAULT_XAI_CHAT_MODEL),
+                    video_model=video_model,
+                )
+            else:
+                prompt = f"# Grok Imagine Cinematic Studio — ACTIVATED\n\n**Project:** {story[:120]}...\n**Genre:** {genre}\n**Director:** {director}"
             st.code(prompt, language="markdown")
             st.success("✅ Prompt ready to copy")
         else:
             st.warning("Please enter a description first.")
 
 with col2:
-    if st.button("🎬 Simulate Full Production", use_container_width=True):
+    if st.button("📋 Preview Production Phases", use_container_width=True):
         if story:
-            with st.spinner("Engaging all 23 agents..."):
-                import time
-                progress = st.progress(0)
-                for i in range(100):
-                    time.sleep(0.012)
-                    progress.progress(i + 1)
+            st.subheader("Production Phase Outline")
+            st.caption("Planned agent workflow — not a live generation or QA run.")
 
-            st.balloons()
-            st.success("✅ Simulation Complete")
-
-            st.subheader("📊 Structured Production Summary")
-
-            # Generate structured simulation output
             st.markdown(f"""
 **Project:** {story[:80]}...
 
@@ -329,73 +347,74 @@ with col2:
 
 ---
 
-### Production Phases (Simulated)
+**Phase 1 — Pre-Production**
+- Mega Production Architect → Production Bible
+- Identity Lock Specialist → Character DNA lock
+- Production Designer → Environment & set references
 
-**Phase 1: Pre-Production**
-- **Mega Production Architect** → Production Bible generated
-- **Identity Lock Specialist** → Character DNA locked
-- **Production Designer** → World & set references created
+**Phase 2 — Core Production**
+- Director of Photography + Performance & Emotion Director → Key sequences
+- Cinematic Sequence Extender → Long-form 1.5 extend/stitch
+- Continuity Guardian + QA Guardian → Chain QA gates
 
-**Phase 2: Core Production**
-- **Director of Photography** + **Performance & Emotion Director** → Key sequences directed
-- **Cinematic Sequence Extender** → Long-form expansion applied
-- **Continuity Guardian** + **QA Guardian** → Consistency & quality checks passed
-
-**Phase 3: Polish & Delivery**
-- **Sonic Architect** + **Foley Specialist** → Audio design completed
-- **Key Art Designer** + **Trailer Director** → Marketing assets generated
-- **Quality Assurance Guardian** → Final 16-point QA: **PASSED**
-
----
-
-### Quality Metrics
+**Phase 3 — Polish & Delivery**
+- Sonic Architect + Foley Specialist → Native audio design
+- Key Art Designer + Trailer Director → Marketing assets
+- AI Polish Director → Final upscale & delivery polish
 """)
 
-            col_a, col_b, col_c, col_d = st.columns(4)
-            col_a.metric("Character Consistency", "96%")
-            col_b.metric("Emotional Impact", "94%")
-            col_c.metric("Visual Coherence", "97%")
-            col_d.metric("Overall QA Score", "✅ GO")
+            dna_count = len(list_characters()) if DNA_AVAILABLE else 0
+            seq_count = len(list_sequences()) if SEQ_AVAILABLE else 0
+            locked_count = len(load_project_state().get("identity_lock", {})) if DNA_AVAILABLE else 0
 
-            st.info("This is an enhanced simulation. For real multi-agent generation, use the Grok API button below or the CLI.")
+            st.markdown("**Current project state**")
+            state_col1, state_col2, state_col3 = st.columns(3)
+            state_col1.metric("DNA Profiles", dna_count)
+            state_col2.metric("Identity Locked", locked_count)
+            state_col3.metric("Sequences", seq_count)
+
+            if QUOTA_AVAILABLE:
+                est = estimate_production(
+                    duration,
+                    complexity=complexity.lower(),
+                    fast_mode=fast_mode,
+                    video_model=video_model,
+                )
+                dash = quota_dashboard()
+                risk = assess_budget_risk(est, tier=tier, budget_remaining=dash.get("budget_remaining"))
+                st.caption(
+                    f"Est. cost: {est['credits_low']:.0f}–{est['credits_high']:.0f} credits "
+                    f"(${est['usd_low']}–${est['usd_high']}) · Risk: {risk['risk_level']}"
+                )
+
+            st.info("Run real generation via the xAI API button below or `tools/cinematic_studio_cli.py`.")
         else:
             st.warning("Enter a project description first.")
 
 with col3:
     if st.button("📄 Export Production Bible", use_container_width=True):
         if story:
-            bible = {
-                "project_title": story[:80],
-                "genre": genre,
-                "director_signature": director,
-                "target_duration_seconds": duration,
-                "complexity": complexity,
-                "total_agents": 23,
-                "version": "3.6.4",
-                "role_cards_source": "references/agents/",
-                "locked_variables": {
-                    "PROJECT_TITLE": story[:60],
-                    "GENRE": genre,
-                    "DIRECTOR_SIGNATURE": director,
-                    "DURATION": f"{duration}s"
-                },
-                "key_agents_involved": [
-                    "Mega Production Architect",
-                    "Identity Lock Specialist",
-                    "Director of Photography",
-                    "Performance & Emotion Director",
-                    "Cinematic Sequence Extender",
-                    "Quality Assurance Guardian"
-                ],
-                "recommended_phases": [
-                    "Pre-Production (Bible + Character DNA)",
-                    "Core Production (Direction + Extension)",
-                    "Polish & Delivery (Audio + Marketing + QA)"
-                ],
-                "created": datetime.now().isoformat(),
-                "status": "Ready for production",
-                "notes": "Generated via Grok Imagine Cinematic Studio Web UI. Use CLI for advanced memory & PDF reports."
-            }
+            if PRODUCTION_AVAILABLE:
+                bible = build_production_bible(
+                    story[:80],
+                    genre=genre,
+                    director_signature=director,
+                    target_duration_seconds=duration,
+                    complexity=complexity,
+                    locked_title=story[:60],
+                    chat_model=st.session_state.get("chat_model", DEFAULT_XAI_CHAT_MODEL),
+                    video_model=video_model,
+                    notes="Generated via Grok Imagine Cinematic Studio Web UI. Use CLI for advanced memory & PDF reports.",
+                )
+            else:
+                bible = {
+                    "project_title": story[:80],
+                    "genre": genre,
+                    "director_signature": director,
+                    "target_duration_seconds": duration,
+                    "complexity": complexity,
+                    "status": "Ready for production",
+                }
             st.download_button(
                 "⬇️ Download production_bible.json",
                 data=json.dumps(bible, indent=2),
@@ -430,15 +449,39 @@ if st.button("✨ Generate Prompt with xAI API", use_container_width=True):
         if not client:
             st.error("Please provide your XAI API key in the sidebar settings.")
         else:
-            api_model = resolve_chat_model(chat_model) if MODELS_AVAILABLE else chat_model
-            model_label = XAI_CHAT_MODELS.get(api_model, {}).get("label", api_model) if MODELS_AVAILABLE else api_model
+            if PRODUCTION_AVAILABLE:
+                ctx = production_context(chat_model=chat_model, video_model=video_model)
+                api_model = ctx["chat_slug"]
+                model_label = ctx["chat_label"]
+                pipeline_spec = ctx["pipeline_spec"]
+            else:
+                api_model = chat_model
+                model_label = chat_model
+                pipeline_spec = f'model="{video_model}"'
             with st.spinner(f"{model_label} is crafting your cinematic prompt..."):
                 try:
                     response = client.chat.completions.create(
                         model=api_model,
                         messages=[
-                            {"role": "system", "content": "You are an expert cinematic prompt engineer for the 23-agent Grok Imagine Cinematic Studio v3.6."},
-                            {"role": "user", "content": f"Create a detailed cinematic prompt for: {story}. Video pipeline: {video_model}. Include lighting, camera work, mood, and visual style."}
+                            {
+                                "role": "system",
+                                "content": (
+                                    "You are an expert cinematic prompt engineer for the 23-agent Grok Imagine "
+                                    "Cinematic Studio v3.6. Use Grok 4.3 for orchestration context, Grok Imagine "
+                                    "Video 1.5 native audio rules, and VIDEO_PIPELINE_SPEC locked variables."
+                                ),
+                            },
+                            {
+                                "role": "user",
+                                "content": (
+                                    f"Create a detailed cinematic prompt for: {story}\n\n"
+                                    f"Chat model: {api_model}\n"
+                                    f"Video pipeline: {video_model}\n"
+                                    f"{pipeline_spec}\n\n"
+                                    "Include lighting, camera work with physics descriptors, mood, native audio "
+                                    "Sound Layer syntax, and visual style."
+                                ),
+                            },
                         ],
                         max_tokens=850,
                         temperature=0.7
@@ -450,4 +493,4 @@ if st.button("✨ Generate Prompt with xAI API", use_container_width=True):
 
 # Footer
 st.divider()
-st.caption("Grok Imagine Cinematic Studio v3.6.4 • 23 Agents • DNA/Sequence/Quota/NSFW • June 2026")
+st.caption("Grok Imagine Cinematic Studio v3.6.5 • Grok 4.3 + Imagine 1.5 + Grok Build • June 2026")

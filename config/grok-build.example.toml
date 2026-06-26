@@ -1,0 +1,11 @@
+# Grok Build configuration for Grok Imagine Cinematic Studio v3.6
+# Copy to ~/.grok/config.toml and adjust as needed
+
+[ui]
+# Secondary model for code/skills work (fork with grok-composer-2.5-fast as default)
+fork_secondary_model = "grok-build"
+
+# Cinematic Studio model stack (reference only — not all keys consumed by Grok Build yet)
+# Orchestration: grok-4.3 (xAI API / grok.com chat)
+# Video: grok-imagine-video-1.5
+# Build API: grok-build-0.1

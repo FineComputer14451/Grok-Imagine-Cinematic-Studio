@@ -59,11 +59,21 @@ fork_secondary_model = "grok-build"
 
 ---
 
+## Python Helpers
+
+`tools/models.py` exposes:
+- `build_video_pipeline_spec(model)` — locked `VIDEO_PIPELINE_SPEC` string
+- `model_stack_summary(chat_model, video_model)` — bible/CLI model stack dict
+- `resolve_chat_model()` / `resolve_video_model()` — alias normalization
+
 ## CLI
 
 ```bash
 python tools/cinematic_studio_cli.py models list
+python tools/cinematic_studio_cli.py status
 python tools/cinematic_studio_cli.py generate-prompt "Story" --chat-model grok-4.3 --video-model 1.5
+python tools/cinematic_studio_cli.py create-bible "Title" --chat-model grok-4.3 --video-model 1.5
+python tools/cinematic_studio_cli.py cost-simulate --duration 90 --video-model 1.5
 python tools/cinematic_studio_cli.py quota estimate --duration 90 --video-model grok-imagine-video-1.5
 ```
 

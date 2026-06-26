@@ -1,6 +1,28 @@
 # Grok Imagine Cinematic Studio v3.6 — Quick Start Guide
 
-**Version:** 3.0 | **Last Updated:** June 20, 2026
+**Version:** 3.6.5 | **Last Updated:** June 24, 2026
+
+---
+
+## 0. Model Stack (Grok 4.3 + Imagine 1.5 + Grok Build)
+
+| Where | Model | Purpose |
+|-------|-------|---------|
+| Grok chat / API | `grok-4.3` | 1M-context orchestration, Production Bibles |
+| Grok Build CLI | `grok-composer-2.5-fast` | Local agent sessions |
+| Grok Build fork | `grok-build` | Code, skills, repo tooling |
+| xAI Build API | `grok-build-0.1` | Agentic automation |
+| Imagine Video | `grok-imagine-video-1.5` | Native audio video ($0.08/sec) |
+| Imagine Image | `grok-imagine-image` | Reference stills |
+
+Verify compatibility: `python tools/cinematic_studio_cli.py models verify`  
+Full reference: `references/MODELS_v3.6.md`
+
+Grok Build config (`~/.grok/config.toml`):
+```toml
+[ui]
+fork_secondary_model = "grok-build"
+```
 
 ---
 

@@ -165,6 +165,7 @@ Canonical slugs live in `tools/models.py` and `references/MODELS_v3.6.md`. List 
 
 ```bash
 python tools/cinematic_studio_cli.py models list
+python tools/cinematic_studio_cli.py models verify
 ```
 
 | Layer | Default Slug | When to Use |

@@ -96,4 +96,4 @@ Maintain strict internal logic. The Signal has rules. The audience should be abl
 ---
 
 **Status:** Ready for full multi-agent activation.  
-**Primary Activation Command:** `Activate Grok Imagine Cinematic Studio v3.5, start new project "The Signal", generate full Production Bible with strong body horror and VFX focus.`
+**Primary Activation Command:** `Activate Grok Imagine Cinematic Studio v3.6, start new project "The Signal", generate full Production Bible with strong body horror and VFX focus. Use grok-4.3 + grok-imagine-video-1.5.`

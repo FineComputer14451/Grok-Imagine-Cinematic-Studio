@@ -14,20 +14,18 @@ from pathlib import Path
 from typing import Any
 
 from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL, usd_to_credits
+from project_state import load_project_state, save_project_state
 from quota_optimizer import (
     SUBSCRIPTION_TIERS,
     assess_budget_risk,
     estimate_clip_cost,
     ensure_quota_state,
-    load_project_state,
     load_pricing_config,
     record_spend,
-    save_project_state,
 )
 
 SCHEMA_VERSION = "1.0"
 BATCHES_DIR = Path("nsfw_batches")
-PROJECT_STATE_FILE = Path(".cinematic_project_state.json")
 
 SHOT_TIERS: dict[str, dict[str, Any]] = {
     "hero": {

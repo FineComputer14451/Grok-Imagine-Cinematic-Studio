@@ -96,6 +96,17 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
 DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video-1.5"
 DEFAULT_IMAGINE_IMAGE_MODEL = "grok-imagine-image"
 
+# Studio compatibility target (Grok 4.3 + Imagine 1.5 + Grok Build)
+STUDIO_COMPATIBILITY_VERSION = "3.6.5"
+REQUIRED_MODEL_SLUGS = (
+    DEFAULT_GROK_BUILD_MODEL,
+    GROK_BUILD_FORK_MODEL,
+    DEFAULT_XAI_CHAT_MODEL,
+    DEFAULT_XAI_BUILD_MODEL,
+    DEFAULT_IMAGINE_VIDEO_MODEL,
+    DEFAULT_IMAGINE_IMAGE_MODEL,
+)
+
 # Credit conversion: 1 credit = $0.01 (for quota dashboard compatibility)
 USD_PER_CREDIT = 0.01
 
@@ -156,6 +167,70 @@ def image_usd_per_image(model: str | None = None) -> float:
     return IMAGINE_IMAGE_MODELS[slug]["usd_per_image"]
 
 
+def build_video_pipeline_spec(model: str | None = None) -> str:
+    """Return locked VIDEO_PIPELINE_SPEC string for Production Bibles and prompts."""
+    slug = resolve_video_model(model)
+    native = IMAGINE_VIDEO_MODELS[slug].get("native_audio", False)
+    native_str = "true" if native else "false"
+    return (
+        f'[VIDEO_PIPELINE_SPEC: model="{slug}", resolution="720p", '
+        f'clip_length="8-12s preferred", native_audio={native_str}, '
+        f"reference_image_fidelity=high, "
+        f'extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]'
+    )
+
+
+def model_stack_summary(
+    chat_model: str | None = None,
+    video_model: str | None = None,
+    image_model: str | None = None,
+) -> dict[str, str]:
+    """Canonical model stack for bibles, CLI output, and Web UI exports."""
+    return {
+        "grok_build_cli_default": DEFAULT_GROK_BUILD_MODEL,
+        "grok_build_cli_fork": GROK_BUILD_FORK_MODEL,
+        "xai_chat": resolve_chat_model(chat_model),
+        "xai_build": DEFAULT_XAI_BUILD_MODEL,
+        "imagine_video": resolve_video_model(video_model),
+        "imagine_image": resolve_image_model(image_model),
+    }
+
+
+def verify_model_compatibility() -> dict[str, Any]:
+    """Validate canonical model registry for Grok 4.3 + Imagine 1.5 + Grok Build."""
+    issues: list[str] = []
+    stack = model_stack_summary()
+
+    if DEFAULT_XAI_CHAT_MODEL != "grok-4.3":
+        issues.append(f"DEFAULT_XAI_CHAT_MODEL must be grok-4.3 (got {DEFAULT_XAI_CHAT_MODEL})")
+    if DEFAULT_IMAGINE_VIDEO_MODEL != "grok-imagine-video-1.5":
+        issues.append(
+            f"DEFAULT_IMAGINE_VIDEO_MODEL must be grok-imagine-video-1.5 "
+            f"(got {DEFAULT_IMAGINE_VIDEO_MODEL})"
+        )
+    if not IMAGINE_VIDEO_MODELS[DEFAULT_IMAGINE_VIDEO_MODEL].get("native_audio"):
+        issues.append("Default Imagine video model must support native_audio")
+    if resolve_chat_model("grok-4") != "grok-4.3":
+        issues.append("Alias grok-4 must resolve to grok-4.3")
+    if resolve_chat_model("grok-build") != "grok-build-0.1":
+        issues.append("Alias grok-build must resolve to grok-build-0.1")
+    if resolve_video_model("1.5") != "grok-imagine-video-1.5":
+        issues.append("Alias 1.5 must resolve to grok-imagine-video-1.5")
+
+    spec = build_video_pipeline_spec()
+    if "grok-imagine-video-1.5" not in spec:
+        issues.append("VIDEO_PIPELINE_SPEC must reference grok-imagine-video-1.5 by default")
+
+    return {
+        "compatible": len(issues) == 0,
+        "studio_version": STUDIO_COMPATIBILITY_VERSION,
+        "model_stack": stack,
+        "video_pipeline_spec": spec,
+        "required_slugs": list(REQUIRED_MODEL_SLUGS),
+        "issues": issues,
+    }
+
+
 def list_all_models() -> dict[str, Any]:
     """Return full registry for CLI/UI display."""
     return {
@@ -178,5 +253,8 @@ def list_all_models() -> dict[str, Any]:
             "default": DEFAULT_IMAGINE_IMAGE_MODEL,
             "models": IMAGINE_IMAGE_MODELS,
         },
+        "studio_compatibility_version": STUDIO_COMPATIBILITY_VERSION,
+        "model_stack": model_stack_summary(),
+        "video_pipeline_spec": build_video_pipeline_spec(),
         "usd_per_credit": USD_PER_CREDIT,
     }

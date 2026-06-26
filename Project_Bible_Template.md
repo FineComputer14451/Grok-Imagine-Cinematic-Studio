@@ -2,8 +2,19 @@
 
 **Version:** 1.0  
 **Date:** [DATE]  
-**Studio:** Grok Imagine Cinematic Studio v3.5  
+**Studio:** Grok Imagine Cinematic Studio v3.6 "Odyssey Native"  
 **Status:** [Pre-Production / Production / Post]
+
+**Model Stack (locked):**
+- Grok Build CLI: `grok-composer-2.5-fast` (fork: `grok-build`)
+- xAI Chat: `grok-4.3` (or `grok-build-0.1` for automation)
+- Imagine Video: `grok-imagine-video-1.5`
+- Imagine Image: `grok-imagine-image`
+
+**VIDEO_PIPELINE_SPEC:**
+```
+[VIDEO_PIPELINE_SPEC: model="grok-imagine-video-1.5", resolution="720p", clip_length="8-12s preferred", native_audio=true, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]
+```
 
 ---
 

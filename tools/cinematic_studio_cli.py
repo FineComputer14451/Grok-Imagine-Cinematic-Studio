@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Grok Imagine Cinematic Studio CLI v3.6.4 — Enhanced Edition
+Grok Imagine Cinematic Studio CLI v3.6.5 — Enhanced Edition
 Professional multi-agent cinematic production toolkit with Role Card integration
 """
 
@@ -40,6 +40,7 @@ from sequence_chain import (  # noqa: E402
     sequence_to_markdown,
     update_sequence_health,
 )
+from project_state import load_project_state, save_project_state  # noqa: E402
 from quota_optimizer import (  # noqa: E402
     SUBSCRIPTION_TIERS,
     assess_budget_risk,
@@ -47,23 +48,14 @@ from quota_optimizer import (  # noqa: E402
     estimate_production,
     estimate_sequence_cost,
     get_optimization_recommendations,
-    load_project_state as quota_load_state,
     quota_dashboard,
     record_spend,
     set_budget,
 )
-from models import (  # noqa: E402
-    DEFAULT_GROK_BUILD_MODEL,
-    DEFAULT_IMAGINE_VIDEO_MODEL,
-    DEFAULT_XAI_CHAT_MODEL,
-    GROK_BUILD_CLI_MODELS,
-    GROK_BUILD_FORK_MODEL,
-    IMAGINE_IMAGE_MODELS,
-    IMAGINE_VIDEO_MODELS,
-    XAI_CHAT_MODELS,
-    resolve_chat_model,
-    resolve_video_model,
-)
+from cli.bible_commands import register as register_bible_commands  # noqa: E402
+from cli.models_commands import models_app  # noqa: E402
+from cli.shared import STUDIO_VERSION, console  # noqa: E402
+from cli.studio_commands import register as register_studio_commands  # noqa: E402
 from nsfw_orchestrator import (  # noqa: E402
     batch_to_markdown,
     decide_generation_mode,
@@ -87,11 +79,11 @@ from nsfw_sequence_extender import (  # noqa: E402
     save_nsfw_sequence,
     suggest_camera_pacing,
 )
-from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
+from models import DEFAULT_IMAGINE_VIDEO_MODEL  # noqa: E402
 from rich import box
 from rich.markdown import Markdown
+from rich.panel import Panel
+from rich.table import Table
 
 try:
     from fpdf import FPDF
@@ -115,349 +107,16 @@ app.add_typer(seq_app, name="sequence")
 quota_app = typer.Typer(help="Per-second 1.5 quota estimation, budgeting, and optimization")
 app.add_typer(quota_app, name="quota")
 
-models_app = typer.Typer(help="Grok Build and xAI model registry")
 app.add_typer(models_app, name="models")
+
+register_studio_commands(app)
+register_bible_commands(app)
 
 nsfw_app = typer.Typer(help="Quota-aware NSFW batch planning, sequence extension, and daily reports")
 app.add_typer(nsfw_app, name="nsfw")
 
 extend_app = typer.Typer(help="Sensual sequence extension 30-120s+ from reference frame or short clip")
 nsfw_app.add_typer(extend_app, name="extend")
-
-console = Console()
-
-# ============================================================
-# CONFIG
-# ============================================================
-AGENTS_DIR = Path("references/agents")
-PROJECT_STATE_FILE = Path(".cinematic_project_state.json")
-
-# Director Signature Presets
-DIRECTOR_SIGNATURES = {
-    "nolan": "Christopher Nolan style — IMAX, practical effects, non-linear storytelling, Hans Zimmer sound",
-    "villeneuve": "Denis Villeneuve — Epic scale, slow-burn tension, breathtaking visuals, Blade Runner 2047 aesthetic",
-    "fincher": "David Fincher — Dark, precise, psychological, Se7en / Gone Girl tension",
-    "snyder": "Zack Snyder — Hyper-stylized, slow-motion, mythic, 300 / Watchmen energy",
-    "deakins": "Roger Deakins — God-tier cinematography, natural light, emotional realism",
-    "default": "Cinematic excellence — emotionally powerful, technically perfect, audience-resonant"
-}
-
-AGENTS = {
-    "Core Leadership": ["Studio Director v3.5", "Mega Production Architect v3.5"],
-    "Visual & Camera": [
-        "Director of Photography (DoP) v3.5",
-        "Post-Production Color Grading Supervisor v3.5",
-        "Production Designer / Set Decorator v3.5"
-    ],
-    "Story & Performance": [
-        "Character DNA Extractor v3.5",
-        "Performance & Emotion Director v3.5",
-        "Identity Lock Specialist v3.5",
-        "Narrative Arc & Pacing Strategist v3.5",
-        "Sequence Director v3.5",
-        "Cinematic Sequence Extender v3.5"
-    ],
-    "Technical & Continuity": [
-        "Continuity & Consistency Guardian v3.5",
-        "Quality Assurance Guardian v3.5",
-        "Imagine Prompt Master v3.5",
-        "Workflow & Quota Optimizer v3.5"
-    ],
-    "Audio": [
-        "Sonic Architect Native Audio Virtuoso v3.5",
-        "Foley Sound Design Specialist v3.5"
-    ],
-    "Action / VFX / SFX": [
-        "Stunt & Action Choreographer v3.5",
-        "VFX & SFX Supervisor v3.5"
-    ],
-    "Marketing & Distribution": [
-        "Key Art & Poster Designer v3.6",
-        "Trailer & Teaser Director v3.6",
-        "Localization & Subtitle Specialist v3.6",
-    ],
-    "Post-Production & Delivery": [
-        "AI Polish Director v3.6",
-    ],
-    "Specialist (Opt-in)": [
-        "ErosForge NSFW Director v3.6",
-    ],
-}
-
-# ============================================================
-# HELPER FUNCTIONS
-# ============================================================
-
-def get_role_card_path(agent_name: str) -> Path | None:
-    """Find the Role Card file for a given agent name."""
-    if not AGENTS_DIR.exists():
-        return None
-    
-    for f in AGENTS_DIR.glob("*.md"):
-        if agent_name.lower().replace(" ", "_") in f.stem.lower() or f.stem.lower() in agent_name.lower().replace(" ", "_"):
-            return f
-    return None
-
-def load_project_state() -> dict:
-    if PROJECT_STATE_FILE.exists():
-        return json.loads(PROJECT_STATE_FILE.read_text())
-    return {"project": None, "characters": {}, "locked_variables": {}}
-
-def save_project_state(state: dict):
-    PROJECT_STATE_FILE.write_text(json.dumps(state, indent=2))
-
-# ============================================================
-# COMMANDS
-# ============================================================
-
-@app.command()
-def status():
-    """Show current studio status"""
-    console.print(Panel.fit(
-        "[bold cyan]🎥 Grok Imagine Cinematic Studio v3.6.4[/bold cyan]\n"
-        "[green]Status:[/green] Enhanced CLI Active\n"
-        "[green]Agents:[/green] 23 Online\n"
-        "[green]Role Cards:[/green] Loaded from references/agents/\n"
-        "[green]Mode:[/green] Production Ready",
-        title="Studio Status",
-        border_style="cyan"
-    ))
-
-@app.command()
-def version():
-    """Show CLI version"""
-    console.print("[bold]cinematic-studio[/bold] v3.6.4 (June 2026)")
-
-@app.command(name="list-agents")
-def list_agents():
-    """List all 23 agents grouped by category"""
-    table = Table(title="🎬 Grok Imagine Cinematic Studio — 23 Agents", box=box.ROUNDED)
-    table.add_column("Category", style="bold cyan", no_wrap=True)
-    table.add_column("Agents", style="white")
-
-    for category, agents in AGENTS.items():
-        agent_list = "\n".join([f"• {a}" for a in agents])
-        table.add_row(category, agent_list)
-
-    console.print(table)
-    total = sum(len(a) for a in AGENTS.values())
-    console.print(f"\n[italic dim]Total: {total} specialized agents ready for production[/italic dim]")
-
-@app.command(name="list-role-cards")
-def list_role_cards():
-    """List all available Role Cards in references/agents/"""
-    if not AGENTS_DIR.exists():
-        console.print("[red]references/agents/ directory not found[/red]")
-        return
-
-    cards = sorted(AGENTS_DIR.glob("*.md"))
-    table = Table(title="📋 Available Role Cards", box=box.SIMPLE)
-    table.add_column("Role Card", style="cyan")
-    table.add_column("File", style="dim")
-
-    for card in cards:
-        table.add_row(card.stem.replace("_", " "), str(card))
-
-    console.print(table)
-    console.print(f"\n[green]Total Role Cards:[/green] {len(cards)}")
-
-@app.command(name="show-role-card")
-def show_role_card(
-    agent: str = typer.Argument(..., help="Agent name or partial match (e.g. 'Identity Lock' or 'ErosForge')")
-):
-    """Display a specific Role Card"""
-    card_path = get_role_card_path(agent)
-    
-    if not card_path or not card_path.exists():
-        console.print(f"[red]Role Card not found for:[/red] {agent}")
-        return
-
-    content = card_path.read_text()
-    console.print(Panel(Markdown(content[:3000]), title=f"📋 {card_path.stem}", border_style="blue", expand=False))
-
-@models_app.command("list")
-def models_list():
-    """List Grok Build CLI, xAI chat, and Imagine model slugs."""
-    table = Table(title="🤖 Grok Build & xAI Model Registry", box=box.ROUNDED)
-    table.add_column("Category", style="bold cyan", no_wrap=True)
-    table.add_column("Slug", style="green")
-    table.add_column("Label / Rate", style="white")
-
-    table.add_row("Grok Build CLI (default)", DEFAULT_GROK_BUILD_MODEL, GROK_BUILD_CLI_MODELS[DEFAULT_GROK_BUILD_MODEL]["label"])
-    table.add_row("Grok Build CLI (fork)", GROK_BUILD_FORK_MODEL, GROK_BUILD_CLI_MODELS[GROK_BUILD_FORK_MODEL]["label"])
-    for slug, info in XAI_CHAT_MODELS.items():
-        default = " (default)" if info.get("default") else ""
-        table.add_row("xAI Chat", slug + default, f"{info['label']} — ${info['input_usd_per_1m']}/${info['output_usd_per_1m']} per 1M")
-    for slug, info in IMAGINE_VIDEO_MODELS.items():
-        default = " (default)" if info.get("default") else ""
-        table.add_row("Imagine Video", slug + default, f"{info['label']} — ${info['usd_per_second']}/sec")
-    for slug, info in IMAGINE_IMAGE_MODELS.items():
-        default = " (default)" if info.get("default") else ""
-        table.add_row("Imagine Image", slug + default, f"{info['label']} — ${info['usd_per_image']}/image")
-
-    console.print(table)
-    console.print("\n[dim]Full registry: references/MODELS_v3.6.md[/dim]")
-
-@app.command(name="generate-prompt")
-def generate_prompt(
-    story: str = typer.Argument(..., help="Your story, scene, or project description"),
-    signature: str = typer.Option("default", "--signature", "-s", help="Director style"),
-    chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.3, grok-build-0.1)"),
-    video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "--model", "-m", help="Imagine video model slug or alias"),
-    output: str = typer.Option(None, "--output", "-o", help="Save to file")
-):
-    """Generate a high-quality ready-to-paste prompt"""
-    sig_text = DIRECTOR_SIGNATURES.get(signature.lower(), DIRECTOR_SIGNATURES["default"])
-    chat_slug = resolve_chat_model(chat_model)
-    video_slug = resolve_video_model(video_model)
-
-    prompt = f"""# Grok Imagine Cinematic Studio v3.6.4 — ACTIVATED
-
-**Project:** {story}
-**Director Signature:** {sig_text}
-**Chat Model:** {chat_slug}
-**Video Pipeline:** {video_slug}
-**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M')}
-
-You are now running the full **23-agent** Grok Imagine Cinematic Studio v3.6 with complete Role Cards loaded from `references/agents/`.
-
-[VIDEO_PIPELINE_SPEC: model="{video_slug}", resolution="720p", clip_length="8-12s preferred", native_audio=true]
-
-Please begin by:
-1. Confirming activation
-2. Asking for my first creative decision, or
-3. Immediately building a detailed Production Bible using the Mega Production Architect
-
-Pipelines available: Character DNA (`dna`), Sequence Chain (`sequence`), Quota Optimizer (`quota`).
-"""
-
-    if output:
-        Path(output).write_text(prompt)
-        console.print(f"[green]✅ Prompt saved to[/green] {output}")
-    else:
-        console.print(Panel(prompt, title="📜 Ready-to-Paste Prompt", border_style="green"))
-
-@app.command(name="cost-simulate")
-def cost_simulate(
-    duration: int = typer.Option(60, "--duration", "-d", help="Target duration in seconds"),
-    complexity: str = typer.Option("medium", "--complexity", "-c", help="low / medium / high / extreme"),
-    clips: int = typer.Option(None, "--clips", help="Number of clips"),
-    fast_mode: bool = typer.Option(False, "--fast-mode", help="Use Fast mode pricing"),
-):
-    """Estimate generation cost and quota usage (delegates to quota optimizer)"""
-    estimate = estimate_production(
-        duration,
-        clip_count=clips,
-        complexity=complexity,
-        fast_mode=fast_mode,
-    )
-    state = quota_load_state()
-    quota = state.get("quota", {})
-    risk = assess_budget_risk(
-        estimate,
-        tier=quota.get("tier", "supergrok_pro"),
-        budget_remaining=quota.get("budget_remaining"),
-    )
-    table = Table(title="💰 Production Cost Estimate (1.5 per-second)", box=box.SIMPLE)
-    table.add_column("Metric", style="cyan")
-    table.add_column("Value", style="bold green")
-    table.add_row("Duration", f"{duration}s")
-    table.add_row("Clips", str(estimate["clip_count"]))
-    table.add_row("Complexity", complexity.title())
-    table.add_row("Credits", f"{estimate['credits_low']} – {estimate['credits_high']}")
-    table.add_row("Est. USD", f"${estimate['usd_low']} – ${estimate['usd_high']}")
-    table.add_row("Est. Tokens", f"~{estimate['estimated_tokens']:,}")
-    table.add_row("Risk", f"[{risk['risk_level']}]{risk['risk_level']}[/]")
-    console.print(table)
-    console.print("[dim]Use 'quota optimize' for savings recommendations[/dim]")
-
-@app.command(name="create-bible")
-def create_bible(
-    title: str = typer.Argument(..., help="Project title"),
-    genre: str = typer.Option("Cinematic", "--genre", "-g"),
-    output: str = typer.Option("production_bible.json", "--output", "-o")
-):
-    """Generate a rich, structured Production Bible"""
-    state = load_project_state()
-    
-    bible = {
-        "project_title": title,
-        "genre": genre,
-        "director_signature": "Cinematic excellence",
-        "target_duration_seconds": 60,
-        "complexity": "Medium",
-        "total_agents": 23,
-        "version": "3.6.4",
-        "role_cards_source": str(AGENTS_DIR) if AGENTS_DIR.exists() else "Not found",
-        "locked_variables": {
-            "PROJECT_TITLE": title,
-            "GENRE": genre,
-            "DIRECTOR_SIGNATURE": "Cinematic excellence",
-            "DURATION": "60s"
-        },
-        "key_agents_involved": [
-            "Character DNA Extractor",
-            "Mega Production Architect",
-            "Identity Lock Specialist",
-            "Director of Photography",
-            "Performance & Emotion Director",
-            "Cinematic Sequence Extender",
-            "Quality Assurance Guardian"
-        ],
-        "recommended_phases": [
-            "Pre-Production (Bible + Character DNA)",
-            "Core Production (Direction + Extension)",
-            "Polish & Delivery (Audio + Marketing + QA)"
-        ],
-        "created": datetime.now().isoformat(),
-        "status": "Ready for production",
-        "notes": "Generated via Grok Imagine Cinematic Studio CLI. Use Web UI for visual simulation and live Grok API."
-    }
-
-    Path(output).write_text(json.dumps(bible, indent=2))
-    
-    state["project"] = bible
-    save_project_state(state)
-
-    console.print(f"[green]✅ Rich Production Bible created:[/green] {output}")
-    console.print("[dim]Includes locked variables, key agents, and recommended phases[/dim]")
-
-@app.command()
-def memory(
-    action: str = typer.Argument(..., help="add / list / load"),
-    name: str = typer.Option(None, "--name", "-n", help="Character or variable name"),
-    value: str = typer.Option(None, "--value", "-v", help="Value to store")
-):
-    """Manage project memory and character DNA"""
-    state = load_project_state()
-
-    if action == "add":
-        if not name or not value:
-            console.print("[red]Please provide --name and --value[/red]")
-            return
-        state["characters"][name] = value
-        save_project_state(state)
-        console.print(f"[green]✅ Saved memory for[/green] {name}")
-
-    elif action == "list":
-        if not state.get("characters"):
-            console.print("[yellow]No memory entries yet[/yellow]")
-            return
-        table = Table(title="🧠 Project Memory")
-        table.add_column("Name", style="cyan")
-        table.add_column("Value", style="white")
-        for k, v in state["characters"].items():
-            table.add_row(k, str(v)[:80])
-        console.print(table)
-
-    elif action == "load":
-        if name and name in state.get("characters", {}):
-            console.print(Panel(state["characters"][name], title=f"Memory: {name}"))
-        else:
-            console.print("[yellow]Memory entry not found[/yellow]")
-
-    else:
-        console.print("[red]Unknown action. Use: add / list / load[/red]")
 
 # ============================================================
 # CHARACTER DNA COMMANDS
@@ -800,7 +459,7 @@ def seq_estimate_cost(
         fast_mode=fast_mode,
         quality_pass=quality_pass,
     )
-    state = quota_load_state()
+    state = load_project_state()
     quota = state.get("quota", {})
     risk = assess_budget_risk(est, tier=quota.get("tier", "supergrok_pro"), budget_remaining=quota.get("budget_remaining"))
     console.print(Panel(
@@ -863,7 +522,7 @@ def quota_estimate(
         agent_mode=agent_mode,
         num_images=images,
     )
-    state = quota_load_state()
+    state = load_project_state()
     quota = state.get("quota", {})
     risk = assess_budget_risk(est, tier=quota.get("tier", "supergrok_pro"), budget_remaining=quota.get("budget_remaining"))
 
@@ -921,7 +580,7 @@ def quota_sequence(
         raise typer.Exit(1)
     seq = load_sequence(seq_path)
     est = estimate_sequence_cost(seq.get("clips", []), fast_mode=fast_mode, quality_pass=quality_pass)
-    state = quota_load_state()
+    state = load_project_state()
     quota = state.get("quota", {})
     risk = assess_budget_risk(est, tier=quota.get("tier", "supergrok_pro"), budget_remaining=quota.get("budget_remaining"))
     recs = get_optimization_recommendations({**est, "clip_count": est["clip_count"], "fast_mode": fast_mode}, risk=risk)
@@ -995,7 +654,7 @@ def quota_optimize(
 ):
     """Get quota optimization recommendations for a production plan."""
     est = estimate_production(duration, clip_count=clips, complexity=complexity, fast_mode=fast_mode)
-    state = quota_load_state()
+    state = load_project_state()
     quota = state.get("quota", {})
     risk = assess_budget_risk(est, tier=quota.get("tier", "supergrok_pro"), budget_remaining=quota.get("budget_remaining"))
     recs = get_optimization_recommendations(est, risk=risk)
@@ -1146,7 +805,7 @@ def nsfw_decide(
         "duration_seconds": duration,
         "consistency_required": True,
     }
-    state = quota_load_state()
+    state = load_project_state()
     quota = state.get("quota", {})
     decision = decide_generation_mode(
         shot,
@@ -1481,16 +1140,6 @@ def validate():
         console.print("\n[bold green]✅ Validation passed[/bold green]")
     else:
         console.print(f"\n[yellow]Validation completed with {issues} issues[/yellow]")
-
-@app.command()
-def activate():
-    """Print the official activation command"""
-    console.print(Panel(
-        "[bold]Activate Grok Imagine Cinematic Studio v3.6[/bold]\n\n"
-        "Load the master prompt first, then paste the activation command.",
-        title="🚀 Activation",
-        border_style="magenta"
-    ))
 
 if __name__ == "__main__":
     app()

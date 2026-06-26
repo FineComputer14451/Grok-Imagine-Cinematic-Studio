@@ -15,11 +15,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from models import DEFAULT_IMAGINE_VIDEO_MODEL
+from models import (
+    DEFAULT_IMAGINE_VIDEO_MODEL,
+    build_video_pipeline_spec,
+    model_stack_summary,
+)
 
 SCHEMA_VERSION = "1.0"
 SEQUENCES_DIR = Path("sequences")
-PROJECT_STATE_FILE = Path(".cinematic_project_state.json")
 
 DEFAULT_PIPELINE = {
     "model": DEFAULT_IMAGINE_VIDEO_MODEL,
@@ -63,6 +66,12 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
 
+def locked_video_pipeline_spec(pipeline: dict[str, Any] | None = None) -> str:
+    """Derive locked VIDEO_PIPELINE_SPEC string from a pipeline dict."""
+    spec = pipeline or DEFAULT_PIPELINE
+    return build_video_pipeline_spec(spec.get("model"))
+
+
 def create_sequence_scaffold(
     sequence_name: str,
     *,
@@ -77,6 +86,9 @@ def create_sequence_scaffold(
         "target_duration_seconds": target_duration,
         "genre": genre,
         "video_pipeline_spec": pipeline or dict(DEFAULT_PIPELINE),
+        "model_stack": model_stack_summary(
+            video_model=(pipeline or DEFAULT_PIPELINE).get("model")
+        ),
         "created_at": _now_iso(),
         "updated_at": _now_iso(),
         "clips": [],
@@ -431,6 +443,8 @@ def sequence_to_markdown(seq: dict[str, Any]) -> str:
         f"**Chain QA Status:** {seq.get('chain_qa_status', 'pending')}",
         "",
         "## Video Pipeline Spec",
+        locked_video_pipeline_spec(seq.get("video_pipeline_spec")),
+        "",
         f"```json\n{json.dumps(seq.get('video_pipeline_spec', {}), indent=2)}\n```",
         "",
         "## Clip Chain",

@@ -26,8 +26,9 @@ from models import (
     video_usd_per_second,
 )
 
+from project_state import default_quota_state, load_project_state, save_project_state
+
 SCHEMA_VERSION = "1.1"
-PROJECT_STATE_FILE = Path(".cinematic_project_state.json")
 QUOTA_CONFIG_FILE = Path(".quota_config.json")
 
 # xAI Imagine pricing (June 2026) — configurable via .quota_config.json
@@ -97,39 +98,9 @@ def load_pricing_config() -> dict[str, Any]:
     return dict(DEFAULT_PRICING)
 
 
-def load_project_state(state_file: Path | None = None) -> dict[str, Any]:
-    path = state_file or PROJECT_STATE_FILE
-    if path.exists():
-        return json.loads(path.read_text())
-    return {
-        "project": None,
-        "characters": {},
-        "identity_lock": {},
-        "locked_variables": {},
-        "quota": _default_quota_state(),
-    }
-
-
-def _default_quota_state() -> dict[str, Any]:
-    return {
-        "schema_version": SCHEMA_VERSION,
-        "tier": "supergrok_pro",
-        "budget_remaining": None,
-        "session_spent": 0,
-        "session_generations": 0,
-        "history": [],
-        "updated_at": _now_iso(),
-    }
-
-
-def save_project_state(state: dict[str, Any], state_file: Path | None = None) -> None:
-    path = state_file or PROJECT_STATE_FILE
-    path.write_text(json.dumps(state, indent=2))
-
-
 def ensure_quota_state(state: dict[str, Any]) -> dict[str, Any]:
     if "quota" not in state or not state["quota"]:
-        state["quota"] = _default_quota_state()
+        state["quota"] = default_quota_state()
     return state["quota"]
 
 
