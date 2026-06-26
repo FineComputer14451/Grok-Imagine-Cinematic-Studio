@@ -21,7 +21,7 @@ def render() -> None:
             dna_core = st.text_area("Core Identity", height=60)
             dna_facial = st.text_area("Facial DNA", height=60)
             dna_hair = st.text_input("Hair & Grooming")
-            if st.form_submit_button("💾 Save DNA Profile", use_container_width=True):
+            if st.form_submit_button("💾 Save DNA Profile", width="stretch"):
                 if dna_name and dna_core and dna_facial:
                     dna = rt.create_dna_scaffold(
                         dna_name,
@@ -53,7 +53,7 @@ def render() -> None:
         with st.form("memory_form"):
             mem_name = st.text_input("Name", placeholder="PROJECT_THEME")
             mem_value = st.text_area("Value", height=80)
-            if st.form_submit_button("💾 Save Memory", use_container_width=True):
+            if st.form_submit_button("💾 Save Memory", width="stretch"):
                 if mem_name and mem_value:
                     state = rt.load_project_state()
                     state["characters"][mem_name] = mem_value

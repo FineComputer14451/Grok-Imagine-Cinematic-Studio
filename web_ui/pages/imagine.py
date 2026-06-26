@@ -45,7 +45,7 @@ def render() -> None:
                     }
                     for j in jobs
                 ],
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
         else:
@@ -58,7 +58,7 @@ def render() -> None:
             image_url = st.text_input("Image URL (edit / i2v)", value="")
             duration = st.slider("Video duration (s)", 4, 15, 10)
             force_dry = st.checkbox("Force dry-run", value=dry)
-            if st.form_submit_button("Submit job", use_container_width=True):
+            if st.form_submit_button("Submit job", width="stretch"):
                 if prompt.strip():
                     code, out = ir.submit_imagine_via_cli(
                         job_type,
@@ -81,7 +81,7 @@ def render() -> None:
         if batches:
             st.dataframe(
                 [{"id": b["batch_id"], "title": b.get("title"), "status": b.get("status")} for b in batches],
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
 
@@ -93,7 +93,7 @@ def render() -> None:
             )
             budget = st.number_input("Budget credits", 50, 5000, 250)
             fast = st.checkbox("Fast mode", value=st.session_state.get("fast_mode", False))
-            if st.form_submit_button("Plan SFW batch", use_container_width=True):
+            if st.form_submit_button("Plan SFW batch", width="stretch"):
                 if title and shots.strip():
                     shot_list = ir.parse_shot_lines(shots)
                     batch, path = ir.plan_and_save_sfw_batch(
@@ -155,7 +155,7 @@ def render() -> None:
                 col_a, col_b, col_c = st.columns(3)
                 force_dry = col_a.checkbox("Dry-run", value=dry, key="exec_dry")
                 prompt_override = col_b.text_input("Prompt override", value="", key="exec_prompt")
-                if col_c.button("Generate shot", use_container_width=True, key="exec_gen"):
+                if col_c.button("Generate shot", width="stretch", key="exec_gen"):
                     try:
                         result = ir.run_sfw_shot(
                             sel_batch, shot_id,
@@ -189,7 +189,7 @@ def render() -> None:
                     credits = st.number_input("Credits spent", 1.0, 500.0, 10.0, 1.0)
                     reason = st.text_input("Failure reason (if fail)", value="")
                     note = st.text_input("Notes", value="")
-                    if st.form_submit_button("Record result", use_container_width=True):
+                    if st.form_submit_button("Record result", width="stretch"):
                         rec = ir.record_sfw_shot(
                             sel_batch, shot_id,
                             quality_score=score,
@@ -217,7 +217,7 @@ def render() -> None:
                     }
                     for a in assets
                 ],
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
         else:
@@ -229,7 +229,7 @@ def render() -> None:
             tier = st.selectbox("Asset tier", ["hero", "standard", "draft"])
             shot_id = st.text_input("Linked shot ID (optional)")
             notes = st.text_input("Notes", value="")
-            if st.form_submit_button("Register plate", use_container_width=True):
+            if st.form_submit_button("Register plate", width="stretch"):
                 if asset_id and url:
                     entry = ir.add_reference_plate(
                         asset_id,
@@ -271,7 +271,7 @@ def render() -> None:
             except (FileNotFoundError, KeyError):
                 pass
         force_dry = st.checkbox("Dry-run", value=dry, key="seq_run_dry")
-        if st.button("Run clip", use_container_width=True, key="seq_run_btn"):
+        if st.button("Run clip", width="stretch", key="seq_run_btn"):
             if seq_name and seq_name != "(none)" and clip_id:
                 code, out = ir.run_sequence_clip_via_cli(seq_name, clip_id, dry_run=force_dry)
                 if code == 0:

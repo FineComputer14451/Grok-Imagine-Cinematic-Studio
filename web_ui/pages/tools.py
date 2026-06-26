@@ -33,7 +33,7 @@ def render() -> None:
     st.divider()
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("Run validate", use_container_width=True, key="tools_validate"):
+        if st.button("Run validate", width="stretch", key="tools_validate"):
             code, output = rt.run_cli(["validate"])
             st.code(output, language="text")
             if code == 0:
@@ -41,7 +41,7 @@ def render() -> None:
             else:
                 st.warning("Completed with issues")
     with col2:
-        if st.button("Generate PDF report", use_container_width=True, key="tools_report"):
+        if st.button("Generate PDF report", width="stretch", key="tools_report"):
             with tempfile.TemporaryDirectory() as tmp:
                 out = Path(tmp) / "production_report.pdf"
                 code, output = rt.run_cli(["report", "--output", str(out)])

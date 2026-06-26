@@ -99,7 +99,7 @@ def render() -> None:
 
     c1, c2, c3 = st.columns(3)
     with c1:
-        if st.button("🚀 Generate Master Prompt", use_container_width=True):
+        if st.button("🚀 Generate Master Prompt", width="stretch"):
             if not story:
                 st.warning("Enter a description first")
             elif rt.PRODUCTION_AVAILABLE:
@@ -119,14 +119,14 @@ def render() -> None:
                 st.success("Fallback prompt ready (production module unavailable)")
 
     with c2:
-        if st.button("📋 Preview Phases", use_container_width=True):
+        if st.button("📋 Preview Phases", width="stretch"):
             if story:
                 st.session_state.show_phases = True
             else:
                 st.warning("Enter a description first")
 
     with c3:
-        if st.button("📄 Export Bible", use_container_width=True):
+        if st.button("📄 Export Bible", width="stretch"):
             if not story:
                 st.warning("Describe your project first")
             elif rt.PRODUCTION_AVAILABLE:
@@ -165,7 +165,7 @@ def render() -> None:
 
     st.divider()
     st.subheader("🔌 Live xAI API")
-    if st.button("✨ Generate with xAI API", use_container_width=True):
+    if st.button("✨ Generate with xAI API", width="stretch"):
         if not story:
             st.warning("Enter a project description first")
         else:

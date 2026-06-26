@@ -44,7 +44,7 @@ def render() -> None:
                 budget = st.number_input("Budget credits", 100, 5000, 800)
             with col2:
                 fast = st.checkbox("Fast mode", value=st.session_state.fast_mode)
-            if st.form_submit_button("Plan batch", use_container_width=True):
+            if st.form_submit_button("Plan batch", width="stretch"):
                 if batch_title and shots.strip():
                     shot_list = nr.parse_shot_lines(shots)
                     batch, path = nr.plan_and_save_batch(
@@ -86,7 +86,7 @@ def render() -> None:
         else:
             st.dataframe(
                 [{"id": b["batch_id"], "title": b.get("title"), "status": b.get("status"), "path": b.get("path")} for b in batches],
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
         slug = st.text_input(
@@ -100,7 +100,7 @@ def render() -> None:
                 try:
                     shots = nr.next_shots(slug, count=count)
                     if shots:
-                        st.dataframe(shots, use_container_width=True)
+                        st.dataframe(shots, width="stretch")
                     else:
                         st.info("No pending shots in this batch.")
                 except Exception as exc:

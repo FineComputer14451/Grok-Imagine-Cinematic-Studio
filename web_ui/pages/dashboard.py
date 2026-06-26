@@ -64,12 +64,12 @@ def render() -> None:
                     "Name": s["name"],
                     "Clips": s["clips"],
                     "Target": f"{s['target_duration']}s",
-                    "Health": s.get("health") or "—",
+                    "Health": str(s.get("health") or "—"),
                     "Chain QA": s.get("chain_qa_status", "pending"),
                 }
                 for s in snap["sequences"]
             ],
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -80,7 +80,7 @@ def render() -> None:
                 {"Name": c["name"], "Slug": c["slug"], "Lock": c.get("status", "pending")}
                 for c in snap["characters"]
             ],
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -95,7 +95,7 @@ def render() -> None:
                 }
                 for b in snap["nsfw_batches"]
             ],
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -104,7 +104,7 @@ def render() -> None:
 
     if quota.get("recent_history"):
         with st.expander("Recent spend", expanded=False):
-            st.dataframe(quota["recent_history"], use_container_width=True, hide_index=True)
+            st.dataframe(quota["recent_history"], width="stretch", hide_index=True)
 
     with st.expander("Full dashboard snapshot (JSON)", expanded=False):
         st.json(snap)
