@@ -14,6 +14,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Changed
 - Moved `REPOSITORY_STRUCTURE.md` and `Example_Production_Bible_Example.md` into `docs/archive/` and `examples/`
+- **CI workflow** — removed deprecated `agents/**` path filters and validation scan
 
 ---
 
