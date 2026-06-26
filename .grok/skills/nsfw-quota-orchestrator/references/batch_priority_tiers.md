@@ -45,3 +45,15 @@ Shot tiers ordered by production impact and quota efficiency on SuperGrok Heavy.
 ### Support / Filler
 - `image_prompt` unless budget surplus confirmed
 - Skip if session pass rate <60%
+
+---
+
+## Model Routing (Reference Curator)
+
+Applied automatically by `apply_reference_curator_models()` in `tools/nsfw_orchestrator.py`:
+
+| Shot Tier | Asset Tier | Image | Video |
+|-----------|------------|-------|-------|
+| `hero`, `key_explicit`, `consistency_anchor` | hero | `grok-imagine-image-quality` | `grok-imagine-video-1.5` |
+| `support` | standard | `grok-imagine-image` | `grok-imagine-video-1.5` |
+| `filler` | draft | `grok-imagine-image` | `grok-imagine-video` |

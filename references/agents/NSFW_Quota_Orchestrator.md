@@ -19,6 +19,18 @@ You are the production scheduler for quota-efficient NSFW/erotic sessions on Sup
 | `support` | 15% | If budget remains after heroes + keys |
 | `filler` | 10% | Only when daily cap <50% used |
 
+## Reference Curator Model Routing
+
+`plan_batch()` and `create_shot()` assign models via `NSFW_ASSET_MODEL_MAP` in `tools/nsfw_orchestrator.py`:
+
+| Shot Tier | Image Model | Video Model |
+|-----------|-------------|-------------|
+| `hero`, `key_explicit`, `consistency_anchor` | `grok-imagine-image-quality` | `grok-imagine-video-1.5` |
+| `support` | `grok-imagine-image` | `grok-imagine-video-1.5` |
+| `filler` | `grok-imagine-image` | `grok-imagine-video` |
+
+Activate `ACTIVATE REFERENCE_CURATOR` before batch spend; routing is applied automatically in the orchestrator.
+
 ## Handoff Partners
 | Agent | Role |
 |-------|------|

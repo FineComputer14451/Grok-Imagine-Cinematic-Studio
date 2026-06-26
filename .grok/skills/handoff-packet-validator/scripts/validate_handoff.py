@@ -41,6 +41,16 @@ PACKET_TYPES: dict[str, dict[str, Any]] = {
         "tier_values": frozenset({"hero", "standard", "draft"}),
         "status_values": frozenset({"draft", "approved", "locked"}),
     },
+    "intimacy_state_handoff": {
+        "required": (
+            "packet_type",
+            "source_clip_id",
+            "intimacy_physics_state",
+            "post_scene_state",
+            "clothing_displacement_log",
+            "emotional_residue",
+        ),
+    },
 }
 
 
@@ -89,6 +99,19 @@ def validate_packet(data: dict[str, Any]) -> list[str]:
         anchors = data.get("key_consistency_anchors")
         if not isinstance(anchors, list) or len(anchors) < 1:
             issues.append("key_consistency_anchors: need at least one anchor")
+
+    if packet_type == "intimacy_state_handoff":
+        if not str(data.get("source_clip_id", "")).strip():
+            issues.append("empty required field: source_clip_id")
+        if not isinstance(data.get("intimacy_physics_state"), dict):
+            issues.append("intimacy_physics_state: must be an object")
+        if not isinstance(data.get("post_scene_state"), dict):
+            issues.append("post_scene_state: must be an object")
+        log = data.get("clothing_displacement_log")
+        if not isinstance(log, list):
+            issues.append("clothing_displacement_log: must be an array")
+        if not str(data.get("emotional_residue", "")).strip():
+            issues.append("empty required field: emotional_residue")
 
     return issues
 

@@ -120,6 +120,7 @@ Studio Director routes standard refinement to I2I Cinematic Refiner; explicit/in
 | ErosForge NSFW Director v3.6.5 | `ErosForge_NSFW_Director.md` | `erosforge-nsfw-director` | `ACTIVATE EROSFORGE` |
 | NSFW Quota Orchestrator v1.0 | `NSFW_Quota_Orchestrator.md` | `nsfw-quota-orchestrator` | `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` |
 | NSFW Sequence Extender v1.0 | `NSFW_Sequence_Extender.md` | `nsfw-sequence-extender` | `ACTIVATE NSFW_SEQUENCE_EXTENDER` |
+| NSFW Chain QA Protocol v1.0 | — | `nsfw-chain-qa-protocol` | `RUN NSFW CHAIN QA REVIEW` |
 
 Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSFORGE` first.
 
@@ -169,7 +170,8 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 | `animatic-director` | Pipeline | `ACTIVATE ANIMATIC DIRECTOR` |
 | `handoff-packet-validator` | Tool | Before extend / i2v handoffs |
 | `production-bible-workflow` | Pipeline | `START PRODUCTION BIBLE WORKFLOW` |
+| `nsfw-chain-qa-protocol` | Pipeline (opt-in) | `RUN NSFW CHAIN QA REVIEW` |
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native" — 23 core agents + 9 specialists + 6 Tier 1 skills*
+*Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native" — 23 core agents + 9 specialists + 7 Tier 1 skills (+ NSFW opt-in)*

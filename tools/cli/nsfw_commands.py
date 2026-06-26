@@ -20,6 +20,7 @@ from nsfw_orchestrator import (
     get_next_shots,
     list_batches,
     load_batch,
+    parse_inline_shot,
     plan_batch,
     record_shot_result,
     save_batch,
@@ -44,23 +45,6 @@ from cli.shared import AGENTS_DIR, STUDIO_ROOT, console
 
 
 def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
-    def _parse_inline_shot(spec: str) -> dict:
-        """Parse tier:description or tier:motion:description."""
-        parts = spec.split(":", 2)
-        if len(parts) == 2:
-            tier, desc = parts
-            motion = "medium"
-        elif len(parts) == 3:
-            tier, motion, desc = parts
-        else:
-            tier, motion, desc = "support", "medium", spec
-        return {
-            "tier": tier.strip(),
-            "description": desc.strip(),
-            "motion_complexity": motion.strip(),
-        }
-
-
     @nsfw_app.command("plan")
     def nsfw_plan(
         title: str = typer.Argument(..., help="Batch title"),
@@ -77,7 +61,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
             shots = json.loads(Path(file).read_text())
         if shot:
             for spec in shot:
-                shots.append(_parse_inline_shot(spec))
+                shots.append(parse_inline_shot(spec))
         if not shots:
             console.print("[red]Provide --file or at least one --shot[/red]")
             raise typer.Exit(1)

@@ -41,9 +41,18 @@ def test_bootstrap_reexports() -> None:
     assert b.clip_story("hello", 3) == "hel…"
 
 
+def test_nsfw_runtime_imports() -> None:
+    from lib import nsfw_runtime as nr
+
+    assert "hero" in nr.SHOT_TIER_OPTIONS
+    assert callable(nr.parse_shot_lines)
+    assert callable(nr.plan_and_save_batch)
+
+
 if __name__ == "__main__":
     test_runtime_imports()
     test_session_helpers()
     test_page_modules_import()
     test_bootstrap_reexports()
+    test_nsfw_runtime_imports()
     print("All smoke tests passed")

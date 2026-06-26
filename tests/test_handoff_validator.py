@@ -57,8 +57,34 @@ def test_valid_asset_manifest() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
 
 
+def test_valid_intimacy_state_handoff() -> None:
+    result = run_validator({
+        "packet_type": "intimacy_state_handoff",
+        "source_clip_id": "clip_001",
+        "intimacy_physics_state": {"weight_transfer": "balanced", "skin_response": "natural"},
+        "post_scene_state": {"clothing": "partially displaced", "position": "embrace"},
+        "clothing_displacement_log": ["strap slipped left shoulder"],
+        "emotional_residue": "tender vulnerability, slowed breath",
+    })
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_invalid_intimacy_missing_residue() -> None:
+    result = run_validator({
+        "packet_type": "intimacy_state_handoff",
+        "source_clip_id": "clip_001",
+        "intimacy_physics_state": {},
+        "post_scene_state": {},
+        "clothing_displacement_log": [],
+        "emotional_residue": "",
+    })
+    assert result.returncode == 1
+
+
 if __name__ == "__main__":
     test_valid_sequence_handoff()
     test_invalid_missing_recap()
     test_valid_asset_manifest()
+    test_valid_intimacy_state_handoff()
+    test_invalid_intimacy_missing_residue()
     print("All handoff validator tests passed")

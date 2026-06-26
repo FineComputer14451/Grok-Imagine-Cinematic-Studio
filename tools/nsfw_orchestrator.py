@@ -13,7 +13,13 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL, usd_to_credits
+from models import (
+    DEFAULT_IMAGINE_IMAGE_MODEL,
+    DEFAULT_IMAGINE_VIDEO_MODEL,
+    IMAGINE_IMAGE_MODELS,
+    IMAGINE_VIDEO_MODELS,
+    usd_to_credits,
+)
 from project_state import load_project_state, save_project_state
 from quota_optimizer import (
     SUBSCRIPTION_TIERS,
@@ -130,6 +136,82 @@ QUALITY_THRESHOLD_HERO = 8.0
 
 HEAVY_DAILY_SOFT_CAP = SUBSCRIPTION_TIERS["supergrok_heavy"]["daily_soft_cap"]
 RETRY_RESERVE_PCT = 0.15
+
+DEFAULT_IMAGE_QUALITY_MODEL = "grok-imagine-image-quality"
+DEFAULT_VIDEO_DRAFT_MODEL = "grok-imagine-video"
+
+# Reference & Asset Curator routing for NSFW shot tiers
+NSFW_ASSET_MODEL_MAP: dict[str, dict[str, Any]] = {
+    "hero": {
+        "asset_tier": "hero",
+        "image_model": DEFAULT_IMAGE_QUALITY_MODEL,
+        "video_model": DEFAULT_IMAGINE_VIDEO_MODEL,
+        "image_quality": True,
+    },
+    "key_explicit": {
+        "asset_tier": "hero",
+        "image_model": DEFAULT_IMAGE_QUALITY_MODEL,
+        "video_model": DEFAULT_IMAGINE_VIDEO_MODEL,
+        "image_quality": True,
+    },
+    "consistency_anchor": {
+        "asset_tier": "hero",
+        "image_model": DEFAULT_IMAGE_QUALITY_MODEL,
+        "video_model": DEFAULT_IMAGINE_VIDEO_MODEL,
+        "image_quality": True,
+    },
+    "support": {
+        "asset_tier": "standard",
+        "image_model": DEFAULT_IMAGINE_IMAGE_MODEL,
+        "video_model": DEFAULT_IMAGINE_VIDEO_MODEL,
+        "image_quality": False,
+    },
+    "filler": {
+        "asset_tier": "draft",
+        "image_model": DEFAULT_IMAGINE_IMAGE_MODEL,
+        "video_model": DEFAULT_VIDEO_DRAFT_MODEL,
+        "image_quality": False,
+    },
+}
+
+
+def parse_inline_shot(spec: str) -> dict[str, Any]:
+    """Parse tier:description or tier:motion:description."""
+    parts = spec.split(":", 2)
+    if len(parts) == 2:
+        tier, desc = parts
+        motion = "medium"
+    elif len(parts) == 3:
+        tier, motion, desc = parts
+    else:
+        tier, motion, desc = "support", "medium", spec
+    return {
+        "tier": tier.strip(),
+        "description": desc.strip(),
+        "motion_complexity": motion.strip(),
+    }
+
+
+def apply_reference_curator_models(shot: dict[str, Any]) -> dict[str, Any]:
+    """Assign image/video model slugs per Reference & Asset Curator NSFW tier map."""
+    tier = shot.get("tier", "support")
+    mapping = NSFW_ASSET_MODEL_MAP.get(tier, NSFW_ASSET_MODEL_MAP["support"])
+    shot["asset_tier"] = mapping["asset_tier"]
+    shot["image_model"] = mapping["image_model"]
+    shot["video_model"] = mapping["video_model"]
+    shot["image_quality"] = mapping["image_quality"]
+    if shot["image_model"] not in IMAGINE_IMAGE_MODELS:
+        shot["image_model"] = DEFAULT_IMAGINE_IMAGE_MODEL
+    if shot["video_model"] not in IMAGINE_VIDEO_MODELS:
+        shot["video_model"] = DEFAULT_IMAGINE_VIDEO_MODEL
+    return shot
+
+
+def normalize_shot_input(raw: str | dict[str, Any]) -> dict[str, Any]:
+    """Accept dict or inline tier:description string."""
+    if isinstance(raw, str):
+        return parse_inline_shot(raw)
+    return dict(raw)
 
 
 def _now_iso() -> str:
@@ -378,7 +460,7 @@ def create_shot(
     cost = estimate_shot_cost({**shot, "recommended_mode": decision["mode"]})
     shot["recommended_mode"] = decision["mode"]
     shot["estimated_credits"] = cost["credits"]
-    return shot
+    return apply_reference_curator_models(shot)
 
 
 def plan_batch(
@@ -400,7 +482,9 @@ def plan_batch(
     retry_reserve = budget_credits * retry_reserve_pct
 
     enriched: list[dict[str, Any]] = []
-    for i, raw in enumerate(shots):
+    for i, item in enumerate(shots):
+        raw = normalize_shot_input(item)
+        apply_reference_curator_models(raw)
         if "shot_id" not in raw:
             raw = create_shot(
                 raw.get("description", f"Shot {i + 1}"),
@@ -417,6 +501,7 @@ def plan_batch(
             cost = estimate_shot_cost({**raw, "recommended_mode": decision["mode"]}, fast_mode=fast_mode)
             raw["recommended_mode"] = decision["mode"]
             raw["estimated_credits"] = cost["credits"]
+            apply_reference_curator_models(raw)
         enriched.append(raw)
 
     enriched.sort(key=lambda s: SHOT_TIERS.get(s.get("tier", "filler"), {}).get("priority", 99))

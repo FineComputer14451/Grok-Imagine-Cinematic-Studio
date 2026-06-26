@@ -49,8 +49,20 @@ python tools/cinematic_studio_cli.py models verify
 python tools/cinematic_studio_cli.py quota estimate --duration 60 --images 8
 ```
 
+## NSFW Tier Routing (ErosForge Batches)
+
+When `ACTIVATE EROSFORGE` + NSFW Quota Orchestrator is active, map **shot tiers** (not SFW asset tiers) to models via `tools/nsfw_orchestrator.py` (`NSFW_ASSET_MODEL_MAP`):
+
+| Shot Tier | Asset Tier | Image | Video |
+|-----------|------------|-------|-------|
+| `hero`, `key_explicit`, `consistency_anchor` | hero | `grok-imagine-image-quality` | `grok-imagine-video-1.5` |
+| `support` | standard | `grok-imagine-image` | `grok-imagine-video-1.5` |
+| `filler` | draft | `grok-imagine-image` | `grok-imagine-video` |
+
+Orchestrator applies routing automatically in `plan_batch()` and `create_shot()`. Publish manifest rows before i2v on key_explicit beats.
+
 ## Integration
 
 - **Upstream:** Character DNA Extractor, Production Designer
-- **Downstream:** I2I refiners, Image-to-Video Specialist, SFW Batch Orchestrator
+- **Downstream:** I2I refiners, Image-to-Video Specialist, SFW/NSFW Batch Orchestrator
 - **Never:** Skip tier assignment on hero shots to save credits (false economy)

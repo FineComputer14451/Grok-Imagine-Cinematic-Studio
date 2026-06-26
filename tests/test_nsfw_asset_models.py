@@ -1,0 +1,73 @@
+"""Tests for NSFW Reference Curator model routing."""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
+
+from nsfw_orchestrator import (  # noqa: E402
+    NSFW_ASSET_MODEL_MAP,
+    apply_reference_curator_models,
+    create_shot,
+    parse_inline_shot,
+    plan_batch,
+)
+
+
+def test_hero_tier_routes_image_quality() -> None:
+    shot = apply_reference_curator_models({"tier": "hero", "description": "Cover"})
+    assert shot["asset_tier"] == "hero"
+    assert shot["image_model"] == "grok-imagine-image-quality"
+    assert shot["video_model"] == "grok-imagine-video-1.5"
+    assert shot["image_quality"] is True
+
+
+def test_key_explicit_matches_hero_routing() -> None:
+    shot = apply_reference_curator_models({"tier": "key_explicit", "description": "Beat"})
+    mapping = NSFW_ASSET_MODEL_MAP["key_explicit"]
+    assert shot["image_model"] == mapping["image_model"]
+    assert shot["video_model"] == mapping["video_model"]
+
+
+def test_filler_uses_draft_video() -> None:
+    shot = apply_reference_curator_models({"tier": "filler", "description": "Mood"})
+    assert shot["asset_tier"] == "draft"
+    assert shot["video_model"] == "grok-imagine-video"
+    assert shot["image_quality"] is False
+
+
+def test_parse_inline_shot_three_part() -> None:
+    parsed = parse_inline_shot("key_explicit:high:Primary beat")
+    assert parsed["tier"] == "key_explicit"
+    assert parsed["motion_complexity"] == "high"
+    assert parsed["description"] == "Primary beat"
+
+
+def test_create_shot_includes_models() -> None:
+    shot = create_shot("Anchor close-up", tier="consistency_anchor")
+    assert shot["image_model"] == "grok-imagine-image-quality"
+    assert shot["asset_tier"] == "hero"
+
+
+def test_plan_batch_applies_routing() -> None:
+    batch = plan_batch(
+        "Test Session",
+        ["hero:Cover", "filler:Atmosphere"],
+        budget_credits=5000,
+    )
+    scheduled = {s["tier"]: s for s in batch["shots"] if s["status"] == "scheduled"}
+    assert scheduled["hero"]["image_model"] == "grok-imagine-image-quality"
+    assert scheduled["filler"]["video_model"] == "grok-imagine-video"
+
+
+if __name__ == "__main__":
+    test_hero_tier_routes_image_quality()
+    test_key_explicit_matches_hero_routing()
+    test_filler_uses_draft_video()
+    test_parse_inline_shot_three_part()
+    test_create_shot_includes_models()
+    test_plan_batch_applies_routing()
+    print("All NSFW asset model tests passed")
