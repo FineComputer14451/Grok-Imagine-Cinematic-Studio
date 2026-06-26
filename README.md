@@ -73,11 +73,12 @@ python tools/cinematic_studio_cli.py nsfw plan "Hero Session" --shot "hero:Cover
 Install the full **32-skill** suite as a Grok plugin:
 
 ```bash
-# Add this repo as a marketplace source
-grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio
+# Install directly from GitHub (simplest)
+grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
 
-# Install the cinematic studio plugin
-grok plugin install grok-imagine-cinematic-studio --trust
+# Or add as a marketplace source and install by name
+grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio
+grok plugin install grok-imagine-cinematic-studio@finecomputer14451/grok-imagine-cinematic-studio --trust
 
 # Optional: refresh after updates
 grok plugin marketplace update
