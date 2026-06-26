@@ -17,6 +17,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **CI workflow** — removed deprecated `agents/**` path filters and validation scan
 - **README.md** — comprehensive update for v3.6.5 (plugin marketplace, 44-skill suite, model stack everywhere, updated architecture/project structure, agent crew to v3.6.5, CLI/Web UI examples, links)
 - **Web UI** — migrated all Streamlit widgets (st.dataframe, st.button, st.form_submit_button) from deprecated `use_container_width=True` to `width="stretch"`. Added `str()` guard for dashboard health column for dataframe robustness. Affects dashboard, dna, imagine, nsfw, production, tools pages.
+- **Imagine 1.0 installed as default** — DEFAULT_IMAGINE_VIDEO_MODEL switched to `grok-imagine-video` (1.0, $0.05/sec); 1.5 remains available for native-audio. Updated models.py verify, web_ui, MODELS doc, and compatibility notes.
 
 ---
 

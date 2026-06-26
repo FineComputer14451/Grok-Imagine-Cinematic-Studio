@@ -94,7 +94,7 @@ except ImportError:
     IMAGINE_AVAILABLE = False
     REGIONS_AVAILABLE = False
     IMAGINE_REGIONS = {}
-    DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video-1.5"
+    DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video"
     DEFAULT_XAI_CHAT_MODEL = "grok-4.3"
     IMAGINE_VIDEO_MODELS = {}
     XAI_CHAT_MODELS = {}
@@ -159,6 +159,6 @@ def render_footer() -> None:
     st.divider()
     st.caption(
         f"Grok Imagine Cinematic Studio v{STUDIO_VERSION} · "
-        f"Grok 4.3 + Imagine 1.5 + Grok Build · "
+        f"Grok 4.3 + Imagine 1.0/1.5 + Grok Build · "
         f"Install: `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`"
     )

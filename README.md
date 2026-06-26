@@ -4,13 +4,13 @@
 
 # 🎬 Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native"
 
-**The most advanced multi-agent cinematic production system for Grok Build + Grok 4.3 + Grok Imagine Video 1.5**
+**The most advanced multi-agent cinematic production system for Grok Build + Grok 4.3 + Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
-Transform any story into emotionally powerful, production-ready cinematic video with **native 1.5 image-to-video**, one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
+Transform any story into emotionally powerful, production-ready cinematic video with **Imagine Video 1.0** ($0.05/sec) or **1.5 native image-to-video** with one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
 [![Version](https://img.shields.io/badge/version-3.6.5-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Grok](https://img.shields.io/badge/Grok-Build%20%2B%204.3%20%2B%201.5-purple)](https://x.ai)
+[![Grok](https://img.shields.io/badge/Grok-Build%20%2B%204.3%20%2B%20Imagine-purple)](https://x.ai)
 
 ---
 
@@ -38,7 +38,8 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 
 ### v3.6.5 — Plugin Marketplace, Model Verification & Refinements (2026-06)
 - **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (44 skills + commands) for `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
-- **`models verify`** CLI — validates full Grok 4.3 + Imagine Video 1.5 + Grok Build registry compatibility
+- **Imagine 1.0 as default** — `grok-imagine-video` ($0.05/sec); 1.5 remains available for native-audio workflows
+- **`models verify`** CLI — validates full Grok 4.3 + Imagine 1.0/1.5 + Grok Build registry compatibility
 - **CLI modularization** — extracted `tools/cli/{models,bible,studio,production,...}_commands.py`; slimmer main entrypoint
 - **Canonical project state** — `tools/project_state.py` with auto-merge legacy support
 - **Model stack everywhere** — `VIDEO_PIPELINE_SPEC` + `model_stack_summary()` wired into CLI, Web UI, DNA/sequence handoffs, Production Bibles
@@ -74,7 +75,7 @@ python tools/cinematic_studio_cli.py sequence init "Neon Alley Chase" --duration
 python tools/cinematic_studio_cli.py models list
 python tools/cinematic_studio_cli.py models verify
 python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --fast-mode
-python tools/cinematic_studio_cli.py generate-prompt "Your story" --chat-model grok-4.3 --video-model 1.5
+python tools/cinematic_studio_cli.py generate-prompt "Your story" --chat-model grok-4.3 --video-model 1.0
 python tools/cinematic_studio_cli.py nsfw extend plan "Intimate Sequence" --duration 90 --profile passionate --reference "..."
 python tools/cinematic_studio_cli.py nsfw plan "Hero Session" --shot "hero:Cover frame" --budget 800
 ```

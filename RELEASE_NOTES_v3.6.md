@@ -14,6 +14,7 @@
 - **Web UI Streamlit fixes** — migrated all `use_container_width=True` (dataframes, buttons, forms) to `width="stretch"` for newer Streamlit compatibility; minor robustness update in dashboard
 - **CHANGELOG.md** updated with detailed entries for 3.6.5 and post-release refinements
 - **Repo hygiene** — removed deprecated `agents/` dir and stale mirrors; canonical Role Cards stay in `references/agents/`
+- **Imagine 1.0 as default** — `DEFAULT_IMAGINE_VIDEO_MODEL` switched to `grok-imagine-video` ($0.05/sec); 1.5 remains for native-audio
 - **Model stack & CLI** — full wiring of `VIDEO_PIPELINE_SPEC`, `models verify` CLI, refactored `tools/cli/`, canonical project state
 - See [3.6.5] section in `CHANGELOG.md` for the core model registry, CLI modularization, Web UI model pickers, Role Card updates, etc.
 

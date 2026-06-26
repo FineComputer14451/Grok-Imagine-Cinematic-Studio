@@ -1,10 +1,10 @@
 # Grok Imagine Cinematic Studio v3.6
 
-**The most advanced multi-agent cinematic production system for Grok Build + Grok 4.3 + Grok Imagine Video 1.5 Native**
+**The most advanced multi-agent cinematic production system for Grok Build + Grok 4.3 + Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
 **Version:** 3.6.4 "Odyssey Native" (June 2026)  
 **Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
-**Key Improvements:** Full native integration with Grok Imagine Video 1.5 (image-to-video, one-pass native audio, improved physics/consistency/stitching), Grok 4.3 Full exploitation (1M token context, structured outputs, configurable reasoning, native PDF export, cross-chat memory), enhanced Video Pipeline protocols, AUDIO_MOMENTUM_VECTOR, 1.5-optimized prompt schemas, updated cost simulation for per-second video pricing.
+**Key Improvements:** Grok Imagine Video support (1.0 default at $0.05/sec; 1.5 for native audio at $0.08/sec), Grok 4.3 Full exploitation (1M token context, structured outputs, configurable reasoning, native PDF export, cross-chat memory), enhanced Video Pipeline protocols, AUDIO_MOMENTUM_VECTOR (for 1.5), optimized prompt schemas, updated cost simulation for per-second video pricing.
 
 ---
 
@@ -24,8 +24,8 @@
 ### Method 1: CLI (Recommended for Power Users)
 ```bash
 python tools/cinematic_studio_cli.py models list
-python tools/cinematic_studio_cli.py generate-prompt "Your story here" --signature villeneuve --chat-model grok-4.3 --video-model 1.5
-python tools/cinematic_studio_cli.py create-bible --title "Project Name" --genre "Sci-Fi" --video-pipeline 1.5
+python tools/cinematic_studio_cli.py generate-prompt "Your story here" --signature villeneuve --chat-model grok-4.3 --video-model 1.0
+python tools/cinematic_studio_cli.py create-bible --title "Project Name" --genre "Sci-Fi" --video-pipeline 1.0
 ```
 
 ### Method 2: Web UI (Best Visual Experience)
@@ -33,7 +33,7 @@ python tools/cinematic_studio_cli.py create-bible --title "Project Name" --genre
 pip install -r requirements-streamlit.txt
 streamlit run web_ui/app.py
 ```
-(Now includes Imagine Model selector: 1.5 Native (default), resolution, duration, native audio toggle, real-time 1.5 cost simulator)
+(Now includes Imagine Model selector: 1.0 (default, cost-effective), 1.5 Native (for audio), resolution, duration, native audio toggle, real-time cost simulator)
 
 ### Method 3: Full Activation Prompt (Classic — Updated for v3.6)
 1. Copy this entire prompt (or the new `MASTER_PROMPT_v3.6.md`)
@@ -128,7 +128,7 @@ Use natural commands like:
 ### 2. Project Bible & Locked Variables
 All critical information is stored as `[VARIABLE_NAME: detailed specifications]`. These must be referenced verbatim in every prompt and handoff.
 
-**New for v3.6:** `[VIDEO_PIPELINE_SPEC: model="grok-imagine-video-1.5", resolution="720p", clip_length="8-12s preferred", native_audio=true, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]`
+**New for v3.6:** `[VIDEO_PIPELINE_SPEC: model="grok-imagine-video", resolution="720p", clip_length="8-12s preferred", native_audio=false, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]` (1.0 default; swap to 1.5 for native audio)
 
 ### 3. Handoff Packet Protocol (v3.6)
 Agents communicate using structured packets containing:
@@ -161,7 +161,7 @@ Canonical slugs in `tools/models.py` and `references/MODELS_v3.6.md`:
 | Grok Build fork | `grok-build` | Code, skills, repo tooling |
 | xAI Chat | `grok-4.3` | 1M context, Production Bibles |
 | xAI Build API | `grok-build-0.1` | Agentic workflows, automation |
-| Imagine Video | `grok-imagine-video-1.5` | Native audio ($0.08/sec) |
+| Imagine Video | `grok-imagine-video` (1.0 default) | $0.05/sec (1.5 for native audio $0.08/sec) |
 | Imagine Image | `grok-imagine-image` | Reference stills ($0.02/image) |
 
 - Prefer structured outputs / JSON for handoffs and bibles when complex

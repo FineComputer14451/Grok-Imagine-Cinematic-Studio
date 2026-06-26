@@ -194,7 +194,7 @@ python tools/cinematic_studio_cli.py models verify
 | Grok Build fork | `grok-build` | Code, skills, repo tooling |
 | xAI Chat API | `grok-4.3` | Cinematic orchestration, 1M context |
 | xAI Build API | `grok-build-0.1` | Agentic/coding automation |
-| Imagine Video | `grok-imagine-video-1.5` | Native audio video ($0.08/sec) |
+| Imagine Video | `grok-imagine-video` (1.0 default) | $0.05/sec (1.5 available for native audio at $0.08/sec) |
 | Imagine Image | `grok-imagine-image` | Reference stills ($0.02/image) |
 
 Local config: `~/.grok/config.toml` sets `fork_secondary_model = "grok-build"`.
@@ -206,7 +206,7 @@ Local config: `~/.grok/config.toml` sets `fork_secondary_model = "grok-build"`.
 - Persistent state and custom skills live in `/home/workdir/.grok/skills/`.
 - Grok plugin marketplace lives in `.grok-plugin/` (marketplace.json, plugin.json, plugin-index.json with 44 skills + 11 commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - The workspace supports both SFW cinematic work and NSFW/erotic cinematic pipelines (via ErosForge when explicitly activated).
-- Model stack (grok-4.3 / grok-build-0.1 / grok-imagine-video-1.5) and `VIDEO_PIPELINE_SPEC` are now wired everywhere (CLI, Web UI, handoffs, Production Bibles, Role Cards).
+- Model stack (grok-4.3 / grok-build-0.1 / grok-imagine-video 1.0 default) and `VIDEO_PIPELINE_SPEC` are now wired everywhere (CLI, Web UI, handoffs, Production Bibles, Role Cards). 1.5 available for native-audio workflows.
 - Recent 3.6.5 work: plugin support, CLI refactor + `models verify`, Web UI Streamlit modernization (`width="stretch"`), repo hygiene (deprecated `agents/` removed), docs refresh (README, CHANGELOG, RELEASE_NOTES_v3.6.md, AGENTS.md).
 - Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, RELEASE_NOTES_v3.6.md).
 

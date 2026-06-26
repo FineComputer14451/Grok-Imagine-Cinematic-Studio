@@ -60,7 +60,7 @@ def models_list():
 
 @models_app.command("verify")
 def models_verify():
-    """Verify Grok 4.3 + Imagine 1.5 + Grok Build model compatibility."""
+    """Verify Grok 4.3 + Imagine 1.0/1.5 + Grok Build model compatibility."""
     result = verify_model_compatibility()
     stack = result["model_stack"]
     if result["compatible"]:
@@ -71,7 +71,7 @@ def models_verify():
             f"xAI Chat: {stack['xai_chat']} | Build API: {stack['xai_build']}\n"
             f"Imagine Video: {stack['imagine_video']} | Image: {stack['imagine_image']}\n\n"
             f"{result['video_pipeline_spec']}",
-            title="Grok 4.3 + Imagine 1.5 + Grok Build",
+            title="Grok 4.3 + Imagine 1.0/1.5 + Grok Build",
             border_style="green",
         ))
     else:

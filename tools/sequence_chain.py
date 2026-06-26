@@ -28,7 +28,7 @@ SCHEMA_VERSION = "1.0"
 DEFAULT_PIPELINE = {
     "model": DEFAULT_IMAGINE_VIDEO_MODEL,
     "resolution": "720p",
-    "native_audio": True,
+    "native_audio": False,
     "clip_length_preferred": "8-12s",
     "extend_protocol": "LAST_FRAME + MOTION_VECTOR + AUDIO_CUE",
     "stitch_priority": "high",
@@ -281,8 +281,8 @@ def build_extend_prompt(
         lines.append("")
 
     lines += [
-        f"[VIDEO_PIPELINE_SPEC: model=\"{pipeline.get('model', 'grok-imagine-video-1.5')}\", "
-        f"resolution=\"{pipeline.get('resolution', '720p')}\", native_audio={str(pipeline.get('native_audio', True)).lower()}, "
+        f"[VIDEO_PIPELINE_SPEC: model=\"{pipeline.get('model', DEFAULT_IMAGINE_VIDEO_MODEL)}\", "
+        f"resolution=\"{pipeline.get('resolution', '720p')}\", native_audio={str(pipeline.get('native_audio', False)).lower()}, "
         f"extend_from_last=true, stitch_to_previous=true]",
         "",
         f"LAST_FRAME_RECAP: {handoff['last_frame_recap']}",

@@ -38,18 +38,18 @@ fork_secondary_model = "grok-build"
 
 | Slug | Cost | Native Audio | Modalities |
 |------|------|--------------|------------|
-| `grok-imagine-video-1.5` | **$0.080 / sec** | Yes (one-pass) | image → video |
-| `grok-imagine-video` | $0.050 / sec | No | text, image, video → video |
+| `grok-imagine-video` | **$0.050 / sec** | No | text, image, video → video |
+| `grok-imagine-video-1.5` | $0.080 / sec | Yes (one-pass) | image → video |
 
+**1.0 aliases (studio shorthand):** `imagine-video`, `video-1.0`, `1.0`  
 **1.5 aliases (xAI API):** `grok-imagine-video-1.5-preview`, `grok-imagine-video-1.5-2026-05-30`  
-**1.5 aliases (studio shorthand):** `imagine-video-1.5`, `video-1.5`, `1.5`, `1.5-preview`, `preview`  
-**1.0 aliases:** `imagine-video`, `video-1.0`, `1.0`
+**1.5 aliases (studio shorthand):** `imagine-video-1.5`, `video-1.5`, `1.5`, `1.5-preview`, `preview`
 
 **Regions:** `us-east-1`, `eu-west-1`, `us-west-2` (both models)
 
 **VIDEO_PIPELINE_SPEC default:**
 ```
-[VIDEO_PIPELINE_SPEC: model="grok-imagine-video-1.5", resolution="720p", ...]
+[VIDEO_PIPELINE_SPEC: model="grok-imagine-video", resolution="720p", ...]
 ```
 
 ---
@@ -98,6 +98,8 @@ python tools/cinematic_studio_cli.py quota estimate --duration 90 --video-model 
 |------|-------|
 | Activate cinematic studio in Grok chat | `grok-4.3` |
 | Run repo scripts / skill development | `grok-build` (CLI) or `grok-build-0.1` (API) |
+| Default video generation (cost-effective) | `grok-imagine-video` (1.0) |
+| Native-audio video (1.5 features) | `grok-imagine-video-1.5` |
 | Generate 1.5 video with native audio | `grok-imagine-video-1.5` |
 | Draft iteration (lower cost) | `grok-imagine-video` or Fast mode strategy |
 | Hero keyframes | `grok-imagine-image-quality` |

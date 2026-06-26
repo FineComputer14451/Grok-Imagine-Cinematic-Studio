@@ -18,7 +18,12 @@ from models import (  # noqa: E402
 
 
 def test_default_video_model() -> None:
-    assert DEFAULT_IMAGINE_VIDEO_MODEL == "grok-imagine-video-1.5"
+    assert DEFAULT_IMAGINE_VIDEO_MODEL == "grok-imagine-video"
+
+
+def test_studio_shorthand_aliases_resolve() -> None:
+    for alias in ("1.0", "video-1.0", "imagine-video"):
+        assert resolve_video_model(alias) == "grok-imagine-video"
 
 
 def test_xai_api_aliases_resolve() -> None:
@@ -46,6 +51,7 @@ def test_model_compatibility() -> None:
 
 if __name__ == "__main__":
     test_default_video_model()
+    test_studio_shorthand_aliases_resolve()
     test_xai_api_aliases_resolve()
     test_pricing_table_matches_registry()
     test_model_compatibility()

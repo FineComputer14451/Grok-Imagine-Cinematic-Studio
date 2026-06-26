@@ -26,7 +26,7 @@ def test_hero_tier_routes_image_quality() -> None:
     shot = apply_reference_curator_models({"tier": "hero", "description": "Cover"})
     assert shot["asset_tier"] == "hero"
     assert shot["image_model"] == "grok-imagine-image-quality"
-    assert shot["video_model"] == "grok-imagine-video-1.5"
+    assert shot["video_model"] == "grok-imagine-video"
     assert shot["image_quality"] is True
 
 

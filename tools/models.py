@@ -69,7 +69,7 @@ IMAGINE_VIDEO_MODELS: dict[str, dict[str, Any]] = {
         "modalities": "image → video",
         "version_date": "2026-05-30",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
-        "default": True,
+        "default": False,
         "aliases": [
             "grok-imagine-video-1.5-preview",
             "grok-imagine-video-1.5-2026-05-30",
@@ -86,7 +86,7 @@ IMAGINE_VIDEO_MODELS: dict[str, dict[str, Any]] = {
         "native_audio": False,
         "modalities": "text, image, video → video",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
-        "default": False,
+        "default": True,
         "aliases": ["imagine-video", "video-1.0", "1.0"],
     },
 }
@@ -124,10 +124,10 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
     },
 }
 
-DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video-1.5"
+DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video"
 DEFAULT_IMAGINE_IMAGE_MODEL = "grok-imagine-image"
 
-# Studio compatibility target (Grok 4.3 + Imagine 1.5 + Grok Build)
+# Studio compatibility target (Grok 4.3 + Imagine 1.0/1.5 + Grok Build)
 STUDIO_COMPATIBILITY_VERSION = "3.6.5"
 REQUIRED_MODEL_SLUGS = (
     DEFAULT_GROK_BUILD_MODEL,
@@ -228,19 +228,20 @@ def model_stack_summary(
 
 
 def verify_model_compatibility() -> dict[str, Any]:
-    """Validate canonical model registry for Grok 4.3 + Imagine 1.5 + Grok Build."""
+    """Validate canonical model registry for Grok 4.3 + Imagine 1.0/1.5 + Grok Build."""
     issues: list[str] = []
     stack = model_stack_summary()
 
     if DEFAULT_XAI_CHAT_MODEL != "grok-4.3":
         issues.append(f"DEFAULT_XAI_CHAT_MODEL must be grok-4.3 (got {DEFAULT_XAI_CHAT_MODEL})")
-    if DEFAULT_IMAGINE_VIDEO_MODEL != "grok-imagine-video-1.5":
+    if DEFAULT_IMAGINE_VIDEO_MODEL not in ("grok-imagine-video-1.5", "grok-imagine-video"):
         issues.append(
-            f"DEFAULT_IMAGINE_VIDEO_MODEL must be grok-imagine-video-1.5 "
+            f"DEFAULT_IMAGINE_VIDEO_MODEL must be grok-imagine-video-1.5 or grok-imagine-video "
             f"(got {DEFAULT_IMAGINE_VIDEO_MODEL})"
         )
-    if not IMAGINE_VIDEO_MODELS[DEFAULT_IMAGINE_VIDEO_MODEL].get("native_audio"):
-        issues.append("Default Imagine video model must support native_audio")
+    # 1.0 does not support native_audio; only enforce for 1.5 default
+    if DEFAULT_IMAGINE_VIDEO_MODEL == "grok-imagine-video-1.5" and not IMAGINE_VIDEO_MODELS[DEFAULT_IMAGINE_VIDEO_MODEL].get("native_audio"):
+        issues.append("Default Imagine video model (1.5) must support native_audio")
     if resolve_chat_model("grok-4") != "grok-4.3":
         issues.append("Alias grok-4 must resolve to grok-4.3")
     if resolve_chat_model("grok-build") != "grok-build-0.1":
@@ -251,6 +252,10 @@ def verify_model_compatibility() -> dict[str, Any]:
         issues.append("Alias grok-imagine-video-1.5-preview must resolve to grok-imagine-video-1.5")
     if resolve_video_model("grok-imagine-video-1.5-2026-05-30") != "grok-imagine-video-1.5":
         issues.append("Alias grok-imagine-video-1.5-2026-05-30 must resolve to grok-imagine-video-1.5")
+    if resolve_video_model("1.0") != "grok-imagine-video":
+        issues.append("Alias 1.0 must resolve to grok-imagine-video")
+    if resolve_video_model("video-1.0") != "grok-imagine-video":
+        issues.append("Alias video-1.0 must resolve to grok-imagine-video")
     if resolve_image_model("grok-imagine-image-2026-03-02") != "grok-imagine-image":
         issues.append("Alias grok-imagine-image-2026-03-02 must resolve to grok-imagine-image")
     if resolve_image_model("grok-imagine-image-pro") != "grok-imagine-image-quality":
@@ -259,8 +264,9 @@ def verify_model_compatibility() -> dict[str, Any]:
         issues.append("Alias grok-imagine-image-quality-latest must resolve to grok-imagine-image-quality")
 
     spec = build_video_pipeline_spec()
-    if "grok-imagine-video-1.5" not in spec:
-        issues.append("VIDEO_PIPELINE_SPEC must reference grok-imagine-video-1.5 by default")
+    default_slug = DEFAULT_IMAGINE_VIDEO_MODEL
+    if default_slug not in spec:
+        issues.append(f"VIDEO_PIPELINE_SPEC must reference {default_slug} by default")
 
     return {
         "compatible": len(issues) == 0,
