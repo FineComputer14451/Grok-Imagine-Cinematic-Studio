@@ -33,7 +33,8 @@ def render() -> None:
             index=sess.select_index(video_models, st.session_state.video_model),
             format_func=lambda s: (
                 f"{rt.IMAGINE_VIDEO_MODELS[s]['label']} "
-                f"(${rt.IMAGINE_VIDEO_MODELS[s]['usd_per_second']}/sec)"
+                f"(${rt.IMAGINE_VIDEO_MODELS[s]['usd_per_second']}/sec"
+                f"{', native audio' if rt.IMAGINE_VIDEO_MODELS[s].get('native_audio') else ''})"
             ),
         )
         st.session_state.chat_model = st.selectbox(

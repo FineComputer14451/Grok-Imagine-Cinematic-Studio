@@ -36,7 +36,14 @@ def models_list():
         table.add_row("xAI Chat", slug + default, f"{info['label']} — ${info['input_usd_per_1m']}/${info['output_usd_per_1m']} per 1M")
     for slug, info in IMAGINE_VIDEO_MODELS.items():
         default = " (default)" if info.get("default") else ""
-        table.add_row("Imagine Video", slug + default, f"{info['label']} — ${info['usd_per_second']}/sec")
+        audio = " + native audio" if info.get("native_audio") else ""
+        aliases = ", ".join(info.get("aliases", [])[:3])
+        if len(info.get("aliases", [])) > 3:
+            aliases += ", …"
+        detail = f"{info['label']} — ${info['usd_per_second']}/sec{audio}"
+        if aliases:
+            detail += f"\n[dim]aliases: {aliases}[/dim]"
+        table.add_row("Imagine Video", slug + default, detail)
     for slug, info in IMAGINE_IMAGE_MODELS.items():
         default = " (default)" if info.get("default") else ""
         table.add_row("Imagine Image", slug + default, f"{info['label']} — ${info['usd_per_image']}/image")

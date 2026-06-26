@@ -36,12 +36,16 @@ fork_secondary_model = "grok-build"
 
 ## Grok Imagine Video
 
-| Slug | Cost | Native Audio |
-|------|------|--------------|
-| `grok-imagine-video-1.5` | **$0.080 / sec** | Yes (one-pass) |
-| `grok-imagine-video` | $0.050 / sec | No |
+| Slug | Cost | Native Audio | Modalities |
+|------|------|--------------|------------|
+| `grok-imagine-video-1.5` | **$0.080 / sec** | Yes (one-pass) | image → video |
+| `grok-imagine-video` | $0.050 / sec | No | text, image, video → video |
 
-**Aliases:** `imagine-video-1.5`, `1.5`, `video-1.5`
+**1.5 aliases (xAI API):** `grok-imagine-video-1.5-preview`, `grok-imagine-video-1.5-2026-05-30`  
+**1.5 aliases (studio shorthand):** `imagine-video-1.5`, `video-1.5`, `1.5`, `1.5-preview`, `preview`  
+**1.0 aliases:** `imagine-video`, `video-1.0`, `1.0`
+
+**Regions:** `us-east-1`, `eu-west-1`, `us-west-2` (both models)
 
 **VIDEO_PIPELINE_SPEC default:**
 ```

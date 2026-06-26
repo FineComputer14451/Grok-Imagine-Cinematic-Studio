@@ -66,13 +66,26 @@ IMAGINE_VIDEO_MODELS: dict[str, dict[str, Any]] = {
         "label": "Imagine Video 1.5",
         "usd_per_second": 0.080,
         "native_audio": True,
+        "modalities": "image → video",
+        "version_date": "2026-05-30",
+        "regions": ["us-east-1", "eu-west-1", "us-west-2"],
         "default": True,
-        "aliases": ["imagine-video-1.5", "video-1.5", "1.5"],
+        "aliases": [
+            "grok-imagine-video-1.5-preview",
+            "grok-imagine-video-1.5-2026-05-30",
+            "imagine-video-1.5",
+            "video-1.5",
+            "1.5",
+            "1.5-preview",
+            "preview",
+        ],
     },
     "grok-imagine-video": {
         "label": "Imagine Video 1.0",
         "usd_per_second": 0.050,
         "native_audio": False,
+        "modalities": "text, image, video → video",
+        "regions": ["us-east-1", "eu-west-1", "us-west-2"],
         "default": False,
         "aliases": ["imagine-video", "video-1.0", "1.0"],
     },
@@ -216,6 +229,10 @@ def verify_model_compatibility() -> dict[str, Any]:
         issues.append("Alias grok-build must resolve to grok-build-0.1")
     if resolve_video_model("1.5") != "grok-imagine-video-1.5":
         issues.append("Alias 1.5 must resolve to grok-imagine-video-1.5")
+    if resolve_video_model("grok-imagine-video-1.5-preview") != "grok-imagine-video-1.5":
+        issues.append("Alias grok-imagine-video-1.5-preview must resolve to grok-imagine-video-1.5")
+    if resolve_video_model("grok-imagine-video-1.5-2026-05-30") != "grok-imagine-video-1.5":
+        issues.append("Alias grok-imagine-video-1.5-2026-05-30 must resolve to grok-imagine-video-1.5")
 
     spec = build_video_pipeline_spec()
     if "grok-imagine-video-1.5" not in spec:
@@ -229,6 +246,19 @@ def verify_model_compatibility() -> dict[str, Any]:
         "required_slugs": list(REQUIRED_MODEL_SLUGS),
         "issues": issues,
     }
+
+
+def imagine_video_pricing_table() -> dict[str, dict[str, float]]:
+    """USD/sec rates keyed by canonical video slug (for quota optimizer sync)."""
+    return {
+        slug: {"usd_per_second": info["usd_per_second"]}
+        for slug, info in IMAGINE_VIDEO_MODELS.items()
+    }
+
+
+def list_video_model_aliases() -> dict[str, list[str]]:
+    """Canonical slug → all accepted aliases (studio + xAI API)."""
+    return {slug: list(info.get("aliases", [])) for slug, info in IMAGINE_VIDEO_MODELS.items()}
 
 
 def list_all_models() -> dict[str, Any]:

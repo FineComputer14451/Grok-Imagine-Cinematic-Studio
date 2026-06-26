@@ -18,7 +18,9 @@ from typing import Any
 from models import (
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
+    IMAGINE_IMAGE_MODELS,
     USD_PER_CREDIT,
+    imagine_video_pricing_table,
     image_usd_per_image,
     resolve_image_model,
     resolve_video_model,
@@ -34,13 +36,10 @@ SCHEMA_VERSION = "1.1"
 # xAI Imagine pricing (June 2026) — configurable via .quota_config.json
 # Credits derived from USD at usd_per_credit ($0.01/credit).
 DEFAULT_PRICING = {
-    "imagine_video": {
-        "grok-imagine-video-1.5": {"usd_per_second": 0.080},
-        "grok-imagine-video": {"usd_per_second": 0.050},
-    },
+    "imagine_video": imagine_video_pricing_table(),
     "imagine_image": {
-        "grok-imagine-image": {"usd_per_image": 0.02},
-        "grok-imagine-image-quality": {"usd_per_image": 0.05},
+        slug: {"usd_per_image": info["usd_per_image"]}
+        for slug, info in IMAGINE_IMAGE_MODELS.items()
     },
     "default_video_model": DEFAULT_IMAGINE_VIDEO_MODEL,
     "default_image_model": DEFAULT_IMAGINE_IMAGE_MODEL,
