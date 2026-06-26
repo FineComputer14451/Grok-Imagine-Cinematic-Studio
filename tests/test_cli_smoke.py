@@ -25,6 +25,7 @@ def test_main_help() -> None:
     assert "dna" in result.stdout
     assert "sequence" in result.stdout
     assert "quota" in result.stdout
+    assert "dashboard" in result.stdout
     assert "memory" in result.stdout
 
 

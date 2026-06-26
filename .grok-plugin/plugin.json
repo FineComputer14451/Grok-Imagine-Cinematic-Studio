@@ -66,6 +66,7 @@
   ],
   "commands": [
     "commands/cinematic.md",
+    "commands/dashboard.md",
     "commands/dna.md",
     "commands/nsfw.md",
     "commands/quota.md",

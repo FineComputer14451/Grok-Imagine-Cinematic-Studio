@@ -12,6 +12,12 @@ from rich.table import Table
 
 from models import model_stack_summary
 
+from cli.dashboard import (
+    build_studio_dashboard,
+    dashboard_renderables,
+    render_dashboard_json,
+    render_studio_dashboard,
+)
 from cli.shared import (
     AGENTS,
     STUDIO_VERSION,
@@ -25,6 +31,36 @@ from cli.shared import (
 
 def register(app: typer.Typer) -> None:
     """Register studio overview commands on the root CLI app."""
+
+    @app.command()
+    def dashboard(
+        json_output: bool = typer.Option(False, "--json", help="Emit machine-readable JSON"),
+        compact: bool = typer.Option(False, "--compact", "-c", help="Summary panels only"),
+        watch: bool = typer.Option(False, "--watch", "-w", help="Live refresh"),
+        interval: float = typer.Option(5.0, "--interval", "-i", help="Refresh seconds (--watch)"),
+    ):
+        """Unified studio dashboard — health, quota, sequences, DNA, and batches."""
+        if watch:
+            import time
+
+            from rich.live import Live
+
+            with Live(console=console, refresh_per_second=4, screen=False) as live:
+                while True:
+                    snapshot = build_studio_dashboard()
+                    if json_output:
+                        import json
+
+                        live.update(json.dumps(snapshot, indent=2))
+                    else:
+                        live.update(dashboard_renderables(snapshot, compact=compact))
+                    time.sleep(max(1.0, interval))
+        else:
+            snapshot = build_studio_dashboard()
+            if json_output:
+                render_dashboard_json(snapshot)
+            else:
+                render_studio_dashboard(snapshot, compact=compact)
 
     @app.command()
     def status():
