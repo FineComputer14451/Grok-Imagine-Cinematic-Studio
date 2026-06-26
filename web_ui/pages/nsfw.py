@@ -26,8 +26,8 @@ def render() -> None:
     if not _gate():
         return
 
-    tab_batch, tab_queue, tab_tools, tab_extend, tab_report = st.tabs(
-        ["Batch plan", "Queue", "Decide / retry", "Extension", "Daily report"]
+    tab_batch, tab_queue, tab_execute, tab_tools, tab_extend, tab_report = st.tabs(
+        ["Batch plan", "Queue", "Execute", "Decide / retry", "Extension", "Daily report"]
     )
 
     with tab_batch:
@@ -107,6 +107,53 @@ def render() -> None:
                     st.error(str(exc))
             else:
                 st.warning("Enter a batch slug.")
+
+    with tab_execute:
+        st.subheader("Batch shot execute")
+        st.caption("Generate next NSFW shots via Imagine API, preview, record QA.")
+        batches = nr.list_batches()
+        batch_slugs = [b.get("slug") or b.get("batch_id", "") for b in batches]
+        sel = st.selectbox("Batch", batch_slugs or ["(none)"], key="nsfw_exec_batch")
+        if sel and sel != "(none)":
+            try:
+                next_shots = nr.next_shots(sel, count=8)
+            except Exception:
+                next_shots = []
+            if next_shots:
+                opts = {s["shot_id"]: s for s in next_shots}
+                shot_id = st.selectbox(
+                    "Next shot",
+                    list(opts.keys()),
+                    format_func=lambda sid: (
+                        f"{sid} · {opts[sid].get('tier')} · "
+                        f"{opts[sid].get('decision', {}).get('mode', opts[sid].get('recommended_mode', ''))}"
+                    ),
+                    key="nsfw_exec_shot",
+                )
+                shot = opts[shot_id]
+                st.markdown(
+                    f"**Models:** `{shot.get('image_model')}` → `{shot.get('video_model')}` · "
+                    f"**Est.:** ~{shot.get('cost_estimate', {}).get('credits', '?')} cr"
+                )
+                c1, c2 = st.columns(2)
+                dry = c1.checkbox("Dry-run", value=True, key="nsfw_exec_dry")
+                session_n = c2.number_input("Session count", 1, 5, 1, key="nsfw_sess_n")
+                if st.button("Generate shot", key="nsfw_exec_gen"):
+                    try:
+                        result = nr.run_nsfw_shot(sel, shot_id, dry_run=dry)
+                        st.session_state["nsfw_exec_result"] = result
+                        st.success(f"Job {result['job_id']}")
+                    except Exception as exc:
+                        st.error(str(exc))
+                if st.button("Run session", key="nsfw_sess_btn"):
+                    summary = nr.run_nsfw_session(sel, count=int(session_n), dry_run=dry)
+                    st.json(summary)
+                if st.session_state.get("nsfw_exec_result", {}).get("shot_id") == shot_id:
+                    url = st.session_state["nsfw_exec_result"].get("result_url")
+                    if url:
+                        st.link_button("Open result", url)
+            else:
+                st.caption("No pending shots.")
 
     with tab_tools:
         st.subheader("Generation mode decision")

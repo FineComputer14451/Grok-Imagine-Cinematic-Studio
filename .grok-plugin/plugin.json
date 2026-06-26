@@ -66,6 +66,7 @@
     ".grok/skills/workflow-quota-optimizer"
   ],
   "commands": [
+    "commands/automation.md",
     "commands/cinematic.md",
     "commands/dashboard.md",
     "commands/delivery.md",

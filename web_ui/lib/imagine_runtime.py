@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from batch_runner import execute_shot
+from batch_runner import execute_sfw_shot
 from imagine_bridge import bridge_to_clipboard, bridge_to_markdown, build_bridge_packet
 from imagine_client import is_dry_run
 from imagine_jobs import (
@@ -62,7 +62,7 @@ def run_sfw_shot(
     prompt: str | None = None,
 ) -> dict[str, Any]:
     batch = load_sfw_batch(batch_slug)
-    return execute_shot(batch, shot_id, dry_run=dry_run, prompt_override=prompt)
+    return execute_sfw_shot(batch, shot_id, dry_run=dry_run, prompt_override=prompt)
 
 
 def record_sfw_shot(

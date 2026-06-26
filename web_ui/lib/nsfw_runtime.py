@@ -28,7 +28,9 @@ from nsfw_sequence_extender import (
     plan_nsfw_extension,
     save_nsfw_sequence,
 )
+from batch_runner import execute_nsfw_shot
 from project_state import load_project_state
+from session_runner import run_batch_session as _run_batch_session
 
 # Re-export canonical option lists for Streamlit widgets
 SHOT_TIER_OPTIONS = list(SHOT_TIER_OPTIONS)
@@ -136,3 +138,23 @@ def plan_extension(
 
 def save_extension(seq: dict[str, Any]) -> str:
     return str(save_nsfw_sequence(seq))
+
+
+def run_nsfw_shot(
+    batch_slug: str,
+    shot_id: str,
+    *,
+    dry_run: bool = False,
+    prompt: str | None = None,
+) -> dict[str, Any]:
+    batch = load_batch(batch_slug)
+    return execute_nsfw_shot(batch, shot_id, dry_run=dry_run, prompt_override=prompt)
+
+
+def run_nsfw_session(
+    batch_slug: str,
+    *,
+    count: int = 3,
+    dry_run: bool = False,
+) -> dict[str, Any]:
+    return _run_batch_session(batch_slug, pipeline="nsfw", count=count, dry_run=dry_run)

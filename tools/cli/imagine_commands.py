@@ -6,6 +6,7 @@ import json
 
 import typer
 from rich import box
+from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
@@ -20,7 +21,9 @@ from imagine_client import (
     submit_video_generation,
 )
 from imagine_jobs import cancel_job, create_job, get_job, job_summary, list_jobs, transition_job
+from artifact_pipeline import artifacts_summary, list_artifacts, register_artifact_from_job
 from imagine_bridge import bridge_to_clipboard, bridge_to_markdown, build_bridge_packet
+from production_report import build_production_report, report_to_markdown
 from imagine_regions import IMAGINE_REGIONS, get_active_region, get_failover_chain, set_imagine_region
 from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL, verify_model_compatibility
 from sequence_chain import get_clip, load_sequence, find_sequence
@@ -326,3 +329,62 @@ def register(app: typer.Typer) -> None:
         else:
             console.print("[red]Provide --batch or --sequence + --clip[/red]")
             raise typer.Exit(1)
+
+
+    @app.command("artifact")
+    def imagine_artifact(
+        job_id: str = typer.Argument(..., help="Imagine job ID"),
+        download: bool = typer.Option(False, "--download", help="Attempt URL download"),
+    ):
+        """Register job output in artifact pipeline."""
+        try:
+            entry = register_artifact_from_job(job_id, download=download)
+        except (KeyError, ValueError) as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+        console.print(Panel(
+            f"Job: {entry['job_id']}\n"
+            f"URL: {entry['result_url']}\n"
+            f"Manifest: {entry['local_path']}.manifest.json\n"
+            f"Downloaded: {entry.get('downloaded', False)}",
+            title="Artifact Registered",
+            border_style="green",
+        ))
+
+
+    @app.command("artifacts")
+    def imagine_artifacts(
+        limit: int = typer.Option(15, "--limit", "-n"),
+    ):
+        """List registered generation artifacts."""
+        summary = artifacts_summary()
+        entries = list_artifacts(limit=limit)
+        table = Table(title="Generation Artifacts", box=box.SIMPLE)
+        table.add_column("Shot/Clip", style="cyan")
+        table.add_column("Pipeline")
+        table.add_column("Downloaded")
+        table.add_column("Path", style="dim")
+        for e in entries:
+            table.add_row(
+                e.get("shot_id") or e.get("clip_id") or "—",
+                e.get("pipeline") or "—",
+                str(e.get("downloaded", False)),
+                (e.get("local_path") or "")[-40:],
+            )
+        console.print(table)
+        console.print(f"[dim]Total: {summary['total']} · Downloaded: {summary['downloaded']}[/dim]")
+
+
+    @app.command("report")
+    def imagine_report(
+        output: str = typer.Option(None, "--output", "-o"),
+    ):
+        """Unified production report (quota, batches, jobs, artifacts)."""
+        report = build_production_report()
+        md = report_to_markdown(report)
+        if output:
+            from pathlib import Path
+            Path(output).write_text(md)
+            console.print(f"[green]Report written:[/green] {output}")
+        else:
+            console.print(Markdown(md))

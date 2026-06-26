@@ -11,7 +11,8 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
-from batch_runner import execute_shot
+from batch_runner import execute_sfw_shot
+from session_runner import run_batch_session
 from imagine_client import ImagineAPIError
 from quality_pass_scheduler import apply_quality_pass_promotion, get_pending_quality_passes
 from sfw_orchestrator import (
@@ -168,7 +169,7 @@ def register(app: typer.Typer) -> None:
         """Execute a batch shot via Imagine API (image / i2v / video)."""
         batch = load_batch(batch_name)
         try:
-            result = execute_shot(
+            result = execute_sfw_shot(
                 batch, shot_id,
                 dry_run=dry_run,
                 prompt_override=prompt,
@@ -192,6 +193,38 @@ def register(app: typer.Typer) -> None:
             title=f"SFW Shot Run — {mode}",
             border_style="cyan",
         ))
+
+
+    @app.command("session")
+    def sfw_session(
+        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+        count: int = typer.Option(3, "--count", "-n", help="Max shots to run"),
+        dry_run: bool = typer.Option(False, "--dry-run"),
+        stop_on_fail: bool = typer.Option(True, "--stop-on-fail/--continue-on-fail"),
+    ):
+        """Run automated session — execute next priority shots in order."""
+        summary = run_batch_session(
+            batch_name,
+            pipeline="sfw",
+            count=count,
+            dry_run=dry_run,
+            stop_on_fail=stop_on_fail,
+        )
+        table = Table(title=f"SFW Session — {batch_name}", box=box.SIMPLE)
+        table.add_column("Shot", style="cyan")
+        table.add_column("Status")
+        table.add_column("Job", style="dim")
+        for r in summary.get("results", []):
+            table.add_row(
+                r.get("shot_id", "?"),
+                r.get("status", r.get("error", "—")),
+                (r.get("job_id") or "")[:18],
+            )
+        console.print(table)
+        console.print(
+            f"[dim]Executed {summary['executed']} · "
+            f"ok {summary.get('succeeded', 0)} · fail {summary.get('failed', 0)}[/dim]"
+        )
 
 
     @app.command("record")

@@ -13,7 +13,9 @@ from rich.panel import Panel
 from rich.table import Table
 
 from models import DEFAULT_IMAGINE_VIDEO_MODEL
+from batch_runner import execute_nsfw_shot
 from quality_pass_scheduler import apply_quality_pass_promotion, get_pending_quality_passes
+from session_runner import run_batch_session
 from nsfw_orchestrator import (
     batch_to_markdown,
     build_shot_context,
@@ -204,6 +206,73 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
             title=f"Retry Plan — {shot_id}",
             border_style="yellow",
         ))
+
+
+    @nsfw_app.command("run")
+    def nsfw_run(
+        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+        shot_id: str = typer.Argument(..., help="Shot ID to execute"),
+        dry_run: bool = typer.Option(False, "--dry-run"),
+        prompt: str = typer.Option(None, "--prompt", "-p", help="Override generation prompt"),
+    ):
+        """Execute a batch shot via Imagine API (image / i2v / video)."""
+        from imagine_client import ImagineAPIError
+
+        batch = load_batch(batch_name)
+        try:
+            result = execute_nsfw_shot(
+                batch, shot_id,
+                dry_run=dry_run,
+                prompt_override=prompt,
+            )
+        except (ValueError, RuntimeError, ImagineAPIError) as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+
+        mode = "[yellow]DRY-RUN[/yellow]" if result.get("dry_run") else "[green]LIVE[/green]"
+        console.print(Panel(
+            f"Shot: {result['shot_id']}\n"
+            f"Mode: {result['mode']}\n"
+            f"Status: {result['status']}\n"
+            f"Job: {result['job_id']}\n"
+            f"URL: {result.get('result_url', '—')}\n"
+            f"Est. credits: {result.get('estimated_credits')}\n\n"
+            f"Next: nsfw record {batch_name} {shot_id} --score <1-10> --credits {result.get('estimated_credits', 10)}",
+            title=f"NSFW Shot Run — {mode}",
+            border_style="magenta",
+        ))
+
+
+    @nsfw_app.command("session")
+    def nsfw_session(
+        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+        count: int = typer.Option(3, "--count", "-n"),
+        dry_run: bool = typer.Option(False, "--dry-run"),
+        stop_on_fail: bool = typer.Option(True, "--stop-on-fail/--continue-on-fail"),
+    ):
+        """Run automated NSFW session — execute next priority shots."""
+        summary = run_batch_session(
+            batch_name,
+            pipeline="nsfw",
+            count=count,
+            dry_run=dry_run,
+            stop_on_fail=stop_on_fail,
+        )
+        table = Table(title=f"NSFW Session — {batch_name}", box=box.SIMPLE)
+        table.add_column("Shot", style="cyan")
+        table.add_column("Status")
+        table.add_column("Job", style="dim")
+        for r in summary.get("results", []):
+            table.add_row(
+                r.get("shot_id", "?"),
+                r.get("status", r.get("error", "—")),
+                (r.get("job_id") or "")[:18],
+            )
+        console.print(table)
+        console.print(
+            f"[dim]Executed {summary['executed']} · "
+            f"ok {summary.get('succeeded', 0)} · fail {summary.get('failed', 0)}[/dim]"
+        )
 
 
     @nsfw_app.command("record")

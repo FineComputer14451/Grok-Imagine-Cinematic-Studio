@@ -183,6 +183,10 @@
         ],
         "commands": [
           {
+            "name": "automation",
+            "description": "Operations and automation — batch sessions, NSFW execute parity, artifact pipeline, unified production reports."
+          },
+          {
             "name": "cinematic",
             "description": "Activate Grok Imagine Cinematic Studio v3.6 with the full 23-agent production suite and native Imagine Video 1.5 pipeli…"
           },

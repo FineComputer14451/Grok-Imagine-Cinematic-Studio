@@ -20,6 +20,8 @@ from sequence_chain import find_sequence, load_sequence
 from nsfw_orchestrator import list_batches
 from project_state import load_project_state
 from sfw_orchestrator import list_batches as list_sfw_batches
+from artifact_pipeline import artifacts_summary
+from production_report import build_production_report
 from quota_optimizer import assess_budget_risk, quota_dashboard
 from sequence_chain import list_sequences
 from studio_health import count_skills
@@ -115,6 +117,8 @@ def build_studio_dashboard() -> dict[str, Any]:
         "sfw_batches": sfw_batches[:5],
         "recent_jobs": recent_jobs,
         "chain_qa": chain_qa_summaries,
+        "production_report": build_production_report(state),
+        "artifacts": artifacts_summary(),
     }
 
 
@@ -208,6 +212,14 @@ def _production_summary(snapshot: dict[str, Any]) -> Table:
     table.add_row("SFW Batches", str(prod.get("sfw_batches", 0)))
     table.add_row("Imagine Jobs", str(prod.get("imagine_jobs", 0)))
     table.add_row("Reference Assets", str(prod.get("reference_assets", 0)))
+    artifacts = snapshot.get("artifacts") or {}
+    if artifacts.get("total"):
+        table.add_row("Artifacts", f"{artifacts.get('total', 0)} ({artifacts.get('downloaded', 0)} local)")
+    report = snapshot.get("production_report") or {}
+    batches = report.get("batches") or {}
+    pending = (batches.get("sfw_pending_shots") or 0) + (batches.get("nsfw_pending_shots") or 0)
+    if pending:
+        table.add_row("Pending Shots", str(pending))
     return table
 
 

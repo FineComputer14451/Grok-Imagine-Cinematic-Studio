@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """
-Batch shot runner — execute SFW batch shots via Imagine API with job tracking.
+Batch shot runner — execute SFW/NSFW batch shots via Imagine API with job tracking.
 """
 
 from __future__ import annotations
 
+from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
 from imagine_bridge import build_bridge_packet, bridge_to_markdown
@@ -19,16 +21,28 @@ from imagine_client import (
 )
 from imagine_jobs import create_job, get_reference_asset, transition_job
 from quota_sync import record_generation_spend
-from sfw_decisions import decide_generation_mode, estimate_shot_cost
-from sfw_orchestrator import save_batch
 
 
-def _build_shot_prompt(shot: dict[str, Any], *, override: str | None = None) -> str:
+@dataclass(frozen=True)
+class BatchPipeline:
+    name: str
+    decide_mode: Callable[..., dict[str, Any]]
+    estimate_cost: Callable[..., dict[str, Any]]
+    save_batch: Callable[[dict[str, Any]], Any]
+    prompt_prefix: str = "Cinematic"
+
+
+def _build_shot_prompt(
+    shot: dict[str, Any],
+    *,
+    override: str | None = None,
+    prefix: str = "Cinematic",
+) -> str:
     if override:
         return override.strip()
     desc = shot.get("description", "").strip()
     tier = shot.get("tier", "coverage")
-    return f"Cinematic {tier} shot: {desc}. Masterpiece, film grain, volumetric lighting, 8K UHD."
+    return f"{prefix} {tier} shot: {desc}. Masterpiece, film grain, volumetric lighting, 8K UHD."
 
 
 def _resolve_reference_url(shot: dict[str, Any]) -> str | None:
@@ -46,6 +60,7 @@ def execute_shot(
     batch: dict[str, Any],
     shot_id: str,
     *,
+    pipeline: BatchPipeline,
     dry_run: bool | None = None,
     prompt_override: str | None = None,
     poll: bool = True,
@@ -66,10 +81,13 @@ def execute_shot(
         elif shot.get("status") == "generating":
             raise RuntimeError(f"Shot {shot_id} is already generating")
 
-    decision = decide_generation_mode(shot)
+    decision = pipeline.decide_mode(shot)
     mode = shot.get("recommended_mode") or decision["mode"]
-    cost_est = estimate_shot_cost({**shot, "recommended_mode": mode}, fast_mode=batch.get("fast_mode", False))
-    prompt = _build_shot_prompt(shot, override=prompt_override)
+    cost_est = pipeline.estimate_cost(
+        {**shot, "recommended_mode": mode},
+        fast_mode=batch.get("fast_mode", False),
+    )
+    prompt = _build_shot_prompt(shot, override=prompt_override, prefix=pipeline.prompt_prefix)
     use_dry = is_dry_run() if dry_run is None else dry_run
     ref_url = _resolve_reference_url(shot)
 
@@ -96,6 +114,7 @@ def execute_shot(
         metadata={
             "batch_id": batch.get("batch_id"),
             "batch_slug": batch.get("slug"),
+            "pipeline": pipeline.name,
             "mode": mode,
             "tier": shot.get("tier"),
         },
@@ -149,13 +168,13 @@ def execute_shot(
             shot["result_url"] = result_url
             shot["status"] = "qa_pending"
 
-        save_batch(batch)
+        pipeline.save_batch(batch)
 
         if record_quota and not use_dry:
             record_generation_spend(
                 est_credits,
                 estimated_credits=est_credits,
-                note=f"batch:{batch.get('slug')}:{shot_id}",
+                note=f"{pipeline.name}:{batch.get('slug')}:{shot_id}",
                 job_id=job["job_id"],
                 shot_id=shot_id,
             )
@@ -169,6 +188,7 @@ def execute_shot(
         return {
             "job_id": job["job_id"],
             "shot_id": shot_id,
+            "pipeline": pipeline.name,
             "mode": mode,
             "status": shot["status"],
             "result_url": result_url,
@@ -180,5 +200,27 @@ def execute_shot(
     except ImagineAPIError as exc:
         transition_job(job["job_id"], "failed", error=str(exc))
         shot["status"] = "failed"
-        save_batch(batch)
+        pipeline.save_batch(batch)
         raise
+
+
+def sfw_pipeline() -> BatchPipeline:
+    from sfw_decisions import decide_generation_mode, estimate_shot_cost
+    from sfw_orchestrator import save_batch
+
+    return BatchPipeline("sfw", decide_generation_mode, estimate_shot_cost, save_batch)
+
+
+def nsfw_pipeline() -> BatchPipeline:
+    from nsfw_decisions import decide_generation_mode, estimate_shot_cost
+    from nsfw_orchestrator import save_batch
+
+    return BatchPipeline("nsfw", decide_generation_mode, estimate_shot_cost, save_batch, prompt_prefix="Intimate cinematic")
+
+
+def execute_sfw_shot(batch: dict[str, Any], shot_id: str, **kwargs: Any) -> dict[str, Any]:
+    return execute_shot(batch, shot_id, pipeline=sfw_pipeline(), **kwargs)
+
+
+def execute_nsfw_shot(batch: dict[str, Any], shot_id: str, **kwargs: Any) -> dict[str, Any]:
+    return execute_shot(batch, shot_id, pipeline=nsfw_pipeline(), **kwargs)
