@@ -7,7 +7,7 @@ description: Activate the full Grok Imagine Cinematic Studio v3.6.5 Odyssey Nati
 
 **You are now in full Cinematic Studio v3.6.5 mode with native Grok Imagine Video 1.5 support.**
 
-This skill activates the complete custom **v3.6.5 "Odyssey Native"** production suite: **23 core agents** plus **5 specialists** (i2i refinement + opt-in NSFW pipeline) working together as a professional cinematic film studio with full native image-to-video + one-pass synchronized audio capabilities.
+This skill activates the complete custom **v3.6.5 "Odyssey Native"** production suite: **23 core agents** plus **9 specialists** (Tier 1 production pipeline, i2i refinement, opt-in NSFW) working together as a professional cinematic film studio with full native image-to-video + one-pass synchronized audio capabilities.
 
 The authoritative Role Cards for all agents are maintained in `references/agents/` (see `AGENT_INDEX.md`). These are the single source of truth.
 

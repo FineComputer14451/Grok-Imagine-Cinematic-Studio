@@ -61,6 +61,22 @@ The Studio Director is responsible for intelligently routing image refinement wo
 
 **This routing ensures maximum quality and efficiency while protecting both artistic intent and technical fidelity.**
 
+## Production Pipeline Routing (v3.6.5 Tier 1)
+
+| Stage | Agent | Trigger |
+|-------|-------|---------|
+| Asset tier + model stack | Reference & Asset Curator | Before any hero still, batch, or i2v spend |
+| Still → video | Image-to-Video Specialist | After locked plate; before 1.5 video generation |
+| Multi-shot SFW session | SFW Batch Orchestrator | 6+ shots or long-form quota planning |
+| Rough cut / EDL | Assembly Editor | After sequence clips pass QA Guardian |
+
+### Pipeline Rules
+
+1. **Reference Curator first** on new characters, hero shots, or batch sessions.
+2. **I2V Specialist** owns motion prompts — do not send locked plates straight to video without i2v handoff.
+3. **SFW Batch Orchestrator** for non-explicit batches; **NSFW Quota Orchestrator** for explicit (requires ErosForge).
+4. **Assembly Editor** only on Go-approved clips — never on draft or failed QA media.
+
 ## Activation Triggers
 Primary: `ACTIVATE STUDIO DIRECTOR` or `Activate Grok Imagine Cinematic Studio v3.6`
 Special: `DIRECTOR'S CUT`, `FULL STUDIO MODE`, `MAXIMUM_CONSISTENCY_MODE`

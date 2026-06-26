@@ -25,7 +25,14 @@ def test_core_agent_count() -> None:
 
 
 def test_total_roster() -> None:
-    assert total_agent_count() == 28
+    assert total_agent_count() == 32
+
+
+def test_production_pipeline_agents() -> None:
+    pipeline = AGENTS.get("Production Pipeline", [])
+    assert len(pipeline) == 4
+    assert "Reference & Asset Curator v3.6.5" in pipeline
+    assert "Image-to-Video Specialist v3.6.5" in pipeline
 
 
 def test_role_cards_on_disk() -> None:
@@ -51,6 +58,7 @@ def test_agents_dict_matches_role_cards() -> None:
 if __name__ == "__main__":
     test_core_agent_count()
     test_total_roster()
+    test_production_pipeline_agents()
     test_role_cards_on_disk()
     test_role_card_lookup()
     test_agents_dict_matches_role_cards()

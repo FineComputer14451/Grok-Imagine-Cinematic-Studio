@@ -75,6 +75,12 @@ AGENTS = {
         "I2I Cinematic Refiner v3.6.5",
         "I2I Refiner v3.6.5",
     ],
+    "Production Pipeline": [
+        "Reference & Asset Curator v3.6.5",
+        "Image-to-Video Specialist v3.6.5",
+        "SFW Batch Orchestrator v1.0",
+        "Assembly Editor v3.6.5",
+    ],
     "Specialist (Opt-in)": [
         "ErosForge NSFW Director v3.6.5",
         "NSFW Quota Orchestrator v1.0",
@@ -108,6 +114,10 @@ AGENT_ROLE_CARDS: dict[str, str] = {
     "AI Polish Director v3.6.5": "AI_Polish_Director.md",
     "I2I Cinematic Refiner v3.6.5": "I2I_Cinematic_Refiner.md",
     "I2I Refiner v3.6.5": "I2I_Refiner.md",
+    "Reference & Asset Curator v3.6.5": "Reference_Asset_Curator.md",
+    "Image-to-Video Specialist v3.6.5": "Image_to_Video_Specialist.md",
+    "SFW Batch Orchestrator v1.0": "SFW_Batch_Orchestrator.md",
+    "Assembly Editor v3.6.5": "Assembly_Editor.md",
     "ErosForge NSFW Director v3.6.5": "ErosForge_NSFW_Director.md",
     "NSFW Quota Orchestrator v1.0": "NSFW_Quota_Orchestrator.md",
     "NSFW Sequence Extender v1.0": "NSFW_Sequence_Extender.md",

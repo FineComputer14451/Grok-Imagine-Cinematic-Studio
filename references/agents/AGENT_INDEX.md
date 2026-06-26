@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio — Agent Index v3.6.5
 
-**23 core agents** · **+5 specialists** (i2i + NSFW opt-in) · **Grok 4.3 + Grok Build + Imagine 1.5** · June 2026
+**23 core agents** · **+9 specialists** (pipeline + i2i + NSFW opt-in) · **Grok 4.3 + Grok Build + Imagine 1.5** · June 2026
 
 Authoritative Role Cards: `references/agents/*.md`  
 Model registry: `tools/models.py`, `references/MODELS_v3.6.md`
@@ -89,6 +89,19 @@ Verify: `python tools/cinematic_studio_cli.py models verify`
 
 ---
 
+## Production Pipeline (Tier 1)
+
+| Agent | Role Card | Skill | Activation |
+|-------|-----------|-------|------------|
+| Reference & Asset Curator v3.6.5 | `Reference_Asset_Curator.md` | `reference-asset-curator` | `ACTIVATE REFERENCE_CURATOR` |
+| Image-to-Video Specialist v3.6.5 | `Image_to_Video_Specialist.md` | `image-to-video-specialist` | `ACTIVATE I2V_SPECIALIST` |
+| SFW Batch Orchestrator v1.0 | `SFW_Batch_Orchestrator.md` | `sfw-batch-orchestrator` | `ACTIVATE SFW_BATCH_ORCHESTRATOR` |
+| Assembly Editor v3.6.5 | `Assembly_Editor.md` | `assembly-editor` | `ACTIVATE ASSEMBLY_EDITOR` |
+
+**Order of operations:** Reference Curator → (i2i if needed) → I2V Specialist → generation/QA → Assembly Editor → color → polish.
+
+---
+
 ## Refinement (i2i)
 
 | Agent | Role Card | Skill | Activation |
@@ -128,6 +141,10 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 | 10 | NSFW Quota Batch (Heavy) | `ACTIVATE EROSFORGE` → `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` |
 | 11 | NSFW Sequence Extension | `ACTIVATE EROSFORGE` → `ACTIVATE NSFW_SEQUENCE_EXTENDER` |
 | 12 | Keyframe Polish | `ACTIVATE I2I CINEMATIC REFINER` |
+| 13 | Asset + Model Routing | `ACTIVATE REFERENCE_CURATOR` |
+| 14 | Still → Video | `ACTIVATE I2V_SPECIALIST` |
+| 15 | SFW Batch Session | `ACTIVATE SFW_BATCH_ORCHESTRATOR` |
+| 16 | Rough Cut Assembly | `ACTIVATE ASSEMBLY_EDITOR` |
 
 ---
 
@@ -142,4 +159,4 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native" — 23 core agents + 5 specialists*
+*Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native" — 23 core agents + 9 specialists*
