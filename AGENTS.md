@@ -2,7 +2,7 @@
 
 **This file provides context and instructions for AI coding agents and assistants working in this workspace.**
 
-**Version:** June 2026 (Updated for Grok Imagine Cinematic Studio v3.6 and AI Polish Director)  
+**Version:** June 2026 (Updated for Grok Imagine Cinematic Studio v3.6.5, Grok plugin marketplace, model stack, and AI Polish Director)  
 **Canonical Source:** https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/AGENTS.md
 
 Think of this as the single source of truth for how to interact with this Grok/xAI agent environment in `/home/workdir/`.
@@ -30,9 +30,16 @@ This is a persistent Linux sandbox environment (`/home/workdir/`) designed for a
 │       │   ├── scripts/         # Optional: executable helpers
 │       │   ├── references/      # Optional: long-form docs, production bibles, agent defs
 │       │   └── assets/          # Optional: templates, reference images, etc.
+├── .grok-plugin/                # Grok plugin manifests (marketplace.json, plugin.json, plugin-index.json for 44 skills + commands)
 ├── artifacts/                   # All outputs go here (images, docs, videos, code, etc.)
+├── scripts/                     # Install/verify/update helpers + generate_plugin_index.py
+├── web_ui/                      # Streamlit dashboard (model pickers, quota sim, DNA/sequence tools)
 ├── AGENTS.md                    # This file (you are here)
-└── (other project files as added)
+├── README.md                    # Human-facing overview (keep in sync)
+├── CHANGELOG.md
+├── RELEASE_NOTES_v3.6.md
+├── Quick_Start_Guide.md
+└── (other project files as added: tools/, references/agents/, examples/, commands/, etc.)
 ```
 
 ## Skill System Rules (Critical)
@@ -64,7 +71,7 @@ When working with or creating skills:
 - **Refine / iterate on previously generated images**: `generated-image-editor`
 - **Upscale video for final delivery** (720p → 1080p/4K, face restoration): Activate `ai-video-upscaler`
 - Video / audio processing: Activate `ffmpeg` skill or use bash directly
-- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (23-agent suite)
+- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (23-agent + specialist suite, v3.6.5 with plugin support)
 
 ### Document Tasks
 - PDF: `pdf` skill
@@ -76,6 +83,14 @@ When working with or creating skills:
 - All GitHub operations: Activate `github-repo-manager` skill first
 - Discover connected services (GitHub, Gmail, Outlook, Google Drive, Canva): `search_connected_tools`
 - Then execute with `call_connected_tool`
+
+### Grok Plugins & Marketplace
+- Install/update the full Cinematic Studio: `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`
+- Or via marketplace: `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio` then install by name
+- Regenerate index after skill changes: `python scripts/generate_plugin_index.py`
+- Validate plugin: `grok plugin validate` + check `.grok-plugin/plugin-index.json`
+- Use `cinematic-studio-meta-installer` skill for full bootstrap/verify in agent sessions
+- The 44 skills + 11 slash commands (in `commands/`) are the primary way to extend Grok Build with studio capabilities
 
 ### Memory & Personalization
 - When the user shares personal facts, preferences, or life updates that may warrant remembering: Use the `memory-edit` skill (consult its SKILL.md).
@@ -91,9 +106,9 @@ Use these in the **final response** (never inside function calls):
 For any complex visual storytelling, film-style image sequences, video production, or NSFW cinematic work:
 
 **Primary activation command:**  
-`Activate Grok Imagine Cinematic Studio v3.6` or `Start cinematic production`
+`Activate Grok Imagine Cinematic Studio v3.6.5` or `Start cinematic production`
 
-This engages the full **23 specialized agents** (v3.6 personalities) including:
+This engages the full **23 specialized agents** (v3.6.5 personalities) including:
 - Studio Director, Mega Production Architect
 - Director of Photography, Production Designer, Color Grading Supervisor
 - Performance & Emotion Director, Identity Lock Specialist, Narrative Arc Pacing Strategist
@@ -158,6 +173,11 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 | **Video / Audio**           | `ffmpeg`                                   | Trimming, merging, subtitles, compression, GIFs, storyboards |
 | **Documents**               | `pdf`, `docx`, `pptx`, `xlsx`              | Professional document or presentation creation |
 | **Memory**                  | `memory-edit`                              | User shares personal facts/preferences worth remembering or updating |
+| **Grok Plugin & Meta**      | `cinematic-studio-meta-installer`          | Bootstrapping, installing, or updating the full 44-skill Grok plugin suite |
+| **AI Polish & Delivery**    | `ai-polish-director`, `assembly-editor`, `cinematic-ffmpeg` | Final upscale/face restore (post-QA), EDL assembly, polished delivery (reels, social crops) |
+| **Pre-viz & Assets**        | `animatic-director`, `reference-asset-curator`, `image-to-video-specialist` | Low-cost animatics/previs, hero asset routing, i2v prompt engineering before 1.5 spend |
+| **Batch Orchestration**     | `sfw-batch-orchestrator`                   | Quota-aware SFW hero-first shot batches with still/i2v/video decisions (pairs with Workflow Quota Optimizer) |
+| **Chain QA & Handoffs**     | `chain-qa-protocol`, `handoff-packet-validator` | 10-point extend/stitch QA gates and JSON handoff validation between agents (Identity Lock, Sequence Extender, etc.) |
 
 ## Grok Build & xAI Model Registry
 
@@ -181,24 +201,29 @@ Local config: `~/.grok/config.toml` sets `fork_secondary_model = "grok-build"`.
 
 ## Project-Specific Notes
 
-- Primary ongoing project: **Grok Imagine Cinematic Studio** (v3.6) and related custom skills.
+- Primary ongoing project: **Grok Imagine Cinematic Studio** (v3.6.5 "Odyssey Native") and related custom skills.
 - All generated artifacts **must** be saved to `/home/workdir/artifacts/`.
 - Persistent state and custom skills live in `/home/workdir/.grok/skills/`.
+- Grok plugin marketplace lives in `.grok-plugin/` (marketplace.json, plugin.json, plugin-index.json with 44 skills + 11 commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - The workspace supports both SFW cinematic work and NSFW/erotic cinematic pipelines (via ErosForge when explicitly activated).
-- Keep this `AGENTS.md` in sync with the GitHub repository.
+- Model stack (grok-4.3 / grok-build-0.1 / grok-imagine-video-1.5) and `VIDEO_PIPELINE_SPEC` are now wired everywhere (CLI, Web UI, handoffs, Production Bibles, Role Cards).
+- Recent 3.6.5 work: plugin support, CLI refactor + `models verify`, Web UI Streamlit modernization (`width="stretch"`), repo hygiene (deprecated `agents/` removed), docs refresh (README, CHANGELOG, RELEASE_NOTES_v3.6.md, AGENTS.md).
+- Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, RELEASE_NOTES_v3.6.md).
 
 ## Quick Start for New Tasks
 
 1. Clarify the goal with the user if ambiguous.
-2. Check if an existing skill covers it (use `ls /home/workdir/.grok/skills/` or read relevant SKILL.md).
-3. If no skill exists and the task is repeatable/specialized → create one with `skill-creator`.
-4. Execute using the correct tool(s) / skill activation.
+2. Check if an existing skill covers it (use `ls /home/workdir/.grok/skills/` or read relevant SKILL.md). For Grok plugin users, also inspect `.grok-plugin/plugin-index.json` or run `grok plugin details grok-imagine-cinematic-studio`.
+3. If no skill exists and the task is repeatable/specialized → create one with `skill-creator` (or extend via cinematic-studio-meta-installer for the suite).
+4. Execute using the correct tool(s) / skill activation. Prefer native Grok plugin commands where available (`grok plugin ...`).
 5. Save all outputs to `artifacts/`.
 6. In the **final response**, use appropriate render components and provide clear, actionable output.
+
+**Pro tip:** After any skill or plugin change, re-validate with `bash scripts/verify_cinematic_studio.sh` (it runs `models verify` too).
 
 ---
 
 **This AGENTS.md is the canonical reference for all AI agents operating in this environment.**  
-Update it whenever workflows, skills, or best practices evolve.
+Update it whenever workflows, skills, or best practices evolve (e.g. new skills, plugin changes, model updates, or doc releases).
 
-*Maintained for SuperGrokPro cinematic & development workflows — June 2026*
+*Maintained for SuperGrokPro cinematic & development workflows — June 2026 (v3.6.5)*
