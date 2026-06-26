@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Build the lightweight meta-installer zip for Grok Imagine Cinematic Studio.
+# Build the lightweight meta-installer zip for Grok Imagine Cinematic Studio v3.6.5.
 # Ships the bootstrap skill + installer scripts (pulls full suite on install).
 #
 

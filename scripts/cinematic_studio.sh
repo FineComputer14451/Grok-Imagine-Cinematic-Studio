@@ -6,7 +6,7 @@
 # Usage:
 #   ./scripts/cinematic_studio.sh install
 #   ./scripts/cinematic_studio.sh update
-#   ./scripts/cinematic_studio.sh verify [--all]
+#   ./scripts/cinematic_studio.sh verify [--all|--plugin]
 #   ./scripts/cinematic_studio.sh version
 #
 # One-liner (curl):
@@ -46,12 +46,14 @@ usage() {
 Usage:
   cinematic_studio.sh install          Install or reinstall the skill bundle
   cinematic_studio.sh update           Update with backup of existing skills
-  cinematic_studio.sh verify [--all]   Verify core (default) or all manifest skills
+  cinematic_studio.sh verify [--all|--plugin]
+                                     Verify core (default), all manifest skills, or Grok plugin install
   cinematic_studio.sh version          Print installed release version
 
 Examples:
   ./scripts/cinematic_studio.sh install
   ./scripts/cinematic_studio.sh verify --all
+  ./scripts/cinematic_studio.sh verify --plugin
   bash <(curl -sL $CINEMATIC_RAW_BASE/scripts/cinematic_studio.sh) install
 EOF
 }
@@ -90,6 +92,11 @@ cmd_update() {
 }
 
 cmd_verify() {
+    if [[ "${1:-}" == "--plugin" ]]; then
+        cinematic_studio_verify_plugin
+        return $?
+    fi
+
     local tier="core"
     if [[ "${1:-}" == "--all" ]]; then
         tier="all"

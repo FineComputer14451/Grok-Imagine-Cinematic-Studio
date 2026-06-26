@@ -480,11 +480,59 @@ cinematic_studio_ensure_tools_local() {
     cinematic_studio_tools_complete
 }
 
+cinematic_studio_resolve_plugin_root() {
+    local plugins_dir="${GROK_PLUGINS_DIR:-$HOME/.grok/installed-plugins}"
+    local candidate=""
+
+    if [[ -n "${CINEMATIC_PLUGIN_ROOT:-}" ]]; then
+        if [[ -d "$CINEMATIC_PLUGIN_ROOT/.grok/skills" ]]; then
+            echo "$CINEMATIC_PLUGIN_ROOT"
+            return 0
+        fi
+        return 1
+    fi
+
+    if [[ -f "$plugins_dir/registry.json" ]] && command -v python3 >/dev/null 2>&1; then
+        candidate="$(python3 - "$plugins_dir/registry.json" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+reg = Path(sys.argv[1])
+data = json.loads(reg.read_text(encoding="utf-8"))
+for repo in data.get("repos", {}).values():
+    if "grok-imagine-cinematic-studio" in repo.get("plugins", {}):
+        print(repo["path"])
+        break
+PY
+)" || true
+        if [[ -n "$candidate" && -d "$candidate/.grok/skills" ]]; then
+            echo "$candidate"
+            return 0
+        fi
+    fi
+
+    shopt -s nullglob
+    for candidate in "$plugins_dir"/grok-imagine-cinematic-studio-*/; do
+        if [[ -d "$candidate/.grok/skills" ]]; then
+            echo "${candidate%/}"
+            shopt -u nullglob
+            return 0
+        fi
+    done
+    shopt -u nullglob
+
+    return 1
+}
+
 cinematic_studio_verify_models() {
+    local tools_root="${1:-}"
     local cli_py=""
 
     if [[ -f "$PROJECT_DIR/tools/cinematic_studio_cli.py" ]]; then
         cli_py="$PROJECT_DIR/tools/cinematic_studio_cli.py"
+    elif [[ -n "$tools_root" && -f "$tools_root/tools/cinematic_studio_cli.py" ]]; then
+        cli_py="$tools_root/tools/cinematic_studio_cli.py"
     elif [[ -n "${CINEMATIC_REPO_ROOT:-}" && -f "$CINEMATIC_REPO_ROOT/tools/cinematic_studio_cli.py" ]]; then
         cli_py="$CINEMATIC_REPO_ROOT/tools/cinematic_studio_cli.py"
     fi
@@ -558,6 +606,121 @@ cinematic_studio_verify() {
 
     echo "⚠️  $missing issue(s) found. Re-run:"
     echo "  bash <(curl -sL $CINEMATIC_RAW_BASE/scripts/cinematic_studio.sh) install"
+    return 1
+}
+
+cinematic_studio_verify_plugin() {
+    local plugin_root=""
+    local skills_dir=""
+    local -a required=()
+    local -a command_paths=()
+    local missing=0
+    local skill=""
+    local cmd_path=""
+    local cmd_name=""
+
+    plugin_root="$(cinematic_studio_resolve_plugin_root)" || {
+        echo "❌ Grok plugin install not found."
+        echo "   Install: grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust"
+        echo "   Or set CINEMATIC_PLUGIN_ROOT to the plugin checkout path."
+        return 1
+    }
+
+    skills_dir="$plugin_root/.grok/skills"
+    cinematic_studio_read_manifest "$CINEMATIC_MANIFEST" "all" required
+
+    if [[ ${#required[@]} -eq 0 ]]; then
+        echo "❌ No skills found in manifest: $CINEMATIC_MANIFEST"
+        return 1
+    fi
+
+    echo "🔍 Verifying Grok Imagine Cinematic Studio v${CINEMATIC_STUDIO_VERSION} (plugin)"
+    echo "================================================"
+    echo ""
+    echo "Plugin root: $plugin_root"
+    echo "Checking ${#required[@]} skill(s) [plugin tier]"
+    echo ""
+
+    for skill in "${required[@]}"; do
+        if [[ -d "$skills_dir/$skill" && -f "$skills_dir/$skill/SKILL.md" ]]; then
+            echo "✅ $skill"
+        else
+            echo "❌ $skill (missing)"
+            missing=$((missing + 1))
+        fi
+    done
+
+    echo ""
+    echo "Slash commands:"
+
+    if [[ -f "$plugin_root/.grok-plugin/plugin.json" ]] && command -v python3 >/dev/null 2>&1; then
+        while IFS= read -r cmd_path; do
+            [[ -z "$cmd_path" ]] && continue
+            command_paths+=("$cmd_path")
+        done < <(python3 - "$plugin_root/.grok-plugin/plugin.json" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+data = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+for cmd in data.get("commands", []):
+    print(cmd)
+PY
+)
+    else
+        shopt -s nullglob
+        for cmd_path in "$plugin_root"/commands/*.md; do
+            [[ "$(basename "$cmd_path")" == _* ]] && continue
+            command_paths+=("commands/$(basename "$cmd_path")")
+        done
+        shopt -u nullglob
+    fi
+
+    if [[ ${#command_paths[@]} -eq 0 ]]; then
+        echo "❌ commands/ (missing)"
+        missing=$((missing + 1))
+    else
+        for cmd_path in "${command_paths[@]}"; do
+            cmd_name="${cmd_path##*/}"
+            cmd_name="${cmd_name%.md}"
+            if [[ -f "$plugin_root/$cmd_path" ]]; then
+                echo "✅ /$cmd_name"
+            else
+                echo "❌ /$cmd_name (missing: $cmd_path)"
+                missing=$((missing + 1))
+            fi
+        done
+    fi
+
+    echo ""
+    if command -v grok >/dev/null 2>&1; then
+        echo "Grok plugin registry:"
+        if grok plugin details grok-imagine-cinematic-studio 2>/dev/null; then
+            echo ""
+        else
+            echo "⚠️  grok plugin details unavailable (on-disk plugin files checked above)"
+            echo ""
+        fi
+    else
+        echo "ℹ️  grok CLI not found — skipped registry check (on-disk plugin files checked above)"
+        echo ""
+    fi
+
+    if ! cinematic_studio_verify_models "$plugin_root"; then
+        missing=$((missing + 1))
+    fi
+
+    if [[ $missing -eq 0 ]]; then
+        echo "✅ Plugin install verified!"
+        echo ""
+        echo "Refresh Skills in Grok, start a new chat, then:"
+        echo "  /cinematic"
+        echo "  Activate Grok Imagine Cinematic Studio v${CINEMATIC_STUDIO_VERSION}"
+        return 0
+    fi
+
+    echo "⚠️  $missing issue(s) found. Re-run:"
+    echo "  grok plugin update grok-imagine-cinematic-studio"
     return 1
 }
 

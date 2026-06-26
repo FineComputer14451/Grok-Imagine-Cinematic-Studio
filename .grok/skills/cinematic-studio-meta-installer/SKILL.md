@@ -8,6 +8,7 @@ description: Meta installer for Grok Imagine Cinematic Studio v3.6.5. Installs u
 You are the **Studio Bootstrap Agent**. Install, update, and verify the complete Grok Imagine Cinematic Studio skill layer for Grok Build and Grok chat.
 
 **Reference:** `references/install_paths.md`  
+**Human guide:** `references/installation_guide.md` (repo root; copied to `~/Grok-Cinematic-Projects/references/` after Method A install)  
 **Repo installer:** `scripts/cinematic_studio.sh`  
 **Release asset:** `grok-imagine-cinematic-studio-skills-install-v3.6.5.zip`
 
@@ -20,11 +21,28 @@ You are the **Studio Bootstrap Agent**. Install, update, and verify the complete
 
 Always begin: **"Starting Cinematic Studio Meta Installer v3.6.5…"**
 
-## Default Action — Run the Installer
+## Install Methods (choose one)
+
+Both methods ship the same **44 skills**. They differ in **where** skills live, **what else** gets installed, and **how you update**.
+
+| | **Method A — Meta installer / zip** | **Method B — Grok plugin** |
+|---|-------------------------------------|----------------------------|
+| **Best for** | Grok chat, agent bootstrap, CLI tools, local verify | Grok Build CLI, marketplace updates, slash commands |
+| **Command** | `cinematic_studio.sh install` (curl, local repo, or zip) | `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust` |
+| **Skills path** | `~/.grok/skills/` | Plugin-managed under `~/.grok/installed-plugins/` |
+| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, installer scripts | 44 skills + **11 slash commands** from `commands/` |
+| **Verify** | `bash scripts/cinematic_studio.sh verify` or `verify --all` | `bash scripts/cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
+| **Update** | `bash scripts/cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` |
+
+**Default for this skill:** Method A — you run the meta installer yourself.
+
+**Use Method B when** the user is on Grok Build, asks for `grok plugin install`, marketplace install, or slash commands (`/cinematic`, etc.). Tell them plugin install does **not** populate `~/Grok-Cinematic-Projects/`; run Method A afterward if they need the CLI, references, or `verify --all` against `~/.grok/skills/`.
+
+## Method A — Meta Installer (default action)
 
 **You must execute the installer yourself.** Do not only print commands for the user.
 
-### Fresh install (recommended)
+### Fresh install (curl)
 
 ```bash
 bash <(curl -sL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/main/scripts/cinematic_studio.sh) install
@@ -42,22 +60,47 @@ bash scripts/cinematic_studio.sh install
 bash .grok/skills/cinematic-studio-meta-installer/scripts/install.sh install
 ```
 
+### Bootstrap zip (offline-friendly)
+
+1. Download `grok-imagine-cinematic-studio-meta-installer-v3.6.5.zip` or the full skills zip from GitHub Releases
+2. Extract and run `./bootstrap.sh` (meta zip) or `bash scripts/cinematic_studio.sh install` (full zip)
+
+Installer reconciles missing manifest skills from GitHub `main` when the release bundle is incomplete.
+
+## Method B — Grok Plugin
+
+```bash
+grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
+```
+
+Marketplace alternative:
+
+```bash
+grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio
+grok plugin install grok-imagine-cinematic-studio@FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
+```
+
+After plugin install: refresh Skills, start a new chat, use `/cinematic` or **Activate Grok Imagine Cinematic Studio v3.6.5**.
+
+For CLI tools and Production Bible references, also run Method A or clone the repo into `~/Grok-Cinematic-Projects/`.
+
 ## Other Commands
 
 | Intent | Command |
 |--------|---------|
 | Update with backup | `bash scripts/cinematic_studio.sh update` |
 | Verify core (7 skills + models) | `bash scripts/cinematic_studio.sh verify` |
-| Verify all (30 skills) | `bash scripts/cinematic_studio.sh verify --all` |
+| Verify all (44 skills, Method A) | `bash scripts/cinematic_studio.sh verify --all` |
+| Verify plugin (44 skills + 11 commands) | `bash scripts/cinematic_studio.sh verify --plugin` |
 | Print version | `bash scripts/cinematic_studio.sh version` |
 
-Curl equivalents work for every command — replace trailing `install` with `update`, `verify`, or `verify --all`.
+Curl equivalents work for every command — replace trailing `install` with `update`, `verify`, `verify --all`, or `verify --plugin`.
 
 ## What Gets Installed
 
 | Target | Path | Contents |
 |--------|------|----------|
-| Skills | `~/.grok/skills/` | All 30 manifest skills |
+| Skills | `~/.grok/skills/` | All 44 skills from `scripts/required_skills.manifest` (matches Grok plugin suite) |
 | Project workspace | `~/Grok-Cinematic-Projects/` | `references/`, `tools/`, `config/`, `scripts/`, docs |
 | Grok Build config (optional) | `~/.grok/config.toml` | Copy from `config/grok-build.example.toml` |
 
@@ -81,7 +124,9 @@ After a successful install, confirm all of the following:
 
 | Symptom | Fix |
 |---------|-----|
-| Skills missing after install | Re-run `install`; installer reconciles gaps from GitHub main |
+| Skills missing after install | Re-run Method A `install`; installer reconciles gaps from GitHub main |
+| Plugin installed but no CLI/references | Run Method A `install` or clone repo to `~/Grok-Cinematic-Projects/` |
+| Unsure which method was used | `ls ~/.grok/skills/grok-imagine-cinematic-studio` → Method A; `grok plugin details grok-imagine-cinematic-studio` → Method B |
 | Nested zip from GitHub Releases | Handled automatically — do not manually flatten |
 | `models verify` fails | Ensure `~/Grok-Cinematic-Projects/tools/` exists; re-run install |
 | Old skills after update | Run `update` (creates timestamped backup in `~/.grok/skills-backup-*`) |
