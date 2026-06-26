@@ -52,6 +52,16 @@ def default_animatic_boards() -> dict[str, Any]:
     return {}
 
 
+def default_imagine_settings() -> dict[str, Any]:
+    return {
+        "region": "us-east-1",
+        "failover_regions": ["us-east-1", "eu-west-1", "us-west-2"],
+        "last_region_used": None,
+        "last_failover_at": None,
+        "failover_count": 0,
+    }
+
+
 def default_asset_manifest() -> dict[str, Any]:
     return {
         "schema_version": SCHEMA_VERSION,
@@ -71,6 +81,7 @@ def default_project_state() -> dict[str, Any]:
         "imagine_jobs": default_imagine_jobs_state(),
         "asset_manifest": default_asset_manifest(),
         "animatic_boards": default_animatic_boards(),
+        "imagine_settings": default_imagine_settings(),
         "model_stack": model_stack_summary(),
         "video_pipeline_spec": build_video_pipeline_spec(),
         "studio_compatibility_version": STUDIO_COMPATIBILITY_VERSION,
@@ -94,7 +105,10 @@ def _merge_defaults(state: dict[str, Any], defaults: dict[str, Any]) -> dict[str
     for key, default_val in defaults.items():
         if key not in merged:
             merged[key] = default_val
-    for key in ("characters", "identity_lock", "locked_variables", "imagine_jobs", "asset_manifest", "animatic_boards"):
+    for key in (
+        "characters", "identity_lock", "locked_variables",
+        "imagine_jobs", "asset_manifest", "animatic_boards", "imagine_settings",
+    ):
         _merge_dict_field(merged, key, defaults.get(key, {}))
     if not isinstance(merged.get("quota"), dict):
         merged["quota"] = default_quota_state()
@@ -103,6 +117,11 @@ def _merge_defaults(state: dict[str, Any], defaults: dict[str, Any]) -> dict[str
         for key, default_val in quota_defaults.items():
             if key not in merged["quota"]:
                 merged["quota"][key] = default_val
+        if "reconciliation" not in merged["quota"]:
+            from quota_sync import default_reconciliation
+            merged["quota"]["reconciliation"] = default_reconciliation()
+    if not isinstance(merged.get("imagine_settings"), dict):
+        merged["imagine_settings"] = default_imagine_settings()
     return merged
 
 

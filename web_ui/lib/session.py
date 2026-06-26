@@ -39,6 +39,7 @@ SESSION_DEFAULTS: dict[str, Any] = {
     "complexity": "Medium",
     "fast_mode": False,
     "quota_tier": PRODUCTION_OPTIONS["tiers"][0],
+    "imagine_region": "us-east-1",
     "nsfw_opt_in": False,
     "xai_api_key": "",
 }

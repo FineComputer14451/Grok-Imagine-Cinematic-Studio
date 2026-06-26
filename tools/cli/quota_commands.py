@@ -9,6 +9,7 @@ from rich.panel import Panel
 from rich.table import Table
 
 from models import DEFAULT_IMAGINE_VIDEO_MODEL
+from quota_sync import get_burn_rate_risk, quota_sync_summary, reconcile_from_jobs, record_generation_spend
 from quota_optimizer import (
     SUBSCRIPTION_TIERS,
     estimate_clip_cost,
@@ -185,3 +186,43 @@ def register(app: typer.Typer) -> None:
             color = {"critical": "red", "high": "yellow", "medium": "cyan", "low": "dim"}.get(r["priority"], "white")
             console.print(f"  [{color}][{r['priority']}][/{color}] {r['action']}")
             console.print(f"    [dim]Savings: {r['savings']}[/dim]")
+        console.print(f"\n[dim]Burn-rate risk (reconciliation): {get_burn_rate_risk()}[/dim]")
+
+
+    @app.command("sync")
+    def quota_sync_cmd(
+        json_output: bool = typer.Option(False, "--json", help="Emit JSON summary"),
+    ):
+        """Reconcile estimated vs actual spend from jobs and history."""
+        recon = reconcile_from_jobs()
+        summary = quota_sync_summary()
+        if json_output:
+            import json
+            console.print(json.dumps(summary, indent=2))
+            return
+        table = Table(title="Quota Reconciliation", box=box.ROUNDED)
+        table.add_column("Metric", style="cyan")
+        table.add_column("Value")
+        table.add_row("Estimated total", f"{summary['estimated_total']} credits")
+        table.add_row("Actual total", f"{summary['actual_total']} credits")
+        table.add_row("Variance", f"{summary['variance_pct']}%")
+        table.add_row("Burn rate", f"{summary['burn_rate_multiplier']}x")
+        table.add_row("Risk level", summary["risk_level"])
+        table.add_row("Entries", str(summary["entry_count"]))
+        console.print(table)
+        console.print(f"[dim]Updated: {recon.get('updated_at')}[/dim]")
+
+
+    @app.command("reconcile")
+    def quota_reconcile(
+        estimated: float = typer.Option(..., "--estimated", "-e"),
+        actual: float = typer.Option(..., "--actual", "-a"),
+        note: str = typer.Option("", "--note", "-n"),
+    ):
+        """Record estimated vs actual credits for a single generation."""
+        result = record_generation_spend(actual, estimated_credits=estimated, note=note)
+        entry = result["entry"]
+        console.print(
+            f"[green]Recorded[/green] est={entry['estimated_credits']} actual={entry['actual_credits']} "
+            f"variance={entry['variance_credits']} | burn risk={result['reconciliation']['risk_level']}"
+        )

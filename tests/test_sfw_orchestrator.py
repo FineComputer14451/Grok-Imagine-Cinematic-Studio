@@ -40,7 +40,7 @@ def test_sfw_plan_batch_prioritizes_hero() -> None:
 
 def test_sfw_decide_i2v_with_ref() -> None:
     shot = build_shot_context("s1", tier="story_beat", has_ref=True, motion="medium")
-    decision = decide_generation_mode(shot)
+    decision = decide_generation_mode(shot, risk_level="low")
     assert decision["mode"] == "image_to_video"
 
 

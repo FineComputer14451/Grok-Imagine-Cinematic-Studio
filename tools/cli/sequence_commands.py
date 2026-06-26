@@ -82,6 +82,7 @@ def register(app: typer.Typer) -> None:
         recap: str = typer.Option("", "--recap", "-r", help="LAST_FRAME_RECAP for this clip"),
         duration: int = typer.Option(10, "--duration", "-d"),
         reference_id: str = typer.Option("", "--ref", help="reference_image_id"),
+        aspect: str = typer.Option("16:9", "--aspect", "-a", help="16:9 | 9:16 | 1:1"),
         transition: str = typer.Option("invisible_edit", "--transition", "-t"),
         last_action: str = typer.Option("", "--action", help="Momentum: last action"),
         emotion: str = typer.Option("", "--emotion", help="Momentum: emotional state"),
@@ -95,6 +96,7 @@ def register(app: typer.Typer) -> None:
             reference_image_id=reference_id,
             last_frame_recap=recap,
             transition_to_next=transition,
+            aspect_ratio=aspect,
         )
         if last_action or emotion:
             clip["momentum_vector"]["last_action"] = last_action

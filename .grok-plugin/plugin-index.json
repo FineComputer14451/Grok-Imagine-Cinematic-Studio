@@ -199,6 +199,10 @@
             "description": "Submit and track Imagine API generation jobs, reference plates, and sequence clip runs with chain QA gates."
           },
           {
+            "name": "intelligence",
+            "description": "Model and quota intelligence — region routing, aspect presets, live quota sync, and two-pass quality scheduling."
+          },
+          {
             "name": "nsfw",
             "description": "Activate ErosForge NSFW pipeline with quota-aware batch planning, model routing, chain QA, and sensual sequence extensi…"
           },

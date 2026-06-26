@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from aspect_presets import apply_aspect_to_clip, DEFAULT_ASPECT
 from models import (
     DEFAULT_IMAGINE_VIDEO_MODEL,
     build_video_pipeline_spec,
@@ -112,8 +113,9 @@ def create_clip(
     continuity_state: dict[str, Any] | None = None,
     transition_to_next: str = "invisible_edit",
     qa_scores: dict[str, Any] | None = None,
+    aspect_ratio: str = DEFAULT_ASPECT,
 ) -> dict[str, Any]:
-    return {
+    clip = {
         "clip_id": clip_id or f"clip_{index + 1:03d}",
         "index": index,
         "duration_seconds": duration_seconds,
@@ -129,6 +131,7 @@ def create_clip(
         "chain_qa": None,
         "created_at": _now_iso(),
     }
+    return apply_aspect_to_clip(clip, aspect_ratio)
 
 
 def _empty_momentum() -> dict[str, Any]:

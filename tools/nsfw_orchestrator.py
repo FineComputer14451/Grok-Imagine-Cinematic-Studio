@@ -21,7 +21,6 @@ from quota_optimizer import (
     SUBSCRIPTION_TIERS,
     assess_budget_risk,
     ensure_quota_state,
-    record_spend,
 )
 from studio_paths import NSFW_BATCHES_DIR as BATCHES_DIR
 
@@ -52,6 +51,13 @@ from nsfw_shots import (  # noqa: F401 — re-exported
     enrich_shot_for_batch,
     normalize_shot_input,
     parse_inline_shot,
+)
+from aspect_presets import plan_social_variants
+from quality_pass_scheduler import (
+    apply_quality_pass_promotion,
+    get_pending_quality_passes,
+    plan_two_pass_batch,
+    promote_after_qa,
 )
 from nsfw_util import now_iso, slugify, today_iso
 
@@ -116,6 +122,7 @@ def plan_batch(
     budget_credits: float | None = None,
     retry_reserve_pct: float = RETRY_RESERVE_PCT,
     fast_mode: bool = False,
+    two_pass: bool = False,
 ) -> dict[str, Any]:
     """Plan an NSFW batch prioritized for Heavy subscription efficiency."""
     tier_info = SUBSCRIPTION_TIERS.get(tier, SUBSCRIPTION_TIERS["supergrok_heavy"])
@@ -130,6 +137,8 @@ def plan_batch(
         enrich_shot_for_batch(normalize_shot_input(item), fast_mode=fast_mode)
         for item in shots
     ]
+    if two_pass:
+        enriched = plan_two_pass_batch(enriched, enabled=True)
     enriched.sort(key=lambda s: SHOT_TIERS.get(s.get("tier", "filler"), {}).get("priority", 99))
 
     scheduled: list[dict[str, Any]] = []
@@ -171,6 +180,8 @@ def plan_batch(
         "usable_credits": round(usable, 1),
         "scheduled_credits": round(total_scheduled, 1),
         "fast_mode": fast_mode,
+        "two_pass": two_pass,
+        "social_variants": plan_social_variants(enriched),
         "risk": risk,
         "shots_total": len(enriched),
         "shots_scheduled": len(scheduled),
@@ -330,8 +341,17 @@ def record_shot_result(
     orch["updated_at"] = now_iso()
     save_project_state(state)
 
+    if qa_pass and shot.get("two_pass") and shot.get("pass_number", 1) == 1:
+        promote_after_qa(shot, quality_score=quality_score, threshold=threshold)
+
     if record_quota:
-        record_spend(credits_spent, note=f"nsfw:{shot_id} {batch.get('title', '')}")
+        from quota_sync import record_generation_spend
+        record_generation_spend(
+            credits_spent,
+            estimated_credits=shot.get("estimated_credits"),
+            note=f"nsfw:{shot_id} est:{shot.get('estimated_credits')} {batch.get('title', '')}",
+            shot_id=shot_id,
+        )
 
     path = save_batch(batch)
     return {"shot": shot, "qa_pass": qa_pass, "saved_to": str(path)}

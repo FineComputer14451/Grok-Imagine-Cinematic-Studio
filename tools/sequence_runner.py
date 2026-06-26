@@ -127,6 +127,7 @@ def run_sequence_clip(
                 model=video_model,
                 duration=duration,
                 image_url=image_url,
+                aspect_ratio=clip.get("aspect_ratio"),
                 dry_run=use_dry,
             )
 

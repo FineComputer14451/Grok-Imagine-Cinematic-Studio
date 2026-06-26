@@ -88,7 +88,7 @@ def test_decide_generation_mode_anchor_without_ref() -> None:
 
 def test_decide_generation_mode_i2v_with_ref_and_motion() -> None:
     shot = build_shot_context("shot_002", tier="key_explicit", motion="high", has_ref=True)
-    decision = decide_generation_mode(shot)
+    decision = decide_generation_mode(shot, risk_level="low")
     assert decision["mode"] == "image_to_video"
 
 

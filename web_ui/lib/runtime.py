@@ -67,6 +67,7 @@ try:
     )
     from cli.dashboard import build_studio_dashboard
     from imagine_jobs import job_summary, list_jobs
+    from imagine_regions import IMAGINE_REGIONS, get_active_region, set_imagine_region
     from models import (
         DEFAULT_IMAGINE_VIDEO_MODEL,
         DEFAULT_XAI_CHAT_MODEL,
@@ -82,6 +83,7 @@ try:
     NSFW_AVAILABLE = True
     DASHBOARD_AVAILABLE = True
     IMAGINE_AVAILABLE = True
+    REGIONS_AVAILABLE = True
 except ImportError:
     DNA_AVAILABLE = False
     SEQ_AVAILABLE = False
@@ -90,6 +92,8 @@ except ImportError:
     NSFW_AVAILABLE = False
     DASHBOARD_AVAILABLE = False
     IMAGINE_AVAILABLE = False
+    REGIONS_AVAILABLE = False
+    IMAGINE_REGIONS = {}
     DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video-1.5"
     DEFAULT_XAI_CHAT_MODEL = "grok-4.3"
     IMAGINE_VIDEO_MODELS = {}

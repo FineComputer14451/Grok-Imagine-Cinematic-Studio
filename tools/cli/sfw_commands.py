@@ -11,6 +11,7 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
+from quality_pass_scheduler import apply_quality_pass_promotion, get_pending_quality_passes
 from sfw_orchestrator import (
     batch_to_markdown,
     build_shot_context,
@@ -38,6 +39,7 @@ def register(app: typer.Typer) -> None:
         budget: float = typer.Option(None, "--budget", "-b", help="Session budget in credits"),
         tier: str = typer.Option("supergrok_pro", "--tier", "-t"),
         fast_mode: bool = typer.Option(False, "--fast-mode"),
+        two_pass: bool = typer.Option(False, "--two-pass", help="Enable fast→hero quality pass scheduler"),
         output: str = typer.Option(None, "--output", "-o", help="Save markdown plan"),
     ):
         """Plan a prioritized SFW batch under quota limits."""
@@ -51,7 +53,7 @@ def register(app: typer.Typer) -> None:
             console.print("[red]Provide --file or at least one --shot[/red]")
             raise typer.Exit(1)
 
-        batch = plan_batch(title, shots, tier=tier, budget_credits=budget, fast_mode=fast_mode)
+        batch = plan_batch(title, shots, tier=tier, budget_credits=budget, fast_mode=fast_mode, two_pass=two_pass)
         path = save_batch(batch)
         md = batch_to_markdown(batch)
 
@@ -174,6 +176,50 @@ def register(app: typer.Typer) -> None:
         )
         status = "[green]PASS[/green]" if result["qa_pass"] else "[red]FAIL[/red]"
         console.print(f"{status} {shot_id} — score {score}/10, {credits} credits")
+
+
+    @app.command("promote")
+    def sfw_promote(
+        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+        shot_id: str = typer.Argument(..., help="Shot with pending quality pass"),
+    ):
+        """Apply quality pass promotion (pass 1 → pass 2 hero models)."""
+        batch = load_batch(batch_name)
+        shot = None
+        for s in batch.get("shots", []):
+            if s["shot_id"] == shot_id:
+                shot = s
+                break
+        if not shot:
+            console.print(f"[red]Shot not found:[/red] {shot_id}")
+            raise typer.Exit(1)
+        try:
+            apply_quality_pass_promotion(shot)
+        except ValueError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+        save_batch(batch)
+        console.print(Panel(
+            f"Shot: {shot_id}\n"
+            f"Pass: 2\n"
+            f"Video: {shot['video_model']}\n"
+            f"Mode: {shot.get('recommended_mode')}",
+            title="Quality Pass Applied",
+            border_style="green",
+        ))
+
+
+    @app.command("quality-pending")
+    def sfw_quality_pending(batch_name: str = typer.Argument(...)):
+        """List shots awaiting quality pass (pass 2)."""
+        batch = load_batch(batch_name)
+        pending = get_pending_quality_passes(batch)
+        if not pending:
+            console.print("[dim]No pending quality passes.[/dim]")
+            return
+        for s in pending:
+            plan = s.get("quality_pass_plan", {})
+            console.print(f"  {s['shot_id']} — est. +{plan.get('estimated_extra_credits', '?')} cr")
 
 
     @app.command("retry")

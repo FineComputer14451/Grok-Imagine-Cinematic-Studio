@@ -60,6 +60,20 @@ def render() -> None:
         index=sess.select_index(opts["tiers"], st.session_state.quota_tier),
     )
 
+    if rt.REGIONS_AVAILABLE:
+        region_keys = list(rt.IMAGINE_REGIONS.keys())
+        current = rt.get_active_region()
+        st.session_state.imagine_region = st.selectbox(
+            "Imagine API Region",
+            region_keys,
+            index=sess.select_index(region_keys, st.session_state.get("imagine_region", current)),
+            format_func=lambda r: f"{r} — {rt.IMAGINE_REGIONS[r]['label']}",
+            help="Routes Imagine API requests; failover chain used on 403/429/5xx.",
+        )
+        if st.session_state.imagine_region != current:
+            rt.set_imagine_region(st.session_state.imagine_region)
+            st.caption(f"Active region: {rt.get_active_region()}")
+
     st.divider()
     st.subheader("🔑 xAI API")
     st.text_input(

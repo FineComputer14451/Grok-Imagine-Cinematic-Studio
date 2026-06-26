@@ -20,6 +20,7 @@ from imagine_client import (
     submit_video_generation,
 )
 from imagine_jobs import cancel_job, create_job, get_job, job_summary, list_jobs, transition_job
+from imagine_regions import IMAGINE_REGIONS, get_active_region, get_failover_chain, set_imagine_region
 from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL
 
 from cli.shared import console
@@ -167,3 +168,29 @@ def register(app: typer.Typer) -> None:
             console.print(f"[red]Job not found:[/red] {job_id}")
             raise typer.Exit(1)
         console.print(f"[yellow]Cancelled[/yellow] {job_id} — {job.get('error', '')}")
+
+
+    @app.command("region")
+    def imagine_region(
+        set_to: str = typer.Option(None, "--set", help="Region slug"),
+        show: bool = typer.Option(False, "--show", help="Show active region and failover chain"),
+    ):
+        """Configure region-aware Imagine API routing with failover."""
+        if set_to:
+            try:
+                settings = set_imagine_region(set_to)
+            except ValueError as exc:
+                console.print(f"[red]{exc}[/red]")
+                raise typer.Exit(1) from exc
+            console.print(f"[green]Region set:[/green] {settings['region']}")
+            return
+        active = get_active_region()
+        chain = get_failover_chain(active)
+        table = Table(title="Imagine Regions", box=box.SIMPLE)
+        table.add_column("Region", style="cyan")
+        table.add_column("Label")
+        table.add_column("Active")
+        for slug, meta in IMAGINE_REGIONS.items():
+            table.add_row(slug, meta["label"], "✓" if slug == active else "")
+        console.print(table)
+        console.print(f"[dim]Failover chain:[/dim] {' → '.join(chain)}")

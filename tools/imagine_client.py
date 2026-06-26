@@ -16,12 +16,20 @@ import urllib.request
 import uuid
 from typing import Any
 
+from imagine_regions import (
+    FAILOVER_STATUS_CODES,
+    get_failover_chain,
+    record_region_used,
+    region_payload_fields,
+    region_request_headers,
+)
 from models import (
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
     resolve_image_model,
     resolve_video_model,
 )
+from project_state import load_project_state
 
 DEFAULT_BASE_URL = "https://api.x.ai/v1"
 DEFAULT_POLL_INTERVAL = 5.0
@@ -52,37 +60,70 @@ def _base_url() -> str:
     return os.getenv("XAI_API_BASE", DEFAULT_BASE_URL).rstrip("/")
 
 
+def _request_single(
+    method: str,
+    path: str,
+    *,
+    payload: dict[str, Any] | None,
+    headers: dict[str, str],
+    timeout: float,
+) -> dict[str, Any]:
+    url = f"{_base_url()}{path}"
+    data = json.dumps(payload).encode("utf-8") if payload is not None else None
+    req = urllib.request.Request(url, data=data, headers=headers, method=method.upper())
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        raw = resp.read().decode("utf-8")
+        return json.loads(raw) if raw else {}
+
+
 def _request(
     method: str,
     path: str,
     *,
     payload: dict[str, Any] | None = None,
     timeout: float = 120.0,
+    region: str | None = None,
 ) -> dict[str, Any]:
-    url = f"{_base_url()}{path}"
-    headers = {"Content-Type": "application/json"}
     api_key = get_api_key()
     if not api_key:
         raise ImagineAPIError("XAI_API_KEY not set — use dry_run helpers or export the key")
-    headers["Authorization"] = f"Bearer {api_key}"
 
-    data = json.dumps(payload).encode("utf-8") if payload is not None else None
-    req = urllib.request.Request(url, data=data, headers=headers, method=method.upper())
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            raw = resp.read().decode("utf-8")
-            return json.loads(raw) if raw else {}
-    except urllib.error.HTTPError as exc:
-        body: Any = None
+    state = load_project_state()
+    regions = get_failover_chain(region, state)
+    last_error: ImagineAPIError | None = None
+
+    for idx, reg in enumerate(regions):
+        body_payload = dict(payload or {})
+        body_payload.update(region_payload_fields(reg))
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+            **region_request_headers(reg),
+        }
         try:
-            body = json.loads(exc.read().decode("utf-8"))
-        except (json.JSONDecodeError, UnicodeDecodeError):
-            body = exc.read().decode("utf-8", errors="replace")
-        raise ImagineAPIError(
-            f"Imagine API {method.upper()} {path} failed ({exc.code})",
-            status=exc.code,
-            body=body,
-        ) from exc
+            result = _request_single(method, path, payload=body_payload, headers=headers, timeout=timeout)
+            record_region_used(reg, failed=idx > 0)
+            result["region"] = reg
+            return result
+        except urllib.error.HTTPError as exc:
+            body: Any = None
+            try:
+                body = json.loads(exc.read().decode("utf-8"))
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                body = exc.read().decode("utf-8", errors="replace")
+            last_error = ImagineAPIError(
+                f"Imagine API {method.upper()} {path} failed ({exc.code}) region={reg}",
+                status=exc.code,
+                body=body,
+            )
+            if exc.code in FAILOVER_STATUS_CODES and idx < len(regions) - 1:
+                record_region_used(reg, failed=True)
+                continue
+            raise last_error from exc
+
+    if last_error:
+        raise last_error
+    raise ImagineAPIError(f"Imagine API {method.upper()} {path} failed — no regions available")
 
 
 def _mock_request_id(prefix: str = "dry") -> str:

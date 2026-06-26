@@ -181,6 +181,18 @@ def _quota_table(snapshot: dict[str, Any]) -> Table:
     if daily:
         table.add_row("Daily Soft Cap", f"{daily} credits")
     table.add_row("Risk", _risk_text(quota.get("risk_level", "unknown")))
+    recon = quota.get("reconciliation") or {}
+    if recon.get("estimated_total", 0) > 0 or recon.get("actual_total", 0) > 0:
+        table.add_row("Est. Total", f"{recon.get('estimated_total', 0)} credits")
+        table.add_row("Actual Total", f"{recon.get('actual_total', 0)} credits")
+        var_pct = recon.get("variance_pct", 0)
+        var_style = "green" if abs(var_pct) < 5 else ("yellow" if abs(var_pct) < 15 else "red")
+        table.add_row("Variance", Text(f"{var_pct:+.1f}%", style=var_style))
+    burn = recon.get("burn_rate_multiplier")
+    if burn is not None and burn != 1.0:
+        burn_risk = quota.get("burn_rate_risk") or recon.get("risk_level", "low")
+        table.add_row("Burn Rate", Text(f"{burn}x", style=RISK_COLORS.get(burn_risk, "white")))
+        table.add_row("Burn Risk", _risk_text(burn_risk))
     return table
 
 

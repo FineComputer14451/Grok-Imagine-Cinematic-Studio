@@ -13,6 +13,7 @@ from models import (
     usd_to_credits,
 )
 from quota_optimizer import estimate_clip_cost, load_pricing_config
+from quota_sync import get_burn_rate_risk
 
 from nsfw_config import (
     QUALITY_THRESHOLD_HERO,
@@ -128,9 +129,11 @@ def decide_generation_mode(
     shot: dict[str, Any],
     *,
     budget_remaining: float | None = None,
-    risk_level: str = "low",
+    risk_level: str | None = None,
 ) -> dict[str, Any]:
     """Recommend image_prompt vs image_to_video vs video_prompt via priority rule table."""
+    if risk_level is None:
+        risk_level = get_burn_rate_risk()
     reasons: list[str] = []
     mode = "video_prompt"
     confidence = 0.65

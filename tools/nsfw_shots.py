@@ -12,6 +12,7 @@ from models import (
     IMAGINE_VIDEO_MODELS,
 )
 
+from aspect_presets import apply_aspect_to_shot, default_aspect_for_tier, normalize_aspect, parse_aspect_from_spec
 from nsfw_config import NSFW_ASSET_MODEL_MAP, SHOT_TIERS
 from nsfw_decisions import decide_generation_mode, estimate_shot_cost
 from nsfw_util import now_iso
@@ -47,7 +48,9 @@ def build_shot_context(
 
 
 def parse_inline_shot(spec: str) -> dict[str, Any]:
-    """Parse tier:description or tier:motion:description."""
+    """Parse tier:description, tier:motion:description, or aspect:tier:description."""
+    aspect_hint, remainder = parse_aspect_from_spec(spec)
+    spec = remainder
     parts = spec.split(":", 2)
     if len(parts) == 2:
         tier, desc = parts
@@ -56,11 +59,13 @@ def parse_inline_shot(spec: str) -> dict[str, Any]:
         tier, motion, desc = parts
     else:
         tier, motion, desc = "support", "medium", spec
-    return {
+    shot = {
         "tier": tier.strip(),
         "description": desc.strip(),
         "motion_complexity": motion.strip(),
     }
+    aspect = aspect_hint or default_aspect_for_tier(shot["tier"])
+    return apply_aspect_to_shot(shot, aspect)
 
 
 def apply_reference_curator_models(shot: dict[str, Any]) -> dict[str, Any]:
@@ -121,7 +126,10 @@ def create_shot(
     cost = estimate_shot_cost({**shot, "recommended_mode": decision["mode"]})
     shot["recommended_mode"] = decision["mode"]
     shot["estimated_credits"] = cost["credits"]
-    return apply_reference_curator_models(shot)
+    shot = apply_reference_curator_models(shot)
+    if "aspect_ratio" not in shot:
+        apply_aspect_to_shot(shot, default_aspect_for_tier(shot.get("tier", "support")))
+    return shot
 
 
 def enrich_shot_for_batch(raw: dict[str, Any], *, fast_mode: bool = False) -> dict[str, Any]:
@@ -141,4 +149,7 @@ def enrich_shot_for_batch(raw: dict[str, Any], *, fast_mode: bool = False) -> di
     cost = estimate_shot_cost({**raw, "recommended_mode": decision["mode"]}, fast_mode=fast_mode)
     raw["recommended_mode"] = decision["mode"]
     raw["estimated_credits"] = cost["credits"]
-    return apply_reference_curator_models(raw)
+    shot = apply_reference_curator_models(raw)
+    if "aspect_ratio" not in shot:
+        apply_aspect_to_shot(shot, default_aspect_for_tier(shot.get("tier", "support")))
+    return shot

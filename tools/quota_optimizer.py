@@ -436,6 +436,13 @@ def quota_dashboard(state: dict[str, Any] | None = None) -> dict[str, Any]:
     remaining = quota.get("budget_remaining")
     spent = quota.get("session_spent", 0)
 
+    sync: dict[str, Any] = {}
+    try:
+        from quota_sync import quota_sync_summary
+        sync = quota_sync_summary(state)
+    except ImportError:
+        pass
+
     return {
         "tier": tier,
         "tier_label": tier_info["label"],
@@ -447,4 +454,6 @@ def quota_dashboard(state: dict[str, Any] | None = None) -> dict[str, Any]:
         "monthly_credits": tier_info.get("monthly_credits"),
         "recent_history": quota.get("history", [])[-5:],
         "updated_at": quota.get("updated_at"),
+        "reconciliation": sync,
+        "burn_rate_risk": sync.get("risk_level", "low"),
     }

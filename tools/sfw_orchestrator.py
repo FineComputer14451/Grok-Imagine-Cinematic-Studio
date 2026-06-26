@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from project_state import load_project_state, save_project_state
-from quota_optimizer import SUBSCRIPTION_TIERS, assess_budget_risk, record_spend
+from quota_optimizer import SUBSCRIPTION_TIERS, assess_budget_risk
 from studio_paths import SFW_BATCHES_DIR as BATCHES_DIR
 
 from sfw_config import (  # noqa: F401 — re-exported
@@ -47,6 +47,8 @@ from sfw_shots import (  # noqa: F401 — re-exported
     normalize_shot_input,
     parse_inline_shot,
 )
+from aspect_presets import plan_social_variants
+from quality_pass_scheduler import get_pending_quality_passes, plan_two_pass_batch, promote_after_qa, apply_quality_pass_promotion
 from nsfw_util import now_iso, slugify
 
 __all__ = [
@@ -106,6 +108,7 @@ def plan_batch(
     budget_credits: float | None = None,
     retry_reserve_pct: float = RETRY_RESERVE_PCT,
     fast_mode: bool = False,
+    two_pass: bool = False,
 ) -> dict[str, Any]:
     tier_info = SUBSCRIPTION_TIERS.get(tier, SUBSCRIPTION_TIERS["supergrok_pro"])
     if budget_credits is None:
@@ -119,6 +122,8 @@ def plan_batch(
         enrich_shot_for_batch(normalize_shot_input(item), fast_mode=fast_mode)
         for item in shots
     ]
+    if two_pass:
+        enriched = plan_two_pass_batch(enriched, enabled=True)
     enriched.sort(key=lambda s: SHOT_TIERS.get(s.get("tier", "filler"), {}).get("priority", 99))
 
     scheduled: list[dict[str, Any]] = []
@@ -160,6 +165,8 @@ def plan_batch(
         "usable_credits": round(usable, 1),
         "scheduled_credits": round(total_scheduled, 1),
         "fast_mode": fast_mode,
+        "two_pass": two_pass,
+        "social_variants": plan_social_variants(enriched),
         "risk": risk,
         "shots_total": len(enriched),
         "shots_scheduled": len(scheduled),
@@ -284,8 +291,17 @@ def record_shot_result(
     orch["updated_at"] = now_iso()
     save_project_state(state)
 
+    if qa_pass and shot.get("two_pass") and shot.get("pass_number", 1) == 1:
+        promote_after_qa(shot, quality_score=quality_score, threshold=threshold)
+
     if record_quota:
-        record_spend(credits_spent, note=f"sfw:{shot_id} {batch.get('title', '')}")
+        from quota_sync import record_generation_spend
+        record_generation_spend(
+            credits_spent,
+            estimated_credits=shot.get("estimated_credits"),
+            note=f"sfw:{shot_id} est:{shot.get('estimated_credits')} {batch.get('title', '')}",
+            shot_id=shot_id,
+        )
 
     path = save_batch(batch)
     return {"shot": shot, "qa_pass": qa_pass, "saved_to": str(path)}
