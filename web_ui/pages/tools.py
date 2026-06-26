@@ -64,4 +64,4 @@ def render() -> None:
             for name in names:
                 st.markdown(f"- {name}")
     else:
-        st.caption(f"{rt.core_agent_count()} core agents + ErosForge (opt-in)")
+        st.caption(f"{rt.core_agent_count()} core agents + i2i + NSFW specialists (opt-in)")

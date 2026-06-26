@@ -12,7 +12,15 @@ from rich.table import Table
 
 from models import model_stack_summary
 
-from cli.shared import AGENTS, STUDIO_VERSION, console, get_role_card_path
+from cli.shared import (
+    AGENTS,
+    STUDIO_VERSION,
+    console,
+    core_agent_count,
+    get_role_card_path,
+    list_role_card_files,
+    total_agent_count,
+)
 
 
 def register(app: typer.Typer) -> None:
@@ -25,7 +33,7 @@ def register(app: typer.Typer) -> None:
         console.print(Panel.fit(
             f"[bold cyan]🎥 Grok Imagine Cinematic Studio v{STUDIO_VERSION}[/bold cyan]\n"
             "[green]Status:[/green] Enhanced CLI Active\n"
-            "[green]Agents:[/green] 23 Online\n"
+            f"[green]Agents:[/green] {core_agent_count()} core + {total_agent_count() - core_agent_count()} specialists\n"
             "[green]Role Cards:[/green] Loaded from references/agents/\n"
             "[green]Mode:[/green] Production Ready\n\n"
             "[bold]Model Stack[/bold]\n"
@@ -43,8 +51,11 @@ def register(app: typer.Typer) -> None:
 
     @app.command(name="list-agents")
     def list_agents():
-        """List all 23 agents grouped by category"""
-        table = Table(title="🎬 Grok Imagine Cinematic Studio — 23 Agents", box=box.ROUNDED)
+        """List all agents grouped by category"""
+        table = Table(
+            title=f"🎬 Grok Imagine Cinematic Studio — {core_agent_count()} Core Agents",
+            box=box.ROUNDED,
+        )
         table.add_column("Category", style="bold cyan", no_wrap=True)
         table.add_column("Agents", style="white")
 
@@ -53,8 +64,10 @@ def register(app: typer.Typer) -> None:
             table.add_row(category, agent_list)
 
         console.print(table)
-        total = sum(len(a) for a in AGENTS.values())
-        console.print(f"\n[italic dim]Total: {total} specialized agents ready for production[/italic dim]")
+        console.print(
+            f"\n[italic dim]Core: {core_agent_count()} · "
+            f"Total roster: {total_agent_count()} (incl. i2i + opt-in NSFW)[/italic dim]"
+        )
 
     @app.command(name="list-role-cards")
     def list_role_cards():
@@ -65,7 +78,7 @@ def register(app: typer.Typer) -> None:
             console.print("[red]references/agents/ directory not found[/red]")
             return
 
-        cards = sorted(AGENTS_DIR.glob("*.md"))
+        cards = list_role_card_files()
         table = Table(title="📋 Available Role Cards", box=box.SIMPLE)
         table.add_column("Role Card", style="cyan")
         table.add_column("File", style="dim")

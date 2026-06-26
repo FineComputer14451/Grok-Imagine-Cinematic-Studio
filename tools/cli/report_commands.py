@@ -10,7 +10,13 @@ from models import verify_model_compatibility
 from project_state import load_project_state
 from studio_paths import AGENTS_DIR, CHARACTERS_DIR, SEQUENCES_DIR, STUDIO_ROOT
 
-from cli.shared import STUDIO_VERSION, console
+from cli.shared import (
+    AGENT_ROLE_CARDS,
+    EXPECTED_ROLE_CARD_COUNT,
+    STUDIO_VERSION,
+    console,
+    list_role_card_files,
+)
 
 SKILLS_ROOT = STUDIO_ROOT / ".grok" / "skills"
 
@@ -58,8 +64,23 @@ def register(app: typer.Typer) -> None:
             console.print("[red]❌ references/agents/ directory missing[/red]")
             issues += 1
         else:
-            card_count = len(list(AGENTS_DIR.glob("*.md")))
+            cards = list_role_card_files()
+            card_count = len(cards)
             console.print(f"[green]✅ Found {card_count} Role Cards in references/agents/[/green]")
+            if card_count != EXPECTED_ROLE_CARD_COUNT:
+                console.print(
+                    f"[yellow]⚠️  Expected {EXPECTED_ROLE_CARD_COUNT} role cards, found {card_count}[/yellow]"
+                )
+                issues += 1
+            missing = [
+                name for name, rel in AGENT_ROLE_CARDS.items()
+                if not (AGENTS_DIR / rel).is_file()
+            ]
+            if missing:
+                console.print(f"[red]❌ Missing role cards for {len(missing)} agent(s)[/red]")
+                for name in missing[:5]:
+                    console.print(f"  [red]• {name}[/red]")
+                issues += 1
 
         core_files = ["MASTER_PROMPT_v3.6.md", "README.md", "Quick_Start_Guide.md"]
         for f in core_files:

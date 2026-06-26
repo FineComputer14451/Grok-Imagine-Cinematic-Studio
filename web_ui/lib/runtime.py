@@ -20,7 +20,7 @@ ROLE_CARD_PREVIEW_CHARS = 4000
 
 try:
     from cli.production import build_activation_prompt, build_production_bible, production_context
-    from cli.shared import AGENTS, STUDIO_VERSION as _CLI_VERSION
+    from cli.shared import AGENTS, STUDIO_VERSION as _CLI_VERSION, core_agent_count as _core_agent_count
 
     STUDIO_VERSION = _CLI_VERSION
     ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
@@ -28,6 +28,9 @@ try:
 except ImportError:
     AGENTS = {}
     PRODUCTION_AVAILABLE = False
+
+    def _core_agent_count() -> int:
+        return 23
 
 try:
     from character_dna import (
@@ -87,7 +90,7 @@ except ImportError:
 def core_agent_count() -> int:
     if not AGENTS:
         return 23
-    return sum(len(v) for k, v in AGENTS.items() if k != "Specialist (Opt-in)")
+    return _core_agent_count()
 
 
 def list_role_card_options() -> list[tuple[str, Path]]:
