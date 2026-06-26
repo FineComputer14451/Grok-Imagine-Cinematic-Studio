@@ -10,6 +10,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SKILLS_ROOT = REPO_ROOT / ".grok" / "skills"
+COMMANDS_ROOT = REPO_ROOT / "commands"
 PLUGIN_DIR = REPO_ROOT / ".grok-plugin"
 INDEX_PATH = PLUGIN_DIR / "plugin-index.json"
 MANIFEST_PATH = PLUGIN_DIR / "plugin.json"
@@ -42,6 +43,23 @@ def clean(text: str) -> str:
     return text
 
 
+def discover_commands() -> list[dict[str, str]]:
+    if not COMMANDS_ROOT.is_dir():
+        return []
+    items: list[dict[str, str]] = []
+    for path in sorted(COMMANDS_ROOT.glob("*.md")):
+        if path.stem.startswith("_"):
+            continue
+        frontmatter = parse_frontmatter(path)
+        items.append(
+            {
+                "name": path.stem,
+                "description": clean(frontmatter.get("description", "")),
+            }
+        )
+    return items
+
+
 def discover_skills() -> list[dict[str, str]]:
     items: list[dict[str, str]] = []
     for skill_dir in sorted(SKILLS_ROOT.iterdir()):
@@ -66,6 +84,16 @@ def skill_paths() -> list[str]:
     ]
 
 
+def command_paths() -> list[str]:
+    if not COMMANDS_ROOT.is_dir():
+        return []
+    return [
+        f"commands/{path.name}"
+        for path in sorted(COMMANDS_ROOT.glob("*.md"))
+        if not path.stem.startswith("_")
+    ]
+
+
 def load_plugin_manifest() -> dict:
     if MANIFEST_PATH.exists():
         data = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
@@ -76,6 +104,11 @@ def load_plugin_manifest() -> dict:
 
 def write_plugin_manifest(manifest: dict) -> None:
     manifest["skills"] = skill_paths()
+    commands = command_paths()
+    if commands:
+        manifest["commands"] = commands
+    elif "commands" in manifest:
+        del manifest["commands"]
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
@@ -84,13 +117,17 @@ def build_index() -> dict:
     plugins = marketplace.get("plugins", [])
     records: dict[str, dict] = {}
     skills = discover_skills()
+    commands = discover_commands()
     for entry in plugins:
         if not isinstance(entry, dict):
             continue
         plugin_name = entry.get("name")
         if not isinstance(plugin_name, str) or not plugin_name:
             continue
-        records[plugin_name] = {"components": {"skills": skills}}
+        components: dict[str, list] = {"skills": skills}
+        if commands:
+            components["commands"] = commands
+        records[plugin_name] = {"components": components}
     return {"version": 1, "plugins": records}
 
 
@@ -117,7 +154,9 @@ def main() -> int:
         return 0
 
     INDEX_PATH.write_text(rendered, encoding="utf-8")
-    print(f"Wrote {INDEX_PATH} ({len(skills := discover_skills())} skills)")
+    skills = discover_skills()
+    commands = discover_commands()
+    print(f"Wrote {INDEX_PATH} ({len(skills)} skills, {len(commands)} commands)")
     return 0
 
 

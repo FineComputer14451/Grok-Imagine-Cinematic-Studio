@@ -132,6 +132,24 @@
             "name": "workflow-quota-optimizer",
             "description": "Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimi…"
           }
+        ],
+        "commands": [
+          {
+            "name": "cinematic",
+            "description": "Activate Grok Imagine Cinematic Studio v3.6 with the full 23-agent production suite and native Imagine Video 1.5 pipeli…"
+          },
+          {
+            "name": "dna",
+            "description": "Character DNA workflow — extract, save, lock identity, and inject prompt blocks for Grok Imagine consistency."
+          },
+          {
+            "name": "quota",
+            "description": "Estimate production credits, assess budget risk, and get quota optimization recommendations for Imagine Video 1.5."
+          },
+          {
+            "name": "validate",
+            "description": "Run full Cinematic Studio validation — skills, agents, models, DNA, sequences, and project state health checks."
+          }
         ]
       }
     }

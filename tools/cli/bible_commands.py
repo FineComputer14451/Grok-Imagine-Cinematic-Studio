@@ -6,15 +6,16 @@ import json
 from pathlib import Path
 
 import typer
-from rich import box
 from rich.panel import Panel
 from rich.table import Table
 
 from models import DEFAULT_IMAGINE_VIDEO_MODEL, DEFAULT_XAI_CHAT_MODEL, resolve_video_model
 from project_state import load_project_state, save_project_state
-from quota_optimizer import assess_budget_risk, estimate_production
+from quota_optimizer import estimate_production
 
+from cli.helpers import assess_risk_from_state
 from cli.production import build_activation_prompt, build_production_bible
+from cli.quota_display import print_production_estimate_table
 from cli.shared import console
 
 
@@ -29,7 +30,7 @@ def register(app: typer.Typer) -> None:
         video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "--model", "-m", help="Imagine video model slug or alias"),
         output: str = typer.Option(None, "--output", "-o", help="Save to file"),
     ):
-        """Generate a high-quality ready-to-paste prompt"""
+        """Generate a high-quality ready-to-paste prompt."""
         prompt = build_activation_prompt(
             story,
             signature=signature,
@@ -50,7 +51,7 @@ def register(app: typer.Typer) -> None:
         fast_mode: bool = typer.Option(False, "--fast-mode", help="Use Fast mode pricing"),
         video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "-m", help="Imagine video model slug or alias"),
     ):
-        """Estimate generation cost and quota usage (delegates to quota optimizer)"""
+        """Estimate generation cost (alias for quota estimate with compact output)."""
         video_slug = resolve_video_model(video_model)
         estimate = estimate_production(
             duration,
@@ -59,29 +60,16 @@ def register(app: typer.Typer) -> None:
             fast_mode=fast_mode,
             video_model=video_slug,
         )
-        state = load_project_state()
-        quota = state.get("quota", {})
-        risk = assess_budget_risk(
+        risk = assess_risk_from_state(estimate)
+        print_production_estimate_table(
             estimate,
-            tier=quota.get("tier", "supergrok_pro"),
-            budget_remaining=quota.get("budget_remaining"),
+            risk,
+            duration=duration,
+            complexity=complexity,
+            fast_mode=fast_mode,
+            video_model=video_slug,
         )
-        table = Table(title="💰 Production Cost Estimate (1.5 per-second)", box=box.SIMPLE)
-        table.add_column("Metric", style="cyan")
-        table.add_column("Value", style="bold green")
-        table.add_row("Duration", f"{duration}s")
-        table.add_row("Video Model", estimate.get("video_model", video_slug))
-        table.add_row("Clips", str(estimate["clip_count"]))
-        table.add_row("Complexity", complexity.title())
-        table.add_row("Credits", f"{estimate['credits_low']} – {estimate['credits_high']}")
-        table.add_row("Est. USD", f"${estimate['usd_low']} – ${estimate['usd_high']}")
-        table.add_row("Est. Tokens", f"~{estimate['estimated_tokens']:,}")
-        risk_colors = {"low": "green", "medium": "yellow", "high": "orange1", "critical": "red"}
-        risk_level = risk["risk_level"]
-        risk_color = risk_colors.get(risk_level, "white")
-        table.add_row("Risk", f"[{risk_color}]{risk_level}[/{risk_color}]")
-        console.print(table)
-        console.print("[dim]Use 'quota optimize' for savings recommendations[/dim]")
+        console.print("[dim]See also: quota estimate · quota optimize[/dim]")
 
     @app.command(name="create-bible")
     def create_bible(
@@ -91,7 +79,7 @@ def register(app: typer.Typer) -> None:
         video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "-m", help="Imagine video model slug or alias"),
         output: str = typer.Option("production_bible.json", "--output", "-o"),
     ):
-        """Generate a rich, structured Production Bible"""
+        """Generate a rich, structured Production Bible."""
         bible = build_production_bible(
             title,
             genre=genre,
@@ -107,39 +95,46 @@ def register(app: typer.Typer) -> None:
         console.print(f"[green]✅ Rich Production Bible created:[/green] {output}")
         console.print("[dim]Includes locked variables, key agents, and recommended phases[/dim]")
 
-    @app.command()
-    def memory(
-        action: str = typer.Argument(..., help="add / list / load"),
-        name: str = typer.Option(None, "--name", "-n", help="Character or variable name"),
-        value: str = typer.Option(None, "--value", "-v", help="Value to store"),
+    memory_app = typer.Typer(help="Manage project memory entries")
+    app.add_typer(memory_app, name="memory")
+
+    @memory_app.command("add")
+    def memory_add(
+        name: str = typer.Option(..., "--name", "-n", help="Memory entry name"),
+        value: str = typer.Option(..., "--value", "-v", help="Value to store"),
     ):
-        """Manage project memory and character DNA"""
+        """Add a project memory entry."""
         state = load_project_state()
+        state.setdefault("characters", {})
+        state["characters"][name] = value
+        save_project_state(state)
+        console.print(f"[green]✅ Saved memory for[/green] {name}")
 
-        if action == "add":
-            if not name or not value:
-                console.print("[red]Please provide --name and --value[/red]")
-                return
-            state["characters"][name] = value
-            save_project_state(state)
-            console.print(f"[green]✅ Saved memory for[/green] {name}")
+    @memory_app.command("list")
+    def memory_list():
+        """List project memory entries."""
+        state = load_project_state()
+        entries = state.get("characters", {})
+        if not entries:
+            console.print("[yellow]No memory entries yet[/yellow]")
+            return
+        table = Table(title="🧠 Project Memory")
+        table.add_column("Name", style="cyan")
+        table.add_column("Value", style="white")
+        for k, v in entries.items():
+            if isinstance(v, str):
+                table.add_row(k, v[:80])
+        console.print(table)
 
-        elif action == "list":
-            if not state.get("characters"):
-                console.print("[yellow]No memory entries yet[/yellow]")
-                return
-            table = Table(title="🧠 Project Memory")
-            table.add_column("Name", style="cyan")
-            table.add_column("Value", style="white")
-            for k, v in state["characters"].items():
-                table.add_row(k, str(v)[:80])
-            console.print(table)
-
-        elif action == "load":
-            if name and name in state.get("characters", {}):
-                console.print(Panel(state["characters"][name], title=f"Memory: {name}"))
-            else:
-                console.print("[yellow]Memory entry not found[/yellow]")
-
+    @memory_app.command("load")
+    def memory_load(
+        name: str = typer.Argument(..., help="Memory entry name"),
+    ):
+        """Display a project memory entry."""
+        state = load_project_state()
+        value = state.get("characters", {}).get(name)
+        if isinstance(value, str):
+            console.print(Panel(value, title=f"Memory: {name}"))
         else:
-            console.print("[red]Unknown action. Use: add / list / load[/red]")
+            console.print("[yellow]Memory entry not found[/yellow]")
+            raise typer.Exit(1)

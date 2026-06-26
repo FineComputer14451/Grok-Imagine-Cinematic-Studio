@@ -18,6 +18,7 @@ eggs/
 .eggs/
 lib/
 !scripts/lib/
+!web_ui/lib/
 lib64/
 parts/
 sdist/

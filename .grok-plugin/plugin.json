@@ -52,5 +52,11 @@
     ".grok/skills/trailer-teaser-director",
     ".grok/skills/vfx-sfx-supervisor",
     ".grok/skills/workflow-quota-optimizer"
+  ],
+  "commands": [
+    "commands/cinematic.md",
+    "commands/dna.md",
+    "commands/quota.md",
+    "commands/validate.md"
   ]
 }

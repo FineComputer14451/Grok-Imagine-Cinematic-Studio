@@ -93,7 +93,7 @@ def register(app: typer.Typer) -> None:
     def activate():
         """Print the official activation command"""
         console.print(Panel(
-            "[bold]Activate Grok Imagine Cinematic Studio v3.6[/bold]\n\n"
+            f"[bold]Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}[/bold]\n\n"
             "Load the master prompt first, then paste the activation command.",
             title="🚀 Activation",
             border_style="magenta",

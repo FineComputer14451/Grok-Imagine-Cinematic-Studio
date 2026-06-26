@@ -67,7 +67,12 @@ def get_role_card_path(agent_name: str) -> Path | None:
     """Find the Role Card file for a given agent name."""
     if not AGENTS_DIR.exists():
         return None
-    for f in AGENTS_DIR.glob("*.md"):
-        if agent_name.lower().replace(" ", "_") in f.stem.lower() or f.stem.lower() in agent_name.lower().replace(" ", "_"):
-            return f
+    needle = agent_name.lower().replace(" ", "_")
+    exact = AGENTS_DIR / f"{needle}.md"
+    if exact.is_file():
+        return exact
+    for path in sorted(AGENTS_DIR.glob("*.md")):
+        stem = path.stem.lower()
+        if stem == needle or needle in stem or stem in needle:
+            return path
     return None
