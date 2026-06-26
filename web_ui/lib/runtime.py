@@ -20,7 +20,12 @@ ROLE_CARD_PREVIEW_CHARS = 4000
 
 try:
     from cli.production import build_activation_prompt, build_production_bible, production_context
-    from cli.shared import AGENTS, STUDIO_VERSION as _CLI_VERSION, core_agent_count as _core_agent_count
+    from cli.shared import (
+        AGENTS,
+        STUDIO_VERSION as _CLI_VERSION,
+        core_agent_count as _core_agent_count,
+        list_role_card_files,
+    )
 
     STUDIO_VERSION = _CLI_VERSION
     ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
@@ -97,13 +102,14 @@ def core_agent_count() -> int:
 def list_role_card_options() -> list[tuple[str, Path]]:
     if not AGENTS_DIR.exists():
         return []
-    options: list[tuple[str, Path]] = []
-    for path in sorted(AGENTS_DIR.glob("*.md")):
-        if path.stem == "AGENT_INDEX":
-            continue
-        label = path.stem.replace("_", " ")
-        options.append((label, path))
-    return options
+    try:
+        return [(p.stem.replace("_", " "), p) for p in list_role_card_files()]
+    except NameError:
+        return [
+            (p.stem.replace("_", " "), p)
+            for p in sorted(AGENTS_DIR.glob("*.md"))
+            if p.stem != "AGENT_INDEX"
+        ]
 
 
 def read_role_card_preview(path: Path, limit: int = ROLE_CARD_PREVIEW_CHARS) -> str:

@@ -8,6 +8,7 @@ import typer
 
 from models import verify_model_compatibility
 from project_state import load_project_state
+from studio_health import MIN_EXPECTED_SKILLS, count_skills
 from studio_paths import AGENTS_DIR, CHARACTERS_DIR, SEQUENCES_DIR, STUDIO_ROOT
 
 from cli.shared import (
@@ -91,10 +92,10 @@ def register(app: typer.Typer) -> None:
                 issues += 1
 
         if SKILLS_ROOT.is_dir():
-            skill_count = sum(1 for d in SKILLS_ROOT.iterdir() if (d / "SKILL.md").is_file())
+            skill_count = count_skills()
             console.print(f"[green]✅ Found {skill_count} skills in .grok/skills/[/green]")
-            if skill_count < 25:
-                console.print(f"[yellow]⚠️  Expected ~30 skills, found {skill_count}[/yellow]")
+            if skill_count < MIN_EXPECTED_SKILLS:
+                console.print(f"[yellow]⚠️  Expected ≥{MIN_EXPECTED_SKILLS} skills, found {skill_count}[/yellow]")
                 issues += 1
         else:
             console.print("[red]❌ .grok/skills/ directory missing[/red]")

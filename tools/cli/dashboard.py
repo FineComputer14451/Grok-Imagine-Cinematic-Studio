@@ -18,7 +18,7 @@ from nsfw_orchestrator import list_batches
 from project_state import load_project_state
 from quota_optimizer import assess_budget_risk, quota_dashboard
 from sequence_chain import list_sequences
-from studio_paths import STUDIO_ROOT
+from studio_health import count_skills
 
 from cli.quota_display import RISK_COLORS
 from cli.shared import (
@@ -30,7 +30,6 @@ from cli.shared import (
     total_agent_count,
 )
 
-SKILLS_ROOT = STUDIO_ROOT / ".grok" / "skills"
 CHAIN_QA_COLORS = {
     "go": "green",
     "conditional": "yellow",
@@ -43,12 +42,6 @@ LOCK_COLORS = {"locked": "green", "pending": "yellow"}
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
-
-
-def count_skills() -> int:
-    if not SKILLS_ROOT.is_dir():
-        return 0
-    return sum(1 for d in SKILLS_ROOT.iterdir() if (d / "SKILL.md").is_file())
 
 
 def build_studio_dashboard() -> dict[str, Any]:

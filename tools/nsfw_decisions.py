@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Any
+
+ModeRule = tuple[Callable[[dict[str, Any], str], bool], str, str, float]
 
 from models import (
     DEFAULT_IMAGINE_IMAGE_MODEL,
@@ -57,70 +60,89 @@ def estimate_shot_cost(
     return {"mode": mode, "credits": clip["credits_high"], "usd": clip["usd_high"], "breakdown": clip}
 
 
+def _tier(shot: dict[str, Any]) -> str:
+    return shot.get("tier", "support")
+
+
+def _has_ref(shot: dict[str, Any]) -> bool:
+    return bool(shot.get("has_reference", False))
+
+
+def _motion(shot: dict[str, Any]) -> str:
+    return shot.get("motion_complexity", "medium")
+
+
+GENERATION_MODE_RULES: tuple[ModeRule, ...] = (
+    (
+        lambda s, r: r in ("high", "critical") and _tier(s) not in ("hero", "consistency_anchor"),
+        "image_prompt",
+        "Quota pressure — explore with still before video spend",
+        0.9,
+    ),
+    (
+        lambda s, _: _tier(s) == "consistency_anchor" and not _has_ref(s),
+        "image_prompt",
+        "Anchor frame must be locked as still before dependent video",
+        0.95,
+    ),
+    (
+        lambda s, _: _has_ref(s) and _motion(s) in ("medium", "high"),
+        "image_to_video",
+        "Approved reference + motion intent — i2v preserves identity",
+        0.92,
+    ),
+    (
+        lambda s, _: _tier(s) in ("hero", "key_explicit") and _has_ref(s),
+        "image_to_video",
+        "High-impact shot with reference — i2v for fidelity",
+        0.88,
+    ),
+    (
+        lambda s, _: _motion(s) == "low" and s.get("explicit_level", "moderate") in ("suggestive", "moderate"),
+        "image_prompt",
+        "Low motion intimate still — image is quota-efficient",
+        0.85,
+    ),
+    (
+        lambda s, _: _motion(s) == "high" and not _has_ref(s),
+        "image_prompt",
+        "High motion without anchor — generate still first, then i2v",
+        0.8,
+    ),
+    (
+        lambda s, _: s.get("duration_seconds", 10) >= 10 and s.get("consistency_required", True) and _has_ref(s),
+        "image_to_video",
+        "Long consistent clip — extend from locked still",
+        0.87,
+    ),
+    (
+        lambda s, _: _tier(s) == "filler",
+        "image_prompt",
+        "Filler tier — still exploration unless budget surplus",
+        0.75,
+    ),
+)
+
+
 def decide_generation_mode(
     shot: dict[str, Any],
     *,
     budget_remaining: float | None = None,
     risk_level: str = "low",
 ) -> dict[str, Any]:
-    """
-    Recommend image_prompt vs image_to_video vs video_prompt.
-
-    Rules (priority order):
-    1. Quota critical → image_prompt for non-hero shots
-    2. Consistency anchor / hero with no ref → image_prompt first
-    3. Has approved reference + motion → image_to_video
-    4. High motion complexity without ref → image_prompt then i2v
-    5. Static portrait / pose → image_prompt
-    6. Key explicit with locked anchor → image_to_video
-    """
-    tier = shot.get("tier", "support")
-    has_ref = shot.get("has_reference", False)
-    consistency = shot.get("consistency_required", True)
-    motion = shot.get("motion_complexity", "medium")
-    explicit = shot.get("explicit_level", "moderate")
-    duration = shot.get("duration_seconds", 10)
-
+    """Recommend image_prompt vs image_to_video vs video_prompt via priority rule table."""
     reasons: list[str] = []
-    mode = "image_prompt"
-    confidence = 0.7
+    mode = "video_prompt"
+    confidence = 0.65
 
-    if risk_level in ("high", "critical") and tier not in ("hero", "consistency_anchor"):
-        mode = "image_prompt"
-        reasons.append("Quota pressure — explore with still before video spend")
-        confidence = 0.9
-    elif tier == "consistency_anchor" and not has_ref:
-        mode = "image_prompt"
-        reasons.append("Anchor frame must be locked as still before dependent video")
-        confidence = 0.95
-    elif has_ref and motion in ("medium", "high"):
-        mode = "image_to_video"
-        reasons.append("Approved reference + motion intent — i2v preserves identity")
-        confidence = 0.92
-    elif tier in ("hero", "key_explicit") and has_ref:
-        mode = "image_to_video"
-        reasons.append("High-impact shot with reference — i2v for fidelity")
-        confidence = 0.88
-    elif motion == "low" and explicit in ("suggestive", "moderate"):
-        mode = "image_prompt"
-        reasons.append("Low motion intimate still — image is quota-efficient")
-        confidence = 0.85
-    elif motion == "high" and not has_ref:
-        mode = "image_prompt"
-        reasons.append("High motion without anchor — generate still first, then i2v")
-        confidence = 0.8
-    elif duration >= 10 and consistency and has_ref:
-        mode = "image_to_video"
-        reasons.append("Long consistent clip — extend from locked still")
-        confidence = 0.87
-    elif tier == "filler":
-        mode = "image_prompt"
-        reasons.append("Filler tier — still exploration unless budget surplus")
-        confidence = 0.75
+    for predicate, rule_mode, reason, rule_confidence in GENERATION_MODE_RULES:
+        if predicate(shot, risk_level):
+            mode = rule_mode
+            reasons.append(reason)
+            confidence = rule_confidence
+            break
     else:
-        mode = "video_prompt"
         reasons.append("No reference; direct video prompt for atmospheric motion")
-        confidence = 0.65
 
     if budget_remaining is not None and budget_remaining < 100 and mode != "image_prompt":
         mode = "image_prompt"

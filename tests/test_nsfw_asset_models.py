@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
+from nsfw_decisions import decide_generation_mode  # noqa: E402
 from nsfw_orchestrator import (  # noqa: E402
     NSFW_ASSET_MODEL_MAP,
     RETRY_REASON_OPTIONS,
@@ -78,6 +79,26 @@ def test_shot_tier_options_follow_priority() -> None:
     assert "identity_drift" in RETRY_REASON_OPTIONS
 
 
+def test_decide_generation_mode_anchor_without_ref() -> None:
+    shot = build_shot_context("shot_001", tier="consistency_anchor", has_ref=False)
+    decision = decide_generation_mode(shot)
+    assert decision["mode"] == "image_prompt"
+    assert decision["confidence"] >= 0.9
+
+
+def test_decide_generation_mode_i2v_with_ref_and_motion() -> None:
+    shot = build_shot_context("shot_002", tier="key_explicit", motion="high", has_ref=True)
+    decision = decide_generation_mode(shot)
+    assert decision["mode"] == "image_to_video"
+
+
+def test_decide_budget_override() -> None:
+    shot = build_shot_context("shot_003", tier="key_explicit", motion="high", has_ref=True)
+    decision = decide_generation_mode(shot, budget_remaining=50)
+    assert decision["mode"] == "image_prompt"
+    assert any("Budget remaining" in r for r in decision["reasons"])
+
+
 def test_enrich_shot_for_batch_single_routing_pass() -> None:
     shot = enrich_shot_for_batch({"tier": "hero", "description": "Cover"})
     assert shot["image_model"] == "grok-imagine-image-quality"
@@ -104,6 +125,9 @@ if __name__ == "__main__":
     test_create_shot_includes_models()
     test_build_shot_context_canonical_fields()
     test_shot_tier_options_follow_priority()
+    test_decide_generation_mode_anchor_without_ref()
+    test_decide_generation_mode_i2v_with_ref_and_motion()
+    test_decide_budget_override()
     test_enrich_shot_for_batch_single_routing_pass()
     test_plan_batch_applies_routing()
     print("All NSFW asset model tests passed")
