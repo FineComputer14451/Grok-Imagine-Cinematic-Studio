@@ -89,6 +89,10 @@
             "description": "Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fideli…"
           },
           {
+            "name": "imagine-execution-bridge",
+            "description": "Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinematic Studio. Emits copy-paste VIDEO_PIPELINE_SPEC re…"
+          },
+          {
             "name": "imagine-prompt-master",
             "description": "Master cinematic prompt engineer and Grok Imagine specialist. Crafts precise, high-quality prompts using the Ultimate T…"
           },
@@ -196,7 +200,7 @@
           },
           {
             "name": "imagine",
-            "description": "Submit and track Imagine API generation jobs, reference plates, and sequence clip runs with chain QA gates."
+            "description": "Imagine production slash command — preflight verify, plan-generate-QA workflow, batch and sequence execution, grok.com/…"
           },
           {
             "name": "intelligence",

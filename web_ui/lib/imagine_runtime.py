@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from batch_runner import execute_shot
+from imagine_bridge import bridge_to_clipboard, bridge_to_markdown, build_bridge_packet
 from imagine_client import is_dry_run
 from imagine_jobs import (
     job_summary,
@@ -14,12 +16,15 @@ from imagine_jobs import (
 )
 from sfw_orchestrator import (
     batch_to_markdown,
+    get_next_shots,
     list_batches as list_sfw_batches,
     load_batch as load_sfw_batch,
     parse_inline_shot,
     plan_batch as plan_sfw_batch,
+    record_shot_result,
     save_batch as save_sfw_batch,
 )
+from sequence_chain import find_sequence, get_clip, load_sequence
 
 
 def parse_shot_lines(text: str) -> list[dict[str, Any]]:
@@ -34,10 +39,68 @@ def plan_and_save_sfw_batch(
     tier: str = "supergrok_pro",
     budget_credits: float | None = None,
     fast_mode: bool = False,
+    two_pass: bool = False,
 ) -> tuple[dict[str, Any], str]:
-    batch = plan_sfw_batch(title, shots, tier=tier, budget_credits=budget_credits, fast_mode=fast_mode)
+    batch = plan_sfw_batch(
+        title, shots, tier=tier, budget_credits=budget_credits,
+        fast_mode=fast_mode, two_pass=two_pass,
+    )
     path = save_sfw_batch(batch)
     return batch, str(path)
+
+
+def get_batch_next_shots(batch_slug: str, count: int = 5) -> list[dict[str, Any]]:
+    batch = load_sfw_batch(batch_slug)
+    return get_next_shots(batch, count=count)
+
+
+def run_sfw_shot(
+    batch_slug: str,
+    shot_id: str,
+    *,
+    dry_run: bool = False,
+    prompt: str | None = None,
+) -> dict[str, Any]:
+    batch = load_sfw_batch(batch_slug)
+    return execute_shot(batch, shot_id, dry_run=dry_run, prompt_override=prompt)
+
+
+def record_sfw_shot(
+    batch_slug: str,
+    shot_id: str,
+    *,
+    quality_score: float,
+    credits_spent: float,
+    failure_reason: str | None = None,
+    notes: str = "",
+) -> dict[str, Any]:
+    batch = load_sfw_batch(batch_slug)
+    return record_shot_result(
+        batch, shot_id,
+        quality_score=quality_score,
+        credits_spent=credits_spent,
+        failure_reason=failure_reason,
+        notes=notes,
+    )
+
+
+def build_shot_bridge(batch_slug: str, shot_id: str) -> dict[str, Any]:
+    batch = load_sfw_batch(batch_slug)
+    for sh in batch.get("shots", []):
+        if sh["shot_id"] == shot_id:
+            return build_bridge_packet({**sh, "batch_slug": batch_slug}, context="shot")
+    raise KeyError(shot_id)
+
+
+def build_clip_bridge(sequence_name: str, clip_id: str) -> dict[str, Any]:
+    path = find_sequence(sequence_name)
+    if not path:
+        raise FileNotFoundError(sequence_name)
+    seq = load_sequence(path)
+    clip = get_clip(seq, clip_id)
+    if not clip:
+        raise KeyError(clip_id)
+    return build_bridge_packet({**clip, "sequence_slug": seq.get("slug")}, context="clip")
 
 
 def submit_imagine_via_cli(

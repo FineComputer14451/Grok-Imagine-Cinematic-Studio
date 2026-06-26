@@ -1,51 +1,116 @@
 ---
-description: Submit and track Imagine API generation jobs, reference plates, and sequence clip runs with chain QA gates.
+description: Imagine production slash command — preflight verify, plan-generate-QA workflow, batch and sequence execution, grok.com/imagine bridge handoff.
 ---
 
-# Imagine Production
+# Imagine Production (`/imagine`)
 
-Bridge the studio planner to live xAI Imagine generation — image, video, job queue, and `sequence run`.
+Full Imagine runtime for Grok Imagine Cinematic Studio — closes the planner-to-generation gap with API jobs, batch execution, sequence runs, and chat bridge handoffs.
 
 ## Preflight
 
+1. **CLI available?**
+   ```bash
+   python tools/cinematic_studio_cli.py imagine --help
+   python tools/cinematic_studio_cli.py imagine verify
+   ```
+2. **API key** — `export XAI_API_KEY=...` (omit for dry-run mock mode)
+3. **Activate skills:** `imagine-prompt-master`, `imagine-execution-bridge`, `sfw-batch-orchestrator`, `reference-asset-curator`, `image-to-video-specialist`, `chain-qa-protocol`
+
+## Plan → Generate → QA Loop
+
+### 1. Preflight
+
 ```bash
-python tools/cinematic_studio_cli.py imagine --help
-python tools/cinematic_studio_cli.py sequence run --help
-export XAI_API_KEY=...   # omit for dry-run mock mode
+python tools/cinematic_studio_cli.py imagine verify
+python tools/cinematic_studio_cli.py models verify
 ```
 
-## Job queue
+### 2. Plan batch or sequence
 
 ```bash
-python tools/cinematic_studio_cli.py imagine submit video \
-  --prompt "Slow dolly through rain-soaked alley, neon reflections" \
-  --duration 10
+python tools/cinematic_studio_cli.py sfw plan "Hero Session" \
+  --shot "hero:Cover frame golden hour" \
+  --shot "story_beat:Reveal beat" --budget 300
 
-python tools/cinematic_studio_cli.py imagine list
-python tools/cinematic_studio_cli.py imagine status job_20260626_120000_123456
-```
-
-## Sequence run (with chain QA)
-
-```bash
 python tools/cinematic_studio_cli.py sequence init "Act 1" --duration 60
 python tools/cinematic_studio_cli.py sequence add-clip "Act 1" \
-  --prompt "Wide establishing shot..." --recap "Hero at window, rain on glass"
-
-python tools/cinematic_studio_cli.py sequence run "Act 1" --clip clip_001
-# Dry-run without API key:
-python tools/cinematic_studio_cli.py sequence run "Act 1" --clip clip_001 --dry-run
+  --prompt "Wide establishing..." --recap "Hero at window"
 ```
 
-`no_go` chain QA blocks extension to the next clip until resolved.
+### 3. Workflow overview
+
+```bash
+python tools/cinematic_studio_cli.py imagine workflow --batch hero-session
+python tools/cinematic_studio_cli.py imagine workflow --sequence "Act 1" --clip clip_001
+```
+
+### 4. Generate
+
+```bash
+# Batch shot (image / i2v / video per Reference Curator routing)
+python tools/cinematic_studio_cli.py sfw run hero-session shot_hero_001
+python tools/cinematic_studio_cli.py sfw run hero-session shot_hero_001 --dry-run
+
+# Sequence clip (chain QA gate)
+python tools/cinematic_studio_cli.py sequence run "Act 1" --clip clip_001
+
+# Direct job submit
+python tools/cinematic_studio_cli.py imagine submit video \
+  --prompt "Slow dolly, rain-soaked alley" --duration 10
+```
+
+### 5. QA record
+
+```bash
+python tools/cinematic_studio_cli.py sfw record hero-session shot_hero_001 \
+  --score 8.5 --credits 12
+
+python tools/cinematic_studio_cli.py sfw promote hero-session shot_hero_001  # two-pass
+```
+
+### 6. Chat bridge (no API key)
+
+```bash
+python tools/cinematic_studio_cli.py imagine bridge --batch hero-session --shot shot_hero_001
+python tools/cinematic_studio_cli.py imagine bridge --sequence "Act 1" --clip clip_001 --format clipboard
+```
+
+Paste output into [grok.com/imagine](https://grok.com/imagine).
+
+## Job Queue
+
+```bash
+python tools/cinematic_studio_cli.py imagine list
+python tools/cinematic_studio_cli.py imagine status job_20260626_120000_123456
+python tools/cinematic_studio_cli.py imagine cancel job_20260626_120000_123456
+```
 
 ## Web UI
 
-Open **Imagine** page: job queue, SFW batch planner, reference plates, sequence run.
+Open **Imagine** page:
 
-## Skills
+- **Job queue** — submit and track jobs
+- **SFW plan** — batch planner with model routing
+- **Batch execute** — pick shot, generate, preview, record QA
+- **Reference plates** — register and lock plates for i2v
+- **Sequence run** — clip runner with bridge preview
+- **Delivery** — polish and EDL export
 
-- `sfw-batch-orchestrator`
-- `reference-asset-curator`
-- `image-to-video-specialist`
-- `chain-qa-protocol`
+## Verification
+
+- `imagine verify` reports compatible model stack and LIVE/DRY-RUN mode
+- `sfw run` returns job ID + result URL
+- `sfw record` updates batch status and quota reconciliation
+- `imagine bridge` includes VIDEO_PIPELINE_SPEC + Sound Layer + reference hints
+- Dashboard shows active Imagine jobs
+
+## Summary
+
+```
+## Result
+- **Action**: Imagine production
+- **Mode**: live | dry-run | bridge
+- **Target**: <batch/shot> | <sequence/clip>
+- **Job**: <job_id>
+- **QA**: pass | fail | pending
+```

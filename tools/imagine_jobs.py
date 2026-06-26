@@ -209,6 +209,12 @@ def lock_reference_asset(asset_id: str, *, lock_status: str = "locked") -> dict[
     return asset
 
 
+def get_reference_asset(asset_id: str) -> dict[str, Any] | None:
+    state = load_project_state()
+    manifest = ensure_asset_manifest(state)
+    return manifest["assets"].get(asset_id)
+
+
 def list_reference_assets(*, lock_status: str | None = None) -> list[dict[str, Any]]:
     state = load_project_state()
     manifest = ensure_asset_manifest(state)

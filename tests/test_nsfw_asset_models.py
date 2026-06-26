@@ -94,7 +94,7 @@ def test_decide_generation_mode_i2v_with_ref_and_motion() -> None:
 
 def test_decide_budget_override() -> None:
     shot = build_shot_context("shot_003", tier="key_explicit", motion="high", has_ref=True)
-    decision = decide_generation_mode(shot, budget_remaining=50)
+    decision = decide_generation_mode(shot, budget_remaining=50, risk_level="low")
     assert decision["mode"] == "image_prompt"
     assert any("Budget remaining" in r for r in decision["reasons"])
 

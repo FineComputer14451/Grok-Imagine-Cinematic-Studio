@@ -18,8 +18,8 @@ def render() -> None:
     if dry:
         st.info("No `XAI_API_KEY` — dry-run mode active (mock URLs). Set key in Settings for live generation.")
 
-    tab_jobs, tab_sfw, tab_refs, tab_run, tab_delivery = st.tabs(
-        ["Job queue", "SFW batch", "Reference plates", "Sequence run", "Delivery"]
+    tab_jobs, tab_sfw, tab_execute, tab_refs, tab_run, tab_delivery = st.tabs(
+        ["Job queue", "SFW plan", "Batch execute", "Reference plates", "Sequence run", "Delivery"]
     )
 
     with tab_jobs:
@@ -121,6 +121,87 @@ def render() -> None:
                 else:
                     st.warning("Title and shots required.")
 
+    with tab_execute:
+        st.subheader("Batch shot execute")
+        st.caption("Pick a planned batch shot, generate via Imagine, preview result, record QA.")
+        batches = ir.list_sfw_batches()
+        batch_slugs = [b.get("slug") or b.get("batch_id", "") for b in batches]
+        sel_batch = st.selectbox("Batch", batch_slugs or ["(none)"], key="exec_batch")
+        if sel_batch and sel_batch != "(none)":
+            try:
+                next_shots = ir.get_batch_next_shots(sel_batch, count=8)
+            except FileNotFoundError:
+                next_shots = []
+                st.error("Batch not found")
+            if next_shots:
+                shot_options = {s["shot_id"]: s for s in next_shots}
+                shot_id = st.selectbox(
+                    "Next shot",
+                    list(shot_options.keys()),
+                    format_func=lambda sid: (
+                        f"{sid} · {shot_options[sid].get('tier')} · "
+                        f"{shot_options[sid].get('decision', {}).get('mode', shot_options[sid].get('recommended_mode', ''))}"
+                    ),
+                    key="exec_shot",
+                )
+                shot = shot_options[shot_id]
+                st.markdown(
+                    f"**Models:** `{shot.get('image_model')}` → `{shot.get('video_model')}` · "
+                    f"**Est.:** ~{shot.get('cost_estimate', {}).get('credits', shot.get('estimated_credits', '?'))} cr · "
+                    f"**Aspect:** {shot.get('aspect_ratio', '16:9')}"
+                )
+                st.text_area("Description", value=shot.get("description", ""), disabled=True, height=80)
+
+                col_a, col_b, col_c = st.columns(3)
+                force_dry = col_a.checkbox("Dry-run", value=dry, key="exec_dry")
+                prompt_override = col_b.text_input("Prompt override", value="", key="exec_prompt")
+                if col_c.button("Generate shot", use_container_width=True, key="exec_gen"):
+                    try:
+                        result = ir.run_sfw_shot(
+                            sel_batch, shot_id,
+                            dry_run=force_dry,
+                            prompt=prompt_override or None,
+                        )
+                        st.session_state["exec_last_result"] = result
+                        st.success(f"Job {result['job_id']} — {result['status']}")
+                    except Exception as exc:
+                        st.error(str(exc))
+
+                if st.session_state.get("exec_last_result", {}).get("shot_id") == shot_id:
+                    res = st.session_state["exec_last_result"]
+                    url = res.get("result_url")
+                    if url:
+                        st.link_button("Open result", url)
+                        if url.endswith((".mp4", ".webm")):
+                            st.video(url)
+                        elif url.endswith((".png", ".jpg", ".jpeg", ".webp")):
+                            st.image(url)
+                    with st.expander("Execution bridge (copy-paste)"):
+                        try:
+                            packet = ir.build_shot_bridge(sel_batch, shot_id)
+                            st.code(ir.bridge_to_clipboard(packet), language="text")
+                        except KeyError:
+                            pass
+
+                with st.form("exec_record"):
+                    st.markdown("**Record QA result**")
+                    score = st.slider("Quality score", 1.0, 10.0, 8.0, 0.5)
+                    credits = st.number_input("Credits spent", 1.0, 500.0, 10.0, 1.0)
+                    reason = st.text_input("Failure reason (if fail)", value="")
+                    note = st.text_input("Notes", value="")
+                    if st.form_submit_button("Record result", use_container_width=True):
+                        rec = ir.record_sfw_shot(
+                            sel_batch, shot_id,
+                            quality_score=score,
+                            credits_spent=credits,
+                            failure_reason=reason or None,
+                            notes=note,
+                        )
+                        status = "PASS" if rec["qa_pass"] else "FAIL"
+                        st.success(f"{status} — shot updated")
+            else:
+                st.caption("No pending shots — plan a batch first.")
+
     with tab_refs:
         st.subheader("Reference asset pipeline")
         assets = ir.list_reference_assets()
@@ -179,6 +260,16 @@ def render() -> None:
         seq_names = [s["name"] for s in seqs] if seqs else []
         seq_name = st.selectbox("Sequence", seq_names or ["(none)"])
         clip_id = st.text_input("Clip ID", value="clip_001")
+        if seq_name and seq_name != "(none)" and clip_id:
+            try:
+                packet = ir.build_clip_bridge(seq_name, clip_id)
+                st.caption(
+                    f"Resolved: `{packet.get('video_model')}` · aspect {packet.get('aspect_ratio', '16:9')}"
+                )
+                with st.expander("Clip bridge (grok.com/imagine)"):
+                    st.code(ir.bridge_to_clipboard(packet), language="text")
+            except (FileNotFoundError, KeyError):
+                pass
         force_dry = st.checkbox("Dry-run", value=dry, key="seq_run_dry")
         if st.button("Run clip", use_container_width=True, key="seq_run_btn"):
             if seq_name and seq_name != "(none)" and clip_id:

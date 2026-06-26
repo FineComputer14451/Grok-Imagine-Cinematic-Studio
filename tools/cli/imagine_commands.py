@@ -20,8 +20,11 @@ from imagine_client import (
     submit_video_generation,
 )
 from imagine_jobs import cancel_job, create_job, get_job, job_summary, list_jobs, transition_job
+from imagine_bridge import bridge_to_clipboard, bridge_to_markdown, build_bridge_packet
 from imagine_regions import IMAGINE_REGIONS, get_active_region, get_failover_chain, set_imagine_region
-from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL
+from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL, verify_model_compatibility
+from sequence_chain import get_clip, load_sequence, find_sequence
+from sfw_orchestrator import get_next_shots, load_batch as load_sfw_batch
 
 from cli.shared import console
 
@@ -194,3 +197,132 @@ def register(app: typer.Typer) -> None:
             table.add_row(slug, meta["label"], "✓" if slug == active else "")
         console.print(table)
         console.print(f"[dim]Failover chain:[/dim] {' → '.join(chain)}")
+
+
+    @app.command("verify")
+    def imagine_verify():
+        """Preflight model stack and Imagine API readiness."""
+        check = verify_model_compatibility()
+        dry = is_dry_run()
+        table = Table(title="Imagine Preflight", box=box.ROUNDED)
+        table.add_column("Check", style="cyan")
+        table.add_column("Status")
+        table.add_row("Model stack", "[green]OK[/green]" if check["compatible"] else "[red]ISSUES[/red]")
+        table.add_row("API mode", "[yellow]DRY-RUN[/yellow]" if dry else "[green]LIVE[/green]")
+        table.add_row("Active region", get_active_region())
+        stack = check.get("model_stack", {})
+        table.add_row("Video model", stack.get("imagine_video", "—"))
+        table.add_row("Image model", stack.get("imagine_image", "—"))
+        console.print(table)
+        if not check["compatible"]:
+            for issue in check.get("issues", []):
+                console.print(f"  [red]•[/red] {issue}")
+            raise typer.Exit(1)
+        if dry:
+            console.print("[dim]Set XAI_API_KEY for live generation.[/dim]")
+
+
+    @app.command("bridge")
+    def imagine_bridge(
+        shot_id: str = typer.Option(None, "--shot", help="Batch shot ID"),
+        batch: str = typer.Option(None, "--batch", "-b", help="SFW batch slug"),
+        sequence: str = typer.Option(None, "--sequence", "-s", help="Sequence slug"),
+        clip: str = typer.Option(None, "--clip", "-c", help="Clip ID"),
+        format: str = typer.Option("markdown", "--format", "-f", help="markdown | clipboard"),
+        output: str = typer.Option(None, "--output", "-o"),
+    ):
+        """Emit copy-paste-ready grok.com/imagine handoff packet."""
+        subject: dict | None = None
+        context = "shot"
+
+        if batch and shot_id:
+            b = load_sfw_batch(batch)
+            for sh in b.get("shots", []):
+                if sh["shot_id"] == shot_id:
+                    subject = {**sh, "batch_slug": b.get("slug")}
+                    break
+            if not subject:
+                console.print(f"[red]Shot not found in batch:[/red] {shot_id}")
+                raise typer.Exit(1)
+        elif sequence and clip:
+            seq_path = find_sequence(sequence)
+            if not seq_path:
+                console.print(f"[red]Sequence not found:[/red] {sequence}")
+                raise typer.Exit(1)
+            seq = load_sequence(seq_path)
+            subject = get_clip(seq, clip)
+            if not subject:
+                console.print(f"[red]Clip not found:[/red] {clip}")
+                raise typer.Exit(1)
+            subject = {**subject, "sequence_slug": seq.get("slug")}
+            context = "clip"
+        else:
+            console.print("[red]Provide --batch + --shot OR --sequence + --clip[/red]")
+            raise typer.Exit(1)
+
+        packet = build_bridge_packet(subject, context=context)
+        text = bridge_to_clipboard(packet) if format == "clipboard" else bridge_to_markdown(packet)
+        if output:
+            from pathlib import Path
+            Path(output).write_text(text)
+            console.print(f"[green]Bridge written:[/green] {output}")
+        else:
+            console.print(Panel(text, title=f"Imagine Bridge — {packet['subject_id']}", border_style="cyan"))
+
+
+    @app.command("workflow")
+    def imagine_workflow(
+        batch: str = typer.Option(None, "--batch", "-b"),
+        sequence: str = typer.Option(None, "--sequence", "-s"),
+        shot_id: str = typer.Option(None, "--shot"),
+        clip: str = typer.Option(None, "--clip", "-c"),
+        dry_run: bool = typer.Option(False, "--dry-run"),
+        count: int = typer.Option(1, "--count", "-n", help="Next shots to show when no --shot"),
+    ):
+        """Preflight → plan queue → generate hint → QA record loop."""
+        check = verify_model_compatibility()
+        if not check["compatible"]:
+            console.print("[red]Model stack incompatible — run: models verify[/red]")
+            raise typer.Exit(1)
+
+        mode_label = "[yellow]DRY-RUN[/yellow]" if (dry_run or is_dry_run()) else "[green]LIVE[/green]"
+        console.print(Panel(f"Imagine workflow ready · {mode_label}", border_style="cyan"))
+
+        if batch:
+            try:
+                b = load_sfw_batch(batch)
+            except FileNotFoundError:
+                console.print(f"[red]Batch not found:[/red] {batch}")
+                raise typer.Exit(1)
+            if shot_id:
+                console.print(f"[bold]Target shot:[/bold] {shot_id}")
+                console.print("[dim]Run: sfw run {batch} {shot_id}{dry}".format(
+                    batch=batch, shot_id=shot_id, dry=" --dry-run" if dry_run else "",
+                ))
+            else:
+                shots = get_next_shots(b, count=count)
+                if not shots:
+                    console.print("[yellow]No pending shots.[/yellow]")
+                    return
+                table = Table(title=f"Next — {b['title']}", box=box.SIMPLE)
+                table.add_column("Shot", style="cyan")
+                table.add_column("Mode")
+                table.add_column("Models", style="dim")
+                table.add_column("Est. cr", justify="right")
+                for sh in shots:
+                    table.add_row(
+                        sh["shot_id"],
+                        sh.get("decision", {}).get("mode", sh.get("recommended_mode", "")),
+                        f"{sh.get('image_model')} → {sh.get('video_model')}",
+                        str(sh.get("cost_estimate", {}).get("credits", "?")),
+                    )
+                console.print(table)
+                console.print(f"[dim]Run: sfw run {batch} {shots[0]['shot_id']}{' --dry-run' if dry_run else ''}[/dim]")
+                console.print(f"[dim]QA: sfw record {batch} {shots[0]['shot_id']} --score 8 --credits 10[/dim]")
+            console.print(f"[dim]Bridge: imagine bridge --batch {batch} --shot <id>[/dim]")
+        elif sequence and clip:
+            console.print(f"[dim]Run: sequence run {sequence} --clip {clip}{' --dry-run' if dry_run else ''}[/dim]")
+            console.print(f"[dim]Bridge: imagine bridge --sequence {sequence} --clip {clip}[/dim]")
+        else:
+            console.print("[red]Provide --batch or --sequence + --clip[/red]")
+            raise typer.Exit(1)

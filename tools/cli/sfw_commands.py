@@ -11,6 +11,8 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
+from batch_runner import execute_shot
+from imagine_client import ImagineAPIError
 from quality_pass_scheduler import apply_quality_pass_promotion, get_pending_quality_passes
 from sfw_orchestrator import (
     batch_to_markdown,
@@ -152,6 +154,42 @@ def register(app: typer.Typer) -> None:
             f"Reasons:\n" + "\n".join(f"  • {r}" for r in decision["reasons"]) +
             (f"\nFollow-up: {decision['follow_up']}" if decision.get("follow_up") else ""),
             title="SFW I2V Decision",
+            border_style="cyan",
+        ))
+
+
+    @app.command("run")
+    def sfw_run(
+        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+        shot_id: str = typer.Argument(..., help="Shot ID to execute"),
+        dry_run: bool = typer.Option(False, "--dry-run"),
+        prompt: str = typer.Option(None, "--prompt", "-p", help="Override generation prompt"),
+    ):
+        """Execute a batch shot via Imagine API (image / i2v / video)."""
+        batch = load_batch(batch_name)
+        try:
+            result = execute_shot(
+                batch, shot_id,
+                dry_run=dry_run,
+                prompt_override=prompt,
+            )
+        except (ValueError, RuntimeError, ImagineAPIError) as exc:
+            if isinstance(exc, ImagineAPIError):
+                console.print(f"[red]Imagine API error:[/red] {exc}")
+            else:
+                console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+
+        mode = "[yellow]DRY-RUN[/yellow]" if result.get("dry_run") else "[green]LIVE[/green]"
+        console.print(Panel(
+            f"Shot: {result['shot_id']}\n"
+            f"Mode: {result['mode']}\n"
+            f"Status: {result['status']}\n"
+            f"Job: {result['job_id']}\n"
+            f"URL: {result.get('result_url', '—')}\n"
+            f"Est. credits: {result.get('estimated_credits')}\n\n"
+            f"Next: sfw record {batch_name} {shot_id} --score <1-10> --credits {result.get('estimated_credits', 10)}",
+            title=f"SFW Shot Run — {mode}",
             border_style="cyan",
         ))
 
