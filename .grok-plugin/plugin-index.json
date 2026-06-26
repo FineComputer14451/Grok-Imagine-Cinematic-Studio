@@ -187,6 +187,10 @@
             "description": "Open the Grok Imagine Cinematic Studio CLI dashboard — studio health, quota, sequences, DNA, and production assets."
           },
           {
+            "name": "delivery",
+            "description": "Post-QA polish and delivery pipeline — upscale, EDL export, concat, and social crops for festival-ready output."
+          },
+          {
             "name": "dna",
             "description": "Character DNA workflow — extract, save, lock identity, and inject prompt blocks for Grok Imagine consistency."
           },

@@ -11,8 +11,12 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
+from assembly_editor import build_edl, edl_to_markdown, save_edl
+from chain_qa_assist import apply_assisted_qa, assist_chain_qa
 from quota_optimizer import estimate_sequence_cost
 from imagine_client import is_dry_run
+from sequence_delivery import deliver_sequence
+from sequence_polish import polish_sequence
 from sequence_chain import (
     CHAIN_QA_CHECKS,
     add_clip_to_sequence,
@@ -203,6 +207,130 @@ def register(app: typer.Typer) -> None:
             title=f"💰 {seq['sequence_name']}",
             border_style="green",
         ))
+
+    @app.command("qa-assist")
+    def seq_qa_assist(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c"),
+        apply: bool = typer.Option(False, "--apply", help="Apply suggested scores to chain QA"),
+        nsfw: bool = typer.Option(False, "--nsfw", help="Use NSFW 8-point assist"),
+    ):
+        """Pre-fill chain QA scores from metadata heuristics (assist mode)."""
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        clips = seq.get("clips", [])
+        idx = target["index"]
+        prev = clips[idx - 1] if idx > 0 else None
+
+        if apply:
+            result = apply_assisted_qa(seq, target, previous_clip=prev, nsfw=nsfw or bool(seq.get("nsfw_extension")))
+            assist = result["assist"]
+            qa = result["chain_qa"]
+            update_sequence_health(seq)
+            save_sequence(seq)
+        else:
+            assist = assist_chain_qa(target, previous_clip=prev, sequence=seq, nsfw=nsfw or bool(seq.get("nsfw_extension")))
+            qa = assist["evaluation"]
+
+        table = Table(title=f"QA Assist — {clip} ({assist['mode']})", box=box.SIMPLE)
+        table.add_column("Check", style="cyan")
+        table.add_column("Score", justify="right")
+        table.add_column("Reason", style="dim", max_width=36)
+        for key, score in assist["suggested_scores"].items():
+            table.add_row(key, str(score), assist["reasons"].get(key, "")[:36])
+        console.print(table)
+
+        decision_color = {"go": "green", "conditional_go": "yellow", "no_go": "red"}.get(qa.get("decision", ""), "white")
+        console.print(
+            f"Confidence: {assist['confidence']} | "
+            f"[{decision_color}]Decision: {qa.get('decision')}[/{decision_color}] | "
+            f"Weighted: {qa.get('weighted_score', 'N/A')}"
+        )
+        if apply:
+            console.print(f"[dim]Applied — sequence health: {seq.get('sequence_health_score')}[/dim]")
+        else:
+            console.print("[dim]Review scores, then: sequence qa-assist \"{name}\" --clip {clip} --apply[/dim]".format(
+                name=name, clip=clip,
+            ))
+
+
+    @app.command("edl")
+    def seq_edl(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        all_clips: bool = typer.Option(False, "--all-clips", help="Include non-approved clips"),
+        output: str = typer.Option(None, "--output", "-o"),
+    ):
+        """Export Assembly Editor EDL from sequence clips."""
+        seq = require_sequence(name)
+        edl = build_edl(seq, approved_only=not all_clips)
+        path = save_edl(edl, output=Path(output) if output else None)
+        console.print(f"[green]EDL saved:[/green] {path}")
+        console.print(f"[dim]Markdown:[/dim] {edl.get('markdown_path', path.with_suffix('.md'))}")
+        console.print(Panel(
+            f"Assembled: {edl['assembled_duration_sec']}s / target {edl['runtime_target_sec']}s\n"
+            f"Clips: {edl['clip_count']} | Skipped: {len(edl.get('skipped_clips', []))}",
+            title="Assembly EDL",
+            border_style="cyan",
+        ))
+        if not output:
+            console.print(Markdown(edl_to_markdown(edl)[:3000]))
+
+
+    @app.command("polish")
+    def seq_polish(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        scale: int = typer.Option(2, "--scale", "-s", help="Upscale factor 2-4"),
+        face_restore: bool = typer.Option(False, "--face-restore"),
+        clip: list[str] = typer.Option(None, "--clip", "-c", help="Polish specific clips only"),
+        dry_run: bool = typer.Option(False, "--dry-run"),
+    ):
+        """AI Polish pass — upscale approved clips via ai-video-upscaler."""
+        seq = require_sequence(name)
+        manifest = polish_sequence(
+            seq,
+            scale=scale,
+            face_restore=face_restore,
+            clip_ids=list(clip) if clip else None,
+            dry_run=dry_run,
+        )
+        save_sequence(seq)
+        console.print(Panel(
+            f"Polished: {manifest['clips_polished']} clips\n"
+            f"Skipped: {len(manifest.get('clips_skipped', []))}\n"
+            f"Output: {manifest['output_dir']}\n"
+            f"Manifest: {manifest['output_dir']}/polish_manifest.json",
+            title=f"AI Polish — {seq['sequence_name']}",
+            border_style="green",
+        ))
+
+
+    @app.command("deliver")
+    def seq_deliver(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        formats: str = typer.Option("16:9", "--formats", "-f", help="Comma-separated: 16:9,9:16,1:1"),
+        all_clips: bool = typer.Option(False, "--all-clips"),
+        dry_run: bool = typer.Option(False, "--dry-run"),
+    ):
+        """Build delivery masters — concat + social crops via cinematic-ffmpeg."""
+        seq = require_sequence(name)
+        fmt_list = [x.strip() for x in formats.split(",") if x.strip()]
+        manifest = deliver_sequence(
+            seq,
+            formats=fmt_list,
+            approved_only=not all_clips,
+            dry_run=dry_run,
+        )
+        save_sequence(seq)
+        lines = [f"{k}: {v}" for k, v in manifest.get("outputs", {}).items()]
+        console.print(Panel(
+            f"Formats: {', '.join(fmt_list)}\n"
+            f"Duration: {manifest.get('assembled_duration_sec')}s\n"
+            + ("\n".join(lines) if lines else "No outputs — check polish step")
+            + ("\n\nNotes:\n" + "\n".join(f"  • {n}" for n in manifest.get("notes", [])) if manifest.get("notes") else ""),
+            title=f"Delivery — {seq['sequence_name']}",
+            border_style="cyan",
+        ))
+
 
     @app.command("run")
     def seq_run(

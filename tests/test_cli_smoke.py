@@ -30,7 +30,7 @@ def test_main_help() -> None:
 
 
 def test_subcommand_groups() -> None:
-    for group in ("dna", "sequence", "quota", "models", "nsfw", "sfw", "imagine", "memory"):
+    for group in ("dna", "sequence", "quota", "models", "nsfw", "sfw", "imagine", "animatic", "memory"):
         result = run_cli(group, "--help")
         assert result.returncode == 0, result.stderr
 

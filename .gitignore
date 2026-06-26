@@ -185,6 +185,10 @@ sfw_batches/*/
 # Imagine job artifacts and reference uploads
 artifacts/jobs/
 artifacts/references/
+artifacts/polished/
+artifacts/delivery/
+artifacts/edl/
+artifacts/animatics/
 
 # Generated production files (optional - comment out if you want to commit examples)
 # production_bible.json

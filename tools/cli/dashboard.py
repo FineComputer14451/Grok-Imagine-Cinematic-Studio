@@ -14,7 +14,9 @@ from rich.text import Text
 
 from character_dna import list_characters
 from models import model_stack_summary, verify_model_compatibility
+from chain_qa_assist import summarize_sequence_qa
 from imagine_jobs import job_summary, list_jobs
+from sequence_chain import find_sequence, load_sequence
 from nsfw_orchestrator import list_batches
 from project_state import load_project_state
 from sfw_orchestrator import list_batches as list_sfw_batches
@@ -58,6 +60,14 @@ def build_studio_dashboard() -> dict[str, Any]:
     sfw_batches = list_sfw_batches()
     imagine_summary = job_summary()
     recent_jobs = list_jobs(limit=8)
+    chain_qa_summaries: list[dict[str, Any]] = []
+    for s in sequences[:6]:
+        seq_path = find_sequence(s["slug"])
+        if seq_path:
+            try:
+                chain_qa_summaries.append(summarize_sequence_qa(load_sequence(seq_path)))
+            except (ValueError, OSError):
+                pass
     role_cards = list_role_card_files()
     identity_locked = sum(1 for c in characters if c.get("status") == "locked")
 
@@ -104,6 +114,7 @@ def build_studio_dashboard() -> dict[str, Any]:
         "nsfw_batches": batches[:5],
         "sfw_batches": sfw_batches[:5],
         "recent_jobs": recent_jobs,
+        "chain_qa": chain_qa_summaries,
     }
 
 
@@ -254,6 +265,29 @@ def _nsfw_table(snapshot: dict[str, Any]) -> Table | None:
     return table
 
 
+def _chain_qa_table(snapshot: dict[str, Any]) -> Table | None:
+    rows = snapshot.get("chain_qa", [])
+    if not rows:
+        return None
+    table = Table(title="Chain QA (unified)", box=box.SIMPLE, expand=True)
+    table.add_column("Sequence", style="cyan")
+    table.add_column("Mode")
+    table.add_column("Health", justify="right")
+    table.add_column("Go", justify="right")
+    table.add_column("No-Go", justify="right")
+    table.add_column("Status")
+    for r in rows:
+        table.add_row(
+            (r.get("sequence_name") or "")[:28],
+            r.get("mode", ""),
+            str(r.get("health") or "—"),
+            str(r.get("go_count", 0)),
+            str(r.get("no_go_count", 0)),
+            r.get("chain_qa_status", "—"),
+        )
+    return table
+
+
 def _jobs_table(snapshot: dict[str, Any]) -> Table | None:
     rows = snapshot.get("recent_jobs", [])
     if not rows:
@@ -306,6 +340,9 @@ def dashboard_renderables(snapshot: dict[str, Any], *, compact: bool = False) ->
         jobs = _jobs_table(snapshot)
         if jobs:
             parts.append(jobs)
+        qa = _chain_qa_table(snapshot)
+        if qa:
+            parts.append(qa)
         if snapshot["quota"].get("recent_history"):
             hist = Table(title="📜 Recent Spend", box=box.SIMPLE, show_header=False)
             hist.add_column("When", style="dim")

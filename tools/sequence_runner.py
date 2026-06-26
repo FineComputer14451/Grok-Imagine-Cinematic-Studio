@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from chain_qa_assist import apply_assisted_qa
 from imagine_client import (
     ImagineAPIError,
     extract_video_url,
@@ -18,7 +19,6 @@ from imagine_client import (
 from imagine_jobs import create_job, transition_job
 from quota_optimizer import record_spend
 from sequence_chain import (
-    CHAIN_QA_CHECKS,
     build_extend_prompt,
     get_clip,
     run_chain_qa,
@@ -150,11 +150,18 @@ def run_sequence_clip(
         clip["status"] = "qa_pending"
 
         prev_clip = seq["clips"][idx - 1] if idx > 0 else None
-        scores = auto_qa_scores
-        if scores is None and use_dry:
-            scores = {key: 8.0 for key, _label, _w in CHAIN_QA_CHECKS}
-
-        qa = run_chain_qa(clip, previous_clip=prev_clip, scores=scores)
+        if auto_qa_scores is not None:
+            qa = run_chain_qa(clip, previous_clip=prev_clip, scores=auto_qa_scores)
+        elif use_dry:
+            applied = apply_assisted_qa(
+                seq,
+                clip,
+                previous_clip=prev_clip,
+                nsfw=bool(seq.get("nsfw_extension")),
+            )
+            qa = applied["chain_qa"]
+        else:
+            qa = run_chain_qa(clip, previous_clip=prev_clip, scores=None)
         clip["chain_qa"] = qa
         job_qa = qa
 

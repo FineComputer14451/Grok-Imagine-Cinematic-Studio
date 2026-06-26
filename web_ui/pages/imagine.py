@@ -18,8 +18,8 @@ def render() -> None:
     if dry:
         st.info("No `XAI_API_KEY` — dry-run mode active (mock URLs). Set key in Settings for live generation.")
 
-    tab_jobs, tab_sfw, tab_refs, tab_run = st.tabs(
-        ["Job queue", "SFW batch", "Reference plates", "Sequence run"]
+    tab_jobs, tab_sfw, tab_refs, tab_run, tab_delivery = st.tabs(
+        ["Job queue", "SFW batch", "Reference plates", "Sequence run", "Delivery"]
     )
 
     with tab_jobs:
@@ -192,3 +192,34 @@ def render() -> None:
                 st.code(out or "(no output)")
             else:
                 st.warning("Select sequence and clip ID.")
+
+    with tab_delivery:
+        st.subheader("Polish & delivery pipeline")
+        st.caption("QA assist → polish → EDL → deliver (Tier 2)")
+        del_seq = st.selectbox("Sequence", seq_names or ["(none)"], key="del_seq")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("QA assist + apply", key="qa_assist_btn"):
+                if del_seq and del_seq != "(none)":
+                    code, out = rt.run_cli([
+                        "sequence", "qa-assist", del_seq,
+                        "--clip", "clip_001", "--apply",
+                    ])
+                    st.code(out)
+            if st.button("Export EDL", key="edl_btn"):
+                if del_seq and del_seq != "(none)":
+                    code, out = rt.run_cli(["sequence", "edl", del_seq])
+                    st.code(out)
+        with col2:
+            if st.button("Polish (dry-run)", key="polish_btn"):
+                if del_seq and del_seq != "(none)":
+                    code, out = rt.run_cli(["sequence", "polish", del_seq, "--dry-run"])
+                    st.code(out)
+            formats = st.text_input("Delivery formats", value="16:9,9:16", key="del_formats")
+            if st.button("Deliver (dry-run)", key="deliver_btn"):
+                if del_seq and del_seq != "(none)":
+                    code, out = rt.run_cli([
+                        "sequence", "deliver", del_seq,
+                        "--formats", formats, "--dry-run",
+                    ])
+                    st.code(out)

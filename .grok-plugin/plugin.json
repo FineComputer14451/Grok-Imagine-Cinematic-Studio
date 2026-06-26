@@ -67,6 +67,7 @@
   "commands": [
     "commands/cinematic.md",
     "commands/dashboard.md",
+    "commands/delivery.md",
     "commands/dna.md",
     "commands/imagine.md",
     "commands/nsfw.md",

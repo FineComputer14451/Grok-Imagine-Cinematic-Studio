@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from cli.bible_commands import register as register_bible_commands  # noqa: E402
 from cli.dna_commands import register as register_dna_commands  # noqa: E402
 from cli.models_commands import models_app  # noqa: E402
+from cli.animatic_commands import register as register_animatic_commands  # noqa: E402
 from cli.imagine_commands import register as register_imagine_commands  # noqa: E402
 from cli.nsfw_commands import register as register_nsfw_commands  # noqa: E402
 from cli.quota_commands import register as register_quota_commands  # noqa: E402
@@ -38,6 +39,7 @@ nsfw_app = typer.Typer(help="Quota-aware NSFW batch planning, sequence extension
 extend_app = typer.Typer(help="Sensual sequence extension 30-120s+ from reference frame or short clip")
 sfw_app = typer.Typer(help="SFW batch planning with hero-first tiers and Reference Curator routing")
 imagine_app = typer.Typer(help="Imagine API jobs — submit, poll, and track generation queue")
+animatic_app = typer.Typer(help="Animatic pre-vis boards and hero promotion workflow")
 
 app.add_typer(dna_app, name="dna")
 app.add_typer(seq_app, name="sequence")
@@ -46,6 +48,7 @@ app.add_typer(models_app, name="models")
 app.add_typer(nsfw_app, name="nsfw")
 app.add_typer(sfw_app, name="sfw")
 app.add_typer(imagine_app, name="imagine")
+app.add_typer(animatic_app, name="animatic")
 nsfw_app.add_typer(extend_app, name="extend")
 
 register_studio_commands(app)
@@ -56,6 +59,7 @@ register_quota_commands(quota_app)
 register_nsfw_commands(nsfw_app, extend_app)
 register_sfw_commands(sfw_app)
 register_imagine_commands(imagine_app)
+register_animatic_commands(animatic_app)
 register_report_commands(app)
 
 if __name__ == "__main__":

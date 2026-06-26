@@ -48,6 +48,10 @@ def default_imagine_jobs_state() -> dict[str, Any]:
     }
 
 
+def default_animatic_boards() -> dict[str, Any]:
+    return {}
+
+
 def default_asset_manifest() -> dict[str, Any]:
     return {
         "schema_version": SCHEMA_VERSION,
@@ -66,6 +70,7 @@ def default_project_state() -> dict[str, Any]:
         "quota": default_quota_state(),
         "imagine_jobs": default_imagine_jobs_state(),
         "asset_manifest": default_asset_manifest(),
+        "animatic_boards": default_animatic_boards(),
         "model_stack": model_stack_summary(),
         "video_pipeline_spec": build_video_pipeline_spec(),
         "studio_compatibility_version": STUDIO_COMPATIBILITY_VERSION,
@@ -89,7 +94,7 @@ def _merge_defaults(state: dict[str, Any], defaults: dict[str, Any]) -> dict[str
     for key, default_val in defaults.items():
         if key not in merged:
             merged[key] = default_val
-    for key in ("characters", "identity_lock", "locked_variables", "imagine_jobs", "asset_manifest"):
+    for key in ("characters", "identity_lock", "locked_variables", "imagine_jobs", "asset_manifest", "animatic_boards"):
         _merge_dict_field(merged, key, defaults.get(key, {}))
     if not isinstance(merged.get("quota"), dict):
         merged["quota"] = default_quota_state()
