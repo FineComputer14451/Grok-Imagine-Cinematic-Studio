@@ -11,6 +11,10 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 VERSION="$(tr -d '[:space:]' < "$REPO_ROOT/VERSION")"
 ZIP_NAME="grok-imagine-cinematic-studio-skills-install-v${VERSION}.zip"
 OUTPUT="${1:-/tmp/$ZIP_NAME}"
+if [[ "$OUTPUT" != /* ]]; then
+    mkdir -p "$(dirname "$OUTPUT")"
+    OUTPUT="$(cd "$(dirname "$OUTPUT")" && pwd)/$(basename "$OUTPUT")"
+fi
 STAGING="/tmp/cinematic-bundle-staging-$$"
 
 # shellcheck source=lib/cinematic_studio_common.sh

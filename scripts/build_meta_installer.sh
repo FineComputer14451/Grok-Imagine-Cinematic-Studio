@@ -15,6 +15,10 @@ VERSION="$(tr -d '[:space:]' < "$REPO_ROOT/VERSION")"
 SKILL_NAME="cinematic-studio-meta-installer"
 ZIP_NAME="grok-imagine-cinematic-studio-meta-installer-v${VERSION}.zip"
 OUTPUT="${1:-$REPO_ROOT/$ZIP_NAME}"
+if [[ "$OUTPUT" != /* ]]; then
+    mkdir -p "$(dirname "$OUTPUT")"
+    OUTPUT="$(cd "$(dirname "$OUTPUT")" && pwd)/$(basename "$OUTPUT")"
+fi
 STAGING="/tmp/cinematic-meta-installer-staging-$$"
 
 META_SKILL_SRC="$REPO_ROOT/.grok/skills/$SKILL_NAME"

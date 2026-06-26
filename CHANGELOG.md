@@ -6,6 +6,14 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Added
 - **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, and `scripts/generate_plugin_index.py` for `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio`
+- **`verify --plugin`** — validates Grok plugin checkout (44 skills, 11 slash commands, model registry)
+
+### Fixed
+- **Installer manifest sync** — `required_skills.manifest` expanded to 44 skills; release bundle, `verify --all`, and GitHub release zip aligned with the plugin suite
+
+### Changed
+- **Meta-installer docs** and `references/installation_guide.md` — explicit Method A (meta/zip) vs Method B (Grok plugin) install paths
+- **Release build scripts** — normalize relative zip output paths before staging `cd` (fixes `artifacts/*.zip` builds)
 
 ### Removed
 - **Deprecated `agents/`** — legacy v3.4/v3.5 stubs; canonical Role Cards remain in `references/agents/`
