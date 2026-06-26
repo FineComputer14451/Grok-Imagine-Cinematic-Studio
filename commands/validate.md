@@ -39,12 +39,20 @@ python tools/cinematic_studio_cli.py models list
 ```bash
 grok plugin validate
 python scripts/generate_plugin_index.py --check
+bash scripts/cinematic_studio.sh verify --plugin
 ```
 
 Regenerate stale index:
 
 ```bash
 python scripts/generate_plugin_index.py
+```
+
+Before release (pin marketplace catalog to current commit):
+
+```bash
+python scripts/generate_plugin_index.py --sync-sha
+# commit marketplace.json + plugin-index.json in the same commit
 ```
 
 ### Optional: generate PDF report

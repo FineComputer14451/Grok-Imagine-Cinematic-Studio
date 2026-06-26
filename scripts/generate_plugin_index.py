@@ -129,7 +129,7 @@ def write_plugin_manifest(manifest: dict) -> None:
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def sync_marketplace_sha(marketplace: dict, sha: str, write: bool) -> None:
+def sync_marketplace_sha(marketplace: dict, sha: str) -> bool:
     changed = False
     for entry in marketplace.get("plugins", []):
         if not isinstance(entry, dict):
@@ -144,8 +144,7 @@ def sync_marketplace_sha(marketplace: dict, sha: str, write: bool) -> None:
         if source.get("sha") != sha:
             source["sha"] = sha
             changed = True
-    if write and changed:
-        MARKETPLACE_PATH.write_text(json.dumps(marketplace, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return changed
 
 
 def pinned_sha(entry: dict) -> str | None:
@@ -185,19 +184,24 @@ def main() -> int:
         print(f"ERROR: missing {MARKETPLACE_PATH}", file=sys.stderr)
         return 1
 
-    sha = git_head_sha()
     marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
-    sync_marketplace_sha(marketplace, sha, write=False)
+    sync_sha = "--sync-sha" in sys.argv
+
     if "--check" in sys.argv:
-        current_marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
-        if current_marketplace != marketplace:
-            print("ERROR: marketplace.json sha is stale; run scripts/generate_plugin_index.py", file=sys.stderr)
-            return 1
-    else:
-        MARKETPLACE_PATH.write_text(
-            json.dumps(marketplace, indent=2, ensure_ascii=False) + "\n",
-            encoding="utf-8",
-        )
+        for entry in marketplace.get("plugins", []):
+            sha = pinned_sha(entry)
+            if sha is None:
+                print("ERROR: marketplace plugin entry missing pinned sha", file=sys.stderr)
+                return 1
+
+    if sync_sha and "--check" not in sys.argv:
+        head_sha = git_head_sha()
+        if sync_marketplace_sha(marketplace, head_sha):
+            MARKETPLACE_PATH.write_text(
+                json.dumps(marketplace, indent=2, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+        print(f"Pinned marketplace sha: {head_sha}")
 
     manifest = load_plugin_manifest()
     write_plugin_manifest(manifest)
@@ -220,7 +224,8 @@ def main() -> int:
     skills = discover_skills()
     commands = discover_commands()
     print(f"Wrote {INDEX_PATH} ({len(skills)} skills, {len(commands)} commands)")
-    print(f"Pinned marketplace sha: {sha}")
+    if not sync_sha:
+        print("Tip: run with --sync-sha before release to pin marketplace catalog to HEAD")
     return 0
 
 
