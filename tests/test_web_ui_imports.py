@@ -44,9 +44,21 @@ def test_bootstrap_reexports() -> None:
 def test_nsfw_runtime_imports() -> None:
     from lib import nsfw_runtime as nr
 
-    assert "hero" in nr.SHOT_TIER_OPTIONS
+    assert nr.SHOT_TIER_OPTIONS[0] == "hero"
     assert callable(nr.parse_shot_lines)
     assert callable(nr.plan_and_save_batch)
+    assert callable(nr.batch_to_markdown)
+    assert callable(nr.list_batches)
+
+
+def test_dashboard_uses_shared_builder() -> None:
+    from lib import runtime as rt
+
+    assert rt.DASHBOARD_AVAILABLE
+    snap = rt.build_studio_dashboard()
+    assert "studio" in snap
+    assert "quota" in snap
+    assert "production" in snap
 
 
 if __name__ == "__main__":
@@ -55,4 +67,5 @@ if __name__ == "__main__":
     test_page_modules_import()
     test_bootstrap_reexports()
     test_nsfw_runtime_imports()
+    test_dashboard_uses_shared_builder()
     print("All smoke tests passed")

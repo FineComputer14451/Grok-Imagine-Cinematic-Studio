@@ -10,7 +10,10 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from nsfw_orchestrator import (  # noqa: E402
     NSFW_ASSET_MODEL_MAP,
+    RETRY_REASON_OPTIONS,
+    SHOT_TIER_OPTIONS,
     apply_reference_curator_models,
+    build_shot_context,
     create_shot,
     parse_inline_shot,
     plan_batch,
@@ -52,6 +55,28 @@ def test_create_shot_includes_models() -> None:
     assert shot["asset_tier"] == "hero"
 
 
+def test_build_shot_context_canonical_fields() -> None:
+    shot = build_shot_context(
+        "shot_001",
+        tier="key_explicit",
+        motion="high",
+        has_ref=True,
+        explicit="explicit",
+        duration=12.0,
+    )
+    assert shot["shot_id"] == "shot_001"
+    assert shot["tier"] == "key_explicit"
+    assert shot["motion_complexity"] == "high"
+    assert shot["has_reference"] is True
+    assert shot["consistency_required"] is True
+
+
+def test_shot_tier_options_follow_priority() -> None:
+    assert SHOT_TIER_OPTIONS[0] == "hero"
+    assert "filler" in SHOT_TIER_OPTIONS
+    assert "identity_drift" in RETRY_REASON_OPTIONS
+
+
 def test_plan_batch_applies_routing() -> None:
     batch = plan_batch(
         "Test Session",
@@ -69,5 +94,7 @@ if __name__ == "__main__":
     test_filler_uses_draft_video()
     test_parse_inline_shot_three_part()
     test_create_shot_includes_models()
+    test_build_shot_context_canonical_fields()
+    test_shot_tier_options_follow_priority()
     test_plan_batch_applies_routing()
     print("All NSFW asset model tests passed")

@@ -15,6 +15,7 @@ from rich.table import Table
 from models import DEFAULT_IMAGINE_VIDEO_MODEL
 from nsfw_orchestrator import (
     batch_to_markdown,
+    build_shot_context,
     decide_generation_mode,
     generate_daily_report,
     get_next_shots,
@@ -150,15 +151,14 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         duration: float = typer.Option(10.0, "--duration", "-d"),
     ):
         """Recommend image_prompt vs image_to_video vs video_prompt."""
-        shot = {
-            "shot_id": shot_id,
-            "tier": shot_tier,
-            "motion_complexity": motion,
-            "has_reference": has_ref,
-            "explicit_level": explicit,
-            "duration_seconds": duration,
-            "consistency_required": True,
-        }
+        shot = build_shot_context(
+            shot_id,
+            tier=shot_tier,
+            motion=motion,
+            has_ref=has_ref,
+            explicit=explicit,
+            duration=duration,
+        )
         state = load_project_state()
         quota = state.get("quota", {})
         decision = decide_generation_mode(
@@ -185,7 +185,11 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         shot_tier: str = typer.Option("key_explicit", "--tier"),
     ):
         """Suggest retry strategy after insufficient quality."""
-        shot = {"shot_id": shot_id, "tier": shot_tier, "duration_seconds": 10, "recommended_mode": "image_to_video"}
+        shot = build_shot_context(
+            shot_id,
+            tier=shot_tier,
+            recommended_mode="image_to_video",
+        )
         plan = suggest_retry(shot, failure_reason=reason, quality_score=score, attempts=attempts)
 
         color = "green" if plan["action"] == "retry" else "yellow"

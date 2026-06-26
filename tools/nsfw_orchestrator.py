@@ -175,6 +175,43 @@ NSFW_ASSET_MODEL_MAP: dict[str, dict[str, Any]] = {
 }
 
 
+SHOT_TIER_OPTIONS: tuple[str, ...] = tuple(
+    sorted(SHOT_TIERS.keys(), key=lambda t: SHOT_TIERS[t]["priority"])
+)
+RETRY_REASON_OPTIONS: tuple[str, ...] = tuple(RETRY_STRATEGIES.keys())
+MOTION_OPTIONS: tuple[str, ...] = ("low", "medium", "high")
+EXPLICIT_OPTIONS: tuple[str, ...] = ("suggestive", "moderate", "explicit")
+
+
+def build_shot_context(
+    shot_id: str,
+    *,
+    tier: str = "support",
+    motion: str = "medium",
+    has_ref: bool = False,
+    explicit: str = "moderate",
+    duration: float = 10.0,
+    consistency_required: bool = True,
+    recommended_mode: str | None = None,
+    description: str | None = None,
+) -> dict[str, Any]:
+    """Canonical shot dict for decide/retry flows (CLI + Web UI)."""
+    ctx: dict[str, Any] = {
+        "shot_id": shot_id,
+        "tier": tier if tier in SHOT_TIERS else "support",
+        "motion_complexity": motion,
+        "has_reference": has_ref,
+        "explicit_level": explicit,
+        "duration_seconds": duration,
+        "consistency_required": consistency_required,
+    }
+    if recommended_mode is not None:
+        ctx["recommended_mode"] = recommended_mode
+    if description is not None:
+        ctx["description"] = description
+    return ctx
+
+
 def parse_inline_shot(spec: str) -> dict[str, Any]:
     """Parse tier:description or tier:motion:description."""
     parts = spec.split(":", 2)

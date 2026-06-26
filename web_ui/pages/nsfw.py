@@ -6,8 +6,8 @@ import json
 
 import streamlit as st
 
+from lib import runtime as rt  # noqa: I001 — sets tools/ on sys.path first
 from lib import nsfw_runtime as nr
-from lib import runtime as rt
 
 
 def _gate() -> bool:
@@ -71,7 +71,7 @@ def render() -> None:
                             )
                     st.download_button(
                         "Download plan (Markdown)",
-                        nr.batch_markdown(batch),
+                        nr.batch_to_markdown(batch),
                         file_name=f"{batch['slug']}-plan.md",
                         mime="text/markdown",
                     )
@@ -80,7 +80,7 @@ def render() -> None:
 
     with tab_queue:
         st.subheader("Batch queue")
-        batches = nr.fetch_batches()
+        batches = nr.list_batches()
         if not batches:
             st.info("No batches yet. Plan one in the **Batch plan** tab.")
         else:
@@ -188,7 +188,7 @@ def render() -> None:
                     })
                     st.download_button(
                         "Download extension plan",
-                        nr.extension_markdown(seq),
+                        nr.nsfw_sequence_to_markdown(seq),
                         file_name=f"{seq.get('slug', 'sequence')}-nsfw-plan.md",
                         mime="text/markdown",
                         key="nsfw_ext_dl",

@@ -60,6 +60,7 @@ try:
         quota_dashboard,
         set_budget,
     )
+    from cli.dashboard import build_studio_dashboard
     from models import (
         DEFAULT_IMAGINE_VIDEO_MODEL,
         DEFAULT_XAI_CHAT_MODEL,
@@ -67,20 +68,20 @@ try:
         XAI_CHAT_MODELS,
         verify_model_compatibility,
     )
-    from nsfw_orchestrator import plan_batch
-    from nsfw_sequence_extender import plan_nsfw_extension
 
     DNA_AVAILABLE = True
     SEQ_AVAILABLE = True
     QUOTA_AVAILABLE = True
     MODELS_AVAILABLE = True
     NSFW_AVAILABLE = True
+    DASHBOARD_AVAILABLE = True
 except ImportError:
     DNA_AVAILABLE = False
     SEQ_AVAILABLE = False
     QUOTA_AVAILABLE = False
     MODELS_AVAILABLE = False
     NSFW_AVAILABLE = False
+    DASHBOARD_AVAILABLE = False
     DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video-1.5"
     DEFAULT_XAI_CHAT_MODEL = "grok-4.3"
     IMAGINE_VIDEO_MODELS = {}

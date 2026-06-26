@@ -1,15 +1,20 @@
-"""NSFW orchestrator and sequence helpers for the Web UI."""
+"""NSFW helpers for the Web UI — thin wrappers over tools/."""
 
 from __future__ import annotations
 
 from typing import Any
 
 from nsfw_orchestrator import (
-    batch_to_markdown,
+    EXPLICIT_OPTIONS,
+    MOTION_OPTIONS,
+    RETRY_REASON_OPTIONS,
+    SHOT_TIER_OPTIONS,
+    batch_to_markdown,  # re-export for pages
+    build_shot_context,
     decide_generation_mode,
     generate_daily_report,
     get_next_shots,
-    list_batches,
+    list_batches,  # re-export for pages
     load_batch,
     parse_inline_shot,
     plan_batch,
@@ -23,24 +28,13 @@ from nsfw_sequence_extender import (
     plan_nsfw_extension,
     save_nsfw_sequence,
 )
+from project_state import load_project_state
 
-SHOT_TIER_OPTIONS = [
-    "hero",
-    "consistency_anchor",
-    "key_explicit",
-    "support",
-    "filler",
-]
-MOTION_OPTIONS = ["low", "medium", "high"]
-EXPLICIT_OPTIONS = ["suggestive", "moderate", "explicit"]
-RETRY_REASONS = [
-    "identity_drift",
-    "physics_failure",
-    "emotional_flat",
-    "explicit_uncanny",
-    "audio_sync_fail",
-    "quota_pressure",
-]
+# Re-export canonical option lists for Streamlit widgets
+SHOT_TIER_OPTIONS = list(SHOT_TIER_OPTIONS)
+MOTION_OPTIONS = list(MOTION_OPTIONS)
+EXPLICIT_OPTIONS = list(EXPLICIT_OPTIONS)
+RETRY_REASONS = list(RETRY_REASON_OPTIONS)
 
 
 def parse_shot_lines(text: str) -> list[dict[str, Any]]:
@@ -61,14 +55,6 @@ def plan_and_save_batch(
     return batch, str(path)
 
 
-def batch_markdown(batch: dict[str, Any]) -> str:
-    return batch_to_markdown(batch)
-
-
-def fetch_batches() -> list[dict[str, Any]]:
-    return list_batches()
-
-
 def next_shots(batch_slug: str, count: int = 5) -> list[dict[str, Any]]:
     batch = load_batch(batch_slug)
     return get_next_shots(batch, count=count)
@@ -84,15 +70,16 @@ def mode_decision(
     duration: float = 10.0,
     budget_remaining: float | None = None,
 ) -> dict[str, Any]:
-    shot = {
-        "shot_id": shot_id,
-        "tier": shot_tier,
-        "motion_complexity": motion,
-        "has_reference": has_ref,
-        "explicit_level": explicit,
-        "duration_seconds": duration,
-        "consistency_required": True,
-    }
+    shot = build_shot_context(
+        shot_id,
+        tier=shot_tier,
+        motion=motion,
+        has_ref=has_ref,
+        explicit=explicit,
+        duration=duration,
+    )
+    if budget_remaining is None:
+        budget_remaining = load_project_state().get("quota", {}).get("budget_remaining")
     return decide_generation_mode(shot, budget_remaining=budget_remaining)
 
 
@@ -104,12 +91,7 @@ def retry_plan(
     attempts: int = 0,
     shot_tier: str = "key_explicit",
 ) -> dict[str, Any]:
-    shot = {
-        "shot_id": shot_id,
-        "tier": shot_tier,
-        "duration_seconds": 10,
-        "recommended_mode": "image_to_video",
-    }
+    shot = build_shot_context(shot_id, tier=shot_tier, recommended_mode="image_to_video")
     return suggest_retry(shot, failure_reason=reason, quality_score=score, attempts=attempts)
 
 
@@ -152,10 +134,5 @@ def plan_extension(
     )
 
 
-def extension_markdown(seq: dict[str, Any]) -> str:
-    return nsfw_sequence_to_markdown(seq)
-
-
 def save_extension(seq: dict[str, Any]) -> str:
-    path = save_nsfw_sequence(seq)
-    return str(path)
+    return str(save_nsfw_sequence(seq))
