@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -15,8 +16,10 @@ PLUGIN_DIR = REPO_ROOT / ".grok-plugin"
 INDEX_PATH = PLUGIN_DIR / "plugin-index.json"
 MANIFEST_PATH = PLUGIN_DIR / "plugin.json"
 MARKETPLACE_PATH = PLUGIN_DIR / "marketplace.json"
+REPO_GIT_URL = "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git"
 
 MAX_DESCRIPTION_LEN = 120
+SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 
 
 def parse_frontmatter(path: Path) -> dict[str, str]:
@@ -41,6 +44,20 @@ def clean(text: str) -> str:
     if len(text) > MAX_DESCRIPTION_LEN:
         return text[: MAX_DESCRIPTION_LEN - 1].rstrip() + "…"
     return text
+
+
+def git_head_sha() -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    sha = result.stdout.strip() if result.returncode == 0 else ""
+    if not SHA_RE.match(sha):
+        raise RuntimeError("unable to resolve current git HEAD sha for marketplace pin")
+    return sha
 
 
 def discover_commands() -> list[dict[str, str]]:
@@ -112,8 +129,34 @@ def write_plugin_manifest(manifest: dict) -> None:
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def build_index() -> dict:
-    marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
+def sync_marketplace_sha(marketplace: dict, sha: str, write: bool) -> None:
+    changed = False
+    for entry in marketplace.get("plugins", []):
+        if not isinstance(entry, dict):
+            continue
+        source = entry.get("source")
+        if not isinstance(source, dict):
+            continue
+        if source.get("source") != "url" and source.get("type") != "url":
+            continue
+        if source.get("url") != REPO_GIT_URL:
+            continue
+        if source.get("sha") != sha:
+            source["sha"] = sha
+            changed = True
+    if write and changed:
+        MARKETPLACE_PATH.write_text(json.dumps(marketplace, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def pinned_sha(entry: dict) -> str | None:
+    source = entry.get("source")
+    if not isinstance(source, dict):
+        return None
+    sha = source.get("sha")
+    return sha if isinstance(sha, str) and SHA_RE.match(sha) else None
+
+
+def build_index(marketplace: dict) -> dict:
     plugins = marketplace.get("plugins", [])
     records: dict[str, dict] = {}
     skills = discover_skills()
@@ -124,10 +167,16 @@ def build_index() -> dict:
         plugin_name = entry.get("name")
         if not isinstance(plugin_name, str) or not plugin_name:
             continue
-        components: dict[str, list] = {"skills": skills}
-        if commands:
-            components["commands"] = commands
-        records[plugin_name] = {"components": components}
+        record: dict[str, object] = {
+            "components": {
+                "skills": skills,
+                **({"commands": commands} if commands else {}),
+            }
+        }
+        sha = pinned_sha(entry)
+        if sha:
+            record["sha"] = sha
+        records[plugin_name] = record
     return {"version": 1, "plugins": records}
 
 
@@ -136,10 +185,24 @@ def main() -> int:
         print(f"ERROR: missing {MARKETPLACE_PATH}", file=sys.stderr)
         return 1
 
+    sha = git_head_sha()
+    marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
+    sync_marketplace_sha(marketplace, sha, write=False)
+    if "--check" in sys.argv:
+        current_marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
+        if current_marketplace != marketplace:
+            print("ERROR: marketplace.json sha is stale; run scripts/generate_plugin_index.py", file=sys.stderr)
+            return 1
+    else:
+        MARKETPLACE_PATH.write_text(
+            json.dumps(marketplace, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+
     manifest = load_plugin_manifest()
     write_plugin_manifest(manifest)
 
-    index = build_index()
+    index = build_index(marketplace)
     rendered = json.dumps(index, indent=2, ensure_ascii=False) + "\n"
 
     if "--check" in sys.argv:
@@ -150,13 +213,14 @@ def main() -> int:
         if current != rendered:
             print("ERROR: plugin-index.json is stale; run scripts/generate_plugin_index.py", file=sys.stderr)
             return 1
-        print("plugin-index.json is up to date")
+        print("marketplace.json and plugin-index.json are up to date")
         return 0
 
     INDEX_PATH.write_text(rendered, encoding="utf-8")
     skills = discover_skills()
     commands = discover_commands()
     print(f"Wrote {INDEX_PATH} ({len(skills)} skills, {len(commands)} commands)")
+    print(f"Pinned marketplace sha: {sha}")
     return 0
 
 

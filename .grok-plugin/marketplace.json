@@ -1,6 +1,6 @@
 {
-  "name": "grok-imagine-cinematic-studio",
-  "description": "Official Grok plugin marketplace for Grok Imagine Cinematic Studio v3.6 — 32 production skills, CLI tools, and 23-agent Role Cards.",
+  "name": "finecomputer14451-cinematic-studio",
+  "description": "Grok Imagine Cinematic Studio v3.6.5 marketplace — 44 production skills, 11 slash commands, CLI tools, and 23-agent Role Cards.",
   "owner": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -11,7 +11,11 @@
       "description": "Full 23-agent cinematic studio with native Grok Imagine Video 1.5, Character DNA, long-form sequence extension, quota orchestration, NSFW pipelines, and AI delivery polish.",
       "category": "creative",
       "version": "3.6.5",
-      "source": "./",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
+        "sha": "30c1dfb058eca6a372da5b95cc428b1ae7e7787a"
+      },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
         "grok-imagine-cinematic-studio",

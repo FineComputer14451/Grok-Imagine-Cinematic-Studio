@@ -10,6 +10,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Fixed
 - **Installer manifest sync** — `required_skills.manifest` expanded to 44 skills; release bundle, `verify --all`, and GitHub release zip aligned with the plugin suite
+- **Grok marketplace install** — `.grok-plugin/marketplace.json` uses pinned `url`+`sha` source (required for `grok plugin install …@finecomputer14451/grok-imagine-cinematic-studio`); `generate_plugin_index.py` syncs sha from `git HEAD`
 
 ### Changed
 - **Meta-installer docs** and `references/installation_guide.md` — explicit Method A (meta/zip) vs Method B (Grok plugin) install paths

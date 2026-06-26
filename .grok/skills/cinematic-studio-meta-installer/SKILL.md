@@ -77,7 +77,7 @@ Marketplace alternative:
 
 ```bash
 grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio
-grok plugin install grok-imagine-cinematic-studio@FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
+grok plugin install grok-imagine-cinematic-studio@finecomputer14451/grok-imagine-cinematic-studio --trust
 ```
 
 After plugin install: refresh Skills, start a new chat, use `/cinematic` or **Activate Grok Imagine Cinematic Studio v3.6.5**.

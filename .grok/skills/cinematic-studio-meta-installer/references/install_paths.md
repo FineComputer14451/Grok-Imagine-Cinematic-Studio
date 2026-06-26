@@ -28,7 +28,11 @@ Verify: `bash scripts/cinematic_studio.sh verify` (7 core + models) or `verify -
 Installs the plugin-managed skill bundle plus **11 slash commands** from `commands/`.
 
 ```bash
+# Direct from GitHub
 grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
+
+# Or via marketplace source (after marketplace add)
+grok plugin install grok-imagine-cinematic-studio@finecomputer14451/grok-imagine-cinematic-studio --trust
 ```
 
 Update: `grok plugin update grok-imagine-cinematic-studio`

@@ -227,7 +227,8 @@
             "description": "Run full Cinematic Studio validation — skills, agents, models, DNA, sequences, and project state health checks."
           }
         ]
-      }
+      },
+      "sha": "30c1dfb058eca6a372da5b95cc428b1ae7e7787a"
     }
   }
 }
