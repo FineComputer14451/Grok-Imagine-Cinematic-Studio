@@ -15,6 +15,7 @@ from nsfw_orchestrator import (  # noqa: E402
     apply_reference_curator_models,
     build_shot_context,
     create_shot,
+    enrich_shot_for_batch,
     parse_inline_shot,
     plan_batch,
 )
@@ -77,6 +78,13 @@ def test_shot_tier_options_follow_priority() -> None:
     assert "identity_drift" in RETRY_REASON_OPTIONS
 
 
+def test_enrich_shot_for_batch_single_routing_pass() -> None:
+    shot = enrich_shot_for_batch({"tier": "hero", "description": "Cover"})
+    assert shot["image_model"] == "grok-imagine-image-quality"
+    assert shot["recommended_mode"]
+    assert shot["estimated_credits"]
+
+
 def test_plan_batch_applies_routing() -> None:
     batch = plan_batch(
         "Test Session",
@@ -96,5 +104,6 @@ if __name__ == "__main__":
     test_create_shot_includes_models()
     test_build_shot_context_canonical_fields()
     test_shot_tier_options_follow_priority()
+    test_enrich_shot_for_batch_single_routing_pass()
     test_plan_batch_applies_routing()
     print("All NSFW asset model tests passed")
