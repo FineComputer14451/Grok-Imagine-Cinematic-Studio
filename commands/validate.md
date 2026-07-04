@@ -61,13 +61,15 @@ git add .grok-plugin/marketplace.json .grok-plugin/plugin-index.json .grok-plugi
 # commit feature changes + catalog files in the SAME commit
 ```
 
-Pre-publish gate (catalog sha must equal HEAD):
+Pre-publish gate (run on the feature commit before catalog pin is committed):
 
 ```bash
 bash scripts/verify_plugins.sh --release
 ```
 
-Do **not** split marketplace sha bumps into a follow-up chore commit. Users installing from the release commit must get code and catalog pin atomically.
+After the catalog pin commit, the marketplace sha intentionally points at the feature commit — use `bash scripts/verify_plugins.sh` (without `--release`) on repo tip.
+
+Do **not** split marketplace sha bumps into a follow-up chore commit that only fixes a stale pin from an earlier release. The pin commit should immediately follow the feature commit and point at it.
 
 ### Optional: generate PDF report
 
