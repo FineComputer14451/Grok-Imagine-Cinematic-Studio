@@ -38,7 +38,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 
 ### v3.6.5 — Plugin Marketplace, Model Verification & Refinements (2026-06)
 - **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (44 skills + commands) for `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
-- **Imagine 1.0 as default** — `grok-imagine-video` ($0.05/sec); 1.5 remains available for native-audio workflows
+- **Imagine 1.0 as default** — `grok-imagine-video` ($0.05/sec); 1.5 opt-in for native audio ($0.08/sec)
 - **`models verify`** CLI — validates full Grok 4.3 + Imagine 1.0/1.5 + Grok Build registry compatibility
 - **CLI modularization** — extracted `tools/cli/{models,bible,studio,production,...}_commands.py`; slimmer main entrypoint
 - **Canonical project state** — `tools/project_state.py` with auto-merge legacy support
@@ -65,19 +65,21 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 ### 2. Python CLI (Power Users)
 ```bash
 pip install -r requirements.txt
-python tools/cinematic_studio_cli.py --help
+cinematic-studio --help
 
-# Examples
-python tools/cinematic_studio_cli.py status
-python tools/cinematic_studio_cli.py create-bible "Your Project Title"
-python tools/cinematic_studio_cli.py dna init "Elena Voss" --core "..." --facial "..."
-python tools/cinematic_studio_cli.py sequence init "Neon Alley Chase" --duration 90
-python tools/cinematic_studio_cli.py models list
-python tools/cinematic_studio_cli.py models verify
-python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --fast-mode
-python tools/cinematic_studio_cli.py generate-prompt "Your story" --chat-model grok-4.3 --video-model 1.0
-python tools/cinematic_studio_cli.py nsfw extend plan "Intimate Sequence" --duration 90 --profile passionate --reference "..."
-python tools/cinematic_studio_cli.py nsfw plan "Hero Session" --shot "hero:Cover frame" --budget 800
+# Examples (short form; also works as `python -m tools.cinematic_studio_cli`)
+cinematic-studio status
+cinematic-studio create-bible "Your Project Title"
+cinematic-studio dna init "Elena Voss" --core "..." --facial "..."
+cinematic-studio sequence init "Neon Alley Chase" --duration 90
+cinematic-studio models list
+cinematic-studio models verify
+cinematic-studio quota estimate --duration 90 --clips 9 --fast-mode
+cinematic-studio generate-prompt "Your story" --chat-model grok-4.3 --video-model 1.0
+cinematic-studio nsfw extend plan "Intimate Sequence" --duration 90 --profile passionate --reference "..."
+cinematic-studio nsfw plan "Hero Session" --shot "hero:Cover frame" --budget 800
+cinematic-studio plugin catalog pin
+cinematic-studio plugin catalog check --release
 ```
 
 ### 3. Grok Build Plugin Marketplace (Recommended for Grok CLI)
@@ -96,11 +98,18 @@ grok plugin marketplace update
 grok plugin update grok-imagine-cinematic-studio
 ```
 
-Catalog lives in `.grok-plugin/marketplace.json`. Regenerate the component index after skill changes:
+Catalog lives in `.grok-plugin/marketplace.json`.
 
+**Plugin catalog commands (new in recent refactor):**
 ```bash
-python3 scripts/generate_plugin_index.py
+cinematic-studio plugin catalog pin          # regenerate + pin SHA for release
+cinematic-studio plugin catalog check        # verify freshness
+cinematic-studio plugin catalog check --release  # pre-publish gate
+cinematic-studio plugin catalog status
+cinematic-studio plugin catalog list
 ```
+
+After skill/command changes, run `pin` and commit the `.grok-plugin/` files atomically with your feature work.
 
 ### 4. Streamlit Web UI
 ```bash
@@ -115,15 +124,15 @@ streamlit run web_ui/app.py
 
 ```
 Studio Director v3.6.5 + Mega Production Architect v3.6.5
-├── .grok-plugin/                 # Marketplace + plugin manifests (44 skills)
+├── .grok-plugin/                 # Marketplace + plugin manifests (44 skills) — managed via `cinematic-studio plugin catalog`
 ├── references/agents/            # Authoritative Role Cards (v3.6.5) + AGENT_INDEX.md
 ├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, models.py
-├── tools/cinematic_studio_cli.py   # CLI: dna, sequence, quota, nsfw, models, verify
+├── tools/cinematic_studio_cli.py   # CLI: cinematic-studio (dna, sequence, quota, nsfw, models, plugin catalog, verify, etc.)
 ├── references/MODELS_v3.6.md   # Grok Build + xAI model registry
 ├── web_ui/app.py                 # Streamlit frontend with 1.5 pipeline + model pickers
 ├── examples/                     # Production Bible templates (v3.6.5 ready)
 ├── MASTER_PROMPT_v3.6.md         # Main activation prompt
-├── scripts/                      # installers, plugin index generator
+├── scripts/                      # thin shims (release/verify); real catalog work via `cinematic-studio plugin catalog`
 └── .grok/skills/                 # 44 Custom Grok skills (primary runtime)
 ```
 
@@ -190,7 +199,7 @@ Grok-Imagine-Cinematic-Studio/
 ├── examples/                     # Production Bible templates (v3.6.5 ready)
 ├── tools/                        # cinematic_studio_cli.py + cli/ submodules + models.py
 ├── web_ui/                       # Streamlit dashboard (1.5 model pickers, quota sim)
-├── scripts/                      # install/verify/update + generate_plugin_index.py
+├── scripts/                      # install/verify/update helpers + thin shims (catalog generation via CLI)
 ├── commands/                     # Slash command docs for Grok (cinematic, dna, nsfw, etc.)
 ├── MASTER_PROMPT_v3.6.md
 ├── Quick_Start_Guide.md

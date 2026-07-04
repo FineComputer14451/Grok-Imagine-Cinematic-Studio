@@ -30,9 +30,9 @@ This is a persistent Linux sandbox environment (`/home/workdir/`) designed for a
 │       │   ├── scripts/         # Optional: executable helpers
 │       │   ├── references/      # Optional: long-form docs, production bibles, agent defs
 │       │   └── assets/          # Optional: templates, reference images, etc.
-├── .grok-plugin/                # Grok plugin manifests (marketplace.json, plugin.json, plugin-index.json for 44 skills + commands)
+├── .grok-plugin/                # Grok plugin manifests (marketplace.json, plugin.json, plugin-index.json for 44 skills + commands) — maintained via CLI `catalog` commands
 ├── artifacts/                   # All outputs go here (images, docs, videos, code, etc.)
-├── scripts/                     # Install/verify/update helpers + generate_plugin_index.py
+├── scripts/                     # Install/verify/update helpers + thin shims (real work via `cinematic-studio plugin catalog`)
 ├── web_ui/                      # Streamlit dashboard (model pickers, quota sim, DNA/sequence tools)
 ├── AGENTS.md                    # This file (you are here)
 ├── README.md                    # Human-facing overview (keep in sync)
@@ -87,10 +87,10 @@ When working with or creating skills:
 ### Grok Plugins & Marketplace
 - Install/update the full Cinematic Studio: `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`
 - Or via marketplace: `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio` then install by name
-- Regenerate index after skill changes: `python scripts/generate_plugin_index.py`
-- Validate plugin: `bash scripts/verify_plugins.sh`
-- Release catalog pin (atomic): `bash scripts/release_plugin_catalog.sh` then commit `.grok-plugin/` in the same commit as the feature
-- Pre-publish plugin gate: `bash scripts/verify_plugins.sh --release`
+- Regenerate index after skill changes: `cinematic-studio plugin catalog pin` (or `python scripts/generate_plugin_index.py` for plain generation only)
+- Validate plugin: `bash scripts/verify_plugins.sh` (or `cinematic-studio plugin catalog check`)
+- Release catalog pin (atomic): `cinematic-studio plugin catalog pin` (preferred) or `bash scripts/release_plugin_catalog.sh`, then commit `.grok-plugin/` in the same commit as the feature
+- Pre-publish plugin gate: `cinematic-studio plugin catalog check --release` or `bash scripts/verify_plugins.sh --release`
 - Dev/test deps: `pip install -r requirements-dev.txt` then `pytest`
 - Use `cinematic-studio-meta-installer` skill for full bootstrap/verify in agent sessions
 - The 44 skills + 11 slash commands (in `commands/`) are the primary way to extend Grok Build with studio capabilities

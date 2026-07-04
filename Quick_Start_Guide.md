@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio v3.6 — Quick Start Guide
 
-**Version:** 3.6.5 | **Last Updated:** June 24, 2026
+**Version:** 3.6.5 | **Last Updated:** July 4, 2026
 
 ---
 
@@ -15,7 +15,7 @@
 | Imagine Video | `grok-imagine-video-1.5` | Native audio video ($0.08/sec) |
 | Imagine Image | `grok-imagine-image` | Reference stills |
 
-Verify compatibility: `python tools/cinematic_studio_cli.py models verify`  
+Verify compatibility: `cinematic-studio models verify` (or `python -m tools.cinematic_studio_cli models verify`)  
 Full reference: `references/MODELS_v3.6.md`
 
 Grok Build config (`~/.grok/config.toml`):
@@ -152,6 +152,7 @@ You can activate any agent directly:
 - **Monitor quota** — The Workflow Quota Optimizer now supports per-second 1.5 video pricing.
 - **Reference Role Cards** — Check `references/agents/[Agent].md` for each agent’s exact capabilities.
 - **Use Skill Files** — Many agents now have enhanced skill files in `.grok/skills/` for deeper integration.
+- **Plugin Catalog** — After editing skills or `commands/`, run `cinematic-studio plugin catalog pin` (then commit the `.grok-plugin/` files atomically for releases). Use `cinematic-studio plugin catalog check --release` as the pre-publish gate.
 
 ---
 
@@ -166,6 +167,8 @@ You can activate any agent directly:
 | `RUN QA REVIEW`                                   | Full 16-point quality check                 |
 | `ACTIVATE EROSFORGE`                              | Enable NSFW specialist mode                 |
 | `Exit cinematic studio`                           | Leave studio mode                           |
+| `cinematic-studio plugin catalog pin`             | Regenerate + pin the Grok plugin catalog (for releases) |
+| `cinematic-studio plugin catalog check --release` | Verify release-ready catalog state          |
 
 ---
 
@@ -179,7 +182,7 @@ You can activate any agent directly:
 | **Skill Files**                 | `.grok/skills/`                       | Enhanced agent capabilities & integration         |
 | **Production Bible Template**   | `Project_Bible_Template.md`           | Professional Production Bible template            |
 | **Examples**                    | `examples/`                           | Ready-to-use Production Bible templates           |
-| **CLI Toolkit**                 | `tools/cinematic_studio_cli.py`       | Memory, Bible generation, PDF reports             |
+| **CLI Toolkit**                 | `cinematic-studio` (or `tools/cinematic_studio_cli.py`) | Memory, Bible generation, PDF reports, plugin catalog (`catalog pin` / `catalog check`) |
 | **Web UI**                      | `web_ui/app.py`                       | Streamlit interface with Memory management        |
 
 ---

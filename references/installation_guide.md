@@ -122,7 +122,7 @@ grok plugin details grok-imagine-cinematic-studio
 
 Refresh the Skills page in Grok and confirm slash commands are available.
 
-**CLI gap:** Plugin install does not populate `~/Grok-Cinematic-Projects/`. Run Method A or clone the repo if you need `tools/cinematic_studio_cli.py`, references, or `cinematic_studio.sh verify`.
+**CLI gap:** Plugin install does not populate `~/Grok-Cinematic-Projects/`. Run Method A or clone the repo if you need the full `cinematic-studio` CLI (including `plugin catalog` commands), references, or local scripts. The core `cinematic-studio plugin catalog check` etc. work when the studio CLI is available.
 
 ---
 
@@ -156,6 +156,20 @@ cp ~/Grok-Cinematic-Projects/config/grok-build.example.toml ~/.grok/config.toml
 - **plugin** — all 44 skills + 11 commands in the Grok plugin checkout (Method B; `verify --plugin`)
 
 Core skills: `grok-imagine-cinematic-studio`, `ai-video-upscaler`, `cinematic-sequence-extender`, `studio-director`, `quality-assurance-guardian`, `identity-lock-specialist`, `workflow-quota-optimizer`
+
+**Plugin catalog management (for contributors):**
+
+After editing skills or commands:
+
+```bash
+cinematic-studio plugin catalog pin
+```
+
+Pre-publish gate:
+
+```bash
+cinematic-studio plugin catalog check --release
+```
 
 ## See also
 

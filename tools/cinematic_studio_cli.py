@@ -21,6 +21,7 @@ from cli.imagine_commands import register as register_imagine_commands  # noqa: 
 from cli.nsfw_commands import register as register_nsfw_commands  # noqa: E402
 from cli.quota_commands import register as register_quota_commands  # noqa: E402
 from cli.sfw_commands import register as register_sfw_commands  # noqa: E402
+from cli.plugin_commands import register as register_plugin_commands  # noqa: E402
 from cli.report_commands import register as register_report_commands  # noqa: E402
 from cli.sequence_commands import register as register_sequence_commands  # noqa: E402
 from cli.studio_commands import register as register_studio_commands  # noqa: E402
@@ -61,6 +62,7 @@ register_sfw_commands(sfw_app)
 register_imagine_commands(imagine_app)
 register_animatic_commands(animatic_app)
 register_report_commands(app)
+register_plugin_commands(app)
 
 if __name__ == "__main__":
     app()

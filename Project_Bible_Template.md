@@ -2,19 +2,21 @@
 
 **Version:** 1.0  
 **Date:** [DATE]  
-**Studio:** Grok Imagine Cinematic Studio v3.6 "Odyssey Native"  
+**Studio:** Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native"  
 **Status:** [Pre-Production / Production / Post]
 
 **Model Stack (locked):**
 - Grok Build CLI: `grok-composer-2.5-fast` (fork: `grok-build`)
 - xAI Chat: `grok-4.3` (or `grok-build-0.1` for automation)
-- Imagine Video: `grok-imagine-video-1.5`
+- Imagine Video: `grok-imagine-video` (1.0 default; use `grok-imagine-video-1.5` for native audio)
 - Imagine Image: `grok-imagine-image`
 
 **VIDEO_PIPELINE_SPEC:**
 ```
-[VIDEO_PIPELINE_SPEC: model="grok-imagine-video-1.5", resolution="720p", clip_length="8-12s preferred", native_audio=true, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]
+[VIDEO_PIPELINE_SPEC: model="grok-imagine-video", resolution="720p", clip_length="8-12s preferred", native_audio=false, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]
 ```
+
+> **Note:** Use `grok-imagine-video-1.5` + `native_audio=true` only when one-pass synchronized audio (lip-sync + SFX + music) is required. Default 1.0 is preferred for most work ($0.05/sec).
 
 ---
 
@@ -114,6 +116,10 @@
 **Current Phase:**  
 **Next Milestones:**  
 **Active Agents:** (list which specialists are currently engaged)
+
+**Studio Tooling:**
+- Use `cinematic-studio` CLI for bible generation, validation, quota estimates, and plugin catalog maintenance.
+- Regenerate plugin index (if contributing): `cinematic-studio plugin catalog pin`
 
 **Open Questions / Risks:**
 

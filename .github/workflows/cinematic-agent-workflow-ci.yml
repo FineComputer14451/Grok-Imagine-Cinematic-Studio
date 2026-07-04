@@ -192,7 +192,17 @@ jobs:
           done
 
       - name: Plugin catalog check
-        run: python scripts/generate_plugin_index.py --check
+        run: python -m tools.cinematic_studio_cli plugin catalog check || python -c '
+import json, sys
+sys.path.insert(0, ".")
+from tools.plugin_catalog import check_plugin_artifacts
+marketplace = json.loads(open(".grok-plugin/marketplace.json").read())
+errors = check_plugin_artifacts(marketplace, require_release_pin=False)
+if errors:
+    for e in errors: print("ERROR:", e, file=sys.stderr)
+    sys.exit(1)
+print("marketplace.json, plugin.json, and plugin-index.json are up to date")
+'
 
       - name: Run tests
         if: steps.check_dirs.outputs.directories_ok == 'true' || env.VALIDATION_MODE != 'standard'

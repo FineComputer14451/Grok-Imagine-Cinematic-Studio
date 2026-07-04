@@ -20,3 +20,11 @@ DELIVERY_DIR = ARTIFACTS_DIR / "delivery"
 EDL_DIR = ARTIFACTS_DIR / "edl"
 ANIMATIC_DIR = ARTIFACTS_DIR / "animatics"
 QUOTA_CONFIG_FILE = STUDIO_ROOT / ".quota_config.json"
+
+# Plugin / marketplace catalog paths (Grok plugin system)
+PLUGIN_DIR = STUDIO_ROOT / ".grok-plugin"
+PLUGIN_MANIFEST_PATH = PLUGIN_DIR / "plugin.json"
+PLUGIN_INDEX_PATH = PLUGIN_DIR / "plugin-index.json"
+PLUGIN_MARKETPLACE_PATH = PLUGIN_DIR / "marketplace.json"
+COMMANDS_DIR = STUDIO_ROOT / "commands"
+SKILLS_DIR = STUDIO_ROOT / ".grok" / "skills"

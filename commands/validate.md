@@ -16,7 +16,7 @@ Run the canonical validation suite before delivery, extension final stitch, or p
 
 1. Run CLI `validate` (skills, agents, models, paths).
 2. Verify model compatibility stack.
-3. If plugin scope: run `scripts/verify_plugins.sh` (manifest, catalog, optional installed checkout).
+3. If plugin scope: run `cinematic-studio plugin catalog check` (or `scripts/verify_plugins.sh`).
 4. Report any blockers vs warnings with fix instructions.
 
 ## Commands
@@ -44,30 +44,34 @@ python tools/cinematic_studio_cli.py models list
 ### Plugin validation (when "$ARGUMENTS" includes plugin)
 
 ```bash
+cinematic-studio plugin catalog check
+# or the legacy helper:
 bash scripts/verify_plugins.sh
 ```
 
-Regenerate stale index:
+Regenerate / pin index:
 
 ```bash
-python scripts/generate_plugin_index.py
+cinematic-studio plugin catalog pin
 ```
 
 Before release (atomic catalog pin — run once, commit everything together):
 
 ```bash
-bash scripts/release_plugin_catalog.sh
+cinematic-studio plugin catalog pin
 git add .grok-plugin/marketplace.json .grok-plugin/plugin-index.json .grok-plugin/plugin.json
 # commit feature changes + catalog files in the SAME commit
 ```
 
-Pre-publish gate (run on the feature commit before catalog pin is committed):
+Pre-publish gate:
 
 ```bash
+cinematic-studio plugin catalog check --release
+# fallback:
 bash scripts/verify_plugins.sh --release
 ```
 
-After the catalog pin commit, the marketplace sha intentionally points at the feature commit — use `bash scripts/verify_plugins.sh` (without `--release`) on repo tip.
+After the catalog pin commit, the marketplace sha intentionally points at the feature commit — use `cinematic-studio plugin catalog check` (without --release) on repo tip.
 
 Do **not** split marketplace sha bumps into a follow-up chore commit that only fixes a stale pin from an earlier release. The pin commit should immediately follow the feature commit and point at it.
 
@@ -82,7 +86,7 @@ python tools/cinematic_studio_cli.py report --output artifacts/production_report
 - `validate` exits 0 with no blocking issues.
 - `models verify` reports `compatible: true`.
 - `pytest` exits 0 (when dev deps installed).
-- Plugin check (if run): `verify_plugins.sh` exits 0 (manifest, `plugin.json`, `plugin-index.json`; installed checkout when present).
+- Plugin check (if run): `cinematic-studio plugin catalog check` (or `verify_plugins.sh`) exits 0.
 
 Re-run failed checks after fixes and confirm exit code 0.
 

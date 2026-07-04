@@ -1,10 +1,10 @@
 # Grok Imagine Cinematic Studio — UPGRADE GUIDE
 
-**From v3.5 → v3.6 "Odyssey Native"**
+**From v3.5 → v3.6 "Odyssey Native"** (with v3.6.5+ refinements)
 
-**Date:** June 20, 2026
+**Date:** July 4, 2026 (updated for plugin catalog CLI)
 
-**Focus:** Full native integration with **Grok Imagine Video 1.5** + Grok 4.3 Full optimizations
+**Focus:** Full native integration with **Grok Imagine Video 1.5** + Grok 4.3 Full optimizations + modern plugin catalog CLI tooling
 
 ---
 
@@ -69,6 +69,21 @@ Every major agent has been updated with 1.5-specific:
 - `AGENT_INDEX.md` (updated with 1.5 examples)
 - All core Role Cards in `references/agents/` upgraded to v3.6 content (clean filenames)
 
+### 7. Plugin Catalog CLI (v3.6.5+ Refinement)
+The plugin index and marketplace catalog system has been modernized for better maintainability:
+
+- **Canonical logic** moved to `tools/plugin_catalog.py`
+- New dedicated CLI commands:
+  - `cinematic-studio plugin catalog pin` — regenerate + pin SHA to current HEAD
+  - `cinematic-studio plugin catalog check [--release]` — verify freshness or run pre-publish gate
+  - `cinematic-studio plugin catalog status` / `list`
+- `scripts/generate_plugin_index.py` is now a **thin pure-generation wrapper** only (no more `--sync-sha` / `--check` flags)
+- `scripts/release_plugin_catalog.sh` and `verify_plugins.sh` are thin shims that delegate to the CLI
+- Strong enforcement of **atomic commits** (feature changes + `.grok-plugin/` files in the same commit)
+- Old direct script + flag workflows are deprecated in favor of the integrated `cinematic-studio` commands
+
+This makes plugin maintenance consistent with the rest of the CLI surface.
+
 ---
 
 ## Migration Steps
@@ -106,6 +121,12 @@ Browse `references/agents/` — all major cards now contain dedicated **v3.6 / 1
 - Activate `Sonic Architect v3.6` early when native audio is important
 - Use new Director’s Notes metrics to evaluate 1.5 quality
 
+### Step 6: Plugin Catalog Maintenance (Post-v3.6)
+If you contribute to or maintain the Grok plugin:
+- After editing skills or `commands/`: `cinematic-studio plugin catalog pin`
+- Before committing a release: `cinematic-studio plugin catalog check --release`
+- Commit `.grok-plugin/` files atomically with feature changes (do not split into a follow-up chore commit)
+
 ---
 
 ## Breaking Changes
@@ -116,6 +137,8 @@ Browse `references/agents/` — all major cards now contain dedicated **v3.6 / 1
 
 **No breaking changes** to core functionality — all previous v3.5 workflows continue to work.
 
+**Plugin catalog tooling** (v3.6.5+): The old direct `python scripts/generate_plugin_index.py --sync-sha` / `--check` interface has been replaced by `cinematic-studio plugin catalog` subcommands. The generator script is now a thin pure-generation wrapper only. See `AGENTS.md` for the current recommended process.
+
 ---
 
 ## Recommended New Workflow (v3.6)
@@ -125,6 +148,7 @@ Browse `references/agents/` — all major cards now contain dedicated **v3.6 / 1
 3. **Activate Sonic Architect early** when native audio is important
 4. **Reference updated Role Cards** in `references/agents/` for 1.5-specific guidance
 5. **Use new handoff protocols** — Include AUDIO_MOMENTUM_VECTOR and reference_image_id
+6. **Plugin catalog (if contributing)** — Use `cinematic-studio plugin catalog pin` / `check --release` for index management and release gates
 
 ---
 
@@ -134,6 +158,7 @@ Browse `references/agents/` — all major cards now contain dedicated **v3.6 / 1
 - See `RELEASE_NOTES_v3.6.md` for the full changelog
 - See `AGENT_INDEX.md` for updated activation examples and 1.5 power commands
 - See individual Role Cards in `references/agents/` for detailed 1.5 integration notes
+- See `commands/validate.md` and `AGENTS.md` for plugin catalog CLI usage (`cinematic-studio plugin catalog ...`) and release process
 
 ---
 
@@ -141,4 +166,4 @@ Browse `references/agents/` — all major cards now contain dedicated **v3.6 / 1
 
 This release brings native 1.5 video + audio capabilities that dramatically raise the bar for cinematic quality and emotional impact.
 
-*Upgrade completed — June 20, 2026*
+*Upgrade completed — June 20, 2026 (plugin catalog tooling refreshed July 2026)*

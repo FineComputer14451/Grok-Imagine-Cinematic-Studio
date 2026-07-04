@@ -41,7 +41,7 @@ def render() -> None:
             for c in chars:
                 col_a, col_b = st.columns([4, 1])
                 col_a.markdown(f"**{c['name']}** `{c['status']}`")
-                if col_rt.button("🔒 Lock", key=f"lock_{c['slug']}"):
+                if col_b.button("🔒 Lock", key=f"lock_{c['slug']}"):
                     path = rt.find_character_dna(c["name"])
                     if path:
                         rt.lock_to_identity_bank(rt.load_character_dna(path))

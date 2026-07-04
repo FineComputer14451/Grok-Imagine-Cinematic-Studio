@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
 # Verify Grok plugin manifest, marketplace catalog, and installed plugin checkout.
+# Delegates catalog checks to:
+#   cinematic-studio plugin catalog check [--release]
 #
 
 set -euo pipefail
@@ -19,10 +21,19 @@ echo "→ Validating plugin manifest..."
 grok plugin validate
 
 echo "→ Checking marketplace catalog + plugin-index..."
-if $release_mode; then
-    python3 scripts/generate_plugin_index.py --check --release
+if command -v cinematic-studio >/dev/null 2>&1; then
+    if $release_mode; then
+        cinematic-studio plugin catalog check --release
+    else
+        cinematic-studio plugin catalog check
+    fi
 else
-    python3 scripts/generate_plugin_index.py --check
+    # Thin fallback to the canonical CLI module
+    if $release_mode; then
+        python3 -m tools.cinematic_studio_cli plugin catalog check --release
+    else
+        python3 -m tools.cinematic_studio_cli plugin catalog check
+    fi
 fi
 
 if grok plugin details grok-imagine-cinematic-studio >/dev/null 2>&1; then

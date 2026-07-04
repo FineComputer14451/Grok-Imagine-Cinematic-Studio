@@ -2,7 +2,7 @@
 
 Canonical model slugs for Grok Imagine Cinematic Studio. Implemented in `tools/models.py`.
 
-**Last updated:** June 2026  
+**Last updated:** July 2026  
 **Source:** [xAI Models & Pricing](https://docs.x.ai/developers/models), local `grok models`
 
 ---
