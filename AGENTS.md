@@ -88,7 +88,10 @@ When working with or creating skills:
 - Install/update the full Cinematic Studio: `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`
 - Or via marketplace: `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio` then install by name
 - Regenerate index after skill changes: `python scripts/generate_plugin_index.py`
-- Validate plugin: `grok plugin validate` + check `.grok-plugin/plugin-index.json`
+- Validate plugin: `bash scripts/verify_plugins.sh`
+- Release catalog pin (atomic): `bash scripts/release_plugin_catalog.sh` then commit `.grok-plugin/` in the same commit as the feature
+- Pre-publish plugin gate: `bash scripts/verify_plugins.sh --release`
+- Dev/test deps: `pip install -r requirements-dev.txt` then `pytest`
 - Use `cinematic-studio-meta-installer` skill for full bootstrap/verify in agent sessions
 - The 44 skills + 11 slash commands (in `commands/`) are the primary way to extend Grok Build with studio capabilities
 

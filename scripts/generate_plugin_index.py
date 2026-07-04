@@ -119,14 +119,27 @@ def load_plugin_manifest() -> dict:
     return {}
 
 
-def write_plugin_manifest(manifest: dict) -> None:
-    manifest["skills"] = skill_paths()
+def build_plugin_manifest(manifest: dict) -> dict:
+    updated = dict(manifest)
+    updated["skills"] = skill_paths()
     commands = command_paths()
     if commands:
-        manifest["commands"] = commands
-    elif "commands" in manifest:
-        del manifest["commands"]
-    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        updated["commands"] = commands
+    elif "commands" in updated:
+        del updated["commands"]
+    return updated
+
+
+def render_plugin_manifest(manifest: dict) -> str:
+    return json.dumps(build_plugin_manifest(manifest), indent=2, ensure_ascii=False) + "\n"
+
+
+def write_plugin_manifest(manifest: dict) -> None:
+    MANIFEST_PATH.write_text(render_plugin_manifest(manifest), encoding="utf-8")
+
+
+def render_index(marketplace: dict) -> str:
+    return json.dumps(build_index(marketplace), indent=2, ensure_ascii=False) + "\n"
 
 
 def sync_marketplace_sha(marketplace: dict, sha: str) -> bool:
@@ -179,22 +192,80 @@ def build_index(marketplace: dict) -> dict:
     return {"version": 1, "plugins": records}
 
 
-def main() -> int:
-    if not MARKETPLACE_PATH.exists():
-        print(f"ERROR: missing {MARKETPLACE_PATH}", file=sys.stderr)
+def catalog_pinned_sha(marketplace: dict) -> str | None:
+    for entry in marketplace.get("plugins", []):
+        if not isinstance(entry, dict):
+            continue
+        source = entry.get("source")
+        if not isinstance(source, dict):
+            continue
+        if source.get("url") != REPO_GIT_URL:
+            continue
+        return pinned_sha(entry)
+    return None
+
+
+def validate_marketplace_pins(marketplace: dict) -> bool:
+    for entry in marketplace.get("plugins", []):
+        if pinned_sha(entry) is None:
+            print("ERROR: marketplace plugin entry missing pinned sha", file=sys.stderr)
+            return False
+    return True
+
+
+def validate_release_pin(marketplace: dict) -> bool:
+    try:
+        head_sha = git_head_sha()
+    except RuntimeError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return False
+
+    catalog_sha = catalog_pinned_sha(marketplace)
+    if catalog_sha is None:
+        print("ERROR: marketplace catalog missing pinned sha for this repo", file=sys.stderr)
+        return False
+    if catalog_sha != head_sha:
+        print(
+            "ERROR: marketplace sha does not match git HEAD; "
+            "run scripts/release_plugin_catalog.sh and commit catalog files in this commit",
+            file=sys.stderr,
+        )
+        print(f"       catalog: {catalog_sha}", file=sys.stderr)
+        print(f"       HEAD:    {head_sha}", file=sys.stderr)
+        return False
+    return True
+
+
+def run_check(marketplace: dict, *, require_release_pin: bool = False) -> int:
+    if not validate_marketplace_pins(marketplace):
+        return 1
+    if require_release_pin and not validate_release_pin(marketplace):
         return 1
 
-    marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
-    sync_sha = "--sync-sha" in sys.argv
+    if not MANIFEST_PATH.exists():
+        print(f"ERROR: {MANIFEST_PATH} is missing; run scripts/generate_plugin_index.py", file=sys.stderr)
+        return 1
+    expected_manifest = render_plugin_manifest(load_plugin_manifest())
+    if MANIFEST_PATH.read_text(encoding="utf-8") != expected_manifest:
+        print("ERROR: plugin.json is stale; run scripts/generate_plugin_index.py", file=sys.stderr)
+        return 1
 
-    if "--check" in sys.argv:
-        for entry in marketplace.get("plugins", []):
-            sha = pinned_sha(entry)
-            if sha is None:
-                print("ERROR: marketplace plugin entry missing pinned sha", file=sys.stderr)
-                return 1
+    if not INDEX_PATH.exists():
+        print("ERROR: plugin-index.json is missing; run scripts/generate_plugin_index.py", file=sys.stderr)
+        return 1
+    if INDEX_PATH.read_text(encoding="utf-8") != render_index(marketplace):
+        print("ERROR: plugin-index.json is stale; run scripts/generate_plugin_index.py", file=sys.stderr)
+        return 1
 
-    if sync_sha and "--check" not in sys.argv:
+    if require_release_pin:
+        print("marketplace catalog pinned to HEAD; plugin.json and plugin-index.json are up to date")
+    else:
+        print("marketplace.json, plugin.json, and plugin-index.json are up to date")
+    return 0
+
+
+def run_write(marketplace: dict, *, sync_sha: bool) -> int:
+    if sync_sha:
         head_sha = git_head_sha()
         if sync_marketplace_sha(marketplace, head_sha):
             MARKETPLACE_PATH.write_text(
@@ -203,30 +274,40 @@ def main() -> int:
             )
         print(f"Pinned marketplace sha: {head_sha}")
 
-    manifest = load_plugin_manifest()
-    write_plugin_manifest(manifest)
+    write_plugin_manifest(load_plugin_manifest())
+    INDEX_PATH.write_text(render_index(marketplace), encoding="utf-8")
 
-    index = build_index(marketplace)
-    rendered = json.dumps(index, indent=2, ensure_ascii=False) + "\n"
-
-    if "--check" in sys.argv:
-        if not INDEX_PATH.exists():
-            print("ERROR: plugin-index.json is missing; run without --check", file=sys.stderr)
-            return 1
-        current = INDEX_PATH.read_text(encoding="utf-8")
-        if current != rendered:
-            print("ERROR: plugin-index.json is stale; run scripts/generate_plugin_index.py", file=sys.stderr)
-            return 1
-        print("marketplace.json and plugin-index.json are up to date")
-        return 0
-
-    INDEX_PATH.write_text(rendered, encoding="utf-8")
     skills = discover_skills()
     commands = discover_commands()
     print(f"Wrote {INDEX_PATH} ({len(skills)} skills, {len(commands)} commands)")
     if not sync_sha:
         print("Tip: run with --sync-sha before release to pin marketplace catalog to HEAD")
     return 0
+
+
+def main() -> int:
+    if not MARKETPLACE_PATH.exists():
+        print(f"ERROR: missing {MARKETPLACE_PATH}", file=sys.stderr)
+        return 1
+
+    marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
+    check_mode = "--check" in sys.argv
+    sync_sha = "--sync-sha" in sys.argv
+    release_mode = "--release" in sys.argv
+
+    if check_mode and sync_sha:
+        print("ERROR: --check and --sync-sha are mutually exclusive", file=sys.stderr)
+        return 1
+    if release_mode and not check_mode:
+        print("ERROR: --release requires --check", file=sys.stderr)
+        return 1
+    if release_mode and sync_sha:
+        print("ERROR: --release and --sync-sha are mutually exclusive", file=sys.stderr)
+        return 1
+
+    if check_mode:
+        return run_check(marketplace, require_release_pin=release_mode)
+    return run_write(marketplace, sync_sha=sync_sha)
 
 
 if __name__ == "__main__":

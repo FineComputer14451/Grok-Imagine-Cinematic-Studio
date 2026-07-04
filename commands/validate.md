@@ -9,14 +9,14 @@ Run the canonical validation suite before delivery, extension final stitch, or p
 ## Preflight
 
 1. **Working directory** — Run from the Cinematic Studio repo root (contains `tools/cinematic_studio_cli.py`).
-2. **Dependencies** — `pip install -r requirements.txt` if imports fail.
+2. **Dependencies** — `pip install -r requirements.txt` if imports fail; `pip install -r requirements-dev.txt` before running tests.
 3. **Scope** — If "$ARGUMENTS" contains `plugin`, also validate the Grok plugin manifest and index freshness.
 
 ## Plan
 
 1. Run CLI `validate` (skills, agents, models, paths).
 2. Verify model compatibility stack.
-3. If plugin scope: run `grok plugin validate` and check `plugin-index.json` is current.
+3. If plugin scope: run `scripts/verify_plugins.sh` (manifest, catalog, optional installed checkout).
 4. Report any blockers vs warnings with fix instructions.
 
 ## Commands
@@ -25,6 +25,13 @@ Run the canonical validation suite before delivery, extension final stitch, or p
 
 ```bash
 python tools/cinematic_studio_cli.py validate
+```
+
+### Test suite
+
+```bash
+pip install -r requirements-dev.txt
+pytest
 ```
 
 ### Model stack verify
@@ -37,9 +44,7 @@ python tools/cinematic_studio_cli.py models list
 ### Plugin validation (when "$ARGUMENTS" includes plugin)
 
 ```bash
-grok plugin validate
-python scripts/generate_plugin_index.py --check
-bash scripts/cinematic_studio.sh verify --plugin
+bash scripts/verify_plugins.sh
 ```
 
 Regenerate stale index:
@@ -48,12 +53,21 @@ Regenerate stale index:
 python scripts/generate_plugin_index.py
 ```
 
-Before release (pin marketplace catalog to current commit):
+Before release (atomic catalog pin — run once, commit everything together):
 
 ```bash
-python scripts/generate_plugin_index.py --sync-sha
-# commit marketplace.json + plugin-index.json in the same commit
+bash scripts/release_plugin_catalog.sh
+git add .grok-plugin/marketplace.json .grok-plugin/plugin-index.json .grok-plugin/plugin.json
+# commit feature changes + catalog files in the SAME commit
 ```
+
+Pre-publish gate (catalog sha must equal HEAD):
+
+```bash
+bash scripts/verify_plugins.sh --release
+```
+
+Do **not** split marketplace sha bumps into a follow-up chore commit. Users installing from the release commit must get code and catalog pin atomically.
 
 ### Optional: generate PDF report
 
@@ -65,7 +79,8 @@ python tools/cinematic_studio_cli.py report --output artifacts/production_report
 
 - `validate` exits 0 with no blocking issues.
 - `models verify` reports `compatible: true`.
-- Plugin check (if run): manifest valid, `plugin-index.json` up to date.
+- `pytest` exits 0 (when dev deps installed).
+- Plugin check (if run): `verify_plugins.sh` exits 0 (manifest, `plugin.json`, `plugin-index.json`; installed checkout when present).
 
 Re-run failed checks after fixes and confirm exit code 0.
 
