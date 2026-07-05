@@ -105,8 +105,8 @@ Catalog lives in `.grok-plugin/marketplace.json`.
 cinematic-studio plugin catalog pin          # regenerate + pin SHA for release
 cinematic-studio plugin catalog check        # verify freshness
 cinematic-studio plugin catalog check --release  # pre-publish gate
-cinematic-studio plugin catalog status
-cinematic-studio plugin catalog list
+cinematic-studio plugin status
+cinematic-studio plugin list
 ```
 
 After skill/command changes, run `pin` and commit the `.grok-plugin/` files atomically with your feature work.

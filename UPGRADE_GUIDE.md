@@ -76,7 +76,7 @@ The plugin index and marketplace catalog system has been modernized for better m
 - New dedicated CLI commands:
   - `cinematic-studio plugin catalog pin` — regenerate + pin SHA to current HEAD
   - `cinematic-studio plugin catalog check [--release]` — verify freshness or run pre-publish gate
-  - `cinematic-studio plugin catalog status` / `list`
+  - `cinematic-studio plugin status` / `list`
 - `scripts/generate_plugin_index.py` is now a **thin pure-generation wrapper** only (no more `--sync-sha` / `--check` flags)
 - `scripts/release_plugin_catalog.sh` and `verify_plugins.sh` are thin shims that delegate to the CLI
 - Strong enforcement of **atomic commits** (feature changes + `.grok-plugin/` files in the same commit)

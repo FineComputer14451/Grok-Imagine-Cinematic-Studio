@@ -14,7 +14,7 @@ from rich.panel import Panel
 from rich.table import Table
 
 from cli.shared import STUDIO_VERSION, console
-from tools.plugin_catalog import (
+from plugin_catalog import (
     catalog_pinned_sha,
     check_plugin_artifacts,
     discover_commands,
