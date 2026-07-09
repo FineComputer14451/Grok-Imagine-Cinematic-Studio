@@ -39,7 +39,60 @@ def test_apply_assisted_qa_updates_clip() -> None:
     assert seq["clips"][0].get("chain_qa_assist")
 
 
+def test_assist_v2_includes_evidence_block() -> None:
+    dna = {
+        "character_name": "Liora",
+        "slug": "liora",
+        "core_identity": "East Asian woman mid-20s",
+        "facial_dna": "almond eyes scar left brow",
+        "hair_grooming": "black bob",
+        "clothing_style": "charcoal coat",
+        "key_consistency_anchors": ["scar left brow", "charcoal coat"],
+        "reference_image_ids": ["ref_a1"],
+        "identity_lock_status": "locked",
+    }
+    prev = create_clip(
+        prompt="Liora charcoal coat black bob scar left brow walks",
+        last_frame_recap="Coat wet, bob dripping, scar visible, tracking shot",
+        reference_image_id="ref_a1",
+    )
+    prev["index"] = 0
+    prev["momentum_vector"] = {
+        "last_action": "walks forward",
+        "emotional_state": "tense",
+        "camera_velocity": "track",
+        "lighting_state": "neon",
+        "physics_state": "weighty",
+    }
+    clip = create_clip(
+        prompt="Liora charcoal coat black bob scar left brow continues",
+        last_frame_recap="Same coat and bob, scar visible",
+        reference_image_id="ref_a1",
+    )
+    clip["index"] = 1
+    clip["momentum_vector"] = dict(prev["momentum_vector"])
+    clip["momentum_vector"]["last_action"] = "continues walking"
+
+    assist = assist_sfw_chain_qa(clip, previous_clip=prev, dna=dna)
+    assert "evidence" in assist
+    assert "identity_drift" in assist["evidence"]
+    assert "seam_report" in assist["evidence"]
+    assert assist["evidence"]["identity_drift"]["drift_score"] is not None
+    assert assist["suggested_scores"]["character_drift_boundary"] == (
+        assist["evidence"]["identity_drift"]["suggested_character_drift_boundary"]
+    )
+
+
+def test_assist_v2_without_dna_still_works() -> None:
+    clip = create_clip(prompt="Wide shot of city", last_frame_recap="Skyline")
+    assist = assist_sfw_chain_qa(clip)
+    assert assist["evidence"]["identity_drift"]["pass"] in (True, False)
+    assert "suggested_scores" in assist
+
+
 if __name__ == "__main__":
     test_assist_prefills_sfw_scores()
     test_apply_assisted_qa_updates_clip()
+    test_assist_v2_includes_evidence_block()
+    test_assist_v2_without_dna_still_works()
     print("Chain QA assist tests passed")

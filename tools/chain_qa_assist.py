@@ -4,6 +4,8 @@ Rule-based chain QA assist — pre-fills SFW 10-point and NSFW 8-point scores.
 
 Vision/heuristic checklist from clip metadata, handoffs, and recap quality.
 Human confirms or applies via --apply on CLI.
+
+v2: blends identity_drift + seam_report evidence into SFW scores.
 """
 
 from __future__ import annotations
@@ -11,10 +13,19 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
+from identity_drift import score_identity_drift
 from nsfw_chain_qa import evaluate_nsfw_chain_qa
+from seam_report import build_seam_report
 from sequence_chain import run_chain_qa
 
 AssistResult = dict[str, Any]
+
+_EVIDENCE_PATH_KEYS = frozenset({
+    "previous_last_frame_path",
+    "current_first_frame_path",
+    "reference_still_path",
+    "clip_still_path",
+})
 
 
 def _now_iso() -> str:
@@ -49,8 +60,13 @@ def assist_sfw_chain_qa(
     *,
     previous_clip: dict[str, Any] | None = None,
     sequence: dict[str, Any] | None = None,
+    dna: dict[str, Any] | None = None,
+    previous_last_frame_path: str | None = None,
+    current_first_frame_path: str | None = None,
+    reference_still_path: str | None = None,
+    clip_still_path: str | None = None,
 ) -> AssistResult:
-    """Suggest SFW 10-point chain QA scores from metadata heuristics."""
+    """Suggest SFW 10-point chain QA scores from metadata heuristics + evidence."""
     idx = clip.get("index", 0)
     is_extend = idx > 0
     recap = clip.get("last_frame_recap", "")
@@ -148,7 +164,47 @@ def assist_sfw_chain_qa(
         scores["stitch_artifact_risk"] = 7.0
         reasons["stitch_artifact_risk"] = "Default stitch risk — review last frames"
 
+    # --- Evidence loop v2: identity drift + seam report overlay ---
+    drift = score_identity_drift(
+        clip,
+        dna=dna,
+        previous_clip=previous_clip,
+        reference_still_path=reference_still_path,
+        clip_still_path=clip_still_path,
+    )
+    seam = build_seam_report(
+        clip,
+        previous_clip=previous_clip,
+        previous_last_frame_path=previous_last_frame_path,
+        current_first_frame_path=current_first_frame_path,
+    )
+
+    scores["character_drift_boundary"] = drift["suggested_character_drift_boundary"]
+    reasons["character_drift_boundary"] = (
+        f"drift_score={drift['drift_score']} (threshold={drift['threshold']}); "
+        + "; ".join(drift["factors"][:2])
+    )
+
+    for key, val in seam.get("suggested_scores", {}).items():
+        if key in scores:
+            blended = round((scores[key] + float(val)) / 2.0, 1)
+            scores[key] = _clamp(blended)
+            seam_note = seam["factors"][0] if seam.get("factors") else "n/a"
+            reasons[key] = f"{reasons.get(key, '')}; seam:{seam_note}"[:200]
+
+    # If drift failed hard, ensure critical identity stays low enough to matter
+    if not drift["pass"]:
+        scores["character_drift_boundary"] = min(
+            scores["character_drift_boundary"],
+            drift["suggested_character_drift_boundary"],
+        )
+
     qa = run_chain_qa(clip, previous_clip=previous_clip, scores=scores)
+    if not drift["pass"]:
+        qa.setdefault("fixes", []).extend(drift.get("fixes") or [])
+    if not seam["pass"]:
+        qa.setdefault("fixes", []).extend(seam.get("fixes") or [])
+
     return {
         "mode": "sfw",
         "clip_id": clip["clip_id"],
@@ -156,8 +212,12 @@ def assist_sfw_chain_qa(
         "suggested_scores": scores,
         "reasons": reasons,
         "evaluation": qa,
-        "confidence": _assist_confidence(scores, reasons),
+        "confidence": _assist_confidence_v2(scores, reasons, drift, seam),
         "sequence_slug": (sequence or {}).get("slug"),
+        "evidence": {
+            "identity_drift": drift,
+            "seam_report": seam,
+        },
     }
 
 
@@ -245,16 +305,56 @@ def _assist_confidence(scores: dict[str, float], reasons: dict[str, str]) -> str
     return "high"
 
 
+def _assist_confidence_v2(
+    scores: dict[str, float],
+    reasons: dict[str, str],
+    drift: dict[str, Any],
+    seam: dict[str, Any],
+) -> str:
+    """Confidence with evidence-loop dampening (metadata-only cannot claim high)."""
+    base = _assist_confidence(scores, reasons)
+    if not drift.get("pass") or not seam.get("pass"):
+        return "low"
+    if drift.get("mode") == "metadata" and seam.get("mode") == "metadata":
+        if base == "high":
+            return "medium"
+    return base
+
+
 def assist_chain_qa(
     clip: dict[str, Any],
     *,
     previous_clip: dict[str, Any] | None = None,
     sequence: dict[str, Any] | None = None,
     nsfw: bool = False,
+    dna: dict[str, Any] | None = None,
+    **evidence_paths: Any,
 ) -> AssistResult:
     if nsfw or (sequence or {}).get("nsfw_extension"):
-        return assist_nsfw_chain_qa(clip, previous_clip=previous_clip, sequence=sequence)
-    return assist_sfw_chain_qa(clip, previous_clip=previous_clip, sequence=sequence)
+        # NSFW path: keep existing score heuristics; attach evidence only
+        result = assist_nsfw_chain_qa(clip, previous_clip=previous_clip, sequence=sequence)
+        drift = score_identity_drift(
+            clip,
+            dna=dna,
+            previous_clip=previous_clip,
+            reference_still_path=evidence_paths.get("reference_still_path"),
+            clip_still_path=evidence_paths.get("clip_still_path"),
+        )
+        seam = build_seam_report(
+            clip,
+            previous_clip=previous_clip,
+            previous_last_frame_path=evidence_paths.get("previous_last_frame_path"),
+            current_first_frame_path=evidence_paths.get("current_first_frame_path"),
+        )
+        result["evidence"] = {"identity_drift": drift, "seam_report": seam}
+        return result
+    return assist_sfw_chain_qa(
+        clip,
+        previous_clip=previous_clip,
+        sequence=sequence,
+        dna=dna,
+        **{k: v for k, v in evidence_paths.items() if k in _EVIDENCE_PATH_KEYS},
+    )
 
 
 def summarize_sequence_qa(seq: dict[str, Any]) -> dict[str, Any]:
@@ -293,10 +393,21 @@ def apply_assisted_qa(
     *,
     previous_clip: dict[str, Any] | None = None,
     nsfw: bool = False,
+    dna: dict[str, Any] | None = None,
+    **evidence_paths: Any,
 ) -> dict[str, Any]:
     """Run assist, store on clip, and evaluate official chain QA."""
-    assist = assist_chain_qa(clip, previous_clip=previous_clip, sequence=seq, nsfw=nsfw)
+    assist = assist_chain_qa(
+        clip,
+        previous_clip=previous_clip,
+        sequence=seq,
+        nsfw=nsfw,
+        dna=dna,
+        **{k: v for k, v in evidence_paths.items() if k in _EVIDENCE_PATH_KEYS},
+    )
     clip["chain_qa_assist"] = assist
+    clip["identity_drift"] = assist.get("evidence", {}).get("identity_drift")
+    clip["seam_report"] = assist.get("evidence", {}).get("seam_report")
 
     if nsfw or seq.get("nsfw_extension"):
         from nsfw_chain_qa import evaluate_nsfw_chain_qa
