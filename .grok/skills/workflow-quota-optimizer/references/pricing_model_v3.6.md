@@ -44,19 +44,24 @@ Quota dashboard uses abstract credits for subscription tier compatibility:
 
 ---
 
-## xAI Chat Models (Agent Orchestration)
+## xAI Chat Models (Agent Orchestration — dual stack)
 
-| Model | Input / 1M | Output / 1M | Context |
-|-------|------------|-------------|---------|
-| `grok-4.3` | $1.25 | $2.50 | 1M |
-| `grok-build-0.1` | $1.00 | $2.00 | 256k |
+| Model | Input / 1M | Output / 1M | Context | Role |
+|-------|------------|-------------|---------|------|
+| `grok-4.3` | $1.25 | $2.50 | 1M | **Cinematic default** |
+| `grok-4.5` | $2.00 ($0.50 cached) | $6.00 | 500k | **Build / coding default** |
+| `grok-build-0.1` | $1.00 | $2.00 | 256k | Legacy (prefer 4.5) |
 
 ## Grok Build CLI
 
 | Model | Role |
 |-------|------|
-| `grok-composer-2.5-fast` | Default agent |
+| `grok-4.5` | Default agent (recommend CLI ≥ 0.2.93) |
 | `grok-build` | Fork secondary (coding) |
+| `grok-composer-2.5-fast` | Creative / multi-agent direction |
+| `grok-4.3` | 1M cinematic sessions inside Build |
+
+Full registry: `tools/models.py`, `references/MODELS_v3.6.md`
 
 ---
 

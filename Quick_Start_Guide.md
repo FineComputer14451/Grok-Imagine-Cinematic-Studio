@@ -1,28 +1,33 @@
 # Grok Imagine Cinematic Studio v3.6 — Quick Start Guide
 
-**Version:** 3.6.5 | **Last Updated:** July 4, 2026
+**Version:** 3.6.6 | **Last Updated:** July 9, 2026
 
 ---
 
-## 0. Model Stack (Grok 4.3 + Imagine 1.5 + Grok Build)
+## 0. Model Stack (Dual: Grok 4.5 Build + Grok 4.3 Cinematic + Imagine)
 
 | Where | Model | Purpose |
 |-------|-------|---------|
-| Grok chat / API | `grok-4.3` | 1M-context orchestration, Production Bibles |
-| Grok Build CLI | `grok-composer-2.5-fast` | Local agent sessions |
+| Grok chat / API (cinematic) | `grok-4.3` | **1M** context, Production Bibles, multi-agent memory |
+| Grok Build CLI (default) | `grok-4.5` | Coding, agentic sessions (min CLI **0.2.93**) |
 | Grok Build fork | `grok-build` | Code, skills, repo tooling |
-| xAI Build API | `grok-build-0.1` | Agentic automation |
-| Imagine Video | `grok-imagine-video-1.5` | Native audio video ($0.08/sec) |
+| xAI Build / coding API | `grok-4.5` | Agentic automation (legacy: `grok-build-0.1`) |
+| Imagine Video | `grok-imagine-video` (1.0) / `1.5` | $0.05/sec default; 1.5 native audio $0.08/sec |
 | Imagine Image | `grok-imagine-image` | Reference stills |
 
-Verify compatibility: `cinematic-studio models verify` (or `python -m tools.cinematic_studio_cli models verify`)  
+Verify compatibility: `cinematic-studio models verify` (or `python tools/cinematic_studio_cli.py models verify`)  
 Full reference: `references/MODELS_v3.6.md`
 
 Grok Build config (`~/.grok/config.toml`):
 ```toml
+[models]
+default = "grok-4.5"
+
 [ui]
 fork_secondary_model = "grok-build"
 ```
+
+Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 
 ---
 

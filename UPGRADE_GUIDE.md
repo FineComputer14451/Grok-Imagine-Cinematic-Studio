@@ -1,10 +1,10 @@
 # Grok Imagine Cinematic Studio — UPGRADE GUIDE
 
-**From v3.5 → v3.6 "Odyssey Native"** (with v3.6.5+ refinements)
+**From v3.5 → v3.6 "Odyssey Native"** (with v3.6.5+ refinements and **v3.6.6 dual model stack**)
 
-**Date:** July 4, 2026 (updated for plugin catalog CLI)
+**Date:** July 9, 2026 (updated for Grok 4.5 Build + Grok 4.3 cinematic dual stack + Grok Build ≥ 0.2.93)
 
-**Focus:** Full native integration with **Grok Imagine Video 1.5** + Grok 4.3 Full optimizations + modern plugin catalog CLI tooling
+**Focus:** Full native integration with **Grok Imagine Video 1.5** + dual Grok 4.5 (coding) / Grok 4.3 (1M cinematic) + modern plugin catalog CLI tooling
 
 ---
 
@@ -94,10 +94,19 @@ git checkout main
 ```
 Or simply use the latest `MASTER_PROMPT_v3.6.md` in a new chat.
 
-### Step 2: Activate the New Studio
-In a new Grok 4.3 Full chat, paste `MASTER_PROMPT_v3.6.md` and type:
+### Step 1b: Dual model stack (v3.6.6) + Grok Build CLI
+```bash
+grok --version   # recommend ≥ 0.2.93
+python tools/cinematic_studio_cli.py models verify
 ```
-Activate Grok Imagine Cinematic Studio v3.6
+- **Cinematic / long Bible:** `grok-4.3` (default chat)
+- **Build / coding / agent sessions:** `grok-4.5` (CLI + build API default)
+- See `references/MODELS_v3.6.md` and `config/grok-build.example.toml`
+
+### Step 2: Activate the New Studio
+In a new **Grok 4.3** (long Bible) or **Grok Build / 4.5** chat, paste `MASTER_PROMPT_v3.6.md` and type:
+```
+Activate Grok Imagine Cinematic Studio v3.6.6
 ```
 
 Or use the powerful new mode:

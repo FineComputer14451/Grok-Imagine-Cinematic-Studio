@@ -115,7 +115,7 @@ SKILLS_DIR=~/.grok/skills PROJECT_DIR=~/my-projects bash scripts/cinematic_studi
 After a successful install, confirm all of the following:
 
 1. **Run verify** — `bash scripts/cinematic_studio.sh verify` (or `verify --all`)
-2. **Model registry** — verify output shows Grok 4.3 + Imagine 1.5 + Grok Build stack
+2. **Model registry** — verify output shows dual stack (Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5); CLI ≥ 0.2.93
 3. **Tell the user** to refresh the Skills page in Grok and start a new chat
 4. **Activation phrase** — `Activate Grok Imagine Cinematic Studio v3.6.5`
 5. **Optional CLI** — `pip install -r ~/Grok-Cinematic-Projects/requirements.txt` then `python ~/Grok-Cinematic-Projects/tools/cinematic_studio_cli.py models verify`

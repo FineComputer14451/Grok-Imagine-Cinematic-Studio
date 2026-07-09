@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio — Agent Index v3.6.5
 
-**23 core agents** · **+9 specialists** (pipeline + i2i + NSFW opt-in) · **Grok 4.3 + Grok Build + Imagine 1.5** · June 2026
+**23 core agents** · **+9 specialists** (pipeline + i2i + NSFW opt-in) · **Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5** · July 2026
 
 Authoritative Role Cards: `references/agents/*.md`  
 Model registry: `tools/models.py`, `references/MODELS_v3.6.md`
@@ -11,11 +11,11 @@ Model registry: `tools/models.py`, `references/MODELS_v3.6.md`
 
 | Layer | Slug | Use |
 |-------|------|-----|
-| Grok Build CLI | `grok-composer-2.5-fast` | Local agent orchestration |
+| Grok Build CLI | `grok-4.5` (min CLI **0.2.93**) | Local agent / coding default |
 | Grok Build fork | `grok-build` | Code, skills, repo tooling |
-| xAI Chat | `grok-4.3` | 1M-context Production Bibles |
-| xAI Build API | `grok-build-0.1` | Agentic automation |
-| Imagine Video | `grok-imagine-video-1.5` | Native audio video |
+| xAI Chat (cinematic) | `grok-4.3` | 1M-context Production Bibles |
+| xAI Build / coding | `grok-4.5` | Agentic automation (legacy: `grok-build-0.1`) |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 default; 1.5 native audio |
 | Imagine Image | `grok-imagine-image` | Reference stills |
 | Imagine Image Quality | `grok-imagine-image-quality` | Hero keyframes |
 

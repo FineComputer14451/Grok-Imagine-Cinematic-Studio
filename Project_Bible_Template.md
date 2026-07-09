@@ -2,12 +2,13 @@
 
 **Version:** 1.0  
 **Date:** [DATE]  
-**Studio:** Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native"  
+**Studio:** Grok Imagine Cinematic Studio v3.6.6 "Odyssey Native"  
 **Status:** [Pre-Production / Production / Post]
 
-**Model Stack (locked):**
-- Grok Build CLI: `grok-composer-2.5-fast` (fork: `grok-build`)
-- xAI Chat: `grok-4.3` (or `grok-build-0.1` for automation)
+**Model Stack (locked — dual):**
+- Grok Build CLI: `grok-4.5` (fork: `grok-build`; min CLI **0.2.93**)
+- xAI Chat (cinematic): `grok-4.3` (1M context Bibles)
+- xAI Build / coding: `grok-4.5` (legacy: `grok-build-0.1`)
 - Imagine Video: `grok-imagine-video` (1.0 default; use `grok-imagine-video-1.5` for native audio)
 - Imagine Image: `grok-imagine-image`
 

@@ -3,36 +3,83 @@
 Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio.
 
 Single source of truth for CLI, Web UI, quota optimizer, and documentation.
+
+Dual stack (v3.6.6+):
+  - Cinematic orchestration (long Bibles, 1M context): grok-4.3
+  - Grok Build / coding / agentic: grok-4.5
+  - Recommended CLI binary: Grok Build ≥ 0.2.93 (not an API slug)
 """
 
 from __future__ import annotations
 
+import re
+import shutil
+import subprocess
 from typing import Any
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.2"
 
 # ---------------------------------------------------------------------------
-# Grok Build CLI (local agent environment — `grok models`)
+# Dual-stack product pins + full role defaults (literals appear once)
+# ---------------------------------------------------------------------------
+
+# Change only with a deliberate studio upgrade (also asserted in tests)
+STACK_CONTRACT: dict[str, str] = {
+    "cinematic": "grok-4.3",
+    "build": "grok-4.5",
+    "cli": "grok-4.5",
+}
+
+# Single source of truth for “which model for which job”
+ROLE_DEFAULTS: dict[str, str] = {
+    **STACK_CONTRACT,
+    "cli_fork": "grok-build",
+    "imagine_video": "grok-imagine-video",
+    "imagine_image": "grok-imagine-image",
+}
+
+# Recommended Grok Build binary version (not an API model slug)
+RECOMMENDED_GROK_BUILD_CLI_VERSION = "0.2.93"
+# Back-compat alias used by stack summary / older imports
+MIN_GROK_BUILD_CLI_VERSION = RECOMMENDED_GROK_BUILD_CLI_VERSION
+
+DEFAULT_XAI_CHAT_MODEL = ROLE_DEFAULTS["cinematic"]
+DEFAULT_XAI_BUILD_MODEL = ROLE_DEFAULTS["build"]
+DEFAULT_GROK_BUILD_MODEL = ROLE_DEFAULTS["cli"]
+GROK_BUILD_FORK_MODEL = ROLE_DEFAULTS["cli_fork"]
+DEFAULT_IMAGINE_VIDEO_MODEL = ROLE_DEFAULTS["imagine_video"]
+DEFAULT_IMAGINE_IMAGE_MODEL = ROLE_DEFAULTS["imagine_image"]
+
+# ---------------------------------------------------------------------------
+# Grok Build CLI picker (local agent environment — `grok models`)
 # ---------------------------------------------------------------------------
 
 GROK_BUILD_CLI_MODELS: dict[str, dict[str, Any]] = {
+    "grok-4.5": {
+        "label": "Grok 4.5",
+        "role": "default",
+        "description": "Default Grok Build agent — coding, agentic tasks, knowledge work",
+    },
     "grok-composer-2.5-fast": {
         "label": "Grok Composer 2.5 Fast",
-        "role": "default",
-        "description": "Default Grok Build agent — fast orchestration and creative direction",
+        "role": "creative",
+        "description": "Fast creative orchestration and multi-agent cinematic direction",
     },
     "grok-build": {
         "label": "Grok Build",
         "role": "coding",
-        "description": "Secondary fork model for code generation, tooling, and agentic workflows",
+        "description": "Fork secondary / coding alias (Grok 4.5 stack)",
+    },
+    "grok-4.3": {
+        "label": "Grok 4.3",
+        "role": "cinematic",
+        "description": "1M-context cinematic orchestration inside Grok Build sessions",
     },
 }
 
-DEFAULT_GROK_BUILD_MODEL = "grok-composer-2.5-fast"
-GROK_BUILD_FORK_MODEL = "grok-build"
-
 # ---------------------------------------------------------------------------
 # xAI API chat models (https://api.x.ai/v1)
+# Defaults are ROLE_DEFAULTS only — no per-entry default/build_default flags.
 # ---------------------------------------------------------------------------
 
 XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
@@ -41,21 +88,39 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
         "context_tokens": 1_000_000,
         "input_usd_per_1m": 1.25,
         "output_usd_per_1m": 2.50,
-        "use_case": "cinematic orchestration, 1M context, complex multi-agent productions",
-        "default": True,
+        "use_case": "cinematic orchestration, 1M context, Production Bibles, multi-agent productions",
+        "role": "cinematic",
+        "aliases": ["4.3", "cinematic", "grok-4"],
+    },
+    "grok-4.5": {
+        "label": "Grok 4.5",
+        "context_tokens": 500_000,
+        "input_usd_per_1m": 2.00,
+        "cached_input_usd_per_1m": 0.50,
+        "output_usd_per_1m": 6.00,
+        "use_case": "coding, agentic workflows, Grok Build default, structured tool use",
+        "role": "build",
+        "reasoning": "low|medium|high (default high)",
+        "aliases": [
+            "4.5",
+            "grok-4.5-latest",
+            "grok-build-latest",
+            "coding",
+            "grok-build",
+            "build",
+        ],
     },
     "grok-build-0.1": {
         "label": "Grok Build 0.1",
         "context_tokens": 256_000,
         "input_usd_per_1m": 1.00,
         "output_usd_per_1m": 2.00,
-        "use_case": "coding, agentic workflows, CLI automation, structured tool use",
-        "default": False,
+        "use_case": "legacy coding API — prefer grok-4.5",
+        "role": "legacy_build",
+        "deprecated": True,
+        "aliases": [],
     },
 }
-
-DEFAULT_XAI_CHAT_MODEL = "grok-4.3"
-DEFAULT_XAI_BUILD_MODEL = "grok-build-0.1"
 
 # ---------------------------------------------------------------------------
 # Grok Imagine models (image + video generation)
@@ -69,7 +134,6 @@ IMAGINE_VIDEO_MODELS: dict[str, dict[str, Any]] = {
         "modalities": "image → video",
         "version_date": "2026-05-30",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
-        "default": False,
         "aliases": [
             "grok-imagine-video-1.5-preview",
             "grok-imagine-video-1.5-2026-05-30",
@@ -86,7 +150,6 @@ IMAGINE_VIDEO_MODELS: dict[str, dict[str, Any]] = {
         "native_audio": False,
         "modalities": "text, image, video → video",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
-        "default": True,
         "aliases": ["imagine-video", "video-1.0", "1.0"],
     },
 }
@@ -98,7 +161,6 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
         "modalities": "text, image → image",
         "version_date": "2026-03-02",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
-        "default": True,
         "aliases": [
             "grok-imagine-image-2026-03-02",
             "imagine-image",
@@ -111,7 +173,6 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
         "modalities": "text, image → image",
         "version_date": "2026-04-03",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
-        "default": False,
         "aliases": [
             "grok-imagine-image-quality-20260403",
             "grok-imagine-image-quality-latest",
@@ -124,64 +185,97 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
     },
 }
 
-DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video"
-DEFAULT_IMAGINE_IMAGE_MODEL = "grok-imagine-image"
+STUDIO_COMPATIBILITY_VERSION = "3.6.6"
 
-# Studio compatibility target (Grok 4.3 + Imagine 1.0/1.5 + Grok Build)
-STUDIO_COMPATIBILITY_VERSION = "3.6.5"
-REQUIRED_MODEL_SLUGS = (
-    DEFAULT_GROK_BUILD_MODEL,
-    GROK_BUILD_FORK_MODEL,
-    DEFAULT_XAI_CHAT_MODEL,
-    DEFAULT_XAI_BUILD_MODEL,
-    DEFAULT_IMAGINE_VIDEO_MODEL,
-    DEFAULT_IMAGINE_IMAGE_MODEL,
-)
+# Role → slug (unique by construction; no duplicate bag)
+REQUIRED_MODEL_ROLES: dict[str, str] = {
+    "cli_default": DEFAULT_GROK_BUILD_MODEL,
+    "cli_fork": GROK_BUILD_FORK_MODEL,
+    "cinematic": DEFAULT_XAI_CHAT_MODEL,
+    "build": DEFAULT_XAI_BUILD_MODEL,
+    "imagine_video": DEFAULT_IMAGINE_VIDEO_MODEL,
+    "imagine_image": DEFAULT_IMAGINE_IMAGE_MODEL,
+}
+# Unique slugs only (order preserved)
+REQUIRED_MODEL_SLUGS = tuple(dict.fromkeys(REQUIRED_MODEL_ROLES.values()))
 
-# Credit conversion: 1 credit = $0.01 (for quota dashboard compatibility)
 USD_PER_CREDIT = 0.01
+
+
+def is_cinematic_default(slug: str) -> bool:
+    return slug == DEFAULT_XAI_CHAT_MODEL
+
+
+def is_build_default(slug: str) -> bool:
+    return slug == DEFAULT_XAI_BUILD_MODEL
+
+
+def is_cli_default(slug: str) -> bool:
+    return slug == DEFAULT_GROK_BUILD_MODEL
+
+
+def _build_alias_map(registry: dict[str, dict[str, Any]]) -> dict[str, str]:
+    """Build alias/shorthand → canonical slug map for a registry."""
+    mapping: dict[str, str] = {}
+    for model_id, info in registry.items():
+        mapping[model_id.lower()] = model_id
+        for alias in info.get("aliases", []):
+            mapping[str(alias).strip().lower()] = model_id
+    return mapping
+
+
+# Built once after registries (immutable in practice for this module)
+_CHAT_ALIAS_MAP = _build_alias_map(XAI_CHAT_MODELS)
+_VIDEO_ALIAS_MAP = _build_alias_map(IMAGINE_VIDEO_MODELS)
+_IMAGE_ALIAS_MAP = _build_alias_map(IMAGINE_IMAGE_MODELS)
+
+
+def _resolve_from_alias_map(
+    slug: str | None,
+    alias_map: dict[str, str],
+    default: str,
+) -> str:
+    if not slug:
+        return default
+    normalized = slug.strip().lower()
+    if not normalized:
+        return default
+    return alias_map.get(normalized, default)
 
 
 def resolve_video_model(slug: str | None = None) -> str:
     """Resolve alias or shorthand to canonical Imagine video model slug."""
-    if not slug:
-        return DEFAULT_IMAGINE_VIDEO_MODEL
-    normalized = slug.strip().lower()
-    if normalized in IMAGINE_VIDEO_MODELS:
-        return normalized
-    for model_id, info in IMAGINE_VIDEO_MODELS.items():
-        if normalized in info.get("aliases", []):
-            return model_id
-    return DEFAULT_IMAGINE_VIDEO_MODEL
+    return _resolve_from_alias_map(slug, _VIDEO_ALIAS_MAP, DEFAULT_IMAGINE_VIDEO_MODEL)
 
 
 def resolve_image_model(slug: str | None = None) -> str:
     """Resolve alias or shorthand to canonical Imagine image model slug."""
-    if not slug:
-        return DEFAULT_IMAGINE_IMAGE_MODEL
-    normalized = slug.strip().lower()
-    if normalized in IMAGINE_IMAGE_MODELS:
-        return normalized
-    for model_id, info in IMAGINE_IMAGE_MODELS.items():
-        if normalized in info.get("aliases", []):
-            return model_id
-    return DEFAULT_IMAGINE_IMAGE_MODEL
+    return _resolve_from_alias_map(slug, _IMAGE_ALIAS_MAP, DEFAULT_IMAGINE_IMAGE_MODEL)
 
 
 def resolve_chat_model(slug: str | None = None) -> str:
-    """Resolve chat model slug; falls back to default."""
-    if not slug:
-        return DEFAULT_XAI_CHAT_MODEL
-    normalized = slug.strip().lower()
-    if normalized in XAI_CHAT_MODELS:
-        return normalized
-    aliases = {
-        "grok-build": DEFAULT_XAI_BUILD_MODEL,
-        "build": DEFAULT_XAI_BUILD_MODEL,
-        "grok-4": DEFAULT_XAI_CHAT_MODEL,
-        "4.3": DEFAULT_XAI_CHAT_MODEL,
-    }
-    return aliases.get(normalized, DEFAULT_XAI_CHAT_MODEL)
+    """Resolve chat model slug; empty/None → cinematic default (grok-4.3)."""
+    return _resolve_from_alias_map(slug, _CHAT_ALIAS_MAP, DEFAULT_XAI_CHAT_MODEL)
+
+
+def known_chat_model(slug: str | None) -> bool:
+    """True if slug is a registered chat model id or alias (not silent fallback)."""
+    if not slug or not str(slug).strip():
+        return False
+    return str(slug).strip().lower() in _CHAT_ALIAS_MAP
+
+
+def normalize_chat_model(slug: str | None) -> tuple[str, bool]:
+    """Return (canonical_slug, is_known).
+
+    Empty/None → cinematic default with is_known=True (intentional default).
+    Unknown non-empty slug → cinematic default with is_known=False (silent fallback).
+    """
+    if not slug or not str(slug).strip():
+        return DEFAULT_XAI_CHAT_MODEL, True
+    if known_chat_model(slug):
+        return resolve_chat_model(slug), True
+    return DEFAULT_XAI_CHAT_MODEL, False
 
 
 def usd_to_credits(usd: float) -> float:
@@ -220,6 +314,7 @@ def model_stack_summary(
     return {
         "grok_build_cli_default": DEFAULT_GROK_BUILD_MODEL,
         "grok_build_cli_fork": GROK_BUILD_FORK_MODEL,
+        "grok_build_cli_min_version": RECOMMENDED_GROK_BUILD_CLI_VERSION,
         "xai_chat": resolve_chat_model(chat_model),
         "xai_build": DEFAULT_XAI_BUILD_MODEL,
         "imagine_video": resolve_video_model(video_model),
@@ -227,53 +322,134 @@ def model_stack_summary(
     }
 
 
+def _parse_grok_cli_version(text: str) -> str | None:
+    match = re.search(r"\b(\d+\.\d+\.\d+)\b", text)
+    return match.group(1) if match else None
+
+
+def _version_tuple(version: str) -> tuple[int, ...]:
+    return tuple(int(p) for p in version.split("."))
+
+
+def probe_grok_cli_version() -> str | None:
+    """Return installed `grok` version string, or None if unavailable."""
+    if not shutil.which("grok"):
+        return None
+    try:
+        result = subprocess.run(
+            ["grok", "--version"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    blob = (result.stdout or "") + (result.stderr or "")
+    return _parse_grok_cli_version(blob)
+
+
+def _check_registry_aliases(
+    name: str,
+    registry: dict[str, dict[str, Any]],
+    resolve_fn,
+    issues: list[str],
+) -> None:
+    """Ensure every registered alias uniquely resolves to its owner."""
+    seen: dict[str, str] = {}
+    for model_id, info in registry.items():
+        keys = [model_id, *info.get("aliases", [])]
+        for key in keys:
+            normalized = str(key).strip().lower()
+            if not normalized:
+                issues.append(f"{name}: empty alias on {model_id}")
+                continue
+            if normalized in seen and seen[normalized] != model_id:
+                issues.append(
+                    f"{name}: alias {key!r} claimed by both {seen[normalized]} and {model_id}"
+                )
+            seen[normalized] = model_id
+            got = resolve_fn(key)
+            if got != model_id:
+                issues.append(f"{name}: alias {key!r} resolves to {got!r}, expected {model_id!r}")
+
+
 def verify_model_compatibility() -> dict[str, Any]:
-    """Validate canonical model registry for Grok 4.3 + Imagine 1.0/1.5 + Grok Build."""
+    """Validate dual-stack contract, registry integrity, and optional CLI version probe."""
     issues: list[str] = []
+    warnings: list[str] = []
     stack = model_stack_summary()
 
-    if DEFAULT_XAI_CHAT_MODEL != "grok-4.3":
-        issues.append(f"DEFAULT_XAI_CHAT_MODEL must be grok-4.3 (got {DEFAULT_XAI_CHAT_MODEL})")
-    if DEFAULT_IMAGINE_VIDEO_MODEL not in ("grok-imagine-video-1.5", "grok-imagine-video"):
-        issues.append(
-            f"DEFAULT_IMAGINE_VIDEO_MODEL must be grok-imagine-video-1.5 or grok-imagine-video "
-            f"(got {DEFAULT_IMAGINE_VIDEO_MODEL})"
-        )
-    # 1.0 does not support native_audio; only enforce for 1.5 default
-    if DEFAULT_IMAGINE_VIDEO_MODEL == "grok-imagine-video-1.5" and not IMAGINE_VIDEO_MODELS[DEFAULT_IMAGINE_VIDEO_MODEL].get("native_audio"):
-        issues.append("Default Imagine video model (1.5) must support native_audio")
-    if resolve_chat_model("grok-4") != "grok-4.3":
-        issues.append("Alias grok-4 must resolve to grok-4.3")
-    if resolve_chat_model("grok-build") != "grok-build-0.1":
-        issues.append("Alias grok-build must resolve to grok-build-0.1")
-    if resolve_video_model("1.5") != "grok-imagine-video-1.5":
-        issues.append("Alias 1.5 must resolve to grok-imagine-video-1.5")
-    if resolve_video_model("grok-imagine-video-1.5-preview") != "grok-imagine-video-1.5":
-        issues.append("Alias grok-imagine-video-1.5-preview must resolve to grok-imagine-video-1.5")
-    if resolve_video_model("grok-imagine-video-1.5-2026-05-30") != "grok-imagine-video-1.5":
-        issues.append("Alias grok-imagine-video-1.5-2026-05-30 must resolve to grok-imagine-video-1.5")
-    if resolve_video_model("1.0") != "grok-imagine-video":
-        issues.append("Alias 1.0 must resolve to grok-imagine-video")
-    if resolve_video_model("video-1.0") != "grok-imagine-video":
-        issues.append("Alias video-1.0 must resolve to grok-imagine-video")
-    if resolve_image_model("grok-imagine-image-2026-03-02") != "grok-imagine-image":
-        issues.append("Alias grok-imagine-image-2026-03-02 must resolve to grok-imagine-image")
-    if resolve_image_model("grok-imagine-image-pro") != "grok-imagine-image-quality":
-        issues.append("Alias grok-imagine-image-pro must resolve to grok-imagine-image-quality")
-    if resolve_image_model("grok-imagine-image-quality-latest") != "grok-imagine-image-quality":
-        issues.append("Alias grok-imagine-image-quality-latest must resolve to grok-imagine-image-quality")
+    # Dual-stack integrity: ROLE_DEFAULTS embeds STACK_CONTRACT; cinematic ≠ build
+    for role, expected in STACK_CONTRACT.items():
+        if ROLE_DEFAULTS.get(role) != expected:
+            issues.append(
+                f"ROLE_DEFAULTS[{role!r}] drifted from STACK_CONTRACT "
+                f"(got {ROLE_DEFAULTS.get(role)!r}, expected {expected!r})"
+            )
+
+    if DEFAULT_XAI_CHAT_MODEL == DEFAULT_XAI_BUILD_MODEL:
+        issues.append("cinematic and build defaults must differ (dual stack)")
+
+    # Role defaults must exist in the right registries
+    if DEFAULT_XAI_CHAT_MODEL not in XAI_CHAT_MODELS:
+        issues.append(f"cinematic default {DEFAULT_XAI_CHAT_MODEL!r} missing from XAI_CHAT_MODELS")
+    if DEFAULT_XAI_BUILD_MODEL not in XAI_CHAT_MODELS:
+        issues.append(f"build default {DEFAULT_XAI_BUILD_MODEL!r} missing from XAI_CHAT_MODELS")
+    if DEFAULT_GROK_BUILD_MODEL not in GROK_BUILD_CLI_MODELS:
+        issues.append(f"CLI default {DEFAULT_GROK_BUILD_MODEL!r} missing from GROK_BUILD_CLI_MODELS")
+    if GROK_BUILD_FORK_MODEL not in GROK_BUILD_CLI_MODELS:
+        issues.append(f"CLI fork {GROK_BUILD_FORK_MODEL!r} missing from GROK_BUILD_CLI_MODELS")
+    if DEFAULT_IMAGINE_VIDEO_MODEL not in IMAGINE_VIDEO_MODELS:
+        issues.append(f"video default {DEFAULT_IMAGINE_VIDEO_MODEL!r} missing from IMAGINE_VIDEO_MODELS")
+    if DEFAULT_IMAGINE_IMAGE_MODEL not in IMAGINE_IMAGE_MODELS:
+        issues.append(f"image default {DEFAULT_IMAGINE_IMAGE_MODEL!r} missing from IMAGINE_IMAGE_MODELS")
+
+    # Native-audio only required when 1.5 is the default
+    if DEFAULT_IMAGINE_VIDEO_MODEL == "grok-imagine-video-1.5":
+        if not IMAGINE_VIDEO_MODELS[DEFAULT_IMAGINE_VIDEO_MODEL].get("native_audio"):
+            issues.append("Default Imagine video model (1.5) must support native_audio")
+
+    # Data-driven alias integrity (implementation matches registry)
+    _check_registry_aliases("chat", XAI_CHAT_MODELS, resolve_chat_model, issues)
+    _check_registry_aliases("video", IMAGINE_VIDEO_MODELS, resolve_video_model, issues)
+    _check_registry_aliases("image", IMAGINE_IMAGE_MODELS, resolve_image_model, issues)
+
+    # Empty resolve → cinematic / video / image defaults
+    if resolve_chat_model(None) != DEFAULT_XAI_CHAT_MODEL:
+        issues.append("resolve_chat_model(None) must return cinematic default")
+    if resolve_chat_model("") != DEFAULT_XAI_CHAT_MODEL:
+        issues.append('resolve_chat_model("") must return cinematic default')
 
     spec = build_video_pipeline_spec()
-    default_slug = DEFAULT_IMAGINE_VIDEO_MODEL
-    if default_slug not in spec:
-        issues.append(f"VIDEO_PIPELINE_SPEC must reference {default_slug} by default")
+    if DEFAULT_IMAGINE_VIDEO_MODEL not in spec:
+        issues.append(f"VIDEO_PIPELINE_SPEC must reference {DEFAULT_IMAGINE_VIDEO_MODEL} by default")
+
+    # Soft probe: recommended CLI version (never hard-fails missing binary)
+    installed = probe_grok_cli_version()
+    if installed is None:
+        warnings.append(
+            f"Grok Build CLI not found on PATH; recommend ≥ {RECOMMENDED_GROK_BUILD_CLI_VERSION}"
+        )
+    else:
+        try:
+            if _version_tuple(installed) < _version_tuple(RECOMMENDED_GROK_BUILD_CLI_VERSION):
+                warnings.append(
+                    f"Grok Build CLI {installed} < recommended {RECOMMENDED_GROK_BUILD_CLI_VERSION}"
+                )
+        except ValueError:
+            warnings.append(f"Could not parse Grok Build CLI version from {installed!r}")
 
     return {
         "compatible": len(issues) == 0,
         "studio_version": STUDIO_COMPATIBILITY_VERSION,
         "model_stack": stack,
         "video_pipeline_spec": spec,
+        "required_roles": dict(REQUIRED_MODEL_ROLES),
         "required_slugs": list(REQUIRED_MODEL_SLUGS),
+        "min_grok_build_cli_version": RECOMMENDED_GROK_BUILD_CLI_VERSION,
+        "installed_grok_cli_version": installed,
+        "warnings": warnings,
         "issues": issues,
     }
 
@@ -308,9 +484,12 @@ def list_all_models() -> dict[str, Any]:
     """Return full registry for CLI/UI display."""
     return {
         "schema_version": SCHEMA_VERSION,
+        "role_defaults": dict(ROLE_DEFAULTS),
+        "stack_contract": dict(STACK_CONTRACT),
         "grok_build_cli": {
             "default": DEFAULT_GROK_BUILD_MODEL,
             "fork_secondary": GROK_BUILD_FORK_MODEL,
+            "recommended_version": RECOMMENDED_GROK_BUILD_CLI_VERSION,
             "models": GROK_BUILD_CLI_MODELS,
         },
         "xai_chat": {

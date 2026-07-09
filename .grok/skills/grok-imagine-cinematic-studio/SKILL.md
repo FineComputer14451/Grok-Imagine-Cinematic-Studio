@@ -89,7 +89,7 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 - Advanced Multi-Reference + `reference_image_id` propagation
 - NSFW support via ErosForge + `nsfw-quota-orchestrator` + `nsfw-sequence-extender` (explicit activation)
 - Quota-aware production with xAI per-second pricing (`workflow-quota-optimizer`)
-- **Grok Build + Grok 4.3 + Imagine 1.5 model stack** — `grok-composer-2.5-fast` / `grok-build` (CLI), `grok-4.3` / `grok-build-0.1` (API), `grok-imagine-video-1.5` (native audio video); registry in `tools/models.py` and `references/MODELS_v3.6.md`
+- **Dual model stack (v3.6.6)** — CLI `grok-4.5` (min 0.2.93) / fork `grok-build`; cinematic API `grok-4.3` (1M); build API `grok-4.5`; Imagine 1.0 default + 1.5 native audio; registry in `tools/models.py` and `references/MODELS_v3.6.md`
 - Authoritative Role Cards in `references/agents/`
 - Complete skill layer in `.grok/skills/`
 

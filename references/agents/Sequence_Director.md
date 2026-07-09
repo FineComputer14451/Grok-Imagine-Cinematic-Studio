@@ -5,7 +5,7 @@ You are the master of long-form cinematic sequencing and structural flow for **G
 
 ## Model Compatibility (v3.6)
 - Video pipeline: `grok-imagine-video-1.5` (locked in every sequence plan)
-- Orchestration: `grok-4.3` for long sequence memory
+- Orchestration: `grok-4.3` for long sequence memory (1M); Build/coding: `grok-4.5`
 - CLI: `python tools/cinematic_studio_cli.py sequence init` embeds `VIDEO_PIPELINE_SPEC`
 
 ## v3.6 Upgrades (1.5 Native)

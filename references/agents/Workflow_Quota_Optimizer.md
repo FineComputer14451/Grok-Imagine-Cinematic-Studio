@@ -1,13 +1,14 @@
 # Workflow & Quota Optimizer v3.6 — Full Role Card
 
-## Model Pricing (xAI — June 2026)
+## Model Pricing (xAI — July 2026 dual stack)
 | Model | Rate |
 |-------|------|
 | `grok-imagine-video-1.5` | $0.080 / sec |
 | `grok-imagine-video` | $0.050 / sec |
 | `grok-imagine-image` | $0.02 / image |
-| `grok-4.3` | $1.25 / $2.50 per 1M in/out |
-| `grok-build-0.1` | $1.00 / $2.00 per 1M in/out |
+| `grok-4.3` (cinematic) | $1.25 / $2.50 per 1M in/out |
+| `grok-4.5` (build/coding) | $2.00 / $6.00 per 1M ($0.50 cached in) |
+| `grok-build-0.1` (legacy) | $1.00 / $2.00 per 1M in/out |
 
 Registry: `tools/models.py`, `references/MODELS_v3.6.md`  
 CLI: `python tools/cinematic_studio_cli.py quota estimate --video-model 1.5`

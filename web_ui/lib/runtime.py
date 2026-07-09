@@ -13,7 +13,7 @@ from openai import OpenAI
 ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
-STUDIO_VERSION = "3.6.5"
+STUDIO_VERSION = "3.6.6"
 ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
 AGENTS_DIR = ROOT / "references" / "agents"
 ROLE_CARD_PREVIEW_CHARS = 4000
@@ -159,6 +159,6 @@ def render_footer() -> None:
     st.divider()
     st.caption(
         f"Grok Imagine Cinematic Studio v{STUDIO_VERSION} · "
-        f"Grok 4.3 + Imagine 1.0/1.5 + Grok Build · "
+        f"Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5 · "
         f"Install: `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`"
     )

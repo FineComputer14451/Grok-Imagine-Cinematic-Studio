@@ -1,11 +1,30 @@
-# Grok Build configuration for Grok Imagine Cinematic Studio v3.6
+# Grok Build configuration for Grok Imagine Cinematic Studio v3.6.6
 # Copy to ~/.grok/config.toml and adjust as needed
+#
+# Dual stack:
+#   - Grok Build / coding: grok-4.5 (CLI default)
+#   - Cinematic orchestration: grok-4.3 (1M context)
+# Min recommended CLI: 0.2.93 (`grok --version`)
+
+[models]
+default = "grok-4.5"
 
 [ui]
-# Secondary model for code/skills work (fork with grok-composer-2.5-fast as default)
+# Secondary model for code/skills work when forking from creative sessions
 fork_secondary_model = "grok-build"
 
-# Cinematic Studio model stack (reference only — not all keys consumed by Grok Build yet)
-# Orchestration: grok-4.3 (xAI API / grok.com chat)
-# Video: grok-imagine-video-1.5
-# Build API: grok-build-0.1
+# Optional: register cinematic model explicitly for picker / API-key routing
+[model."grok-4.3"]
+model = "grok-4.3"
+base_url = "https://api.x.ai/v1"
+name = "Grok 4.3"
+description = "1M context cinematic orchestration and Production Bibles"
+context_window = 1000000
+env_key = "XAI_API_KEY"
+api_backend = "chat_completions"
+
+# Cinematic Studio model stack (reference)
+# Orchestration (long Bible): grok-4.3
+# Build / coding: grok-4.5 (aliases: grok-build-latest, grok-4.5-latest)
+# Video: grok-imagine-video (1.0 default) or grok-imagine-video-1.5 (native audio)
+# Legacy coding API: grok-build-0.1 (prefer grok-4.5)

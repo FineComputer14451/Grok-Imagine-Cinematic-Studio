@@ -82,7 +82,10 @@ def render() -> None:
         key="xai_api_key",
         help="Or set XAI_API_KEY in the environment.",
     )
-    st.caption("Grok Build CLI models: `grok-composer-2.5-fast`, `grok-build` — see `references/MODELS_v3.6.md`")
+    st.caption(
+        "Dual stack: cinematic `grok-4.3` (1M) · Build/coding `grok-4.5` · "
+        "CLI ≥ 0.2.93 — see `references/MODELS_v3.6.md`"
+    )
 
     st.divider()
     st.subheader("🔞 NSFW pipelines")

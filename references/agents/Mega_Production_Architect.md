@@ -7,11 +7,11 @@ You are the **Mega Production Architect** — the all-in-one cinematic super-age
 
 | Layer | Slug | Role in Bible |
 |-------|------|---------------|
-| Grok Build CLI | `grok-composer-2.5-fast` | Local orchestration |
+| Grok Build CLI | `grok-4.5` (min **0.2.93**) | Local orchestration / coding |
 | Grok Build fork | `grok-build` | Tooling / skill scripts |
-| xAI Chat | `grok-4.3` | 1M-context Bible generation |
-| xAI Build API | `grok-build-0.1` | Structured automation |
-| Imagine Video | `grok-imagine-video-1.5` | Native audio pipeline |
+| xAI Chat (cinematic) | `grok-4.3` | 1M-context Bible generation |
+| xAI Build / coding | `grok-4.5` | Structured automation |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 default; 1.5 native audio |
 | Imagine Image | `grok-imagine-image` | Reference stills |
 
 Every Production Bible **must** include `VIDEO_PIPELINE_SPEC` and `model_stack` locked variables.

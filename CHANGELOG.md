@@ -5,6 +5,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **Dual model stack (v3.6.6)** — cinematic default `grok-4.3` (1M); Build/coding default `grok-4.5`; min Grok Build CLI **0.2.93**
+- **`grok-4.5` registry entry** — $2/$6 per 1M, 500k context, aliases (`4.5`, `grok-4.5-latest`, `grok-build-latest`, `coding`); `grok-build-0.1` marked legacy
+- **`tests/test_models_chat.py`** — dual-default and alias coverage
 - **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, and `scripts/generate_plugin_index.py` for `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio`
 - **`verify --plugin`** — validates Grok plugin checkout (44 skills, 11 slash commands, model registry)
 - **`cinematic-studio plugin`** — `status`, `list`, and `catalog` subcommands (`check [--release]`, `pin`) for manifest, index, and marketplace pinning (via shared `tools/plugin_catalog.py`)
@@ -15,6 +18,8 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Grok marketplace install** — `.grok-plugin/marketplace.json` uses pinned `url`+`sha` source (required for `grok plugin install …@finecomputer14451/grok-imagine-cinematic-studio`); `generate_plugin_index.py` syncs sha from `git HEAD`
 
 ### Changed
+- **`tools/models.py`** — `STUDIO_COMPATIBILITY_VERSION` → 3.6.6; dual stack via `STACK_CONTRACT` → `ROLE_DEFAULTS` (literals once); cached alias maps; data-driven verify + soft `grok --version` probe; `REQUIRED_MODEL_ROLES`; `normalize_chat_model` + CLI warn on unknown `--chat-model`; recommend CLI ≥ 0.2.93
+- **Docs & Role Cards** — README, AGENTS, MASTER_PROMPT, Quick Start, MODELS, Project Bible, Studio Director / Mega / Prompt Master / Quota / AGENT_INDEX aligned to dual stack
 - **Meta-installer docs** and `references/installation_guide.md` — explicit Method A (meta/zip) vs Method B (Grok plugin) install paths
 - **Release build scripts** — normalize relative zip output paths before staging `cd` (fixes `artifacts/*.zip` builds)
 - **Plugin tooling** — centralized discovery/build/pin/validate into `tools/plugin_catalog.py`; `generate_plugin_index.py`, verify_plugins.sh, and release_plugin_catalog.sh now delegate to CLI + shared module; atomic `.grok-plugin/` commit hygiene enforced

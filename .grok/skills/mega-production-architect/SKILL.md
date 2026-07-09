@@ -16,11 +16,13 @@ description: All-in-one cinematic super-agent that transforms any idea into a co
 
 | Layer | Slug |
 |-------|------|
-| Grok Build CLI | `grok-composer-2.5-fast` (+ fork `grok-build`) |
-| xAI Chat | `grok-4.3` |
-| xAI Build | `grok-build-0.1` |
-| Imagine Video | `grok-imagine-video-1.5` |
+| Grok Build CLI | `grok-4.5` (+ fork `grok-build`; recommend ≥ 0.2.93) |
+| xAI Chat (cinematic) | `grok-4.3` |
+| xAI Build / coding | `grok-4.5` |
+| Imagine Video | `grok-imagine-video` (1.0 default) / `1.5` native audio |
 | Imagine Image | `grok-imagine-image` |
+
+Canonical registry: `tools/models.py` · `references/MODELS_v3.6.md`
 
 ## VIDEO_PIPELINE_SPEC (Required in Every Bible)
 

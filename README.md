@@ -2,19 +2,26 @@
   <img src="assets/banner.jpg" alt="Grok Imagine Cinematic Studio Banner" width="100%">
 </p>
 
-# 🎬 Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native"
+# 🎬 Grok Imagine Cinematic Studio v3.6.6 "Odyssey Native"
 
-**The most advanced multi-agent cinematic production system for Grok Build + Grok 4.3 + Grok Imagine Video (1.0 default; 1.5 native audio available)**
+**The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (coding) · Grok 4.3 (cinematic 1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
 Transform any story into emotionally powerful, production-ready cinematic video with **Imagine Video 1.0** ($0.05/sec) or **1.5 native image-to-video** with one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
-[![Version](https://img.shields.io/badge/version-3.6.5-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
+[![Version](https://img.shields.io/badge/version-3.6.6-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Grok](https://img.shields.io/badge/Grok-Build%20%2B%204.3%20%2B%20Imagine-purple)](https://x.ai)
+[![Grok](https://img.shields.io/badge/Grok-4.5%20Build%20%2B%204.3%20cinematic%20%2B%20Imagine-purple)](https://x.ai)
 
 ---
 
-## ✨ What's New in v3.6.5 "Odyssey Native"
+## ✨ What's New in v3.6.6 (Dual Model Stack)
+
+- **Dual stack** — cinematic orchestration on **`grok-4.3`** (1M context); Grok Build / coding on **`grok-4.5`**
+- **Grok Build ≥ 0.2.93** documented as minimum recommended CLI (`grok --version`)
+- **Registry + verify** — `tools/models.py` / `models verify` enforce dual defaults; `grok-build-0.1` marked legacy
+- Aliases: `4.5`, `coding`, `grok-build-latest` → 4.5; `4.3`, `cinematic` → 4.3
+
+### What's New in v3.6.5 "Odyssey Native"
 
 ### Grok Imagine Video 1.5 Native Integration
 - **Full native image-to-video** with dramatically improved motion, physics, and consistency
@@ -39,7 +46,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 ### v3.6.5 — Plugin Marketplace, Model Verification & Refinements (2026-06)
 - **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (44 skills + commands) for `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
 - **Imagine 1.0 as default** — `grok-imagine-video` ($0.05/sec); 1.5 opt-in for native audio ($0.08/sec)
-- **`models verify`** CLI — validates full Grok 4.3 + Imagine 1.0/1.5 + Grok Build registry compatibility
+- **`models verify`** CLI — validates dual Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5 registry
 - **CLI modularization** — extracted `tools/cli/{models,bible,studio,production,...}_commands.py`; slimmer main entrypoint
 - **Canonical project state** — `tools/project_state.py` with auto-merge legacy support
 - **Model stack everywhere** — `VIDEO_PIPELINE_SPEC` + `model_stack_summary()` wired into CLI, Web UI, DNA/sequence handoffs, Production Bibles
@@ -59,8 +66,8 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 
 ### 1. Fastest: Master Prompt Activation (Recommended)
 1. Copy the content of [`MASTER_PROMPT_v3.6.md`](MASTER_PROMPT_v3.6.md)
-2. Paste into a new **Grok 4.3** or **Grok Build** chat (enable reasoning=medium/high for complex productions)
-3. Type: `Activate Grok Imagine Cinematic Studio v3.6.5`
+2. Paste into a new **Grok 4.3** (long Bible) or **Grok Build / Grok 4.5** chat (enable reasoning=medium/high for complex productions)
+3. Type: `Activate Grok Imagine Cinematic Studio v3.6.6`
 
 ### 2. Python CLI (Power Users)
 ```bash
@@ -116,7 +123,7 @@ After skill/command changes, run `pin` and commit the `.grok-plugin/` files atom
 pip install -r requirements-streamlit.txt
 streamlit run web_ui/app.py
 ```
-(Imagine video model selector, xAI chat model picker (`grok-4.3` / `grok-build-0.1`), live per-second cost simulator)
+(Imagine video model selector, xAI chat model picker (`grok-4.3` cinematic / `grok-4.5` build), live per-second cost simulator)
 
 ---
 
@@ -228,6 +235,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native" — Built for Grok Build, Grok 4.3, and Imagine Video 1.5*
+*Grok Imagine Cinematic Studio v3.6.6 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (coding), Grok 4.3 (cinematic), and Imagine Video 1.0/1.5*
 
 *Last updated: June 26, 2026 — v3.6.5*

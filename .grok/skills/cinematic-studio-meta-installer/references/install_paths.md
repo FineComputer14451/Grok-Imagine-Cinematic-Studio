@@ -85,7 +85,7 @@ Verify: `bash scripts/cinematic_studio.sh verify --plugin` (44 skills + 11 slash
 cp ~/Grok-Cinematic-Projects/config/grok-build.example.toml ~/.grok/config.toml
 ```
 
-Sets `fork_secondary_model = "grok-build"` for code and skills work alongside `grok-composer-2.5-fast`.
+Sets `[models] default = "grok-4.5"` and `fork_secondary_model = "grok-build"` for dual-stack Build/coding (recommend Grok Build CLI ≥ 0.2.93). Cinematic long-Bible work still uses `grok-4.3`.
 
 ## Verify Tiers
 

@@ -13,7 +13,7 @@ from models import DEFAULT_IMAGINE_VIDEO_MODEL, DEFAULT_XAI_CHAT_MODEL, resolve_
 from project_state import load_project_state, save_project_state
 from quota_optimizer import estimate_production
 
-from cli.helpers import assess_risk_from_state
+from cli.helpers import assess_risk_from_state, resolve_chat_model_cli
 from cli.production import build_activation_prompt, build_production_bible
 from cli.quota_display import print_production_estimate_table
 from cli.shared import console
@@ -26,15 +26,16 @@ def register(app: typer.Typer) -> None:
     def generate_prompt(
         story: str = typer.Argument(..., help="Your story, scene, or project description"),
         signature: str = typer.Option("default", "--signature", "-s", help="Director style"),
-        chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.3, grok-build-0.1)"),
+        chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.3 cinematic, grok-4.5 build)"),
         video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "--model", "-m", help="Imagine video model slug or alias"),
         output: str = typer.Option(None, "--output", "-o", help="Save to file"),
     ):
         """Generate a high-quality ready-to-paste prompt."""
+        chat_slug = resolve_chat_model_cli(chat_model)
         prompt = build_activation_prompt(
             story,
             signature=signature,
-            chat_model=chat_model,
+            chat_model=chat_slug,
             video_model=video_model,
         )
         if output:
@@ -75,15 +76,16 @@ def register(app: typer.Typer) -> None:
     def create_bible(
         title: str = typer.Argument(..., help="Project title"),
         genre: str = typer.Option("Cinematic", "--genre", "-g"),
-        chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.3, grok-build-0.1)"),
+        chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.3 cinematic, grok-4.5 build)"),
         video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "-m", help="Imagine video model slug or alias"),
         output: str = typer.Option("production_bible.json", "--output", "-o"),
     ):
         """Generate a rich, structured Production Bible."""
+        chat_slug = resolve_chat_model_cli(chat_model)
         bible = build_production_bible(
             title,
             genre=genre,
-            chat_model=chat_model,
+            chat_model=chat_slug,
             video_model=video_model,
         )
         Path(output).write_text(json.dumps(bible, indent=2))

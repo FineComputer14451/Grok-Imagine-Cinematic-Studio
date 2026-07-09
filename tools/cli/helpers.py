@@ -8,11 +8,22 @@ from typing import Any
 import typer
 
 from character_dna import find_character_dna, load_character_dna
+from models import normalize_chat_model
 from project_state import load_project_state
 from quota_optimizer import assess_budget_risk
 from sequence_chain import find_sequence, get_clip, load_sequence
 
 from cli.shared import console
+
+
+def resolve_chat_model_cli(slug: str | None) -> str:
+    """Resolve --chat-model for CLI; warn on unknown non-empty slugs."""
+    resolved, known = normalize_chat_model(slug)
+    if slug and str(slug).strip() and not known:
+        console.print(
+            f"[yellow]Unknown chat model {slug!r}; using {resolved}[/yellow]"
+        )
+    return resolved
 
 
 def require_character_dna_path(name: str) -> Path:

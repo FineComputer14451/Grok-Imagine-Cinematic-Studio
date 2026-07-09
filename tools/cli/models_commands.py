@@ -9,16 +9,32 @@ from rich.table import Table
 
 from models import (
     DEFAULT_GROK_BUILD_MODEL,
+    DEFAULT_IMAGINE_IMAGE_MODEL,
+    DEFAULT_IMAGINE_VIDEO_MODEL,
     GROK_BUILD_CLI_MODELS,
     GROK_BUILD_FORK_MODEL,
     IMAGINE_IMAGE_MODELS,
     IMAGINE_VIDEO_MODELS,
+    RECOMMENDED_GROK_BUILD_CLI_VERSION,
     XAI_CHAT_MODELS,
+    is_build_default,
+    is_cinematic_default,
     verify_model_compatibility,
 )
 from cli.shared import console
 
 models_app = typer.Typer(help="Grok Build and xAI model registry")
+
+
+def _chat_tags(slug: str, info: dict) -> str:
+    tags: list[str] = []
+    if is_cinematic_default(slug):
+        tags.append("cinematic default")
+    if is_build_default(slug):
+        tags.append("build default")
+    if info.get("deprecated"):
+        tags.append("legacy")
+    return f" ({', '.join(tags)})" if tags else ""
 
 
 @models_app.command("list")
@@ -29,13 +45,29 @@ def models_list():
     table.add_column("Slug", style="green")
     table.add_column("Label / Rate", style="white")
 
-    table.add_row("Grok Build CLI (default)", DEFAULT_GROK_BUILD_MODEL, GROK_BUILD_CLI_MODELS[DEFAULT_GROK_BUILD_MODEL]["label"])
-    table.add_row("Grok Build CLI (fork)", GROK_BUILD_FORK_MODEL, GROK_BUILD_CLI_MODELS[GROK_BUILD_FORK_MODEL]["label"])
+    table.add_row(
+        "Grok Build CLI (default)",
+        DEFAULT_GROK_BUILD_MODEL,
+        GROK_BUILD_CLI_MODELS[DEFAULT_GROK_BUILD_MODEL]["label"],
+    )
+    table.add_row(
+        "Grok Build CLI (fork)",
+        GROK_BUILD_FORK_MODEL,
+        GROK_BUILD_CLI_MODELS[GROK_BUILD_FORK_MODEL]["label"],
+    )
+    table.add_row(
+        "Grok Build CLI (recommended)",
+        RECOMMENDED_GROK_BUILD_CLI_VERSION,
+        "Recommended binary version (soft probe in models verify)",
+    )
     for slug, info in XAI_CHAT_MODELS.items():
-        default = " (default)" if info.get("default") else ""
-        table.add_row("xAI Chat", slug + default, f"{info['label']} — ${info['input_usd_per_1m']}/${info['output_usd_per_1m']} per 1M")
+        table.add_row(
+            "xAI Chat",
+            slug + _chat_tags(slug, info),
+            f"{info['label']} — ${info['input_usd_per_1m']}/${info['output_usd_per_1m']} per 1M",
+        )
     for slug, info in IMAGINE_VIDEO_MODELS.items():
-        default = " (default)" if info.get("default") else ""
+        default = " (default)" if slug == DEFAULT_IMAGINE_VIDEO_MODEL else ""
         audio = " + native audio" if info.get("native_audio") else ""
         aliases = ", ".join(info.get("aliases", [])[:3])
         if len(info.get("aliases", [])) > 3:
@@ -45,7 +77,7 @@ def models_list():
             detail += f"\n[dim]aliases: {aliases}[/dim]"
         table.add_row("Imagine Video", slug + default, detail)
     for slug, info in IMAGINE_IMAGE_MODELS.items():
-        default = " (default)" if info.get("default") else ""
+        default = " (default)" if slug == DEFAULT_IMAGINE_IMAGE_MODEL else ""
         aliases = ", ".join(info.get("aliases", [])[:3])
         if len(info.get("aliases", [])) > 3:
             aliases += ", …"
@@ -60,24 +92,34 @@ def models_list():
 
 @models_app.command("verify")
 def models_verify():
-    """Verify Grok 4.3 + Imagine 1.0/1.5 + Grok Build model compatibility."""
+    """Verify dual stack: Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5."""
     result = verify_model_compatibility()
     stack = result["model_stack"]
+    warn_block = ""
+    if result.get("warnings"):
+        warn_block = "\n\n[yellow]Warnings:[/yellow]\n" + "\n".join(
+            f"• {w}" for w in result["warnings"]
+        )
+    installed = result.get("installed_grok_cli_version") or "not found"
     if result["compatible"]:
         console.print(Panel.fit(
             "[bold green]✅ Model compatibility verified[/bold green]\n\n"
             f"Studio target: v{result['studio_version']}\n"
-            f"Grok Build CLI: {stack['grok_build_cli_default']} (+ {stack['grok_build_cli_fork']})\n"
-            f"xAI Chat: {stack['xai_chat']} | Build API: {stack['xai_build']}\n"
+            f"Grok Build CLI: {stack['grok_build_cli_default']} "
+            f"(+ {stack['grok_build_cli_fork']}, recommend ≥ {stack.get('grok_build_cli_min_version', RECOMMENDED_GROK_BUILD_CLI_VERSION)})\n"
+            f"Installed CLI: {installed}\n"
+            f"xAI Chat (cinematic): {stack['xai_chat']} | Build/coding: {stack['xai_build']}\n"
             f"Imagine Video: {stack['imagine_video']} | Image: {stack['imagine_image']}\n\n"
-            f"{result['video_pipeline_spec']}",
-            title="Grok 4.3 + Imagine 1.0/1.5 + Grok Build",
+            f"{result['video_pipeline_spec']}"
+            f"{warn_block}",
+            title="Grok 4.5 Build + Grok 4.3 Cinematic + Imagine",
             border_style="green",
         ))
     else:
         console.print(Panel.fit(
             "[bold red]❌ Model compatibility issues[/bold red]\n\n"
-            + "\n".join(f"• {issue}" for issue in result["issues"]),
+            + "\n".join(f"• {issue}" for issue in result["issues"])
+            + warn_block,
             title="Compatibility Check Failed",
             border_style="red",
         ))
