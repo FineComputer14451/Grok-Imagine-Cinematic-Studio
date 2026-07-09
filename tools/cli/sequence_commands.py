@@ -13,8 +13,10 @@ from rich.table import Table
 
 from assembly_editor import build_edl, edl_to_markdown, save_edl
 from chain_qa_assist import apply_assisted_qa, assist_chain_qa
+from identity_drift import DEFAULT_DRIFT_THRESHOLD, score_identity_drift
 from quota_optimizer import estimate_sequence_cost
 from imagine_client import is_dry_run
+from seam_report import build_seam_report
 from sequence_delivery import deliver_sequence
 from sequence_polish import polish_sequence
 from sequence_chain import (
@@ -34,6 +36,22 @@ from sequence_runner import run_sequence_clip
 
 from cli.helpers import assess_risk_from_state, require_clip, require_sequence, require_sequence_bundle
 from cli.shared import console
+
+
+def _load_dna_optional(dna: str | None) -> dict | None:
+    """Load Character DNA from a path or character slug; None if missing."""
+    if not dna:
+        return None
+    from character_dna import find_character_dna, load_character_dna
+
+    p = Path(dna)
+    if p.is_file():
+        return load_character_dna(p)
+    found = find_character_dna(dna)
+    if found:
+        return load_character_dna(found)
+    console.print(f"[yellow]DNA not found: {dna} — scoring without DNA[/yellow]")
+    return None
 
 
 def register(app: typer.Typer) -> None:
@@ -216,6 +234,9 @@ def register(app: typer.Typer) -> None:
         clip: str = typer.Option(..., "--clip", "-c"),
         apply: bool = typer.Option(False, "--apply", help="Apply suggested scores to chain QA"),
         nsfw: bool = typer.Option(False, "--nsfw", help="Use NSFW 8-point assist"),
+        dna: str = typer.Option(None, "--dna", help="DNA path or character slug"),
+        prev_frame: str = typer.Option(None, "--prev-frame", help="Path to previous last-frame still"),
+        curr_frame: str = typer.Option(None, "--curr-frame", help="Path to current first-frame still"),
     ):
         """Pre-fill chain QA scores from metadata heuristics (assist mode)."""
         seq = require_sequence(name)
@@ -223,15 +244,34 @@ def register(app: typer.Typer) -> None:
         clips = seq.get("clips", [])
         idx = target["index"]
         prev = clips[idx - 1] if idx > 0 else None
+        dna_obj = _load_dna_optional(dna)
+        evidence_kwargs = {
+            "previous_last_frame_path": prev_frame,
+            "current_first_frame_path": curr_frame,
+        }
 
         if apply:
-            result = apply_assisted_qa(seq, target, previous_clip=prev, nsfw=nsfw or bool(seq.get("nsfw_extension")))
+            result = apply_assisted_qa(
+                seq,
+                target,
+                previous_clip=prev,
+                nsfw=nsfw or bool(seq.get("nsfw_extension")),
+                dna=dna_obj,
+                **evidence_kwargs,
+            )
             assist = result["assist"]
             qa = result["chain_qa"]
             update_sequence_health(seq)
             save_sequence(seq)
         else:
-            assist = assist_chain_qa(target, previous_clip=prev, sequence=seq, nsfw=nsfw or bool(seq.get("nsfw_extension")))
+            assist = assist_chain_qa(
+                target,
+                previous_clip=prev,
+                sequence=seq,
+                nsfw=nsfw or bool(seq.get("nsfw_extension")),
+                dna=dna_obj,
+                **evidence_kwargs,
+            )
             qa = assist["evaluation"]
 
         table = Table(title=f"QA Assist — {clip} ({assist['mode']})", box=box.SIMPLE)
@@ -248,6 +288,13 @@ def register(app: typer.Typer) -> None:
             f"[{decision_color}]Decision: {qa.get('decision')}[/{decision_color}] | "
             f"Weighted: {qa.get('weighted_score', 'N/A')}"
         )
+        ev = assist.get("evidence") or {}
+        if ev.get("identity_drift"):
+            d = ev["identity_drift"]
+            console.print(
+                f"[dim]Evidence drift_score={d.get('drift_score')} "
+                f"seam_risk={ev.get('seam_report', {}).get('seam_risk')}[/dim]"
+            )
         if apply:
             console.print(f"[dim]Applied — sequence health: {seq.get('sequence_health_score')}[/dim]")
         else:
@@ -255,6 +302,70 @@ def register(app: typer.Typer) -> None:
                 name=name, clip=clip,
             ))
 
+    @app.command("drift-score")
+    def seq_drift_score(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c"),
+        dna: str = typer.Option(None, "--dna", help="Path to dna.json or character slug"),
+        threshold: float = typer.Option(None, "--threshold", help="Default 2.5"),
+    ):
+        """Score identity drift for a clip against Character DNA (evidence loop #1)."""
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        clips = seq.get("clips", [])
+        idx = target["index"]
+        prev = clips[idx - 1] if idx > 0 else None
+        dna_obj = _load_dna_optional(dna)
+        thr = DEFAULT_DRIFT_THRESHOLD if threshold is None else threshold
+        report = score_identity_drift(
+            target, dna=dna_obj, previous_clip=prev, threshold=thr
+        )
+        target["identity_drift"] = report
+        save_sequence(seq)
+        color = "green" if report["pass"] else "red"
+        console.print(
+            f"[{color}]drift_score={report['drift_score']} "
+            f"(threshold={report['threshold']}) pass={report['pass']}[/{color}]"
+        )
+        for factor in report.get("factors") or []:
+            console.print(f"  • {factor}")
+        if report.get("fixes"):
+            console.print("[yellow]Fixes:[/yellow]")
+            for fix in report["fixes"]:
+                console.print(f"  → {fix}")
+
+    @app.command("seam-report")
+    def seq_seam_report(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c"),
+        prev_frame: str = typer.Option(None, "--prev-frame", help="Path to previous last-frame still"),
+        curr_frame: str = typer.Option(None, "--curr-frame", help="Path to current first-frame still"),
+    ):
+        """Last-frame seam risk report (evidence loop #2)."""
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        clips = seq.get("clips", [])
+        idx = target["index"]
+        prev = clips[idx - 1] if idx > 0 else None
+        report = build_seam_report(
+            target,
+            previous_clip=prev,
+            previous_last_frame_path=prev_frame,
+            current_first_frame_path=curr_frame,
+        )
+        target["seam_report"] = report
+        save_sequence(seq)
+        color = "green" if report["pass"] else "yellow"
+        console.print(
+            f"[{color}]seam_risk={report['seam_risk']} pass={report['pass']} "
+            f"mode={report['mode']}[/{color}]"
+        )
+        for factor in report.get("factors") or []:
+            console.print(f"  • {factor}")
+        if report.get("fixes"):
+            console.print("[yellow]Fixes:[/yellow]")
+            for fix in report["fixes"]:
+                console.print(f"  → {fix}")
 
     @app.command("edl")
     def seq_edl(

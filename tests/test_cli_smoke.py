@@ -63,10 +63,19 @@ def test_main_file_is_small() -> None:
     assert len(lines) < 80, f"cinematic_studio_cli.py should be wiring-only, got {len(lines)} lines"
 
 
+def test_sequence_continuity_commands_registered() -> None:
+    result = run_cli("sequence", "--help")
+    assert result.returncode == 0
+    assert "drift-score" in result.stdout
+    assert "seam-report" in result.stdout
+    assert "qa-assist" in result.stdout
+
+
 if __name__ == "__main__":
     test_main_file_is_small()
     test_main_help()
     test_subcommand_groups()
     test_validate_passes()
     test_cost_simulate_and_quota_estimate()
+    test_sequence_continuity_commands_registered()
     print("All CLI smoke tests passed")
