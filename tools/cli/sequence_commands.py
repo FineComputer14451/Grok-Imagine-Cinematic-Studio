@@ -14,6 +14,12 @@ from rich.table import Table
 from assembly_editor import build_edl, edl_to_markdown, save_edl
 from audio_momentum import build_audio_momentum_report
 from chain_qa_assist import apply_assisted_qa, assist_chain_qa
+from continuity_diff import (
+    diff_clip_pair,
+    diff_clip_vs_bank,
+    format_continuity_diff_markdown,
+    format_continuity_diff_table_rows,
+)
 from extend_regen import apply_regen_plan, ensure_clip_regen, plan_regen, prepare_regen_run
 from identity_drift import DEFAULT_DRIFT_THRESHOLD, score_identity_drift
 from quota_optimizer import estimate_sequence_cost
@@ -407,6 +413,96 @@ def register(app: typer.Typer) -> None:
             console.print("[yellow]Fixes:[/yellow]")
             for fix in report["fixes"]:
                 console.print(f"  → {fix}")
+
+    @app.command("continuity-diff")
+    def seq_continuity_diff(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c", help="Right-hand clip ID"),
+        against: str = typer.Option(
+            "prev",
+            "--against",
+            help="prev | bank | <clip_id>",
+        ),
+        save: bool = typer.Option(False, "--save", help="Store report on right clip"),
+        output: str = typer.Option(None, "--output", "-o", help="Write markdown file"),
+    ):
+        """Diff continuity_state / momentum / AMV for Continuity Guardian (roadmap #9)."""
+        seq = require_sequence(name)
+        right = require_clip(seq, clip)
+        against_raw = (against or "prev").strip()
+        against_key = against_raw.lower()
+        clips = seq.get("clips") or []
+
+        if against_key == "bank":
+            report = diff_clip_vs_bank(right, seq.get("memory_bank") or {})
+        elif against_key == "prev":
+            idx = right.get("index")
+            if idx is None:
+                # Fall back to position in clips list
+                try:
+                    idx = next(
+                        i for i, c in enumerate(clips)
+                        if c.get("clip_id") == right.get("clip_id")
+                    )
+                except StopIteration:
+                    idx = 0
+            if idx <= 0:
+                console.print(
+                    "[red]No previous clip — opening clip cannot use --against prev[/red]"
+                )
+                raise typer.Exit(1)
+            left = clips[idx - 1]
+            report = diff_clip_pair(left, right)
+        else:
+            left = require_clip(seq, against_raw)
+            report = diff_clip_pair(left, right)
+
+        summary = report.get("summary") or {}
+        total = summary.get("total", 0)
+        color = "green" if total == 0 else "yellow"
+        console.print(
+            f"[{color}]mode={report.get('mode')} "
+            f"left={report.get('left_label')} right={report.get('right_label')} "
+            f"added={summary.get('added', 0)} removed={summary.get('removed', 0)} "
+            f"changed={summary.get('changed', 0)} total={total}[/{color}]"
+        )
+        for w in report.get("warnings") or []:
+            console.print(f"[yellow]⚠ {w}[/yellow]")
+
+        table = Table(title="Continuity Diff", box=box.ROUNDED)
+        table.add_column("Path", style="cyan")
+        table.add_column("Kind", style="yellow")
+        table.add_column("Before", style="dim")
+        table.add_column("After", style="white")
+        rows = format_continuity_diff_table_rows(report)
+        if not rows:
+            table.add_row("—", "—", "—", "No continuity changes detected")
+        else:
+            for path, kind, before, after in rows:
+                table.add_row(path, kind, before, after)
+        console.print(table)
+
+        md = format_continuity_diff_markdown(report)
+        console.print(
+            Panel(
+                Markdown(md[:4000]),
+                title="Continuity Diff Report",
+                border_style="blue",
+            )
+        )
+
+        if save:
+            right["continuity_diff"] = report
+            save_sequence(seq)
+            console.print(
+                f"[green]✅ Saved continuity_diff on {right.get('clip_id')}[/green]"
+            )
+
+        if output:
+            out_path = Path(output)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(md, encoding="utf-8")
+            console.print(f"[green]✅ Markdown report:[/green] {out_path}")
 
     @app.command("edl")
     def seq_edl(

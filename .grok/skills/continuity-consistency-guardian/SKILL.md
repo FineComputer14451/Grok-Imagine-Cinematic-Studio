@@ -28,6 +28,9 @@ python tools/cinematic_studio_cli.py sequence show "Sequence Name"
 
 # Validate handoff continuity before extend
 python tools/cinematic_studio_cli.py sequence handoff "Sequence Name" --clip clip_001
+
+# Diff continuity_state / momentum / AMV vs previous clip (or --against bank | <clip_id>)
+python tools/cinematic_studio_cli.py sequence continuity-diff "Sequence Name" --clip clip_002
 ```
 
 Check on every clip boundary:

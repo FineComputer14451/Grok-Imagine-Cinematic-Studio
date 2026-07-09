@@ -76,6 +76,11 @@ def test_sequence_amv_check_registered() -> None:
     assert "amv-check" in result.stdout
 
 
+def test_sequence_continuity_diff_registered() -> None:
+    result = run_cli("sequence", "--help")
+    assert "continuity-diff" in result.stdout
+
+
 def test_sequence_memory_commands_registered() -> None:
     result = run_cli("sequence", "--help")
     assert result.returncode == 0
@@ -118,6 +123,7 @@ if __name__ == "__main__":
     test_cost_simulate_and_quota_estimate()
     test_sequence_continuity_commands_registered()
     test_sequence_amv_check_registered()
+    test_sequence_continuity_diff_registered()
     test_sequence_memory_commands_registered()
     test_sequence_regen_commands_registered()
     test_sequence_temp_commands_registered()
