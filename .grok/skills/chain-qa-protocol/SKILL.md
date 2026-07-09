@@ -81,7 +81,7 @@ python tools/cinematic_studio_cli.py sequence seam-report --prev last.png --next
 |--------|-----------|
 | **Go** | Approve extend / stitch |
 | **Conditional Go** | Fix handoff fields, re-score |
-| **No-Go** | Regenerate clip N; do not extend |
+| **No-Go** | Regenerate clip N; do not extend. Use `sequence regen plan|apply|run` (attempt budget + fix prompt from chain QA / drift / seam / memory bank) |
 
 ## Handoff Requirements Before QA
 

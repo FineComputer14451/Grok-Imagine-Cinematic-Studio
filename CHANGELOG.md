@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **Extend re-gen loop (roadmap #5)** — `tools/extend_regen.py` builds fix prompts from chain QA + drift/seam + memory bank; per-clip/sequence attempt budget; CLI `sequence regen plan|apply|run` (run spends one attempt via existing sequence runner)
 - **Sequence memory bank (roadmap #4)** — `tools/sequence_memory.py`; `sequence.json` `memory_bank` (schema 1.0+1.1); handoff/extend-prompt embed running cast/prop/lighting/audio state; CLI `sequence memory show|sync`
 - **Long-form continuity evidence loop (v1)** — `tools/identity_drift.py`, `tools/seam_report.py`; Chain QA Assist v2 blends drift + seam into SFW scores with `evidence` block; CLI `sequence drift-score`, `sequence seam-report`, and `qa-assist --dna`
 

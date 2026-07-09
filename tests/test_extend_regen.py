@@ -16,6 +16,7 @@ from extend_regen import (  # noqa: E402
     ensure_regen_budget,
     ensure_clip_regen,
     plan_regen,
+    prepare_regen_run,
 )
 from sequence_chain import create_clip, create_sequence_scaffold  # noqa: E402
 
@@ -116,3 +117,25 @@ def test_apply_regen_plan_sets_prompt() -> None:
     assert clip["prompt"] == plan["fix_prompt"]
     assert clip.get("regen_fix_prompt") == plan["fix_prompt"]
     assert clip["status"] in ("pending", "qa_hold", "regen_ready")
+
+
+def test_prepare_regen_run_consumes_attempt() -> None:
+    seq = create_sequence_scaffold("R")
+    ensure_regen_budget(seq)
+    clip = create_clip(prompt="original")
+    clip["clip_id"] = "clip_001"
+    clip["chain_qa"] = {
+        "decision": "no_go",
+        "fixes": ["Strengthen LAST_FRAME_RECAP"],
+        "critical_failures": ["last_frame_continuity"],
+    }
+    ensure_clip_regen(clip, seq)
+    assert clip["regen"]["attempts"] == 0
+    assert seq["regen_budget"]["sequence_attempts_used"] == 0
+
+    plan = prepare_regen_run(seq, clip)
+    assert plan["allowed"] is True
+    assert clip["regen"]["attempts"] == 1
+    assert seq["regen_budget"]["sequence_attempts_used"] == 1
+    assert clip["prompt"] == plan["fix_prompt"]
+    assert clip["status"] == "regen_ready"
