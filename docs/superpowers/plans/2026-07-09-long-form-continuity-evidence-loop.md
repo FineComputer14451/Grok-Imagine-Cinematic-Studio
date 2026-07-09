@@ -612,8 +612,6 @@ def build_seam_report(
             risk_parts.append(fr)
             factors.append(f"frame_mad_penalty={fr}")
 
-    seam_risk = _clamp(sum(max(0.0, p) for p in risk_parts) + sum(p for p in risk_parts if p < 0))
-    # Recalculate cleanly:
     seam_risk = _clamp(sum(risk_parts))
     passed = seam_risk < SEAM_PASS_THRESHOLD
 
