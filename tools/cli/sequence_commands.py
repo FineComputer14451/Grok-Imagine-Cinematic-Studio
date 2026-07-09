@@ -30,6 +30,7 @@ from sequence_chain import (
     run_chain_qa,
     save_sequence,
     sequence_to_markdown,
+    sync_memory_from_clip,
     update_sequence_health,
 )
 from sequence_runner import run_sequence_clip
@@ -136,7 +137,7 @@ def register(app: typer.Typer) -> None:
         """Generate extend/stitch handoff packet from a clip."""
         seq, seq_path = require_sequence_bundle(name)
         source = require_clip(seq, clip)
-        handoff = build_handoff_from_clip(source)
+        handoff = build_handoff_from_clip(source, memory_bank=seq.get("memory_bank"))
         out_path = Path(output) if output else seq_path.parent / f"handoff_{clip}.json"
         out_path.write_text(json.dumps(handoff, indent=2))
         console.print(f"[green]✅ Handoff packet:[/green] {out_path}")
@@ -511,3 +512,35 @@ def register(app: typer.Typer) -> None:
             title=f"🎬 {seq['sequence_name']}",
             border_style="cyan",
         ))
+
+
+    memory_app = typer.Typer(help="Sequence memory bank (roadmap #4)")
+    app.add_typer(memory_app, name="memory")
+
+    @memory_app.command("show")
+    def memory_show(name: str = typer.Argument(..., help="Sequence name or slug")):
+        """Show running sequence memory bank."""
+        seq = require_sequence(name)
+        bank = seq.get("memory_bank") or {}
+        from sequence_memory import ensure_memory_bank, memory_bank_summary
+
+        bank = ensure_memory_bank(bank)
+        console.print(memory_bank_summary(bank))
+        console.print(Panel(json.dumps(bank, indent=2)[:3000], title="memory_bank", border_style="cyan"))
+
+    @memory_app.command("sync")
+    def memory_sync(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c", help="Clip ID to merge into memory bank"),
+        character: str = typer.Option(None, "--character", help="Character slug for cast entry"),
+        character_name: str = typer.Option(None, "--character-name", help="Display name"),
+    ):
+        """Merge a clip's continuity/momentum/AMV into the sequence memory bank."""
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        sync_memory_from_clip(seq, target, character_slug=character, character_name=character_name)
+        save_sequence(seq)
+        from sequence_memory import ensure_memory_bank, memory_bank_summary
+
+        console.print(f"[green]Memory bank synced from {clip}[/green]")
+        console.print(memory_bank_summary(ensure_memory_bank(seq.get("memory_bank"))))
