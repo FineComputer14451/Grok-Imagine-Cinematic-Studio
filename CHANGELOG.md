@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **Guided Production Bible wizard** — shared stage data (`tools/cli/bible_stages.py`) maps answers to kwargs for existing `build_production_bible` (no second schema). CLI: `create-bible --wizard` (TTY-only; direct `create-bible "Title"` remains default for scripts). Web UI: Production → Guided Bible Creator multi-step form. Free-text logline/characters/world/tech notes roll into `notes`. Design + implementation plan under `docs/superpowers/`.
 - **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, and `scripts/generate_plugin_index.py` for `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio`
 - **`verify --plugin`** — validates Grok plugin checkout (44 skills, 11 slash commands, model registry)
 - **`cinematic-studio plugin`** — `status`, `list`, and `catalog` subcommands (`check [--release]`, `pin`) for manifest, index, and marketplace pinning (via shared `tools/plugin_catalog.py`)

@@ -15,6 +15,7 @@
 - **CLI** — unknown `--chat-model` warns and falls back to cinematic default; `models list` tags cinematic/build defaults from helpers
 - **Docs & skills** — README, AGENTS, MASTER_PROMPT, Quick Start, MODELS, Role Cards, quota pricing, meta-installer paths aligned
 - **Plugin** — `.grok-plugin` version **3.6.6** + marketplace pin for dual-stack install
+- **Guided Production Bible wizard** (post-pin) — `create-bible --wizard` + Web UI Guided Bible Creator; shared stages feed existing `build_production_bible` (script-safe direct path unchanged)
 
 **Activation:** `Activate Grok Imagine Cinematic Studio v3.6.6`
 
