@@ -752,3 +752,135 @@ def register(app: typer.Typer) -> None:
             title=f"Sequence Re-gen Run — {seq['sequence_name']}",
             border_style="green" if result.get("status") == "approved" else "yellow",
         ))
+
+    temp_app = typer.Typer(help="Emotional temperature curve gate (roadmap #7)")
+    app.add_typer(temp_app, name="temp")
+
+    @temp_app.command("set")
+    def temp_set(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        index: int = typer.Option(..., "--index", "-i", help="Clip index for this curve point"),
+        temp: float = typer.Option(..., "--temp", "-t", help="Planned emotional temperature 0–10"),
+        label: str = typer.Option("", "--label", help="Optional emotion label"),
+        beat: str = typer.Option("", "--beat", help="Optional narrative beat"),
+    ):
+        """Upsert a curve point for a clip index."""
+        from emotional_temperature import normalize_curve
+
+        seq = require_sequence(name)
+        raw = list(seq.get("emotional_temperature_curve") or [])
+        # Drop existing points for this index (upsert)
+        kept: list = []
+        for item in raw:
+            if isinstance(item, dict):
+                idx = item.get("index", item.get("i"))
+                try:
+                    if idx is not None and int(idx) == index:
+                        continue
+                except (TypeError, ValueError):
+                    pass
+            kept.append(item)
+
+        point: dict = {"index": index, "temp": temp}
+        if label and str(label).strip():
+            point["label"] = str(label).strip()
+        if beat and str(beat).strip():
+            point["beat"] = str(beat).strip()
+        kept.append(point)
+
+        curve = normalize_curve(kept)
+        seq["emotional_temperature_curve"] = curve
+        save_sequence(seq)
+
+        label_s = f" label={point.get('label')}" if point.get("label") else ""
+        beat_s = f" beat={point.get('beat')}" if point.get("beat") else ""
+        console.print(
+            f"[green]Curve point set:[/green] index={index} temp={temp}{label_s}{beat_s} "
+            f"({len(curve)} points total)"
+        )
+
+    @temp_app.command("show")
+    def temp_show(name: str = typer.Argument(..., help="Sequence name or slug")):
+        """Show normalized emotional temperature curve."""
+        from emotional_temperature import normalize_curve
+
+        seq = require_sequence(name)
+        curve = normalize_curve(seq.get("emotional_temperature_curve"))
+        seq["emotional_temperature_curve"] = curve
+
+        if not curve:
+            console.print("[yellow]No emotional_temperature_curve points set.[/yellow]")
+            console.print(
+                "[dim]Use: sequence temp set <name> --index N --temp T [--label ...] [--beat ...][/dim]"
+            )
+            return
+
+        table = Table(
+            title=f"Emotional temperature curve — {seq.get('sequence_name', name)}",
+            box=box.ROUNDED,
+        )
+        table.add_column("Index", style="cyan")
+        table.add_column("Temp", style="bold")
+        table.add_column("Label", style="white")
+        table.add_column("Beat", style="dim")
+        for p in curve:
+            table.add_row(
+                str(p.get("index")),
+                f"{float(p.get('temp', 0)):.1f}",
+                str(p.get("label") or "—"),
+                str(p.get("beat") or "—"),
+            )
+        console.print(table)
+        console.print(Panel(json.dumps(curve, indent=2)[:3000], title="normalized curve", border_style="cyan"))
+
+    @temp_app.command("gate")
+    def temp_gate(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c", help="Clip ID to evaluate"),
+        strict: bool = typer.Option(
+            False, "--strict", help="Exit 1 if gate does not pass (severity fail)"
+        ),
+    ):
+        """Evaluate temperature gate for a clip."""
+        from emotional_temperature import evaluate_temperature_gate
+
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        prev = _previous_clip(seq, target)
+        report = evaluate_temperature_gate(seq, target, previous_clip=prev)
+        target["temperature_gate"] = report
+        save_sequence(seq)
+
+        passed = report.get("pass", False)
+        severity = report.get("severity", "ok")
+        style = {"ok": "green", "warn": "yellow", "fail": "red"}.get(severity, "white")
+        planned = report.get("planned_temp")
+        observed = report.get("observed_temp")
+        delta = report.get("delta")
+
+        def _fmt(v: float | None) -> str:
+            return f"{v:.2f}" if v is not None else "—"
+
+        console.print(
+            Panel(
+                f"Pass: [{style}]{passed}[/{style}] | Severity: [{style}]{severity}[/{style}]\n"
+                f"Planned: {_fmt(planned)} | Observed: {_fmt(observed)} | Delta: {_fmt(delta)}\n"
+                f"Flags: {', '.join(report.get('flags') or []) or '—'}\n"
+                f"Suggested emotion score: {report.get('suggested_emotion_score', '—')}",
+                title=f"Temperature gate — {clip}",
+                border_style=style,
+            )
+        )
+        factors = report.get("factors") or []
+        if factors:
+            for f in factors:
+                console.print(f"  [dim]•[/dim] {f}")
+        fixes = report.get("fixes") or []
+        if fixes:
+            console.print("[bold]Fixes:[/bold]")
+            for fix in fixes:
+                console.print(f"  → {fix}")
+
+        console.print(f"[dim]Stored temperature_gate on {clip}[/dim]")
+        if strict and not passed:
+            raise typer.Exit(1)

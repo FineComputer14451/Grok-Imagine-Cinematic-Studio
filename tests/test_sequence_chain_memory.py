@@ -87,3 +87,14 @@ def test_extend_prompt_includes_memory_block() -> None:
     text = build_extend_prompt(seq, prev, "She steps inside")
     assert "SEQUENCE_MEMORY_BANK" in text
     assert "Train car" in text
+
+
+def test_extend_prompt_includes_planned_emotional_temperature() -> None:
+    seq = create_sequence_scaffold("Temp Ext")
+    seq["emotional_temperature_curve"] = [
+        {"index": 0, "temp": 2.0},
+        {"index": 1, "temp": 7.5, "label": "tense"},
+    ]
+    prev = create_clip(index=0, last_frame_recap="Still night", prompt="Open")
+    text = build_extend_prompt(seq, prev, "Tension rises")
+    assert "PLANNED_EMOTIONAL_TEMPERATURE: 7.5/10" in text

@@ -95,6 +95,14 @@ def test_sequence_regen_commands_registered() -> None:
     assert "run" in out
 
 
+def test_sequence_temp_commands_registered() -> None:
+    r = run_cli("sequence", "temp", "--help")
+    assert r.returncode == 0
+    assert "set" in r.stdout.lower()
+    assert "show" in r.stdout.lower()
+    assert "gate" in r.stdout.lower()
+
+
 if __name__ == "__main__":
     test_main_file_is_small()
     test_main_help()
@@ -105,4 +113,5 @@ if __name__ == "__main__":
     test_sequence_amv_check_registered()
     test_sequence_memory_commands_registered()
     test_sequence_regen_commands_registered()
+    test_sequence_temp_commands_registered()
     print("All CLI smoke tests passed")

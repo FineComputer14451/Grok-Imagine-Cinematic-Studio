@@ -332,6 +332,21 @@ def build_extend_prompt(
     if memory_block and not memory_block.rstrip().endswith("(empty)"):
         lines.append("")
         lines.append(memory_block)
+
+    # Planned emotional temperature for the *next* clip (local import avoids cycles).
+    try:
+        from emotional_temperature import normalize_curve, planned_temp_at
+    except ImportError:
+        normalize_curve = None  # type: ignore[assignment]
+        planned_temp_at = None  # type: ignore[assignment]
+    if normalize_curve is not None and planned_temp_at is not None:
+        curve = normalize_curve(seq.get("emotional_temperature_curve"))
+        next_index = int(previous_clip.get("index", 0)) + 1
+        pt = planned_temp_at(curve, next_index)
+        if pt is not None:
+            lines.append("")
+            lines.append(f"PLANNED_EMOTIONAL_TEMPERATURE: {pt:.1f}/10")
+
     return "\n".join(lines)
 
 
