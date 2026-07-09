@@ -21,12 +21,13 @@ fi
 
 cat <<'EOF'
 
-Next steps:
-  1. Stage your feature changes together with:
-       .grok-plugin/marketplace.json
-       .grok-plugin/plugin-index.json
-       .grok-plugin/plugin.json   (if changed)
-  2. Commit in a single commit — do not split catalog sha bumps into a follow-up commit.
-  3. Before publish/tag: bash scripts/verify_plugins.sh --release
-     (or: cinematic-studio plugin catalog check --release)
+Next steps (pin cannot embed its own commit hash):
+  1. Content must already be committed (skills, tools, docs).
+  2. This pin wrote the current HEAD as the install SHA.
+  3. Commit **only** catalog artifacts:
+       git add .grok-plugin/marketplace.json .grok-plugin/plugin-index.json .grok-plugin/plugin.json
+       git commit -m "chore(plugins): pin marketplace catalog to HEAD"
+  4. Pre-publish gate (still green after the pin-only commit):
+       bash scripts/verify_plugins.sh --release
+       # or: cinematic-studio plugin catalog check --release
 EOF

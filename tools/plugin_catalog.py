@@ -39,6 +39,17 @@ REPO_GIT_URL = "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Stud
 MAX_DESCRIPTION_LEN = 120
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 
+# Paths allowed to change after the install pin without requiring a re-pin.
+# A pin-only commit updates marketplace + index (and sometimes the manifest)
+# while the marketplace ``sha`` still points at the content revision.
+ALLOWED_POST_PIN_PATHS = frozenset(
+    {
+        ".grok-plugin/marketplace.json",
+        ".grok-plugin/plugin-index.json",
+        ".grok-plugin/plugin.json",
+    }
+)
+
 
 def parse_frontmatter(path: Path) -> dict[str, str]:
     """Parse simple YAML frontmatter from SKILL.md or command .md files."""
@@ -81,6 +92,46 @@ def git_head_sha() -> str:
     if not SHA_RE.match(sha):
         raise RuntimeError("unable to resolve current git HEAD sha for marketplace pin")
     return sha
+
+
+def git_commit_exists(sha: str) -> bool:
+    """True if sha names a commit object in this repo."""
+    if not SHA_RE.match(sha):
+        return False
+    result = subprocess.run(
+        ["git", "cat-file", "-t", sha],
+        cwd=STUDIO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return result.returncode == 0 and result.stdout.strip() == "commit"
+
+
+def git_is_ancestor(ancestor: str, descendant: str) -> bool:
+    """True if ancestor is an ancestor of descendant (or equal)."""
+    result = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", ancestor, descendant],
+        cwd=STUDIO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return result.returncode == 0
+
+
+def git_diff_names(base: str, head: str) -> list[str]:
+    """Return paths changed between base and head (name-only)."""
+    result = subprocess.run(
+        ["git", "diff", "--name-only", f"{base}..{head}"],
+        cwd=STUDIO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return []
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
 
 
 def discover_skills() -> list[dict[str, str]]:
@@ -247,7 +298,21 @@ def validate_marketplace_pins(marketplace: dict[str, Any]) -> list[str]:
 
 
 def validate_release_pin(marketplace: dict[str, Any]) -> list[str]:
-    """Return list of error messages for release pin check."""
+    """Return list of error messages for release pin check.
+
+    A valid release pin means the marketplace install SHA points at the content
+    revision that should be installed. That SHA is almost never the tip commit
+    after a pin-only follow-up (a commit cannot contain its own hash in
+    marketplace.json). Accepted states:
+
+    1. ``catalog_sha == HEAD`` — pin just applied, not yet committed (or pin
+       commit somehow matches, rare).
+    2. ``catalog_sha`` is an ancestor of HEAD **and** every path changed from
+       catalog_sha..HEAD is in ``ALLOWED_POST_PIN_PATHS`` — normal pin-only
+       commit(s) on top of the content revision.
+
+    Any skill/code/doc change after the pin fails and requires re-pin.
+    """
     errors: list[str] = []
     try:
         head_sha = git_head_sha()
@@ -259,10 +324,34 @@ def validate_release_pin(marketplace: dict[str, Any]) -> list[str]:
     if catalog_sha is None:
         errors.append("marketplace catalog missing pinned sha for this repo")
         return errors
-    if catalog_sha != head_sha:
+
+    if not git_commit_exists(catalog_sha):
         errors.append(
-            f"marketplace sha does not match git HEAD; "
-            f"catalog: {catalog_sha}, HEAD: {head_sha}"
+            f"marketplace pin {catalog_sha} is not a commit in this repository"
+        )
+        return errors
+
+    if catalog_sha == head_sha:
+        return errors
+
+    if not git_is_ancestor(catalog_sha, head_sha):
+        errors.append(
+            f"marketplace pin {catalog_sha} is not an ancestor of HEAD {head_sha}; "
+            f"re-run: cinematic-studio plugin catalog pin"
+        )
+        return errors
+
+    changed = git_diff_names(catalog_sha, head_sha)
+    extra = sorted(set(changed) - ALLOWED_POST_PIN_PATHS)
+    if extra:
+        preview = ", ".join(extra[:8])
+        more = f" (+{len(extra) - 8} more)" if len(extra) > 8 else ""
+        errors.append(
+            f"content changed after marketplace pin {catalog_sha[:12]}… "
+            f"without re-pin (HEAD {head_sha[:12]}…). "
+            f"Non-catalog paths: {preview}{more}. "
+            f"Re-run: cinematic-studio plugin catalog pin, then commit only "
+            f".grok-plugin/ on top of the content revision."
         )
     return errors
 

@@ -11,6 +11,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **`cinematic-studio plugin`** — `status`, `list`, and `catalog` subcommands (`check [--release]`, `pin`) for manifest, index, and marketplace pinning (via shared `tools/plugin_catalog.py`)
 
 ### Fixed
+- **`plugin catalog check --release` chicken-and-egg** — release pin accepts install SHA == HEAD **or** ancestor with only `.grok-plugin` catalog paths after it (pin-only follow-up). A commit cannot embed its own hash in `marketplace.json`; docs/CLI workflow updated (content → pin → catalog-only commit).
 - **`plugin_commands` import** — fix `ModuleNotFoundError: No module named 'tools'` when invoking `python tools/cinematic_studio_cli.py` (import `plugin_catalog` directly to match CLI `sys.path`)
 - **Installer manifest sync** — `required_skills.manifest` expanded to 44 skills; release bundle, `verify --all`, and GitHub release zip aligned with the plugin suite
 - **Grok marketplace install** — `.grok-plugin/marketplace.json` uses pinned `url`+`sha` source (required for `grok plugin install …@finecomputer14451/grok-imagine-cinematic-studio`); `generate_plugin_index.py` syncs sha from `git HEAD`

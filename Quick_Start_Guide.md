@@ -159,7 +159,7 @@ You can activate any agent directly:
 - **Monitor quota** — The Workflow Quota Optimizer now supports per-second 1.5 video pricing.
 - **Reference Role Cards** — Check `references/agents/[Agent].md` for each agent’s exact capabilities.
 - **Use Skill Files** — Many agents now have enhanced skill files in `.grok/skills/` for deeper integration.
-- **Plugin Catalog** — After editing skills or `commands/`, run `cinematic-studio plugin catalog pin` (then commit the `.grok-plugin/` files atomically for releases). Use `cinematic-studio plugin catalog check --release` as the pre-publish gate.
+- **Plugin Catalog** — After editing skills or `commands/`, commit content first, run `cinematic-studio plugin catalog pin`, then commit only `.grok-plugin/`. Use `cinematic-studio plugin catalog check --release` as the pre-publish gate (green after pin-only tip).
 
 ---
 

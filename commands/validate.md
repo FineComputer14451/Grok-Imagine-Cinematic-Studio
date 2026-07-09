@@ -55,15 +55,19 @@ Regenerate / pin index:
 cinematic-studio plugin catalog pin
 ```
 
-Before release (atomic catalog pin — run once, commit everything together):
+Before release (content first, then pin-only catalog commit):
 
 ```bash
+# 1. Content already committed on HEAD
 cinematic-studio plugin catalog pin
+# 2. Commit only catalog files (install SHA stays on content revision)
 git add .grok-plugin/marketplace.json .grok-plugin/plugin-index.json .grok-plugin/plugin.json
-# commit feature changes + catalog files in the SAME commit
+git commit -m "chore(plugins): pin marketplace catalog to HEAD"
 ```
 
-Pre-publish gate:
+A commit cannot contain its own hash in `marketplace.json`. The pin-only follow-up is expected; `check --release` accepts it when no non-catalog paths change after the pin.
+
+Pre-publish gate (green on tip after pin-only commit):
 
 ```bash
 cinematic-studio plugin catalog check --release
@@ -71,9 +75,7 @@ cinematic-studio plugin catalog check --release
 bash scripts/verify_plugins.sh --release
 ```
 
-After the catalog pin commit, the marketplace sha intentionally points at the feature commit — use `cinematic-studio plugin catalog check` (without --release) on repo tip.
-
-Do **not** split marketplace sha bumps into a follow-up chore commit that only fixes a stale pin from an earlier release. The pin commit should immediately follow the feature commit and point at it.
+If you change skills/code after the pin, re-run `plugin catalog pin` and commit `.grok-plugin/` again.
 
 ### Optional: generate PDF report
 

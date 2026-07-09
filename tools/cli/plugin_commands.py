@@ -49,7 +49,12 @@ plugin_app.add_typer(catalog_app, name="catalog")
 @catalog_app.command("check")
 def catalog_check(
     release: bool = typer.Option(
-        False, "--release", help="Require marketplace catalog SHA to match current HEAD (pre-publish gate)"
+        False,
+        "--release",
+        help=(
+            "Require a valid release pin: install SHA is HEAD, or an ancestor "
+            "with only .grok-plugin catalog files after it (pre-publish gate)"
+        ),
     ),
     json_output: bool = typer.Option(False, "--json", "-j", help="Machine readable output"),
 ):
@@ -71,9 +76,18 @@ def catalog_check(
 
     if not errors:
         if release:
+            pin = catalog_pinned_sha(marketplace) or "?"
+            head = git_head_sha()
+            if pin == head:
+                pin_line = f"install SHA == HEAD ({pin[:12]}…)"
+            else:
+                pin_line = (
+                    f"install SHA {pin[:12]}… (content revision); "
+                    f"HEAD {head[:12]}… is pin-only catalog follow-up"
+                )
             console.print(Panel.fit(
                 "[bold green]✅ Release pin verified[/bold green]\n\n"
-                "marketplace catalog pinned to HEAD\n"
+                f"{pin_line}\n"
                 "plugin.json and plugin-index.json are up to date",
                 title="Plugin Catalog Check (--release)",
                 border_style="green",
@@ -86,16 +100,21 @@ def catalog_check(
     for err in errors:
         console.print(f"  [red]• {err}[/red]")
     if release:
-        console.print("\n[yellow]Run the release helper and commit .grok-plugin/ together with feature changes.[/yellow]")
+        console.print(
+            "\n[yellow]Workflow: commit content first → "
+            "`plugin catalog pin` → commit only `.grok-plugin/` → "
+            "`plugin catalog check --release`.[/yellow]"
+        )
     raise typer.Exit(1)
 
 
 @catalog_app.command("pin")
 def catalog_pin():
-    """Pin the marketplace catalog SHA to current HEAD and write fresh artifacts.
+    """Pin the marketplace install SHA to current HEAD and write fresh artifacts.
 
-    Recommended before an atomic release commit.
-    Commit the generated .grok-plugin/ files together with your changes.
+    Commit content first, then pin, then commit **only** ``.grok-plugin/`` so
+    the install SHA stays on the content revision (a commit cannot embed its
+    own hash in marketplace.json).
     """
     try:
         marketplace = json.loads(PLUGIN_MARKETPLACE_PATH.read_text(encoding="utf-8"))
@@ -112,14 +131,15 @@ def catalog_pin():
     result = write_artifacts(marketplace, sync_sha=True)
 
     if result.get("pinned"):
-        console.print(f"[green]Pinned marketplace sha to {head}[/green]")
+        console.print(f"[green]Pinned marketplace install SHA to {head}[/green]")
 
     console.print(
         f"[green]✅ Wrote plugin artifacts "
         f"({result.get('skills', 0)} skills, {result.get('commands', 0)} commands)[/green]"
     )
     console.print(
-        "\n[yellow]Next: git add .grok-plugin/ and commit together with your feature changes.[/yellow]"
+        "[dim]Next: git add .grok-plugin/ && commit (catalog files only). "
+        "Then: plugin catalog check --release[/dim]"
     )
 
 
