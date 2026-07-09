@@ -198,3 +198,6 @@ artifacts/animatics/
 .streamlit/secrets.toml
 # Superpowers brainstorm session artifacts (local only)
 .superpowers/
+
+# Git worktrees (local isolation)
+.worktrees/
