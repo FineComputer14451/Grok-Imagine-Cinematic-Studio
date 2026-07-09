@@ -8,14 +8,15 @@
 
 ---
 
-## ✨ Current State (June 2026)
+## ✨ Current State (July 2026 — v3.6.7)
 
-- **23 Specialized Agents** with complete Role Cards in `references/agents/` (updated v3.6 sections for Imagine Video 1.5)
-- **Authoritative Role Card System** — Every agent has structured Core Mission, v3.6 Upgrades (1.5 & 4.3), Decision Frameworks, Activation Triggers, and Integration Notes
-- **Mature CLI + Web UI** with new Video 1.5 model picker, native audio toggle, 720p/duration controls, live per-second cost estimation, and "Stitch Sequence" workflow
-- **Native Grok Imagine Video 1.5 Pipeline** — Image-to-video with reference image fidelity, explicit motion/camera prompts, one-pass synchronized audio (dialogue lip-sync + SFX + ambience + music), seamless extend & stitch with minimal quality loss, Fast mode support
-- **Grok Build + dual Grok 4.5 / 4.3 stack** — Grok Build CLI default `grok-4.5` (fork `grok-build`, min CLI 0.2.93); cinematic API `grok-4.3` (1M Bibles); coding API `grok-4.5` (legacy `grok-build-0.1`); structured JSON handoffs, configurable reasoning
-- All previous v3.5 features retained and enhanced: Persistent Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + new AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop (now includes Audio-Visual Sync Fidelity & Physics Realism)
+- **23 Specialized Agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.6.7**)
+- **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & dual stack), Decision Frameworks, Activation Triggers, Integration Notes
+- **Mature CLI + Web UI** — model pickers, native audio toggle, 720p/duration, live cost estimation, **Guided Production Bible wizard** (`create-bible --wizard` / Web Guided Bible Creator)
+- **Native Grok Imagine Video 1.5 Pipeline** — image-to-video, one-pass audio, extend/stitch, Fast mode (1.0 remains cost default)
+- **Grok Build + dual Grok 4.5 / 4.3 stack** — CLI default `grok-4.5` (fork `grok-build`, min CLI **0.2.93**); cinematic API `grok-4.3` (1M); coding API `grok-4.5` (legacy `grok-build-0.1`)
+- **Plugin marketplace** — 44 skills + 11 commands; release-pin hygiene for catalog commits
+- v3.5 heritage retained: Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop
 
 ---
 
@@ -24,8 +25,10 @@
 ### Method 1: CLI (Recommended for Power Users)
 ```bash
 python tools/cinematic_studio_cli.py models list
+python tools/cinematic_studio_cli.py models verify
 python tools/cinematic_studio_cli.py generate-prompt "Your story here" --signature villeneuve --chat-model grok-4.3 --video-model 1.0
-python tools/cinematic_studio_cli.py create-bible --title "Project Name" --genre "Sci-Fi" --video-pipeline 1.0
+python tools/cinematic_studio_cli.py create-bible "Project Name" --genre "Sci-Fi" --video-model 1.0
+python tools/cinematic_studio_cli.py create-bible --wizard   # optional guided stages (TTY only)
 ```
 
 ### Method 2: Web UI (Best Visual Experience)
@@ -181,16 +184,16 @@ When crafting prompts for Imagine Prompt Master or direct generation:
 
 ---
 
-**You are now running the full Grok Imagine Cinematic Studio v3.6 "Odyssey Native". **
+**You are now running the full Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native". **
 
-Type `Activate Grok Imagine Cinematic Studio v3.6` to begin.
+Type `Activate Grok Imagine Cinematic Studio v3.6.7` to begin.
 
 This version is optimized for Grok Build ≥ 0.2.93, Grok 4.5 (coding), Grok 4.3 (cinematic), and Imagine Video 1.0/1.5 on grok.com/imagine, mobile apps, and API.
 
 **Next Steps after activation:**
-- Generate or load a Production Bible with Video Pipeline Spec
+- Generate or load a Production Bible with Video Pipeline Spec (`create-bible` or `--wizard`)
 - Create first keyframe/reference image
-- Use Imagine Prompt Master + Sequence Director to build 1.5 sequences with native audio
+- Use Imagine Prompt Master + Sequence Director to build sequences (1.0 cost-default or 1.5 native audio)
 - Extend, stitch, QA, polish (AI Polish Director), and export
 
 Welcome to the next level of cinematic AI production. 🎥✨

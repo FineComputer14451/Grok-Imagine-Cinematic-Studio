@@ -1,7 +1,7 @@
 # Contributing to Grok Imagine Cinematic Studio
 
 Thank you for your interest in contributing to **Grok Imagine Cinematic Studio**!  
-We’re building the most advanced multi-agent cinematic production system for Grok 4.3 Beta, and every contribution helps push the boundaries of AI-generated cinema.
+We’re building the most advanced multi-agent cinematic production system for **Grok Build 0.2.93+**, **Grok 4.5** (coding), **Grok 4.3** (cinematic), and **Grok Imagine Video 1.0/1.5** — every contribution helps push the boundaries of AI-generated cinema.
 
 ## 🌟 Ways to Contribute
 

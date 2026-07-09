@@ -83,7 +83,7 @@ def register(app: typer.Typer) -> None:
     @app.command()
     def version():
         """Show CLI version"""
-        console.print(f"[bold]cinematic-studio[/bold] v{STUDIO_VERSION} (June 2026)")
+        console.print(f"[bold]cinematic-studio[/bold] v{STUDIO_VERSION} (July 2026)")
 
     @app.command(name="list-agents")
     def list_agents():

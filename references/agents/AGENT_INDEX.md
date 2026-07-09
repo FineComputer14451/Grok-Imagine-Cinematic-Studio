@@ -1,6 +1,8 @@
-# Grok Imagine Cinematic Studio — Agent Index v3.6.5
+# Grok Imagine Cinematic Studio — Agent Index v3.6.7
 
-**23 core agents** · **+9 specialists** (pipeline + i2i + NSFW opt-in) · **Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5** · July 2026
+**23 core agents** · **+9 specialists** (pipeline + i2i + NSFW opt-in) · **Studio v3.6.7** · **Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5** · July 2026
+
+> Agent display names keep the **v3.6.5** suffix (CLI registry / Role Card labels). Studio release version is **3.6.7**.
 
 Authoritative Role Cards: `references/agents/*.md`  
 Model registry: `tools/models.py`, `references/MODELS_v3.6.md`
@@ -130,7 +132,7 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 
 | # | Preset | Command |
 |---|--------|---------|
-| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.6.5` |
+| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.6.7` |
 | 2 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | 4 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
@@ -174,4 +176,4 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.5 "Odyssey Native" — 23 core agents + 9 specialists + 7 Tier 1 skills (+ NSFW opt-in)*
+*Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — 23 core agents + 9 specialists + Tier 1 skills (+ NSFW opt-in)*

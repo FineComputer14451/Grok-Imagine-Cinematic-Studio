@@ -61,10 +61,10 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 - **Quick Start Guide & Project Bible template** updated with model stack section and Grok Build config example
 
 ### Agent & System Upgrades
-- All core agents at v3.6.5 with 1.5-specific protocols, decision frameworks, and output formats
+- Core agents at **v3.6.5 Role Cards** under **studio v3.6.7** (1.5 protocols, dual stack, decision frameworks)
 - Enhanced long-form sequencing (60–180s+) with low-degradation 1.5 native chaining
 - Stronger emotional + audio continuity across extended sequences
-- Updated CLI & Web UI with DNA, sequence, quota, NSFW, and model selection tooling + live per-second cost estimation + plugin install support
+- CLI & Web UI: DNA, sequence, quota, NSFW, model pickers, guided Bible wizard, live cost estimation, plugin install
 
 ---
 
@@ -134,31 +134,32 @@ streamlit run web_ui/app.py
 
 ---
 
-## 🏗️ System Architecture (v3.6.5)
+## 🏗️ System Architecture (v3.6.7)
 
 ```
-Studio Director v3.6.5 + Mega Production Architect v3.6.5
+Studio Director v3.6.5 + Mega Production Architect v3.6.5  (Role Cards; studio v3.6.7)
 ├── .grok-plugin/                 # Marketplace + plugin manifests (44 skills) — managed via `cinematic-studio plugin catalog`
-├── references/agents/            # Authoritative Role Cards (v3.6.5) + AGENT_INDEX.md
-├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, models.py
-├── tools/cinematic_studio_cli.py   # CLI: cinematic-studio (dna, sequence, quota, nsfw, models, plugin catalog, verify, etc.)
-├── references/MODELS_v3.6.md   # Grok Build + xAI model registry
-├── web_ui/app.py                 # Streamlit frontend with 1.5 pipeline + model pickers
-├── examples/                     # Production Bible templates (v3.6.5 ready)
-├── MASTER_PROMPT_v3.6.md         # Main activation prompt
+├── references/agents/            # Authoritative Role Cards (v3.6.5+) + AGENT_INDEX.md
+├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, models.py, bible_stages
+├── tools/cinematic_studio_cli.py   # CLI: cinematic-studio (create-bible --wizard, dna, sequence, quota, nsfw, models, plugin catalog)
+├── references/MODELS_v3.6.md   # Grok Build + xAI dual-stack registry
+├── web_ui/app.py                 # Streamlit + Guided Bible Creator + model pickers
+├── examples/                     # Production Bible templates
+├── MASTER_PROMPT_v3.6.md         # Main activation prompt (v3.6.7)
 ├── scripts/                      # thin shims (release/verify); real catalog work via `cinematic-studio plugin catalog`
 └── .grok/skills/                 # 44 Custom Grok skills (primary runtime)
 ```
 
-**Key v3.6.5 Components:**
-- `references/agents/` — Single source of truth for all Role Cards (v3.6.5 content)
-- `MASTER_PROMPT_v3.6.md` — Full v3.6.5 activation with 1.5 native pipeline rules + model stack
-- `references/agents/AGENT_INDEX.md` — Quick reference + 16 activation presets (updated for 1.5 + plugin)
-- `.grok-plugin/` — Grok Marketplace support for `grok plugin install` + generated index
+**Key v3.6.7 Components:**
+- `references/agents/` — Single source of truth for Role Cards (agent labels remain v3.6.5 in CLI registry)
+- `MASTER_PROMPT_v3.6.md` — Full v3.6.7 activation with dual stack + 1.5 pipeline rules
+- `tools/cli/bible_stages.py` — Guided Production Bible wizard (CLI `--wizard` + Web UI)
+- `references/agents/AGENT_INDEX.md` — Quick reference + activation presets
+- `.grok-plugin/` — Marketplace support for `grok plugin install` + release-pin hygiene
 
 ---
 
-## 🎥 The 23-Agent Professional Film Crew (v3.6.5)
+## 🎥 The 23-Agent Professional Film Crew (v3.6.5 Role Cards · studio v3.6.7)
 
 ### Core Leadership
 - **Studio Director v3.6.5** — Central commander & **1.5 video pipeline leader**
@@ -209,8 +210,8 @@ Studio Director v3.6.5 + Mega Production Architect v3.6.5
 ```
 Grok-Imagine-Cinematic-Studio/
 ├── .grok-plugin/                 # Grok plugin manifests (marketplace.json, plugin.json, generated index)
-├── references/agents/            # Authoritative Role Cards (v3.6.5) + AGENT_INDEX.md
-├── examples/                     # Production Bible templates (v3.6.5 ready)
+├── references/agents/            # Authoritative Role Cards (v3.6.5+) + AGENT_INDEX.md
+├── examples/                     # Production Bible templates
 ├── tools/                        # cinematic_studio_cli.py + cli/ submodules + models.py
 ├── web_ui/                       # Streamlit dashboard (1.5 model pickers, quota sim)
 ├── scripts/                      # install/verify/update helpers + thin shims (catalog generation via CLI)
@@ -227,7 +228,7 @@ Grok-Imagine-Cinematic-Studio/
 ## 🔗 Useful Links
 
 - [Quick Start Guide](Quick_Start_Guide.md)
-- [Agent Index (v3.6.5)](references/agents/AGENT_INDEX.md)
+- [Agent Index (v3.6.7)](references/agents/AGENT_INDEX.md)
 - [Production Bible Template](Project_Bible_Template.md)
 - [CHANGELOG](CHANGELOG.md)
 - [RELEASE_NOTES_v3.6.md](RELEASE_NOTES_v3.6.md)
@@ -244,4 +245,4 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 *Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (coding), Grok 4.3 (cinematic), and Imagine Video 1.0/1.5*
 
-*Last updated: June 26, 2026 — v3.6.5*
+*Last updated: July 9, 2026 — v3.6.7*

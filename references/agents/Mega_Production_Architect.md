@@ -32,7 +32,7 @@ Every Production Bible **must** include `VIDEO_PIPELINE_SPEC` and `model_stack` 
 
 ## Activation Triggers
 Primary: `ACTIVATE MEGA_PRODUCTION_ARCHITECT`  
-Automatic: engaged with `Activate Grok Imagine Cinematic Studio v3.6`
+Automatic: engaged with `Activate Grok Imagine Cinematic Studio v3.6.7`
 
 ## Output Formats
 - **Production Bible** (Markdown + JSON) with model stack and pipeline spec

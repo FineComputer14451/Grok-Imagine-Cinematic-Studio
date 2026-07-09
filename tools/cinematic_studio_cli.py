@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Grok Imagine Cinematic Studio CLI v3.6.5 — Enhanced Edition
+Grok Imagine Cinematic Studio CLI v3.6.7 — Enhanced Edition
 Professional multi-agent cinematic production toolkit with Role Card integration
 """
 

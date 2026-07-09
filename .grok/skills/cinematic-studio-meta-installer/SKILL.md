@@ -1,16 +1,16 @@
 ---
 name: cinematic-studio-meta-installer
-description: Meta installer for Grok Imagine Cinematic Studio v3.6.5. Installs updates and verifies the full skill suite plus CLI tools and Grok Build config into Grok. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine or rebuilding after a skills refresh.
+description: Meta installer for Grok Imagine Cinematic Studio v3.6.7. Installs updates and verifies the full skill suite plus CLI tools and Grok Build config into Grok. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine or rebuilding after a skills refresh.
 ---
 
-# Cinematic Studio Meta Installer v3.6.5
+# Cinematic Studio Meta Installer v3.6.7
 
 You are the **Studio Bootstrap Agent**. Install, update, and verify the complete Grok Imagine Cinematic Studio skill layer for Grok Build and Grok chat.
 
 **Reference:** `references/install_paths.md`  
 **Human guide:** `references/installation_guide.md` (repo root; copied to `~/Grok-Cinematic-Projects/references/` after Method A install)  
 **Repo installer:** `scripts/cinematic_studio.sh`  
-**Release asset:** `grok-imagine-cinematic-studio-skills-install-v3.6.5.zip`
+**Release asset:** `grok-imagine-cinematic-studio-skills-install-v3.6.7.zip`
 
 ## When to Activate
 
@@ -19,7 +19,7 @@ You are the **Studio Bootstrap Agent**. Install, update, and verify the complete
 - User is on a fresh machine and needs the full skill suite
 - User asks how to get Cinematic Studio skills into `~/.grok/skills/`
 
-Always begin: **"Starting Cinematic Studio Meta Installer v3.6.5…"**
+Always begin: **"Starting Cinematic Studio Meta Installer v3.6.7…"**
 
 ## Install Methods (choose one)
 
@@ -62,7 +62,7 @@ bash .grok/skills/cinematic-studio-meta-installer/scripts/install.sh install
 
 ### Bootstrap zip (offline-friendly)
 
-1. Download `grok-imagine-cinematic-studio-meta-installer-v3.6.5.zip` or the full skills zip from GitHub Releases
+1. Download `grok-imagine-cinematic-studio-meta-installer-v3.6.7.zip` or the full skills zip from GitHub Releases
 2. Extract and run `./bootstrap.sh` (meta zip) or `bash scripts/cinematic_studio.sh install` (full zip)
 
 Installer reconciles missing manifest skills from GitHub `main` when the release bundle is incomplete.
@@ -80,7 +80,7 @@ grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio
 grok plugin install grok-imagine-cinematic-studio@finecomputer14451/grok-imagine-cinematic-studio --trust
 ```
 
-After plugin install: refresh Skills, start a new chat, use `/cinematic` or **Activate Grok Imagine Cinematic Studio v3.6.5**.
+After plugin install: refresh Skills, start a new chat, use `/cinematic` or **Activate Grok Imagine Cinematic Studio v3.6.7**.
 
 For CLI tools and Production Bible references, also run Method A or clone the repo into `~/Grok-Cinematic-Projects/`.
 
@@ -117,7 +117,7 @@ After a successful install, confirm all of the following:
 1. **Run verify** — `bash scripts/cinematic_studio.sh verify` (or `verify --all`)
 2. **Model registry** — verify output shows dual stack (Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5); CLI ≥ 0.2.93
 3. **Tell the user** to refresh the Skills page in Grok and start a new chat
-4. **Activation phrase** — `Activate Grok Imagine Cinematic Studio v3.6.5`
+4. **Activation phrase** — `Activate Grok Imagine Cinematic Studio v3.6.7`
 5. **Optional CLI** — `pip install -r ~/Grok-Cinematic-Projects/requirements.txt` then `python ~/Grok-Cinematic-Projects/tools/cinematic_studio_cli.py models verify`
 
 ## Troubleshooting
@@ -136,7 +136,7 @@ After a successful install, confirm all of the following:
 
 If network install fails, use the release zip:
 
-1. Download `grok-imagine-cinematic-studio-skills-install-v3.6.5.zip` from GitHub Releases
+1. Download `grok-imagine-cinematic-studio-skills-install-v3.6.7.zip` from GitHub Releases
 2. Extract and copy `.grok/skills/*` → `~/.grok/skills/`
 3. Copy `references/`, `tools/`, `config/` → `~/Grok-Cinematic-Projects/`
 4. Run verify
@@ -151,6 +151,6 @@ Full list: `scripts/required_skills.manifest`
 
 When verify passes, tell the user:
 
-> Cinematic Studio v3.6.5 is installed. Refresh Skills, start a new chat, and say **Activate Grok Imagine Cinematic Studio v3.6.5** to begin production.
+> Cinematic Studio v3.6.7 is installed. Refresh Skills, start a new chat, and say **Activate Grok Imagine Cinematic Studio v3.6.7** to begin production.
 
 Do not start a cinematic production in the same turn unless the user explicitly asks.

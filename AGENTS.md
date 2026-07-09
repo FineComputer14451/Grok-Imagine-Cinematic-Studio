@@ -71,7 +71,7 @@ When working with or creating skills:
 - **Refine / iterate on previously generated images**: `generated-image-editor`
 - **Upscale video for final delivery** (720p → 1080p/4K, face restoration): Activate `ai-video-upscaler`
 - Video / audio processing: Activate `ffmpeg` skill or use bash directly
-- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (23-agent + specialist suite, v3.6.5 with plugin support)
+- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (23-agent + specialist suite, v3.6.7 with plugin support)
 
 ### Document Tasks
 - PDF: `pdf` skill
@@ -109,9 +109,9 @@ Use these in the **final response** (never inside function calls):
 For any complex visual storytelling, film-style image sequences, video production, or NSFW cinematic work:
 
 **Primary activation command:**  
-`Activate Grok Imagine Cinematic Studio v3.6.5` or `Start cinematic production`
+`Activate Grok Imagine Cinematic Studio v3.6.7` or `Start cinematic production`
 
-This engages the full **23 specialized agents** (v3.6.5 personalities) including:
+This engages the full **23 specialized agents** (v3.6.5 Role Cards under studio v3.6.7) including:
 - Studio Director, Mega Production Architect
 - Director of Photography, Production Designer, Color Grading Supervisor
 - Performance & Emotion Director, Identity Lock Specialist, Narrative Arc Pacing Strategist

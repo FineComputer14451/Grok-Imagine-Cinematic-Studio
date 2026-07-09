@@ -86,11 +86,12 @@ See `CHANGELOG.md` for full details.
 - Consistent markdown formatting across all skill files (SKILL.md)
 - Enhanced protocols for 1.5 native video + audio workflows + plugin distribution
 
-### Agent & System Upgrades (v3.6.5–v3.6.6)
-- All core agents at v3.6.5+ with 1.5-specific protocols, model stack tables, decision frameworks, and output formats
+### Agent & System Upgrades (v3.6.5–v3.6.7)
+- Core agents at v3.6.5 Role Cards under studio **v3.6.7** (1.5 protocols, dual stack, decision frameworks)
 - Enhanced long-form sequencing (60–180s+) with low-degradation 1.5 native chaining + AUDIO_MOMENTUM_VECTOR
 - Stronger emotional + audio continuity across extended sequences
-- **v3.6.6 dual stack:** cinematic `grok-4.3` + Build/coding `grok-4.5`; CLI/Web UI model pickers and `models verify` updated
+- **v3.6.6 dual stack:** cinematic `grok-4.3` + Build/coding `grok-4.5`; CLI/Web UI model pickers and `models verify`
+- **v3.6.7:** Guided Production Bible wizard + catalog release-pin hygiene
 - Grok plugin distribution for the full 23-agent + specialist suite
 
 ---
@@ -113,14 +114,15 @@ See `CHANGELOG.md` for full details.
 **v3.6.5+ additions:** `cinematic-studio-meta-installer`, `github-repo-manager`, `assembly-editor`, `animatic-director`, `reference-asset-curator`, `image-to-video-specialist`, `sfw-batch-orchestrator`, `chain-qa-protocol`, `handoff-packet-validator`, `cinematic-ffmpeg`, `ai-polish-director`, `production-bible-workflow`, `nsfw-*` variants, and more (full 44 in `.grok-plugin/plugin-index.json`).
 
 ### Documentation Updates
-- `MASTER_PROMPT_v3.6.md` — Complete new activation prompt with 1.5 pipeline rules
-- `README.md` — Fully refreshed for v3.6.5 (plugin marketplace, 44-skill suite, model stack, architecture, CLI examples)
-- `CHANGELOG.md` — Extended with [3.6.5] and [Unreleased] entries (plugin, web UI fixes, hygiene)
-- `AGENT_INDEX.md` — Updated to v3.6.5 with model compatibility table and 16 activation presets
-- `Quick_Start_Guide.md` — Updated to v3.6.5 with model stack section (§0) and Grok Build config
-- `RELEASE_NOTES_v3.6.md` — This file (now includes v3.6.5 patch + plugin support)
-- `UPGRADE_GUIDE.md` — v3.5 → v3.6 migration guide
-- `.grok-plugin/` files — `marketplace.json`, `plugin.json`, generated `plugin-index.json` for Grok CLI plugin installation
+- `MASTER_PROMPT_v3.6.md` — Activation prompt (dual stack + 1.5 + v3.6.7 wizard pointers)
+- `README.md` — Refreshed for **v3.6.7** (wizard, dual stack, plugin marketplace, architecture, CLI)
+- `CHANGELOG.md` — [3.6.7], [3.6.6], [3.6.5], … historical entries
+- `AGENT_INDEX.md` — Model compatibility table + activation presets (studio v3.6.7)
+- `Quick_Start_Guide.md` — Model stack §0, wizard, activation **v3.6.7**
+- `RELEASE_NOTES_v3.6.md` — This file (through v3.6.7 patch)
+- `UPGRADE_GUIDE.md` — v3.5 → v3.6 migration (dual stack + wizard + pin hygiene)
+- `references/installation_guide.md` — Meta installer + plugin install paths
+- `.grok-plugin/` files — `marketplace.json`, `plugin.json`, generated `plugin-index.json`
 
 ### CI Improvements
 - Removed broken `.markdownlint.json` dependency
@@ -130,27 +132,31 @@ See `CHANGELOG.md` for full details.
 
 ---
 
-## 🚀 How to Activate v3.6.5
+## 🚀 How to Activate v3.6.7
 
 ```bash
-# Recommended (Grok 4.3 / Grok Build)
+# Recommended (Grok 4.3 cinematic / Grok Build 4.5)
 Copy MASTER_PROMPT_v3.6.md into a new chat
-Type: Activate Grok Imagine Cinematic Studio v3.6.5
+Type: Activate Grok Imagine Cinematic Studio v3.6.7
 
 # Or install as Grok plugin (recommended for CLI)
 grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
+# then: grok plugin update   # if already installed
+
+# Guided Bible (CLI TTY or Web UI Guided Bible Creator)
+cinematic-studio create-bible --wizard
 
 # Or use specific 1.5 mode
 ACTIVATE IMAGINE_VIDEO_1.5_FULL
 ```
 
-See `Quick_Start_Guide.md` for full onboarding (including model stack and plugin marketplace).
+See `Quick_Start_Guide.md` for full onboarding (model stack, wizard, plugin marketplace).
 
 ---
 
-**v3.6.5 "Odyssey Native"** adds full Grok plugin marketplace support (44 skills), comprehensive model stack wiring across CLI/Web UI/agents, Streamlit API modernization for the Web UI, repo hygiene, and polished documentation.
+**v3.6.7 "Odyssey Native"** adds the guided Production Bible wizard and catalog release-pin hygiene on top of the **v3.6.6 dual model stack** (Grok 4.5 Build + Grok 4.3 cinematic) and **v3.6.5** plugin marketplace (44 skills).
 
-v3.6 "Odyssey Native" (with 1.5 native video + audio) marks the biggest leap in cinematic quality, audio-visual integration, and system completeness since the original studio launch.
+v3.6 "Odyssey Native" (1.5 native video + audio + dual stack + wizard) marks the biggest leap in cinematic quality, audio-visual integration, and system completeness since the original studio launch.
 
 Thank you for building with us. 🎥✨
 

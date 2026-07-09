@@ -132,9 +132,18 @@ Browse `references/agents/` — all major cards now contain dedicated **v3.6 / 1
 
 ### Step 6: Plugin Catalog Maintenance (Post-v3.6)
 If you contribute to or maintain the Grok plugin:
-- After editing skills or `commands/`: `cinematic-studio plugin catalog pin`
-- Before committing a release: `cinematic-studio plugin catalog check --release`
-- Commit `.grok-plugin/` files atomically with feature changes (do not split into a follow-up chore commit)
+1. Commit **content** first (skills, commands, tools, docs)
+2. Run `cinematic-studio plugin catalog pin` (regenerate + pin install SHA)
+3. Commit **only** `.grok-plugin/` (pin-only follow-up is expected; a commit cannot embed its own hash)
+4. Pre-publish: `cinematic-studio plugin catalog check --release` (green when pin == HEAD **or** pin is ancestor with only catalog paths after it)
+
+### Step 7: Guided Production Bible Wizard (v3.6.7)
+Optional multi-step Bible creation (same JSON shape as direct `create-bible`):
+```bash
+cinematic-studio create-bible --wizard          # TTY only; scripts keep create-bible "Title"
+# Web UI: Production → Guided Bible Creator
+```
+Free-text logline/characters/world/tech notes roll into `notes`. Stages live in `tools/cli/bible_stages.py`.
 
 ---
 
@@ -150,29 +159,31 @@ If you contribute to or maintain the Grok plugin:
 
 ---
 
-## Recommended New Workflow (v3.6)
+## Recommended New Workflow (v3.6.7)
 
-1. **Primary Activation** — Start with `Activate Grok Imagine Cinematic Studio v3.6` or `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
-2. **Use VIDEO_PIPELINE_SPEC** — Define your 1.5 parameters early in the Bible
-3. **Activate Sonic Architect early** when native audio is important
-4. **Reference updated Role Cards** in `references/agents/` for 1.5-specific guidance
-5. **Use new handoff protocols** — Include AUDIO_MOMENTUM_VECTOR and reference_image_id
-6. **Plugin catalog (if contributing)** — Use `cinematic-studio plugin catalog pin` / `check --release` for index management and release gates
+1. **Primary Activation** — `Activate Grok Imagine Cinematic Studio v3.6.7` or `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
+2. **Production Bible** — `create-bible "Title"` (scripts) or `create-bible --wizard` (guided TTY) / Web Guided Bible Creator
+3. **Use VIDEO_PIPELINE_SPEC** — 1.0 cost default; 1.5 when native audio is required
+4. **Activate Sonic Architect early** when native audio is important
+5. **Reference Role Cards** in `references/agents/` for 1.5 + dual-stack guidance
+6. **Handoff protocols** — AUDIO_MOMENTUM_VECTOR and reference_image_id on long sequences
+7. **Plugin catalog (if contributing)** — content commit → `catalog pin` → catalog-only commit → `check --release`
 
 ---
 
 ## Need Help?
 
-- See `MASTER_PROMPT_v3.6.md` for the complete v3.6 activation prompt
+- See `MASTER_PROMPT_v3.6.md` for the complete v3.6.7 activation prompt
 - See `RELEASE_NOTES_v3.6.md` for the full changelog
-- See `AGENT_INDEX.md` for updated activation examples and 1.5 power commands
-- See individual Role Cards in `references/agents/` for detailed 1.5 integration notes
-- See `commands/validate.md` and `AGENTS.md` for plugin catalog CLI usage (`cinematic-studio plugin catalog ...`) and release process
+- See `references/agents/AGENT_INDEX.md` for activation examples and power commands
+- See individual Role Cards in `references/agents/` for 1.5 integration notes
+- See `Quick_Start_Guide.md` and `references/installation_guide.md` for install paths
+- See `commands/validate.md` and `AGENTS.md` for plugin catalog CLI usage and release process
 
 ---
 
-**Welcome to Grok Imagine Cinematic Studio v3.6 "Odyssey Native"!**
+**Welcome to Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native"!**
 
-This release brings native 1.5 video + audio capabilities that dramatically raise the bar for cinematic quality and emotional impact.
+Dual stack (Grok 4.5 Build + Grok 4.3 cinematic), guided Bible wizard, plugin marketplace, and native 1.5 video + audio.
 
-*Upgrade completed — June 20, 2026 (plugin catalog tooling refreshed July 2026)*
+*Upgrade guide updated — July 9, 2026 (v3.6.7)*

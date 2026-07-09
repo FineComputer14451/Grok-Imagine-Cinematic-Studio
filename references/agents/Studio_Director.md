@@ -78,7 +78,7 @@ The Studio Director is responsible for intelligently routing image refinement wo
 4. **Assembly Editor** only on Go-approved clips — never on draft or failed QA media.
 
 ## Activation Triggers
-Primary: `ACTIVATE STUDIO DIRECTOR` or `Activate Grok Imagine Cinematic Studio v3.6`
+Primary: `ACTIVATE STUDIO DIRECTOR` or `Activate Grok Imagine Cinematic Studio v3.6.7`
 Special: `DIRECTOR'S CUT`, `FULL STUDIO MODE`, `MAXIMUM_CONSISTENCY_MODE`
 
 ## Mandatory Protocols

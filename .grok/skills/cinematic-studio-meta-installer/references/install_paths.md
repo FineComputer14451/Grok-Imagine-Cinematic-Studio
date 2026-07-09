@@ -1,4 +1,4 @@
-# Cinematic Studio Meta Installer — Paths Reference v3.6.5 (44-skill Grok plugin suite)
+# Cinematic Studio Meta Installer — Paths Reference v3.6.7 (44-skill Grok plugin suite)
 
 ## Install Methods
 
@@ -16,7 +16,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagi
 bash scripts/cinematic_studio.sh install
 
 # Bootstrap zip (meta-installer only)
-unzip grok-imagine-cinematic-studio-meta-installer-v3.6.5.zip && ./bootstrap.sh
+unzip grok-imagine-cinematic-studio-meta-installer-v3.6.7.zip && ./bootstrap.sh
 ```
 
 Update: `bash scripts/cinematic_studio.sh update` (timestamped backup under `~/.grok/skills-backup-*`).
@@ -50,9 +50,9 @@ Verify: `bash scripts/cinematic_studio.sh verify --plugin` (44 skills + 11 slash
 | Meta installer script | `https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/main/scripts/cinematic_studio.sh` |
 | Shared library | `https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/main/scripts/lib/cinematic_studio_common.sh` |
 | Skill manifest | `https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/main/scripts/required_skills.manifest` |
-| Meta-installer zip (bootstrap) | `grok-imagine-cinematic-studio-meta-installer-v3.6.5.zip` — skill + scripts only; run `./bootstrap.sh` or `scripts/cinematic_studio.sh install` |
-| Full skills zip (latest) | `https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/releases/latest/download/grok-imagine-cinematic-studio-skills-install-v3.6.5.zip` |
-| Full skills zip (versioned) | `https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/releases/download/v3.6.5/grok-imagine-cinematic-studio-skills-install-v3.6.5.zip` |
+| Meta-installer zip (bootstrap) | `grok-imagine-cinematic-studio-meta-installer-v3.6.7.zip` — skill + scripts only; run `./bootstrap.sh` or `scripts/cinematic_studio.sh install` |
+| Full skills zip (latest) | `https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/releases/latest/download/grok-imagine-cinematic-studio-skills-install-v3.6.7.zip` |
+| Full skills zip (versioned) | `https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/releases/download/v3.6.7/grok-imagine-cinematic-studio-skills-install-v3.6.7.zip` |
 | Build meta-installer | `bash scripts/build_meta_installer.sh` |
 | Build full suite | `bash scripts/build_release_bundle.sh` |
 

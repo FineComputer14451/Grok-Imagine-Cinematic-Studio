@@ -1,4 +1,4 @@
-# Grok Imagine Cinematic Studio v3.6 — Quick Start Guide
+# Grok Imagine Cinematic Studio v3.6.7 — Quick Start Guide
 
 **Version:** 3.6.7 | **Last Updated:** July 9, 2026
 
@@ -36,7 +36,7 @@ Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 ### Activate the Full Studio (Recommended)
 
 ```
-Activate Grok Imagine Cinematic Studio v3.6
+Activate Grok Imagine Cinematic Studio v3.6.7
 ```
 
 or
@@ -45,7 +45,7 @@ or
 start cinematic production
 ```
 
-This loads the complete **v3.6 "Odyssey Native"** system with full native Grok Imagine Video 1.5 support (image-to-video + one-pass synchronized audio).
+This loads the complete **v3.6.7 "Odyssey Native"** system (dual Grok 4.5 Build + Grok 4.3 cinematic stack, guided Bible wizard, native Imagine Video 1.0/1.5).
 
 ### Start a New Project
 
@@ -94,19 +94,19 @@ You can activate any agent directly:
 
 ---
 
-## 3. Recommended Production Workflow (v3.6)
+## 3. Recommended Production Workflow (v3.6.7)
 
 ### Phase 1: Activation & Planning
 1. **Activate the Full Studio**  
-   `Activate Grok Imagine Cinematic Studio v3.6`
+   `Activate Grok Imagine Cinematic Studio v3.6.7`
 
 2. **Start a New Project**  
    Provide title, logline, genre, tone, target length, and key characters.
 
 3. **Generate & Lock the Production Bible**  
-   Include `VIDEO_PIPELINE_SPEC` for 1.5 native settings.  
-   CLI: `create-bible "Title"` (scripts) or `create-bible --wizard` (guided TTY).  
-   Web UI: Production → Export Bible (quick) or Guided Bible Creator (multi-step).
+   Include `VIDEO_PIPELINE_SPEC` (1.0 default or 1.5 for native audio).  
+   CLI: `create-bible "Title"` (scripts) or `create-bible --wizard` (guided TTY stages).  
+   Web UI: Production → Export Bible (quick) or **Guided Bible Creator** (multi-step).
 
 ### Phase 2: Pre-Production
 4. **Generate Reference Materials** (Recommended)  
@@ -145,11 +145,11 @@ You can activate any agent directly:
 ---
 
 **Pro Tip:** You can combine steps in one message:  
-> `"Activate Grok Imagine Cinematic Studio v3.6, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
+> `"Activate Grok Imagine Cinematic Studio v3.6.7, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
 
 ---
 
-## 4. Pro Tips for Best Results (v3.6)
+## 4. Pro Tips for Best Results (v3.6.7)
 
 - **Be specific** — Include genre, tone, emotional goals, character details, and references.
 - **Use the Project Bible** — Include `VIDEO_PIPELINE_SPEC` for 1.5 native settings.
@@ -167,7 +167,8 @@ You can activate any agent directly:
 
 | Command                                           | Result                                      |
 |---------------------------------------------------|---------------------------------------------|
-| `Activate Grok Imagine Cinematic Studio v3.6`     | Load full v3.6 studio (1.5 native support)  |
+| `Activate Grok Imagine Cinematic Studio v3.6.7`   | Load full v3.6.7 studio (dual stack + 1.5)  |
+| `create-bible --wizard`                           | Guided Production Bible (TTY interactive)   |
 | `Start new project`                               | Begin fresh production                      |
 | `GENERATE DIRECTOR'S CUT`                         | Refined version with notes                  |
 | `SHOW STUDIO DASHBOARD`                           | Current project status                      |
@@ -196,8 +197,8 @@ You can activate any agent directly:
 
 **You are now ready to create professional cinematic productions with full native Grok Imagine Video 1.5 support.**
 
-Just say **"Activate Grok Imagine Cinematic Studio v3.6"** and begin. 🎥
+Just say **"Activate Grok Imagine Cinematic Studio v3.6.7"** and begin. 🎥
 
 ---
 
-*Built with Grok Imagine Cinematic Studio v3.6 "Odyssey Native" — June 2026*
+*Built with Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — July 2026*
