@@ -90,9 +90,25 @@ def test_assist_v2_without_dna_still_works() -> None:
     assert "suggested_scores" in assist
 
 
+def test_assist_includes_audio_momentum_evidence() -> None:
+    prev = create_clip()
+    prev["index"] = 0
+    prev["audio_momentum_vector"]["dialogue_state"] = "Hello—"
+    prev["audio_momentum_vector"]["sfx_timing"] = "rain"
+    clip = create_clip(prompt="Continue", last_frame_recap="Same room")
+    clip["index"] = 1
+    clip["audio_momentum_vector"]["dialogue_state"] = ""
+    assist = assist_sfw_chain_qa(clip, previous_clip=prev)
+    assert "audio_momentum" in assist["evidence"]
+    assert assist["suggested_scores"]["audio_momentum_sync"] == (
+        assist["evidence"]["audio_momentum"]["suggested_audio_momentum_sync"]
+    )
+
+
 if __name__ == "__main__":
     test_assist_prefills_sfw_scores()
     test_apply_assisted_qa_updates_clip()
     test_assist_v2_includes_evidence_block()
     test_assist_v2_without_dna_still_works()
+    test_assist_includes_audio_momentum_evidence()
     print("Chain QA assist tests passed")

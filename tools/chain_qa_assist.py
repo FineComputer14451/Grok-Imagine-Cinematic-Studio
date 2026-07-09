@@ -6,6 +6,7 @@ Vision/heuristic checklist from clip metadata, handoffs, and recap quality.
 Human confirms or applies via --apply on CLI.
 
 v2: blends identity_drift + seam_report evidence into SFW scores.
+v3: overlays audio_momentum integrity into audio_momentum_sync.
 """
 
 from __future__ import annotations
@@ -13,6 +14,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
+from audio_momentum import build_audio_momentum_report
 from identity_drift import score_identity_drift
 from nsfw_chain_qa import evaluate_nsfw_chain_qa
 from seam_report import build_seam_report
@@ -164,7 +166,7 @@ def assist_sfw_chain_qa(
         scores["stitch_artifact_risk"] = 7.0
         reasons["stitch_artifact_risk"] = "Default stitch risk — review last frames"
 
-    # --- Evidence loop v2: identity drift + seam report overlay ---
+    # --- Evidence loop v2/v3: identity drift + seam + audio momentum ---
     drift = score_identity_drift(
         clip,
         dna=dna,
@@ -177,6 +179,11 @@ def assist_sfw_chain_qa(
         previous_clip=previous_clip,
         previous_last_frame_path=previous_last_frame_path,
         current_first_frame_path=current_first_frame_path,
+    )
+    amv_report = build_audio_momentum_report(
+        clip,
+        previous_clip=previous_clip,
+        memory_bank=(sequence or {}).get("memory_bank"),
     )
 
     scores["character_drift_boundary"] = drift["suggested_character_drift_boundary"]
@@ -192,6 +199,12 @@ def assist_sfw_chain_qa(
             seam_note = seam["factors"][0] if seam.get("factors") else "n/a"
             reasons[key] = f"{reasons.get(key, '')}; seam:{seam_note}"[:200]
 
+    scores["audio_momentum_sync"] = amv_report["suggested_audio_momentum_sync"]
+    amv_note = amv_report["factors"][0] if amv_report.get("factors") else "n/a"
+    reasons["audio_momentum_sync"] = (
+        f"integrity={amv_report['integrity_score']} pass={amv_report['pass']}; {amv_note}"
+    )[:200]
+
     # If drift failed hard, ensure critical identity stays low enough to matter
     if not drift["pass"]:
         scores["character_drift_boundary"] = min(
@@ -204,6 +217,8 @@ def assist_sfw_chain_qa(
         qa.setdefault("fixes", []).extend(drift.get("fixes") or [])
     if not seam["pass"]:
         qa.setdefault("fixes", []).extend(seam.get("fixes") or [])
+    if not amv_report["pass"]:
+        qa.setdefault("fixes", []).extend(amv_report.get("fixes") or [])
 
     return {
         "mode": "sfw",
@@ -217,6 +232,7 @@ def assist_sfw_chain_qa(
         "evidence": {
             "identity_drift": drift,
             "seam_report": seam,
+            "audio_momentum": amv_report,
         },
     }
 
@@ -346,7 +362,16 @@ def assist_chain_qa(
             previous_last_frame_path=evidence_paths.get("previous_last_frame_path"),
             current_first_frame_path=evidence_paths.get("current_first_frame_path"),
         )
-        result["evidence"] = {"identity_drift": drift, "seam_report": seam}
+        amv_report = build_audio_momentum_report(
+            clip,
+            previous_clip=previous_clip,
+            memory_bank=(sequence or {}).get("memory_bank"),
+        )
+        result["evidence"] = {
+            "identity_drift": drift,
+            "seam_report": seam,
+            "audio_momentum": amv_report,
+        }
         return result
     return assist_sfw_chain_qa(
         clip,
@@ -408,6 +433,7 @@ def apply_assisted_qa(
     clip["chain_qa_assist"] = assist
     clip["identity_drift"] = assist.get("evidence", {}).get("identity_drift")
     clip["seam_report"] = assist.get("evidence", {}).get("seam_report")
+    clip["audio_momentum_report"] = assist.get("evidence", {}).get("audio_momentum")
 
     if nsfw or seq.get("nsfw_extension"):
         from nsfw_chain_qa import evaluate_nsfw_chain_qa

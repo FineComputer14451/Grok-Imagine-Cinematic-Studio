@@ -12,6 +12,7 @@ from rich.panel import Panel
 from rich.table import Table
 
 from assembly_editor import build_edl, edl_to_markdown, save_edl
+from audio_momentum import build_audio_momentum_report
 from chain_qa_assist import apply_assisted_qa, assist_chain_qa
 from extend_regen import apply_regen_plan, ensure_clip_regen, plan_regen, prepare_regen_run
 from identity_drift import DEFAULT_DRIFT_THRESHOLD, score_identity_drift
@@ -364,6 +365,44 @@ def register(app: typer.Typer) -> None:
         )
         for factor in report.get("factors") or []:
             console.print(f"  • {factor}")
+        if report.get("fixes"):
+            console.print("[yellow]Fixes:[/yellow]")
+            for fix in report["fixes"]:
+                console.print(f"  → {fix}")
+
+    @app.command("amv-check")
+    def seq_amv_check(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c"),
+    ):
+        """Audio momentum integrity check across stitch (roadmap #6)."""
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        clips = seq.get("clips", [])
+        idx = target["index"]
+        prev = clips[idx - 1] if idx > 0 else None
+        report = build_audio_momentum_report(
+            target,
+            previous_clip=prev,
+            memory_bank=seq.get("memory_bank"),
+        )
+        target["audio_momentum_report"] = report
+        save_sequence(seq)
+        color = "green" if report["pass"] else "red"
+        console.print(
+            f"[{color}]integrity_score={report['integrity_score']} "
+            f"pass={report['pass']} mode={report['mode']}[/{color}]"
+        )
+        console.print(
+            f"[dim]suggested_audio_momentum_sync="
+            f"{report['suggested_audio_momentum_sync']}[/dim]"
+        )
+        for factor in report.get("factors") or []:
+            console.print(f"  • {factor}")
+        if report.get("field_status"):
+            console.print("[dim]Field status:[/dim]")
+            for key, status in report["field_status"].items():
+                console.print(f"  {key}: {status}")
         if report.get("fixes"):
             console.print("[yellow]Fixes:[/yellow]")
             for fix in report["fixes"]:
