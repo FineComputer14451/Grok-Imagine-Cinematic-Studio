@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **Continuity diff CLI (roadmap #9)** — `tools/continuity_diff.py` clip-to-clip and clip-vs-memory-bank continuity reports; CLI `sequence continuity-diff` for Continuity Guardian / QA
 - **Multi-character identity arbiter (roadmap #8)** — `tools/multi_character_arbiter.py` primary/secondary DNA weights, conflict rules, multi inject blocks; CLI `sequence cast arbitrate|inject`; skill + Role Card
 - **Emotional temperature gate (roadmap #7)** — `tools/emotional_temperature.py` normalizes `emotional_temperature_curve`, infers observed temp, flags flat/spike/off-plan; CLI `sequence temp set|show|gate`; extend prompts may include planned temperature
 - **Audio momentum integrity (roadmap #6)** — `tools/audio_momentum.py` diffs AMV across stitches (dialogue/SFX/music/lip-sync); Chain QA Assist uses evidence for `audio_momentum_sync`; CLI `sequence amv-check`
