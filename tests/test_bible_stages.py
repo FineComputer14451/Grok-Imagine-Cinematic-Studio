@@ -34,7 +34,7 @@ SAMPLE_ANSWERS = {
     "world_text": "Tokyo 2091; rain never stops.",
     "target_duration_seconds": 90,
     "video_model": "1.5",
-    "chat_model": "grok-4.3",
+    "chat_model": "grok-4.5",
     "tech_notes": "16:9; native rain SFX",
 }
 
@@ -90,7 +90,7 @@ def test_answers_to_kwargs_allowed_keys_only() -> None:
     assert kwargs["complexity"] == "High"
     assert kwargs["director_signature"] == "Wet neon, handheld urgency"
     assert kwargs["video_model"] == "1.5"
-    assert kwargs["chat_model"] == "grok-4.3"
+    assert kwargs["chat_model"] == "grok-4.5"
     assert "Logline:" in kwargs["notes"]
     assert "Mara" in kwargs["notes"]
 

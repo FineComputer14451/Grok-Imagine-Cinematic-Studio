@@ -2,7 +2,7 @@
 
 **From v3.5 → v3.6 "Odyssey Native"** (with v3.6.5+ refinements, **v3.6.6 dual model stack**, and **v3.6.7 guided bible wizard**)
 
-**Date:** July 9, 2026 (updated for Grok 4.5 Build + Grok 4.3 cinematic dual stack + Grok Build ≥ 0.2.93)
+**Date:** July 9, 2026 (updated for unified Grok 4.5 cinematic+Build default, optional 4.3 1M, Grok Build ≥ 0.2.93)
 
 **Focus:** Full native integration with **Grok Imagine Video 1.5** + dual Grok 4.5 (coding) / Grok 4.3 (1M cinematic) + modern plugin catalog CLI tooling
 
@@ -99,7 +99,7 @@ Or simply use the latest `MASTER_PROMPT_v3.6.md` in a new chat.
 grok --version   # recommend ≥ 0.2.93
 python tools/cinematic_studio_cli.py models verify
 ```
-- **Cinematic / long Bible:** `grok-4.3` (default chat)
+- **Cinematic / Bible:** `grok-4.5` (default chat); `grok-4.3` for 1M opt-in
 - **Build / coding / agent sessions:** `grok-4.5` (CLI + build API default)
 - See `references/MODELS_v3.6.md` and `config/grok-build.example.toml`
 
@@ -184,6 +184,6 @@ Free-text logline/characters/world/tech notes roll into `notes`. Stages live in 
 
 **Welcome to Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native"!**
 
-Dual stack (Grok 4.5 Build + Grok 4.3 cinematic), guided Bible wizard, plugin marketplace, and native 1.5 video + audio.
+Unified Grok 4.5 cinematic+Build (optional 4.3 1M), guided Bible wizard, plugin marketplace, and native 1.5 video + audio.
 
 *Upgrade guide updated — July 9, 2026 (v3.6.7)*

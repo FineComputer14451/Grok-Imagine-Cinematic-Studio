@@ -124,6 +124,11 @@ AGENT_ROLE_CARDS: dict[str, str] = {
 }
 
 ROLE_CARD_INDEX_FILE = "AGENT_INDEX.md"
+# Shared docs in references/agents/ that are not per-agent Role Cards
+ROLE_CARD_SHARED_DOCS = frozenset({
+    ROLE_CARD_INDEX_FILE,
+    "MODEL_LAYER_v3.6.7.md",
+})
 EXPECTED_ROLE_CARD_COUNT = len(AGENT_ROLE_CARDS)
 
 
@@ -137,11 +142,11 @@ def total_agent_count() -> int:
 
 
 def list_role_card_files() -> list[Path]:
-    """Return sorted Role Card paths (excludes AGENT_INDEX.md)."""
+    """Return sorted Role Card paths (excludes index + shared model docs)."""
     if not AGENTS_DIR.exists():
         return []
     return sorted(
-        p for p in AGENTS_DIR.glob("*.md") if p.name != ROLE_CARD_INDEX_FILE
+        p for p in AGENTS_DIR.glob("*.md") if p.name not in ROLE_CARD_SHARED_DOCS
     )
 
 

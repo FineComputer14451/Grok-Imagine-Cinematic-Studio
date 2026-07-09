@@ -18,11 +18,11 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 
 - **Guided Production Bible wizard** — `create-bible --wizard` + Web UI Guided Bible Creator (shared stages → existing bible builder)
 - **Catalog release pin hygiene** — `plugin catalog check --release` green after pin-only follow-up commits
-- Builds on **v3.6.6 dual model stack** (Grok 4.5 Build + Grok 4.3 cinematic)
+- Builds on **v3.6.6/3.6.7 model stack** (Grok 4.5 cinematic+Build; optional Grok 4.3 1M)
 
 ## ✨ v3.6.6 Dual Model Stack
 
-- **Dual stack** — cinematic orchestration on **`grok-4.3`** (1M context); Grok Build / coding on **`grok-4.5`**
+- **Unified chat default** — cinematic orchestration + Grok Build / coding on **`grok-4.5`**; opt-in **`grok-4.3`** for 1M-context Bibles
 - **Grok Build ≥ 0.2.93** documented as minimum recommended CLI (`grok --version`)
 - **Registry + verify** — `tools/models.py` / `models verify` enforce dual defaults; `grok-build-0.1` marked legacy
 - Aliases: `4.5`, `coding`, `grok-build-latest` → 4.5; `4.3`, `cinematic` → 4.3
@@ -52,7 +52,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 ### v3.6.5 — Plugin Marketplace, Model Verification & Refinements (2026-06)
 - **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (44 skills + commands) for `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
 - **Imagine 1.0 as default** — `grok-imagine-video` ($0.05/sec); 1.5 opt-in for native audio ($0.08/sec)
-- **`models verify`** CLI — validates dual Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5 registry
+- **`models verify`** CLI — validates Grok 4.5 cinematic+Build + optional 4.3 + Imagine 1.0/1.5 registry
 - **CLI modularization** — extracted `tools/cli/{models,bible,studio,production,...}_commands.py`; slimmer main entrypoint
 - **Canonical project state** — `tools/project_state.py` with auto-merge legacy support
 - **Model stack everywhere** — `VIDEO_PIPELINE_SPEC` + `model_stack_summary()` wired into CLI, Web UI, DNA/sequence handoffs, Production Bibles
@@ -89,7 +89,7 @@ cinematic-studio sequence init "Neon Alley Chase" --duration 90
 cinematic-studio models list
 cinematic-studio models verify
 cinematic-studio quota estimate --duration 90 --clips 9 --fast-mode
-cinematic-studio generate-prompt "Your story" --chat-model grok-4.3 --video-model 1.0
+cinematic-studio generate-prompt "Your story" --chat-model grok-4.5 --video-model 1.0
 cinematic-studio nsfw extend plan "Intimate Sequence" --duration 90 --profile passionate --reference "..."
 cinematic-studio nsfw plan "Hero Session" --shot "hero:Cover frame" --budget 800
 cinematic-studio plugin catalog pin
@@ -130,7 +130,7 @@ After skill/command changes, run `pin` and commit the `.grok-plugin/` files atom
 pip install -r requirements-streamlit.txt
 streamlit run web_ui/app.py
 ```
-(Imagine video model selector, xAI chat model picker (`grok-4.3` cinematic / `grok-4.5` build), live per-second cost simulator)
+(Imagine video model selector, xAI chat model picker (`grok-4.5` default / `grok-4.3` 1M opt-in), live per-second cost simulator)
 
 ---
 

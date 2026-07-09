@@ -41,7 +41,7 @@ def register(app: typer.Typer) -> None:
     def generate_prompt(
         story: str = typer.Argument(..., help="Your story, scene, or project description"),
         signature: str = typer.Option("default", "--signature", "-s", help="Director style"),
-        chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.3 cinematic, grok-4.5 build)"),
+        chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.5 default; grok-4.3 for 1M context)"),
         video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "--model", "-m", help="Imagine video model slug or alias"),
         output: str = typer.Option(None, "--output", "-o", help="Save to file"),
     ):
@@ -91,7 +91,7 @@ def register(app: typer.Typer) -> None:
     def create_bible(
         title: str | None = typer.Argument(None, help="Project title (omit with --wizard on a TTY)"),
         genre: str = typer.Option("Cinematic", "--genre", "-g"),
-        chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.3 cinematic, grok-4.5 build)"),
+        chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.5 default; grok-4.3 for 1M context)"),
         video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "-m", help="Imagine video model slug or alias"),
         output: str = typer.Option("production_bible.json", "--output", "-o"),
         wizard: bool = typer.Option(False, "--wizard", "-w", help="Guided interactive stages (requires TTY)"),

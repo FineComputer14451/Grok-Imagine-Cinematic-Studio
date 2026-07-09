@@ -104,7 +104,7 @@ def test_run_bible_wizard_with_injected_input(tmp_path: Path) -> None:
         saved["output"] = output
 
     bible = run_bible_wizard(
-        seed={"genre": "Thriller", "video_model": "1.0", "chat_model": "grok-4.3"},
+        seed={"genre": "Thriller", "video_model": "1.0", "chat_model": "grok-4.5"},
         output=str(out),
         persist=persist,
         input_fn=fake_input,

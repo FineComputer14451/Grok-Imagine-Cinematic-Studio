@@ -87,7 +87,7 @@ If a future version needs structured logline/characters on the Bible dict, exten
 4. **Technical Specs**
    - Target duration (seconds)
    - Video model preference (1.0 default vs 1.5) — resolve only via `resolve_video_model` / `tools/models.py`
-   - Optional chat model (default cinematic `grok-4.3`)
+   - Optional chat model (default cinematic `grok-4.5`; `grok-4.3` for 1M opt-in)
    - Audio / aspect notes as free text (folded into `notes`; pipeline spec still owned by models layer)
    - **Kwargs:** `target_duration_seconds`, `video_model`, `chat_model`; notes append
 

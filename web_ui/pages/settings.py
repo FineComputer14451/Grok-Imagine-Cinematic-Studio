@@ -83,7 +83,7 @@ def render() -> None:
         help="Or set XAI_API_KEY in the environment.",
     )
     st.caption(
-        "Dual stack: cinematic `grok-4.3` (1M) · Build/coding `grok-4.5` · "
+        "Stack: cinematic+Build `grok-4.5` · optional 1M `grok-4.3` · "
         "CLI ≥ 0.2.93 — see `references/MODELS_v3.6.md`"
     )
 

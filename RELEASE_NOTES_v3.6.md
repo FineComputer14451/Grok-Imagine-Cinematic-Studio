@@ -16,7 +16,7 @@
 
 ## v3.6.6 Patch (July 9, 2026) — Dual Model Stack
 
-- **Dual stack** — cinematic orchestration default **`grok-4.3`** (1M context); Grok Build / coding default **`grok-4.5`**
+- **Unified chat default** — cinematic orchestration + Grok Build / coding on **`grok-4.5`**; opt-in **`grok-4.3`** for 1M-context Bibles
 - **Grok Build ≥ 0.2.93** recommended CLI (`RECOMMENDED_GROK_BUILD_CLI_VERSION`; soft-probed by `models verify`)
 - **Registry redesign** — `STACK_CONTRACT` → `ROLE_DEFAULTS` (single source), cached alias maps, data-driven `verify_model_compatibility()`, `REQUIRED_MODEL_ROLES`
 - **`grok-4.5` pricing** — $2 / $6 per 1M ($0.50 cached in), 500k context; `grok-build-0.1` kept as legacy
@@ -30,7 +30,7 @@
 
 | Layer | Slug | Notes |
 |-------|------|-------|
-| Cinematic / Production Bibles | `grok-4.3` | 1M context |
+| Cinematic / Production Bibles | `grok-4.5` | Default (use `grok-4.3` for 1M opt-in) |
 | Grok Build CLI / coding API | `grok-4.5` | Default agent; recommend CLI ≥ 0.2.93 |
 | Build fork | `grok-build` | Skills / tooling |
 | Imagine Video | `grok-imagine-video` (1.0) / `1.5` | Cost default vs native audio |
@@ -90,7 +90,7 @@ See `CHANGELOG.md` for full details.
 - Core agents at v3.6.5 Role Cards under studio **v3.6.7** (1.5 protocols, dual stack, decision frameworks)
 - Enhanced long-form sequencing (60–180s+) with low-degradation 1.5 native chaining + AUDIO_MOMENTUM_VECTOR
 - Stronger emotional + audio continuity across extended sequences
-- **v3.6.6 dual stack:** cinematic `grok-4.3` + Build/coding `grok-4.5`; CLI/Web UI model pickers and `models verify`
+- **v3.6.6 dual stack (historical):** cinematic `grok-4.3` + Build/coding `grok-4.5`; later unified cinematic default to `grok-4.5` (4.3 remains 1M opt-in)
 - **v3.6.7:** Guided Production Bible wizard + catalog release-pin hygiene
 - Grok plugin distribution for the full 23-agent + specialist suite
 

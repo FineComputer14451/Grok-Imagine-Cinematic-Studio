@@ -1,25 +1,28 @@
 # Grok Imagine Cinematic Studio — Agent Index v3.6.7
 
-**23 core agents** · **+9 specialists** (pipeline + i2i + NSFW opt-in) · **Studio v3.6.7** · **Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5** · July 2026
+**23 core agents** · **+9 specialists** (pipeline + i2i + NSFW opt-in) · **Studio v3.6.7** · **Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5** · July 2026
 
 > Agent display names keep the **v3.6.5** suffix (CLI registry / Role Card labels). Studio release version is **3.6.7**.
 
 Authoritative Role Cards: `references/agents/*.md`  
+Shared model rules: `references/agents/MODEL_LAYER_v3.6.7.md`  
 Model registry: `tools/models.py`, `references/MODELS_v3.6.md`
 
 ---
 
-## Model Compatibility (Required)
+## Model Compatibility (Required — Grok 4.5 default)
 
 | Layer | Slug | Use |
 |-------|------|-----|
 | Grok Build CLI | `grok-4.5` (min CLI **0.2.93**) | Local agent / coding default |
 | Grok Build fork | `grok-build` | Code, skills, repo tooling |
-| xAI Chat (cinematic) | `grok-4.3` | 1M-context Production Bibles |
+| xAI Chat (cinematic) | `grok-4.5` | Production Bibles (default); `grok-4.3` for 1M opt-in |
 | xAI Build / coding | `grok-4.5` | Agentic automation (legacy: `grok-build-0.1`) |
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 default; 1.5 native audio |
 | Imagine Image | `grok-imagine-image` | Reference stills |
 | Imagine Image Quality | `grok-imagine-image-quality` | Hero keyframes |
+
+**Grok 4.5 agent rules:** reasoning **high** for Bibles/QA/Identity Lock; stable `prompt_cache_key` per project; alias `cinematic` → `grok-4.5`.
 
 Every Production Bible must include:
 
@@ -28,6 +31,8 @@ Every Production Bible must include:
 ```
 
 Verify: `python tools/cinematic_studio_cli.py models verify`
+
+Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.6.7)** block.
 
 ---
 

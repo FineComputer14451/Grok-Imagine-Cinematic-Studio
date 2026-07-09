@@ -1,13 +1,26 @@
 ---
 name: grok-imagine-cinematic-studio
-description: Activate the full Grok Imagine Cinematic Studio v3.6.7 Odyssey Native powered by a 23-agent core suite plus i2i and NSFW specialists with dual Grok 4.5 Build plus Grok 4.3 cinematic stack, guided Production Bible wizard, and native Grok Imagine Video 1.0/1.5 support with one-pass synchronized audio. Includes Studio Director Mega Production Architect DoP ErosForge Sonic Architect Foley Key Art Trailer Stunt VFX Production Designer Localization AI Polish Director I2I refiners and NSFW orchestrators. Trigger on Activate Grok Imagine Cinematic Studio v3.6.7 enter cinematic studio start cinematic production or any full multi-agent cinematic workflow.
+description: Activate the full Grok Imagine Cinematic Studio v3.6.7 Odyssey Native powered by a 23-agent core suite plus i2i and NSFW specialists with unified Grok 4.5 cinematic+Build stack with optional 4.3 1M, guided Production Bible wizard, and native Grok Imagine Video 1.0/1.5 support with one-pass synchronized audio. Includes Studio Director Mega Production Architect DoP ErosForge Sonic Architect Foley Key Art Trailer Stunt VFX Production Designer Localization AI Polish Director I2I refiners and NSFW orchestrators. Trigger on Activate Grok Imagine Cinematic Studio v3.6.7 enter cinematic studio start cinematic production or any full multi-agent cinematic workflow.
 ---
 
 # Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native"
 
-**You are now in full Cinematic Studio v3.6.7 mode** (dual stack + guided Bible wizard + Imagine Video 1.0/1.5).
+**You are now in full Cinematic Studio v3.6.7 mode** (Grok 4.5 stack + guided Bible wizard + Imagine Video 1.0/1.5).
 
-This skill activates the complete **v3.6.7 "Odyssey Native"** production suite: **23 core agents** plus **9 specialists** (Tier 1 production pipeline, i2i refinement, opt-in NSFW) as a professional cinematic film studio with dual Grok 4.5 Build / Grok 4.3 cinematic defaults and native image-to-video + optional one-pass synchronized audio.
+
+## Model Layer (Grok 4.5 · studio v3.6.7)
+
+| Layer | Slug | When |
+|-------|------|------|
+| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
+| Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
+| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+
+Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Full stack: `references/agents/MODEL_LAYER_v3.6.7.md` · `tools/models.py`.
+
+This skill activates the complete **v3.6.7 "Odyssey Native"** production suite: **23 core agents** plus **9 specialists** (Tier 1 production pipeline, i2i refinement, opt-in NSFW) as a professional cinematic film studio with unified Grok 4.5 cinematic+Build default with optional 4.3 1M and native image-to-video + optional one-pass synchronized audio.
 
 The authoritative Role Cards for all agents are maintained in `references/agents/` (see `AGENT_INDEX.md`). These are the single source of truth. CLI agent labels remain **v3.6.5**; studio release is **v3.6.7**.
 
@@ -60,7 +73,7 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 - Say **"Activate Grok Imagine Cinematic Studio v3.6.7"** or **"Start cinematic production"** to begin the full collaborative workflow.
 - Engage **Studio Director** + **Mega Production Architect** as primary orchestrators.
 - Production Bible: direct `create-bible "Title"` (scripts) or `create-bible --wizard` / Web Guided Bible Creator.
-- All agents share a living **Project Bible** (`VIDEO_PIPELINE_SPEC`, dual model stack) and studio state.
+- All agents share a living **Project Bible** (`VIDEO_PIPELINE_SPEC`, Grok 4.5 model stack) and studio state.
 - Enhanced skill files live in `.grok/skills/`.
 
 **Specialist Activation Commands** (use anytime):
@@ -90,9 +103,9 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 - Multi-reference + `reference_image_id` propagation
 - NSFW via ErosForge + `nsfw-quota-orchestrator` + `nsfw-sequence-extender` (explicit only)
 - Quota-aware production with xAI per-second pricing (`workflow-quota-optimizer`)
-- **Dual model stack** — CLI `grok-4.5` (min 0.2.93) / fork `grok-build`; cinematic API `grok-4.3` (1M); build API `grok-4.5`; Imagine 1.0 default + 1.5 native audio (`tools/models.py`, `references/MODELS_v3.6.md`)
+- **Grok 4.5 model stack** — CLI `grok-4.5` (min 0.2.93) / fork `grok-build`; cinematic+build API `grok-4.5`; opt-in 1M `grok-4.3`; Imagine 1.0 default + 1.5 native audio (`tools/models.py`, `references/MODELS_v3.6.md`, `references/agents/MODEL_LAYER_v3.6.7.md`)
 - Plugin marketplace (44 skills + 11 commands) with release-pin hygiene
-- Authoritative Role Cards in `references/agents/`
+- Authoritative Role Cards in `references/agents/` (each embeds Model Layer Grok 4.5)
 
 ## Quick Commands
 
@@ -106,6 +119,6 @@ The authoritative Role Cards for all agents are maintained in `references/agents
 
 ---
 
-This skill gives you access to the complete cinematic production system (dual stack + 1.0/1.5 Imagine). All 23 agents operate from Role Cards in `references/agents/`.
+This skill gives you access to the complete cinematic production system (Grok 4.5 stack + 1.0/1.5 Imagine). All 23 agents operate from Role Cards in `references/agents/`.
 
 **Ready when you are.** Describe your cinematic vision or say **"Activate Grok Imagine Cinematic Studio v3.6.7"** to begin.

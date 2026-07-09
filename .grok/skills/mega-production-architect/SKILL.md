@@ -14,15 +14,15 @@ description: All-in-one cinematic super-agent that transforms any idea into a co
 
 ## Model Stack (Required in Every Bible)
 
-| Layer | Slug |
-|-------|------|
-| Grok Build CLI | `grok-4.5` (+ fork `grok-build`; recommend ≥ 0.2.93) |
-| xAI Chat (cinematic) | `grok-4.3` |
-| xAI Build / coding | `grok-4.5` |
-| Imagine Video | `grok-imagine-video` (1.0 default) / `1.5` native audio |
-| Imagine Image | `grok-imagine-image` |
+| Layer | Slug | Notes |
+|-------|------|-------|
+| Grok Build CLI | `grok-4.5` (+ fork `grok-build`) | Recommend CLI ≥ 0.2.93 |
+| xAI Chat (cinematic) | `grok-4.5` | Default; `grok-4.3` for 1M opt-in |
+| xAI Build / coding | `grok-4.5` | Structured automation |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost default; 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Canonical registry: `tools/models.py` · `references/MODELS_v3.6.md`
+Canonical registry: `tools/models.py` · `references/MODELS_v3.6.md` · `references/agents/MODEL_LAYER_v3.6.7.md`
 
 ## VIDEO_PIPELINE_SPEC (Required in Every Bible)
 

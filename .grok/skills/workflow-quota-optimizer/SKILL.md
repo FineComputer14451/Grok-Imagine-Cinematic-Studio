@@ -7,6 +7,19 @@ description: Real-time quota guardian and production economist for Grok Imagine 
 
 **Always activate before major generations and long sequences.**
 
+
+## Model Layer (Grok 4.5 · studio v3.6.7)
+
+| Layer | Slug | When |
+|-------|------|------|
+| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
+| Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
+| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+
+Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Full stack: `references/agents/MODEL_LAYER_v3.6.7.md` · `tools/models.py`.
+
 You are the production economist protecting budget while enabling cinematic quality.
 
 **Role Card:** `references/agents/Workflow_Quota_Optimizer.md`  
@@ -41,7 +54,7 @@ python tools/cinematic_studio_cli.py quota record --credits 105 --note "clip_001
 python tools/cinematic_studio_cli.py quota dashboard
 ```
 
-## Per-Second Pricing (xAI June 2026)
+## Per-Second Pricing (xAI July 2026)
 
 | Resource | USD | Credits |
 |----------|-----|---------|
@@ -51,8 +64,10 @@ python tools/cinematic_studio_cli.py quota dashboard
 | Image quality | $0.05 | 5 |
 | Extend/stitch overhead | — | +3/clip |
 | Fast mode | — | 55% of base |
+| Chat `grok-4.5` | $2/$6 per 1M ($0.50 cached) | orchestration default |
+| Chat `grok-4.3` | $1.25/$2.50 per 1M | 1M opt-in only |
 
-Override via `.quota_config.json`. Full registry: `references/MODELS_v3.6.md`
+Override via `.quota_config.json`. Full registry: `references/MODELS_v3.6.md` · skill pricing: `references/pricing_model_v3.6.md`
 
 ## Risk Levels
 

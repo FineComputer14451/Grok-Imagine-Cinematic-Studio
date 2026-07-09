@@ -132,7 +132,7 @@ STAGES: list[Stage] = [
             {
                 "key": "chat_model",
                 "prompt": "xAI chat model (optional)",
-                "example": "grok-4.3",
+                "example": "grok-4.5 or grok-4.3 (1M)",
                 "required": False,
                 "default": DEFAULT_XAI_CHAT_MODEL,
             },

@@ -92,7 +92,7 @@ def models_list():
 
 @models_app.command("verify")
 def models_verify():
-    """Verify dual stack: Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5."""
+    """Verify stack: Grok 4.5 cinematic+Build + optional 4.3 1M + Imagine 1.0/1.5."""
     result = verify_model_compatibility()
     stack = result["model_stack"]
     warn_block = ""
@@ -112,7 +112,7 @@ def models_verify():
             f"Imagine Video: {stack['imagine_video']} | Image: {stack['imagine_image']}\n\n"
             f"{result['video_pipeline_spec']}"
             f"{warn_block}",
-            title="Grok 4.5 Build + Grok 4.3 Cinematic + Imagine",
+            title="Grok 4.5 Cinematic+Build · Optional 4.3 1M · Imagine",
             border_style="green",
         ))
     else:

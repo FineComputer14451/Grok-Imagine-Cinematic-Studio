@@ -4,7 +4,7 @@ description: Activate Grok Imagine Cinematic Studio v3.6.7 with the full 23-agen
 
 # Activate Cinematic Studio
 
-Start a full multi-agent cinematic production session with dual Grok 4.5 Build + Grok 4.3 cinematic stack, Character DNA, sequence extension, quota-aware orchestration, and optional guided Production Bible wizard.
+Start a full multi-agent cinematic production session with unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), Character DNA, sequence extension, quota-aware orchestration, and optional guided Production Bible wizard.
 
 ## Preflight
 
@@ -49,7 +49,7 @@ python tools/cinematic_studio_cli.py create-bible --wizard   # guided TTY only
 
 ```bash
 python tools/cinematic_studio_cli.py generate-prompt "$ARGUMENTS" \
-  --chat-model grok-4.3 --video-model grok-imagine-video
+  --chat-model grok-4.5 --video-model grok-imagine-video
 ```
 
 ### Specialist activations (use as needed)
@@ -65,7 +65,7 @@ Confirm the session is in studio mode:
 
 - Studio Director acknowledges the project brief and names the active agent roster.
 - `VIDEO_PIPELINE_SPEC` is stated (model, resolution, clip length, native_audio).
-- Model stack noted: cinematic `grok-4.3`, Build/coding `grok-4.5`, CLI ≥ 0.2.93.
+- Model stack noted: cinematic+Build `grok-4.5` (optional 1M `grok-4.3`), CLI ≥ 0.2.93.
 - Next concrete action is proposed (Bible, DNA, or first clip plan).
 
 ## Summary
@@ -76,7 +76,7 @@ Confirm the session is in studio mode:
 - **Status**: success
 - **Project**: <title or brief from $ARGUMENTS>
 - **Pipeline**: Imagine Video 1.0 default / 1.5 when native audio
-- **Stack**: grok-4.3 cinematic + grok-4.5 Build
+- **Stack**: grok-4.5 cinematic+Build (opt-in grok-4.3 for 1M)
 - **Agents**: 23 core (+ ErosForge opt-in)
 ```
 

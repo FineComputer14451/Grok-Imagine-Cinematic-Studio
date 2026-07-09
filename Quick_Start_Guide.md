@@ -8,7 +8,7 @@
 
 | Where | Model | Purpose |
 |-------|-------|---------|
-| Grok chat / API (cinematic) | `grok-4.3` | **1M** context, Production Bibles, multi-agent memory |
+| Grok chat / API (cinematic) | `grok-4.5` | Production Bibles, multi-agent direction (default); `grok-4.3` for **1M** opt-in |
 | Grok Build CLI (default) | `grok-4.5` | Coding, agentic sessions (min CLI **0.2.93**) |
 | Grok Build fork | `grok-build` | Code, skills, repo tooling |
 | xAI Build / coding API | `grok-4.5` | Agentic automation (legacy: `grok-build-0.1`) |

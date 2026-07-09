@@ -7,6 +7,19 @@ description: Meta installer for Grok Imagine Cinematic Studio v3.6.7. Installs u
 
 You are the **Studio Bootstrap Agent**. Install, update, and verify the complete Grok Imagine Cinematic Studio skill layer for Grok Build and Grok chat.
 
+
+## Model Layer (Grok 4.5 · studio v3.6.7)
+
+| Layer | Slug | When |
+|-------|------|------|
+| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
+| Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
+| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+
+Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Full stack: `references/agents/MODEL_LAYER_v3.6.7.md` · `tools/models.py`.
+
 **Reference:** `references/install_paths.md`  
 **Human guide:** `references/installation_guide.md` (repo root; copied to `~/Grok-Cinematic-Projects/references/` after Method A install)  
 **Repo installer:** `scripts/cinematic_studio.sh`  
@@ -115,7 +128,7 @@ SKILLS_DIR=~/.grok/skills PROJECT_DIR=~/my-projects bash scripts/cinematic_studi
 After a successful install, confirm all of the following:
 
 1. **Run verify** — `bash scripts/cinematic_studio.sh verify` (or `verify --all`)
-2. **Model registry** — verify output shows dual stack (Grok 4.5 Build + Grok 4.3 cinematic + Imagine 1.0/1.5); CLI ≥ 0.2.93
+2. **Model registry** — verify output shows Grok 4.5 stack (Grok 4.5 cinematic+Build · optional 4.3 1M + Imagine 1.0/1.5); CLI ≥ 0.2.93
 3. **Tell the user** to refresh the Skills page in Grok and start a new chat
 4. **Activation phrase** — `Activate Grok Imagine Cinematic Studio v3.6.7`
 5. **Optional CLI** — `pip install -r ~/Grok-Cinematic-Projects/requirements.txt` then `python ~/Grok-Cinematic-Projects/tools/cinematic_studio_cli.py models verify`

@@ -4,7 +4,7 @@
 
 **Version:** 3.6.7 "Odyssey Native" (July 2026)  
 **Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
-**Key Improvements:** Dual model stack (Grok 4.5 Build/coding + Grok 4.3 cinematic 1M), Grok Build ≥ 0.2.93, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
+**Key Improvements:** Unified Grok 4.5 cinematic+Build default (optional Grok 4.3 1M), Grok Build ≥ 0.2.93, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
 
 ---
 
@@ -14,7 +14,7 @@
 - **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & dual stack), Decision Frameworks, Activation Triggers, Integration Notes
 - **Mature CLI + Web UI** — model pickers, native audio toggle, 720p/duration, live cost estimation, **Guided Production Bible wizard** (`create-bible --wizard` / Web Guided Bible Creator)
 - **Native Grok Imagine Video 1.5 Pipeline** — image-to-video, one-pass audio, extend/stitch, Fast mode (1.0 remains cost default)
-- **Grok Build + dual Grok 4.5 / 4.3 stack** — CLI default `grok-4.5` (fork `grok-build`, min CLI **0.2.93**); cinematic API `grok-4.3` (1M); coding API `grok-4.5` (legacy `grok-build-0.1`)
+- **Grok Build + unified Grok 4.5 stack** — CLI default `grok-4.5` (fork `grok-build`, min CLI **0.2.93**); cinematic + coding API `grok-4.5`; optional 1M `grok-4.3` (legacy coding: `grok-build-0.1`)
 - **Plugin marketplace** — 44 skills + 11 commands; release-pin hygiene for catalog commits
 - v3.5 heritage retained: Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop
 
@@ -26,7 +26,7 @@
 ```bash
 python tools/cinematic_studio_cli.py models list
 python tools/cinematic_studio_cli.py models verify
-python tools/cinematic_studio_cli.py generate-prompt "Your story here" --signature villeneuve --chat-model grok-4.3 --video-model 1.0
+python tools/cinematic_studio_cli.py generate-prompt "Your story here" --signature villeneuve --chat-model grok-4.5 --video-model 1.0
 python tools/cinematic_studio_cli.py create-bible "Project Name" --genre "Sci-Fi" --video-model 1.0
 python tools/cinematic_studio_cli.py create-bible --wizard   # optional guided stages (TTY only)
 ```
@@ -162,14 +162,14 @@ Canonical slugs in `tools/models.py` and `references/MODELS_v3.6.md`:
 |-------|--------------|----------|
 | Grok Build CLI | `grok-4.5` | Default agent (coding/agentic); min CLI **0.2.93** |
 | Grok Build fork | `grok-build` | Code, skills, repo tooling |
-| xAI Chat (cinematic) | `grok-4.3` | 1M context, Production Bibles |
+| xAI Chat (cinematic) | `grok-4.5` | Production Bibles (default); `grok-4.3` opt-in for 1M |
 | xAI Build / coding | `grok-4.5` | Agentic workflows (legacy: `grok-build-0.1`) |
 | Imagine Video | `grok-imagine-video` (1.0 default) | $0.05/sec (1.5 for native audio $0.08/sec) |
 | Imagine Image | `grok-imagine-image` | Reference stills ($0.02/image) |
 
 - Prefer structured outputs / JSON for handoffs and bibles when complex
-- Use `grok-4.3` 1M context for full memory banks + Production Bible in one shot
-- Use `grok-4.5` for Grok Build sessions, skill work, and agentic coding loops
+- Use `grok-4.5` for Production Bibles, multi-agent direction, Grok Build, and coding (studio default)
+- Use `grok-4.3` (opt-in) when you need the full 1M context window for very large memory banks
 - `EXPORT_BIBLE_PDF` for professional deliverables
 - Configurable reasoning (set to "medium" for most productions, "high" for intricate emotional/audio timing; Grok 4.5 defaults high)
 
@@ -188,7 +188,7 @@ When crafting prompts for Imagine Prompt Master or direct generation:
 
 Type `Activate Grok Imagine Cinematic Studio v3.6.7` to begin.
 
-This version is optimized for Grok Build ≥ 0.2.93, Grok 4.5 (coding), Grok 4.3 (cinematic), and Imagine Video 1.0/1.5 on grok.com/imagine, mobile apps, and API.
+This version is optimized for Grok Build ≥ 0.2.93, Grok 4.5 (cinematic + coding default), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5 on grok.com/imagine, mobile apps, and API.
 
 **Next Steps after activation:**
 - Generate or load a Production Bible with Video Pipeline Spec (`create-bible` or `--wizard`)

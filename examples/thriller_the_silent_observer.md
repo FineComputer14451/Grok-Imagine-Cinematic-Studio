@@ -84,4 +84,4 @@ Structure is everything. The audience should slowly realize they are also "obser
 ---
 
 **Status:** Ready for full multi-agent activation.  
-**Primary Activation Command:** `Activate Grok Imagine Cinematic Studio v3.6, start new project "The Silent Observer", generate full Production Bible with strong QA Guardian and Continuity Guardian focus. Use grok-4.3 + grok-imagine-video-1.5.`
+**Primary Activation Command:** `Activate Grok Imagine Cinematic Studio v3.6, start new project "The Silent Observer", generate full Production Bible with strong QA Guardian and Continuity Guardian focus. Use grok-4.5 + grok-imagine-video-1.5.`

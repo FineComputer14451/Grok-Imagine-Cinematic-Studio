@@ -4,9 +4,10 @@ Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio.
 
 Single source of truth for CLI, Web UI, quota optimizer, and documentation.
 
-Dual stack (v3.6.6+ / studio v3.6.7):
-  - Cinematic orchestration (long Bibles, 1M context): grok-4.3
+Unified chat stack (v3.6.7+):
+  - Cinematic orchestration (Production Bibles, multi-agent): grok-4.5
   - Grok Build / coding / agentic: grok-4.5
+  - Optional long-context (1M): grok-4.3 via --chat-model grok-4.3
   - Recommended CLI binary: Grok Build ≥ 0.2.93 (not an API slug)
 """
 
@@ -25,7 +26,7 @@ SCHEMA_VERSION = "1.2"
 
 # Change only with a deliberate studio upgrade (also asserted in tests)
 STACK_CONTRACT: dict[str, str] = {
-    "cinematic": "grok-4.3",
+    "cinematic": "grok-4.5",
     "build": "grok-4.5",
     "cli": "grok-4.5",
 }
@@ -58,7 +59,7 @@ GROK_BUILD_CLI_MODELS: dict[str, dict[str, Any]] = {
     "grok-4.5": {
         "label": "Grok 4.5",
         "role": "default",
-        "description": "Default Grok Build agent — coding, agentic tasks, knowledge work",
+        "description": "Default agent — cinematic orchestration, coding, agentic tasks",
     },
     "grok-composer-2.5-fast": {
         "label": "Grok Composer 2.5 Fast",
@@ -72,8 +73,8 @@ GROK_BUILD_CLI_MODELS: dict[str, dict[str, Any]] = {
     },
     "grok-4.3": {
         "label": "Grok 4.3",
-        "role": "cinematic",
-        "description": "1M-context cinematic orchestration inside Grok Build sessions",
+        "role": "long_context",
+        "description": "Optional 1M-context orchestration (opt-in via --chat-model grok-4.3)",
     },
 }
 
@@ -88,9 +89,9 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
         "context_tokens": 1_000_000,
         "input_usd_per_1m": 1.25,
         "output_usd_per_1m": 2.50,
-        "use_case": "cinematic orchestration, 1M context, Production Bibles, multi-agent productions",
-        "role": "cinematic",
-        "aliases": ["4.3", "cinematic", "grok-4"],
+        "use_case": "optional 1M-context Production Bibles and multi-agent memory banks",
+        "role": "long_context",
+        "aliases": ["4.3", "long-context", "grok-4"],
     },
     "grok-4.5": {
         "label": "Grok 4.5",
@@ -98,8 +99,8 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
         "input_usd_per_1m": 2.00,
         "cached_input_usd_per_1m": 0.50,
         "output_usd_per_1m": 6.00,
-        "use_case": "coding, agentic workflows, Grok Build default, structured tool use",
-        "role": "build",
+        "use_case": "cinematic default, coding, agentic workflows, Grok Build, structured tool use",
+        "role": "default",
         "reasoning": "low|medium|high (default high)",
         "aliases": [
             "4.5",
@@ -108,6 +109,7 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
             "coding",
             "grok-build",
             "build",
+            "cinematic",
         ],
     },
     "grok-build-0.1": {
@@ -254,7 +256,7 @@ def resolve_image_model(slug: str | None = None) -> str:
 
 
 def resolve_chat_model(slug: str | None = None) -> str:
-    """Resolve chat model slug; empty/None → cinematic default (grok-4.3)."""
+    """Resolve chat model slug; empty/None → cinematic default (grok-4.5)."""
     return _resolve_from_alias_map(slug, _CHAT_ALIAS_MAP, DEFAULT_XAI_CHAT_MODEL)
 
 
@@ -375,12 +377,12 @@ def _check_registry_aliases(
 
 
 def verify_model_compatibility() -> dict[str, Any]:
-    """Validate dual-stack contract, registry integrity, and optional CLI version probe."""
+    """Validate stack contract, registry integrity, and optional CLI version probe."""
     issues: list[str] = []
     warnings: list[str] = []
     stack = model_stack_summary()
 
-    # Dual-stack integrity: ROLE_DEFAULTS embeds STACK_CONTRACT; cinematic ≠ build
+    # Stack integrity: ROLE_DEFAULTS embeds STACK_CONTRACT
     for role, expected in STACK_CONTRACT.items():
         if ROLE_DEFAULTS.get(role) != expected:
             issues.append(
@@ -388,8 +390,12 @@ def verify_model_compatibility() -> dict[str, Any]:
                 f"(got {ROLE_DEFAULTS.get(role)!r}, expected {expected!r})"
             )
 
+    # Unified cinematic+build on 4.5 is intentional; note opt-in 1M path
     if DEFAULT_XAI_CHAT_MODEL == DEFAULT_XAI_BUILD_MODEL:
-        issues.append("cinematic and build defaults must differ (dual stack)")
+        warnings.append(
+            f"cinematic and build defaults are unified ({DEFAULT_XAI_CHAT_MODEL}); "
+            "use --chat-model grok-4.3 (or long-context) for 1M-context Bibles"
+        )
 
     # Role defaults must exist in the right registries
     if DEFAULT_XAI_CHAT_MODEL not in XAI_CHAT_MODELS:

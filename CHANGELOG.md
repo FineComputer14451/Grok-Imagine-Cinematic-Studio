@@ -9,6 +9,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Fixed
 
 ### Changed
+- **Cinematic chat default → `grok-4.5`** — `STACK_CONTRACT["cinematic"]` unified with Build/CLI on `grok-4.5`; `grok-4.3` remains opt-in for 1M context (`--chat-model grok-4.3` / alias `long-context`). Alias `cinematic` now resolves to `grok-4.5`. `models verify` warns on unified chat defaults instead of failing.
+- **Docs & Role Cards** — MODELS, AGENTS, README, MASTER_PROMPT, Quick Start, Project Bible, RELEASE_NOTES, Studio Director / Mega / Prompt Master / Sequence / Quota / AGENT_INDEX, commands, Web UI, config example aligned to unified default.
+- **Agents + skills enhanced for Grok 4.5** — new `references/agents/MODEL_LAYER_v3.6.7.md`; all 32 Role Cards embed Model Layer; 27 skills updated (studio hub, Studio Director, Mega, Prompt Master, Quota, Bible workflow, meta-installer, pipeline specialists) with stack tables, 4.5 operating rules, and pricing.
 
 ---
 

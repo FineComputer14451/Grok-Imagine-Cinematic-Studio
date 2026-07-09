@@ -2,7 +2,7 @@
 
 **This file provides context and instructions for AI coding agents and assistants working in this workspace.**
 
-**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio v3.6.7, guided Production Bible wizard, dual Grok 4.5 Build + Grok 4.3 cinematic stack, Grok Build ≥ 0.2.93, plugin marketplace, AI Polish Director)  
+**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio v3.6.7, guided Production Bible wizard, unified Grok 4.5 cinematic+Build stack with optional 4.3 1M, Grok Build ≥ 0.2.93, plugin marketplace, AI Polish Director)  
 **Canonical Source:** https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/AGENTS.md
 
 Think of this as the single source of truth for how to interact with this Grok/xAI agent environment in `/home/workdir/`.
@@ -195,7 +195,8 @@ python tools/cinematic_studio_cli.py models verify
 |-------|--------------|-------------|
 | Grok Build CLI | `grok-4.5` | Default agent (coding / agentic); min CLI **0.2.93** |
 | Grok Build fork | `grok-build` | Code, skills, repo tooling |
-| xAI Chat API (cinematic) | `grok-4.3` | Long Production Bibles, 1M context |
+| xAI Chat API (cinematic) | `grok-4.5` | Production Bibles, multi-agent direction (default) |
+| xAI Chat API (1M opt-in) | `grok-4.3` | Very long Bibles / memory banks |
 | xAI Build / coding API | `grok-4.5` | Agentic automation (legacy: `grok-build-0.1`) |
 | Imagine Video | `grok-imagine-video` (1.0 default) | $0.05/sec (1.5 available for native audio at $0.08/sec) |
 | Imagine Image | `grok-imagine-image` | Reference stills ($0.02/image) |
@@ -204,13 +205,13 @@ Local config: `~/.grok/config.toml` — `[models] default = "grok-4.5"` and `for
 
 ## Project-Specific Notes
 
-- Primary ongoing project: **Grok Imagine Cinematic Studio** (v3.6.7 dual stack + guided bible wizard) and related custom skills.
+- Primary ongoing project: **Grok Imagine Cinematic Studio** (v3.6.7 unified 4.5 stack + guided bible wizard) and related custom skills.
 - All generated artifacts **must** be saved to `/home/workdir/artifacts/`.
 - Persistent state and custom skills live in `/home/workdir/.grok/skills/`.
 - Grok plugin marketplace lives in `.grok-plugin/` (marketplace.json, plugin.json, plugin-index.json with 44 skills + 11 commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - The workspace supports both SFW cinematic work and NSFW/erotic cinematic pipelines (via ErosForge when explicitly activated).
-- **Dual model stack:** cinematic `grok-4.3` (1M) + Build/coding `grok-4.5` + Imagine 1.0 default; `VIDEO_PIPELINE_SPEC` wired everywhere. 1.5 available for native-audio workflows.
-- Recent 3.6.7 work: guided Production Bible wizard, catalog release-pin hygiene; 3.6.6 dual stack remains the model baseline.
+- **Model stack:** cinematic + Build/coding default `grok-4.5`; optional 1M `grok-4.3`; Imagine 1.0 default; `VIDEO_PIPELINE_SPEC` wired everywhere. 1.5 available for native-audio workflows.
+- Recent 3.6.7 work: guided Production Bible wizard, catalog release-pin hygiene; cinematic chat default unified on `grok-4.5`.
 - Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, RELEASE_NOTES_v3.6.md).
 
 ## Quick Start for New Tasks
