@@ -71,8 +71,6 @@ def test_sequence_continuity_commands_registered() -> None:
     assert "qa-assist" in result.stdout
 
 
-
-
 def test_sequence_memory_commands_registered() -> None:
     result = run_cli("sequence", "--help")
     assert result.returncode == 0
@@ -83,6 +81,15 @@ def test_sequence_memory_commands_registered() -> None:
     assert "sync" in result2.stdout.lower()
 
 
+def test_sequence_regen_commands_registered() -> None:
+    result = run_cli("sequence", "regen", "--help")
+    assert result.returncode == 0
+    out = result.stdout.lower()
+    assert "plan" in out
+    assert "apply" in out
+    assert "run" in out
+
+
 if __name__ == "__main__":
     test_main_file_is_small()
     test_main_help()
@@ -91,4 +98,5 @@ if __name__ == "__main__":
     test_cost_simulate_and_quota_estimate()
     test_sequence_continuity_commands_registered()
     test_sequence_memory_commands_registered()
+    test_sequence_regen_commands_registered()
     print("All CLI smoke tests passed")

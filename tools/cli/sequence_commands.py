@@ -13,6 +13,7 @@ from rich.table import Table
 
 from assembly_editor import build_edl, edl_to_markdown, save_edl
 from chain_qa_assist import apply_assisted_qa, assist_chain_qa
+from extend_regen import apply_regen_plan, ensure_clip_regen, plan_regen, prepare_regen_run
 from identity_drift import DEFAULT_DRIFT_THRESHOLD, score_identity_drift
 from quota_optimizer import estimate_sequence_cost
 from imagine_client import is_dry_run
@@ -544,3 +545,171 @@ def register(app: typer.Typer) -> None:
 
         console.print(f"[green]Memory bank synced from {clip}[/green]")
         console.print(memory_bank_summary(ensure_memory_bank(seq.get("memory_bank"))))
+
+    regen_app = typer.Typer(help="Re-gen loop after chain QA No-Go (roadmap #5)")
+    app.add_typer(regen_app, name="regen")
+
+    def _previous_clip(seq: dict, target: dict) -> dict | None:
+        clips = seq.get("clips", [])
+        idx = target.get("index", 0)
+        return clips[idx - 1] if idx > 0 else None
+
+    @regen_app.command("plan")
+    def regen_plan(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c", help="Clip ID to plan re-gen for"),
+        beat: str = typer.Option(None, "--beat", "-b", help="Optional narrative beat override"),
+        character: str = typer.Option("", "--character", help="DNA inject block text"),
+    ):
+        """Build fix prompt + show budget (no spend; does not set regen_ready)."""
+        from datetime import datetime, timezone
+
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        prev = _previous_clip(seq, target)
+        plan = plan_regen(
+            seq,
+            target,
+            previous_clip=prev,
+            next_beat=beat,
+            character_injection=character or "",
+        )
+
+        allowed_style = "green" if plan["allowed"] else "red"
+        console.print(
+            f"[{allowed_style}]Allowed: {plan['allowed']}[/{allowed_style}] — {plan['reason']}"
+        )
+        console.print(
+            f"Attempts: {plan['attempts']}/{plan['max_attempts']} | "
+            f"Sequence used: {plan['sequence_attempts_used']} | "
+            f"Prior decision: {plan.get('prior_decision') or '—'}"
+        )
+
+        fixes = plan.get("fixes") or []
+        if fixes:
+            table = Table(title="Fixes", box=box.ROUNDED)
+            table.add_column("#", style="dim")
+            table.add_column("Fix", style="white")
+            for i, fix in enumerate(fixes, 1):
+                table.add_row(str(i), str(fix))
+            console.print(table)
+        else:
+            console.print("[dim]No fixes listed on clip chain_qa / drift / seam[/dim]")
+
+        prompt = plan.get("fix_prompt") or ""
+        console.print(Panel(
+            prompt[:4000] + ("…" if len(prompt) > 4000 else ""),
+            title=f"regen fix_prompt — {clip}",
+            border_style="yellow" if plan["allowed"] else "red",
+        ))
+
+        # Plan is free: store last prompt for inspect without status → regen_ready
+        ensure_clip_regen(target, seq)
+        target["regen_fix_prompt"] = prompt
+        target["regen"]["last_plan_at"] = (
+            datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+        )
+        save_sequence(seq)
+        console.print(f"[dim]Saved regen_fix_prompt on {clip} (status unchanged)[/dim]")
+
+    @regen_app.command("apply")
+    def regen_apply(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c", help="Clip ID to apply re-gen plan"),
+        beat: str = typer.Option(None, "--beat", "-b", help="Optional narrative beat override"),
+        character: str = typer.Option("", "--character", help="DNA inject block text"),
+    ):
+        """Write fix prompt onto clip as prompt (status=regen_ready). No Imagine call."""
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        prev = _previous_clip(seq, target)
+        plan = apply_regen_plan(
+            seq,
+            target,
+            previous_clip=prev,
+            next_beat=beat,
+            character_injection=character or "",
+        )
+        save_sequence(seq)
+        console.print(
+            f"[green]Applied re-gen plan → {clip} status={target.get('status')}[/green] "
+            f"(attempts {plan['attempts']}/{plan['max_attempts']}, budget not consumed)"
+        )
+        if not plan["allowed"]:
+            console.print(
+                f"[yellow]Warning: re-gen currently blocked — {plan['reason']}[/yellow]"
+            )
+
+    @regen_app.command("run")
+    def regen_run(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(..., "--clip", "-c", help="Clip ID to re-generate"),
+        beat: str = typer.Option(None, "--beat", "-b", help="Optional narrative beat override"),
+        character: str = typer.Option("", "--character", help="DNA inject block text"),
+        dry_run: bool = typer.Option(False, "--dry-run", help="Force mock generation (no API key)"),
+        force: bool = typer.Option(
+            False, "--force", help="Run even if last chain QA decision was go"
+        ),
+    ):
+        """Consume one attempt and call run_sequence_clip with the fix prompt."""
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        prev = _previous_clip(seq, target)
+
+        decision = (target.get("chain_qa") or {}).get("decision")
+        if decision == "go" and not force:
+            console.print(
+                "[yellow]Last decision is go — use --force to re-gen anyway[/yellow]"
+            )
+            raise typer.Exit(1)
+
+        try:
+            plan = prepare_regen_run(
+                seq,
+                target,
+                previous_clip=prev,
+                next_beat=beat,
+                character_injection=character or "",
+            )
+        except ValueError as exc:
+            console.print(f"[red]Re-gen blocked:[/red] {exc}")
+            raise typer.Exit(1) from exc
+
+        save_sequence(seq)  # persist counters before API
+
+        use_dry = dry_run or is_dry_run()
+        if use_dry:
+            console.print("[dim]Dry-run mode — mock URLs and auto chain QA[/dim]")
+
+        try:
+            result = run_sequence_clip(seq, clip, dry_run=use_dry)
+        except RuntimeError as exc:
+            console.print(f"[red]Blocked:[/red] {exc}")
+            raise typer.Exit(1) from exc
+        except Exception as exc:
+            console.print(f"[red]Re-gen run failed:[/red] {exc}")
+            raise typer.Exit(1) from exc
+
+        save_sequence(seq)
+
+        decision_color = {
+            "go": "green",
+            "conditional_go": "yellow",
+            "no_go": "red",
+            "awaiting_scores": "dim",
+            "pending": "dim",
+        }.get(result.get("chain_qa", {}).get("decision", ""), "white")
+
+        console.print(Panel(
+            f"Re-gen attempt: {plan['attempts'] + 1}/{plan['max_attempts']} "
+            f"(sequence used: {seq.get('regen_budget', {}).get('sequence_attempts_used', '?')})\n"
+            f"Job: {result.get('job_id')}\n"
+            f"Clip: {result.get('clip_id')} → {result.get('status')}\n"
+            f"URL: {result.get('result_url') or '—'}\n"
+            f"Chain QA: [{decision_color}]{result.get('chain_qa', {}).get('decision', 'pending')}"
+            f"[/{decision_color}] "
+            f"(score: {result.get('chain_qa', {}).get('weighted_score', 'N/A')})\n"
+            f"Sequence health: {result.get('sequence_health')} | Status: {result.get('chain_qa_status')}",
+            title=f"Sequence Re-gen Run — {seq['sequence_name']}",
+            border_style="green" if result.get("status") == "approved" else "yellow",
+        ))
