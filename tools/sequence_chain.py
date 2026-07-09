@@ -21,9 +21,16 @@ from models import (
     build_video_pipeline_spec,
     model_stack_summary,
 )
+from sequence_memory import (
+    apply_clip_to_memory_bank,
+    empty_memory_bank,
+    ensure_memory_bank,
+    memory_bank_to_prompt_block,
+)
 from studio_paths import SEQUENCES_DIR
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"  # new scaffolds
+SUPPORTED_SCHEMA_VERSIONS = frozenset({"1.0", "1.1"})
 
 DEFAULT_PIPELINE = {
     "model": DEFAULT_IMAGINE_VIDEO_MODEL,
@@ -96,6 +103,7 @@ def create_sequence_scaffold(
         "emotional_temperature_curve": [],
         "sequence_health_score": None,
         "chain_qa_status": "pending",
+        "memory_bank": empty_memory_bank(),
     }
 
 
@@ -159,7 +167,7 @@ def validate_sequence(seq: dict[str, Any]) -> list[str]:
     issues: list[str] = []
     if not seq.get("sequence_name"):
         issues.append("Missing sequence_name")
-    if seq.get("schema_version") != SCHEMA_VERSION:
+    if seq.get("schema_version") not in SUPPORTED_SCHEMA_VERSIONS:
         issues.append(f"Unsupported schema_version: {seq.get('schema_version')}")
     return issues
 
@@ -179,11 +187,12 @@ def save_sequence(seq: dict[str, Any], *, root: Path | None = None) -> Path:
 
 
 def load_sequence(path: Path) -> dict[str, Any]:
-    seq = json.loads(path.read_text())
-    issues = validate_sequence(seq)
+    data = json.loads(path.read_text())
+    issues = validate_sequence(data)
     if issues:
         raise ValueError("; ".join(issues))
-    return seq
+    data["memory_bank"] = ensure_memory_bank(data.get("memory_bank"))
+    return data
 
 
 def find_sequence(name_or_slug: str, *, root: Path | None = None) -> Path | None:
@@ -238,9 +247,13 @@ def get_clip(seq: dict[str, Any], clip_id: str) -> dict[str, Any] | None:
     return None
 
 
-def build_handoff_from_clip(clip: dict[str, Any]) -> dict[str, Any]:
+def build_handoff_from_clip(
+    clip: dict[str, Any],
+    *,
+    memory_bank: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     """Generate handoff packet for the next clip in the chain."""
-    return {
+    packet: dict[str, Any] = {
         "packet_type": "sequence_extend_handoff",
         "schema_version": SCHEMA_VERSION,
         "created_at": _now_iso(),
@@ -260,6 +273,9 @@ def build_handoff_from_clip(clip: dict[str, Any]) -> dict[str, Any]:
             "Run chain QA before approving next clip",
         ],
     }
+    if memory_bank is not None:
+        packet["memory_bank"] = ensure_memory_bank(memory_bank)
+    return packet
 
 
 def build_extend_prompt(
@@ -311,7 +327,29 @@ def build_extend_prompt(
         "Sound Layer: lip-synced dialogue continuation, SFX carry-over, ambience match, music cue at t=0",
         "Physics: weighty momentum, realistic cloth/hair dynamics, no morphing at stitch boundary",
     ]
+    memory_block = memory_bank_to_prompt_block(seq.get("memory_bank"))
+    # Only inject when bank has real content (not the empty placeholder).
+    if memory_block and not memory_block.rstrip().endswith("(empty)"):
+        lines.append("")
+        lines.append(memory_block)
     return "\n".join(lines)
+
+
+def sync_memory_from_clip(
+    seq: dict[str, Any],
+    clip: dict[str, Any],
+    *,
+    character_slug: str | None = None,
+    character_name: str | None = None,
+) -> dict[str, Any]:
+    """Merge clip continuity into seq.memory_bank in place; return seq."""
+    seq["memory_bank"] = apply_clip_to_memory_bank(
+        seq.get("memory_bank"),
+        clip,
+        character_slug=character_slug,
+        character_name=character_name,
+    )
+    return seq
 
 
 def run_chain_qa(
