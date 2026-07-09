@@ -2,19 +2,25 @@
   <img src="assets/banner.jpg" alt="Grok Imagine Cinematic Studio Banner" width="100%">
 </p>
 
-# 🎬 Grok Imagine Cinematic Studio v3.6.6 "Odyssey Native"
+# 🎬 Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native"
 
 **The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (coding) · Grok 4.3 (cinematic 1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
 Transform any story into emotionally powerful, production-ready cinematic video with **Imagine Video 1.0** ($0.05/sec) or **1.5 native image-to-video** with one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
-[![Version](https://img.shields.io/badge/version-3.6.6-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
+[![Version](https://img.shields.io/badge/version-3.6.7-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Grok](https://img.shields.io/badge/Grok-4.5%20Build%20%2B%204.3%20cinematic%20%2B%20Imagine-purple)](https://x.ai)
 
 ---
 
-## ✨ What's New in v3.6.6 (Dual Model Stack)
+## ✨ What's New in v3.6.7
+
+- **Guided Production Bible wizard** — `create-bible --wizard` + Web UI Guided Bible Creator (shared stages → existing bible builder)
+- **Catalog release pin hygiene** — `plugin catalog check --release` green after pin-only follow-up commits
+- Builds on **v3.6.6 dual model stack** (Grok 4.5 Build + Grok 4.3 cinematic)
+
+## ✨ v3.6.6 Dual Model Stack
 
 - **Dual stack** — cinematic orchestration on **`grok-4.3`** (1M context); Grok Build / coding on **`grok-4.5`**
 - **Grok Build ≥ 0.2.93** documented as minimum recommended CLI (`grok --version`)
@@ -67,7 +73,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 ### 1. Fastest: Master Prompt Activation (Recommended)
 1. Copy the content of [`MASTER_PROMPT_v3.6.md`](MASTER_PROMPT_v3.6.md)
 2. Paste into a new **Grok 4.3** (long Bible) or **Grok Build / Grok 4.5** chat (enable reasoning=medium/high for complex productions)
-3. Type: `Activate Grok Imagine Cinematic Studio v3.6.6`
+3. Type: `Activate Grok Imagine Cinematic Studio v3.6.7`
 
 ### 2. Python CLI (Power Users)
 ```bash
@@ -236,6 +242,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.6 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (coding), Grok 4.3 (cinematic), and Imagine Video 1.0/1.5*
+*Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (coding), Grok 4.3 (cinematic), and Imagine Video 1.0/1.5*
 
 *Last updated: June 26, 2026 — v3.6.5*

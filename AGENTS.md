@@ -2,7 +2,7 @@
 
 **This file provides context and instructions for AI coding agents and assistants working in this workspace.**
 
-**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio v3.6.6, dual Grok 4.5 Build + Grok 4.3 cinematic stack, Grok Build ≥ 0.2.93, plugin marketplace, AI Polish Director)  
+**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio v3.6.7, guided Production Bible wizard, dual Grok 4.5 Build + Grok 4.3 cinematic stack, Grok Build ≥ 0.2.93, plugin marketplace, AI Polish Director)  
 **Canonical Source:** https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/AGENTS.md
 
 Think of this as the single source of truth for how to interact with this Grok/xAI agent environment in `/home/workdir/`.
@@ -204,13 +204,13 @@ Local config: `~/.grok/config.toml` — `[models] default = "grok-4.5"` and `for
 
 ## Project-Specific Notes
 
-- Primary ongoing project: **Grok Imagine Cinematic Studio** (v3.6.6 dual stack) and related custom skills.
+- Primary ongoing project: **Grok Imagine Cinematic Studio** (v3.6.7 dual stack + guided bible wizard) and related custom skills.
 - All generated artifacts **must** be saved to `/home/workdir/artifacts/`.
 - Persistent state and custom skills live in `/home/workdir/.grok/skills/`.
 - Grok plugin marketplace lives in `.grok-plugin/` (marketplace.json, plugin.json, plugin-index.json with 44 skills + 11 commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - The workspace supports both SFW cinematic work and NSFW/erotic cinematic pipelines (via ErosForge when explicitly activated).
 - **Dual model stack:** cinematic `grok-4.3` (1M) + Build/coding `grok-4.5` + Imagine 1.0 default; `VIDEO_PIPELINE_SPEC` wired everywhere. 1.5 available for native-audio workflows.
-- Recent 3.6.6 work: dual Grok 4.5 / 4.3 registry, Grok Build ≥ 0.2.93 guidance, `models verify` dual-stack gate.
+- Recent 3.6.7 work: guided Production Bible wizard, catalog release-pin hygiene; 3.6.6 dual stack remains the model baseline.
 - Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, RELEASE_NOTES_v3.6.md).
 
 ## Quick Start for New Tasks
@@ -229,4 +229,4 @@ Local config: `~/.grok/config.toml` — `[models] default = "grok-4.5"` and `for
 **This AGENTS.md is the canonical reference for all AI agents operating in this environment.**  
 Update it whenever workflows, skills, or best practices evolve (e.g. new skills, plugin changes, model updates, or doc releases).
 
-*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.6.6 dual stack)*
+*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.6.7)*

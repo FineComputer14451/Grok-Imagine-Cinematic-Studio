@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from cli.production import build_production_bible  # noqa: E402
 
-# Canonical top-level keys emitted by build_production_bible (v3.6.6).
+# Canonical top-level keys emitted by build_production_bible (v3.6.7).
 # Wizard tests assert output keys are exactly this set (or a superset only if
 # production.py is intentionally extended in the same change).
 REQUIRED_BIBLE_KEYS = frozenset(

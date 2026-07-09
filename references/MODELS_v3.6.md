@@ -1,9 +1,9 @@
-# Model Registry v3.6.6 — Grok Build & xAI (Dual Stack)
+# Model Registry v3.6.7 — Grok Build & xAI (Dual Stack)
 
 Canonical model slugs for Grok Imagine Cinematic Studio. Implemented in `tools/models.py`.
 
 **Last updated:** July 2026  
-**Studio target:** v3.6.6  
+**Studio target:** v3.6.7  
 **Source:** [xAI Models & Pricing](https://docs.x.ai/developers/models), [Grok 4.5](https://docs.x.ai/developers/grok-4-5), local `grok models`
 
 **Implementation note:** Defaults live only in `ROLE_DEFAULTS` / `STACK_CONTRACT` (not per-model flags). Aliases live on each model entry. `models verify` is data-driven (alias integrity + dual-stack contract) and soft-probes `grok --version` against recommended **0.2.93**.

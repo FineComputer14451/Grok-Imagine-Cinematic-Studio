@@ -5,33 +5,23 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+
+### Fixed
+
+### Changed
+
+---
+
+## [3.6.7] - 2026-07-09
+
+### Added
 - **Guided Production Bible wizard** — shared stage data (`tools/cli/bible_stages.py`) maps answers to kwargs for existing `build_production_bible` (no second schema). CLI: `create-bible --wizard` (TTY-only; direct `create-bible "Title"` remains default for scripts). Web UI: Production → Guided Bible Creator multi-step form. Free-text logline/characters/world/tech notes roll into `notes`. Design + implementation plan under `docs/superpowers/`.
-- **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, and `scripts/generate_plugin_index.py` for `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio`
-- **`verify --plugin`** — validates Grok plugin checkout (44 skills, 11 slash commands, model registry)
-- **`cinematic-studio plugin`** — `status`, `list`, and `catalog` subcommands (`check [--release]`, `pin`) for manifest, index, and marketplace pinning (via shared `tools/plugin_catalog.py`)
 
 ### Fixed
 - **`plugin catalog check --release` chicken-and-egg** — release pin accepts install SHA == HEAD **or** ancestor with only `.grok-plugin` catalog paths after it (pin-only follow-up). A commit cannot embed its own hash in `marketplace.json`; docs/CLI workflow updated (content → pin → catalog-only commit).
-- **`plugin_commands` import** — fix `ModuleNotFoundError: No module named 'tools'` when invoking `python tools/cinematic_studio_cli.py` (import `plugin_catalog` directly to match CLI `sys.path`)
-- **Installer manifest sync** — `required_skills.manifest` expanded to 44 skills; release bundle, `verify --all`, and GitHub release zip aligned with the plugin suite
-- **Grok marketplace install** — `.grok-plugin/marketplace.json` uses pinned `url`+`sha` source (required for `grok plugin install …@finecomputer14451/grok-imagine-cinematic-studio`); `generate_plugin_index.py` syncs sha from `git HEAD`
 
 ### Changed
-- **Meta-installer docs** and `references/installation_guide.md` — explicit Method A (meta/zip) vs Method B (Grok plugin) install paths
-- **Release build scripts** — normalize relative zip output paths before staging `cd` (fixes `artifacts/*.zip` builds)
-- **Plugin tooling** — centralized discovery/build/pin/validate into `tools/plugin_catalog.py`; `generate_plugin_index.py`, verify_plugins.sh, and release_plugin_catalog.sh now delegate to CLI + shared module; atomic `.grok-plugin/` commit hygiene enforced
-
-### Removed
-- **Deprecated `agents/`** — legacy v3.4/v3.5 stubs; canonical Role Cards remain in `references/agents/`
-- **Stale skill mirrors** — duplicate Role Cards and v3.5 prompts under `grok-imagine-cinematic-studio/references/`
-- **Duplicate `references/agents/MASTER_PROMPT_v3.6.md`** — root `MASTER_PROMPT_v3.6.md` is canonical
-
-### Changed
-- Moved `REPOSITORY_STRUCTURE.md` and `Example_Production_Bible_Example.md` into `docs/archive/` and `examples/`
-- **CI workflow** — removed deprecated `agents/**` path filters and validation scan
-- **README.md** — comprehensive update for v3.6.5 (plugin marketplace, 44-skill suite, model stack everywhere, updated architecture/project structure, agent crew to v3.6.5, CLI/Web UI examples, links)
-- **Web UI** — migrated all Streamlit widgets (st.dataframe, st.button, st.form_submit_button) from deprecated `use_container_width=True` to `width="stretch"`. Added `str()` guard for dashboard health column for dataframe robustness. Affects dashboard, dna, imagine, nsfw, production, tools pages.
-- **Imagine 1.0 installed as default** — DEFAULT_IMAGINE_VIDEO_MODEL switched to `grok-imagine-video` (1.0, $0.05/sec); 1.5 remains available for native-audio. Updated models.py verify, web_ui, MODELS doc, and compatibility notes.
+- **Studio version** — `VERSION` / CLI / Web UI / plugin manifests → **3.6.7**
 
 ---
 

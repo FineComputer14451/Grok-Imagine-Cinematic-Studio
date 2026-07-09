@@ -130,7 +130,7 @@ def test_model_stack_summary_dual() -> None:
 def test_model_compatibility() -> None:
     result = verify_model_compatibility()
     assert result["compatible"], result["issues"]
-    assert result["studio_version"] == "3.6.6"
+    assert result["studio_version"] == "3.6.7"
     assert result["min_grok_build_cli_version"] == "0.2.93"
     assert "required_roles" in result
     assert isinstance(result.get("warnings"), list)

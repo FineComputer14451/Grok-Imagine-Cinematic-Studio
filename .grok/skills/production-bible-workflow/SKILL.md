@@ -66,7 +66,7 @@ ACTIVATE ANIMATIC DIRECTOR
 ## Phase 5 — Production activation
 
 ```
-Activate Grok Imagine Cinematic Studio v3.6.6
+Activate Grok Imagine Cinematic Studio v3.6.7
 ACTIVATE REFERENCE_CURATOR
 ACTIVATE SFW_BATCH_ORCHESTRATOR   # multi-shot
 # or

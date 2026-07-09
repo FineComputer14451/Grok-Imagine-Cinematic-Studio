@@ -2,7 +2,7 @@
 
 **The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (coding) · Grok 4.3 (cinematic 1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
-**Version:** 3.6.6 "Odyssey Native" (July 2026)  
+**Version:** 3.6.7 "Odyssey Native" (July 2026)  
 **Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
 **Key Improvements:** Dual model stack (Grok 4.5 Build/coding + Grok 4.3 cinematic 1M), Grok Build ≥ 0.2.93, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
 
@@ -38,7 +38,7 @@ streamlit run web_ui/app.py
 ### Method 3: Full Activation Prompt (Classic — Updated for v3.6)
 1. Copy this entire prompt (or the new `MASTER_PROMPT_v3.6.md`)
 2. Paste into a **new Grok 4.3** (long Bible) or **Grok Build / Grok 4.5** chat (enable reasoning=medium or high for complex productions)
-3. Type: `Activate Grok Imagine Cinematic Studio v3.6.6`
+3. Type: `Activate Grok Imagine Cinematic Studio v3.6.7`
 
 Then choose your workflow:
 - **A** — Full Production Bible + First 1.5 Sequence (Recommended)

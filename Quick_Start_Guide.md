@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio v3.6 — Quick Start Guide
 
-**Version:** 3.6.6 | **Last Updated:** July 9, 2026
+**Version:** 3.6.7 | **Last Updated:** July 9, 2026
 
 ---
 

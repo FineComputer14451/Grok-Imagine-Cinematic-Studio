@@ -1,10 +1,18 @@
 # RELEASE NOTES — Grok Imagine Cinematic Studio v3.6 "Odyssey Native"
 
 **Release Date:** June 20, 2026  
-**Latest Patch:** v3.6.6 (July 9, 2026)  
+**Latest Patch:** v3.6.7 (July 9, 2026)  
 **Focus:** Full native integration with **Grok Imagine Video 1.5** + dual Grok 4.5 Build / Grok 4.3 cinematic stack + Grok plugin marketplace support
 
 ---
+
+## v3.6.7 Patch (July 9, 2026) — Guided Bible Wizard + Catalog Pin Hygiene
+
+- **Guided Production Bible wizard** — `create-bible --wizard` (TTY) + Web UI Guided Bible Creator; shared stages → existing `build_production_bible` (no dual schema; direct path stays script-default)
+- **Release pin fix** — `plugin catalog check --release` accepts pin-only catalog follow-up commits (install SHA = content revision)
+- **Studio / plugin version** — **3.6.7**
+
+**Activation:** `Activate Grok Imagine Cinematic Studio v3.6.7`
 
 ## v3.6.6 Patch (July 9, 2026) — Dual Model Stack
 
@@ -15,11 +23,10 @@
 - **CLI** — unknown `--chat-model` warns and falls back to cinematic default; `models list` tags cinematic/build defaults from helpers
 - **Docs & skills** — README, AGENTS, MASTER_PROMPT, Quick Start, MODELS, Role Cards, quota pricing, meta-installer paths aligned
 - **Plugin** — `.grok-plugin` version **3.6.6** + marketplace pin for dual-stack install
-- **Guided Production Bible wizard** (post-pin) — `create-bible --wizard` + Web UI Guided Bible Creator; shared stages feed existing `build_production_bible` (script-safe direct path unchanged)
 
-**Activation:** `Activate Grok Imagine Cinematic Studio v3.6.6`
+**Activation (historical):** `Activate Grok Imagine Cinematic Studio v3.6.6`
 
-**Recommended models (v3.6.6):**
+**Recommended models (v3.6.6+ dual stack):**
 
 | Layer | Slug | Notes |
 |-------|------|-------|

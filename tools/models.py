@@ -4,7 +4,7 @@ Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio.
 
 Single source of truth for CLI, Web UI, quota optimizer, and documentation.
 
-Dual stack (v3.6.6+):
+Dual stack (v3.6.6+ / studio v3.6.7):
   - Cinematic orchestration (long Bibles, 1M context): grok-4.3
   - Grok Build / coding / agentic: grok-4.5
   - Recommended CLI binary: Grok Build ≥ 0.2.93 (not an API slug)
@@ -185,7 +185,7 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
     },
 }
 
-STUDIO_COMPATIBILITY_VERSION = "3.6.6"
+STUDIO_COMPATIBILITY_VERSION = "3.6.7"
 
 # Role → slug (unique by construction; no duplicate bag)
 REQUIRED_MODEL_ROLES: dict[str, str] = {
