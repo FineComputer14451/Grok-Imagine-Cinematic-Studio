@@ -38,7 +38,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.6.5. Installs updates and verifies the full skill suite plus CLI to…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.6.7. Installs updates and verifies the full skill suite plus CLI to…"
           },
           {
             "name": "continuity-consistency-guardian",
@@ -66,7 +66,7 @@
           },
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.6.5 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.6.7 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
           },
           {
             "name": "handoff-packet-validator",
@@ -188,7 +188,7 @@
           },
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.6 with the full 23-agent production suite and native Imagine Video 1.5 pipeli…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.6.7 with the full 23-agent production suite, dual model stack, and native Ima…"
           },
           {
             "name": "dashboard",
@@ -228,7 +228,7 @@
           }
         ]
       },
-      "sha": "3dec96e319cd45356d181b45581026d7486405a9"
+      "sha": "cb4220d2fde8a5140878f4b8af72d74d45896f89"
     }
   }
 }
