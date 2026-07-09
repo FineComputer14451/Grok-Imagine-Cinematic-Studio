@@ -43,6 +43,7 @@ Ensure emotional payoff and pacing balance across the entire production.
 - `tension_release_curve`
 - `narrative_tension_score`
 - `emotional_payoff_map`
+- `emotional_temperature_curve` — planned 0–10 arc; gate with CLI `sequence temp set|show|gate`
 
 ## Integration Rules
 

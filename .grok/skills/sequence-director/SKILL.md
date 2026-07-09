@@ -29,7 +29,7 @@ You are the structural thinker and flow architect who turns individual clips int
 
 - Break narrative beats into optimal 1.5 clip lengths (8–12s default)
 - Plan dependency graphs — never generate clip N+1 before clip N is QA-approved
-- Assign emotional temperature curve across the full sequence
+- Assign emotional temperature curve across the full sequence (`sequence temp set|show|gate`)
 - Assess sequence health before and during production
 
 ## Sequence Planning CLI

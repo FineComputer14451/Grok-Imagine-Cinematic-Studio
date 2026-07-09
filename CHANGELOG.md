@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **Emotional temperature gate (roadmap #7)** — `tools/emotional_temperature.py` normalizes `emotional_temperature_curve`, infers observed temp, flags flat/spike/off-plan; CLI `sequence temp set|show|gate`; extend prompts may include planned temperature
 - **Audio momentum integrity (roadmap #6)** — `tools/audio_momentum.py` diffs AMV across stitches (dialogue/SFX/music/lip-sync); Chain QA Assist uses evidence for `audio_momentum_sync`; CLI `sequence amv-check`
 - **Extend re-gen loop (roadmap #5)** — `tools/extend_regen.py` builds fix prompts from chain QA + drift/seam + memory bank; per-clip/sequence attempt budget; CLI `sequence regen plan|apply|run` (run spends one attempt via existing sequence runner)
 - **Sequence memory bank (roadmap #4)** — `tools/sequence_memory.py`; `sequence.json` `memory_bank` (schema 1.0+1.1); handoff/extend-prompt embed running cast/prop/lighting/audio state; CLI `sequence memory show|sync`
