@@ -529,19 +529,21 @@ cinematic_studio_verify_models() {
     local tools_root="${1:-}"
     local cli_py=""
 
-    if [[ -f "$PROJECT_DIR/tools/cinematic_studio_cli.py" ]]; then
-        cli_py="$PROJECT_DIR/tools/cinematic_studio_cli.py"
-    elif [[ -n "$tools_root" && -f "$tools_root/tools/cinematic_studio_cli.py" ]]; then
+    # Prefer explicit tools_root (plugin checkout) so a stale PROJECT_DIR copy
+    # cannot shadow the installed dual-stack registry (v3.6.6+).
+    if [[ -n "$tools_root" && -f "$tools_root/tools/cinematic_studio_cli.py" ]]; then
         cli_py="$tools_root/tools/cinematic_studio_cli.py"
     elif [[ -n "${CINEMATIC_REPO_ROOT:-}" && -f "$CINEMATIC_REPO_ROOT/tools/cinematic_studio_cli.py" ]]; then
         cli_py="$CINEMATIC_REPO_ROOT/tools/cinematic_studio_cli.py"
+    elif [[ -f "$PROJECT_DIR/tools/cinematic_studio_cli.py" ]]; then
+        cli_py="$PROJECT_DIR/tools/cinematic_studio_cli.py"
     fi
 
     if [[ -z "$cli_py" ]] && cinematic_studio_ensure_tools_local; then
         cli_py="$PROJECT_DIR/tools/cinematic_studio_cli.py"
     fi
 
-    echo "Model compatibility (Grok 4.3 + Imagine 1.5 + Grok Build):"
+    echo "Model compatibility (Grok 4.5 Build + Grok 4.3 cinematic + Imagine):"
     if [[ -z "$cli_py" ]]; then
         echo "⚠️  Skipping model check (CLI tools unavailable — re-run install)"
         echo ""
