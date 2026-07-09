@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **Long-form continuity evidence loop (v1)** — `tools/identity_drift.py`, `tools/seam_report.py`; Chain QA Assist v2 blends drift + seam into SFW scores with `evidence` block; CLI `sequence drift-score`, `sequence seam-report`, and `qa-assist --dna`
 
 ### Fixed
 
