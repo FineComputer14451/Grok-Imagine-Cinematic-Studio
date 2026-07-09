@@ -69,10 +69,11 @@ Sequence health:
 python tools/cinematic_studio_cli.py sequence health "Neon Alley Chase"
 ```
 
-Evidence inputs (drift / seam for QA Assist v2):
+Evidence inputs (drift / seam / AMV for QA Assist v2):
 ```bash
 python tools/cinematic_studio_cli.py sequence drift-score --dna dna.json --images clip_001.png clip_002.png
 python tools/cinematic_studio_cli.py sequence seam-report --prev last.png --next first.png
+python tools/cinematic_studio_cli.py sequence amv-check --prev prev_amv.json --next next_amv.json
 ```
 
 ## Decisions
