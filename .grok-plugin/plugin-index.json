@@ -109,6 +109,10 @@
             "description": "All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates…"
           },
           {
+            "name": "multi-character-identity-arbiter",
+            "description": "Arbitrate primary and secondary Character DNA locks for multi-cast Grok Imagine scenes. Builds dual inject blocks and c…"
+          },
+          {
             "name": "narrative-arc-pacing-strategist",
             "description": "Story rhythm master and emotional architect. Designs three-act structure, pacing heatmap, tension/release curves, and e…"
           },
@@ -228,7 +232,7 @@
           }
         ]
       },
-      "sha": "cb4220d2fde8a5140878f4b8af72d74d45896f89"
+      "sha": "81f8718748604a1dba37d2802d66159c449e491a"
     }
   }
 }
