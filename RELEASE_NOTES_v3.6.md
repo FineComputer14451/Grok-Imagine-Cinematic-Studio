@@ -1,10 +1,32 @@
 # RELEASE NOTES — Grok Imagine Cinematic Studio v3.6 "Odyssey Native"
 
 **Release Date:** June 20, 2026  
-**Latest Patch:** v3.6.5 (June 26, 2026)  
-**Focus:** Full native integration with **Grok Imagine Video 1.5** + Grok Build model registry + NSFW production pipelines + Grok plugin marketplace support
+**Latest Patch:** v3.6.6 (July 9, 2026)  
+**Focus:** Full native integration with **Grok Imagine Video 1.5** + dual Grok 4.5 Build / Grok 4.3 cinematic stack + Grok plugin marketplace support
 
 ---
+
+## v3.6.6 Patch (July 9, 2026) — Dual Model Stack
+
+- **Dual stack** — cinematic orchestration default **`grok-4.3`** (1M context); Grok Build / coding default **`grok-4.5`**
+- **Grok Build ≥ 0.2.93** recommended CLI (`RECOMMENDED_GROK_BUILD_CLI_VERSION`; soft-probed by `models verify`)
+- **Registry redesign** — `STACK_CONTRACT` → `ROLE_DEFAULTS` (single source), cached alias maps, data-driven `verify_model_compatibility()`, `REQUIRED_MODEL_ROLES`
+- **`grok-4.5` pricing** — $2 / $6 per 1M ($0.50 cached in), 500k context; `grok-build-0.1` kept as legacy
+- **CLI** — unknown `--chat-model` warns and falls back to cinematic default; `models list` tags cinematic/build defaults from helpers
+- **Docs & skills** — README, AGENTS, MASTER_PROMPT, Quick Start, MODELS, Role Cards, quota pricing, meta-installer paths aligned
+- **Plugin** — `.grok-plugin` version **3.6.6** + marketplace pin for dual-stack install
+
+**Activation:** `Activate Grok Imagine Cinematic Studio v3.6.6`
+
+**Recommended models (v3.6.6):**
+
+| Layer | Slug | Notes |
+|-------|------|-------|
+| Cinematic / Production Bibles | `grok-4.3` | 1M context |
+| Grok Build CLI / coding API | `grok-4.5` | Default agent; recommend CLI ≥ 0.2.93 |
+| Build fork | `grok-build` | Skills / tooling |
+| Imagine Video | `grok-imagine-video` (1.0) / `1.5` | Cost default vs native audio |
+| Imagine Image | `grok-imagine-image` | Reference stills |
 
 ## v3.6.5 Patch (June 24–26, 2026)
 
@@ -56,11 +78,11 @@ See `CHANGELOG.md` for full details.
 - Consistent markdown formatting across all skill files (SKILL.md)
 - Enhanced protocols for 1.5 native video + audio workflows + plugin distribution
 
-### Agent & System Upgrades (v3.6.5)
-- All core agents at v3.6.5 with 1.5-specific protocols, model stack tables, decision frameworks, and output formats
+### Agent & System Upgrades (v3.6.5–v3.6.6)
+- All core agents at v3.6.5+ with 1.5-specific protocols, model stack tables, decision frameworks, and output formats
 - Enhanced long-form sequencing (60–180s+) with low-degradation 1.5 native chaining + AUDIO_MOMENTUM_VECTOR
 - Stronger emotional + audio continuity across extended sequences
-- Updated CLI & Web UI with full model selection (`grok-4.3` / `grok-build-0.1` / `grok-imagine-video-1.5`), `VIDEO_PIPELINE_SPEC`, per-second cost estimation, and Streamlit API compatibility
+- **v3.6.6 dual stack:** cinematic `grok-4.3` + Build/coding `grok-4.5`; CLI/Web UI model pickers and `models verify` updated
 - Grok plugin distribution for the full 23-agent + specialist suite
 
 ---
