@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio — Agent Index v3.6.7
 
-**23 core agents** · **+9 specialists** (pipeline + i2i + NSFW opt-in) · **Studio v3.6.7** · **Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5** · July 2026
+**23 core agents** · **+10 specialists** (pipeline + i2i + NSFW opt-in) · **Studio v3.6.7** · **Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5** · July 2026
 
 > Agent display names keep the **v3.6.5** suffix (CLI registry / Role Card labels). Studio release version is **3.6.7**.
 
@@ -104,6 +104,7 @@ Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.6.7)** block.
 | Image-to-Video Specialist v3.6.5 | `Image_to_Video_Specialist.md` | `image-to-video-specialist` | `ACTIVATE I2V_SPECIALIST` |
 | SFW Batch Orchestrator v1.0 | `SFW_Batch_Orchestrator.md` | `sfw-batch-orchestrator` | `ACTIVATE SFW_BATCH_ORCHESTRATOR` |
 | Assembly Editor v3.6.5 | `Assembly_Editor.md` | `assembly-editor` | `ACTIVATE ASSEMBLY_EDITOR` |
+| Multi-Character Identity Arbiter v3.6.5 | `Multi_Character_Identity_Arbiter.md` | `multi-character-identity-arbiter` | `ACTIVATE MULTI_CHARACTER_ARBITER` |
 
 **Order of operations:** Reference Curator → (i2i if needed) → I2V Specialist → generation/QA → Assembly Editor → color → polish.
 
@@ -141,6 +142,7 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 | 2 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | 4 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
+| 4b | Multi-Cast Identity | `ACTIVATE MULTI_CHARACTER_ARBITER` + `ACTIVATE IDENTITY_LOCK` |
 | 5 | Native Audio Pass | `ACTIVATE SONIC_ARCHITECT` + `GENERATE_NATIVE_AUDIO_SEQUENCE` |
 | 6 | Marketing Package | `ACTIVATE KEY_ART_DESIGNER` + `ACTIVATE TRAILER_DIRECTOR` |
 | 7 | QA + Delivery | `RUN QA REVIEW` → `ACTIVATE AI_POLISH_DIRECTOR` |
@@ -181,4 +183,4 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — 23 core agents + 9 specialists + Tier 1 skills (+ NSFW opt-in)*
+*Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — 23 core agents + 10 specialists + Tier 1 skills (+ NSFW opt-in)*
