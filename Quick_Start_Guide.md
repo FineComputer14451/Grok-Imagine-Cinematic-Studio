@@ -104,7 +104,9 @@ You can activate any agent directly:
    Provide title, logline, genre, tone, target length, and key characters.
 
 3. **Generate & Lock the Production Bible**  
-   Include `VIDEO_PIPELINE_SPEC` for 1.5 native settings.
+   Include `VIDEO_PIPELINE_SPEC` for 1.5 native settings.  
+   CLI: `create-bible "Title"` (scripts) or `create-bible --wizard` (guided TTY).  
+   Web UI: Production → Export Bible (quick) or Guided Bible Creator (multi-step).
 
 ### Phase 2: Pre-Production
 4. **Generate Reference Materials** (Recommended)  

@@ -19,13 +19,19 @@ python tools/cinematic_studio_cli.py models verify
 python tools/cinematic_studio_cli.py status
 ```
 
-Create bible + activation prompt:
+Create bible + activation prompt (direct path — preferred for scripts):
 ```bash
 python tools/cinematic_studio_cli.py create-bible "Project Title" \
   --genre "Sci-Fi" --chat-model grok-4.3 --video-model 1.5
 
 python tools/cinematic_studio_cli.py generate-prompt "Opening scene description" \
   --chat-model grok-4.3 --video-model 1.5 -o artifacts/activation_prompt.txt
+```
+
+Optional guided wizard (interactive TTY only; same Bible shape):
+```bash
+python tools/cinematic_studio_cli.py create-bible --wizard
+# Web UI: Production → Guided Bible Creator
 ```
 
 ## Phase 2 — Characters

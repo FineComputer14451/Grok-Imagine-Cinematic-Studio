@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
+from typing import Any
 
 import typer
 from rich.panel import Panel
@@ -13,10 +15,23 @@ from models import DEFAULT_IMAGINE_VIDEO_MODEL, DEFAULT_XAI_CHAT_MODEL, resolve_
 from project_state import load_project_state, save_project_state
 from quota_optimizer import estimate_production
 
+from cli.bible_stages import should_run_wizard, summary_and_next_steps
+from cli.bible_wizard_cli import run_bible_wizard
 from cli.helpers import assess_risk_from_state, resolve_chat_model_cli
 from cli.production import build_activation_prompt, build_production_bible
 from cli.quota_display import print_production_estimate_table
 from cli.shared import console
+
+
+def _persist_bible(bible: dict[str, Any], output: str) -> None:
+    """Write bible JSON and update project state."""
+    Path(output).write_text(json.dumps(bible, indent=2))
+    state = load_project_state()
+    state["project"] = bible
+    save_project_state(state)
+    console.print(f"[green]✅ Rich Production Bible created:[/green] {output}")
+    console.print("[dim]Includes locked variables, key agents, and recommended phases[/dim]")
+    console.print(summary_and_next_steps(bible))
 
 
 def register(app: typer.Typer) -> None:
@@ -74,28 +89,53 @@ def register(app: typer.Typer) -> None:
 
     @app.command(name="create-bible")
     def create_bible(
-        title: str = typer.Argument(..., help="Project title"),
+        title: str | None = typer.Argument(None, help="Project title (omit with --wizard on a TTY)"),
         genre: str = typer.Option("Cinematic", "--genre", "-g"),
         chat_model: str = typer.Option(DEFAULT_XAI_CHAT_MODEL, "--chat-model", help="xAI chat model (grok-4.3 cinematic, grok-4.5 build)"),
         video_model: str = typer.Option(DEFAULT_IMAGINE_VIDEO_MODEL, "--video-model", "-m", help="Imagine video model slug or alias"),
         output: str = typer.Option("production_bible.json", "--output", "-o"),
+        wizard: bool = typer.Option(False, "--wizard", "-w", help="Guided interactive stages (requires TTY)"),
     ):
-        """Generate a rich, structured Production Bible."""
+        """Generate a rich, structured Production Bible (direct or --wizard)."""
+        isatty = sys.stdin.isatty()
+        use_wizard = should_run_wizard(
+            wizard_flag=wizard,
+            title=title,
+            stdin_isatty=isatty,
+        )
+
+        if use_wizard:
+            if not isatty:
+                console.print(
+                    "[red]create-bible --wizard requires an interactive terminal.[/red]\n"
+                    '[dim]Use: create-bible "Title" --genre ... for scripts[/dim]'
+                )
+                raise typer.Exit(2)
+            seed: dict[str, Any] = {
+                "genre": genre,
+                "chat_model": chat_model,
+                "video_model": video_model,
+            }
+            if title and str(title).strip():
+                seed["title"] = str(title).strip()
+            run_bible_wizard(seed=seed, output=output, persist=_persist_bible)
+            return
+
+        if not title or not str(title).strip():
+            console.print(
+                "[red]Project title is required for non-interactive create-bible.[/red]\n"
+                "[dim]Pass a title, or run with --wizard on a TTY.[/dim]"
+            )
+            raise typer.Exit(2)
+
         chat_slug = resolve_chat_model_cli(chat_model)
         bible = build_production_bible(
-            title,
+            str(title).strip(),
             genre=genre,
             chat_model=chat_slug,
             video_model=video_model,
         )
-        Path(output).write_text(json.dumps(bible, indent=2))
-
-        state = load_project_state()
-        state["project"] = bible
-        save_project_state(state)
-
-        console.print(f"[green]✅ Rich Production Bible created:[/green] {output}")
-        console.print("[dim]Includes locked variables, key agents, and recommended phases[/dim]")
+        _persist_bible(bible, output)
 
     memory_app = typer.Typer(help="Manage project memory entries")
     app.add_typer(memory_app, name="memory")

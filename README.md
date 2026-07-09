@@ -77,6 +77,7 @@ cinematic-studio --help
 # Examples (short form; also works as `python -m tools.cinematic_studio_cli`)
 cinematic-studio status
 cinematic-studio create-bible "Your Project Title"
+cinematic-studio create-bible --wizard   # optional guided stages (TTY); same Bible JSON
 cinematic-studio dna init "Elena Voss" --core "..." --facial "..."
 cinematic-studio sequence init "Neon Alley Chase" --duration 90
 cinematic-studio models list

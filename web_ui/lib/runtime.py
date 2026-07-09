@@ -38,6 +38,32 @@ except ImportError:
         return 23
 
 try:
+    from cli.bible_stages import (
+        STAGES,
+        answers_to_kwargs,
+        build_notes,
+        summary_and_next_steps,
+        validate_answers,
+    )
+
+    BIBLE_STAGES_AVAILABLE = True
+except ImportError:
+    BIBLE_STAGES_AVAILABLE = False
+    STAGES = []
+
+    def answers_to_kwargs(answers):  # type: ignore[misc]
+        raise RuntimeError("bible stages unavailable")
+
+    def build_notes(answers):  # type: ignore[misc]
+        return ""
+
+    def summary_and_next_steps(bible):  # type: ignore[misc]
+        return ""
+
+    def validate_answers(stage_id, answers):  # type: ignore[misc]
+        return ["bible stages unavailable"]
+
+try:
     from character_dna import (
         build_prompt_blocks,
         create_dna_scaffold,

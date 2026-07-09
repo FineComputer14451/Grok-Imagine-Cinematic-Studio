@@ -16,6 +16,12 @@ def test_runtime_imports() -> None:
     assert rt.ROOT == ROOT
     assert rt.STUDIO_VERSION
     assert rt.core_agent_count() >= 23
+    assert rt.BIBLE_STAGES_AVAILABLE is True
+    assert len(rt.STAGES) == 5
+    assert callable(rt.answers_to_kwargs)
+    assert callable(rt.validate_answers)
+    assert callable(rt.summary_and_next_steps)
+    assert callable(rt.build_notes)
 
 
 def test_session_helpers() -> None:
@@ -32,6 +38,12 @@ def test_page_modules_import() -> None:
 
     for mod in (dashboard, production, dna, sequences, imagine, quota, settings, tools, nsfw):
         assert callable(mod.render)
+
+
+def test_bible_wizard_ui_import() -> None:
+    from lib import bible_wizard_ui
+
+    assert callable(bible_wizard_ui.render_bible_wizard)
 
 
 def test_bootstrap_reexports() -> None:

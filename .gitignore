@@ -196,3 +196,5 @@ artifacts/animatics/
 
 # Streamlit
 .streamlit/secrets.toml
+# Superpowers brainstorm session artifacts (local only)
+.superpowers/

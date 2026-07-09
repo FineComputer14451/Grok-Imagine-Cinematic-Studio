@@ -6,6 +6,7 @@ import json
 
 import streamlit as st
 
+from lib import bible_wizard_ui
 from lib import runtime as rt
 from lib import session as sess
 
@@ -162,6 +163,9 @@ def render() -> None:
             file_name="production_bible.json",
             mime="application/json",
         )
+
+    st.divider()
+    bible_wizard_ui.render_bible_wizard()
 
     st.divider()
     st.subheader("🔌 Live xAI API")
