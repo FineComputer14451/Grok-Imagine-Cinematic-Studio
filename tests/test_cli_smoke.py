@@ -103,6 +103,13 @@ def test_sequence_temp_commands_registered() -> None:
     assert "gate" in r.stdout.lower()
 
 
+def test_sequence_cast_commands_registered() -> None:
+    r = run_cli("sequence", "cast", "--help")
+    assert r.returncode == 0
+    assert "arbitrate" in r.stdout.lower()
+    assert "inject" in r.stdout.lower()
+
+
 if __name__ == "__main__":
     test_main_file_is_small()
     test_main_help()
@@ -114,4 +121,5 @@ if __name__ == "__main__":
     test_sequence_memory_commands_registered()
     test_sequence_regen_commands_registered()
     test_sequence_temp_commands_registered()
+    test_sequence_cast_commands_registered()
     print("All CLI smoke tests passed")

@@ -884,3 +884,181 @@ def register(app: typer.Typer) -> None:
         console.print(f"[dim]Stored temperature_gate on {clip}[/dim]")
         if strict and not passed:
             raise typer.Exit(1)
+
+    cast_app = typer.Typer(help="Multi-character identity arbitration (roadmap #8)")
+    app.add_typer(cast_app, name="cast")
+
+    def _parse_cast_slugs(characters: str) -> list[str]:
+        return [s.strip() for s in characters.split(",") if s.strip()]
+
+    def _parse_cast_weights(weights: str | None) -> dict[str, float] | None:
+        if not weights or not str(weights).strip():
+            return None
+        out: dict[str, float] = {}
+        for part in str(weights).split(","):
+            part = part.strip()
+            if not part:
+                continue
+            if "=" not in part:
+                console.print(f"[red]Invalid weight entry (expected slug=0.7): {part}[/red]")
+                raise typer.Exit(1)
+            slug, raw = part.split("=", 1)
+            slug = slug.strip()
+            try:
+                out[slug] = float(raw.strip())
+            except ValueError as exc:
+                console.print(f"[red]Invalid weight value for '{slug}': {raw}[/red]")
+                raise typer.Exit(1) from exc
+        return out or None
+
+    def _print_cast_plan(plan: dict) -> None:
+        style = "green" if plan.get("pass") else "red"
+        console.print(
+            Panel(
+                f"Pass: [{style}]{plan.get('pass')}[/{style}]\n"
+                f"Primary: {plan.get('primary_name') or '—'} "
+                f"({plan.get('primary_slug') or '—'})\n"
+                f"Cast: {len(plan.get('cast') or [])} | "
+                f"Rules: {', '.join(plan.get('rules_applied') or []) or '—'}",
+                title="Cast arbitration",
+                border_style=style,
+            )
+        )
+        cast = plan.get("cast") or []
+        if cast:
+            table = Table(title="Cast", box=box.ROUNDED)
+            table.add_column("Role", style="cyan")
+            table.add_column("Slug", style="white")
+            table.add_column("Name")
+            table.add_column("Weight", justify="right")
+            table.add_column("Locked")
+            for entry in cast:
+                table.add_row(
+                    str(entry.get("role") or "—"),
+                    str(entry.get("slug") or "—"),
+                    str(entry.get("name") or "—"),
+                    f"{float(entry.get('ref_weight', 0)):.2f}",
+                    "yes" if entry.get("locked") else "no",
+                )
+            console.print(table)
+        conflicts = plan.get("conflicts") or []
+        if conflicts:
+            console.print("[bold]Conflicts:[/bold]")
+            for c in conflicts:
+                sev = c.get("severity", "info")
+                color = {"error": "red", "warn": "yellow", "info": "dim"}.get(sev, "white")
+                console.print(
+                    f"  [{color}]{sev}[/{color}] {c.get('code', '?')}: {c.get('message', '')}"
+                )
+        else:
+            console.print("[dim]No conflicts[/dim]")
+
+    def _arbitrate_from_options(
+        characters: str,
+        primary: str | None,
+        weights: str | None,
+    ) -> dict:
+        from multi_character_arbiter import arbitrate_cast, load_cast_dnas
+
+        slugs = _parse_cast_slugs(characters)
+        if not slugs:
+            console.print("[red]--characters requires at least one slug[/red]")
+            raise typer.Exit(1)
+        weight_map = _parse_cast_weights(weights)
+        try:
+            dnas = load_cast_dnas(slugs)
+        except ValueError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+        return arbitrate_cast(dnas, primary_slug=primary, weights=weight_map)
+
+    @cast_app.command("arbitrate")
+    def cast_arbitrate(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        characters: str = typer.Option(
+            ..., "--characters", "-c", help="Comma-separated character DNA slugs"
+        ),
+        primary: str = typer.Option(
+            None, "--primary", "-p", help="Primary slug (default: first character)"
+        ),
+        weights: str = typer.Option(
+            None, "--weights", help="Explicit weights: slug=0.7,other=0.3"
+        ),
+        save: bool = typer.Option(True, "--save/--no-save", help="Persist plan on sequence"),
+    ):
+        """Arbitrate cast lock for a sequence; store on sequence.cast_arbitration."""
+        seq = require_sequence(name)
+        plan = _arbitrate_from_options(characters, primary, weights)
+        _print_cast_plan(plan)
+
+        if save:
+            seq["cast_arbitration"] = plan
+            # Optional: ensure memory bank cast entries exist for each cast member
+            bank = seq.get("memory_bank")
+            if isinstance(bank, dict):
+                cast_bank = bank.setdefault("cast", {})
+                if isinstance(cast_bank, dict):
+                    for entry in plan.get("cast") or []:
+                        slug = entry.get("slug")
+                        if slug and slug not in cast_bank:
+                            cast_bank[slug] = {
+                                "slug": slug,
+                                "name": entry.get("name") or slug,
+                                "role": entry.get("role"),
+                                "ref_weight": entry.get("ref_weight"),
+                            }
+            path = save_sequence(seq)
+            console.print(f"[green]✅ Saved cast_arbitration on sequence:[/green] {path}")
+        else:
+            console.print("[dim]--no-save: plan not written to sequence[/dim]")
+
+    @cast_app.command("inject")
+    def cast_inject(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        characters: str = typer.Option(
+            None, "--characters", "-c", help="Comma-separated slugs (or use saved plan)"
+        ),
+        primary: str = typer.Option(
+            None, "--primary", "-p", help="Primary slug (with --characters)"
+        ),
+        weights: str = typer.Option(
+            None, "--weights", help="Explicit weights: slug=0.7,other=0.3"
+        ),
+        output: str = typer.Option(None, "--output", "-o", help="Write inject block to file"),
+    ):
+        """Print multi-character inject block (from saved plan or fresh arbitrate)."""
+        seq = require_sequence(name)
+
+        if characters:
+            plan = _arbitrate_from_options(characters, primary, weights)
+        else:
+            plan = seq.get("cast_arbitration")
+            if not plan or not isinstance(plan, dict):
+                console.print(
+                    "[red]No saved cast_arbitration on sequence. "
+                    "Run: sequence cast arbitrate <name> -c slug1,slug2 "
+                    "or pass --characters[/red]"
+                )
+                raise typer.Exit(1)
+
+        inject_block = plan.get("inject_block") or ""
+        if not inject_block and plan.get("cast"):
+            from multi_character_arbiter import build_multi_inject
+
+            inject_block = build_multi_inject(
+                plan["cast"],
+                plan.get("primary_slug") or "",
+            )
+
+        if output:
+            out_path = Path(output)
+            out_path.write_text(inject_block)
+            console.print(f"[green]✅ Inject block saved:[/green] {out_path}")
+        else:
+            console.print(
+                Panel(
+                    inject_block or "[empty]",
+                    title="Multi-character inject block",
+                    border_style="cyan",
+                )
+            )
