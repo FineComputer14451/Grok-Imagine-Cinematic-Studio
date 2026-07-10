@@ -92,6 +92,9 @@ def test_build_fix_prompt_includes_fixes_and_memory() -> None:
     assert "Character drift" in text or "drift" in text.lower()
     assert "Neon alley" in text or "SEQUENCE_MEMORY_BANK" in text
     assert "Continue the chase" in text or "chase" in text.lower()
+    # Lexicon-expanded NEGATIVES (default/high-risk pack includes flicker or morph)
+    assert "NEGATIVES" in text
+    assert "flicker" in text.lower() or "morph" in text.lower()
 
 
 def test_plan_regen_returns_structured_result() -> None:

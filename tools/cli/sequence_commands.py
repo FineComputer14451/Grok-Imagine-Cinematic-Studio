@@ -43,6 +43,14 @@ from sequence_chain import (
     update_sequence_health,
 )
 from sequence_runner import run_sequence_clip
+from stitch_artifact_lexicon import (
+    build_negative_pack,
+    build_positive_guards,
+    format_lexicon_markdown,
+    list_entries,
+    suggest_entries_from_chain_qa,
+    suggest_entries_from_seam,
+)
 
 from cli.helpers import assess_risk_from_state, require_clip, require_sequence, require_sequence_bundle
 from cli.shared import console
@@ -1273,3 +1281,143 @@ def register(app: typer.Typer) -> None:
                     border_style="cyan",
                 )
             )
+
+    # --- Stitch artifact lexicon (roadmap #11) ---
+    lex_app = typer.Typer(help="Stitch artifact lexicon (roadmap #11)")
+    app.add_typer(lex_app, name="artifact-lexicon")
+
+    @lex_app.command("list")
+    def artifact_lexicon_list(
+        category: str = typer.Option(
+            None, "--category", "-c", help="Filter by category (temporal, identity, …)"
+        ),
+        markdown: bool = typer.Option(
+            False, "--markdown", "-m", help="Print full markdown catalog"
+        ),
+    ):
+        """List stitch artifact lexicon entries (ids, names, categories)."""
+        if markdown:
+            ids = None
+            if category:
+                ids = [e["id"] for e in list_entries(category=category)]
+            console.print(Markdown(format_lexicon_markdown(ids)))
+            return
+
+        entries = list_entries(category=category)
+        if not entries:
+            console.print(
+                f"[yellow]No lexicon entries"
+                f"{f' for category={category}' if category else ''}[/yellow]"
+            )
+            return
+        table = Table(title="Stitch Artifact Lexicon", box=box.ROUNDED)
+        table.add_column("ID", style="cyan")
+        table.add_column("Name", style="white")
+        table.add_column("Category", style="yellow")
+        table.add_column("Aliases", style="dim")
+        for e in entries:
+            aliases = ", ".join(e.get("aliases") or [])
+            table.add_row(
+                e["id"],
+                e.get("name") or "",
+                e.get("category") or "",
+                aliases[:60] + ("…" if len(aliases) > 60 else ""),
+            )
+        console.print(table)
+
+    @lex_app.command("pack")
+    def artifact_lexicon_pack(
+        tags: str = typer.Option(
+            None,
+            "--tags",
+            "-t",
+            help="Comma-separated entry ids (e.g. flicker,morph,halo)",
+        ),
+        all_entries: bool = typer.Option(
+            False,
+            "--all",
+            help="Use default core pack (flicker, morph, halo, …)",
+        ),
+        positives: bool = typer.Option(
+            False,
+            "--positives",
+            "-p",
+            help="Also print positive guard phrases",
+        ),
+    ):
+        """Build negative phrase pack (and optional positive guards) from lexicon tags."""
+        if not tags and not all_entries:
+            console.print(
+                "[red]Provide --tags a,b or --all for the default core pack[/red]"
+            )
+            raise typer.Exit(1)
+        if tags and all_entries:
+            console.print(
+                "[yellow]Both --tags and --all given; using --tags only[/yellow]"
+            )
+
+        entry_ids: list[str] | None = None
+        if tags:
+            entry_ids = [t.strip() for t in tags.split(",") if t.strip()]
+            pack = build_negative_pack(entry_ids, all_default=False)
+            guard_ids = entry_ids
+        else:
+            pack = build_negative_pack(None, all_default=True)
+            guard_ids = None
+
+        if not pack:
+            console.print("[yellow]Empty pack (unknown tags or no phrases)[/yellow]")
+        else:
+            console.print(Panel(pack, title="NEGATIVES pack", border_style="red"))
+
+        if positives:
+            guards = build_positive_guards(guard_ids)
+            if guards:
+                console.print(
+                    Panel(guards, title="POSITIVE guards", border_style="green")
+                )
+            else:
+                console.print("[dim]No positive guards resolved[/dim]")
+
+    @lex_app.command("suggest")
+    def artifact_lexicon_suggest(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(
+            ..., "--clip", "-c", help="Clip ID with seam_report / chain_qa"
+        ),
+        positives: bool = typer.Option(
+            False, "--positives", "-p", help="Also print positive guards"
+        ),
+    ):
+        """Suggest lexicon tags from clip seam_report + chain_qa; print tags + pack."""
+        seq = require_sequence(name)
+        target = require_clip(seq, clip)
+        seam = target.get("seam_report")
+        qa = target.get("chain_qa")
+
+        tags = list(
+            dict.fromkeys(
+                suggest_entries_from_seam(seam if isinstance(seam, dict) else None)
+                + suggest_entries_from_chain_qa(qa if isinstance(qa, dict) else None)
+            )
+        )
+        pack = build_negative_pack(tags if tags else None, all_default=not tags)
+
+        if tags:
+            console.print(f"[cyan]Suggested tags:[/cyan] {', '.join(tags)}")
+        else:
+            console.print(
+                "[dim]No tags from seam_report/chain_qa — using default core pack[/dim]"
+            )
+
+        if pack:
+            console.print(Panel(pack, title="NEGATIVES pack", border_style="red"))
+        else:
+            console.print("[yellow]Empty pack[/yellow]")
+
+        if positives:
+            guards = build_positive_guards(tags if tags else None)
+            if guards:
+                console.print(
+                    Panel(guards, title="POSITIVE guards", border_style="green")
+                )

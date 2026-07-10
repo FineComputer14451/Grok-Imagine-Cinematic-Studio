@@ -58,6 +58,10 @@ python tools/cinematic_studio_cli.py sequence qa "Neon Alley Chase" --clip clip_
 
 # Check sequence health
 python tools/cinematic_studio_cli.py sequence health "Neon Alley Chase"
+
+# Stitch artifact negatives (re-gen / extend fix prompts)
+python tools/cinematic_studio_cli.py sequence artifact-lexicon pack --all
+python tools/cinematic_studio_cli.py sequence artifact-lexicon suggest "Neon Alley Chase" --clip clip_002
 ```
 
 ## Key Protocols

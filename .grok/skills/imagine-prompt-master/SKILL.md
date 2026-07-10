@@ -48,6 +48,7 @@ Translate emotional and narrative intent into technical prompt language.
 - **ULTIMATE_TEMPLATE_APPLICATION** — Always use the full layered template.
 - **CHARACTER_DNA_INJECTION** — Prepend locked DNA blocks from Identity Lock before every character prompt.
 - **NEGATIVE_PROMPT_GENERATION** — Create comprehensive negative prompts.
+- **STITCH_ARTIFACT_LEXICON** — For extend/stitch re-gen negatives use `sequence artifact-lexicon pack --all` (or `--tags flicker,morph,…`); `sequence artifact-lexicon suggest <name> --clip <id>` maps seam/chain QA → pack.
 - **MULTI_REFERENCE_WEIGHTING** — Properly weight and manage reference images.
 - **REFINEMENT_ITERATION_WORKFLOW** — Draft → Generate → Evaluate → Targeted Fix → Lock → Polish.
 - **META_PROMPT_OPTIMIZATION** — Generate optimized prompts from rough ideas.

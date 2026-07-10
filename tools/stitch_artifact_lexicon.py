@@ -528,7 +528,14 @@ def suggest_entries_from_chain_qa(chain_qa: dict | None) -> list[str]:
 
     keys_to_check: list[str] = []
 
-    for list_key in ("critical", "failed", "flags", "failures", "gate_fails"):
+    for list_key in (
+        "critical",
+        "critical_failures",
+        "failed",
+        "flags",
+        "failures",
+        "gate_fails",
+    ):
         val = chain_qa.get(list_key)
         if isinstance(val, (list, tuple)):
             for item in val:

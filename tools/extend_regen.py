@@ -10,6 +10,11 @@ from typing import Any
 
 from sequence_chain import build_extend_prompt
 from sequence_memory import memory_bank_to_prompt_block
+from stitch_artifact_lexicon import (
+    build_negative_pack,
+    suggest_entries_from_chain_qa,
+    suggest_entries_from_seam,
+)
 
 DEFAULT_MAX_ATTEMPTS_PER_CLIP = 2
 DEFAULT_MAX_SEQUENCE_ATTEMPTS = 20
@@ -143,10 +148,23 @@ def build_regen_fix_prompt(
         header.append("FIXES:")
         for f in fixes:
             header.append(f"  - {f}")
-    header.append(
-        "NEGATIVES: face morph, wardrobe teleport, lighting pop, temporal flicker, "
+
+    # Expand NEGATIVES from stitch artifact lexicon (seam + chain QA tags)
+    tags = list(
+        dict.fromkeys(
+            suggest_entries_from_seam(seam)
+            + suggest_entries_from_chain_qa(qa)
+        )
+    )
+    pack = build_negative_pack(tags if tags else None, all_default=not tags)
+    base_neg = (
+        "face morph, wardrobe teleport, lighting pop, temporal flicker, "
         "identity drift, lost props, audio dialogue drop"
     )
+    if pack:
+        header.append(f"NEGATIVES: {base_neg}, {pack}")
+    else:
+        header.append(f"NEGATIVES: {base_neg}")
     header.append("---")
     return "\n".join(header) + "\n\n" + base
 
