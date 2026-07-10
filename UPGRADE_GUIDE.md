@@ -1,10 +1,10 @@
 # Grok Imagine Cinematic Studio — UPGRADE GUIDE
 
-**From v3.5 → v3.6 "Odyssey Native"** (with v3.6.5+ refinements, **v3.6.6 dual model stack**, and **v3.6.7 guided bible wizard**)
+**From v3.5 → v3.6 "Odyssey Native"** (with v3.6.5+ refinements, **unified Grok 4.5** stack, and **v3.6.7 guided bible wizard**)
 
-**Date:** July 9, 2026 (updated for unified Grok 4.5 cinematic+Build default, optional 4.3 1M, Grok Build ≥ 0.2.93)
+**Date:** July 10, 2026 (updated for unified Grok 4.5 cinematic+Build default, optional 4.3 1M, Grok Build ≥ 0.2.93)
 
-**Focus:** Full native integration with **Grok Imagine Video 1.5** + dual Grok 4.5 (coding) / Grok 4.3 (1M cinematic) + modern plugin catalog CLI tooling
+**Focus:** Full native integration with **Grok Imagine Video 1.5** + unified **Grok 4.5** (cinematic + coding) / optional **Grok 4.3** (1M) + modern plugin catalog CLI tooling
 
 ---
 
@@ -94,7 +94,7 @@ git checkout main
 ```
 Or simply use the latest `MASTER_PROMPT_v3.6.md` in a new chat.
 
-### Step 1b: Dual model stack (v3.6.6+) + Grok Build CLI
+### Step 1b: Unified Grok 4.5 stack (v3.6.6+) + Grok Build CLI
 ```bash
 grok --version   # recommend ≥ 0.2.93
 python tools/cinematic_studio_cli.py models verify
@@ -104,7 +104,7 @@ python tools/cinematic_studio_cli.py models verify
 - See `references/MODELS_v3.6.md` and `config/grok-build.example.toml`
 
 ### Step 2: Activate the New Studio
-In a new **Grok 4.3** (long Bible) or **Grok Build / 4.5** chat, paste `MASTER_PROMPT_v3.6.md` and type:
+In a new **Grok 4.5** chat (default) or **Grok 4.3** for very long Bibles, paste `MASTER_PROMPT_v3.6.md` and type:
 ```
 Activate Grok Imagine Cinematic Studio v3.6.7
 ```
@@ -186,4 +186,4 @@ Free-text logline/characters/world/tech notes roll into `notes`. Stages live in 
 
 Unified Grok 4.5 cinematic+Build (optional 4.3 1M), guided Bible wizard, plugin marketplace, and native 1.5 video + audio.
 
-*Upgrade guide updated — July 9, 2026 (v3.6.7)*
+*Upgrade guide updated — July 10, 2026 (v3.6.7 · unified Grok 4.5)*
