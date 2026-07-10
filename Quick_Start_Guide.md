@@ -1,10 +1,10 @@
 # Grok Imagine Cinematic Studio v3.6.7 — Quick Start Guide
 
-**Version:** 3.6.7 | **Last Updated:** July 9, 2026
+**Version:** 3.6.7 | **Last Updated:** July 10, 2026
 
 ---
 
-## 0. Model Stack (Dual: Grok 4.5 Build + Grok 4.3 Cinematic + Imagine)
+## 0. Model Stack (Unified Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine)
 
 | Where | Model | Purpose |
 |-------|-------|---------|
@@ -45,7 +45,7 @@ or
 start cinematic production
 ```
 
-This loads the complete **v3.6.7 "Odyssey Native"** system (dual Grok 4.5 Build + Grok 4.3 cinematic stack, guided Bible wizard, native Imagine Video 1.0/1.5).
+This loads the complete **v3.6.7 "Odyssey Native"** system (unified Grok 4.5 cinematic+Build stack with optional 4.3 1M, guided Bible wizard, native Imagine Video 1.0/1.5).
 
 ### Start a New Project
 
@@ -117,7 +117,6 @@ You can activate any agent directly:
    - `ACTIVATE PRODUCTION_DESIGNER` for world-building  
    - `ACTIVATE DOP` for visual language
 
-### Phase 3: Production
 6. **Execute Scenes / Sequences**  
    - Single scenes: Describe clearly  
    - Long sequences: Use `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER`
@@ -167,7 +166,7 @@ You can activate any agent directly:
 
 | Command                                           | Result                                      |
 |---------------------------------------------------|---------------------------------------------|
-| `Activate Grok Imagine Cinematic Studio v3.6.7`   | Load full v3.6.7 studio (dual stack + 1.5)  |
+| `Activate Grok Imagine Cinematic Studio v3.6.7`   | Load full v3.6.7 studio (Grok 4.5 + 1.5)   |
 | `create-bible --wizard`                           | Guided Production Bible (TTY interactive)   |
 | `Start new project`                               | Begin fresh production                      |
 | `GENERATE DIRECTOR'S CUT`                         | Refined version with notes                  |
