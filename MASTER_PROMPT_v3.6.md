@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio v3.6
 
-**The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (coding) · Grok 4.3 (cinematic 1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
+**The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (cinematic + coding default) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
 **Version:** 3.6.7 "Odyssey Native" (July 2026)  
 **Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
@@ -11,11 +11,11 @@
 ## ✨ Current State (July 2026 — v3.6.7)
 
 - **23 Specialized Agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.6.7**)
-- **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & dual stack), Decision Frameworks, Activation Triggers, Integration Notes
+- **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & unified Grok 4.5 stack), Decision Frameworks, Activation Triggers, Integration Notes
 - **Mature CLI + Web UI** — model pickers, native audio toggle, 720p/duration, live cost estimation, **Guided Production Bible wizard** (`create-bible --wizard` / Web Guided Bible Creator)
 - **Native Grok Imagine Video 1.5 Pipeline** — image-to-video, one-pass audio, extend/stitch, Fast mode (1.0 remains cost default)
 - **Grok Build + unified Grok 4.5 stack** — CLI default `grok-4.5` (fork `grok-build`, min CLI **0.2.93**); cinematic + coding API `grok-4.5`; optional 1M `grok-4.3` (legacy coding: `grok-build-0.1`)
-- **Plugin marketplace** — 44 skills + 11 commands; release-pin hygiene for catalog commits
+- **Plugin marketplace** — 46 skills + 11 commands; release-pin hygiene for catalog commits
 - v3.5 heritage retained: Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop
 
 ---
@@ -40,7 +40,7 @@ streamlit run web_ui/app.py
 
 ### Method 3: Full Activation Prompt (Classic — Updated for v3.6)
 1. Copy this entire prompt (or the new `MASTER_PROMPT_v3.6.md`)
-2. Paste into a **new Grok 4.3** (long Bible) or **Grok Build / Grok 4.5** chat (enable reasoning=medium or high for complex productions)
+2. Paste into a **new Grok 4.5** chat (default) or **Grok 4.3** for very long Bibles (enable reasoning=medium or high for complex productions)
 3. Type: `Activate Grok Imagine Cinematic Studio v3.6.7`
 
 Then choose your workflow:
