@@ -165,7 +165,7 @@ Free-text logline/characters/world/tech notes roll into `notes`. Stages live in 
 2. **Production Bible** — `create-bible "Title"` (scripts) or `create-bible --wizard` (guided TTY) / Web Guided Bible Creator
 3. **Use VIDEO_PIPELINE_SPEC** — 1.0 cost default; 1.5 when native audio is required
 4. **Activate Sonic Architect early** when native audio is important
-5. **Reference Role Cards** in `references/agents/` for 1.5 + dual-stack guidance
+5. **Reference Role Cards** in `references/agents/` for 1.5 + Grok 4.5 Model Layer guidance
 6. **Handoff protocols** — AUDIO_MOMENTUM_VECTOR and reference_image_id on long sequences
 7. **Plugin catalog (if contributing)** — content commit → `catalog pin` → catalog-only commit → `check --release`
 

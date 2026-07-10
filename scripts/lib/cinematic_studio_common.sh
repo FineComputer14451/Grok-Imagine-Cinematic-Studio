@@ -530,7 +530,7 @@ cinematic_studio_verify_models() {
     local cli_py=""
 
     # Prefer explicit tools_root (plugin checkout) so a stale PROJECT_DIR copy
-    # cannot shadow the installed dual-stack registry (v3.6.6+).
+    # cannot shadow the installed Grok 4.5 stack registry (v3.6.6+).
     if [[ -n "$tools_root" && -f "$tools_root/tools/cinematic_studio_cli.py" ]]; then
         cli_py="$tools_root/tools/cinematic_studio_cli.py"
     elif [[ -n "${CINEMATIC_REPO_ROOT:-}" && -f "$CINEMATIC_REPO_ROOT/tools/cinematic_studio_cli.py" ]]; then

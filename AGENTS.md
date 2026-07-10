@@ -30,7 +30,7 @@ This is a persistent Linux sandbox environment (`/home/workdir/`) designed for a
 │       │   ├── scripts/         # Optional: executable helpers
 │       │   ├── references/      # Optional: long-form docs, production bibles, agent defs
 │       │   └── assets/          # Optional: templates, reference images, etc.
-├── .grok-plugin/                # Grok plugin manifests (marketplace.json, plugin.json, plugin-index.json for 44 skills + commands) — maintained via CLI `catalog` commands
+├── .grok-plugin/                # Grok plugin manifests (marketplace.json, plugin.json, plugin-index.json for 46 skills + commands) — maintained via CLI `catalog` commands
 ├── artifacts/                   # All outputs go here (images, docs, videos, code, etc.)
 ├── scripts/                     # Install/verify/update helpers + thin shims (real work via `cinematic-studio plugin catalog`)
 ├── web_ui/                      # Streamlit dashboard (model pickers, quota sim, DNA/sequence tools)
@@ -93,7 +93,7 @@ When working with or creating skills:
 - Pre-publish plugin gate: `cinematic-studio plugin catalog check --release` or `bash scripts/verify_plugins.sh --release` (passes when pin == HEAD or pin is ancestor with only catalog paths after it)
 - Dev/test deps: `pip install -r requirements-dev.txt` then `pytest`
 - Use `cinematic-studio-meta-installer` skill for full bootstrap/verify in agent sessions
-- The 44 skills + 11 slash commands (in `commands/`) are the primary way to extend Grok Build with studio capabilities
+- The 46 skills + 11 slash commands (in `commands/`) are the primary way to extend Grok Build with studio capabilities
 
 ### Memory & Personalization
 - When the user shares personal facts, preferences, or life updates that may warrant remembering: Use the `memory-edit` skill (consult its SKILL.md).
@@ -208,7 +208,7 @@ Local config: `~/.grok/config.toml` — `[models] default = "grok-4.5"` and `for
 - Primary ongoing project: **Grok Imagine Cinematic Studio** (v3.6.7 unified 4.5 stack + guided bible wizard) and related custom skills.
 - All generated artifacts **must** be saved to `/home/workdir/artifacts/`.
 - Persistent state and custom skills live in `/home/workdir/.grok/skills/`.
-- Grok plugin marketplace lives in `.grok-plugin/` (marketplace.json, plugin.json, plugin-index.json with 44 skills + 11 commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
+- Grok plugin marketplace lives in `.grok-plugin/` (marketplace.json, plugin.json, plugin-index.json with 46 skills + 11 commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - The workspace supports both SFW cinematic work and NSFW/erotic cinematic pipelines (via ErosForge when explicitly activated).
 - **Model stack:** cinematic + Build/coding default `grok-4.5`; optional 1M `grok-4.3`; Imagine 1.0 default; `VIDEO_PIPELINE_SPEC` wired everywhere. 1.5 available for native-audio workflows.
 - Recent 3.6.7 work: guided Production Bible wizard, catalog release-pin hygiene; cinematic chat default unified on `grok-4.5`.

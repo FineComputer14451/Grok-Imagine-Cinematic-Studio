@@ -19,6 +19,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Fixed
 
 ### Changed
+- **Plugin/docs hygiene (46 skills + unified 4.5 copy)** — `plugin.json` / `marketplace.json` descriptions no longer market dual-stack; marketplace skill count **44 → 46**; AGENTS/README/UPGRADE_GUIDE registry lines aligned.
 - **All agents → Grok 4.5** — remaining **18** skills that lacked Model Layer now embed `## Model Layer (Grok 4.5 · studio v3.6.7)` (DoP v3.3, Performance, Foley, Key Art, Trailer, Stunt, VFX, Localization, Narrative Arc, Color Grading, Production Designer, Continuity Guardian, i2i refiners, NSFW chain QA, AI video upscaler, cinematic-ffmpeg, Mega Production Architect). Full suite: **46/46** skills + all Role Cards on Grok 4.5 orchestration default (`grok-4.3` 1M opt-in only).
 - **Docs: public stack copy → unified Grok 4.5** — README hero/badge/aliases/footer, Quick Start, MASTER_PROMPT, RELEASE_NOTES, UPGRADE_GUIDE, CONTRIBUTING, `commands/cinematic.md`, `scripts/lib/cinematic_studio_common.sh` no longer market dual-stack (4.3-as-cinematic); code already had `STACK_CONTRACT` on `grok-4.5`.
 - **Skill hygiene (46 skills)** — `required_skills.manifest` adds `arc-replan-copilot` + `multi-character-identity-arbiter` (parity with disk / `plugin.json`); docs and marketplace copy updated from 44 → 46 skills (AGENTS, README, MASTER_PROMPT, RELEASE_NOTES, installation guide).

@@ -50,7 +50,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 - **NSFW Sequence Extender** (v3.6.4) — 30–120s+ sensual extension, prompt chains, erotic pacing, artifact QA
 
 ### v3.6.5 — Plugin Marketplace, Model Verification & Refinements (2026-06)
-- **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (44 skills + commands) for `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
+- **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (46 skills + commands) for `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
 - **Imagine 1.0 as default** — `grok-imagine-video` ($0.05/sec); 1.5 opt-in for native audio ($0.08/sec)
 - **`models verify`** CLI — validates Grok 4.5 cinematic+Build + optional 4.3 + Imagine 1.0/1.5 registry
 - **CLI modularization** — extracted `tools/cli/{models,bible,studio,production,...}_commands.py`; slimmer main entrypoint
@@ -97,7 +97,7 @@ cinematic-studio plugin catalog check --release
 ```
 
 ### 3. Grok Build Plugin Marketplace (Recommended for Grok CLI)
-Install the full Grok plugin suite (**44 skills** + 11 slash commands) as a Grok plugin:
+Install the full Grok plugin suite (**46 skills** + 11 slash commands) as a Grok plugin:
 
 ```bash
 # Install directly from GitHub (simplest)
@@ -138,11 +138,11 @@ streamlit run web_ui/app.py
 
 ```
 Studio Director v3.6.5 + Mega Production Architect v3.6.5  (Role Cards; studio v3.6.7)
-├── .grok-plugin/                 # Marketplace + plugin manifests (44 skills) — managed via `cinematic-studio plugin catalog`
+├── .grok-plugin/                 # Marketplace + plugin manifests (46 skills) — managed via `cinematic-studio plugin catalog`
 ├── references/agents/            # Authoritative Role Cards (v3.6.5+) + AGENT_INDEX.md
 ├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, models.py, bible_stages
 ├── tools/cinematic_studio_cli.py   # CLI: cinematic-studio (create-bible --wizard, dna, sequence, quota, nsfw, models, plugin catalog)
-├── references/MODELS_v3.6.md   # Grok Build + xAI dual-stack registry
+├── references/MODELS_v3.6.md   # Grok Build + xAI model registry (Grok 4.5 default)
 ├── web_ui/app.py                 # Streamlit + Guided Bible Creator + model pickers
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT_v3.6.md         # Main activation prompt (v3.6.7)

@@ -1,7 +1,7 @@
 {
   "name": "grok-imagine-cinematic-studio",
   "version": "3.6.7",
-  "description": "23-agent cinematic production suite for Grok Imagine Video 1.0/1.5 with dual Grok 4.5 Build + Grok 4.3 cinematic stack, Character DNA, sequence extension, quota orchestration, and delivery polish.",
+  "description": "23-agent cinematic production suite for Grok Imagine Video 1.0/1.5 with unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), Character DNA, sequence extension, quota orchestration, and delivery polish.",
   "author": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
