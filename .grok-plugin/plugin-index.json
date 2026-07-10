@@ -17,6 +17,10 @@
             "description": "Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers…"
           },
           {
+            "name": "arc-replan-copilot",
+            "description": "Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the…"
+          },
+          {
             "name": "assembly-editor",
             "description": "Editorial assembly specialist for Grok Imagine long-form productions. Builds rough-cut EDLs cut-point rhythm match-cut…"
           },
@@ -232,7 +236,7 @@
           }
         ]
       },
-      "sha": "676c1dcca395fabdbab74d86e035eb61b3dd0d83"
+      "sha": "0595ef16563c6c4dc5bf275d2237233dac6c92b0"
     }
   }
 }

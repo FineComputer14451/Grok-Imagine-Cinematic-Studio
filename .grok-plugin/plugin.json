@@ -23,6 +23,7 @@
     ".grok/skills/ai-polish-director",
     ".grok/skills/ai-video-upscaler",
     ".grok/skills/animatic-director",
+    ".grok/skills/arc-replan-copilot",
     ".grok/skills/assembly-editor",
     ".grok/skills/chain-qa-protocol",
     ".grok/skills/character-dna-extractor",
