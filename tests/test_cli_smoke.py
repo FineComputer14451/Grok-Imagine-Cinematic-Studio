@@ -69,6 +69,15 @@ def test_sequence_continuity_commands_registered() -> None:
     assert "drift-score" in result.stdout
     assert "seam-report" in result.stdout
     assert "qa-assist" in result.stdout
+    assert "health" in result.stdout
+
+
+def test_sequence_health_options_registered() -> None:
+    result = run_cli("sequence", "health", "--help")
+    assert result.returncode == 0
+    assert "--json" in result.stdout
+    assert "--markdown" in result.stdout
+    assert "--output" in result.stdout
 
 
 def test_sequence_amv_check_registered() -> None:
@@ -122,6 +131,7 @@ if __name__ == "__main__":
     test_validate_passes()
     test_cost_simulate_and_quota_estimate()
     test_sequence_continuity_commands_registered()
+    test_sequence_health_options_registered()
     test_sequence_amv_check_registered()
     test_sequence_continuity_diff_registered()
     test_sequence_memory_commands_registered()

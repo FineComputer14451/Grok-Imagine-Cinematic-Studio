@@ -26,6 +26,7 @@ from quota_optimizer import estimate_sequence_cost
 from imagine_client import is_dry_run
 from seam_report import build_seam_report
 from sequence_delivery import deliver_sequence
+from sequence_health_dashboard import build_longform_health, format_longform_health_markdown
 from sequence_polish import polish_sequence
 from sequence_chain import (
     CHAIN_QA_CHECKS,
@@ -635,19 +636,133 @@ def register(app: typer.Typer) -> None:
 
 
     @app.command("health")
-    def seq_health(name: str = typer.Argument(..., help="Sequence name or slug")):
-        """Show sequence health score and chain QA status."""
+    def seq_health(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        json_out: bool = typer.Option(False, "--json", help="Emit JSON report"),
+        markdown: bool = typer.Option(False, "--markdown", help="Emit markdown report"),
+        output: str | None = typer.Option(None, "--output", "-o", help="Write report to file"),
+    ):
+        """Long-form health dashboard — QA, drift, seam, regen, cost (roadmap #10)."""
         seq = require_sequence(name)
         update_sequence_health(seq)
         save_sequence(seq)
+        report = build_longform_health(seq)
+
+        def _fmt(value: object) -> str:
+            return "—" if value is None else str(value)
+
+        # JSON path
+        if json_out:
+            payload = json.dumps(report, indent=2)
+            if output:
+                out_path = Path(output)
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                out_path.write_text(payload, encoding="utf-8")
+                console.print(f"[green]✅ JSON report:[/green] {out_path}")
+            else:
+                console.print(payload)
+            return
+
+        # Markdown path (--markdown or -o *.md)
+        want_md = markdown or (output is not None and str(output).lower().endswith(".md"))
+        if want_md:
+            md = format_longform_health_markdown(report)
+            if output:
+                out_path = Path(output)
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                out_path.write_text(md, encoding="utf-8")
+                console.print(f"[green]✅ Markdown report:[/green] {out_path}")
+            else:
+                console.print(Markdown(md))
+            return
+
+        # Rich default dashboard
+        health = report.get("health_score")
+        health_disp = _fmt(health)
+        cq = report.get("chain_qa") or {}
+        alerts = report.get("alerts") or []
+        alert_block = (
+            "\n".join(f"⚠ {a}" for a in alerts) if alerts else "None"
+        )
+        overview = (
+            f"Health Score: [bold]{health_disp}[/bold] / 10\n"
+            f"Chain QA Status: [bold]{report.get('chain_qa_status', 'pending')}[/bold]\n"
+            f"Clips: {report.get('clip_count', 0)} "
+            f"(approved {report.get('clips_approved', 0)}, "
+            f"qa_hold {report.get('clips_qa_hold', 0)}, "
+            f"pending {report.get('clips_pending', 0)})\n"
+            f"Target Duration: {report.get('target_duration_seconds', 0)}s\n"
+            f"Chain QA: go={cq.get('go', 0)} no_go={cq.get('no_go', 0)} "
+            f"conditional={cq.get('conditional_go', 0)} pending={cq.get('pending', 0)} "
+            f"(avg {_fmt(cq.get('avg_weighted_score'))})\n"
+            f"Alerts:\n{alert_block}"
+        )
+        border = "red" if alerts else "cyan"
         console.print(Panel(
-            f"Health Score: [bold]{seq.get('sequence_health_score')}[/bold] / 10\n"
-            f"Chain QA Status: [bold]{seq.get('chain_qa_status')}[/bold]\n"
-            f"Clips: {len(seq.get('clips', []))}\n"
-            f"Target Duration: {seq.get('target_duration_seconds')}s",
-            title=f"🎬 {seq['sequence_name']}",
-            border_style="cyan",
+            overview,
+            title=f"🎬 Long-Form Health — {report.get('sequence_name') or name}",
+            border_style=border,
         ))
+
+        table = Table(title="Clip Health Rows", box=box.ROUNDED)
+        table.add_column("Clip", style="cyan")
+        table.add_column("Status", style="white")
+        table.add_column("QA", style="yellow")
+        table.add_column("Score", justify="right")
+        table.add_column("Drift", justify="right")
+        table.add_column("Seam", justify="right")
+        table.add_column("AMV", justify="right")
+        table.add_column("Regen", justify="right")
+        table.add_column("Temp", style="dim")
+        table.add_column("ContDiff", justify="right")
+        rows = report.get("clip_rows") or []
+        if not rows:
+            table.add_row("—", "—", "—", "—", "—", "—", "—", "—", "—", "No clips")
+        else:
+            for r in rows:
+                table.add_row(
+                    str(r.get("clip_id") or "—"),
+                    str(r.get("status") or "—"),
+                    _fmt(r.get("qa_decision")),
+                    _fmt(r.get("weighted_score")),
+                    _fmt(r.get("drift_score")),
+                    _fmt(r.get("seam_risk")),
+                    _fmt(r.get("amv_integrity")),
+                    str(r.get("regen_attempts", 0)),
+                    _fmt(r.get("temp_severity")),
+                    _fmt(r.get("cont_diff_total")),
+                )
+        console.print(table)
+
+        cost = report.get("cost") or {}
+        drift = report.get("drift") or {}
+        seam = report.get("seam") or {}
+        amv = report.get("audio_momentum") or {}
+        regen = report.get("regen") or {}
+        temp = report.get("temperature") or {}
+        cdiff = report.get("continuity_diff") or {}
+        cost_body = (
+            f"Remaining: {cost.get('remaining_clips', 0)} clips "
+            f"({cost.get('remaining_duration_seconds', 0)}s)\n"
+            f"Credits: {_fmt(cost.get('credits_low'))} – {_fmt(cost.get('credits_high'))}\n"
+            f"USD: ${_fmt(cost.get('usd_low'))} – ${_fmt(cost.get('usd_high'))}\n"
+            f"Drift fails: {drift.get('fail_count', 0)} | "
+            f"Seam fails: {seam.get('fail_count', 0)} | "
+            f"AMV fails: {amv.get('fail_count', 0)}\n"
+            f"Regen attempts: {regen.get('total_attempts', 0)} "
+            f"(seq used {regen.get('sequence_attempts_used', 0)}) | "
+            f"Temp fail/warn: {temp.get('fail_count', 0)}/{temp.get('warn_count', 0)} | "
+            f"ContDiff changes: {cdiff.get('total_changes', 0)}"
+        )
+        console.print(Panel(cost_body, title="💰 Remaining Cost & Gate Summary", border_style="green"))
+
+        if output:
+            # Non-.md output without --json: write markdown as portable default
+            md = format_longform_health_markdown(report)
+            out_path = Path(output)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(md, encoding="utf-8")
+            console.print(f"[green]✅ Report written:[/green] {out_path}")
 
 
     memory_app = typer.Typer(help="Sequence memory bank (roadmap #4)")
