@@ -1,16 +1,16 @@
-# Grok Imagine Cinematic Studio v3.6
+# Grok Imagine Cinematic Studio v3.7.1
 
 **The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (cinematic + coding default) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
-**Version:** 3.6.7 "Odyssey Native" (July 2026)  
+**Version:** 3.7.1 "Odyssey Native" (July 2026)  
 **Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
 **Key Improvements:** Unified Grok 4.5 cinematic+Build default (optional Grok 4.3 1M), Grok Build ≥ 0.2.93, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
 
 ---
 
-## ✨ Current State (July 2026 — v3.6.7)
+## ✨ Current State (July 2026 — v3.7.1)
 
-- **23 Specialized Agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.6.7**)
+- **23 Specialized Agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.7.1**)
 - **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & unified Grok 4.5 stack), Decision Frameworks, Activation Triggers, Integration Notes
 - **Mature CLI + Web UI** — model pickers, native audio toggle, 720p/duration, live cost estimation, **Guided Production Bible wizard** (`create-bible --wizard` / Web Guided Bible Creator)
 - **Native Grok Imagine Video 1.5 Pipeline** — image-to-video, one-pass audio, extend/stitch, Fast mode (1.0 remains cost default)
@@ -38,10 +38,10 @@ streamlit run web_ui/app.py
 ```
 (Now includes Imagine Model selector: 1.0 (default, cost-effective), 1.5 Native (for audio), resolution, duration, native audio toggle, real-time cost simulator)
 
-### Method 3: Full Activation Prompt (Classic — Updated for v3.6)
+### Method 3: Full Activation Prompt (Classic — Updated for v3.7.1)
 1. Copy this entire prompt (or the new `MASTER_PROMPT_v3.6.md`)
 2. Paste into a **new Grok 4.5** chat (default) or **Grok 4.3** for very long Bibles (enable reasoning=medium or high for complex productions)
-3. Type: `Activate Grok Imagine Cinematic Studio v3.6.7`
+3. Type: `Activate Grok Imagine Cinematic Studio v3.7.1`
 
 Then choose your workflow:
 - **A** — Full Production Bible + First 1.5 Sequence (Recommended)
@@ -59,6 +59,7 @@ Then choose your workflow:
 - `ACTIVATE AI_POLISH_DIRECTOR` / `RUN FINAL POLISH PASS` (post-QA upscale & face restoration)
 - `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` — Heavy batch planning, i2v decisions, daily quota reports
 - `ACTIVATE NSFW_SEQUENCE_EXTENDER` — 30–120s+ sensual extension from reference frame or short clip
+- `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` — Official planning→Imagine execution handoff (v3.7.1)
 
 **NSFW CLI (requires `ACTIVATE EROSFORGE`):**
 ```bash
@@ -113,7 +114,7 @@ python tools/cinematic_studio_cli.py nsfw report
 ### Specialist (Opt-in)
 - **ErosForge NSFW Director v3.6** — Adult/R-rated content specialist (1.5-optimized erotic motion + synced intimate audio; activate explicitly with `ACTIVATE EROSFORGE`)
 
-> **All agents have complete Role Cards** stored in `references/agents/`. These are the authoritative definitions. Every card embeds the **Model Layer (Grok 4.5 · studio v3.6.7)** block; v3.6 cards also include "Imagine Video 1.5 Integration" and Grok 4.5 operating rules (optional 4.3 for 1M only).
+> **All agents have complete Role Cards** stored in `references/agents/`. These are the authoritative definitions. Every card embeds the **Model Layer (Grok 4.5 · studio v3.7.1)** block; v3.6 cards also include "Imagine Video 1.5 Integration" and Grok 4.5 operating rules (optional 4.3 for 1M only).
 
 ---
 
@@ -184,9 +185,9 @@ When crafting prompts for Imagine Prompt Master or direct generation:
 
 ---
 
-**You are now running the full Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native". **
+**You are now running the full Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native". **
 
-Type `Activate Grok Imagine Cinematic Studio v3.6.7` to begin.
+Type `Activate Grok Imagine Cinematic Studio v3.7.1` to begin.
 
 This version is optimized for Grok Build ≥ 0.2.93, Grok 4.5 (cinematic + coding default), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5 on grok.com/imagine, mobile apps, and API.
 

@@ -13,7 +13,7 @@ from openai import OpenAI
 ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
-STUDIO_VERSION = "3.6.7"
+STUDIO_VERSION = "3.7.1"
 ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
 AGENTS_DIR = ROOT / "references" / "agents"
 ROLE_CARD_PREVIEW_CHARS = 4000

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Grok Imagine Cinematic Studio v3.6.7 Updater
+# Grok Imagine Cinematic Studio v3.7.1 Updater
 # Backward-compatible wrapper — delegates to cinematic_studio.sh
 #
 

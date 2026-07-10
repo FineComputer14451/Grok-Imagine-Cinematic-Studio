@@ -1,6 +1,6 @@
-# Grok Imagine Cinematic Studio v3.6.7 — Quick Start Guide
+# Grok Imagine Cinematic Studio v3.7.1 — Quick Start Guide
 
-**Version:** 3.6.7 | **Last Updated:** July 10, 2026
+**Version:** 3.7.1 | **Last Updated:** July 10, 2026
 
 ---
 
@@ -36,7 +36,7 @@ Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 ### Activate the Full Studio (Recommended)
 
 ```
-Activate Grok Imagine Cinematic Studio v3.6.7
+Activate Grok Imagine Cinematic Studio v3.7.1
 ```
 
 or
@@ -45,7 +45,7 @@ or
 start cinematic production
 ```
 
-This loads the complete **v3.6.7 "Odyssey Native"** system (unified Grok 4.5 cinematic+Build stack with optional 4.3 1M, guided Bible wizard, native Imagine Video 1.0/1.5).
+This loads the complete **v3.7.1 "Odyssey Native"** system (unified Grok 4.5 cinematic+Build stack with optional 4.3 1M, guided Bible wizard, native Imagine Video 1.0/1.5).
 
 ### Start a New Project
 
@@ -86,6 +86,7 @@ You can activate any agent directly:
 | **Stunt & Action Choreographer**        | `ACTIVATE STUNT_CHOREOGRAPHER`      | Fights, chases, stunts                        |
 | **VFX & SFX Supervisor**                | `ACTIVATE VFX_SFX_SUPERVISOR`       | Creatures, destruction, particles             |
 | **Workflow & Quota Optimizer**          | `ACTIVATE WORKFLOW_OPTIMIZER`       | Real-time quota & efficiency management       |
+| **Imagine Agent Mode Handoff**           | `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` | Planning → generation handoff (v3.7.1)      |
 
 **Tip:** You can also use natural language, for example:
 - "Create key art for this scene"
@@ -94,11 +95,11 @@ You can activate any agent directly:
 
 ---
 
-## 3. Recommended Production Workflow (v3.6.7)
+## 3. Recommended Production Workflow (v3.7.1)
 
 ### Phase 1: Activation & Planning
 1. **Activate the Full Studio**  
-   `Activate Grok Imagine Cinematic Studio v3.6.7`
+   `Activate Grok Imagine Cinematic Studio v3.7.1`
 
 2. **Start a New Project**  
    Provide title, logline, genre, tone, target length, and key characters.
@@ -145,11 +146,11 @@ You can activate any agent directly:
 ---
 
 **Pro Tip:** You can combine steps in one message:  
-> `"Activate Grok Imagine Cinematic Studio v3.6.7, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
+> `"Activate Grok Imagine Cinematic Studio v3.7.1, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
 
 ---
 
-## 4. Pro Tips for Best Results (v3.6.7)
+## 4. Pro Tips for Best Results (v3.7.1)
 
 - **Be specific** — Include genre, tone, emotional goals, character details, and references.
 - **Use the Project Bible** — Include `VIDEO_PIPELINE_SPEC` for 1.5 native settings.
@@ -167,7 +168,7 @@ You can activate any agent directly:
 
 | Command                                           | Result                                      |
 |---------------------------------------------------|---------------------------------------------|
-| `Activate Grok Imagine Cinematic Studio v3.6.7`   | Load full v3.6.7 studio (Grok 4.5 + 1.5)   |
+| `Activate Grok Imagine Cinematic Studio v3.7.1`   | Load full v3.7.1 studio (Grok 4.5 + 1.5)   |
 | `create-bible --wizard`                           | Guided Production Bible (TTY interactive)   |
 | `Start new project`                               | Begin fresh production                      |
 | `GENERATE DIRECTOR'S CUT`                         | Refined version with notes                  |
@@ -195,10 +196,10 @@ You can activate any agent directly:
 
 ---
 
-**You are now ready to create professional cinematic productions with full native Grok Imagine Video 1.5 support.**
+**You are now ready to create professional cinematic productions with Grok 4.5 orchestration + Imagine Video 1.0/1.5 support.**
 
-Just say **"Activate Grok Imagine Cinematic Studio v3.6.7"** and begin. 🎥
+Just say **"Activate Grok Imagine Cinematic Studio v3.7.1"** and begin. 🎥
 
 ---
 
-*Built with Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — July 2026*
+*Built with Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native" — July 2026*

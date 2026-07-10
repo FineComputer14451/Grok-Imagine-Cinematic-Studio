@@ -1,7 +1,7 @@
 {
   "name": "grok-imagine-cinematic-studio",
-  "version": "3.6.7",
-  "description": "23-agent cinematic production suite for Grok Imagine Video 1.0/1.5 with unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), Character DNA, sequence extension, quota orchestration, and delivery polish.",
+  "version": "3.7.1",
+  "description": "23-agent cinematic production suite for Grok Imagine Video 1.0/1.5 with unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), Imagine Agent Mode Handoff, Character DNA, sequence extension, quota orchestration, and delivery polish.",
   "author": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -60,6 +60,7 @@
     ".grok/skills/reference-asset-curator",
     ".grok/skills/sequence-director",
     ".grok/skills/sfw-batch-orchestrator",
+    ".grok/skills/skill-agent-architect",
     ".grok/skills/sonic-architect-native-audio-virtuoso",
     ".grok/skills/studio-director",
     ".grok/skills/stunt-action-choreographer",

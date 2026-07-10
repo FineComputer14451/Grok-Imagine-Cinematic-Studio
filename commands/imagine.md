@@ -14,7 +14,7 @@ Full Imagine runtime for Grok Imagine Cinematic Studio — closes the planner-to
    python tools/cinematic_studio_cli.py imagine verify
    ```
 2. **API key** — `export XAI_API_KEY=...` (omit for dry-run mock mode)
-3. **Activate skills:** `imagine-prompt-master`, `imagine-execution-bridge`, `sfw-batch-orchestrator`, `reference-asset-curator`, `image-to-video-specialist`, `chain-qa-protocol`
+3. **Activate skills:** `imagine-prompt-master`, `imagine-execution-bridge`, `studio-director` (Imagine Agent Mode Handoff), `sfw-batch-orchestrator`, `reference-asset-curator`, `image-to-video-specialist`, `chain-qa-protocol`
 
 ## Plan → Generate → QA Loop
 
@@ -68,15 +68,21 @@ python tools/cinematic_studio_cli.py sfw record hero-session shot_hero_001 \
 python tools/cinematic_studio_cli.py sfw promote hero-session shot_hero_001  # two-pass
 ```
 
-### 6. Chat bridge (no API key)
+### 6. Chat bridge (no API key) + Agent Mode Handoff (v3.7.1)
 
 ```bash
+# Classic web UI bridge (surface: grok_com_imagine)
 python tools/cinematic_studio_cli.py imagine bridge --batch hero-session --shot shot_hero_001
 python tools/cinematic_studio_cli.py imagine bridge --sequence "Act 1" --clip clip_001 --format clipboard
+
+# Official multi-surface Imagine Agent Mode Handoff (Studio Director protocol)
+python tools/cinematic_studio_cli.py imagine agent-handoff \
+  --batch hero-session --shot shot_hero_001 --surface grok_build_tools --format markdown
+python tools/cinematic_studio_cli.py imagine agent-handoff \
+  --sequence "Act 1" --clip clip_001 --surface grok_agent_acp --format json
 ```
 
-Paste output into [grok.com/imagine](https://grok.com/imagine).
-
+Paste bridge output into [grok.com/imagine](https://grok.com/imagine). Use `agent-handoff` for Grok Build tools / ACP / API with full return_path + quota context.
 ## Job Queue
 
 ```bash

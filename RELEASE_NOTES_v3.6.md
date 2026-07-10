@@ -1,8 +1,17 @@
 # RELEASE NOTES — Grok Imagine Cinematic Studio v3.6 "Odyssey Native"
 
 **Release Date:** June 20, 2026  
-**Latest Patch:** v3.6.7 (July 9, 2026)  
+**Latest Patch:** v3.7.1 (July 10, 2026)  
 **Focus:** Full native integration with **Grok Imagine Video 1.5** + unified **Grok 4.5** cinematic+Build (optional **Grok 4.3** 1M) + Grok plugin marketplace support
+
+---
+
+## v3.7.1 Patch (July 10, 2026) — Imagine Agent Mode Handoff + Suite-wide Grok 4.5
+
+- **Imagine Agent Mode Handoff** — Studio Director owns routing to Grok Build tools / ACP / grok.com/imagine / xAI API (`imagine agent-handoff` CLI)
+- **Suite-wide Grok 4.5** — all Role Cards + skills use **Model Layer (Grok 4.5 · studio v3.7.1)**; enhanced operating rules (reasoning, 1M opt-in, Imagine tools)
+- **Canonical docs** — `MODEL_LAYER_v3.7.1.md`, README/Quick Start/MASTER_PROMPT/UPGRADE_GUIDE/installation guide aligned; alias `cinematic` → `grok-4.5`
+- **Activation:** `Activate Grok Imagine Cinematic Studio v3.7.1`
 
 ---
 
@@ -12,7 +21,8 @@
 - **Release pin fix** — `plugin catalog check --release` accepts pin-only catalog follow-up commits (install SHA = content revision)
 - **Studio / plugin version** — **3.6.7**
 
-**Activation:** `Activate Grok Imagine Cinematic Studio v3.6.7`
+**Activation (at release):** `Activate Grok Imagine Cinematic Studio v3.6.7`  
+**Current activation:** `Activate Grok Imagine Cinematic Studio v3.7.1`
 
 ## v3.6.6 Patch (July 9, 2026) — Dual Model Stack
 
@@ -24,7 +34,7 @@
 - **Docs & skills** — README, AGENTS, MASTER_PROMPT, Quick Start, MODELS, Role Cards, quota pricing, meta-installer paths aligned
 - **Plugin** — `.grok-plugin` version **3.6.6** + marketplace pin for dual-stack install
 
-**Activation (historical):** `Activate Grok Imagine Cinematic Studio v3.6.6`
+**Activation (historical):** `Activate Grok Imagine Cinematic Studio v3.7.1.6`
 
 **Recommended models (v3.6.6+ unified Grok 4.5 stack):**
 
@@ -117,7 +127,7 @@ See `CHANGELOG.md` for full details.
 - `MASTER_PROMPT_v3.6.md` — Activation prompt (unified Grok 4.5 stack + 1.5 + v3.6.7 wizard pointers)
 - `README.md` — Refreshed for **v3.6.7** (wizard, Grok 4.5 default, plugin marketplace, architecture, CLI)
 - `CHANGELOG.md` — [3.6.7], [3.6.6], [3.6.5], … historical entries
-- `AGENT_INDEX.md` — Model compatibility table + activation presets (studio v3.6.7)
+- `AGENT_INDEX.md` — Model compatibility table + activation presets (studio v3.7.1)
 - `Quick_Start_Guide.md` — Model stack §0, wizard, activation **v3.6.7**
 - `RELEASE_NOTES_v3.6.md` — This file (through v3.6.7 patch)
 - `UPGRADE_GUIDE.md` — v3.5 → v3.6 migration (unified 4.5 stack + wizard + pin hygiene)
@@ -137,7 +147,7 @@ See `CHANGELOG.md` for full details.
 ```bash
 # Recommended (Grok 4.5 default; optional Grok 4.3 for 1M Bibles)
 Copy MASTER_PROMPT_v3.6.md into a new chat
-Type: Activate Grok Imagine Cinematic Studio v3.6.7
+Type: Activate Grok Imagine Cinematic Studio v3.7.1
 
 # Or install as Grok plugin (recommended for CLI)
 grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust

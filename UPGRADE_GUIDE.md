@@ -1,12 +1,29 @@
 # Grok Imagine Cinematic Studio — UPGRADE GUIDE
 
-**From v3.5 → v3.6 "Odyssey Native"** (with v3.6.5+ refinements, **unified Grok 4.5** stack, and **v3.6.7 guided bible wizard**)
+**Current target:** **v3.7.1** — unified **Grok 4.5** cinematic+Build · optional **Grok 4.3** 1M · Imagine Agent Mode Handoff · Imagine Video 1.0/1.5
 
-**Date:** July 10, 2026 (updated for unified Grok 4.5 cinematic+Build default, optional 4.3 1M, Grok Build ≥ 0.2.93)
-
-**Focus:** Full native integration with **Grok Imagine Video 1.5** + unified **Grok 4.5** (cinematic + coding) / optional **Grok 4.3** (1M) + modern plugin catalog CLI tooling
+**Date:** July 10, 2026
 
 ---
+
+## Upgrade to v3.7.1 (from v3.6.7)
+
+1. Pull / reinstall the repo or run `bash scripts/cinematic_studio.sh update` / `grok plugin update grok-imagine-cinematic-studio`
+2. Confirm `VERSION` is **3.7.1** and `python tools/cinematic_studio_cli.py models verify` shows Grok **4.5** cinematic+Build
+3. Set `~/.grok/config.toml` defaults: `[models] default = "grok-4.5"` · `[ui] fork_secondary_model = "grok-build"`
+4. Activation phrase: `Activate Grok Imagine Cinematic Studio v3.7.1`
+5. Read `references/agents/MODEL_LAYER_v3.7.1.md` and `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`
+6. Re-pin plugin catalog after skill edits: `cinematic-studio plugin catalog pin`
+
+### What changed for Grok 4.5
+- Orchestration default remains **`grok-4.5`** (not dual-stack 4.3 cinematic)
+- All skills/Role Cards embed Model Layer **Grok 4.5 · studio v3.7.1**
+- Imagine Agent Mode Handoff standardizes generation surfaces
+- Alias `cinematic` → `grok-4.5`; use `long-context` / `grok-4.3` only for 1M Bibles
+
+---
+
+## From v3.5 → v3.6 "Odyssey Native" (background)
 
 ## Overview
 
@@ -106,7 +123,7 @@ python tools/cinematic_studio_cli.py models verify
 ### Step 2: Activate the New Studio
 In a new **Grok 4.5** chat (default) or **Grok 4.3** for very long Bibles, paste `MASTER_PROMPT_v3.6.md` and type:
 ```
-Activate Grok Imagine Cinematic Studio v3.6.7
+Activate Grok Imagine Cinematic Studio v3.7.1
 ```
 
 Or use the powerful new mode:
@@ -137,7 +154,7 @@ If you contribute to or maintain the Grok plugin:
 3. Commit **only** `.grok-plugin/` (pin-only follow-up is expected; a commit cannot embed its own hash)
 4. Pre-publish: `cinematic-studio plugin catalog check --release` (green when pin == HEAD **or** pin is ancestor with only catalog paths after it)
 
-### Step 7: Guided Production Bible Wizard (v3.6.7)
+### Step 7: Guided Production Bible Wizard (v3.7.1)
 Optional multi-step Bible creation (same JSON shape as direct `create-bible`):
 ```bash
 cinematic-studio create-bible --wizard          # TTY only; scripts keep create-bible "Title"
@@ -159,9 +176,9 @@ Free-text logline/characters/world/tech notes roll into `notes`. Stages live in 
 
 ---
 
-## Recommended New Workflow (v3.6.7)
+## Recommended New Workflow (v3.7.1)
 
-1. **Primary Activation** — `Activate Grok Imagine Cinematic Studio v3.6.7` or `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
+1. **Primary Activation** — `Activate Grok Imagine Cinematic Studio v3.7.1` or `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
 2. **Production Bible** — `create-bible "Title"` (scripts) or `create-bible --wizard` (guided TTY) / Web Guided Bible Creator
 3. **Use VIDEO_PIPELINE_SPEC** — 1.0 cost default; 1.5 when native audio is required
 4. **Activate Sonic Architect early** when native audio is important
@@ -182,7 +199,7 @@ Free-text logline/characters/world/tech notes roll into `notes`. Stages live in 
 
 ---
 
-**Welcome to Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native"!**
+**Welcome to Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native"!**
 
 Unified Grok 4.5 cinematic+Build (optional 4.3 1M), guided Bible wizard, plugin marketplace, and native 1.5 video + audio.
 

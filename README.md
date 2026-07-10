@@ -2,30 +2,32 @@
   <img src="assets/banner.jpg" alt="Grok Imagine Cinematic Studio Banner" width="100%">
 </p>
 
-# 🎬 Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native"
+# 🎬 Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native"
 
 **The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (cinematic + coding default) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
 Transform any story into emotionally powerful, production-ready cinematic video with **Imagine Video 1.0** ($0.05/sec) or **1.5 native image-to-video** with one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
-[![Version](https://img.shields.io/badge/version-3.6.7-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
+[![Version](https://img.shields.io/badge/version-3.7.1-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Grok](https://img.shields.io/badge/Grok-4.5%20Build%20%2B%204.3%20cinematic%20%2B%20Imagine-purple)](https://x.ai)
+[![Grok](https://img.shields.io/badge/Grok-4.5%20cinematic%2BBuild%20%C2%B7%20optional%204.3%201M%20%C2%B7%20Imagine-purple)](https://x.ai)
 
 ---
 
-## ✨ What's New in v3.6.7
+## ✨ What's New in v3.7.1
 
-- **Guided Production Bible wizard** — `create-bible --wizard` + Web UI Guided Bible Creator (shared stages → existing bible builder)
-- **Catalog release pin hygiene** — `plugin catalog check --release` green after pin-only follow-up commits
-- Builds on **v3.6.6/3.6.7 model stack** (Grok 4.5 cinematic+Build; optional Grok 4.3 1M)
+- **Imagine Agent Mode Handoff** — Studio Director routes planning → generation across Grok Build tools, ACP, grok.com/imagine, and xAI API
+- **Full suite on Grok 4.5** — all Role Cards + skills embed **Model Layer (Grok 4.5 · studio v3.7.1)**; operating rules (reasoning high, 1M opt-in only, Imagine tools ≠ chat)
+- **Canonical model docs** — `references/agents/MODEL_LAYER_v3.7.1.md` + `tools/models.py` (`STACK_CONTRACT` cinematic+Build = `grok-4.5`)
+- Builds on **v3.6.7** guided Bible wizard + catalog pin hygiene
 
-## ✨ v3.6.6 Dual Model Stack
+## ✨ Unified Grok 4.5 Stack (since v3.6.6/3.6.7)
 
-- **Unified chat default** — cinematic orchestration + Grok Build / coding on **`grok-4.5`**; opt-in **`grok-4.3`** for 1M-context Bibles
+- **Unified chat default** — cinematic orchestration + Grok Build / coding on **`grok-4.5`**; opt-in **`grok-4.3`** for 1M-context Bibles only
 - **Grok Build ≥ 0.2.93** documented as minimum recommended CLI (`grok --version`)
-- **Registry + verify** — `tools/models.py` / `models verify` enforce dual defaults; `grok-build-0.1` marked legacy
-- Aliases: `4.5`, `coding`, `grok-build-latest` → 4.5; `4.3`, `cinematic` → 4.3
+- **Registry + verify** — `tools/models.py` / `models verify`; `grok-build-0.1` marked legacy
+- Aliases: `4.5`, `coding`, `cinematic`, `grok-build-latest` → **4.5**; `4.3`, `long-context` → **4.3** (1M opt-in)
+- **Guided Production Bible wizard** (v3.6.7) — `create-bible --wizard` + Web UI Guided Bible Creator
 
 ### What's New in v3.6.5 "Odyssey Native"
 
@@ -61,7 +63,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 - **Quick Start Guide & Project Bible template** updated with model stack section and Grok Build config example
 
 ### Agent & System Upgrades
-- Core agents at **v3.6.5 Role Cards** under **studio v3.6.7** (1.5 protocols, Grok 4.5 Model Layer on all agents, decision frameworks)
+- Core agents at **v3.6.5 Role Cards** under **studio v3.7.1** (1.5 protocols, Grok 4.5 Model Layer on all agents, decision frameworks)
 - Enhanced long-form sequencing (60–180s+) with low-degradation 1.5 native chaining
 - Stronger emotional + audio continuity across extended sequences
 - CLI & Web UI: DNA, sequence, quota, NSFW, model pickers, guided Bible wizard, live cost estimation, plugin install
@@ -73,7 +75,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 ### 1. Fastest: Master Prompt Activation (Recommended)
 1. Copy the content of [`MASTER_PROMPT_v3.6.md`](MASTER_PROMPT_v3.6.md)
 2. Paste into a new **Grok 4.5** chat (default) or **Grok 4.3** for long 1M Bibles (enable reasoning=medium/high for complex productions)
-3. Type: `Activate Grok Imagine Cinematic Studio v3.6.7`
+3. Type: `Activate Grok Imagine Cinematic Studio v3.7.1`
 
 ### 2. Python CLI (Power Users)
 ```bash
@@ -134,35 +136,36 @@ streamlit run web_ui/app.py
 
 ---
 
-## 🏗️ System Architecture (v3.6.7)
+## 🏗️ System Architecture (v3.7.1)
 
 ```
-Studio Director v3.6.5 + Mega Production Architect v3.6.5  (Role Cards; studio v3.6.7)
+Studio Director v3.7.1 + Mega Production Architect v3.6.5  (Role Cards; studio v3.7.1 · Grok 4.5)
 ├── .grok-plugin/                 # Marketplace + plugin manifests (46 skills) — managed via `cinematic-studio plugin catalog`
-├── references/agents/            # Authoritative Role Cards (v3.6.5+) + AGENT_INDEX.md
-├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, models.py, bible_stages
-├── tools/cinematic_studio_cli.py   # CLI: cinematic-studio (create-bible --wizard, dna, sequence, quota, nsfw, models, plugin catalog)
+├── references/agents/            # Role Cards + AGENT_INDEX + MODEL_LAYER_v3.7.1 + Handoff protocol
+├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, models.py, bible_stages, imagine_bridge
+├── tools/cinematic_studio_cli.py   # CLI: create-bible --wizard, dna, sequence, quota, nsfw, models, imagine, plugin catalog
 ├── references/MODELS_v3.6.md   # Grok Build + xAI model registry (Grok 4.5 default)
 ├── web_ui/app.py                 # Streamlit + Guided Bible Creator + model pickers
 ├── examples/                     # Production Bible templates
-├── MASTER_PROMPT_v3.6.md         # Main activation prompt (v3.6.7)
+├── MASTER_PROMPT_v3.6.md         # Main activation prompt (v3.7.1 · Grok 4.5)
 ├── scripts/                      # thin shims (release/verify); real catalog work via `cinematic-studio plugin catalog`
-└── .grok/skills/                 # 44 Custom Grok skills (primary runtime)
+└── .grok/skills/                 # 46+ custom Grok skills (primary runtime)
 ```
 
-**Key v3.6.7 Components:**
-- `references/agents/` — Single source of truth for Role Cards (agent labels remain v3.6.5 in CLI registry)
-- `MASTER_PROMPT_v3.6.md` — Full v3.6.7 activation with Grok 4.5 default stack + 1.5 pipeline rules
+**Key v3.7.1 Components:**
+- `references/agents/` — Role Cards (labels remain v3.6.5 in CLI registry; Studio Director **v3.7.1**)
+- `references/agents/MODEL_LAYER_v3.7.1.md` — Grok 4.5 operating rules for every agent/skill
+- `MASTER_PROMPT_v3.6.md` — Activation with Grok 4.5 stack + Imagine Agent Mode Handoff
 - `tools/cli/bible_stages.py` — Guided Production Bible wizard (CLI `--wizard` + Web UI)
 - `references/agents/AGENT_INDEX.md` — Quick reference + activation presets
 - `.grok-plugin/` — Marketplace support for `grok plugin install` + release-pin hygiene
 
 ---
 
-## 🎥 The 23-Agent Professional Film Crew (v3.6.5 Role Cards · studio v3.6.7)
+## 🎥 The 23-Agent Professional Film Crew (v3.6.5 Role Cards · studio v3.7.1 · Grok 4.5)
 
 ### Core Leadership
-- **Studio Director v3.6.5** — Central commander & **1.5 video pipeline leader**
+- **Studio Director v3.7.1** — Central commander, **Imagine Agent Mode Handoff** owner, pipeline leader
 - **Mega Production Architect v3.6.5** — Production Bibles with VIDEO_PIPELINE_SPEC
 
 ### Visual & Camera
@@ -228,7 +231,7 @@ Grok-Imagine-Cinematic-Studio/
 ## 🔗 Useful Links
 
 - [Quick Start Guide](Quick_Start_Guide.md)
-- [Agent Index (v3.6.7)](references/agents/AGENT_INDEX.md)
+- [Agent Index (v3.7.1)](references/agents/AGENT_INDEX.md)
 - [Production Bible Template](Project_Bible_Template.md)
 - [CHANGELOG](CHANGELOG.md)
 - [RELEASE_NOTES_v3.6.md](RELEASE_NOTES_v3.6.md)
@@ -243,6 +246,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (cinematic + coding), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5*
+*Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (cinematic + coding), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5*
 
-*Last updated: July 9, 2026 — v3.6.7*
+*Last updated: July 10, 2026 — v3.7.1*

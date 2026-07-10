@@ -29,6 +29,24 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ---
 
+## [3.7.1] - 2026-07-10
+
+### Added
+- **Imagine Agent Mode Handoff protocol (v3.7.1)** — official Studio Director–owned routing from planning into four execution surfaces: `grok_build_tools`, `grok_agent_acp`, `grok_com_imagine`, `xai_api`. Canonical doc: `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md` (mirrored under studio-director + main skill `references/`).
+- **Packet type `imagine_agent_mode_handoff`** — required fields for pipeline spec, prompt, Sound Layer (video), model stack, quota note, return path, handoff steps; validated by `handoff-packet-validator`.
+- **CLI `imagine agent-handoff`** — emit markdown/json/clipboard handoffs from batch shots or sequence clips (`--surface`, `--mode`).
+- **`build_agent_mode_handoff` / `agent_mode_handoff_to_markdown`** in `tools/imagine_bridge.py`.
+- **Studio Director Role Card + skill** — own surface decision, specialist-before-handoff, block incomplete video packets, close loop with QA.
+- **Main skill `grok-imagine-cinematic-studio`** — activation phrase v3.7.1; `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` / `HANDOFF TO IMAGINE AGENT MODE`.
+
+### Changed
+- **Studio version** — `VERSION` / CLI / Web UI / plugin manifests / `STUDIO_COMPATIBILITY_VERSION` → **3.7.1**
+- **Public suite docs → Grok 4.5 / v3.7.1** — README, Quick Start, MASTER_PROMPT, UPGRADE_GUIDE, Project Bible, installation guide, MODELS, RELEASE_NOTES, config example, installer scripts; correct aliases (`cinematic` → 4.5); badge + activation phrases.
+- **All skills → Grok 4.5 operating notes (v3.7.1)** — every SKILL.md Model Layer footer adds reasoning/1M/Imagine-tool rules; meta-installer + install_paths → v3.7.1; production-bible-workflow defaults video 1.0 + handoff; github-repo-manager tool paths modernized; i2i skills use `image_edit`; no remaining v3.6.7 skill branding.
+- **All Role Cards + skills → Model Layer (Grok 4.5 · studio v3.7.1)** — stamp and links updated across 80+ agent/skill docs; canonical `MODEL_LAYER_v3.7.1.md` (v3.6.7 file is a pointer); `skill-agent-architect` Role Card template and skill revised off Grok 4.3 dual-stack language; `AGENT_INDEX` VIDEO_PIPELINE_SPEC documents 1.0 cost default + 1.5 native-audio variant.
+
+---
+
 ## [3.6.7] - 2026-07-09
 
 ### Added

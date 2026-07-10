@@ -51,6 +51,46 @@ PACKET_TYPES: dict[str, dict[str, Any]] = {
             "emotional_residue",
         ),
     },
+    "imagine_agent_mode_handoff": {
+        "required": (
+            "packet_type",
+            "protocol_version",
+            "studio_version",
+            "target_surface",
+            "execution_mode",
+            "subject_id",
+            "prompt",
+            "reference_hints",
+            "model_stack",
+            "quota_note",
+            "return_path",
+            "handoff_steps",
+        ),
+        "target_surfaces": frozenset(
+            {
+                "grok_build_tools",
+                "grok_agent_acp",
+                "grok_com_imagine",
+                "xai_api",
+            }
+        ),
+        "execution_modes": frozenset(
+            {
+                "image_prompt",
+                "image_edit",
+                "image_to_video",
+                "video_prompt",
+                "reference_to_video",
+            }
+        ),
+        "video_modes": frozenset(
+            {
+                "image_to_video",
+                "video_prompt",
+                "reference_to_video",
+            }
+        ),
+    },
 }
 
 
@@ -112,6 +152,37 @@ def validate_packet(data: dict[str, Any]) -> list[str]:
             issues.append("clothing_displacement_log: must be an array")
         if not str(data.get("emotional_residue", "")).strip():
             issues.append("empty required field: emotional_residue")
+
+    if packet_type == "imagine_agent_mode_handoff":
+        if not str(data.get("subject_id", "")).strip():
+            issues.append("empty required field: subject_id")
+        if not str(data.get("prompt", "")).strip():
+            issues.append("empty required field: prompt")
+        surface = data.get("target_surface")
+        if surface not in schema.get("target_surfaces", ()):
+            issues.append(f"invalid target_surface: {surface}")
+        mode = data.get("execution_mode")
+        if mode not in schema.get("execution_modes", ()):
+            issues.append(f"invalid execution_mode: {mode}")
+        if not isinstance(data.get("reference_hints"), list):
+            issues.append("reference_hints: must be an array")
+        stack = data.get("model_stack")
+        if not isinstance(stack, dict):
+            issues.append("model_stack: must be an object")
+        elif not any(str(stack.get(k, "")).strip() for k in ("imagine_image", "imagine_video", "chat")):
+            issues.append("model_stack: need at least one of chat/imagine_image/imagine_video")
+        steps = data.get("handoff_steps")
+        if not isinstance(steps, list) or len(steps) < 1:
+            issues.append("handoff_steps: need at least one step")
+        if not str(data.get("quota_note", "")).strip():
+            issues.append("empty required field: quota_note")
+        if not str(data.get("return_path", "")).strip():
+            issues.append("empty required field: return_path")
+        if mode in schema.get("video_modes", ()):
+            if not str(data.get("video_pipeline_spec", "")).strip():
+                issues.append("video modes require video_pipeline_spec")
+            if not str(data.get("sound_layer", "")).strip():
+                issues.append("video modes require sound_layer")
 
     return issues
 

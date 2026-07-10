@@ -22,7 +22,14 @@ from imagine_client import (
 )
 from imagine_jobs import cancel_job, create_job, get_job, job_summary, list_jobs, transition_job
 from artifact_pipeline import artifacts_summary, list_artifacts, register_artifact_from_job
-from imagine_bridge import bridge_to_clipboard, bridge_to_markdown, build_bridge_packet
+from imagine_bridge import (
+    TARGET_SURFACES,
+    agent_mode_handoff_to_markdown,
+    bridge_to_clipboard,
+    bridge_to_markdown,
+    build_agent_mode_handoff,
+    build_bridge_packet,
+)
 from production_report import build_production_report, report_to_markdown
 from imagine_regions import IMAGINE_REGIONS, get_active_region, get_failover_chain, set_imagine_region
 from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL, verify_model_compatibility
@@ -271,6 +278,94 @@ def register(app: typer.Typer) -> None:
             console.print(f"[green]Bridge written:[/green] {output}")
         else:
             console.print(Panel(text, title=f"Imagine Bridge — {packet['subject_id']}", border_style="cyan"))
+
+
+    @app.command("agent-handoff")
+    def imagine_agent_handoff(
+        shot_id: str = typer.Option(None, "--shot", help="Batch shot ID"),
+        batch: str = typer.Option(None, "--batch", "-b", help="SFW batch slug"),
+        sequence: str = typer.Option(None, "--sequence", "-s", help="Sequence slug"),
+        clip: str = typer.Option(None, "--clip", "-c", help="Clip ID"),
+        surface: str = typer.Option(
+            "grok_build_tools",
+            "--surface",
+            help="grok_build_tools | grok_agent_acp | grok_com_imagine | xai_api",
+        ),
+        format: str = typer.Option("markdown", "--format", "-f", help="markdown | json | clipboard"),
+        mode: str = typer.Option(None, "--mode", help="Override execution_mode"),
+        output: str = typer.Option(None, "--output", "-o"),
+    ):
+        """Emit official Imagine Agent Mode Handoff packet (protocol v3.7.1)."""
+        subject: dict | None = None
+        context = "shot"
+
+        if batch and shot_id:
+            b = load_sfw_batch(batch)
+            for sh in b.get("shots", []):
+                if sh["shot_id"] == shot_id:
+                    subject = {**sh, "batch_slug": b.get("slug")}
+                    break
+            if not subject:
+                console.print(f"[red]Shot not found in batch:[/red] {shot_id}")
+                raise typer.Exit(1)
+        elif sequence and clip:
+            seq_path = find_sequence(sequence)
+            if not seq_path:
+                console.print(f"[red]Sequence not found:[/red] {sequence}")
+                raise typer.Exit(1)
+            seq = load_sequence(seq_path)
+            subject = get_clip(seq, clip)
+            if not subject:
+                console.print(f"[red]Clip not found:[/red] {clip}")
+                raise typer.Exit(1)
+            subject = {**subject, "sequence_slug": seq.get("slug")}
+            context = "clip"
+        else:
+            console.print("[red]Provide --batch + --shot OR --sequence + --clip[/red]")
+            raise typer.Exit(1)
+
+        if surface not in TARGET_SURFACES:
+            console.print(
+                f"[red]Invalid --surface:[/red] {surface}\n"
+                f"Expected one of: {', '.join(sorted(TARGET_SURFACES))}"
+            )
+            raise typer.Exit(1)
+
+        try:
+            packet = build_agent_mode_handoff(
+                subject,
+                target_surface=surface,
+                context=context,
+                execution_mode=mode,
+            )
+        except ValueError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+
+        if format == "json":
+            text = json.dumps(packet, indent=2)
+        elif format == "clipboard":
+            # Web-ready single block when surface is grok.com; else markdown
+            if surface == "grok_com_imagine":
+                text = bridge_to_clipboard(build_bridge_packet(subject, context=context))
+            else:
+                text = agent_mode_handoff_to_markdown(packet)
+        else:
+            text = agent_mode_handoff_to_markdown(packet)
+
+        if output:
+            from pathlib import Path
+
+            Path(output).write_text(text)
+            console.print(f"[green]Agent-mode handoff written:[/green] {output}")
+        else:
+            console.print(
+                Panel(
+                    text if format != "json" else Markdown(f"```json\n{text}\n```"),
+                    title=f"Imagine Agent Mode Handoff — {packet['subject_id']}",
+                    border_style="magenta",
+                )
+            )
 
 
     @app.command("workflow")

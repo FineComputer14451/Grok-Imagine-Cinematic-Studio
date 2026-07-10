@@ -70,7 +70,7 @@
           },
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.6.7 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.7.1 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
           },
           {
             "name": "handoff-packet-validator",
@@ -165,6 +165,10 @@
             "description": "SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota a…"
           },
           {
+            "name": "skill-agent-architect",
+            "description": "Skill & Agent Architect for the Grok-Imagine-Cinematic-Studio ecosystem. Helps design, draft, refine and document custo…"
+          },
+          {
             "name": "sonic-architect-native-audio-virtuoso",
             "description": "Sound design visionary and native audio synthesis master. Creates perfectly synchronized, cinema-grade audio with multi…"
           },
@@ -196,7 +200,7 @@
           },
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.6.7 with the full 23-agent production suite, Grok 4.5 model stack, and native…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.7.1 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
           },
           {
             "name": "dashboard",
@@ -236,7 +240,7 @@
           }
         ]
       },
-      "sha": "60f0e06165d7a130d6c54e30174b47adba06c9ea"
+      "sha": "643dd201c69dfead33c26fb247e047d510aaeb8b"
     }
   }
 }

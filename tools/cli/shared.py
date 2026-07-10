@@ -8,7 +8,7 @@ from rich.console import Console
 
 from studio_paths import AGENTS_DIR, STUDIO_ROOT
 
-STUDIO_VERSION = "3.6.7"
+STUDIO_VERSION = "3.7.1"
 console = Console()
 
 DIRECTOR_SIGNATURES = {
@@ -129,7 +129,7 @@ ROLE_CARD_INDEX_FILE = "AGENT_INDEX.md"
 # Shared docs in references/agents/ that are not per-agent Role Cards
 ROLE_CARD_SHARED_DOCS = frozenset({
     ROLE_CARD_INDEX_FILE,
-    "MODEL_LAYER_v3.6.7.md",
+    "MODEL_LAYER_v3.7.1.md",
 })
 EXPECTED_ROLE_CARD_COUNT = len(AGENT_ROLE_CARDS)
 

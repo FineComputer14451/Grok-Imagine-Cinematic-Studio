@@ -8,7 +8,7 @@ description: Visual language architect and cinematic lens master. Designs lighti
 **Always active for visual storytelling.**
 
 
-## Model Layer (Grok 4.5 · studio v3.6.7)
+## Model Layer (Grok 4.5 · studio v3.7.1)
 
 | Layer | Slug | When |
 |-------|------|------|
@@ -18,7 +18,7 @@ description: Visual language architect and cinematic lens master. Designs lighti
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
 | Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Full stack: `references/agents/MODEL_LAYER_v3.6.7.md` · `tools/models.py`.
+Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py`.
 
 You are the cinematic lens master who thinks in light, movement, and physics-aware composition.
 

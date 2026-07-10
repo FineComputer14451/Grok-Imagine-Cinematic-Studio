@@ -1,11 +1,12 @@
-# Grok Imagine Cinematic Studio — Agent Index v3.6.7
+# Grok Imagine Cinematic Studio — Agent Index v3.7.1
 
-**23 core agents** · **+10 specialists** (pipeline + i2i + NSFW opt-in) · **Studio v3.6.7** · **Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5** · July 2026
+**23 core agents** · **+10 specialists** (pipeline + i2i + NSFW opt-in) · **Studio v3.7.1** · **Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5** · July 2026
 
-> Agent display names keep the **v3.6.5** suffix (CLI registry / Role Card labels). Studio release version is **3.6.7**.
+> Agent display names keep the **v3.6.5** suffix (CLI registry / Role Card labels). Studio release version is **3.7.1**.
 
 Authoritative Role Cards: `references/agents/*.md`  
-Shared model rules: `references/agents/MODEL_LAYER_v3.6.7.md`  
+Shared model rules: `references/agents/MODEL_LAYER_v3.7.1.md`  
+Imagine Agent Mode Handoff: `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`  
 Model registry: `tools/models.py`, `references/MODELS_v3.6.md`
 
 ---
@@ -22,9 +23,15 @@ Model registry: `tools/models.py`, `references/MODELS_v3.6.md`
 | Imagine Image | `grok-imagine-image` | Reference stills |
 | Imagine Image Quality | `grok-imagine-image-quality` | Hero keyframes |
 
-**Grok 4.5 agent rules:** reasoning **high** for Bibles/QA/Identity Lock; stable `prompt_cache_key` per project; alias `cinematic` → `grok-4.5`.
+**Grok 4.5 agent rules:** reasoning **high** for Bibles/QA/Identity Lock; stable `prompt_cache_key` per project; alias `cinematic` → `grok-4.5`. Never market `grok-4.3` as the cinematic default.
 
-Every Production Bible must include:
+Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`. Studio **cost default** is 1.0; use 1.5 when native audio is required:
+
+```
+[VIDEO_PIPELINE_SPEC: model="grok-imagine-video", resolution="720p", clip_length="8-12s preferred", native_audio=false, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]
+```
+
+1.5 native-audio variant:
 
 ```
 [VIDEO_PIPELINE_SPEC: model="grok-imagine-video-1.5", resolution="720p", clip_length="8-12s preferred", native_audio=true, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]
@@ -32,7 +39,7 @@ Every Production Bible must include:
 
 Verify: `python tools/cinematic_studio_cli.py models verify`
 
-Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.6.7)** block.
+Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.7.1)** block.
 
 ---
 
@@ -40,7 +47,7 @@ Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.6.7)** block.
 
 | Agent | Role Card | Activation |
 |-------|-----------|------------|
-| Studio Director v3.6.5 | `Studio_Director.md` | `ACTIVATE STUDIO DIRECTOR` |
+| Studio Director v3.7.1 | `Studio_Director.md` | `ACTIVATE STUDIO DIRECTOR` · `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` |
 | Mega Production Architect v3.6.5 | `Mega_Production_Architect.md` | `ACTIVATE MEGA_PRODUCTION_ARCHITECT` |
 
 ## Visual & Camera
@@ -138,7 +145,7 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 
 | # | Preset | Command |
 |---|--------|---------|
-| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.6.7` |
+| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.7.1` |
 | 2 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | 4 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
@@ -183,4 +190,4 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — 23 core agents + 10 specialists + Tier 1 skills (+ NSFW opt-in)*
+*Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native" — 23 core agents + 10 specialists + Tier 1 skills (+ NSFW opt-in)*

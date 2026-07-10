@@ -1,4 +1,4 @@
-# Grok Imagine Cinematic Studio v3.6.7 — Installation Guide
+# Grok Imagine Cinematic Studio v3.7.1 — Installation Guide
 
 Two supported install paths. Both ship the same **46 skills**; choose based on how you use Grok.
 
@@ -52,8 +52,8 @@ bash <(curl -sL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine
 
 ### Bootstrap / release zips
 
-- **Meta bootstrap:** `grok-imagine-cinematic-studio-meta-installer-v3.6.7.zip` → extract, run `./bootstrap.sh`
-- **Full skills bundle:** `grok-imagine-cinematic-studio-skills-install-v3.6.7.zip` → extract, run `bash scripts/cinematic_studio.sh install`
+- **Meta bootstrap:** `grok-imagine-cinematic-studio-meta-installer-v3.7.1.zip` → extract, run `./bootstrap.sh`
+- **Full skills bundle:** `grok-imagine-cinematic-studio-skills-install-v3.7.1.zip` → extract, run `bash scripts/cinematic_studio.sh install`
 
 The installer reconciles missing manifest skills from GitHub `main` when needed.
 
@@ -76,7 +76,7 @@ Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
 
 ### Manual zip (Method A)
 
-1. Download the latest `.zip` from GitHub Releases (`grok-imagine-cinematic-studio-skills-install-v3.6.7.zip` or current release)
+1. Download the latest `.zip` from GitHub Releases (`grok-imagine-cinematic-studio-skills-install-v3.7.1.zip` or current release)
 2. Extract it (release zips may use a nested root folder — the meta installer handles this automatically)
 3. Copy `.grok/skills/*` → `~/.grok/skills/`
 4. Copy `references/`, `tools/`, `config/`, and prompt files to `~/Grok-Cinematic-Projects/` (or your `PROJECT_DIR`)
@@ -130,7 +130,7 @@ Refresh the Skills page in Grok and confirm slash commands are available.
 
 1. Refresh the Skills page in Grok
 2. Start a new chat
-3. Type: `Activate Grok Imagine Cinematic Studio v3.6.7` (or use `/cinematic` with Method B)
+3. Type: `Activate Grok Imagine Cinematic Studio v3.7.1` (or use `/cinematic` with Method B)
 
 Optional Grok Build config:
 

@@ -8,7 +8,7 @@ description: General-purpose Image-to-Image cinematic refinement specialist for 
 **Role Card:** `references/agents/I2I_Cinematic_Refiner.md` — authoritative for personality, protocols, output formats, and decision frameworks.
 
 
-## Model Layer (Grok 4.5 · studio v3.6.7)
+## Model Layer (Grok 4.5 · studio v3.7.1)
 
 | Layer | Slug | When |
 |-------|------|------|
@@ -18,7 +18,7 @@ description: General-purpose Image-to-Image cinematic refinement specialist for 
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
 | Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Full stack: `references/agents/MODEL_LAYER_v3.6.7.md` · `tools/models.py`.
+Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py`.
 
 ## When to Activate
 
@@ -59,7 +59,7 @@ Always begin with: **"Initiating I2I Cinematic Refinement Protocol v3.6…"**
 Start from Imagine Prompt Master output and append:
 ", exact character likeness from reference, maintain all identity anchors, cinematic color grade, photorealistic skin texture, subtle film grain, no deformation"
 
-For Grok `edit_image` calls, translate desired strength into clear descriptive language in the prompt.
+For Grok `image_edit` calls, translate desired strength into clear descriptive language in the prompt.
 
 ### Workflow Integration & Optimization
 See the full **I2I Workflow Optimization Guide** (`references/I2I_Workflow_Optimization_Guide.md`) for advanced techniques including:

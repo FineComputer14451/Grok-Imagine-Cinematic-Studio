@@ -2,7 +2,7 @@
 
 **Version:** 1.0  
 **Date:** [DATE]  
-**Studio:** Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native"  
+**Studio:** Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native"  
 **Status:** [Pre-Production / Production / Post]
 
 **Model Stack (locked — dual):**
