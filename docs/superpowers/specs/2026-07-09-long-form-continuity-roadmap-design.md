@@ -1,8 +1,9 @@
 # Design: Long-Form Continuity Capability Roadmap (v3.7+)
 
 **Date:** 2026-07-09  
+**Implemented:** 2026-07-10  
 **Topic:** Ranked backlog of additional tools, agents, and skills for long-form continuity  
-**Status:** Design approved — ready for implementation planning  
+**Status:** Implemented (#1–#12 shipped on `main`)  
 **Approach:** Gap audit of the existing long-form stack (upgrade/tool-first; new Role Cards only for judgment gaps)
 
 ## Summary of Decisions
@@ -195,10 +196,14 @@ v1 of #1/#2 may use **metadata + frame extract / structural heuristics** (hashes
 - [ ] User review of the written spec
 - [ ] Implementation plan via writing-plans (after user approves this file)
 
+## Implementation status (2026-07-10)
+
+All ranked items **#1–#12** shipped on `main` (see `docs/superpowers/plans/2026-07-09-*-*.md` and `CHANGELOG.md` Unreleased). Primary CLI surface: `sequence drift-score`, `seam-report`, `qa-assist`, `memory`, `regen`, `amv-check`, `temp`, `cast`, `continuity-diff`, `health`, `artifact-lexicon`, `replan`.
+
 ## Next Step
 
-After user approves this written spec: invoke **writing-plans** for the first implementation epic — **Identity Drift Scorer + Last-Frame Seam Report + Chain QA Assist v2** (#1–#3).
+~~After user approves this written spec: invoke **writing-plans** for the first implementation epic — **Identity Drift Scorer + Last-Frame Seam Report + Chain QA Assist v2** (#1–#3).~~ **Done.** Further work is outside this long-form continuity track (e.g. full studio roadmap, release packaging).
 
 ---
 
-*Grok Imagine Cinematic Studio — long-form continuity roadmap design — 2026-07-09*
+*Grok Imagine Cinematic Studio — long-form continuity roadmap design — 2026-07-09 · implemented 2026-07-10*
