@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **Arc replan co-pilot (roadmap #12)** — `tools/arc_replan.py` replans remaining beats and temperature curve after mid-sequence failure; CLI `sequence replan plan|apply`; skill `arc-replan-copilot` (final long-form continuity roadmap item)
 - **Stitch artifact lexicon (roadmap #11)** — `tools/stitch_artifact_lexicon.py` vocabulary + negative/positive packs for flicker/morph/halo; CLI `sequence artifact-lexicon`; re-gen prompts consume suggested packs
 - **Long-form health dashboard (roadmap #10)** — `tools/sequence_health_dashboard.py` aggregates chain QA, drift/seam/AMV, regen, temperature, continuity diffs, remaining cost; CLI `sequence health` with `--json` / `--markdown`
 - **Continuity diff CLI (roadmap #9)** — `tools/continuity_diff.py` clip-to-clip and clip-vs-memory-bank continuity reports; CLI `sequence continuity-diff` for Continuity Guardian / QA
