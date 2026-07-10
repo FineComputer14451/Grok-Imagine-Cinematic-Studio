@@ -19,11 +19,12 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Fixed
 
 ### Changed
-- **Docs: public stack copy → unified Grok 4.5** — README hero/badge/aliases/footer, Quick Start, MASTER_PROMPT, RELEASE_NOTES, UPGRADE_GUIDE no longer market dual-stack (4.3-as-cinematic); code already had `STACK_CONTRACT` on `grok-4.5`.
+- **All agents → Grok 4.5** — remaining **18** skills that lacked Model Layer now embed `## Model Layer (Grok 4.5 · studio v3.6.7)` (DoP v3.3, Performance, Foley, Key Art, Trailer, Stunt, VFX, Localization, Narrative Arc, Color Grading, Production Designer, Continuity Guardian, i2i refiners, NSFW chain QA, AI video upscaler, cinematic-ffmpeg, Mega Production Architect). Full suite: **46/46** skills + all Role Cards on Grok 4.5 orchestration default (`grok-4.3` 1M opt-in only).
+- **Docs: public stack copy → unified Grok 4.5** — README hero/badge/aliases/footer, Quick Start, MASTER_PROMPT, RELEASE_NOTES, UPGRADE_GUIDE, CONTRIBUTING, `commands/cinematic.md`, `scripts/lib/cinematic_studio_common.sh` no longer market dual-stack (4.3-as-cinematic); code already had `STACK_CONTRACT` on `grok-4.5`.
 - **Skill hygiene (46 skills)** — `required_skills.manifest` adds `arc-replan-copilot` + `multi-character-identity-arbiter` (parity with disk / `plugin.json`); docs and marketplace copy updated from 44 → 46 skills (AGENTS, README, MASTER_PROMPT, RELEASE_NOTES, installation guide).
 - **Cinematic chat default → `grok-4.5`** — `STACK_CONTRACT["cinematic"]` unified with Build/CLI on `grok-4.5`; `grok-4.3` remains opt-in for 1M context (`--chat-model grok-4.3` / alias `long-context`). Alias `cinematic` now resolves to `grok-4.5`. `models verify` warns on unified chat defaults instead of failing.
 - **Docs & Role Cards** — MODELS, AGENTS, README, MASTER_PROMPT, Quick Start, Project Bible, RELEASE_NOTES, Studio Director / Mega / Prompt Master / Sequence / Quota / AGENT_INDEX, commands, Web UI, config example aligned to unified default.
-- **Agents + skills enhanced for Grok 4.5** — new `references/agents/MODEL_LAYER_v3.6.7.md`; all 32 Role Cards embed Model Layer; 27 skills updated (studio hub, Studio Director, Mega, Prompt Master, Quota, Bible workflow, meta-installer, pipeline specialists) with stack tables, 4.5 operating rules, and pricing.
+- **Agents + skills enhanced for Grok 4.5** — new `references/agents/MODEL_LAYER_v3.6.7.md`; all Role Cards embed Model Layer; all skills carry stack tables and 4.5 operating rules.
 
 ---
 

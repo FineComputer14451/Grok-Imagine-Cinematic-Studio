@@ -1,5 +1,5 @@
 ---
-description: Activate Grok Imagine Cinematic Studio v3.6.7 with the full 23-agent production suite, dual model stack, and native Imagine Video 1.0/1.5 pipeline.
+description: Activate Grok Imagine Cinematic Studio v3.6.7 with the full 23-agent production suite, Grok 4.5 model stack, and native Imagine Video 1.0/1.5 pipeline.
 ---
 
 # Activate Cinematic Studio

@@ -54,7 +54,7 @@ Then choose your workflow:
 - `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
 - `GENERATE_NATIVE_AUDIO_SEQUENCE`
 - `STITCH_WITH_AUDIO_SYNC`
-- `EXPORT_BIBLE_PDF` (uses Grok 4.3 native PDF)
+- `EXPORT_BIBLE_PDF` (uses Grok native PDF export)
 - `IMPORT_MEMORY_FROM_CHAT [chat_url]`
 - `ACTIVATE AI_POLISH_DIRECTOR` / `RUN FINAL POLISH PASS` (post-QA upscale & face restoration)
 - `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` — Heavy batch planning, i2v decisions, daily quota reports
@@ -113,7 +113,7 @@ python tools/cinematic_studio_cli.py nsfw report
 ### Specialist (Opt-in)
 - **ErosForge NSFW Director v3.6** — Adult/R-rated content specialist (1.5-optimized erotic motion + synced intimate audio; activate explicitly with `ACTIVATE EROSFORGE`)
 
-> **All agents have complete Role Cards** stored in `references/agents/`. These are the authoritative definitions. v3.6 cards include dedicated "Imagine Video 1.5 Integration" and "Grok 4.3 Full Exploitation" sections.
+> **All agents have complete Role Cards** stored in `references/agents/`. These are the authoritative definitions. Every card embeds the **Model Layer (Grok 4.5 · studio v3.6.7)** block; v3.6 cards also include "Imagine Video 1.5 Integration" and Grok 4.5 operating rules (optional 4.3 for 1M only).
 
 ---
 

@@ -87,7 +87,7 @@ See `CHANGELOG.md` for full details.
 - Enhanced protocols for 1.5 native video + audio workflows + plugin distribution
 
 ### Agent & System Upgrades (v3.6.5–v3.6.7)
-- Core agents at v3.6.5 Role Cards under studio **v3.6.7** (1.5 protocols, dual stack, decision frameworks)
+- Core agents at v3.6.5 Role Cards under studio **v3.6.7** (1.5 protocols, Grok 4.5 Model Layer, decision frameworks)
 - Enhanced long-form sequencing (60–180s+) with low-degradation 1.5 native chaining + AUDIO_MOMENTUM_VECTOR
 - Stronger emotional + audio continuity across extended sequences
 - **v3.6.6 dual stack (historical):** cinematic `grok-4.3` + Build/coding `grok-4.5`; later unified cinematic default to `grok-4.5` (4.3 remains 1M opt-in)

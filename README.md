@@ -4,7 +4,7 @@
 
 # 🎬 Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native"
 
-**The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (coding) · Grok 4.3 (cinematic 1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
+**The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (cinematic + coding default) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
 Transform any story into emotionally powerful, production-ready cinematic video with **Imagine Video 1.0** ($0.05/sec) or **1.5 native image-to-video** with one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
@@ -61,7 +61,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 - **Quick Start Guide & Project Bible template** updated with model stack section and Grok Build config example
 
 ### Agent & System Upgrades
-- Core agents at **v3.6.5 Role Cards** under **studio v3.6.7** (1.5 protocols, dual stack, decision frameworks)
+- Core agents at **v3.6.5 Role Cards** under **studio v3.6.7** (1.5 protocols, Grok 4.5 Model Layer on all agents, decision frameworks)
 - Enhanced long-form sequencing (60–180s+) with low-degradation 1.5 native chaining
 - Stronger emotional + audio continuity across extended sequences
 - CLI & Web UI: DNA, sequence, quota, NSFW, model pickers, guided Bible wizard, live cost estimation, plugin install
@@ -72,7 +72,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 
 ### 1. Fastest: Master Prompt Activation (Recommended)
 1. Copy the content of [`MASTER_PROMPT_v3.6.md`](MASTER_PROMPT_v3.6.md)
-2. Paste into a new **Grok 4.3** (long Bible) or **Grok Build / Grok 4.5** chat (enable reasoning=medium/high for complex productions)
+2. Paste into a new **Grok 4.5** chat (default) or **Grok 4.3** for long 1M Bibles (enable reasoning=medium/high for complex productions)
 3. Type: `Activate Grok Imagine Cinematic Studio v3.6.7`
 
 ### 2. Python CLI (Power Users)
@@ -152,7 +152,7 @@ Studio Director v3.6.5 + Mega Production Architect v3.6.5  (Role Cards; studio v
 
 **Key v3.6.7 Components:**
 - `references/agents/` — Single source of truth for Role Cards (agent labels remain v3.6.5 in CLI registry)
-- `MASTER_PROMPT_v3.6.md` — Full v3.6.7 activation with dual stack + 1.5 pipeline rules
+- `MASTER_PROMPT_v3.6.md` — Full v3.6.7 activation with Grok 4.5 default stack + 1.5 pipeline rules
 - `tools/cli/bible_stages.py` — Guided Production Bible wizard (CLI `--wizard` + Web UI)
 - `references/agents/AGENT_INDEX.md` — Quick reference + activation presets
 - `.grok-plugin/` — Marketplace support for `grok plugin install` + release-pin hygiene
@@ -243,6 +243,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ---
 
-*Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (coding), Grok 4.3 (cinematic), and Imagine Video 1.0/1.5*
+*Grok Imagine Cinematic Studio v3.6.7 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (cinematic + coding), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5*
 
 *Last updated: July 9, 2026 — v3.6.7*

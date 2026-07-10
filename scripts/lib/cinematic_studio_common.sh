@@ -543,7 +543,7 @@ cinematic_studio_verify_models() {
         cli_py="$PROJECT_DIR/tools/cinematic_studio_cli.py"
     fi
 
-    echo "Model compatibility (Grok 4.5 Build + Grok 4.3 cinematic + Imagine):"
+    echo "Model compatibility (Grok 4.5 cinematic+Build default · optional 4.3 1M · Imagine):"
     if [[ -z "$cli_py" ]]; then
         echo "⚠️  Skipping model check (CLI tools unavailable — re-run install)"
         echo ""
