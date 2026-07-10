@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **Long-form health dashboard (roadmap #10)** — `tools/sequence_health_dashboard.py` aggregates chain QA, drift/seam/AMV, regen, temperature, continuity diffs, remaining cost; CLI `sequence health` with `--json` / `--markdown`
 - **Continuity diff CLI (roadmap #9)** — `tools/continuity_diff.py` clip-to-clip and clip-vs-memory-bank continuity reports; CLI `sequence continuity-diff` for Continuity Guardian / QA
 - **Multi-character identity arbiter (roadmap #8)** — `tools/multi_character_arbiter.py` primary/secondary DNA weights, conflict rules, multi inject blocks; CLI `sequence cast arbitrate|inject`; skill + Role Card
 - **Emotional temperature gate (roadmap #7)** — `tools/emotional_temperature.py` normalizes `emotional_temperature_curve`, infers observed temp, flags flat/spike/off-plan; CLI `sequence temp set|show|gate`; extend prompts may include planned temperature
