@@ -196,7 +196,7 @@
           },
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.6.7 with the full 23-agent production suite, dual model stack, and native Ima…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.6.7 with the full 23-agent production suite, Grok 4.5 model stack, and native…"
           },
           {
             "name": "dashboard",
@@ -236,7 +236,7 @@
           }
         ]
       },
-      "sha": "b6e3067217c1bdca4ae20246dafffd385b9334d9"
+      "sha": "a27306f02cc94ef47ac86b74708b85c035ae9d69"
     }
   }
 }
