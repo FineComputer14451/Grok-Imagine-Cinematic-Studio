@@ -117,6 +117,7 @@ You can activate any agent directly:
    - `ACTIVATE PRODUCTION_DESIGNER` for world-building  
    - `ACTIVATE DOP` for visual language
 
+### Phase 3: Production
 6. **Execute Scenes / Sequences**  
    - Single scenes: Describe clearly  
    - Long sequences: Use `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER`
