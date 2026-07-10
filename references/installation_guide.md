@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio v3.6.7 — Installation Guide
 
-Two supported install paths. Both ship the same **44 skills**; choose based on how you use Grok.
+Two supported install paths. Both ship the same **46 skills**; choose based on how you use Grok.
 
 ## Choose Your Install Method
 
@@ -8,13 +8,13 @@ Two supported install paths. Both ship the same **44 skills**; choose based on h
 |---|-------------------------------------|----------------------------|
 | **Best for** | Grok chat, agent sessions, CLI tools, scripted verify | Grok Build CLI, marketplace updates, slash commands |
 | **Skills location** | `~/.grok/skills/` | `~/.grok/installed-plugins/` (plugin-managed) |
-| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts | 44 skills + 11 slash commands (`/cinematic`, etc.) |
+| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts | 46 skills + 11 slash commands (`/cinematic`, etc.) |
 | **Verify** | `cinematic_studio.sh verify` / `verify --all` | `cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
 | **Update** | `cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` |
 
 You can use **both**: plugin for Grok Build slash commands, Method A for CLI tools and Production Bible references.
 
-**Skill parity:** `scripts/required_skills.manifest` lists the same 44 skills as `.grok-plugin/plugin-index.json`.
+**Skill parity:** `scripts/required_skills.manifest` lists the same 46 skills as `.grok-plugin/plugin-index.json`.
 
 ### Path overrides (Method A)
 
@@ -69,7 +69,7 @@ Creates a timestamped backup at `~/.grok/skills-backup-*` before replacing skill
 
 ```bash
 ./scripts/cinematic_studio.sh verify          # core skills (7) + model registry
-./scripts/cinematic_studio.sh verify --all    # full manifest (44 skills)
+./scripts/cinematic_studio.sh verify --all    # full manifest (46 skills)
 ```
 
 Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
@@ -112,7 +112,7 @@ grok plugin update grok-imagine-cinematic-studio
 bash scripts/cinematic_studio.sh verify --plugin
 ```
 
-Checks all 44 plugin skills, 11 slash commands (`/cinematic`, `/dna`, etc.), and model registry when CLI tools are present in the plugin checkout.
+Checks all 46 plugin skills, 11 slash commands (`/cinematic`, `/dna`, etc.), and model registry when CLI tools are present in the plugin checkout.
 
 Registry cross-check (optional):
 
@@ -152,8 +152,8 @@ cp ~/Grok-Cinematic-Projects/config/grok-build.example.toml ~/.grok/config.toml
 ## Verify tiers
 
 - **core** (default) — 7 manifest skills marked `# core` in `required_skills.manifest`, plus `models verify`
-- **all** — all 44 manifest skills in `~/.grok/skills/` (Method A)
-- **plugin** — all 44 skills + 11 commands in the Grok plugin checkout (Method B; `verify --plugin`)
+- **all** — all 46 manifest skills in `~/.grok/skills/` (Method A)
+- **plugin** — all 46 skills + 11 commands in the Grok plugin checkout (Method B; `verify --plugin`)
 
 Core skills: `grok-imagine-cinematic-studio`, `ai-video-upscaler`, `cinematic-sequence-extender`, `studio-director`, `quality-assurance-guardian`, `identity-lock-specialist`, `workflow-quota-optimizer`
 
