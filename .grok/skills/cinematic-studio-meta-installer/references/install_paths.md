@@ -1,8 +1,8 @@
-# Cinematic Studio Meta Installer — Paths Reference v3.6.7 (44-skill Grok plugin suite)
+# Cinematic Studio Meta Installer — Paths Reference v3.6.7 (46-skill Grok plugin suite)
 
 ## Install Methods
 
-Both paths deliver the same **44 skills** (`scripts/required_skills.manifest` ≡ `.grok-plugin/plugin-index.json`).
+Both paths deliver the same **46 skills** (`scripts/required_skills.manifest` ≡ `.grok-plugin/plugin-index.json`).
 
 ### Method A — Meta installer / release zip
 
@@ -21,7 +21,7 @@ unzip grok-imagine-cinematic-studio-meta-installer-v3.6.7.zip && ./bootstrap.sh
 
 Update: `bash scripts/cinematic_studio.sh update` (timestamped backup under `~/.grok/skills-backup-*`).
 
-Verify: `bash scripts/cinematic_studio.sh verify` (7 core + models) or `verify --all` (44 skills).
+Verify: `bash scripts/cinematic_studio.sh verify` (7 core + models) or `verify --all` (46 skills).
 
 ### Method B — Grok plugin (marketplace)
 
@@ -37,7 +37,7 @@ grok plugin install grok-imagine-cinematic-studio@finecomputer14451/grok-imagine
 
 Update: `grok plugin update grok-imagine-cinematic-studio`
 
-Verify: `bash scripts/cinematic_studio.sh verify --plugin` (44 skills + 11 slash commands), or `grok plugin details grok-imagine-cinematic-studio` + refresh Skills in Grok.
+Verify: `bash scripts/cinematic_studio.sh verify --plugin` (46 skills + 11 slash commands), or `grok plugin details grok-imagine-cinematic-studio` + refresh Skills in Grok.
 
 **Note:** Plugin install does not create `~/Grok-Cinematic-Projects/`. Run Method A or clone the repo if you need `tools/cinematic_studio_cli.py`, references, or `cinematic_studio.sh verify`.
 
@@ -90,5 +90,5 @@ Sets `[models] default = "grok-4.5"` and `fork_secondary_model = "grok-build"` f
 ## Verify Tiers
 
 - **core** — 7 manifest skills marked `# core` plus `models verify`
-- **all** — full 44 skills from `required_skills.manifest` (Method A; checks `~/.grok/skills/`)
-- **plugin** — full 44 skills + 11 slash commands under `~/.grok/installed-plugins/` (Method B; `verify --plugin`)
+- **all** — full 46 skills from `required_skills.manifest` (Method A; checks `~/.grok/skills/`)
+- **plugin** — full 46 skills + 11 slash commands under `~/.grok/installed-plugins/` (Method B; `verify --plugin`)
