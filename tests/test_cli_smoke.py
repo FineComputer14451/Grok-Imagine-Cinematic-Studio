@@ -133,6 +133,14 @@ def test_sequence_artifact_lexicon_registered() -> None:
     assert "suggest" in out
 
 
+def test_sequence_replan_commands_registered() -> None:
+    r = run_cli("sequence", "replan", "--help")
+    assert r.returncode == 0
+    out = r.stdout.lower()
+    assert "plan" in out
+    assert "apply" in out
+
+
 if __name__ == "__main__":
     test_main_file_is_small()
     test_main_help()
@@ -148,4 +156,5 @@ if __name__ == "__main__":
     test_sequence_temp_commands_registered()
     test_sequence_artifact_lexicon_registered()
     test_sequence_cast_commands_registered()
+    test_sequence_replan_commands_registered()
     print("All CLI smoke tests passed")

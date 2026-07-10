@@ -1421,3 +1421,107 @@ def register(app: typer.Typer) -> None:
                 console.print(
                     Panel(guards, title="POSITIVE guards", border_style="green")
                 )
+
+    replan_app = typer.Typer(help="Arc replan co-pilot (roadmap #12)")
+    app.add_typer(replan_app, name="replan")
+
+    @replan_app.command("plan")
+    def replan_plan(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(
+            None, "--clip", "-c", help="Clip ID to start replan from"
+        ),
+        from_index: int = typer.Option(
+            None, "--from-index", help="Clip index to start replan from"
+        ),
+        reason: str = typer.Option(
+            None, "--reason", help="Replan reason override (e.g. chain_qa_no_go)"
+        ),
+    ):
+        """Build arc replan proposal (plan only; does not mutate beats/curve)."""
+        from arc_replan import format_arc_replan_markdown, plan_arc_replan
+
+        seq = require_sequence(name)
+        try:
+            proposal = plan_arc_replan(
+                seq,
+                from_index=from_index,
+                from_clip_id=clip,
+                reason=reason,
+            )
+        except ValueError as exc:
+            console.print(f"[red]Replan plan failed:[/red] {exc}")
+            raise typer.Exit(1) from exc
+
+        md = format_arc_replan_markdown(proposal)
+        console.print(
+            Panel(Markdown(md), title="Arc replan proposal", border_style="cyan")
+        )
+        console.print(f"[cyan]{proposal.get('summary', '')}[/cyan]")
+        for alert in proposal.get("alerts") or []:
+            console.print(f"[yellow]Alert:[/yellow] {alert}")
+
+        # Plan only: store proposal; do not apply beats / curve
+        seq["arc_replan_proposal"] = proposal
+        path = save_sequence(seq)
+        console.print(
+            f"[dim]Saved arc_replan_proposal (beats/curve not applied) → {path}[/dim]"
+        )
+
+    @replan_app.command("apply")
+    def replan_apply(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        clip: str = typer.Option(
+            None, "--clip", "-c", help="Clip ID to start replan from"
+        ),
+        from_index: int = typer.Option(
+            None, "--from-index", help="Clip index to start replan from"
+        ),
+        reason: str = typer.Option(
+            None, "--reason", help="Replan reason override (e.g. chain_qa_no_go)"
+        ),
+        yes: bool = typer.Option(
+            False, "--yes", "-y", help="Suppress apply notice (always applies)"
+        ),
+    ):
+        """Plan then apply arc replan (mutates narrative beats + temperature curve)."""
+        from arc_replan import (
+            apply_arc_replan,
+            format_arc_replan_markdown,
+            plan_arc_replan,
+        )
+
+        seq = require_sequence(name)
+        try:
+            proposal = plan_arc_replan(
+                seq,
+                from_index=from_index,
+                from_clip_id=clip,
+                reason=reason,
+            )
+        except ValueError as exc:
+            console.print(f"[red]Replan apply failed:[/red] {exc}")
+            raise typer.Exit(1) from exc
+
+        md = format_arc_replan_markdown(proposal)
+        console.print(
+            Panel(Markdown(md), title="Arc replan proposal", border_style="yellow")
+        )
+        console.print(f"[cyan]{proposal.get('summary', '')}[/cyan]")
+        for alert in proposal.get("alerts") or []:
+            console.print(f"[yellow]Alert:[/yellow] {alert}")
+
+        if not yes:
+            console.print(
+                "[yellow]Applying replan (use --yes to suppress this notice). "
+                "Mutates narrative beats + emotional_temperature_curve.[/yellow]"
+            )
+
+        seq["arc_replan_proposal"] = proposal
+        apply_arc_replan(seq, proposal)
+        path = save_sequence(seq)
+        n = len(proposal.get("replanned_clips") or [])
+        console.print(
+            f"[green]Applied arc replan from index {proposal.get('from_index')} "
+            f"({proposal.get('reason')}): {n} clip(s) → {path}[/green]"
+        )
