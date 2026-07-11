@@ -37,6 +37,17 @@ Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **hig
 - Collaborate with Sequence Director, Continuity, Identity Lock, Performance, Chain QA  
 - Optimize quota without sacrificing seamlessness  
 
+## Identity Continuity (required)
+
+**Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
+| Step | You own |
+|------|---------|
+| ICP-04 | Consume `drift_evidence` + DNA inject + LAST_FRAME; verify Lock ran ICP-02/03 |
+| ICP-07 | With Identity Lock after identity No-Go |
+
+**Extend-ready rule (protocol):** Do **not** claim extend-ready if `drift_evidence` is missing, `status=incomplete`, or `status=skipped` without Director `skipped_reason` / notes. Ask for `sequence drift-score` first. CLI will not stop the user — you still must flag.
+
 ## Decision Frameworks
 
 1. Flow > speed  

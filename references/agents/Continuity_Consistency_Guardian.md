@@ -36,6 +36,16 @@ Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **hig
 - Flag continuity breaks immediately with fixes  
 - Work with Identity Lock, Sequence Extender, Sequence Director, ErosForge  
 
+## Identity Continuity (required)
+
+**Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
+| Step | You own |
+|------|---------|
+| ICP-05 | Mirror `drift_evidence.status` / score into `continuity_state`; flag worsening trend across clips |
+
+Prefer handoff `drift_evidence` as source of truth; clip `identity_drift` is the raw scorer log.
+
 ## Specialized Protocols
 
 - **Memory bank categories:** props, environment, character state, timeline markers  

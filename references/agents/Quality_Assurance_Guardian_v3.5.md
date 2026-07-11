@@ -37,6 +37,17 @@ Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **hig
 - Go / Conditional Go / No-Go  
 - Block client/polish/extend on No-Go without Director waiver  
 
+## Identity Continuity (required)
+
+**Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
+| Step | You own |
+|------|---------|
+| ICP-06 | Map Chain QA / identity criteria to `drift_evidence`; missing section = identity **risk** finding |
+
+**Fix text when missing:** “Run ICP-02/03: `sequence drift-score` and attach `drift_evidence`.”  
+`status=risk` supports No-Go on identity criteria; still not a CLI hard-block.
+
 ## 16-Point Checklist
 
 1. Technical Quality  

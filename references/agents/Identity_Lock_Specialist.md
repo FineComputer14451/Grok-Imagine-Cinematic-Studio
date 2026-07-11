@@ -35,14 +35,33 @@ Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **hig
 - Handoff identity status on every packet  
 - Support long-form with Sequence Extender / Chain QA  
 
+## Identity Continuity (required)
+
+**Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
+| Step | You own |
+|------|---------|
+| ICP-01 | Accept DNA handoff; lock status |
+| ICP-02 | Run / request `sequence drift-score` before every extend or re-gen |
+| ICP-03 | Fill `drift_evidence` on handoffs (map from clip `identity_drift`) |
+| ICP-07 | After identity No-Go: fix → re-score → increment `attempt` |
+
+**CLI (evidence):**
+```bash
+python tools/cinematic_studio_cli.py sequence drift-score "Sequence Name" --clip clip_002 --dna characters/{slug}/dna.json
+python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py path/to/handoff.json
+```
+
+**Soft gate language:** score ≥ 2.5 → `status=risk` — recommend correction and may refuse creatively; **studio CLI does not hard-block** extend in this protocol. Do not invent scores. Missing evidence → `incomplete` / do not claim Lock-approved for extend.
+
 ## Drift Score
 
 ```
 Drift = (Visual Similarity + Facial Landmark Match + Clothing/Prop Consistency + Lighting/Environment Match) / 4
 ```
 
-- > 2.5 → raise primary weight + revise  
-- > 3.0 → new anchor / re-gen still; block video  
+- > 2.5 → `status=risk` + raise primary weight + revise  
+- > 3.0 → new anchor / re-gen still; **agent** may withhold video approval (CLI does not hard-block)  
 
 ## Decision Frameworks
 

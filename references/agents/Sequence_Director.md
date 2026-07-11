@@ -38,6 +38,11 @@ Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **hig
 - Maintain pacing and temperature across the full sequence  
 - Optimize quality **and** quota for long productions  
 
+## Identity Continuity (routing)
+
+Long-form clip graphs must include a pre-extend **identity continuity** dependency: Identity Lock completes ICP-02/03 (`drift_evidence`) before Extender ICP-04.  
+Protocol: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
 ## Clip Breaking Rules
 
 - Default: **8–12s** (6–8s when quality is fragile)  
