@@ -12,12 +12,15 @@ ROOT = Path(__file__).resolve().parent.parent
 VALIDATOR = ROOT / ".grok/skills/handoff-packet-validator/scripts/validate_handoff.py"
 
 
-def run_validator(data: dict) -> subprocess.CompletedProcess[str]:
+def run_validator(
+    data: dict,
+    *extra_args: str,
+) -> subprocess.CompletedProcess[str]:
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
         json.dump(data, f)
         path = f.name
     return subprocess.run(
-        [sys.executable, str(VALIDATOR), path],
+        [sys.executable, str(VALIDATOR), path, *extra_args],
         capture_output=True,
         text=True,
     )
@@ -124,6 +127,29 @@ def test_agent_mode_readiness_warns_on_weak_return_path() -> None:
     assert result.returncode == 0
     out = (result.stdout + result.stderr).lower()
     assert "readiness" in out or "return_path" in out or "⚠️" in result.stdout
+
+
+def test_agent_mode_strict_handoff_fails_on_weak_return_path() -> None:
+    result = run_validator(
+        {
+            "packet_type": "imagine_agent_mode_handoff",
+            "protocol_version": "3.7.1",
+            "studio_version": "3.8.1",
+            "target_surface": "grok_build_tools",
+            "execution_mode": "image_prompt",
+            "subject_id": "shot_001",
+            "prompt": "Hero in rain",
+            "reference_hints": [],
+            "model_stack": {"chat": "grok-4.5"},
+            "quota_note": "1 still",
+            "return_path": "done",
+            "handoff_steps": ["1. gen", "2. save"],
+        },
+        "--strict-handoff",
+    )
+    assert result.returncode == 1
+    out = (result.stdout + result.stderr).lower()
+    assert "readiness" in out or "return_path" in out
 
 
 def test_invalid_imagine_agent_mode_missing_pipeline() -> None:

@@ -287,7 +287,11 @@ def validate_drift_evidence_section(data: dict[str, Any]) -> tuple[list[str], li
     return issues, warnings
 
 
-def validate_packet_with_warnings(data: dict[str, Any]) -> tuple[list[str], list[str]]:
+def validate_packet_with_warnings(
+    data: dict[str, Any],
+    *,
+    strict_handoff: bool = False,
+) -> tuple[list[str], list[str]]:
     """Return (hard issues, soft warnings). Hard issues fail validation."""
     issues: list[str] = []
     packet_type = data.get("packet_type")
@@ -299,27 +303,49 @@ def validate_packet_with_warnings(data: dict[str, Any]) -> tuple[list[str], list
     issues.extend(apply_schema_rules(data, schema))
     drift_issues, warnings = validate_drift_evidence_section(data)
     issues.extend(drift_issues)
-    # Semantic readiness: warn-only (blockers surfaced as warnings; CLI --strict-handoff hard-fails)
+    # Semantic readiness for agent-mode packets (default soft; --strict-handoff hard-fails)
     if not issues and packet_type == PACKET_TYPE_IMAGINE_AGENT_MODE:
         ready = evaluate_imagine_handoff_readiness(data)
         for b in ready.get("blockers") or []:
-            warnings.append(f"readiness blocker: {b}")
+            msg = f"readiness blocker: {b}"
+            if strict_handoff:
+                issues.append(msg)
+            else:
+                warnings.append(msg)
         for w in ready.get("warnings") or []:
             warnings.append(f"readiness: {w}")
     return issues, warnings
 
 
-def validate_packet(data: dict[str, Any]) -> list[str]:
-    issues, _warnings = validate_packet_with_warnings(data)
+def validate_packet(
+    data: dict[str, Any],
+    *,
+    strict_handoff: bool = False,
+) -> list[str]:
+    issues, _warnings = validate_packet_with_warnings(
+        data, strict_handoff=strict_handoff
+    )
     return issues
 
 
 def main() -> int:
-    if len(sys.argv) < 2:
-        print("Usage: validate_handoff.py <handoff.json>", file=sys.stderr)
-        return 2
+    import argparse
 
-    path = Path(sys.argv[1])
+    parser = argparse.ArgumentParser(
+        description="Validate Cinematic Studio handoff JSON packets"
+    )
+    parser.add_argument("path", type=Path, help="Path to handoff.json")
+    parser.add_argument(
+        "--strict-handoff",
+        action="store_true",
+        help=(
+            "Treat imagine_agent_mode_handoff readiness blockers as hard failures "
+            "(exit 1); default is warn-only"
+        ),
+    )
+    args = parser.parse_args()
+    path: Path = args.path
+
     if not path.is_file():
         print(f"File not found: {path}", file=sys.stderr)
         return 2
@@ -334,7 +360,9 @@ def main() -> int:
         print("Root must be a JSON object", file=sys.stderr)
         return 1
 
-    issues, warnings = validate_packet_with_warnings(data)
+    issues, warnings = validate_packet_with_warnings(
+        data, strict_handoff=args.strict_handoff
+    )
     for w in warnings:
         print(f"⚠️  {w}")
     if issues:

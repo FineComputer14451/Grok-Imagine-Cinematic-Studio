@@ -175,6 +175,7 @@ Structural validation is not enough. Run semantic readiness before spend:
 
 ```bash
 python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py packet.json
+python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py packet.json --strict-handoff
 python tools/cinematic_studio_cli.py imagine agent-handoff ... --strict-handoff
 ```
 

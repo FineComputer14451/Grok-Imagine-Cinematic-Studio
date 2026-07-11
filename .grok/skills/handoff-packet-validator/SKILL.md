@@ -60,12 +60,14 @@ Unknown `packet_type` → **fail**. See `references/packet_types.md` for require
 python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py path/to/handoff.json
 python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py characters/hero-slug/handoff.json
 python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py artifacts/handoffs/clip_001_extend.json
+# Agent-mode readiness blockers as hard failures:
+python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py packet.json --strict-handoff
 ```
 
 | Exit | Meaning |
 |------|---------|
 | `0` | Valid (may include ⚠️ warnings) |
-| `1` | Schema / JSON structure errors |
+| `1` | Schema / JSON structure errors, or readiness blockers with `--strict-handoff` |
 | `2` | Usage or file not found |
 
 ## Identity Continuity (`drift_evidence`)
@@ -79,7 +81,16 @@ CLI: `sequence drift-score`
 
 After schema OK, semantic readiness runs as **warnings** (exit 0): empty i2v
 references, video without motion cues, weak `return_path`, placeholder quota, etc.
-Hard-fail automation: `imagine agent-handoff --strict-handoff`.
+
+Hard-fail (exit 1 on readiness blockers):
+
+```bash
+python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py packet.json \
+  --strict-handoff
+# or emit with hard gate:
+python tools/cinematic_studio_cli.py imagine agent-handoff ... --strict-handoff
+```
+
 Helper: `tools/handoff_readiness.py` · Protocol: `IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`
 
 ### Generate packets then validate
