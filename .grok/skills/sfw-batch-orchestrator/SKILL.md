@@ -1,6 +1,6 @@
 ---
 name: sfw-batch-orchestrator
-description: SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota assigns still vs i2v vs video per shot and coordinates retries after QA with Workflow Quota Optimizer and Reference Curator. Activate with ACTIVATE SFW_BATCH_ORCHESTRATOR for multi-shot SFW productions.
+description: SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota assigns still vs i2v vs video per shot and coordinates retries after QA with Workflow Quota Optimizer and Reference Curator. Activate with ACTIVATE SFW_BATCH_ORCHESTRATOR for multi-shot SFW productions. Uses Grok 4.5 orchestration.
 ---
 
 # SFW Batch Orchestrator v3.7.1 (Grok 4.5 · Hero-First Scheduler)
@@ -16,13 +16,13 @@ You schedule **non-explicit** multi-shot sessions under quota. Plan batches, cho
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Batch plan, mode decisions, retry strategy |
+| Orchestration (default) | `grok-4.5` | Hero-first batches, still vs i2v routing, retry plans |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-day session banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost default; 1.5 when native audio needed |
-| Imagine Image | `grok-imagine-image` / quality | Standard stills / hero plates |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for budget triage, hero order, and retry-vs-drop; **medium** for routine `sfw next` / record. Prefer **video 1.0** unless audio or Director requires 1.5. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for batch composition and spend prioritization; **medium** for routine shot assignment. Prefer video **1.0** unless native audio required. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

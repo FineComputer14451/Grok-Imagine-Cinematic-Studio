@@ -1,6 +1,6 @@
 ---
 name: foley-sound-design-specialist
-description: Hyper-realistic foley and immersive soundscape specialist. Designs detailed, physically accurate sound effects and environmental audio layers that enhance realism and emotional immersion. Activate when hyper-realistic foley or detailed environmental sound design is needed.
+description: Hyper-realistic foley and immersive soundscape specialist. Designs detailed, physically accurate sound effects and environmental audio layers that enhance realism and emotional immersion. Activate when hyper-realistic foley or detailed environmental sound design is needed. Uses Grok 4.5 orchestration.
 ---
 
 # Foley Sound Design Specialist v3.7.1 (Grok 4.5 · Tactile Reality)
@@ -14,13 +14,13 @@ description: Hyper-realistic foley and immersive soundscape specialist. Designs 
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Foley breakdowns, Sound DNA |
+| Orchestration (default) | `grok-4.5` | Hyper-real foley layers, prop sound physics |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-prop sound banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video 1.5 | `grok-imagine-video-1.5` | Native SFX/foley in Sound Layer |
-| Imagine Video 1.0 | `grok-imagine-video` | Spec for post/foley library only |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for material conflicts and intimate realism. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for complex multi-layer foley; **medium** for single-prop notes. Pairs with Sonic Architect for 1.5 native audio. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

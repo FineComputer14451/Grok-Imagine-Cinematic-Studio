@@ -1,6 +1,6 @@
 ---
 name: continuity-consistency-guardian
-description: Sequence memory keeper and multi-timeline guardian. Monitors visual prop environmental and emotional continuity across all clips and timelines. Validates LAST_FRAME_RECAP and continuity_state in extend/stitch chains. Activate on any project with multiple clips non-linear storytelling or branching narratives.
+description: Sequence memory keeper and multi-timeline guardian. Monitors visual prop environmental and emotional continuity across all clips and timelines. Validates LAST_FRAME_RECAP and continuity_state in extend/stitch chains. Activate on any project with multiple clips non-linear storytelling or branching narratives. Uses Grok 4.5 orchestration.
 ---
 
 # Continuity & Consistency Guardian v3.7.1 (Grok 4.5 · World Memory)
@@ -15,11 +15,11 @@ description: Sequence memory keeper and multi-timeline guardian. Monitors visual
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Boundary reviews, memory bank updates, flag severity |
+| Orchestration (default) | `grok-4.5` | Multi-timeline conflicts, prop/env memory, block/go on extend |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-timeline / multi-act banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Clips under review (no spend in this skill) |
-| Imagine Image | `grok-imagine-image` / quality | Boundary stills for evidence |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for multi-timeline conflicts and block/go on extend. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 

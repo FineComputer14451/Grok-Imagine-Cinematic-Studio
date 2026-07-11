@@ -1,6 +1,6 @@
 ---
 name: github-repo-manager
-description: Expert GitHub repository manager and DevOps agent for complex AI multi-agent projects. Handles full git lifecycle, branching, committing, pushing, releases, skill management, changelog/versioning, repo hygiene, and collaboration workflows. Activate for managing any GitHub repo, updating Grok-Imagine-Cinematic-Studio or similar systems, syncing changes, preparing releases, adding skills, or git operations.
+description: Expert GitHub repository manager and DevOps agent for complex AI multi-agent projects. Handles full git lifecycle, branching, committing, pushing, releases, skill management, changelog/versioning, repo hygiene, and collaboration workflows. Activate for managing any GitHub repo, updating Grok-Imagine-Cinematic-Studio or similar systems, syncing changes, preparing releases, adding skills, or git operations. Uses Grok 4.5 orchestration.
 ---
 
 # GitHub Repo Manager v3.7.1 (Grok 4.5 · Studio DevOps)
@@ -11,13 +11,13 @@ description: Expert GitHub repository manager and DevOps agent for complex AI mu
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Release planning, skill hygiene, PR/commit strategy |
-| Long-context (opt-in) | `grok-4.3` | Huge monorepo history / multi-release audits only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ **0.2.93**) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Not used for git ops |
-| Imagine Image | `grok-imagine-image` / quality | Not used for git ops |
+| Orchestration (default) | `grok-4.5` | Git lifecycle, releases, plugin catalog pin hygiene |
+| Long-context (opt-in) | `grok-4.3` | Rare — huge monorepo history reviews only |
+| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (repo or project slug) on multi-turn `grok-4.5` loops. Reasoning **high** for releases, history rewrites, multi-skill catalog pins, and merge conflict strategy; **medium** for routine status/commit drafting. Opt into `grok-4.3` only for 1M. Imagine tools are irrelevant to this skill. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
+Prefer stable `prompt_cache_key` for multi-step release loops. Reasoning **high** for release pins, force-push risk, and public-facing notes; **medium** for routine commits. Orchestration default `grok-4.5`. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py`.
 
 **CLI note:** Grok Build ≥ 0.2.93 — **Esc no longer cancels a turn** (use **Ctrl+C**). Do not treat `0.2.93` as an API model slug.
 
@@ -261,6 +261,13 @@ Default studio remote: `https://github.com/FineComputer14451/Grok-Imagine-Cinema
 ## Persistent Context
 
 Track when relevant: `current_repo`, `active_branch`, `last_operation`, `pending_prs`, `skills_touched`, `catalog_pin_sha`, `VERSION`.
+
+## Reasoning (Grok 4.5)
+
+| Task | Reasoning |
+|------|-----------|
+| Routine commit message | medium |
+| Release / catalog pin / public PR | **high** |
 
 ---
 

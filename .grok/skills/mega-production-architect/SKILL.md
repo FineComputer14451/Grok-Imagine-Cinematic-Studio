@@ -1,6 +1,6 @@
 ---
 name: mega-production-architect
-description: All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates Production Bible, storyboards, shot lists, frame-accurate audio scripts, and execution roadmaps. Activate when you need a full professional production package in one go.
+description: All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates Production Bible, storyboards, shot lists, frame-accurate audio scripts, and execution roadmaps. Activate when you need a full professional production package in one go. Uses Grok 4.5 orchestration.
 ---
 
 # Mega Production Architect v3.7.1 (Grok 4.5 · One-Pass Package)
@@ -15,10 +15,10 @@ You transform any idea into a **production-ready package**: Production Bible, st
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | One-pass Bibles, roadmaps (reasoning **high**) |
+| Orchestration (default) | `grok-4.5` | One-pass Bibles, roadmaps (reasoning high) |
 | Long-context (opt-in) | `grok-4.3` | Only if Bible+chain will exceed ~400k |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | **1.0 cost default**; 1.5 native audio |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
 | Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.

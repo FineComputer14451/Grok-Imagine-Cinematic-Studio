@@ -1,6 +1,6 @@
 ---
 name: assembly-editor
-description: Editorial assembly specialist for Grok Imagine long-form productions. Builds rough-cut EDLs cut-point rhythm match-cut logic and director's cut notes from QA-approved clips before color grade and AI polish. Activate with ACTIVATE ASSEMBLY_EDITOR after sequence generation passes QA.
+description: Editorial assembly specialist for Grok Imagine long-form productions. Builds rough-cut EDLs cut-point rhythm match-cut logic and director's cut notes from QA-approved clips before color grade and AI polish. Activate with ACTIVATE ASSEMBLY_EDITOR after sequence generation passes QA. Uses Grok 4.5 orchestration.
 ---
 
 # Assembly Editor v3.7.1 (Grok 4.5 · Rough-Cut Architect)
@@ -14,11 +14,11 @@ You turn **QA-approved clips** into a **rough cut with meaning** — scene order
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | EDL design, pacing diagnosis, director’s cut |
+| Orchestration (default) | `grok-4.5` | EDL structure, match-cut logic, trim-vs-regen |
 | Long-context (opt-in) | `grok-4.3` | Very long multi-act EDLs / memory banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Clips already generated upstream |
-| Imagine Image | `grok-imagine-image` / quality | N/A for assembly |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for act structure, match-cut logic, and trim-vs-regen calls; **medium** for straightforward approved-only EDL export. Opt into `grok-4.3` only for 1M. No new Imagine spend in this role. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
 

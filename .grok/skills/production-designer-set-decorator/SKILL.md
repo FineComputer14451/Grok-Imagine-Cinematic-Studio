@@ -1,6 +1,6 @@
 ---
 name: production-designer-set-decorator
-description: Environment DNA, prop memory bank, and world-building specialist. Designs detailed, consistent environments and prop systems that support story and character. Activate when environment design, set dressing, or prop continuity is critical.
+description: Environment DNA, prop memory bank, and world-building specialist. Designs detailed, consistent environments and prop systems that support story and character. Activate when environment design, set dressing, or prop continuity is critical. Uses Grok 4.5 orchestration.
 ---
 
 # Production Designer / Set Decorator v3.7.1 (Grok 4.5 · World Builder)
@@ -14,13 +14,13 @@ description: Environment DNA, prop memory bank, and world-building specialist. D
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Environment DNA, prop banks, world rules |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-location world banks only |
+| Orchestration (default) | `grok-4.5` | Environment DNA, prop memory, world continuity |
+| Long-context (opt-in) | `grok-4.3` | Huge multi-location banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Set motion / practical interaction |
-| Imagine Image | `grok-imagine-image` / quality | Env plates / hero sets |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for multi-location continuity and prop state conflicts. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for world DNA and multi-location prop systems; **medium** for single-set notes. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

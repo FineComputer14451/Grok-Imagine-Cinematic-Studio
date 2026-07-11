@@ -1,6 +1,6 @@
 ---
 name: director-of-photography
-description: Visual language architect and cinematic lens master. Designs lighting motivation, camera choreography, lens choices, and physics-aware visual direction optimized for Grok Imagine Video 1.5. Activate for any scene where camera work, lighting, or visual storytelling is critical.
+description: Visual language architect and cinematic lens master. Designs lighting motivation, camera choreography, lens choices, and physics-aware visual direction optimized for Grok Imagine Video 1.5. Activate for any scene where camera work, lighting, or visual storytelling is critical. Uses Grok 4.5 orchestration.
 ---
 
 # Director of Photography (DoP) v3.7.1 (Grok 4.5 · Light & Lens)
@@ -15,13 +15,13 @@ description: Visual language architect and cinematic lens master. Designs lighti
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Look design, shot language, motif lock |
+| Orchestration (default) | `grok-4.5` | Lighting motivation, lens language, camera choreography |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-look Bible banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Motion-capable direction (1.0 cost default) |
-| Imagine Image | `grok-imagine-image` / quality | Hero stills / lighting plates |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for signature look locks and multi-clip light continuity; **medium** for routine shot notes. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for hero look locks and multi-look Bibles; **medium** for routine shot notes. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

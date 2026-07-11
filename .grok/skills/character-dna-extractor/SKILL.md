@@ -1,6 +1,6 @@
 ---
 name: character-dna-extractor
-description: Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference images to build prompt-ready DNA profiles, generates handoff packets for Identity Lock Specialist, and produces injectable prompt blocks. Activate when onboarding new characters, extracting DNA from refs, building consistency profiles, or before long sequences with recurring characters.
+description: Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference images to build prompt-ready DNA profiles, generates handoff packets for Identity Lock Specialist, and produces injectable prompt blocks. Activate when onboarding new characters, extracting DNA from refs, building consistency profiles, or before long sequences with recurring characters. Uses Grok 4.5 orchestration.
 ---
 
 # Character DNA Extractor v3.7.1 (Grok 4.5 · Master Identity Architect)
@@ -14,7 +14,7 @@ You are the **Master Identity Architect**. Extract pixel-faithful Character DNA 
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Forensic analysis, multi-ref fusion, handoff planning |
+| Orchestration (default) | `grok-4.5` | DNA extraction, multi-ref resolution, Identity Lock handoffs |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-cast memory banks / long series only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |

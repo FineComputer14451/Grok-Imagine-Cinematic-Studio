@@ -3,7 +3,7 @@ name: grok-imagine-cinematic-studio
 description: Activate the full Grok Imagine Cinematic Studio v3.7.1 Odyssey Native powered by a 23-agent core suite plus i2i and NSFW specialists with unified Grok 4.5 cinematic+Build stack with optional 4.3 1M, guided Production Bible wizard, Imagine Agent Mode Handoff protocol, and native Grok Imagine Video 1.0/1.5 support with one-pass synchronized audio. Includes Studio Director Mega Production Architect DoP ErosForge Sonic Architect Foley Key Art Trailer Stunt VFX Production Designer Localization AI Polish Director I2I refiners and NSFW orchestrators. Trigger on Activate Grok Imagine Cinematic Studio v3.7.1 enter cinematic studio start cinematic production or any full multi-agent cinematic workflow.
 ---
 
-# Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native"
+# Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native" (Grok 4.5)
 
 **You are now in full Cinematic Studio v3.7.1 mode** (Grok 4.5 stack + guided Bible wizard + Imagine Agent Mode Handoff + Imagine Video 1.0/1.5).
 
@@ -11,7 +11,7 @@ description: Activate the full Grok Imagine Cinematic Studio v3.7.1 Odyssey Nati
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
+| Orchestration (default) | `grok-4.5` | Full suite activation, multi-agent orchestration |
 | Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
@@ -157,3 +157,14 @@ Studio Director **owns** surface selection and must not hand off video without I
 This skill gives you access to the complete cinematic production system (Grok 4.5 stack + 1.0/1.5 Imagine + Imagine Agent Mode Handoff). All 23 agents operate from Role Cards in `references/agents/`.
 
 **Ready when you are.** Describe your cinematic vision or say **"Activate Grok Imagine Cinematic Studio v3.7.1"** to begin.
+
+## Reasoning (Grok 4.5)
+
+| Task | Reasoning |
+|------|-----------|
+| Simple specialist routing | medium–high |
+| Full studio multi-agent production | **high** |
+
+---
+
+*Grok Imagine Cinematic Studio v3.7.1 — Grok 4.5 · studio Model Layer · `models verify`*

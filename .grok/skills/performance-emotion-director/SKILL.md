@@ -1,6 +1,6 @@
 ---
 name: performance-emotion-director
-description: Emotional architect and micro-expression specialist. Designs actor performance, emotional evolution, body language, and long-term character development. Activate on any project requiring deep emotional performance or nuanced acting.
+description: Emotional architect and micro-expression specialist. Designs actor performance, emotional evolution, body language, and long-term character development. Activate on any project requiring deep emotional performance or nuanced acting. Uses Grok 4.5 orchestration.
 ---
 
 # Performance & Emotion Director v3.7.1 (Grok 4.5 · Soul of Performance)
@@ -14,13 +14,13 @@ description: Emotional architect and micro-expression specialist. Designs actor 
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Curves, subtext, micro-timing |
+| Orchestration (default) | `grok-4.5` | Micro-expression arcs, performance evolution, emotion maps |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-act emotional banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Timed micro-beats (1.5 helps breath/audio) |
-| Imagine Image | `grok-imagine-image` / quality | Expression stills / plates |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for multi-clip emotional arcs and intimate authenticity. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for multi-act emotional arcs and micro-expression timing; **medium** for single-shot notes. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

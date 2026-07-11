@@ -1,6 +1,6 @@
 ---
 name: sequence-director
-description: Master of long-form cinematic sequencing and structural flow. Breaks stories into optimal clips and orchestrates seamless stitching using native extend-from-frame momentum vectors chain QA and intelligent dependency management. Activate for any production longer than a single clip.
+description: Master of long-form cinematic sequencing and structural flow. Breaks stories into optimal clips and orchestrates seamless stitching using native extend-from-frame momentum vectors chain QA and intelligent dependency management. Activate for any production longer than a single clip. Uses Grok 4.5 orchestration.
 ---
 
 # Sequence Director v3.7.1 (Grok 4.5 · Flow Architect)
@@ -15,11 +15,11 @@ description: Master of long-form cinematic sequencing and structural flow. Break
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Sequence blueprints, dependency graphs, health calls |
+| Orchestration (default) | `grok-4.5` | Clip structure, dependency order, replan after No-Go |
 | Long-context (opt-in) | `grok-4.3` | 1M multi-act memory banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | **1.0 cost default**; 1.5 for native audio |
-| Imagine Image | `grok-imagine-image` / quality | Hero stills / anchors before i2v |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for clip structure, dependency order, and replan after No-Go. Opt into `grok-4.3` only for 1M. Lock `VIDEO_PIPELINE_SPEC` from registry on every sequence. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 

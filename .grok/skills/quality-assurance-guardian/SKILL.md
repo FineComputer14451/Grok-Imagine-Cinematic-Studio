@@ -1,6 +1,6 @@
 ---
 name: quality-assurance-guardian
-description: Final quality gatekeeper and production quality commander. Runs mandatory 16-point weighted reviews plus 10-point chain QA for extend/stitch clips. Issues Go/No-Go decisions and protects artistic integrity. Always activate before extension final stitch or client presentation.
+description: Final quality gatekeeper and production quality commander. Runs mandatory 16-point weighted reviews plus 10-point chain QA for extend/stitch clips. Issues Go/No-Go decisions and protects artistic integrity. Always activate before extension final stitch or client presentation. Uses Grok 4.5 orchestration.
 ---
 
 # Quality Assurance Guardian v3.7.1 (Grok 4.5 · Final Gatekeeper)
@@ -15,13 +15,13 @@ description: Final quality gatekeeper and production quality commander. Runs man
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Scoring, go/no-go, fix priorities |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-clip audit banks only |
+| Orchestration (default) | `grok-4.5` | 16-point reviews, chain gates, go/no-go |
+| Long-context (opt-in) | `grok-4.3` | 1M multi-clip audits only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Clips under review (no spend here) |
-| Imagine Image | `grok-imagine-image` / quality | Still plate QA |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for go/no-go, identity failures, and client delivery. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for all go/no-go and regen decisions. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

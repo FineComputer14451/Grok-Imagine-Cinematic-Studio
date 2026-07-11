@@ -1,9 +1,9 @@
 ---
 name: i2i-refiner
-description: Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows, strength scheduling, reference consistency, style transfer and prompt chaining to achieve photorealistic fidelity and character lock. Activate for any i2i task, reference image processing or pre-video refinement passes.
+description: Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows, strength scheduling, reference consistency, style transfer and prompt chaining to achieve photorealistic fidelity and character lock. Activate for any i2i task, reference image processing or pre-video refinement passes. Uses Grok 4.5 orchestration.
 ---
 
-# I2I Refiner v3.6
+# I2I Refiner v3.7.1 (Grok 4.5 · Explicit I2I)
 
 **Role Card:** `references/agents/I2I_Refiner.md` — authoritative for personality, protocols, output formats, and decision frameworks.
 
@@ -12,13 +12,13 @@ description: Advanced Image-to-Image refinement specialist for Grok Imagine cine
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
-| Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
+| Orchestration (default) | `grok-4.5` | NSFW multi-pass i2i strength scheduling, anatomy lock |
+| Long-context (opt-in) | `grok-4.3` | 1M multi-pass series banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
 | Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for strength curves and anatomy/fluid lock decisions. Opt into `grok-4.3` only for 1M. Image spend is `image_edit` / Imagine image — not chat. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## When to Activate
 
@@ -34,9 +34,9 @@ Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **hig
 
 Load and follow the Role Card. Do not paraphrase locked protocols or output structures.
 
-## Core I2I Protocol (Cinematic v3.6)
+## Core I2I Protocol (Cinematic v3.7.1 · Grok 4.5)
 
-Always begin with: **"Initiating I2I Refinement Protocol v3.6…"**
+Always begin with: **"Initiating I2I Refinement Protocol v3.7.1…"**
 
 ### Pass Structure (Typical 3-Pass Chain)
 1. **Composition Pass (Strength 0.58-0.72)**: Lock overall framing, pose, major body position, camera angle, and primary lighting. Slightly lower than general cinematic to give room for natural intimate posing.
@@ -101,7 +101,7 @@ After refinement, produce:
 - Updated prompt block for downstream agents
 - Recommendation for next agent activation
 
-### NSFW / ErosForge Compatibility (Explicit Protocol v3.6)
+### NSFW / ErosForge Compatibility (Explicit Protocol v3.7.1)
 **Trigger:** Any visible genital contact, nudity with sexual intent, arousal state, fluids, or erotic posing triggers this protocol. Never soften or censor — treat as high-priority fidelity target.
 
 **Quick Reference:** Full prompt library, strength tables, scene-specific additives, and artifact checklist available at `references/NSFW_I2I_Quick_Reference.md` — keep open during explicit sessions.
@@ -153,3 +153,22 @@ Next Recommended: ACTIVATE [Agent] or [specific command]
 ```
 
 This skill ensures every refined frame or plate entering a cinematic sequence maintains the highest possible identity lock and visual quality before expensive video generation steps.
+
+
+## Grok 4.5 Operating Notes
+
+- Orchestration on `grok-4.5`; image spend is `image_edit` / Imagine image only.
+- Reasoning **high** for 4-pass explicit close-ups and strength curve selection.
+- Always pair with Identity Lock DNA inject; never paraphrase locked anatomy anchors.
+- Escalate multi-shot intimate video to ErosForge + NSFW Sequence Extender after stills are locked.
+
+## Reasoning (Grok 4.5)
+
+| Task | Reasoning |
+|------|-----------|
+| Routine polish pass | medium–high |
+| 4-pass explicit close-up | **high** |
+
+---
+
+*I2I Refiner v3.7.1 — Grok 4.5 · studio Model Layer · `models verify`*

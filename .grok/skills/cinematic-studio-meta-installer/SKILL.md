@@ -3,7 +3,7 @@ name: cinematic-studio-meta-installer
 description: Meta installer for Grok Imagine Cinematic Studio v3.7.1. Installs updates and verifies the full skill suite plus CLI tools and Grok Build config into Grok with unified Grok 4.5 cinematic+Build stack. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine or rebuilding after a skills refresh.
 ---
 
-# Cinematic Studio Meta Installer v3.7.1
+# Cinematic Studio Meta Installer v3.7.1 (Grok 4.5 · Meta Installer)
 
 You are the **Studio Bootstrap Agent**. Install, update, and verify the complete Grok Imagine Cinematic Studio skill layer for Grok Build and Grok chat on the **Grok 4.5** stack.
 
@@ -11,13 +11,13 @@ You are the **Studio Bootstrap Agent**. Install, update, and verify the complete
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
-| Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
+| Orchestration (default) | `grok-4.5` | Install/update/verify of full Grok 4.5 skill suite |
+| Long-context (opt-in) | `grok-4.3` | Rare — multi-machine audit dumps only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
 | Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py`.
+Prefer stable `prompt_cache_key` for long install diagnostics. Reasoning **high** for install path conflicts and version pins; **medium** for routine verify. Stack target is **Grok 4.5** cinematic+Build (CLI ≥ 0.2.93). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 **Reference:** `references/install_paths.md`  
 **Human guide:** `references/installation_guide.md` (repo root; copied to `~/Grok-Cinematic-Projects/references/` after Method A install)  
@@ -168,3 +168,14 @@ When verify passes, tell the user:
 > Cinematic Studio **v3.7.1** is installed (Grok **4.5** stack). Refresh Skills, start a new chat, and say **Activate Grok Imagine Cinematic Studio v3.7.1** to begin production.
 
 Do not start a cinematic production in the same turn unless the user explicitly asks.
+
+## Reasoning (Grok 4.5)
+
+| Task | Reasoning |
+|------|-----------|
+| Routine verify | medium |
+| Broken install / version pin conflict | **high** |
+
+---
+
+*Cinematic Studio Meta Installer v3.7.1 — Grok 4.5 · studio Model Layer · `models verify`*

@@ -1,6 +1,6 @@
 ---
 name: cinematic-ffmpeg
-description: Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Assembly Editor and AI Polish Director. Activate when building delivery files muxing reels or exporting 9x16 1x1 and 16x9 variants.
+description: Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Assembly Editor and AI Polish Director. Activate when building delivery files muxing reels or exporting 9x16 1x1 and 16x9 variants. Uses Grok 4.5 orchestration.
 ---
 
 # Cinematic FFmpeg v3.7.1 (Grok 4.5 · Delivery Toolkit)
@@ -11,11 +11,11 @@ description: Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concaten
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Delivery plan, EDL match, crop strategy |
+| Orchestration (default) | `grok-4.5` | Concat, social crops, delivery packages |
 | Long-context (opt-in) | `grok-4.3` | Rare — huge multi-reel manifests only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Source generation only (already done) |
-| Imagine Image | `grok-imagine-image` / quality | N/A for mux |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **medium** for routine concat/crop; **high** if EDL timing, multi-format packages, or re-encode quality tradeoffs are non-trivial. Opt into `grok-4.3` only for 1M. Imagine tools are not used here. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
 
@@ -164,6 +164,13 @@ Next: Studio Director sign-off | Localization | upload
 - Re-encode only when trim/crop filters require it  
 - Spot-check first/last frames and audio after every mux  
 - Save under `artifacts/delivery/` — not inside skill directories  
+
+## Reasoning (Grok 4.5)
+
+| Task | Reasoning |
+|------|-----------|
+| Routine concat/crop | medium |
+| Multi-format package / re-encode risk | **high** |
 
 ---
 

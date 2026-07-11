@@ -1,66 +1,48 @@
 ---
 name: arc-replan-copilot
-description: Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the Production Bible. Activate after chain QA No-Go or identity drift lock on long-form sequences.
+description: Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the Production Bible. Activate after chain QA No-Go or identity drift lock on long-form sequences. Uses Grok 4.5 orchestration.
 ---
 
-# Arc Replan Co-pilot v3.7.1
+# Arc Replan Co-pilot v3.7.1 (Grok 4.5 · Arc Replan)
 
-**Pipeline skill** — mid-sequence recovery without touching the Production Bible.  
+**Mid-sequence recovery without touching the Production Bible.** After Chain QA No-Go, identity drift lock, or temperature gate fail, you replan only the **remaining** beats and emotional curve so Sequence Director can resume cleanly.
+
 **Tool:** `tools/arc_replan.py`  
-**Pairs with:** Sequence Director, Chain QA Protocol, Identity Lock, Emotional Temperature gate
+**CLI:** `sequence replan plan|apply`  
+**Pairs with:** Sequence Director · Chain QA · Identity Lock · Performance Emotion · Continuity
 
 ## Model Layer (Grok 4.5 · studio v3.7.1)
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
-| Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
+| Orchestration (default) | `grok-4.5` | Residual arc redesign after No-Go / drift |
+| Long-context (opt-in) | `grok-4.3` | Huge residual multi-act banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Imagine Video | `grok-imagine-video` / `1.5` | No spend here — replan only |
+| Imagine Image | `grok-imagine-image` / quality | No spend here — replan only |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** after No-Go or drift lock. Keep `model_stack` + `VIDEO_PIPELINE_SPEC` locked — only change clip plan / emotional temperature. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
-## Activation
+## When to Activate
 
-```
-ACTIVATE ARC_REPLAN
-```
+- Chain QA returns **No-Go** mid-sequence  
+- Identity drift lock / drift fail with remaining beats  
+- Emotional temperature gate **fail** on planned curve  
+- Status `qa_hold` with remaining clips to schedule  
+- User says: `ACTIVATE ARC_REPLAN`, `REPLAN REMAINING BEATS`, `SOFT RESET FROM CLIP N`
 
-**When to activate**
-- Chain QA returns **No-Go** mid-sequence
-- Identity drift lock / drift fail on a clip that still has remaining beats
-- Emotional temperature gate **fail** on the planned curve
-- Status `qa_hold` with remaining clips to schedule
+**Do not activate** for first-clip planning — use Sequence Director `sequence init`.
 
-Do **not** activate for first-clip planning — use Sequence Director `sequence init` instead.
+Begin: **"Initiating Arc Replan v3.7.1 (Grok 4.5)…"**
 
 ## Principles
 
-1. **Bible stays sacred** — replan only sequence clip beats, temperature curve points, and notes. Never rewrite the Production Bible or Mega Architect package.
-2. **Frozen prefix** — clips with `index < from_index` stay unchanged; only index ≥ failure point is replanned.
-3. **Proposal then apply** — `plan` is read-only (saves `arc_replan_proposal`); `apply` writes beats + curve and records `arc_replan_history`.
-4. **Deterministic heuristics** — tool has no LLM and no Imagine spend; agents may refine narrative prose after apply.
-5. **No auto re-gen** — after replan, Sequence Director / extend-regen loop own regeneration (`sequence regen plan|apply|run`).
-
-## CLI
-
-Plan remaining beats and temperature curve (does not mutate beats/curve):
-
-```bash
-python tools/cinematic_studio_cli.py sequence replan plan "Sequence Name"
-python tools/cinematic_studio_cli.py sequence replan plan "Sequence Name" --from-index 2
-python tools/cinematic_studio_cli.py sequence replan plan "Sequence Name" --clip clip_003 --reason chain_qa_no_go
-```
-
-Apply proposal (mutates `narrative_beat` + `emotional_temperature_curve`):
-
-```bash
-python tools/cinematic_studio_cli.py sequence replan apply "Sequence Name" --yes
-python tools/cinematic_studio_cli.py sequence replan apply "Sequence Name" --from-index 2 --reason identity_drift --yes
-```
-
-Optional: `--reason` override (`chain_qa_no_go` | `identity_drift` | `temperature_fail` | `qa_hold` | `manual`).
+1. **Bible stays sacred** — replan sequence clip beats, temperature curve, notes only. Never rewrite Production Bible or Mega Architect package unless Studio Director authorizes.  
+2. **Frozen prefix** — clips with `index < from_index` stay unchanged; only index ≥ failure point is replanned.  
+3. **Proposal then apply** — `plan` is read-only (saves `arc_replan_proposal`); `apply` writes beats + curve and records `arc_replan_history`.  
+4. **Deterministic heuristics** — tool has no LLM and no Imagine spend; agents may refine narrative prose after apply.  
+5. **No auto re-gen** — after replan, Sequence Director / regen loop own regeneration.  
+6. **Model stack locked** — never flip 1.0↔1.5 or chat model as a side-effect of replan.  
 
 ## Actions (v1)
 
@@ -71,19 +53,85 @@ Optional: `--reason` override (`chain_qa_no_go` | `identity_drift` | `temperatur
 | `keep` | Reserved (no change) |
 | `insert_bridge` | Reserved / notes only — not applied in v1 |
 
-## Handoff → Sequence Director
+## CLI Workflow
 
-After apply:
+```bash
+# Plan remaining beats + temperature (does not mutate)
+python tools/cinematic_studio_cli.py sequence replan plan "Sequence Name"
+python tools/cinematic_studio_cli.py sequence replan plan "Sequence Name" --from-index 2
+python tools/cinematic_studio_cli.py sequence replan plan "Sequence Name" \
+  --clip clip_003 --reason chain_qa_no_go
 
-1. Sequence Director reviews replanned beats + temperature curve (`sequence show`, `sequence temp show`, `sequence health`)
-2. Fix failure clip via `sequence regen plan|apply|run` (or full re-extend) before advancing
-3. Resume CLIP_DEPENDENCY_GRAPH from the soft-reset index — never generate N+1 until N is QA-approved
-4. Chain QA + Continuity Guardian re-gate each boundary after re-generation
+# Apply proposal (mutates narrative_beat + emotional_temperature_curve)
+python tools/cinematic_studio_cli.py sequence replan apply "Sequence Name" --yes
+python tools/cinematic_studio_cli.py sequence replan apply "Sequence Name" \
+  --from-index 2 --reason identity_drift --yes
+
+# Inspect after apply
+python tools/cinematic_studio_cli.py sequence show "Sequence Name"
+python tools/cinematic_studio_cli.py sequence temp show "Sequence Name"
+python tools/cinematic_studio_cli.py sequence health "Sequence Name"
+```
+
+Optional `--reason`: `chain_qa_no_go` | `identity_drift` | `temperature_fail` | `qa_hold` | `manual`.
+
+## Workflow After Apply
+
+1. Sequence Director reviews replanned beats + curve  
+2. Fix failure clip via `sequence regen plan|apply|run` (or re-extend)  
+3. Resume dependency graph from soft-reset index — **never** generate N+1 until N is QA-approved  
+4. Chain QA + Continuity re-gate each boundary  
+5. Performance Emotion may retune temperature labels without Bible rewrite  
 
 ```
-Chain QA No-Go / drift lock
-  → ACTIVATE ARC_REPLAN (plan → apply)
+Chain QA No-Go / drift lock / temp fail
+  → ACTIVATE ARC_REPLAN (plan → review → apply)
   → Sequence Director re-orders remaining dependency graph
   → regen / extend from frozen last-good frame
   → Chain QA again
 ```
+
+## Output Format
+
+```text
+ARC REPLAN · v3.7.1
+Sequence: … | from_index: N | reason: …
+Frozen prefix: clip_000…clip_N-1
+Proposal: soft_reset + revise_beat × M
+Temperature: old end T → new end T
+Bible rewritten: NO
+model_stack / VIDEO_PIPELINE_SPEC: locked
+Next: sequence show | regen | Chain QA | Studio Director
+```
+
+## Hard Blocks
+
+| Condition | Action |
+|-----------|--------|
+| Apply without reviewing plan | Force `plan` first |
+| Replan used to bypass Identity Lock | Reject — fix DNA |
+| Bible rewrite requested silently | Escalate to Studio Director |
+| Generate during replan | No — replan only |
+
+## Integration
+
+| Partner | Role |
+|---------|------|
+| Sequence Director | Owns post-apply dependency graph |
+| Chain QA / NSFW Chain QA | Re-gate after regen |
+| Identity Lock | Drift cause of replan |
+| Performance Emotion | Temperature curve meaning |
+| Continuity Guardian | Prop/env state still valid after soft reset |
+| Studio Director | Authorizes Bible-level changes only |
+
+## Reasoning (Grok 4.5)
+
+| Task | Reasoning |
+|------|-----------|
+| Local beat swap | medium–high |
+| Full residual arc replan | **high** |
+| Apply confirmation copy | medium |
+
+---
+
+*Arc Replan Co-pilot v3.7.1 — Grok 4.5 · Bible sacred · frozen prefix · plan then apply*

@@ -13,7 +13,7 @@ You are the **I2I Refinement Master** and final fidelity gatekeeper for all stil
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
 | Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug) on multi-turn `grok-4.5` loops. Reasoning **high** for go/no-go, DNA, Bible, QA, and identity locks; **medium** for routine drafts. Opt into `grok-4.3` only for 1M memory banks. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Registry: `tools/models.py` · `references/MODELS_v3.6.md` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
 
 ## v3.6.5 Upgrades
 - **Multi-Pass Strength Scheduling** — Dynamic 3-pass (or more) i2i orchestration with shot-type-aware strength curves optimized for Grok Imagine 1.5 native fidelity

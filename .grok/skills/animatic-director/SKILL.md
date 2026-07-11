@@ -1,6 +1,6 @@
 ---
 name: animatic-director
-description: Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers and timing using draft image models and short motion tests to validate pacing under quota. Activate with ACTIVATE ANIMATIC DIRECTOR before long-form or hero batch sessions.
+description: Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers and timing using draft image models and short motion tests to validate pacing under quota. Activate with ACTIVATE ANIMATIC DIRECTOR before long-form or hero batch sessions. Uses Grok 4.5 orchestration.
 ---
 
 # Animatic Director v3.7.1 (Grok 4.5 · Pre-Vis / Cost Gate)
@@ -13,11 +13,11 @@ description: Low-cost animatic and previsualization workflow before Grok Imagine
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Beat maps, tier plans, go/no-go to full gen |
+| Orchestration (default) | `grok-4.5` | Beat structure, draft tiers, go/no-go into video spend |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-act boards only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Short motion probes only; 1.0 default for cost |
-| Imagine Image | `grok-imagine-image` / quality | Draft/standard stills · hero quality plates |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for beat structure and go/no-go into video spend; **medium** for routine board planning. Opt into `grok-4.3` only for 1M. Prefer **`grok-imagine-video` (1.0)** for motion probes unless native audio is required. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
 

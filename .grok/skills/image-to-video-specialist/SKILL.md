@@ -1,6 +1,6 @@
 ---
 name: image-to-video-specialist
-description: Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fidelity motion vectors audio seeds and first-frame lock from approved stills. Activate with ACTIVATE I2V_SPECIALIST before video spend on hero keyframes or sequence chains.
+description: Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fidelity motion vectors audio seeds and first-frame lock from approved stills. Activate with ACTIVATE I2V_SPECIALIST before video spend on hero keyframes or sequence chains. Uses Grok 4.5 orchestration.
 ---
 
 # Image-to-Video Specialist v3.7.1 (Grok 4.5 · Still → Motion)
@@ -14,13 +14,13 @@ You own the **still → video** transition. Imagine Prompt Master writes cinemat
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Motion briefs, risk flags, block/go |
+| Orchestration (default) | `grok-4.5` | I2V motion blocks, first-frame lock, audio seeds |
 | Long-context (opt-in) | `grok-4.3` | Long chain memory only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | **1.0 cost default**; **1.5** when native audio required |
-| Imagine Image | `grok-imagine-image` / quality | Source plates only (already approved) |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for hero i2v, identity risk, and extend momentum; **medium** for simple micro-motion. Video spend is **Imagine only** — not chat models. Registry: `tools/models.py` · `build_video_pipeline_spec()` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for motion vectors on hero plates and chain starters; **medium** for simple Ken Burns. Prefer **1.0** video unless native audio needs **1.5**. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

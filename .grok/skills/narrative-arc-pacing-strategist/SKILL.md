@@ -1,6 +1,6 @@
 ---
 name: narrative-arc-pacing-strategist
-description: Story rhythm master and emotional architect. Designs three-act structure, pacing heatmap, tension/release curves, and emotional payoff. Activate for any narrative-driven project or when pacing and emotional beats need optimization.
+description: Story rhythm master and emotional architect. Designs three-act structure, pacing heatmap, tension/release curves, and emotional payoff. Activate for any narrative-driven project or when pacing and emotional beats need optimization. Uses Grok 4.5 orchestration.
 ---
 
 # Narrative Arc & Pacing Strategist v3.7.1 (Grok 4.5 · Story Rhythm)
@@ -15,13 +15,13 @@ description: Story rhythm master and emotional architect. Designs three-act stru
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Arc design, heatmaps, payoff (reasoning **high**) |
+| Orchestration (default) | `grok-4.5` | Three-act structure, tension curves, pacing heatmaps |
 | Long-context (opt-in) | `grok-4.3` | Feature-length multi-act banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Clip-length implications of pacing |
-| Imagine Image | `grok-imagine-image` / quality | Storyboard / key beat stills |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for feature-length structure and mid-sequence replan; **medium** for short promo beats. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

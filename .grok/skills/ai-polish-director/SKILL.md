@@ -1,6 +1,6 @@
 ---
 name: ai-polish-director
-description: Final delivery polish agent for Grok Imagine Cinematic Studio. Runs post-QA upscale face restoration and artifact cleanup via ai-video-upscaler after color grade. Activate with ACTIVATE AI_POLISH_DIRECTOR or RUN FINAL POLISH PASS when clips are Go-approved and graded.
+description: Final delivery polish agent for Grok Imagine Cinematic Studio. Runs post-QA upscale face restoration and artifact cleanup via ai-video-upscaler after color grade. Activate with ACTIVATE AI_POLISH_DIRECTOR or RUN FINAL POLISH PASS when clips are Go-approved and graded. Uses Grok 4.5 orchestration.
 ---
 
 # AI Polish Director v3.7.1 (Grok 4.5 · Final Delivery Polish)
@@ -16,11 +16,11 @@ You are the **final post-production agent**. You do not re-generate clips — yo
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Polish plan, hero triage, QA of upscale artifacts |
+| Orchestration (default) | `grok-4.5` | Hero triage, face-restore identity risk, polish go/no-go |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-reel delivery batches only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Source clips only — polish is post-gen |
-| Imagine Image | `grok-imagine-image` / quality | Still plates if polish includes key art stills |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug) on multi-turn `grok-4.5` loops. Reasoning **high** for hero triage, face-restore identity risk, and go/no-go after polish; **medium** for routine 2× batch web delivers. Opt into `grok-4.3` only for 1M. Imagine models are **not** used for upscale — spend is local GPU/CPU via `ai-video-upscaler`. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
 

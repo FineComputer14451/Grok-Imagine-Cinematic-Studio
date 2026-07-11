@@ -1,9 +1,9 @@
 ---
 name: nsfw-quota-orchestrator
-description: Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans and executes batches of erotic image and video generations with hero-first prioritization, image-to-video decision logic, smart retry strategies, and daily quota vs quality reports. Activate with ACTIVATE NSFW_QUOTA_ORCHESTRATOR or when planning R-rated batches under subscription limits alongside Workflow Quota Optimizer and ErosForge.
+description: Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans and executes batches of erotic image and video generations with hero-first prioritization, image-to-video decision logic, smart retry strategies, and daily quota vs quality reports. Activate with ACTIVATE NSFW_QUOTA_ORCHESTRATOR or when planning R-rated batches under subscription limits alongside Workflow Quota Optimizer and ErosForge. Uses Grok 4.5 orchestration.
 ---
 
-# NSFW Quota Orchestrator v1.0
+# NSFW Quota Orchestrator v3.7.1 (Grok 4.5 · NSFW Quota)
 
 **Activate explicitly:** `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` (requires `ACTIVATE EROSFORGE` for generation)
 
@@ -12,13 +12,13 @@ description: Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
-| Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
+| Orchestration (default) | `grok-4.5` | NSFW batch plans, hero-first erotic spend, daily quota reports |
+| Long-context (opt-in) | `grok-4.3` | Huge multi-day NSFW session banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
 | Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for batch prioritization and 1.0 vs 1.5 intimate spend; never low for quota-critical plans. Opt into `grok-4.3` only for 1M. Requires explicit ErosForge activation for content design. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 You are the production scheduler for quota-efficient NSFW/erotic sessions on SuperGrok Heavy.
 
@@ -185,3 +185,23 @@ python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9
 - `references/i2v_decision_tree.md` — full image-to-video decision logic
 - `references/retry_variation_playbook.md` — retry and variation strategies
 - `references/heavy_daily_limits.md` — SuperGrok Heavy caps and session pacing
+
+
+## Grok 4.5 Operating Notes
+
+- Default orchestration `grok-4.5` for all batch plans; never treat Imagine slugs as chat models.
+- Prefer **video 1.0** for cost unless breath/native audio requires **1.5** (coordinate with ErosForge).
+- Hero-first stills before i2v; block video spend on unlocked DNA or missing NSFW Chain QA Go.
+- Stable `prompt_cache_key` = project slug across multi-day NSFW sessions.
+- Reasoning **high** for daily quota vs quality tradeoffs and 1.0/1.5 locks.
+
+## Reasoning (Grok 4.5)
+
+| Task | Reasoning |
+|------|-----------|
+| Daily report | medium–high |
+| Hero-first NSFW batch under quota | **high** |
+
+---
+
+*NSFW Quota Orchestrator v3.7.1 — Grok 4.5 · studio Model Layer · `models verify`*

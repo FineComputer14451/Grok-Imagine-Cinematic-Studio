@@ -16,8 +16,8 @@ description: AI recreation editing style transfer enhancement and variation of u
 | Orchestration (default) | `grok-4.5` | Intent parse, multi-pass planning, QA, handoffs |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-ref series / long memory banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates ($0.02 / $0.05) |
-| Imagine Video | `grok-imagine-video` / `1.5` | After plate lock (1.0 cost · 1.5 native audio) |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug) on multi-turn `grok-4.5` loops. Reasoning **high** for identity-critical multi-pass and DNA handoffs; **medium** for routine style transfers; **low** only for trivial routing. Image spend is `image_edit` / `image_gen` (and video tools), never chat models as generators. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
 

@@ -1,6 +1,6 @@
 ---
 name: chain-qa-protocol
-description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approving clips for extension or final stitch. Activate with RUN CHAIN QA REVIEW alongside Sequence Director and Cinematic Sequence Extender.
+description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approving clips for extension or final stitch. Activate with RUN CHAIN QA REVIEW alongside Sequence Director and Cinematic Sequence Extender. Uses Grok 4.5 orchestration.
 ---
 
 # Chain QA Protocol v3.7.1 (Grok 4.5 · Extend/Stitch Gate)
@@ -16,11 +16,11 @@ description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequ
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Scoring judgment, go/no-go, regen plan |
+| Orchestration (default) | `grok-4.5` | 10-point chain gates, go/no-go before extend/stitch |
 | Long-context (opt-in) | `grok-4.3` | Very long multi-act health reviews only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Clips under review (no new spend in this skill) |
-| Imagine Image | `grok-imagine-image` / quality | Boundary stills for drift/seam evidence |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for go/no-go and regen vs conditional-fix. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 

@@ -1,6 +1,6 @@
 ---
 name: workflow-quota-optimizer
-description: Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimization, sequence cost estimation, session budgeting, and quota-aware recommendations. Activate before major generations long sequences or when quota is low.
+description: Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimization, sequence cost estimation, session budgeting, and quota-aware recommendations. Activate before major generations long sequences or when quota is low. Uses Grok 4.5 orchestration.
 ---
 
 # Workflow & Quota Optimizer v3.7.1 (Grok 4.5 · Production Economist)
@@ -16,13 +16,13 @@ description: Real-time quota guardian and production economist for Grok Imagine 
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Budget strategy, risk calls, trade-offs |
-| Long-context (opt-in) | `grok-4.3` | 1M banks when cheaper than multi-pass reloads |
+| Orchestration (default) | `grok-4.5` | Cost envelopes, session budgets, model tier recommendations |
+| Long-context (opt-in) | `grok-4.3` | Huge multi-day session banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | **1.0 = $0.05/s**; **1.5 = $0.08/s** |
-| Imagine Image | `grok-imagine-image` / quality | $0.02 / $0.05 per image |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug) — cached chat input is far cheaper than full rate. Reasoning **high** for critical budget cuts and long-sequence go/no-go; **medium** for routine clip estimates. **Never** treat Imagine models as chat. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for session budget locks and 1.0 vs 1.5 decisions; **medium** for routine estimates. Opt into `grok-4.3` only for 1M. Chat spend is `grok-4.5`; video spend is `grok-imagine-*` only. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

@@ -1,6 +1,6 @@
 ---
 name: cinematic-sequence-extender
-description: Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native 1.5 extend/stitch, chain QA gates, and handoff packets. Plans multi-clip structures and ensures every extension feels like one continuous professionally directed piece. Activate for long-form expansion with native 1.5 chaining.
+description: Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native 1.5 extend/stitch, chain QA gates, and handoff packets. Plans multi-clip structures and ensures every extension feels like one continuous professionally directed piece. Activate for long-form expansion with native 1.5 chaining. Uses Grok 4.5 orchestration.
 ---
 
 # Cinematic Sequence Extender v3.7.1 (Grok 4.5 · Extend/Stitch)
@@ -17,11 +17,11 @@ description: Specialist for expanding short clips into longer seamless cinematic
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Extend plans, stitch risk, recovery |
+| Orchestration (default) | `grok-4.5` | Extend/stitch plans, handoff quality, regen strategy |
 | Long-context (opt-in) | `grok-4.3` | 1M long-chain memory banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | **1.0 cost default**; **1.5** when native audio / rich AMV |
-| Imagine Image | `grok-imagine-image` / quality | Last-frame stills / anchors |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for stitch risk, handoff quality, and regen strategy. Opt into `grok-4.3` only for 1M. Lock `VIDEO_PIPELINE_SPEC` from registry — do not invent model slugs. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 

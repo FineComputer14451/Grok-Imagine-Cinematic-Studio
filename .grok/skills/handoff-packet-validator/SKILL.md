@@ -1,6 +1,6 @@
 ---
 name: handoff-packet-validator
-description: Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest intimacy state and Imagine Agent Mode Handoff. Run before activating downstream agents or extend generation. Use when validating handoff.json packets or debugging chain QA failures.
+description: Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest intimacy state and Imagine Agent Mode Handoff. Run before activating downstream agents or extend generation. Use when validating handoff.json packets or debugging chain QA failures. Uses Grok 4.5 orchestration.
 ---
 
 # Handoff Packet Validator v3.7.1 (Grok 4.5 · Schema Gate)
@@ -15,11 +15,11 @@ description: Validates JSON handoff packets between Cinematic Studio agents incl
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Interpreting failures, choosing fix path |
+| Orchestration (default) | `grok-4.5` | JSON handoff gates before downstream activation |
 | Long-context (opt-in) | `grok-4.3` | Rare multi-packet audits only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Validated before gen — not used by validator |
-| Imagine Image | `grok-imagine-image` / quality | Validated before gen — not used by validator |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** when a failed handoff gates production spend or identity lock; **medium** for routine re-checks. Opt into `grok-4.3` only for 1M. Validator itself is pure Python JSON — no Imagine API spend. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
@@ -157,6 +157,13 @@ Next: <activate consumer | fix producer | block spend>
 
 Imagine Agent Mode (surfaces, modes, required fields):  
 `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`
+
+## Reasoning (Grok 4.5)
+
+| Task | Reasoning |
+|------|-----------|
+| Routine re-check | medium |
+| Spend/identity-gating failure | **high** |
 
 ---
 

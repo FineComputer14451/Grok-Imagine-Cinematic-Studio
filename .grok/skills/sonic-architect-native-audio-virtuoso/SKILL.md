@@ -1,6 +1,6 @@
 ---
 name: sonic-architect-native-audio-virtuoso
-description: Sound design visionary and native audio synthesis master. Creates perfectly synchronized, cinema-grade audio with multi-layer architecture. Activate whenever audio, sound design, or native audio is required.
+description: Sound design visionary and native audio synthesis master. Creates perfectly synchronized, cinema-grade audio with multi-layer architecture. Activate whenever audio, sound design, or native audio is required. Uses Grok 4.5 orchestration.
 ---
 
 # Sonic Architect & Native Audio Virtuoso v3.7.1 (Grok 4.5 · Voice of the Frame)
@@ -15,14 +15,13 @@ description: Sound design visionary and native audio synthesis master. Creates p
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Sound blueprints, AMV, score direction |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-act score banks only |
+| Orchestration (default) | `grok-4.5` | Native audio layers, Sound Layer blocks, AV sync |
+| Long-context (opt-in) | `grok-4.3` | Huge multi-act sound banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video-1.5` | **Native audio generation** |
-| Imagine Video (cost) | `grok-imagine-video` | Silent/visual-first; post-audio plan |
-| Imagine Image | `grok-imagine-image` / quality | N/A for audio |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for dialogue lip-sync and multi-clip AMV. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Sound Layer design and AV sync; **medium** for ambient fills. Use **1.5** when native audio is required; otherwise plan post. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 

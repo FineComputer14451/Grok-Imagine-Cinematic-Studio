@@ -1,93 +1,139 @@
 ---
 name: ai-video-upscaler
-description: AI video upscaling and face restoration for cinematic delivery. Upscale Grok Imagine 720p clips to 1080p or 4K with Real-ESRGAN GPU path or pure-Python fallback. Includes async batch processing and automatic face restoration. Activate for final delivery polish, upscale for festival submission, face restore on close-ups, or when AI Polish Director runs a polish pass.
+description: AI video upscaling and face restoration for cinematic delivery. Upscale Grok Imagine 720p clips to 1080p or 4K with Real-ESRGAN GPU path or pure-Python fallback. Includes async batch processing and automatic face restoration. Activate for final delivery polish, upscale for festival submission, face restore on close-ups, or when AI Polish Director runs a polish pass. Uses Grok 4.5 orchestration.
 ---
 
-# AI Video Upscaler
+# AI Video Upscaler v3.7.1 (Grok 4.5 · Local Upscale)
 
-Upscale generated video clips for final delivery. Used by the **AI Polish Director** agent in the post-production pipeline.
+**Local delivery upscale** for Grok Imagine 720p masters. Used by **AI Polish Director** after QA Go and color grade. This is **not** Imagine API spend — orchestration plans on `grok-4.5`; pixels run on GPU/CPU scripts.
 
+**Skill scripts:** `.grok/skills/ai-video-upscaler/scripts/`  
+**Agent:** `ai-polish-director` · CLI: `sequence polish`
 
 ## Model Layer (Grok 4.5 · studio v3.7.1)
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
-| Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
+| Orchestration (default) | `grok-4.5` | Path selection, face-restore risk, batch planning |
+| Long-context (opt-in) | `grok-4.3` | Rare multi-reel manifests only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Imagine Video | `grok-imagine-video` / `1.5` | Source clips only (already generated) |
+| Imagine Image | `grok-imagine-image` / quality | Not used for upscale |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** when face-restore risks identity; **medium** for routine scale-2 batches. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+
+## When to Activate
+
+- Final delivery 1080p / 4K-class from native 720p  
+- Face restore on character close-ups  
+- Festival / client masters after grade  
+- User says: `UPSCALE FOR DELIVERY`, `FACE RESTORE PASS`, `RUN FINAL POLISH PASS` (via AI Polish Director)
+
+Begin: **"Initiating Local Upscale Protocol v3.7.1 (Grok 4.5)…"**
 
 ## Prerequisites
 
 ```bash
-# System dependencies
 sudo apt-get install -y ffmpeg
-
-# Python dependencies (GPU path)
 pip install realesrgan basicsr gfpgan opencv-python-headless numpy pillow
-
-# Install model weights (one-time)
-bash scripts/install_models.sh
+bash .grok/skills/ai-video-upscaler/scripts/install_models.sh
 ```
 
-If GPU libraries are unavailable, the pure-Python fallback runs automatically.
+If GPU libraries are unavailable, pure-Python fallback runs automatically.
 
 ## Quick Start
 
-### Single clip (auto-detects GPU or fallback)
+### Prefer sequence CLI (when sequence exists)
 
 ```bash
-python scripts/ai_video_upscale.py \
-  --input /path/to/source.mp4 \
-  --output /path/to/upscaled.mp4 \
-  --scale 2 \
-  --face-restore
+python tools/cinematic_studio_cli.py sequence polish "Act 1" --scale 2 --face-restore
+python tools/cinematic_studio_cli.py sequence polish "Act 1" --dry-run
 ```
 
-### Batch / async (directory of clips)
+### Single clip
 
 ```bash
-python scripts/ai_video_upscale_async.py \
-  --input /path/to/clips/ \
-  --output /path/to/polished/ \
-  --scale 2 \
-  --workers 4
+python .grok/skills/ai-video-upscaler/scripts/ai_video_upscale.py \
+  --input artifacts/source_clip.mp4 \
+  --output artifacts/polished/clip.mp4 \
+  --scale 2 --face-restore
 ```
 
-### Force pure-Python fallback (no GPU models)
+### Batch / async
 
 ```bash
-python scripts/ai_video_upscale_pure.py \
-  --input /path/to/source.mp4 \
-  --output /path/to/upscaled.mp4 \
-  --scale 2
+python .grok/skills/ai-video-upscaler/scripts/ai_video_upscale_async.py \
+  --input artifacts/clips/ --output artifacts/polished/ \
+  --scale 2 --workers 4
+```
+
+### Force pure-Python fallback
+
+```bash
+python .grok/skills/ai-video-upscaler/scripts/ai_video_upscale_pure.py \
+  --input artifacts/source_clip.mp4 \
+  --output artifacts/polished/clip.mp4 --scale 2
 ```
 
 ## Options
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--scale` | `2` | Upscale factor (2 = 720p→1440p, use 2 for 1080p delivery) |
-| `--face-restore` | off | Enable GFPGAN face restoration on detected faces |
+| Flag | Default | Notes |
+|------|---------|--------|
+| `--scale` | `2` | 2× typical for 720p→~1440p / 1080p-class delivery |
+| `--face-restore` | off | GFPGAN on detected faces — **high reasoning** if identity-critical |
 | `--model` | `realesrgan-x4plus` | Real-ESRGAN model name |
-| `--workers` | `4` | Parallel frame workers (async mode only) |
-| `--crf` | `18` | Output video quality (lower = better, 18–23 typical) |
+| `--workers` | `4` | Async only |
+| `--crf` | `18` | Encode quality (18–23 typical) |
 
 ## Workflow Integration
 
-Run after QA Guardian approval and color grading:
+1. QA Guardian **Go** (and color grade or Director waiver)  
+2. `ACTIVATE AI_POLISH_DIRECTOR`  
+3. Install models if needed  
+4. Upscale approved clips only (never No-Go sources)  
+5. Spot-check faces vs DNA anchors after face-restore  
+6. Studio Director sign-off → `sequence deliver` / `cinematic-ffmpeg`  
 
-1. `ACTIVATE AI_POLISH_DIRECTOR`
-2. Install models if needed: `bash scripts/install_models.sh`
-3. Upscale approved clips
-4. Hand polished output to Studio Director for sign-off
+Log `[POLISH_SPEC: …]` in Project Bible.
+
+## Identity-Safe Face Restore
+
+- Prefer face-restore on hero close-ups only when needed  
+- After restore, Identity Lock spot-check: eyes, freckles, scars, hairline  
+- If restore morphs identity → disable face-restore, re-upscale, or re-gen still  
 
 ## Output
 
-- Upscaled MP4 with original audio preserved
-- Console report: method used (GPU/fallback), resolution, frame count, elapsed time
+- Upscaled MP4 with original audio preserved  
+- Console report: method (GPU/fallback), resolution, frames, elapsed  
+- Save under `artifacts/polished/`  
 
-Save all outputs to `artifacts/`.
+## Output Format
+
+```text
+UPSCALE COMPLETE · v3.7.1
+Method: GPU|fallback | Scale: 2 | Face restore: on|off
+Input: … → Output: artifacts/polished/…
+Identity check: pass|recheck
+Next: cinematic-ffmpeg | Studio sign-off | re-run without face-restore
+```
+
+## Hard Blocks
+
+| Condition | Action |
+|-----------|--------|
+| Source not QA Go | Reject |
+| Face-restore morphs DNA | Disable FR or re-gen plate |
+| Missing ffmpeg | Install before batch |
+
+## Reasoning (Grok 4.5)
+
+| Task | Reasoning |
+|------|-----------|
+| Routine 2× batch | medium |
+| Face restore / 4K hero | **high** |
+| Path select GPU vs pure | medium–high |
+
+---
+
+*AI Video Upscaler v3.7.1 — Grok 4.5 orchestration · local GPU/CPU · not Imagine spend*

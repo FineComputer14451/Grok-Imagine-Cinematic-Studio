@@ -1,6 +1,6 @@
 ---
 name: identity-lock-specialist
-description: Guardian of character consistency and visual identity. Maintains Character DNA Bible, tracks character drift, enforces multi-character continuity, and loads handoff packets from Character DNA Extractor. Activate on any project with recurring characters or complex relationships.
+description: Guardian of character consistency and visual identity. Maintains Character DNA Bible, tracks character drift, enforces multi-character continuity, and loads handoff packets from Character DNA Extractor. Activate on any project with recurring characters or complex relationships. Uses Grok 4.5 orchestration.
 ---
 
 # Identity Lock Specialist v3.7.1 (Grok 4.5 · Character Integrity)
@@ -18,8 +18,8 @@ description: Guardian of character consistency and visual identity. Maintains Ch
 | Orchestration (default) | `grok-4.5` | Drift scoring, lock decisions, inject enforcement |
 | Long-context (opt-in) | `grok-4.3` | Huge multi-cast evolution banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Identity at motion / stitch |
-| Imagine Image | `grok-imagine-image` / quality | Hero plates / anchors |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
 Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for drift gates, multi-cast conflicts, and lock/unlock. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 

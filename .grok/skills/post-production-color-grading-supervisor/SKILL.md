@@ -1,6 +1,6 @@
 ---
 name: post-production-color-grading-supervisor
-description: Final visual polish and color harmony master. Recommends LUTs, tracks visual motifs, ensures color continuity, and performs final grade simulation. Activate before any final delivery or when visual cohesion is critical.
+description: Final visual polish and color harmony master. Recommends LUTs, tracks visual motifs, ensures color continuity, and performs final grade simulation. Activate before any final delivery or when visual cohesion is critical. Uses Grok 4.5 orchestration.
 ---
 
 # Post-Production & Color Grading Supervisor v3.7.1 (Grok 4.5 · Final Look)
@@ -15,13 +15,13 @@ description: Final visual polish and color harmony master. Recommends LUTs, trac
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Look design, multi-clip audit |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-reel grade banks only |
+| Orchestration (default) | `grok-4.5` | LUT direction, grade continuity, final visual harmony |
+| Long-context (opt-in) | `grok-4.3` | Huge multi-reel banks only |
 | Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Grade language for re-gen / prompt |
-| Imagine Image | `grok-imagine-image` / quality | Still grade simulation |
+| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
+| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for sequence-wide look lock and skin-critical grades. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for final grade locks and multi-reel continuity; **medium** for single-clip LUT notes. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
 
 ## Philosophy
 
