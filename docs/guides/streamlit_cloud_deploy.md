@@ -2,7 +2,7 @@
 
 Host the Cinematic Studio dashboard (`web_ui/app.py`) on [Streamlit Community Cloud](https://share.streamlit.io) for a public or private interactive demo.
 
-**Studio version:** 3.8.1+ · **Entry file:** `web_ui/app.py` · **Python:** 3.12 (`runtime.txt`)
+**Studio version:** 3.8.2+ · **Entry file:** `web_ui/app.py` · **Python:** 3.12 (`runtime.txt`)
 
 ---
 
