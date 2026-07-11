@@ -179,9 +179,23 @@ python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py packet.
 python tools/cinematic_studio_cli.py imagine agent-handoff ... --strict-handoff
 ```
 
-**Blockers (strict):** empty `reference_hints` on i2v/ref-to-video; video without motion/I2V cues; weak `return_path` (must mention qa/record/chain/artifact/sfw/sequence/…).  
-**Warnings:** placeholder `quota_note`; `studio_version` mismatch; short `handoff_steps`.  
-Helper: `evaluate_imagine_handoff_readiness` in `tools/handoff_readiness.py`.
+**Blockers (strict):** empty `reference_hints` on i2v/ref-to-video; video without motion/I2V cues; weak `return_path` (must mention qa/record/chain/artifact/sfw/sequence/…); incomplete `specialist_checklist` when present (GHR-10).  
+**Warnings:** placeholder `quota_note`; `studio_version` mismatch; short `handoff_steps`; missing `specialist_checklist` (GHR-09).  
+
+### Specialist order checklist
+
+Optional additive field `specialist_checklist` confirms Studio Director order before spend:
+
+DNA Extractor → Identity Lock → Reference Curator → Prompt Master → I2V (video modes)
+
+```bash
+python tools/cinematic_studio_cli.py imagine agent-handoff \
+  --batch … --shot … \
+  --checklist dna,lock,curator,prompt,i2v \
+  --strict-handoff
+```
+
+Helper: `evaluate_specialist_order` in `tools/specialist_order.py` (folded into `evaluate_imagine_handoff_readiness`).
 
 ## CLI
 

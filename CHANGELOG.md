@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Added
+- **Specialist-order checklist** — optional `specialist_checklist` on agent-mode handoffs; `--checklist` on `imagine agent-handoff`; GHR-09/GHR-10 in readiness (incomplete steps block under `--strict-handoff`).
+
 ### Fixed
 - **Still compare** — use Pillow `get_flattened_data()` instead of deprecated `getdata()` in `compare_stills_soft`.
 

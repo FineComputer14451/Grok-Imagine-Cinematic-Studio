@@ -355,6 +355,13 @@ def build_handoff(
     for key in ("last_frame_recap", "momentum_vector", "audio_momentum_vector", "slug_link"):
         if core.get(key):
             packet[key] = core[key]
+    # Optional specialist-order checklist (DNA→Lock→Curator→Prompt→I2V)
+    if state and state.get("specialist_checklist") is not None:
+        from specialist_order import normalize_specialist_checklist
+
+        packet["specialist_checklist"] = normalize_specialist_checklist(
+            state.get("specialist_checklist")
+        )
     return packet
 
 

@@ -80,7 +80,8 @@ CLI: `sequence drift-score`
 ## Generation handoff readiness (`imagine_agent_mode_handoff`)
 
 After schema OK, semantic readiness runs as **warnings** (exit 0): empty i2v
-references, video without motion cues, weak `return_path`, placeholder quota, etc.
+references, video without motion cues, weak `return_path`, placeholder quota,
+missing/incomplete `specialist_checklist` (GHR-09/10), etc.
 
 Hard-fail (exit 1 on readiness blockers):
 

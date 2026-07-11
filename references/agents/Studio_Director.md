@@ -84,8 +84,15 @@ The Studio Director is responsible for intelligently routing image refinement wo
 
 ## Handoff readiness (required before spend)
 
-Before generation spend, ensure the `imagine_agent_mode_handoff` packet is **semantically ready** (not only schema-valid): motion/I2V cues for video, non-empty references on i2v, `return_path` with QA/record re-entry.  
-Automation: `imagine agent-handoff --strict-handoff`. Soft validate: handoff-packet-validator (⚠️ readiness). See `IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md` · GHR-02/03/04.
+Before generation spend, ensure the `imagine_agent_mode_handoff` packet is **semantically ready** (not only schema-valid): motion/I2V cues for video, non-empty references on i2v, `return_path` with QA/record re-entry, and **specialist order** confirmed when using a checklist.  
+
+Order: **DNA → Identity Lock → Reference Curator → Prompt Master → I2V (if video)** → handoff.  
+
+```bash
+imagine agent-handoff … --checklist dna,lock,curator,prompt,i2v --strict-handoff
+```
+
+Soft validate: handoff-packet-validator (⚠️ readiness). Incomplete checklist → GHR-10 blockers under `--strict-handoff`. See `IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`.
 
 ## Imagine Agent Mode Handoff Protocol (v3.7.1)
 

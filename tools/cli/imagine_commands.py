@@ -330,9 +330,18 @@ def register(app: typer.Typer) -> None:
             "--strict-handoff",
             help="Exit 1 if semantic readiness fails (blockers); do not write output",
         ),
+        checklist: str = typer.Option(
+            None,
+            "--checklist",
+            help=(
+                "Specialist order confirmations, e.g. "
+                "dna,lock,curator,prompt,i2v or dna=1,lock=true"
+            ),
+        ),
     ):
         """Emit official Imagine Agent Mode Handoff packet (protocol v3.7.1)."""
         from handoff_readiness import evaluate_imagine_handoff_readiness
+        from specialist_order import parse_checklist_csv
 
         try:
             subject, context = resolve_handoff_subject(
@@ -349,12 +358,17 @@ def register(app: typer.Typer) -> None:
             )
             raise typer.Exit(1)
 
+        state = None
+        if checklist:
+            state = {"specialist_checklist": parse_checklist_csv(checklist)}
+
         try:
             packet = build_agent_mode_handoff(
                 subject,
                 target_surface=surface,
                 context=context,
                 execution_mode=mode,
+                state=state,
             )
         except ValueError as exc:
             console.print(f"[red]{exc}[/red]")

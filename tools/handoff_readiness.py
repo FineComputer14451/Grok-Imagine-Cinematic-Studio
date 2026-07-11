@@ -9,6 +9,7 @@ from handoff_schema import (
     PACKET_TYPE_IMAGINE_AGENT_MODE,
     is_video_execution_mode,
 )
+from specialist_order import evaluate_specialist_order
 from studio_paths import STUDIO_ROOT
 
 MOTION_CUES = (
@@ -141,6 +142,15 @@ def evaluate_imagine_handoff_readiness(
     if isinstance(steps, list) and len(steps) < 2:
         warnings.append("GHR-08: handoff_steps has fewer than 2 steps")
 
+    # GHR-09 / GHR-10 — specialist order (DNA→Lock→Curator→Prompt→I2V)
+    order = evaluate_specialist_order(packet, execution_mode=mode)
+    warnings.extend(order.get("warnings") or [])
+    blockers.extend(order.get("blockers") or [])
+    for f in order.get("fixes") or []:
+        if f not in fixes:
+            fixes.append(f)
+    checks.extend(order.get("checks") or [])
+
     return {
         "pass": len(blockers) == 0,
         "strict": True,
@@ -149,4 +159,5 @@ def evaluate_imagine_handoff_readiness(
         "blockers": blockers,
         "fixes": fixes,
         "checks": checks,
+        "specialist_order": order,
     }
