@@ -2,7 +2,7 @@
 
 **Cited as:** `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`  
 **Path:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`  
-**Enforcement:** Agent protocol only — CLI does **not** hard-block extend when evidence is missing.  
+**Enforcement:** Agent protocol by default; CLI **opt-in** hard-fail via `--strict-identity` on `sequence handoff` / `extend-prompt`. Handoff validator remains warn-only unless separately extended.  
 **Tooling:** `python tools/cinematic_studio_cli.py sequence drift-score`  
 **Threshold:** drift score must stay **below 2.5** for `status=pass` (Identity Lock convention).
 
@@ -47,6 +47,24 @@ Multi-cast: array of evidence objects (one per character).
 ## Validator
 
 `handoff-packet-validator`: warns if missing/incomplete on extend-type packets; errors only on invalid schema (e.g. bad `status`). Exit 0 with warnings.
+
+## CLI opt-in hard mode
+
+Default: no CLI hard-block (agent protocol + warn-only handoff validator).
+
+With **`--strict-identity`** on:
+
+- `sequence handoff`
+- `sequence extend-prompt`
+
+…the CLI exits **1** when drift evidence is missing, incomplete, skipped, or `status=risk` (score ≥ 2.5). Evaluation runs **before** writing handoff/prompt artifacts.
+
+```bash
+python tools/cinematic_studio_cli.py sequence handoff "Seq" --clip clip_001 --strict-identity
+python tools/cinematic_studio_cli.py sequence extend-prompt "Seq" --clip clip_001 --beat "next" --strict-identity
+```
+
+Helper: `evaluate_identity_strict_gate` in `tools/identity_drift.py`.
 
 ## Related agents
 
