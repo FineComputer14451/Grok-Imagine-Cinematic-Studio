@@ -29,3 +29,10 @@ api_backend = "chat_completions"
 # Build / coding: grok-4.5 (aliases: grok-build-latest, grok-4.5-latest, cinematic)
 # Video: grok-imagine-video (1.0 default) or grok-imagine-video-1.5 (native audio)
 # Legacy coding API: grok-build-0.1 (prefer grok-4.5)
+#
+# NSFW / ErosForge custom Grok Build picker aliases (opt-in):
+#   config/grok-build-nsfw-models.example.toml
+#   tools/models.py → GROK_BUILD_NSFW_MODELS (listed by models list / verify)
+# Install: bash scripts/install_nsfw_grok_models.sh [--force] [--subagents]
+# Then: grok models · /model erosforge-director · ACTIVATE EROSFORGE
+# Personas: .grok/personas/{erosforge,nsfw-prompt,nsfw-qa}.toml

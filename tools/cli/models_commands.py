@@ -14,6 +14,7 @@ from models import (
     DEFAULT_XAI_CHAT_MODEL,
     GROK_BUILD_CLI_MODELS,
     GROK_BUILD_FORK_MODEL,
+    GROK_BUILD_NSFW_MODELS,
     IMAGINE_IMAGE_MODELS,
     IMAGINE_VIDEO_MODELS,
     RECOMMENDED_GROK_BUILD_CLI_VERSION,
@@ -117,10 +118,22 @@ def models_list():
             detail += f"\n[dim]aliases: {aliases}[/dim]"
         table.add_row("Imagine Image", slug + default, detail)
 
+    for slug, info in GROK_BUILD_NSFW_MODELS.items():
+        base = info.get("base_model", "?")
+        temp = info.get("temperature")
+        temp_s = f" · T={temp}" if temp is not None else ""
+        aliases = ", ".join(info.get("aliases", [])[:3])
+        detail = f"{info['label']} → {base}{temp_s} — {info.get('description', '')}"
+        if aliases:
+            detail += f"\n[dim]aliases: {aliases}[/dim]"
+        table.add_row("Grok Build NSFW (opt-in)", slug, detail)
+
     console.print(table)
     console.print(
         f"\n[dim]Docs: {MODELS_DOC} · {MODEL_LAYER_DOC} · "
-        f"opt-in 1M: --chat-model grok-4.3 · never treat CLI 0.2.93 as a model slug[/dim]"
+        f"opt-in 1M: --chat-model grok-4.3 · never treat CLI 0.2.93 as a model slug · "
+        f"NSFW Build aliases: bash scripts/install_nsfw_grok_models.sh · "
+        f"not Imagine generators[/dim]"
     )
 
 

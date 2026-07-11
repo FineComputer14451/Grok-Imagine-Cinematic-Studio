@@ -1,0 +1,144 @@
+# Grok Build custom NSFW model presets — Grok Imagine Cinematic Studio
+#
+# These are picker aliases for NSFW / ErosForge *orchestration* sessions.
+# They wrap official xAI chat models (grok-4.5 / grok-4.3) with role-tuned
+# sampling. They do NOT replace Imagine generation models:
+#   stills  → grok-imagine-image / grok-imagine-image-quality
+#   video   → grok-imagine-video / grok-imagine-video-1.5
+#
+# Install into user config (models only load from ~/.grok/config.toml):
+#   bash scripts/install_nsfw_grok_models.sh
+# Or merge the [model.*] blocks below by hand, then:
+#   grok models
+#   /model erosforge-director
+#
+# Opt-in only. Activate with ACTIVATE EROSFORGE before intimate production.
+# Uses session auth via cli-chat-proxy (SuperGrok / grok login). Avoids paid api.x.ai credits.
+
+# ---------------------------------------------------------------------------
+# ErosForge Director — primary intimate scene direction
+# High creativity for emotion, consent framing, and 1.5 intimacy physics.
+# ---------------------------------------------------------------------------
+[model.erosforge-director]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "ErosForge Director"
+description = "NSFW cinematic director — intimate scene design, emotion, consent, 1.5 physics"
+context_window = 500000
+temperature = 0.92
+top_p = 0.95
+max_completion_tokens = 16384
+api_backend = "responses"
+
+# ---------------------------------------------------------------------------
+# NSFW Prompt Master — erotic prompt craft for Imagine stills / i2v / video
+# Slightly cooler than director; prioritizes precision and DNA inject blocks.
+# ---------------------------------------------------------------------------
+[model.nsfw-prompt-master]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "NSFW Prompt Master"
+description = "Erotic prompt engineer — Ultimate Template, DNA inject, negative prompts"
+context_window = 500000
+temperature = 0.78
+top_p = 0.92
+max_completion_tokens = 12288
+api_backend = "responses"
+
+# ---------------------------------------------------------------------------
+# NSFW Quota Planner — batch economics under SuperGrok Heavy caps
+# Low temperature for deterministic budget / tier / retry planning.
+# ---------------------------------------------------------------------------
+[model.nsfw-quota-planner]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "NSFW Quota Planner"
+description = "NSFW batch economist — hero-first tiers, i2v decisions, Heavy daily caps"
+context_window = 500000
+temperature = 0.35
+top_p = 0.85
+max_completion_tokens = 8192
+api_backend = "responses"
+
+# ---------------------------------------------------------------------------
+# NSFW Sequence Extend — 30–120s+ sensual chain planning
+# Balanced creativity for tension curves and extend-from-frame packets.
+# ---------------------------------------------------------------------------
+[model.nsfw-sequence-extend]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "NSFW Sequence Extend"
+description = "Sensual sequence extender — tension curves, stitch plans, chain handoffs"
+context_window = 500000
+temperature = 0.72
+top_p = 0.9
+max_completion_tokens = 16384
+api_backend = "responses"
+
+# ---------------------------------------------------------------------------
+# NSFW Chain QA — 8-point intimate artifact gate
+# Strict / low temperature for Go/No-Go decisions.
+# ---------------------------------------------------------------------------
+[model.nsfw-chain-qa]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "NSFW Chain QA"
+description = "NSFW chain QA guardian — hands, skin, fabric, intimacy physics, stitch seams"
+context_window = 500000
+temperature = 0.25
+top_p = 0.8
+max_completion_tokens = 8192
+api_backend = "responses"
+
+# ---------------------------------------------------------------------------
+# NSFW Identity Lock — multi-scene body/face consistency under intimacy
+# ---------------------------------------------------------------------------
+[model.nsfw-identity-lock]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "NSFW Identity Lock"
+description = "Intimate identity lock — Character DNA, drift watch, multi-cast intimacy"
+context_window = 500000
+temperature = 0.4
+top_p = 0.85
+max_completion_tokens = 8192
+api_backend = "responses"
+
+# ---------------------------------------------------------------------------
+# NSFW Long Context — optional 1M memory banks for multi-arc intimacy Bibles
+# Opt-in only when context exceeds ~400k effective tokens.
+# ---------------------------------------------------------------------------
+[model.nsfw-long-context]
+model = "grok-4.3"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "NSFW Long Context"
+description = "1M-context NSFW memory bank — multi-scene intimacy Bibles and long chains"
+context_window = 1000000
+temperature = 0.7
+top_p = 0.9
+max_completion_tokens = 16384
+api_backend = "responses"
+
+# ---------------------------------------------------------------------------
+# NSFW Creative Fast — rapid multi-agent erotic direction drafts
+# Uses Composer 2.5 Fast when available in the CLI catalog.
+# ---------------------------------------------------------------------------
+[model.nsfw-creative-fast]
+model = "grok-composer-2.5-fast"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "NSFW Creative Fast"
+description = "Fast NSFW creative drafts — beat boards, mood, rough shot lists"
+context_window = 200000
+temperature = 0.95
+top_p = 0.96
+max_completion_tokens = 8192
+api_backend = "responses"
+
+# Optional: default new sessions to ErosForge Director for pure NSFW workspaces
+# [models]
+# default = "erosforge-director"
+#
+# Optional subagent model routing (merge under [subagents.models]):
+# [subagents.models]
+# explore = "nsfw-quota-planner"
+# plan = "nsfw-sequence-extend"

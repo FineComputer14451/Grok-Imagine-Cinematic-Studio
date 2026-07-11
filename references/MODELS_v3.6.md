@@ -46,6 +46,38 @@ fork_secondary_model = "grok-build"
 
 ---
 
+## Grok Build NSFW aliases (opt-in ErosForge)
+
+Picker aliases for **orchestration** only (not Imagine generators). Registry: `GROK_BUILD_NSFW_MODELS` in `tools/models.py`. Config example: `config/grok-build-nsfw-models.example.toml`.
+
+| Slug | Base model | Temp | Role |
+|------|------------|------|------|
+| `erosforge-director` | `grok-4.5` | 0.92 | Intimate direction |
+| `nsfw-prompt-master` | `grok-4.5` | 0.78 | Erotic prompt craft |
+| `nsfw-quota-planner` | `grok-4.5` | 0.35 | Batch / Heavy quota |
+| `nsfw-sequence-extend` | `grok-4.5` | 0.72 | 30–120s sensual chains |
+| `nsfw-chain-qa` | `grok-4.5` | 0.25 | 8-point intimate QA |
+| `nsfw-identity-lock` | `grok-4.5` | 0.40 | Intimate DNA lock |
+| `nsfw-long-context` | `grok-4.3` | 0.70 | 1M intimacy banks |
+| `nsfw-creative-fast` | `grok-composer-2.5-fast` | 0.95 | Fast drafts |
+
+**Install (user config only — models load from `~/.grok/config.toml`):**
+
+```bash
+bash scripts/install_nsfw_grok_models.sh
+bash scripts/install_nsfw_grok_models.sh --force      # refresh blocks
+bash scripts/install_nsfw_grok_models.sh --subagents  # explore/plan → NSFW planners
+grok models
+/model erosforge-director
+```
+
+Prefer **cli-chat-proxy** session auth (SuperGrok) over paid `api.x.ai` credits.  
+Personas: `.grok/personas/{erosforge,nsfw-prompt,nsfw-qa}.toml`  
+**Still/video generation** remains `grok-imagine-image*` / `grok-imagine-video*`.  
+Activate production with **`ACTIVATE EROSFORGE`**.
+
+---
+
 ## xAI API Chat Models
 
 | Slug | Context | Input / 1M | Output / 1M | When to Use |

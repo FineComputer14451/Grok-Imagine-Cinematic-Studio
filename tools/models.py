@@ -79,6 +79,80 @@ GROK_BUILD_CLI_MODELS: dict[str, dict[str, Any]] = {
 }
 
 # ---------------------------------------------------------------------------
+# Grok Build custom NSFW / ErosForge picker aliases (opt-in)
+# These are NOT separate API products — they map to chat base models with
+# role-tuned sampling in ~/.grok/config.toml (see config/grok-build-nsfw-models.example.toml).
+# Install: bash scripts/install_nsfw_grok_models.sh
+# ---------------------------------------------------------------------------
+
+GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
+    "erosforge-director": {
+        "label": "ErosForge Director",
+        "role": "nsfw_director",
+        "base_model": "grok-4.5",
+        "temperature": 0.92,
+        "description": "Intimate scene design, consent framing, 1.5 intimacy physics",
+        "aliases": ["erosforge", "nsfw-director"],
+    },
+    "nsfw-prompt-master": {
+        "label": "NSFW Prompt Master",
+        "role": "nsfw_prompt",
+        "base_model": "grok-4.5",
+        "temperature": 0.78,
+        "description": "Erotic prompt craft — DNA inject, Ultimate Template, negatives",
+        "aliases": ["nsfw-prompt", "erotic-prompt"],
+    },
+    "nsfw-quota-planner": {
+        "label": "NSFW Quota Planner",
+        "role": "nsfw_quota",
+        "base_model": "grok-4.5",
+        "temperature": 0.35,
+        "description": "Hero-first NSFW batch economics under Heavy caps",
+        "aliases": ["nsfw-quota", "nsfw-batch-planner"],
+    },
+    "nsfw-sequence-extend": {
+        "label": "NSFW Sequence Extend",
+        "role": "nsfw_extend",
+        "base_model": "grok-4.5",
+        "temperature": 0.72,
+        "description": "Sensual 30–120s+ tension curves and extend handoffs",
+        "aliases": ["nsfw-extend", "nsfw-sequence"],
+    },
+    "nsfw-chain-qa": {
+        "label": "NSFW Chain QA",
+        "role": "nsfw_qa",
+        "base_model": "grok-4.5",
+        "temperature": 0.25,
+        "description": "8-point intimate artifact gate before extend/stitch",
+        "aliases": ["nsfw-qa"],
+    },
+    "nsfw-identity-lock": {
+        "label": "NSFW Identity Lock",
+        "role": "nsfw_identity",
+        "base_model": "grok-4.5",
+        "temperature": 0.40,
+        "description": "Intimate multi-scene body/face consistency",
+        "aliases": ["nsfw-identity", "nsfw-dna"],
+    },
+    "nsfw-long-context": {
+        "label": "NSFW Long Context",
+        "role": "nsfw_long_context",
+        "base_model": "grok-4.3",
+        "temperature": 0.70,
+        "description": "1M multi-scene intimacy Bibles (opt-in)",
+        "aliases": ["nsfw-1m", "nsfw-long"],
+    },
+    "nsfw-creative-fast": {
+        "label": "NSFW Creative Fast",
+        "role": "nsfw_creative",
+        "base_model": "grok-composer-2.5-fast",
+        "temperature": 0.95,
+        "description": "Fast NSFW beat boards and rough shot lists",
+        "aliases": ["nsfw-fast", "nsfw-draft"],
+    },
+}
+
+# ---------------------------------------------------------------------------
 # xAI API chat models (https://api.x.ai/v1)
 # Defaults are ROLE_DEFAULTS only — no per-entry default/build_default flags.
 # ---------------------------------------------------------------------------
@@ -230,6 +304,7 @@ def _build_alias_map(registry: dict[str, dict[str, Any]]) -> dict[str, str]:
 _CHAT_ALIAS_MAP = _build_alias_map(XAI_CHAT_MODELS)
 _VIDEO_ALIAS_MAP = _build_alias_map(IMAGINE_VIDEO_MODELS)
 _IMAGE_ALIAS_MAP = _build_alias_map(IMAGINE_IMAGE_MODELS)
+_NSFW_BUILD_ALIAS_MAP = _build_alias_map(GROK_BUILD_NSFW_MODELS)
 
 
 def _resolve_from_alias_map(
@@ -258,6 +333,34 @@ def resolve_image_model(slug: str | None = None) -> str:
 def resolve_chat_model(slug: str | None = None) -> str:
     """Resolve chat model slug; empty/None → cinematic default (grok-4.5)."""
     return _resolve_from_alias_map(slug, _CHAT_ALIAS_MAP, DEFAULT_XAI_CHAT_MODEL)
+
+
+def resolve_nsfw_build_model(slug: str | None = None) -> str | None:
+    """Resolve Grok Build NSFW picker alias → canonical custom-model id.
+
+    Returns None when slug is empty (no silent default — NSFW is opt-in).
+    Unknown non-empty slugs fall back to erosforge-director only if they look
+    like an NSFW alias miss; prefer known_nsfw_build_model() for strict checks.
+    """
+    if not slug or not str(slug).strip():
+        return None
+    normalized = str(slug).strip().lower()
+    return _NSFW_BUILD_ALIAS_MAP.get(normalized)
+
+
+def known_nsfw_build_model(slug: str | None) -> bool:
+    """True if slug is a registered Grok Build NSFW custom-model id or alias."""
+    if not slug or not str(slug).strip():
+        return False
+    return str(slug).strip().lower() in _NSFW_BUILD_ALIAS_MAP
+
+
+def nsfw_build_base_model(slug: str | None) -> str | None:
+    """Return the underlying chat/CLI base model for an NSFW picker alias."""
+    resolved = resolve_nsfw_build_model(slug)
+    if not resolved:
+        return None
+    return GROK_BUILD_NSFW_MODELS[resolved].get("base_model")
 
 
 def known_chat_model(slug: str | None) -> bool:
@@ -421,6 +524,26 @@ def verify_model_compatibility() -> dict[str, Any]:
     _check_registry_aliases("video", IMAGINE_VIDEO_MODELS, resolve_video_model, issues)
     _check_registry_aliases("image", IMAGINE_IMAGE_MODELS, resolve_image_model, issues)
 
+    def _resolve_nsfw_strict(key: str) -> str:
+        got = resolve_nsfw_build_model(key)
+        return got if got is not None else ""
+
+    _check_registry_aliases(
+        "nsfw_build", GROK_BUILD_NSFW_MODELS, _resolve_nsfw_strict, issues
+    )
+    for nsfw_id, info in GROK_BUILD_NSFW_MODELS.items():
+        base = info.get("base_model")
+        if not base:
+            issues.append(f"nsfw_build: {nsfw_id!r} missing base_model")
+            continue
+        # Base must be a known CLI picker or chat model
+        if base not in GROK_BUILD_CLI_MODELS and base not in XAI_CHAT_MODELS:
+            # composer may only appear in CLI catalog
+            if base not in ("grok-composer-2.5-fast",):
+                issues.append(
+                    f"nsfw_build: {nsfw_id!r} base_model {base!r} not in known catalogs"
+                )
+
     # Empty resolve → cinematic / video / image defaults
     if resolve_chat_model(None) != DEFAULT_XAI_CHAT_MODEL:
         issues.append("resolve_chat_model(None) must return cinematic default")
@@ -486,6 +609,11 @@ def list_image_model_aliases() -> dict[str, list[str]]:
     return {slug: list(info.get("aliases", [])) for slug, info in IMAGINE_IMAGE_MODELS.items()}
 
 
+def list_nsfw_build_models() -> dict[str, dict[str, Any]]:
+    """Return Grok Build NSFW custom-model registry (opt-in picker aliases)."""
+    return dict(GROK_BUILD_NSFW_MODELS)
+
+
 def list_all_models() -> dict[str, Any]:
     """Return full registry for CLI/UI display."""
     return {
@@ -497,6 +625,16 @@ def list_all_models() -> dict[str, Any]:
             "fork_secondary": GROK_BUILD_FORK_MODEL,
             "recommended_version": RECOMMENDED_GROK_BUILD_CLI_VERSION,
             "models": GROK_BUILD_CLI_MODELS,
+        },
+        "grok_build_nsfw": {
+            "opt_in": True,
+            "install": "bash scripts/install_nsfw_grok_models.sh",
+            "config_example": "config/grok-build-nsfw-models.example.toml",
+            "note": (
+                "Picker aliases for ErosForge orchestration; not Imagine generators. "
+                "Require install into ~/.grok/config.toml. Prefer cli-chat-proxy session auth."
+            ),
+            "models": GROK_BUILD_NSFW_MODELS,
         },
         "xai_chat": {
             "default": DEFAULT_XAI_CHAT_MODEL,
