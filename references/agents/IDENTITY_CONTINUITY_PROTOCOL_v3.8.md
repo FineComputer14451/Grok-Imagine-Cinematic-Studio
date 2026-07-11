@@ -66,6 +66,15 @@ python tools/cinematic_studio_cli.py sequence extend-prompt "Seq" --clip clip_00
 
 Helper: `evaluate_identity_strict_gate` in `tools/identity_drift.py`.
 
+## Hybrid still compare (evidence quality)
+
+`sequence drift-score` accepts `--ref-still` / `--clip-still`, or reads clip fields
+(`reference_still_path`, `hero_plate_path`, `last_frame_path`, `first_frame_path`, …).
+When both stills load via optional Pillow, the scorer runs multi-signal still compare
+(`mode=hybrid`: luma MAE, histogram, edge energy; penalty capped 0–3) in addition to
+DNA/metadata heuristics. No face-recognition dependency. Metadata-only when stills
+or PIL are unavailable.
+
 ## Related agents
 
 Identity Lock · Character DNA Extractor · Cinematic Sequence Extender · Continuity Guardian · QA Guardian · Sequence Director (routing) · Chain QA Protocol

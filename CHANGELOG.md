@@ -7,6 +7,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Added
 - **Identity Continuity Protocol v1.0** — deepen existing long-form agents: canonical ICP (`references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`), `drift_evidence` handoff mapping from clip `identity_drift`, warn-only validator checks (no new agents; no CLI hard-block).
 - **`--strict-identity`** on `sequence handoff` and `sequence extend-prompt` — opt-in hard-fail when drift evidence is missing or identity risk (default soft path unchanged). Helper: `evaluate_identity_strict_gate`.
+- **Identity drift evidence quality** — multi-signal soft-PIL still compare, still path resolve (CLI flags + clip fields), modest facial DNA weighting; `sequence drift-score --ref-still` / `--clip-still`.
 
 ## [3.8.0] - 2026-07-11
 

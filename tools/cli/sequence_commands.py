@@ -24,6 +24,7 @@ from extend_regen import apply_regen_plan, ensure_clip_regen, plan_regen, prepar
 from identity_drift import (
     DEFAULT_DRIFT_THRESHOLD,
     evaluate_identity_strict_gate,
+    resolve_still_paths,
     score_identity_drift,
 )
 from quota_optimizer import estimate_sequence_cost
@@ -376,6 +377,12 @@ def register(app: typer.Typer) -> None:
         clip: str = typer.Option(..., "--clip", "-c"),
         dna: str = typer.Option(None, "--dna", help="Path to dna.json or character slug"),
         threshold: float = typer.Option(None, "--threshold", help="Default 2.5"),
+        ref_still: str = typer.Option(
+            None, "--ref-still", help="Hero/reference still path (overrides clip fields)"
+        ),
+        clip_still: str = typer.Option(
+            None, "--clip-still", help="Clip/current still path (overrides clip fields)"
+        ),
     ):
         """Score identity drift for a clip against Character DNA (evidence loop #1)."""
         seq = require_sequence(name)
@@ -385,16 +392,32 @@ def register(app: typer.Typer) -> None:
         prev = clips[idx - 1] if idx > 0 else None
         dna_obj = _load_dna_optional(dna)
         thr = DEFAULT_DRIFT_THRESHOLD if threshold is None else threshold
+        ref_p, clip_p = resolve_still_paths(
+            target, ref_still=ref_still, clip_still=clip_still
+        )
         report = score_identity_drift(
-            target, dna=dna_obj, previous_clip=prev, threshold=thr
+            target,
+            dna=dna_obj,
+            previous_clip=prev,
+            threshold=thr,
+            reference_still_path=ref_p,
+            clip_still_path=clip_p,
         )
         target["identity_drift"] = report
         save_sequence(seq)
         color = "green" if report["pass"] else "red"
         console.print(
             f"[{color}]drift_score={report['drift_score']} "
-            f"(threshold={report['threshold']}) pass={report['pass']}[/{color}]"
+            f"(threshold={report['threshold']}) pass={report['pass']} "
+            f"mode={report.get('mode')}[/{color}]"
         )
+        if report.get("mode") == "hybrid" and report.get("still_signals"):
+            ss = report["still_signals"]
+            console.print(
+                f"[dim]still: luma_mae={ss.get('luma_mae')} "
+                f"hist_l1={ss.get('hist_l1')} edge_delta={ss.get('edge_delta')} "
+                f"penalty={ss.get('penalty')}[/dim]"
+            )
         for factor in report.get("factors") or []:
             console.print(f"  • {factor}")
         if report.get("fixes"):

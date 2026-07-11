@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 DEFAULT_DRIFT_THRESHOLD = 2.5
@@ -64,6 +65,9 @@ def report_to_drift_evidence(
     score = float(report.get("drift_score", report.get("score", 0.0)) or 0.0)
     threshold = float(report.get("threshold", DEFAULT_DRIFT_THRESHOLD) or DEFAULT_DRIFT_THRESHOLD)
     status = status_from_report(report)
+    flags = list(factors[:8])
+    if report.get("mode") == "hybrid" and "hybrid_still" not in flags:
+        flags = ["hybrid_still"] + flags
     return {
         "schema_version": DRIFT_EVIDENCE_SCHEMA_VERSION,
         "protocol": DRIFT_EVIDENCE_PROTOCOL,
@@ -82,7 +86,7 @@ def report_to_drift_evidence(
         },
         "signals": {
             "summary": "; ".join(summary_parts) if summary_parts else f"drift_score={score}",
-            "flags": factors[:8],
+            "flags": flags,
         },
         "attempt": int(attempt),
         "notes": notes or "",
@@ -404,6 +408,18 @@ def score_identity_drift(
             penalties.append(lex_penalty)
             factors.append(f"DNA token overlap={overlap:.0%} (lex_penalty={lex_penalty})")
 
+            facial = (dna.get("facial_dna") or "").strip()
+            if facial:
+                facial_toks = _tokens(facial)
+                if facial_toks:
+                    f_overlap = len(facial_toks & clip_toks) / max(1, len(facial_toks))
+                    if f_overlap + 0.15 < overlap:
+                        fp = _clamp((1.0 - f_overlap) * 1.5, 0.0, 1.0)
+                        penalties.append(fp)
+                        factors.append(
+                            f"facial_dna overlap={f_overlap:.0%} (penalty={fp})"
+                        )
+
             if anchors:
                 hit = sum(
                     1 for a in anchors if _anchor_hit(a, clip_text_lower, clip_toks)
@@ -448,9 +464,11 @@ def score_identity_drift(
             factors.append("Previous clip had reference_image_id; current missing")
 
     mode = "metadata"
+    still_signals: dict[str, Any] | None = None
     if reference_still_path and clip_still_path:
-        frame_score = _optional_still_drift(reference_still_path, clip_still_path)
-        if frame_score is not None:
+        compared = compare_stills_soft(reference_still_path, clip_still_path)
+        if compared is not None:
+            frame_score, still_signals = compared
             mode = "hybrid"
             penalties.append(frame_score)
             factors.append(f"still_compare_penalty={frame_score}")
@@ -469,6 +487,11 @@ def score_identity_drift(
         "mode": mode,
         "factors": factors,
         "suggested_character_drift_boundary": _drift_to_qa_score(drift_score),
+        "still_signals": still_signals,
+        "still_paths": {
+            "ref": reference_still_path,
+            "clip": clip_still_path,
+        },
         "fixes": []
         if passed
         else [
@@ -484,24 +507,125 @@ def _drift_to_qa_score(drift_score: float) -> float:
     return round(max(1.0, min(10.0, 10.0 - drift_score)), 1)
 
 
-def _optional_still_drift(ref_path: str, clip_path: str) -> float | None:
-    """Return extra drift penalty 0–3 from mean abs pixel diff, or None if unavailable."""
+REF_STILL_KEYS = (
+    "reference_still_path",
+    "hero_plate_path",
+    "ref_still_path",
+)
+CLIP_STILL_KEYS = (
+    "clip_still_path",
+    "last_frame_path",
+    "first_frame_path",
+    "still_path",
+)
+
+
+def _existing_path(value: str | None) -> str | None:
+    if not value or not str(value).strip():
+        return None
+    p = Path(str(value).strip())
+    if p.is_file():
+        return str(p)
+    return None
+
+
+def resolve_still_paths(
+    clip: dict[str, Any],
+    *,
+    ref_still: str | None = None,
+    clip_still: str | None = None,
+) -> tuple[str | None, str | None]:
+    """Resolve reference and clip still paths. Flags override clip fields."""
+    ref = _existing_path(ref_still)
+    if ref is None:
+        for key in REF_STILL_KEYS:
+            raw = clip.get(key)
+            ref = _existing_path(raw if isinstance(raw, str) else None)
+            if ref:
+                break
+    cur = _existing_path(clip_still)
+    if cur is None:
+        for key in CLIP_STILL_KEYS:
+            raw = clip.get(key)
+            cur = _existing_path(raw if isinstance(raw, str) else None)
+            if cur:
+                break
+    return ref, cur
+
+
+def compare_stills_soft(
+    ref_path: str, clip_path: str
+) -> tuple[float, dict[str, Any]] | None:
+    """
+    Multi-signal still compare. Returns (penalty 0–3, signals) or None.
+    Soft-depends on Pillow.
+    """
     try:
         from PIL import Image
     except ImportError:
         return None
     try:
-        a = Image.open(ref_path).convert("RGB").resize((64, 64))
-        b = Image.open(clip_path).convert("RGB").resize((64, 64))
+        a = Image.open(ref_path).convert("RGB").resize((128, 128))
+        b = Image.open(clip_path).convert("RGB").resize((128, 128))
     except OSError:
         return None
 
     px_a = list(a.getdata())
     px_b = list(b.getdata())
-    if not px_a or len(px_a) != len(px_b):
+    n = len(px_a)
+    if not n or n != len(px_b):
         return None
 
-    mad = sum(abs(pa[i] - pb[i]) for pa, pb in zip(px_a, px_b) for i in range(3)) / (
-        len(px_a) * 3 * 255.0
+    def _luma(rgb: tuple[int, ...]) -> float:
+        return 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]
+
+    luma_mae = sum(abs(_luma(pa) - _luma(pb)) for pa, pb in zip(px_a, px_b)) / (
+        n * 255.0
     )
-    return round(min(3.0, mad * 6.0), 2)
+    luma_contrib = min(1.5, luma_mae * 3.0)
+
+    def _hist(channel_vals: list[int]) -> list[int]:
+        bins = [0] * 32
+        for v in channel_vals:
+            bins[min(31, v * 32 // 256)] += 1
+        return bins
+
+    hist_l1_sum = 0.0
+    for ch in range(3):
+        ha = _hist([p[ch] for p in px_a])
+        hb = _hist([p[ch] for p in px_b])
+        hist_l1_sum += sum(abs(x - y) for x, y in zip(ha, hb)) / (2.0 * n)
+    hist_l1 = hist_l1_sum / 3.0
+    hist_contrib = min(1.0, hist_l1 * 2.0)
+
+    def _edge_energy(px: list) -> float:
+        w = 128
+        total = 0.0
+        count = 0
+        for y in range(128):
+            for x in range(127):
+                i = y * w + x
+                total += abs(_luma(px[i]) - _luma(px[i + 1]))
+                count += 1
+        return total / max(1, count) / 255.0
+
+    edge_delta = abs(_edge_energy(px_a) - _edge_energy(px_b))
+    edge_contrib = min(0.5, edge_delta * 2.0)
+
+    penalty = round(min(3.0, luma_contrib + hist_contrib + edge_contrib), 2)
+    signals: dict[str, Any] = {
+        "luma_mae": round(luma_mae, 4),
+        "hist_l1": round(hist_l1, 4),
+        "edge_delta": round(edge_delta, 4),
+        "size": 128,
+        "penalty": penalty,
+    }
+    return penalty, signals
+
+
+def _optional_still_drift(ref_path: str, clip_path: str) -> float | None:
+    """Back-compat: return still penalty only, or None if unavailable."""
+    result = compare_stills_soft(ref_path, clip_path)
+    if result is None:
+        return None
+    return result[0]
