@@ -1,4 +1,4 @@
-"""Shared CLI constants and helpers (Grok 4.5 · studio v3.7.1)."""
+"""Shared CLI constants and helpers (Grok 4.5 · studio version from VERSION)."""
 
 from __future__ import annotations
 
@@ -11,7 +11,15 @@ from rich.table import Table
 
 from studio_paths import AGENTS_DIR, STUDIO_ROOT
 
-STUDIO_VERSION = "3.7.1"
+
+def _read_studio_version() -> str:
+    vf = STUDIO_ROOT / "VERSION"
+    if vf.is_file():
+        return vf.read_text(encoding="utf-8").strip() or "3.8.0"
+    return "3.8.0"
+
+
+STUDIO_VERSION = _read_studio_version()
 ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
 MODEL_LAYER_DOC = "references/agents/MODEL_LAYER_v3.7.1.md"
 MODELS_DOC = "references/MODELS.md"
@@ -214,7 +222,7 @@ def format_stack_panel(stack: dict[str, Any] | None = None) -> Panel:
     )
     return Panel.fit(
         body,
-        title="Model Layer (Grok 4.5 · studio v3.7.1)",
+        title=f"Model Layer (Grok 4.5 · studio v{STUDIO_VERSION})",
         border_style="cyan",
     )
 

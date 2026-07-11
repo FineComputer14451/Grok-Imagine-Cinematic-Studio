@@ -28,13 +28,15 @@ def test_main_help() -> None:
     assert "dashboard" in result.stdout
     assert "memory" in result.stdout
     assert "Grok 4.5" in result.stdout or "4.5" in result.stdout
-    assert "3.7.1" in result.stdout
+    ver = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    assert ver in result.stdout
 
 
 def test_status_and_stack_show_grok_45() -> None:
     status = run_cli("status")
     assert status.returncode == 0
-    assert "3.7.1" in status.stdout
+    ver = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    assert ver in status.stdout
     assert "grok-4.5" in status.stdout
     stack = run_cli("stack")
     assert stack.returncode == 0

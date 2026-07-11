@@ -200,7 +200,7 @@
         "commands": [
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.7.1 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.8.0 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
           },
           {
             "name": "dna",
@@ -317,7 +317,7 @@
         "commands": [
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.7.1 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.8.0 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
           },
           {
             "name": "dna",

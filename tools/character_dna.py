@@ -20,7 +20,7 @@ from project_state import load_project_state, save_project_state
 from studio_paths import CHARACTERS_DIR
 
 SCHEMA_VERSION = "1.0"
-STUDIO_AGENT_VERSION = "v3.7.1"
+STUDIO_AGENT_VERSION = "v3.8.0"
 
 PROMPT_MODES = (
     "compact",
