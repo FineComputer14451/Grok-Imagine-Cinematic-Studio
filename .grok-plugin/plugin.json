@@ -1,6 +1,6 @@
 {
   "name": "grok-imagine-cinematic-studio",
-  "version": "3.8.0",
+  "version": "3.8.1",
   "description": "23-agent cinematic production suite for Grok Imagine Video 1.0/1.5 with unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), Imagine Agent Mode Handoff, Character DNA, sequence extension, quota orchestration, and delivery polish.",
   "author": {
     "name": "FineComputer14451",
