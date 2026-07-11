@@ -25,12 +25,22 @@ if __name__ != "__main__" or "tools" not in str(Path(__file__)):
     if str(_root / "tools") not in sys.path:
         sys.path.insert(0, str(_root / "tools"))
 
+from plugin_packs import (
+    FULL_PLUGIN_NAME,
+    PACK_IDS,
+    all_pack_plugin_names,
+    load_plugin_packs,
+    resolve_pack_command_paths,
+    resolve_pack_skill_paths,
+    validate_plugin_packs,
+)
 from studio_paths import (
     COMMANDS_DIR,
     PLUGIN_DIR,
     PLUGIN_INDEX_PATH,
     PLUGIN_MANIFEST_PATH,
     PLUGIN_MARKETPLACE_PATH,
+    PLUGIN_PACKS_DIR,
     SKILLS_DIR,
     STUDIO_ROOT,
 )
@@ -42,6 +52,8 @@ SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 # Paths allowed to change after the install pin without requiring a re-pin.
 # A pin-only commit updates marketplace + index (and sometimes the manifest)
 # while the marketplace ``sha`` still points at the content revision.
+# Pack manifests under .grok-plugin/packs/*/plugin.json are also allowed
+# via _is_allowed_post_pin_path (prefix match, not only this frozenset).
 ALLOWED_POST_PIN_PATHS = frozenset(
     {
         ".grok-plugin/marketplace.json",
@@ -49,6 +61,21 @@ ALLOWED_POST_PIN_PATHS = frozenset(
         ".grok-plugin/plugin.json",
     }
 )
+
+
+def _studio_version() -> str:
+    vf = STUDIO_ROOT / "VERSION"
+    if vf.is_file():
+        return vf.read_text(encoding="utf-8").strip()
+    return "0.0.0"
+
+
+def _is_allowed_post_pin_path(path: str) -> bool:
+    if path in ALLOWED_POST_PIN_PATHS:
+        return True
+    if path.startswith(".grok-plugin/packs/") and path.endswith("/plugin.json"):
+        return True
+    return False
 
 
 def parse_frontmatter(path: Path) -> dict[str, str]:
@@ -292,6 +319,10 @@ def load_plugin_manifest() -> dict[str, Any]:
 
 
 def build_plugin_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
+    """Legacy full-suite rebuild from disk discovery (sorted paths).
+
+    Prefer :func:`build_full_plugin_manifest_from_packs` for catalog writes.
+    """
     updated = dict(manifest)
     updated["skills"] = skill_paths()
     commands = command_paths()
@@ -302,6 +333,185 @@ def build_plugin_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
     return updated
 
 
+def build_pack_plugin_manifest(cfg: dict[str, Any], pack_id: str) -> dict[str, Any]:
+    """Build a satellite pack plugin.json from packs config."""
+    pack = cfg["packs"][pack_id]
+    description = pack.get("description") or pack.get("display_name") or pack_id
+    if isinstance(description, str):
+        description = description.strip()
+    manifest: dict[str, Any] = {
+        "name": pack["name"],
+        "version": _studio_version(),
+        "description": description,
+        "author": {
+            "name": "FineComputer14451",
+            "url": "https://github.com/FineComputer14451",
+        },
+        "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+        "repository": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+        "license": "MIT",
+        "keywords": ["grok-imagine-cinematic-studio", pack_id, "cinematic studio"],
+        "skills": resolve_pack_skill_paths(list(pack["skills"])),
+    }
+    cmds = list(pack.get("commands") or [])
+    if cmds:
+        manifest["commands"] = resolve_pack_command_paths(cmds)
+    if pack.get("requires"):
+        manifest["cinematicStudioRequires"] = list(pack["requires"])
+    return manifest
+
+
+def build_full_plugin_manifest_from_packs(
+    cfg: dict[str, Any], base: dict[str, Any] | None = None
+) -> dict[str, Any]:
+    """Full suite = union of pack skills + commands; preserve author fields from base."""
+    base = dict(base or load_plugin_manifest())
+    all_skills: list[str] = []
+    all_cmds: list[str] = []
+    for pid in PACK_IDS:
+        all_skills.extend(cfg["packs"][pid]["skills"])
+        all_cmds.extend(cfg["packs"][pid].get("commands") or [])
+    base["name"] = FULL_PLUGIN_NAME
+    base["version"] = _studio_version()
+    base["skills"] = resolve_pack_skill_paths(all_skills)
+    if all_cmds:
+        base["commands"] = resolve_pack_command_paths(all_cmds)
+    elif "commands" in base:
+        del base["commands"]
+    return base
+
+
+def build_marketplace_from_packs(
+    cfg: dict[str, Any], sha: str | None = None
+) -> dict[str, Any]:
+    """Build a six-plugin marketplace (full suite + five packs), shared SHA."""
+    errs = validate_plugin_packs(cfg)
+    if errs:
+        raise ValueError("invalid plugin packs: " + "; ".join(errs))
+    pin = sha
+    plugins: list[dict[str, Any]] = []
+
+    def entry(name: str, description: str, **extra: Any) -> dict[str, Any]:
+        source: dict[str, Any] = {
+            "source": "url",
+            "url": REPO_GIT_URL,
+        }
+        if pin:
+            source["sha"] = pin
+        desc = description.strip() if isinstance(description, str) else description
+        e: dict[str, Any] = {
+            "name": name,
+            "description": desc,
+            "category": "creative",
+            "version": _studio_version(),
+            "source": source,
+            "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+            "keywords": ["grok-imagine-cinematic-studio", "cinematic studio"],
+        }
+        e.update(extra)
+        return e
+
+    full = cfg["full_plugin"]
+    plugins.append(
+        entry(
+            full["name"],
+            full.get("description") or "Full Cinematic Studio suite",
+            recommended=True,
+        )
+    )
+    for pid in PACK_IDS:
+        pack = cfg["packs"][pid]
+        plugins.append(
+            entry(
+                pack["name"],
+                pack.get("description") or pack.get("display_name") or pid,
+                pack_id=pid,
+                requires=list(pack.get("requires") or []),
+            )
+        )
+    version = _studio_version()
+    return {
+        "name": "finecomputer14451-cinematic-studio",
+        "description": (
+            f"Grok Imagine Cinematic Studio v{version} marketplace — "
+            "full suite + modular packs (core, camera-image, sequence-narrative, "
+            "nsfw, delivery-post)."
+        ),
+        "owner": {
+            "name": "FineComputer14451",
+            "url": "https://github.com/FineComputer14451",
+        },
+        "plugins": plugins,
+    }
+
+
+def build_index_from_packs(
+    marketplace: dict[str, Any], cfg: dict[str, Any]
+) -> dict[str, Any]:
+    """Per-plugin skill/command components (not a global dump for every entry)."""
+    skills_by_name = {s["name"]: s for s in discover_skills()}
+    cmds_by_name = {c["name"]: c for c in discover_commands()}
+    records: dict[str, dict[str, Any]] = {}
+
+    full_skills: list[dict[str, str]] = []
+    full_cmds: list[dict[str, str]] = []
+    for pid in PACK_IDS:
+        for s in cfg["packs"][pid]["skills"]:
+            if s in skills_by_name:
+                full_skills.append(skills_by_name[s])
+        for c in cfg["packs"][pid].get("commands") or []:
+            if c in cmds_by_name:
+                full_cmds.append(cmds_by_name[c])
+    full_name = cfg["full_plugin"]["name"]
+    records[full_name] = {
+        "components": {
+            "skills": full_skills,
+            **({"commands": full_cmds} if full_cmds else {}),
+        }
+    }
+
+    for pid in PACK_IDS:
+        pack = cfg["packs"][pid]
+        sk = [skills_by_name[s] for s in pack["skills"] if s in skills_by_name]
+        cm = [
+            cmds_by_name[c]
+            for c in (pack.get("commands") or [])
+            if c in cmds_by_name
+        ]
+        rec: dict[str, Any] = {"components": {"skills": sk}}
+        if cm:
+            rec["components"]["commands"] = cm
+        records[pack["name"]] = rec
+
+    for market_entry in marketplace.get("plugins") or []:
+        if not isinstance(market_entry, dict):
+            continue
+        name = market_entry.get("name")
+        if isinstance(name, str) and name in records:
+            sha = pinned_sha(market_entry)
+            if sha:
+                records[name]["sha"] = sha
+
+    return {"version": 1, "plugins": records}
+
+
+def write_pack_manifests(cfg: dict[str, Any]) -> list[Path]:
+    """Write .grok-plugin/packs/<id>/plugin.json for each satellite pack."""
+    written: list[Path] = []
+    PLUGIN_PACKS_DIR.mkdir(parents=True, exist_ok=True)
+    for pid in PACK_IDS:
+        out_dir = PLUGIN_PACKS_DIR / pid
+        out_dir.mkdir(parents=True, exist_ok=True)
+        path = out_dir / "plugin.json"
+        manifest = build_pack_plugin_manifest(cfg, pid)
+        path.write_text(
+            json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        written.append(path)
+    return written
+
+
 def render_plugin_manifest(manifest: dict[str, Any]) -> str:
     return json.dumps(build_plugin_manifest(manifest), indent=2, ensure_ascii=False) + "\n"
 
@@ -310,8 +520,16 @@ def write_plugin_manifest(manifest: dict[str, Any]) -> None:
     PLUGIN_MANIFEST_PATH.write_text(render_plugin_manifest(manifest), encoding="utf-8")
 
 
-def render_index(marketplace: dict[str, Any]) -> str:
-    return json.dumps(build_index(marketplace), indent=2, ensure_ascii=False) + "\n"
+def render_index(marketplace: dict[str, Any], cfg: dict[str, Any] | None = None) -> str:
+    if cfg is None:
+        try:
+            cfg = load_plugin_packs()
+        except Exception:
+            return json.dumps(build_index(marketplace), indent=2, ensure_ascii=False) + "\n"
+    return (
+        json.dumps(build_index_from_packs(marketplace, cfg), indent=2, ensure_ascii=False)
+        + "\n"
+    )
 
 
 def sync_marketplace_sha(marketplace: dict[str, Any], sha: str) -> bool:
@@ -433,7 +651,7 @@ def validate_release_pin(marketplace: dict[str, Any]) -> list[str]:
         return errors
 
     changed = git_diff_names(catalog_sha, head_sha)
-    extra = sorted(set(changed) - ALLOWED_POST_PIN_PATHS)
+    extra = sorted({p for p in changed if not _is_allowed_post_pin_path(p)})
     if extra:
         preview = ", ".join(extra[:8])
         more = f" (+{len(extra) - 8} more)" if len(extra) > 8 else ""
@@ -447,9 +665,20 @@ def validate_release_pin(marketplace: dict[str, Any]) -> list[str]:
     return errors
 
 
-def check_plugin_artifacts(marketplace: dict[str, Any], *, require_release_pin: bool = False) -> list[str]:
+def check_plugin_artifacts(
+    marketplace: dict[str, Any], *, require_release_pin: bool = False
+) -> list[str]:
     """Full artifact freshness + pin validation. Returns list of errors."""
     errors: list[str] = []
+
+    cfg: dict[str, Any] | None = None
+    try:
+        cfg = load_plugin_packs()
+        pack_errors = validate_plugin_packs(cfg)
+        if pack_errors:
+            errors.extend(pack_errors)
+    except Exception as exc:
+        errors.append(f"plugin packs config: {exc}")
 
     pin_errors = validate_marketplace_pins(marketplace)
     if pin_errors:
@@ -460,46 +689,136 @@ def check_plugin_artifacts(marketplace: dict[str, Any], *, require_release_pin: 
         if release_errors:
             errors.extend(release_errors)
 
+    plugins = marketplace.get("plugins") or []
+    if len(plugins) != 6:
+        errors.append(f"marketplace must list 6 plugins, found {len(plugins)}")
+    elif cfg is not None:
+        expected_names = all_pack_plugin_names(cfg)
+        actual_names = [
+            p.get("name") for p in plugins if isinstance(p, dict)
+        ]
+        if actual_names != expected_names:
+            errors.append(
+                "marketplace plugin order/names mismatch expected pack set: "
+                f"got {actual_names}, want {expected_names}"
+            )
+
     if not PLUGIN_MANIFEST_PATH.exists():
         errors.append(f"{PLUGIN_MANIFEST_PATH} is missing")
-    else:
-        expected = render_plugin_manifest(load_plugin_manifest())
-        if PLUGIN_MANIFEST_PATH.read_text(encoding="utf-8") != expected:
+    elif cfg is not None:
+        expected_full = (
+            json.dumps(
+                build_full_plugin_manifest_from_packs(cfg, base=load_plugin_manifest()),
+                indent=2,
+                ensure_ascii=False,
+            )
+            + "\n"
+        )
+        if PLUGIN_MANIFEST_PATH.read_text(encoding="utf-8") != expected_full:
             errors.append("plugin.json is stale")
+
+    if cfg is not None:
+        for pid in PACK_IDS:
+            path = PLUGIN_PACKS_DIR / pid / "plugin.json"
+            if not path.is_file():
+                errors.append(f"pack manifest missing: .grok-plugin/packs/{pid}/plugin.json")
+                continue
+            expected_pack = (
+                json.dumps(
+                    build_pack_plugin_manifest(cfg, pid),
+                    indent=2,
+                    ensure_ascii=False,
+                )
+                + "\n"
+            )
+            if path.read_text(encoding="utf-8") != expected_pack:
+                errors.append(f"pack plugin.json is stale: packs/{pid}/plugin.json")
 
     if not PLUGIN_INDEX_PATH.exists():
         errors.append(f"{PLUGIN_INDEX_PATH} is missing")
-    else:
-        if PLUGIN_INDEX_PATH.read_text(encoding="utf-8") != render_index(marketplace):
+    elif cfg is not None:
+        expected_index = (
+            json.dumps(
+                build_index_from_packs(marketplace, cfg),
+                indent=2,
+                ensure_ascii=False,
+            )
+            + "\n"
+        )
+        if PLUGIN_INDEX_PATH.read_text(encoding="utf-8") != expected_index:
             errors.append("plugin-index.json is stale")
 
     return errors
 
 
 def write_artifacts(marketplace: dict[str, Any], *, sync_sha: bool = False) -> dict[str, Any]:
-    """Write (or pin) the artifacts. Returns summary info."""
+    """Write pack-aware marketplace, full + satellite manifests, and index.
+
+    When ``sync_sha`` is True, pin all marketplace entries to current HEAD.
+    When False, preserve the existing catalog pin SHA (if any) across all six
+    plugin entries.
+    """
     result: dict[str, Any] = {"pinned": False, "sha": None}
 
+    try:
+        cfg = load_plugin_packs()
+    except Exception as exc:
+        result["error"] = str(exc)
+        return result
+
+    pack_errors = validate_plugin_packs(cfg)
+    if pack_errors:
+        result["error"] = "invalid plugin packs: " + "; ".join(pack_errors)
+        return result
+
+    pin_sha: str | None = None
     if sync_sha:
         try:
-            head_sha = git_head_sha()
-            result["sha"] = head_sha
-            if sync_marketplace_sha(marketplace, head_sha):
-                PLUGIN_MARKETPLACE_PATH.write_text(
-                    json.dumps(marketplace, indent=2, ensure_ascii=False) + "\n",
-                    encoding="utf-8",
-                )
-                result["pinned"] = True
+            pin_sha = git_head_sha()
+            result["sha"] = pin_sha
+            result["pinned"] = True
         except RuntimeError as exc:
             result["error"] = str(exc)
+            pin_sha = catalog_pinned_sha(marketplace)
+    else:
+        pin_sha = catalog_pinned_sha(marketplace)
+        result["sha"] = pin_sha
 
-    write_plugin_manifest(load_plugin_manifest())
-    PLUGIN_INDEX_PATH.write_text(render_index(marketplace), encoding="utf-8")
+    new_market = build_marketplace_from_packs(cfg, sha=pin_sha)
+
+    # If caller passed a marketplace and we only need to sync SHA into an
+    # already multi-plugin market, rebuild-from-packs is still authoritative.
+    full_manifest = build_full_plugin_manifest_from_packs(
+        cfg, base=load_plugin_manifest()
+    )
+    PLUGIN_MANIFEST_PATH.write_text(
+        json.dumps(full_manifest, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+    written_packs = write_pack_manifests(cfg)
+    result["pack_manifests"] = len(written_packs)
+
+    PLUGIN_MARKETPLACE_PATH.write_text(
+        json.dumps(new_market, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+    index = build_index_from_packs(new_market, cfg)
+    PLUGIN_INDEX_PATH.write_text(
+        json.dumps(index, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+    # Keep in-memory marketplace in sync for callers that reuse the dict.
+    marketplace.clear()
+    marketplace.update(new_market)
 
     skills = discover_skills()
     commands = discover_commands()
     result["skills"] = len(skills)
     result["commands"] = len(commands)
+    result["plugins"] = len(new_market.get("plugins", []))
     return result
 
 

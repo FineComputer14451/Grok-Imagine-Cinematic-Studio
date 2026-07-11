@@ -1,0 +1,30 @@
+{
+  "name": "grok-imagine-delivery-post",
+  "version": "3.7.1",
+  "description": "Assembly EDL, color grade, AI polish, upscale, and cinematic ffmpeg delivery.",
+  "author": {
+    "name": "FineComputer14451",
+    "url": "https://github.com/FineComputer14451"
+  },
+  "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "repository": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "license": "MIT",
+  "keywords": [
+    "grok-imagine-cinematic-studio",
+    "delivery-post",
+    "cinematic studio"
+  ],
+  "skills": [
+    ".grok/skills/assembly-editor",
+    ".grok/skills/post-production-color-grading-supervisor",
+    ".grok/skills/ai-polish-director",
+    ".grok/skills/ai-video-upscaler",
+    ".grok/skills/cinematic-ffmpeg"
+  ],
+  "commands": [
+    "commands/delivery.md"
+  ],
+  "cinematicStudioRequires": [
+    "core"
+  ]
+}

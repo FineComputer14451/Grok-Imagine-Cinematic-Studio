@@ -1,0 +1,31 @@
+{
+  "name": "grok-imagine-camera-image",
+  "version": "3.7.1",
+  "description": "DoP, production design, i2i, key art, reference curator, and i2v specialist.",
+  "author": {
+    "name": "FineComputer14451",
+    "url": "https://github.com/FineComputer14451"
+  },
+  "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "repository": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "license": "MIT",
+  "keywords": [
+    "grok-imagine-cinematic-studio",
+    "camera-image",
+    "cinematic studio"
+  ],
+  "skills": [
+    ".grok/skills/director-of-photography",
+    ".grok/skills/director-of-photography-v3-3",
+    ".grok/skills/production-designer-set-decorator",
+    ".grok/skills/i2i-cinematic-refiner",
+    ".grok/skills/i2i-refiner",
+    ".grok/skills/ai-image-recreation",
+    ".grok/skills/key-art-poster-designer",
+    ".grok/skills/reference-asset-curator",
+    ".grok/skills/image-to-video-specialist"
+  ],
+  "cinematicStudioRequires": [
+    "core"
+  ]
+}

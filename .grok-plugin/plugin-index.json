@@ -5,52 +5,68 @@
       "components": {
         "skills": [
           {
-            "name": "ai-image-recreation",
-            "description": "AI recreation editing style transfer enhancement and variation of user-uploaded images via Grok Imagine image_edit and…"
+            "name": "grok-imagine-cinematic-studio",
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.7.1 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
           },
           {
-            "name": "ai-polish-director",
-            "description": "Final delivery polish agent for Grok Imagine Cinematic Studio. Runs post-QA upscale face restoration and artifact clean…"
+            "name": "studio-director",
+            "description": "Central production commander and visionary Studio Director. Orchestrates the entire cinematic pipeline, activates other…"
           },
           {
-            "name": "ai-video-upscaler",
-            "description": "AI video upscaling and face restoration for cinematic delivery. Upscale Grok Imagine 720p clips to 1080p or 4K with Rea…"
+            "name": "mega-production-architect",
+            "description": "All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates…"
           },
           {
-            "name": "animatic-director",
-            "description": "Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers…"
-          },
-          {
-            "name": "arc-replan-copilot",
-            "description": "Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the…"
-          },
-          {
-            "name": "assembly-editor",
-            "description": "Editorial assembly specialist for Grok Imagine long-form productions. Builds rough-cut EDLs cut-point rhythm match-cut…"
-          },
-          {
-            "name": "chain-qa-protocol",
-            "description": "Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approv…"
-          },
-          {
-            "name": "character-dna-extractor",
-            "description": "Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference…"
-          },
-          {
-            "name": "cinematic-ffmpeg",
-            "description": "Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Ass…"
-          },
-          {
-            "name": "cinematic-sequence-extender",
-            "description": "Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native 1.5 extend/stitch,…"
+            "name": "production-bible-workflow",
+            "description": "End-to-end Production Bible onboarding workflow for Grok Imagine Cinematic Studio. Guides create-bible DNA init sequenc…"
           },
           {
             "name": "cinematic-studio-meta-installer",
             "description": "Meta installer for Grok Imagine Cinematic Studio v3.7.1. Installs updates and verifies the full skill suite plus CLI to…"
           },
           {
-            "name": "continuity-consistency-guardian",
-            "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual prop environmental and emotional continuity across…"
+            "name": "skill-agent-architect",
+            "description": "Skill and Agent Architect for the Grok Imagine Cinematic Studio ecosystem. Helps design, draft, refine and document cus…"
+          },
+          {
+            "name": "github-repo-manager",
+            "description": "Expert GitHub repository manager and DevOps agent for complex AI multi-agent projects. Handles full git lifecycle, bran…"
+          },
+          {
+            "name": "character-dna-extractor",
+            "description": "Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference…"
+          },
+          {
+            "name": "identity-lock-specialist",
+            "description": "Guardian of character consistency and visual identity. Maintains Character DNA Bible, tracks character drift, enforces…"
+          },
+          {
+            "name": "multi-character-identity-arbiter",
+            "description": "Arbitrate primary and secondary Character DNA locks for multi-cast Grok Imagine scenes. Builds dual inject blocks and c…"
+          },
+          {
+            "name": "imagine-prompt-master",
+            "description": "Master cinematic prompt engineer and Grok Imagine specialist. Crafts precise, high-quality prompts using the Ultimate T…"
+          },
+          {
+            "name": "imagine-execution-bridge",
+            "description": "Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinematic Studio. Emits copy-paste VIDEO_PIPELINE_SPEC re…"
+          },
+          {
+            "name": "handoff-packet-validator",
+            "description": "Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest i…"
+          },
+          {
+            "name": "workflow-quota-optimizer",
+            "description": "Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimi…"
+          },
+          {
+            "name": "quality-assurance-guardian",
+            "description": "Final quality gatekeeper and production quality commander. Runs mandatory 16-point weighted reviews plus 10-point chain…"
+          },
+          {
+            "name": "chain-qa-protocol",
+            "description": "Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approv…"
           },
           {
             "name": "director-of-photography",
@@ -61,24 +77,8 @@
             "description": "Visual language architect and cinematic lens master. Defines camera moves, framing, lens choices, and translates emotio…"
           },
           {
-            "name": "erosforge-nsfw-director",
-            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper 1.5…"
-          },
-          {
-            "name": "foley-sound-design-specialist",
-            "description": "Hyper-realistic foley and immersive soundscape specialist. Designs detailed, physically accurate sound effects and envi…"
-          },
-          {
-            "name": "github-repo-manager",
-            "description": "Expert GitHub repository manager and DevOps agent for complex AI multi-agent projects. Handles full git lifecycle, bran…"
-          },
-          {
-            "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.7.1 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
-          },
-          {
-            "name": "handoff-packet-validator",
-            "description": "Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest i…"
+            "name": "production-designer-set-decorator",
+            "description": "Environment DNA, prop memory bank, and world-building specialist. Designs detailed, consistent environments and prop sy…"
           },
           {
             "name": "i2i-cinematic-refiner",
@@ -89,44 +89,80 @@
             "description": "Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows,…"
           },
           {
-            "name": "identity-lock-specialist",
-            "description": "Guardian of character consistency and visual identity. Maintains Character DNA Bible, tracks character drift, enforces…"
-          },
-          {
-            "name": "image-to-video-specialist",
-            "description": "Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fideli…"
-          },
-          {
-            "name": "imagine-execution-bridge",
-            "description": "Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinematic Studio. Emits copy-paste VIDEO_PIPELINE_SPEC re…"
-          },
-          {
-            "name": "imagine-prompt-master",
-            "description": "Master cinematic prompt engineer and Grok Imagine specialist. Crafts precise, high-quality prompts using the Ultimate T…"
+            "name": "ai-image-recreation",
+            "description": "AI recreation editing style transfer enhancement and variation of user-uploaded images via Grok Imagine image_edit and…"
           },
           {
             "name": "key-art-poster-designer",
             "description": "Theatrical key art, poster, and marketing visual specialist. Creates emotionally powerful single images that capture th…"
           },
           {
-            "name": "localization-subtitle-specialist",
-            "description": "Cultural adaptation, SDH subtitles, and multi-language support specialist. Ensures emotional tone, cultural nuance, and…"
+            "name": "reference-asset-curator",
+            "description": "Reference and asset curator for Grok Imagine productions. Assigns hero standard or draft tiers routes grok-imagine-imag…"
           },
           {
-            "name": "mega-production-architect",
-            "description": "All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates…"
+            "name": "image-to-video-specialist",
+            "description": "Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fideli…"
           },
           {
-            "name": "multi-character-identity-arbiter",
-            "description": "Arbitrate primary and secondary Character DNA locks for multi-cast Grok Imagine scenes. Builds dual inject blocks and c…"
+            "name": "sequence-director",
+            "description": "Master of long-form cinematic sequencing and structural flow. Breaks stories into optimal clips and orchestrates seamle…"
+          },
+          {
+            "name": "cinematic-sequence-extender",
+            "description": "Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native 1.5 extend/stitch,…"
           },
           {
             "name": "narrative-arc-pacing-strategist",
             "description": "Story rhythm master and emotional architect. Designs three-act structure, pacing heatmap, tension/release curves, and e…"
           },
           {
-            "name": "nsfw-chain-qa-protocol",
-            "description": "NSFW extend and stitch chain QA protocol for intimate Grok Imagine Video 1.5 sequences. Runs the weighted 8-point artif…"
+            "name": "arc-replan-copilot",
+            "description": "Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the…"
+          },
+          {
+            "name": "animatic-director",
+            "description": "Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers…"
+          },
+          {
+            "name": "continuity-consistency-guardian",
+            "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual prop environmental and emotional continuity across…"
+          },
+          {
+            "name": "performance-emotion-director",
+            "description": "Emotional architect and micro-expression specialist. Designs actor performance, emotional evolution, body language, and…"
+          },
+          {
+            "name": "trailer-teaser-director",
+            "description": "High-impact trailer and teaser specialist. Crafts emotionally powerful 15–60s trailers and teasers with native audio, o…"
+          },
+          {
+            "name": "sonic-architect-native-audio-virtuoso",
+            "description": "Sound design visionary and native audio synthesis master. Creates perfectly synchronized, cinema-grade audio with multi…"
+          },
+          {
+            "name": "foley-sound-design-specialist",
+            "description": "Hyper-realistic foley and immersive soundscape specialist. Designs detailed, physically accurate sound effects and envi…"
+          },
+          {
+            "name": "localization-subtitle-specialist",
+            "description": "Cultural adaptation, SDH subtitles, and multi-language support specialist. Ensures emotional tone, cultural nuance, and…"
+          },
+          {
+            "name": "stunt-action-choreographer",
+            "description": "Professional stunt, fight, and high-impact action design specialist. Creates safe, visually powerful, and emotionally g…"
+          },
+          {
+            "name": "vfx-sfx-supervisor",
+            "description": "Particle systems, creatures, destruction, and practical-to-VFX transition specialist. Designs high-quality visual effec…"
+          },
+          {
+            "name": "sfw-batch-orchestrator",
+            "description": "SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota a…"
+          },
+          {
+            "name": "erosforge-nsfw-director",
+            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper 1.5…"
           },
           {
             "name": "nsfw-quota-orchestrator",
@@ -137,82 +173,34 @@
             "description": "NSFW sensual sequence extension from reference frame or short clip to 30-120+ seconds. Plans erotic tension curves, Gro…"
           },
           {
-            "name": "performance-emotion-director",
-            "description": "Emotional architect and micro-expression specialist. Designs actor performance, emotional evolution, body language, and…"
+            "name": "nsfw-chain-qa-protocol",
+            "description": "NSFW extend and stitch chain QA protocol for intimate Grok Imagine Video 1.5 sequences. Runs the weighted 8-point artif…"
+          },
+          {
+            "name": "assembly-editor",
+            "description": "Editorial assembly specialist for Grok Imagine long-form productions. Builds rough-cut EDLs cut-point rhythm match-cut…"
           },
           {
             "name": "post-production-color-grading-supervisor",
             "description": "Final visual polish and color harmony master. Recommends LUTs, tracks visual motifs, ensures color continuity, and perf…"
           },
           {
-            "name": "production-bible-workflow",
-            "description": "End-to-end Production Bible onboarding workflow for Grok Imagine Cinematic Studio. Guides create-bible DNA init sequenc…"
+            "name": "ai-polish-director",
+            "description": "Final delivery polish agent for Grok Imagine Cinematic Studio. Runs post-QA upscale face restoration and artifact clean…"
           },
           {
-            "name": "production-designer-set-decorator",
-            "description": "Environment DNA, prop memory bank, and world-building specialist. Designs detailed, consistent environments and prop sy…"
+            "name": "ai-video-upscaler",
+            "description": "AI video upscaling and face restoration for cinematic delivery. Upscale Grok Imagine 720p clips to 1080p or 4K with Rea…"
           },
           {
-            "name": "quality-assurance-guardian",
-            "description": "Final quality gatekeeper and production quality commander. Runs mandatory 16-point weighted reviews plus 10-point chain…"
-          },
-          {
-            "name": "reference-asset-curator",
-            "description": "Reference and asset curator for Grok Imagine productions. Assigns hero standard or draft tiers routes grok-imagine-imag…"
-          },
-          {
-            "name": "sequence-director",
-            "description": "Master of long-form cinematic sequencing and structural flow. Breaks stories into optimal clips and orchestrates seamle…"
-          },
-          {
-            "name": "sfw-batch-orchestrator",
-            "description": "SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota a…"
-          },
-          {
-            "name": "skill-agent-architect",
-            "description": "Skill and Agent Architect for the Grok Imagine Cinematic Studio ecosystem. Helps design, draft, refine and document cus…"
-          },
-          {
-            "name": "sonic-architect-native-audio-virtuoso",
-            "description": "Sound design visionary and native audio synthesis master. Creates perfectly synchronized, cinema-grade audio with multi…"
-          },
-          {
-            "name": "studio-director",
-            "description": "Central production commander and visionary Studio Director. Orchestrates the entire cinematic pipeline, activates other…"
-          },
-          {
-            "name": "stunt-action-choreographer",
-            "description": "Professional stunt, fight, and high-impact action design specialist. Creates safe, visually powerful, and emotionally g…"
-          },
-          {
-            "name": "trailer-teaser-director",
-            "description": "High-impact trailer and teaser specialist. Crafts emotionally powerful 15–60s trailers and teasers with native audio, o…"
-          },
-          {
-            "name": "vfx-sfx-supervisor",
-            "description": "Particle systems, creatures, destruction, and practical-to-VFX transition specialist. Designs high-quality visual effec…"
-          },
-          {
-            "name": "workflow-quota-optimizer",
-            "description": "Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimi…"
+            "name": "cinematic-ffmpeg",
+            "description": "Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Ass…"
           }
         ],
         "commands": [
           {
-            "name": "automation",
-            "description": "Operations and automation — batch sessions, NSFW execute parity, artifact pipeline, unified production reports."
-          },
-          {
             "name": "cinematic",
             "description": "Activate Grok Imagine Cinematic Studio v3.7.1 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
-          },
-          {
-            "name": "dashboard",
-            "description": "Open the Grok Imagine Cinematic Studio CLI dashboard — studio health, quota, sequences, DNA, and production assets."
-          },
-          {
-            "name": "delivery",
-            "description": "Post-QA polish and delivery pipeline — upscale, EDL export, concat, and social crops for festival-ready output."
           },
           {
             "name": "dna",
@@ -223,24 +211,313 @@
             "description": "Imagine production slash command — preflight verify, plan-generate-QA workflow, batch and sequence execution, grok.com/…"
           },
           {
-            "name": "intelligence",
-            "description": "Model and quota intelligence — region routing, aspect presets, live quota sync, and two-pass quality scheduling."
+            "name": "dashboard",
+            "description": "Open the Grok Imagine Cinematic Studio CLI dashboard — studio health, quota, sequences, DNA, and production assets."
           },
           {
-            "name": "nsfw",
-            "description": "Activate ErosForge NSFW pipeline with quota-aware batch planning, model routing, chain QA, and sensual sequence extensi…"
+            "name": "validate",
+            "description": "Run full Cinematic Studio validation — skills, agents, models, DNA, sequences, and project state health checks."
           },
           {
             "name": "quota",
             "description": "Estimate production credits, assess budget risk, and get quota optimization recommendations for Imagine Video 1.5."
           },
           {
+            "name": "intelligence",
+            "description": "Model and quota intelligence — region routing, aspect presets, live quota sync, and two-pass quality scheduling."
+          },
+          {
+            "name": "automation",
+            "description": "Operations and automation — batch sessions, NSFW execute parity, artifact pipeline, unified production reports."
+          },
+          {
             "name": "sfw",
             "description": "Plan SFW multi-shot batches with hero-first tiers, Reference Curator model routing, and quota-aware scheduling."
           },
           {
+            "name": "nsfw",
+            "description": "Activate ErosForge NSFW pipeline with quota-aware batch planning, model routing, chain QA, and sensual sequence extensi…"
+          },
+          {
+            "name": "delivery",
+            "description": "Post-QA polish and delivery pipeline — upscale, EDL export, concat, and social crops for festival-ready output."
+          }
+        ]
+      },
+      "sha": "4a251787cf36f19d0e17596b7dbb15410f578843"
+    },
+    "grok-imagine-cinematic-core": {
+      "components": {
+        "skills": [
+          {
+            "name": "grok-imagine-cinematic-studio",
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.7.1 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
+          },
+          {
+            "name": "studio-director",
+            "description": "Central production commander and visionary Studio Director. Orchestrates the entire cinematic pipeline, activates other…"
+          },
+          {
+            "name": "mega-production-architect",
+            "description": "All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates…"
+          },
+          {
+            "name": "production-bible-workflow",
+            "description": "End-to-end Production Bible onboarding workflow for Grok Imagine Cinematic Studio. Guides create-bible DNA init sequenc…"
+          },
+          {
+            "name": "cinematic-studio-meta-installer",
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.7.1. Installs updates and verifies the full skill suite plus CLI to…"
+          },
+          {
+            "name": "skill-agent-architect",
+            "description": "Skill and Agent Architect for the Grok Imagine Cinematic Studio ecosystem. Helps design, draft, refine and document cus…"
+          },
+          {
+            "name": "github-repo-manager",
+            "description": "Expert GitHub repository manager and DevOps agent for complex AI multi-agent projects. Handles full git lifecycle, bran…"
+          },
+          {
+            "name": "character-dna-extractor",
+            "description": "Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference…"
+          },
+          {
+            "name": "identity-lock-specialist",
+            "description": "Guardian of character consistency and visual identity. Maintains Character DNA Bible, tracks character drift, enforces…"
+          },
+          {
+            "name": "multi-character-identity-arbiter",
+            "description": "Arbitrate primary and secondary Character DNA locks for multi-cast Grok Imagine scenes. Builds dual inject blocks and c…"
+          },
+          {
+            "name": "imagine-prompt-master",
+            "description": "Master cinematic prompt engineer and Grok Imagine specialist. Crafts precise, high-quality prompts using the Ultimate T…"
+          },
+          {
+            "name": "imagine-execution-bridge",
+            "description": "Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinematic Studio. Emits copy-paste VIDEO_PIPELINE_SPEC re…"
+          },
+          {
+            "name": "handoff-packet-validator",
+            "description": "Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest i…"
+          },
+          {
+            "name": "workflow-quota-optimizer",
+            "description": "Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimi…"
+          },
+          {
+            "name": "quality-assurance-guardian",
+            "description": "Final quality gatekeeper and production quality commander. Runs mandatory 16-point weighted reviews plus 10-point chain…"
+          },
+          {
+            "name": "chain-qa-protocol",
+            "description": "Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approv…"
+          }
+        ],
+        "commands": [
+          {
+            "name": "cinematic",
+            "description": "Activate Grok Imagine Cinematic Studio v3.7.1 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
+          },
+          {
+            "name": "dna",
+            "description": "Character DNA workflow — extract, save, lock identity, and inject prompt blocks for Grok Imagine consistency."
+          },
+          {
+            "name": "imagine",
+            "description": "Imagine production slash command — preflight verify, plan-generate-QA workflow, batch and sequence execution, grok.com/…"
+          },
+          {
+            "name": "dashboard",
+            "description": "Open the Grok Imagine Cinematic Studio CLI dashboard — studio health, quota, sequences, DNA, and production assets."
+          },
+          {
             "name": "validate",
             "description": "Run full Cinematic Studio validation — skills, agents, models, DNA, sequences, and project state health checks."
+          },
+          {
+            "name": "quota",
+            "description": "Estimate production credits, assess budget risk, and get quota optimization recommendations for Imagine Video 1.5."
+          },
+          {
+            "name": "intelligence",
+            "description": "Model and quota intelligence — region routing, aspect presets, live quota sync, and two-pass quality scheduling."
+          },
+          {
+            "name": "automation",
+            "description": "Operations and automation — batch sessions, NSFW execute parity, artifact pipeline, unified production reports."
+          },
+          {
+            "name": "sfw",
+            "description": "Plan SFW multi-shot batches with hero-first tiers, Reference Curator model routing, and quota-aware scheduling."
+          }
+        ]
+      },
+      "sha": "4a251787cf36f19d0e17596b7dbb15410f578843"
+    },
+    "grok-imagine-camera-image": {
+      "components": {
+        "skills": [
+          {
+            "name": "director-of-photography",
+            "description": "Visual language architect and cinematic lens master. Designs lighting motivation, camera choreography, lens choices, an…"
+          },
+          {
+            "name": "director-of-photography-v3-3",
+            "description": "Visual language architect and cinematic lens master. Defines camera moves, framing, lens choices, and translates emotio…"
+          },
+          {
+            "name": "production-designer-set-decorator",
+            "description": "Environment DNA, prop memory bank, and world-building specialist. Designs detailed, consistent environments and prop sy…"
+          },
+          {
+            "name": "i2i-cinematic-refiner",
+            "description": "General-purpose Image-to-Image cinematic refinement specialist for Grok Imagine productions. Handles multi-pass refinem…"
+          },
+          {
+            "name": "i2i-refiner",
+            "description": "Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows,…"
+          },
+          {
+            "name": "ai-image-recreation",
+            "description": "AI recreation editing style transfer enhancement and variation of user-uploaded images via Grok Imagine image_edit and…"
+          },
+          {
+            "name": "key-art-poster-designer",
+            "description": "Theatrical key art, poster, and marketing visual specialist. Creates emotionally powerful single images that capture th…"
+          },
+          {
+            "name": "reference-asset-curator",
+            "description": "Reference and asset curator for Grok Imagine productions. Assigns hero standard or draft tiers routes grok-imagine-imag…"
+          },
+          {
+            "name": "image-to-video-specialist",
+            "description": "Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fideli…"
+          }
+        ]
+      },
+      "sha": "4a251787cf36f19d0e17596b7dbb15410f578843"
+    },
+    "grok-imagine-sequence-narrative": {
+      "components": {
+        "skills": [
+          {
+            "name": "sequence-director",
+            "description": "Master of long-form cinematic sequencing and structural flow. Breaks stories into optimal clips and orchestrates seamle…"
+          },
+          {
+            "name": "cinematic-sequence-extender",
+            "description": "Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native 1.5 extend/stitch,…"
+          },
+          {
+            "name": "narrative-arc-pacing-strategist",
+            "description": "Story rhythm master and emotional architect. Designs three-act structure, pacing heatmap, tension/release curves, and e…"
+          },
+          {
+            "name": "arc-replan-copilot",
+            "description": "Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the…"
+          },
+          {
+            "name": "animatic-director",
+            "description": "Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers…"
+          },
+          {
+            "name": "continuity-consistency-guardian",
+            "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual prop environmental and emotional continuity across…"
+          },
+          {
+            "name": "performance-emotion-director",
+            "description": "Emotional architect and micro-expression specialist. Designs actor performance, emotional evolution, body language, and…"
+          },
+          {
+            "name": "trailer-teaser-director",
+            "description": "High-impact trailer and teaser specialist. Crafts emotionally powerful 15–60s trailers and teasers with native audio, o…"
+          },
+          {
+            "name": "sonic-architect-native-audio-virtuoso",
+            "description": "Sound design visionary and native audio synthesis master. Creates perfectly synchronized, cinema-grade audio with multi…"
+          },
+          {
+            "name": "foley-sound-design-specialist",
+            "description": "Hyper-realistic foley and immersive soundscape specialist. Designs detailed, physically accurate sound effects and envi…"
+          },
+          {
+            "name": "localization-subtitle-specialist",
+            "description": "Cultural adaptation, SDH subtitles, and multi-language support specialist. Ensures emotional tone, cultural nuance, and…"
+          },
+          {
+            "name": "stunt-action-choreographer",
+            "description": "Professional stunt, fight, and high-impact action design specialist. Creates safe, visually powerful, and emotionally g…"
+          },
+          {
+            "name": "vfx-sfx-supervisor",
+            "description": "Particle systems, creatures, destruction, and practical-to-VFX transition specialist. Designs high-quality visual effec…"
+          },
+          {
+            "name": "sfw-batch-orchestrator",
+            "description": "SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota a…"
+          }
+        ]
+      },
+      "sha": "4a251787cf36f19d0e17596b7dbb15410f578843"
+    },
+    "grok-imagine-nsfw": {
+      "components": {
+        "skills": [
+          {
+            "name": "erosforge-nsfw-director",
+            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper 1.5…"
+          },
+          {
+            "name": "nsfw-quota-orchestrator",
+            "description": "Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans and executes batches of erotic image and video gene…"
+          },
+          {
+            "name": "nsfw-sequence-extender",
+            "description": "NSFW sensual sequence extension from reference frame or short clip to 30-120+ seconds. Plans erotic tension curves, Gro…"
+          },
+          {
+            "name": "nsfw-chain-qa-protocol",
+            "description": "NSFW extend and stitch chain QA protocol for intimate Grok Imagine Video 1.5 sequences. Runs the weighted 8-point artif…"
+          }
+        ],
+        "commands": [
+          {
+            "name": "nsfw",
+            "description": "Activate ErosForge NSFW pipeline with quota-aware batch planning, model routing, chain QA, and sensual sequence extensi…"
+          }
+        ]
+      },
+      "sha": "4a251787cf36f19d0e17596b7dbb15410f578843"
+    },
+    "grok-imagine-delivery-post": {
+      "components": {
+        "skills": [
+          {
+            "name": "assembly-editor",
+            "description": "Editorial assembly specialist for Grok Imagine long-form productions. Builds rough-cut EDLs cut-point rhythm match-cut…"
+          },
+          {
+            "name": "post-production-color-grading-supervisor",
+            "description": "Final visual polish and color harmony master. Recommends LUTs, tracks visual motifs, ensures color continuity, and perf…"
+          },
+          {
+            "name": "ai-polish-director",
+            "description": "Final delivery polish agent for Grok Imagine Cinematic Studio. Runs post-QA upscale face restoration and artifact clean…"
+          },
+          {
+            "name": "ai-video-upscaler",
+            "description": "AI video upscaling and face restoration for cinematic delivery. Upscale Grok Imagine 720p clips to 1080p or 4K with Rea…"
+          },
+          {
+            "name": "cinematic-ffmpeg",
+            "description": "Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Ass…"
+          }
+        ],
+        "commands": [
+          {
+            "name": "delivery",
+            "description": "Post-QA polish and delivery pipeline — upscale, EDL export, concat, and social crops for festival-ready output."
           }
         ]
       },

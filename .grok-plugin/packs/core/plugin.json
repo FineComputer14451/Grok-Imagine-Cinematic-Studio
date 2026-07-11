@@ -1,0 +1,46 @@
+{
+  "name": "grok-imagine-cinematic-core",
+  "version": "3.7.1",
+  "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.",
+  "author": {
+    "name": "FineComputer14451",
+    "url": "https://github.com/FineComputer14451"
+  },
+  "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "repository": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "license": "MIT",
+  "keywords": [
+    "grok-imagine-cinematic-studio",
+    "core",
+    "cinematic studio"
+  ],
+  "skills": [
+    ".grok/skills/grok-imagine-cinematic-studio",
+    ".grok/skills/studio-director",
+    ".grok/skills/mega-production-architect",
+    ".grok/skills/production-bible-workflow",
+    ".grok/skills/cinematic-studio-meta-installer",
+    ".grok/skills/skill-agent-architect",
+    ".grok/skills/github-repo-manager",
+    ".grok/skills/character-dna-extractor",
+    ".grok/skills/identity-lock-specialist",
+    ".grok/skills/multi-character-identity-arbiter",
+    ".grok/skills/imagine-prompt-master",
+    ".grok/skills/imagine-execution-bridge",
+    ".grok/skills/handoff-packet-validator",
+    ".grok/skills/workflow-quota-optimizer",
+    ".grok/skills/quality-assurance-guardian",
+    ".grok/skills/chain-qa-protocol"
+  ],
+  "commands": [
+    "commands/cinematic.md",
+    "commands/dna.md",
+    "commands/imagine.md",
+    "commands/dashboard.md",
+    "commands/validate.md",
+    "commands/quota.md",
+    "commands/intelligence.md",
+    "commands/automation.md",
+    "commands/sfw.md"
+  ]
+}

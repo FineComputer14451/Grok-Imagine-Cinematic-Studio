@@ -1,0 +1,29 @@
+{
+  "name": "grok-imagine-nsfw",
+  "version": "3.7.1",
+  "description": "Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.",
+  "author": {
+    "name": "FineComputer14451",
+    "url": "https://github.com/FineComputer14451"
+  },
+  "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "repository": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "license": "MIT",
+  "keywords": [
+    "grok-imagine-cinematic-studio",
+    "nsfw",
+    "cinematic studio"
+  ],
+  "skills": [
+    ".grok/skills/erosforge-nsfw-director",
+    ".grok/skills/nsfw-quota-orchestrator",
+    ".grok/skills/nsfw-sequence-extender",
+    ".grok/skills/nsfw-chain-qa-protocol"
+  ],
+  "commands": [
+    "commands/nsfw.md"
+  ],
+  "cinematicStudioRequires": [
+    "core"
+  ]
+}

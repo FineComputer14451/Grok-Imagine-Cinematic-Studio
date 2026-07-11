@@ -1,0 +1,36 @@
+{
+  "name": "grok-imagine-sequence-narrative",
+  "version": "3.7.1",
+  "description": "Long-form sequence, continuity, performance, audio, action/VFX, and SFW batches.",
+  "author": {
+    "name": "FineComputer14451",
+    "url": "https://github.com/FineComputer14451"
+  },
+  "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "repository": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+  "license": "MIT",
+  "keywords": [
+    "grok-imagine-cinematic-studio",
+    "sequence-narrative",
+    "cinematic studio"
+  ],
+  "skills": [
+    ".grok/skills/sequence-director",
+    ".grok/skills/cinematic-sequence-extender",
+    ".grok/skills/narrative-arc-pacing-strategist",
+    ".grok/skills/arc-replan-copilot",
+    ".grok/skills/animatic-director",
+    ".grok/skills/continuity-consistency-guardian",
+    ".grok/skills/performance-emotion-director",
+    ".grok/skills/trailer-teaser-director",
+    ".grok/skills/sonic-architect-native-audio-virtuoso",
+    ".grok/skills/foley-sound-design-specialist",
+    ".grok/skills/localization-subtitle-specialist",
+    ".grok/skills/stunt-action-choreographer",
+    ".grok/skills/vfx-sfx-supervisor",
+    ".grok/skills/sfw-batch-orchestrator"
+  ],
+  "cinematicStudioRequires": [
+    "core"
+  ]
+}

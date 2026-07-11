@@ -8,6 +8,11 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
+from plugin_catalog import (  # noqa: E402
+    build_index_from_packs,
+    build_marketplace_from_packs,
+    build_pack_plugin_manifest,
+)
 from plugin_packs import (  # noqa: E402
     FULL_PLUGIN_NAME,
     PACK_IDS,
@@ -63,3 +68,44 @@ def test_duplicate_skill_fails_validation() -> None:
     errs = validate_plugin_packs(cfg)
     assert errs
     assert any("duplicate" in e.lower() or "two packs" in e.lower() for e in errs)
+
+
+def test_build_marketplace_has_six_plugins() -> None:
+    cfg = load_plugin_packs()
+    market = build_marketplace_from_packs(cfg, sha="a" * 40)
+    names = [p["name"] for p in market["plugins"]]
+    assert len(names) == 6
+    assert FULL_PLUGIN_NAME in names
+    assert names[0] == FULL_PLUGIN_NAME  # full suite first / recommended order
+    for p in market["plugins"]:
+        assert p["source"]["sha"] == "a" * 40
+        assert p["source"]["url"].endswith("Grok-Imagine-Cinematic-Studio.git")
+
+
+def test_pack_manifest_subset() -> None:
+    cfg = load_plugin_packs()
+    m = build_pack_plugin_manifest(cfg, "nsfw")
+    assert m["name"] == "grok-imagine-nsfw"
+    assert m["skills"] == [
+        ".grok/skills/erosforge-nsfw-director",
+        ".grok/skills/nsfw-quota-orchestrator",
+        ".grok/skills/nsfw-sequence-extender",
+        ".grok/skills/nsfw-chain-qa-protocol",
+    ]
+    assert m["commands"] == ["commands/nsfw.md"]
+
+
+def test_index_per_plugin_not_global() -> None:
+    cfg = load_plugin_packs()
+    market = build_marketplace_from_packs(cfg, sha="b" * 40)
+    index = build_index_from_packs(market, cfg)
+    nsfw = index["plugins"]["grok-imagine-nsfw"]["components"]["skills"]
+    names = {s["name"] for s in nsfw}
+    assert names == {
+        "erosforge-nsfw-director",
+        "nsfw-quota-orchestrator",
+        "nsfw-sequence-extender",
+        "nsfw-chain-qa-protocol",
+    }
+    full = index["plugins"][FULL_PLUGIN_NAME]["components"]["skills"]
+    assert len(full) == 48
