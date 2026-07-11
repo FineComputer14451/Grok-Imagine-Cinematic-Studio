@@ -78,7 +78,7 @@
           },
           {
             "name": "handoff-packet-validator",
-            "description": "Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend and asset manife…"
+            "description": "Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest i…"
           },
           {
             "name": "i2i-cinematic-refiner",
@@ -244,7 +244,7 @@
           }
         ]
       },
-      "sha": "643dd201c69dfead33c26fb247e047d510aaeb8b"
+      "sha": "c38a4ef35fbbbbade74b008324e068c68773064f"
     }
   }
 }
