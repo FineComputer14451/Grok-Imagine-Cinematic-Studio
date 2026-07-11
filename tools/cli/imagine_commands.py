@@ -24,11 +24,10 @@ from imagine_jobs import cancel_job, create_job, get_job, job_summary, list_jobs
 from artifact_pipeline import artifacts_summary, list_artifacts, register_artifact_from_job
 from imagine_bridge import (
     TARGET_SURFACES,
-    agent_mode_handoff_to_markdown,
-    bridge_to_clipboard,
-    bridge_to_markdown,
     build_agent_mode_handoff,
     build_bridge_packet,
+    handoff_to_clipboard,
+    handoff_to_markdown,
 )
 from production_report import build_production_report, report_to_markdown
 from imagine_regions import IMAGINE_REGIONS, get_active_region, get_failover_chain, set_imagine_region
@@ -37,6 +36,36 @@ from sequence_chain import get_clip, load_sequence, find_sequence
 from sfw_orchestrator import get_next_shots, load_batch as load_sfw_batch
 
 from cli.shared import console
+
+
+def resolve_handoff_subject(
+    *,
+    batch: str | None = None,
+    shot_id: str | None = None,
+    sequence: str | None = None,
+    clip: str | None = None,
+) -> tuple[dict, str]:
+    """
+    Resolve batch shot or sequence clip into (subject, context).
+
+    Raises ValueError with a user-facing message on failure.
+    """
+    if batch and shot_id:
+        b = load_sfw_batch(batch)
+        for sh in b.get("shots", []):
+            if sh["shot_id"] == shot_id:
+                return {**sh, "batch_slug": b.get("slug")}, "shot"
+        raise ValueError(f"Shot not found in batch: {shot_id}")
+    if sequence and clip:
+        seq_path = find_sequence(sequence)
+        if not seq_path:
+            raise ValueError(f"Sequence not found: {sequence}")
+        seq = load_sequence(seq_path)
+        subject = get_clip(seq, clip)
+        if not subject:
+            raise ValueError(f"Clip not found: {clip}")
+        return {**subject, "sequence_slug": seq.get("slug")}, "clip"
+    raise ValueError("Provide --batch + --shot OR --sequence + --clip")
 
 
 def register(app: typer.Typer) -> None:
@@ -232,6 +261,24 @@ def register(app: typer.Typer) -> None:
             console.print("[dim]Set XAI_API_KEY for live generation.[/dim]")
 
 
+    def _write_handoff_output(
+        packet: dict,
+        text: str,
+        *,
+        title: str,
+        border: str,
+        output: str | None,
+        as_json: bool = False,
+    ) -> None:
+        if output:
+            from pathlib import Path
+
+            Path(output).write_text(text)
+            console.print(f"[green]Handoff written:[/green] {output}")
+            return
+        body = Markdown(f"```json\n{text}\n```") if as_json else text
+        console.print(Panel(body, title=title, border_style=border))
+
     @app.command("bridge")
     def imagine_bridge(
         shot_id: str = typer.Option(None, "--shot", help="Batch shot ID"),
@@ -242,43 +289,27 @@ def register(app: typer.Typer) -> None:
         output: str = typer.Option(None, "--output", "-o"),
     ):
         """Emit copy-paste-ready grok.com/imagine handoff packet."""
-        subject: dict | None = None
-        context = "shot"
-
-        if batch and shot_id:
-            b = load_sfw_batch(batch)
-            for sh in b.get("shots", []):
-                if sh["shot_id"] == shot_id:
-                    subject = {**sh, "batch_slug": b.get("slug")}
-                    break
-            if not subject:
-                console.print(f"[red]Shot not found in batch:[/red] {shot_id}")
-                raise typer.Exit(1)
-        elif sequence and clip:
-            seq_path = find_sequence(sequence)
-            if not seq_path:
-                console.print(f"[red]Sequence not found:[/red] {sequence}")
-                raise typer.Exit(1)
-            seq = load_sequence(seq_path)
-            subject = get_clip(seq, clip)
-            if not subject:
-                console.print(f"[red]Clip not found:[/red] {clip}")
-                raise typer.Exit(1)
-            subject = {**subject, "sequence_slug": seq.get("slug")}
-            context = "clip"
-        else:
-            console.print("[red]Provide --batch + --shot OR --sequence + --clip[/red]")
-            raise typer.Exit(1)
+        try:
+            subject, context = resolve_handoff_subject(
+                batch=batch, shot_id=shot_id, sequence=sequence, clip=clip
+            )
+        except ValueError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
 
         packet = build_bridge_packet(subject, context=context)
-        text = bridge_to_clipboard(packet) if format == "clipboard" else bridge_to_markdown(packet)
-        if output:
-            from pathlib import Path
-            Path(output).write_text(text)
-            console.print(f"[green]Bridge written:[/green] {output}")
-        else:
-            console.print(Panel(text, title=f"Imagine Bridge — {packet['subject_id']}", border_style="cyan"))
-
+        text = (
+            handoff_to_clipboard(packet)
+            if format == "clipboard"
+            else handoff_to_markdown(packet)
+        )
+        _write_handoff_output(
+            packet,
+            text,
+            title=f"Imagine Bridge — {packet['subject_id']}",
+            border="cyan",
+            output=output,
+        )
 
     @app.command("agent-handoff")
     def imagine_agent_handoff(
@@ -296,33 +327,13 @@ def register(app: typer.Typer) -> None:
         output: str = typer.Option(None, "--output", "-o"),
     ):
         """Emit official Imagine Agent Mode Handoff packet (protocol v3.7.1)."""
-        subject: dict | None = None
-        context = "shot"
-
-        if batch and shot_id:
-            b = load_sfw_batch(batch)
-            for sh in b.get("shots", []):
-                if sh["shot_id"] == shot_id:
-                    subject = {**sh, "batch_slug": b.get("slug")}
-                    break
-            if not subject:
-                console.print(f"[red]Shot not found in batch:[/red] {shot_id}")
-                raise typer.Exit(1)
-        elif sequence and clip:
-            seq_path = find_sequence(sequence)
-            if not seq_path:
-                console.print(f"[red]Sequence not found:[/red] {sequence}")
-                raise typer.Exit(1)
-            seq = load_sequence(seq_path)
-            subject = get_clip(seq, clip)
-            if not subject:
-                console.print(f"[red]Clip not found:[/red] {clip}")
-                raise typer.Exit(1)
-            subject = {**subject, "sequence_slug": seq.get("slug")}
-            context = "clip"
-        else:
-            console.print("[red]Provide --batch + --shot OR --sequence + --clip[/red]")
-            raise typer.Exit(1)
+        try:
+            subject, context = resolve_handoff_subject(
+                batch=batch, shot_id=shot_id, sequence=sequence, clip=clip
+            )
+        except ValueError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
 
         if surface not in TARGET_SURFACES:
             console.print(
@@ -345,27 +356,19 @@ def register(app: typer.Typer) -> None:
         if format == "json":
             text = json.dumps(packet, indent=2)
         elif format == "clipboard":
-            # Web-ready single block when surface is grok.com; else markdown
-            if surface == "grok_com_imagine":
-                text = bridge_to_clipboard(build_bridge_packet(subject, context=context))
-            else:
-                text = agent_mode_handoff_to_markdown(packet)
+            # Always serialize the official packet (no second rebuild)
+            text = handoff_to_clipboard(packet)
         else:
-            text = agent_mode_handoff_to_markdown(packet)
+            text = handoff_to_markdown(packet)
 
-        if output:
-            from pathlib import Path
-
-            Path(output).write_text(text)
-            console.print(f"[green]Agent-mode handoff written:[/green] {output}")
-        else:
-            console.print(
-                Panel(
-                    text if format != "json" else Markdown(f"```json\n{text}\n```"),
-                    title=f"Imagine Agent Mode Handoff — {packet['subject_id']}",
-                    border_style="magenta",
-                )
-            )
+        _write_handoff_output(
+            packet,
+            text,
+            title=f"Imagine Agent Mode Handoff — {packet['subject_id']}",
+            border="magenta",
+            output=output,
+            as_json=(format == "json"),
+        )
 
 
     @app.command("workflow")

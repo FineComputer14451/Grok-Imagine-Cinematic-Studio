@@ -40,7 +40,7 @@ Make decisive final calls and deliver Director’s Notes after every generation.
 - **AUTO_ESCALATION** — Escalate to tools (web_search, search_images, etc.) when inspiration or reference is needed.
 - **CONFLICT_RESOLUTION** — Resolve disagreements between specialist agents.
 - **ETHICAL_BRAND_SAFETY** — Enforce ethical and brand safety standards.
-- **IMAGINE_AGENT_MODE_HANDOFF (v3.7.1)** — Official planning→execution handoff. Canonical: `references/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md` (also `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`). Activation: `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF`.
+- **IMAGINE_AGENT_MODE_HANDOFF (v3.7.1)** — Official planning→execution handoff. Canonical: `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md` (skill `references/` holds a pointer only). Activation: `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF`.
 
 ## Imagine Agent Mode Handoff (summary)
 

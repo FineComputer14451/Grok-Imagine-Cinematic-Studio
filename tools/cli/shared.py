@@ -127,9 +127,12 @@ AGENT_ROLE_CARDS: dict[str, str] = {
 
 ROLE_CARD_INDEX_FILE = "AGENT_INDEX.md"
 # Shared docs in references/agents/ that are not per-agent Role Cards
+# (protocol docs, model layer, index — keep in sync when adding non-role .md files)
 ROLE_CARD_SHARED_DOCS = frozenset({
     ROLE_CARD_INDEX_FILE,
+    "MODEL_LAYER_v3.6.7.md",  # pointer → MODEL_LAYER_v3.7.1.md
     "MODEL_LAYER_v3.7.1.md",
+    "IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md",
 })
 EXPECTED_ROLE_CARD_COUNT = len(AGENT_ROLE_CARDS)
 

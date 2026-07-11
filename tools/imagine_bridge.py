@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-Grok Imagine execution bridge — copy-paste handoff packets for grok.com/imagine
-and official Imagine Agent Mode Handoff packets (studio v3.7.1+).
+Grok Imagine execution bridge — handoff packets for grok.com/imagine and
+official Imagine Agent Mode (studio v3.7.1+).
 
-Emits VIDEO_PIPELINE_SPEC, reference attachment hints, and native audio Sound Layer
-blocks for chat-based generation when API keys are unavailable, plus multi-surface
-agent-mode handoffs (Build tools, ACP, web UI, xAI API).
+One core builder feeds both classic bridge packets and agent-mode envelopes.
+Canonical surface/mode enums live in handoff_schema.py.
 """
 
 from __future__ import annotations
@@ -20,34 +19,146 @@ from models import (
     STUDIO_COMPATIBILITY_VERSION,
     build_video_pipeline_spec,
 )
+from handoff_schema import (
+    CANONICAL_PROTOCOL_DOC,
+    EXECUTION_MODES,
+    PACKET_TYPE_IMAGINE_AGENT_MODE,
+    PROTOCOL_VERSION,
+    TARGET_SURFACES,
+    VIDEO_EXECUTION_MODES,
+    is_video_execution_mode,
+    normalize_execution_mode,
+    normalize_target_surface,
+)
 from project_state import load_project_state
 from imagine_jobs import ensure_asset_manifest
 
-PROTOCOL_VERSION = "3.7.1"
-
-TARGET_SURFACES = frozenset(
-    {
-        "grok_build_tools",
-        "grok_agent_acp",
-        "grok_com_imagine",
-        "xai_api",
-    }
-)
-
-EXECUTION_MODES = frozenset(
-    {
-        "image_prompt",
-        "image_edit",
-        "image_to_video",
-        "video_prompt",
-        "reference_to_video",
-    }
-)
+# Re-export schema constants for CLI / callers
+__all__ = [
+    "PROTOCOL_VERSION",
+    "TARGET_SURFACES",
+    "EXECUTION_MODES",
+    "VIDEO_EXECUTION_MODES",
+    "build_handoff",
+    "build_bridge_packet",
+    "build_agent_mode_handoff",
+    "handoff_to_markdown",
+    "handoff_to_clipboard",
+    "bridge_to_markdown",
+    "bridge_to_clipboard",
+    "agent_mode_handoff_to_markdown",
+    "build_reference_hints",
+    "build_sound_layer",
+]
 
 DEFAULT_SOUND_LAYER = (
     "Sound Layer: lip-synced dialogue at t=0, SFX: environmental texture, "
     "ambience: room tone match, music cue: subtle underscore at t=2s"
 )
+
+GROK_IMAGINE_URL = "https://grok.com/imagine"
+
+# ---------------------------------------------------------------------------
+# Handoff steps — data table (surface × mode bucket)
+# ---------------------------------------------------------------------------
+
+_MODE_BUCKET_IMAGE = "image"
+_MODE_BUCKET_I2V = "i2v"
+_MODE_BUCKET_VIDEO = "video"
+
+# Web / classic grok.com paste steps (mode bucket → steps)
+_WEB_STEPS: dict[str, list[str]] = {
+    _MODE_BUCKET_IMAGE: [
+        "1. Paste prompt + VIDEO_PIPELINE_SPEC into grok.com/imagine (Image)",
+        "2. Attach reference plate if listed",
+        "3. On QA ≥7, lock plate and run i2v pass",
+    ],
+    _MODE_BUCKET_I2V: [
+        "1. Attach locked reference plate first",
+        "2. Paste i2v prompt with MOTION_VECTOR block",
+        "3. Enable native audio — verify Sound Layer sync",
+    ],
+    _MODE_BUCKET_VIDEO: [
+        "1. Paste full video prompt with Sound Layer",
+        "2. Set duration 8–12s, native audio on",
+        "3. Record result via: sfw record or sequence run",
+    ],
+}
+
+# In-session Build tools / ACP steps
+_BUILD_STEPS: dict[str, list[str]] = {
+    _MODE_BUCKET_IMAGE: [
+        "1. Call image_gen or image_edit with packet prompt + references",
+        "2. Set aspect_ratio from packet; save under artifacts/",
+        "3. On QA ≥7, lock plate before any i2v spend",
+        "4. return_path: sfw record or plate lock + Director's Notes",
+    ],
+    _MODE_BUCKET_I2V: [
+        "1. Attach locked reference plate as frame-1 source",
+        "2. Call image_to_video (or reference_to_video) with motion prompt + Sound Layer",
+        "3. Prefer 6–10s shots; native audio when pipeline requires",
+        "4. return_path: sequence run / sfw record + chain QA if extend",
+    ],
+    _MODE_BUCKET_VIDEO: [
+        "1. Prefer still→i2v when plate exists; else craft first frame then animate",
+        "2. Call image_to_video with Sound Layer; duration 6–10s preferred",
+        "3. Save artifact; do not claim success without tool result",
+        "4. return_path: QA Guardian + Director's Notes",
+    ],
+}
+
+_XAI_API_STEPS = [
+    "1. Run: python tools/cinematic_studio_cli.py imagine verify",
+    "2. Submit via sfw run / sequence run / imagine submit with packet prompt + models",
+    "3. Attach job_id to directors_notes_log; reconcile quota",
+    "4. return_path: record QA score and artifact path",
+]
+
+_ACP_STEPS = [
+    "1. Confirm plugin skills loaded (grok-imagine-cinematic-studio) in ACP session",
+    "2. Execute Imagine tools or CLI per execution_mode (no TUI-only modals)",
+    "3. Save outputs under artifacts/; log tool results",
+    "4. return_path: QA Guardian + Project Bible update",
+]
+
+_RETURN_PATHS: dict[str, str] = {
+    "clip": "sequence run / chain QA + Continuity Guardian update",
+    "xai_api": "sfw record <batch> <shot> --score … --credits …",
+    "grok_com_imagine": "Download result → sfw record or sequence handoff JSON + QA",
+    "default": "artifacts/ path + Director's Notes + QA Guardian",
+}
+
+
+def _mode_bucket(execution_mode: str) -> str:
+    if execution_mode in ("image_prompt", "image_edit"):
+        return _MODE_BUCKET_IMAGE
+    if execution_mode in ("image_to_video", "reference_to_video"):
+        return _MODE_BUCKET_I2V
+    return _MODE_BUCKET_VIDEO
+
+
+def handoff_steps(surface: str, execution_mode: str) -> list[str]:
+    """Ordered steps for a surface × mode pair."""
+    bucket = _mode_bucket(execution_mode)
+    if surface == "grok_com_imagine":
+        return list(_WEB_STEPS[bucket])
+    if surface == "xai_api":
+        return list(_XAI_API_STEPS)
+    if surface == "grok_agent_acp":
+        return list(_ACP_STEPS)
+    # grok_build_tools (default)
+    return list(_BUILD_STEPS[bucket])
+
+
+def default_return_path(surface: str, context: str) -> str:
+    if context == "clip":
+        return _RETURN_PATHS["clip"]
+    return _RETURN_PATHS.get(surface, _RETURN_PATHS["default"])
+
+
+# ---------------------------------------------------------------------------
+# Shared subject field extraction
+# ---------------------------------------------------------------------------
 
 
 def _reference_asset(asset_id: str | None, state: dict[str, Any] | None = None) -> dict[str, Any] | None:
@@ -100,6 +211,153 @@ def build_sound_layer(
     return ", ".join(parts)
 
 
+def _raw_subject_mode(subject: dict[str, Any], override: str | None = None) -> str | None:
+    return (
+        override
+        or subject.get("recommended_mode")
+        or subject.get("decision", {}).get("mode")
+    )
+
+
+def _core_content(
+    subject: dict[str, Any],
+    *,
+    context: str,
+    video_model: str | None,
+    prompt: str | None,
+    state: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """Shared content fields for classic and agent-mode packets."""
+    vid_model = (
+        video_model
+        or subject.get("video_model")
+        or DEFAULT_IMAGINE_VIDEO_MODEL
+    )
+    img_model = subject.get("image_model") or DEFAULT_IMAGINE_IMAGE_MODEL
+    description = prompt or subject.get("prompt") or subject.get("description", "")
+    core: dict[str, Any] = {
+        "context": context,
+        "subject_id": subject.get("shot_id") or subject.get("clip_id") or "item",
+        "video_model": vid_model,
+        "image_model": img_model,
+        "aspect_ratio": subject.get("aspect_ratio", "16:9"),
+        "video_pipeline_spec": build_video_pipeline_spec(vid_model),
+        "prompt": description.strip(),
+        "reference_hints": build_reference_hints(
+            reference_image_id=subject.get("reference_image_id"),
+            reference_url=subject.get("reference_image_url"),
+            state=state,
+        ),
+        "sound_layer": build_sound_layer(
+            dialogue=subject.get("dialogue", "")
+            or ((subject.get("audio_momentum_vector") or {}).get("dialogue_state", "")),
+        ),
+        "grok_imagine_url": GROK_IMAGINE_URL,
+    }
+    if context == "clip" and subject.get("last_frame_recap"):
+        core["last_frame_recap"] = subject["last_frame_recap"]
+        mv = subject.get("momentum_vector") or {}
+        if mv:
+            core["momentum_vector"] = mv
+    slug = subject.get("batch_slug") or subject.get("sequence_slug")
+    if slug:
+        core["slug_link"] = slug
+    if subject.get("audio_momentum_vector"):
+        core["audio_momentum_vector"] = subject["audio_momentum_vector"]
+    if subject.get("dna_inject"):
+        core["dna_inject"] = subject["dna_inject"]
+    return core
+
+
+# ---------------------------------------------------------------------------
+# Unified builder
+# ---------------------------------------------------------------------------
+
+
+def build_handoff(
+    subject: dict[str, Any],
+    *,
+    context: str = "shot",
+    target_surface: str | None = None,
+    execution_mode: str | None = None,
+    video_model: str | None = None,
+    prompt: str | None = None,
+    quota_note: str = (
+        "Confirm remaining quota before video spend; prefer Fast mode when quality allows"
+    ),
+    return_path: str | None = None,
+    dna_inject: str | None = None,
+    qa_gate: str = "still QA ≥7 before hero video; chain QA Go before extend",
+    state: dict[str, Any] | None = None,
+    agent_mode: bool | None = None,
+) -> dict[str, Any]:
+    """
+    Build a handoff packet.
+
+    - agent_mode=False / target_surface=None → classic bridge packet (web paste).
+    - agent_mode=True or target_surface set → official imagine_agent_mode_handoff.
+    """
+    core = _core_content(
+        subject,
+        context=context,
+        video_model=video_model,
+        prompt=prompt,
+        state=state,
+    )
+    want_agent = agent_mode if agent_mode is not None else target_surface is not None
+    raw_mode = _raw_subject_mode(subject, execution_mode)
+
+    if not want_agent:
+        # Classic bridge: soft mode normalization; web steps
+        mode = normalize_execution_mode(raw_mode, strict=False)
+        packet = {
+            **core,
+            "mode": mode,
+            "handoff_steps": handoff_steps("grok_com_imagine", mode),
+        }
+        return packet
+
+    surface = normalize_target_surface(target_surface or "grok_build_tools")
+    mode = normalize_execution_mode(raw_mode, strict=True)
+    is_video = is_video_execution_mode(mode)
+
+    packet: dict[str, Any] = {
+        "packet_type": PACKET_TYPE_IMAGINE_AGENT_MODE,
+        "protocol_version": PROTOCOL_VERSION,
+        "studio_version": STUDIO_COMPATIBILITY_VERSION,
+        "target_surface": surface,
+        "execution_mode": mode,
+        "context": core["context"],
+        "subject_id": core["subject_id"],
+        "video_model": core["video_model"],
+        "image_model": core["image_model"],
+        "aspect_ratio": core.get("aspect_ratio", "16:9"),
+        "video_pipeline_spec": core["video_pipeline_spec"] if is_video else "",
+        "prompt": core["prompt"],
+        "reference_hints": core["reference_hints"],
+        "sound_layer": core["sound_layer"] if is_video else "",
+        "model_stack": {
+            "chat": DEFAULT_XAI_CHAT_MODEL,
+            "build": DEFAULT_XAI_BUILD_MODEL,
+            "imagine_image": core.get("image_model") or DEFAULT_IMAGINE_IMAGE_MODEL,
+            "imagine_video": core.get("video_model") or DEFAULT_IMAGINE_VIDEO_MODEL,
+        },
+        "quota_note": quota_note,
+        "return_path": return_path or default_return_path(surface, context),
+        "handoff_steps": handoff_steps(surface, mode),
+        "qa_gate": qa_gate,
+        "grok_imagine_url": core.get("grok_imagine_url", GROK_IMAGINE_URL),
+    }
+
+    inject = dna_inject or core.get("dna_inject")
+    if inject:
+        packet["dna_inject"] = inject
+    for key in ("last_frame_recap", "momentum_vector", "audio_momentum_vector", "slug_link"):
+        if core.get(key):
+            packet[key] = core[key]
+    return packet
+
+
 def build_bridge_packet(
     subject: dict[str, Any],
     *,
@@ -108,204 +366,15 @@ def build_bridge_packet(
     prompt: str | None = None,
     state: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Build structured handoff packet for a shot, clip, or sequence item."""
-    mode = subject.get("recommended_mode") or subject.get("decision", {}).get("mode", "video_prompt")
-    vid_model = video_model or subject.get("video_model", "grok-imagine-video-1.5")
-    img_model = subject.get("image_model", "grok-imagine-image")
-    ref_id = subject.get("reference_image_id")
-    description = prompt or subject.get("prompt") or subject.get("description", "")
-    aspect = subject.get("aspect_ratio", "16:9")
-
-    packet: dict[str, Any] = {
-        "context": context,
-        "subject_id": subject.get("shot_id") or subject.get("clip_id") or "item",
-        "mode": mode,
-        "video_model": vid_model,
-        "image_model": img_model,
-        "aspect_ratio": aspect,
-        "video_pipeline_spec": build_video_pipeline_spec(vid_model),
-        "prompt": description.strip(),
-        "reference_hints": build_reference_hints(
-            reference_image_id=ref_id,
-            reference_url=subject.get("reference_image_url"),
-            state=state,
-        ),
-        "sound_layer": build_sound_layer(
-            dialogue=subject.get("dialogue", "") or (
-                (subject.get("audio_momentum_vector") or {}).get("dialogue_state", "")
-            ),
-        ),
-        "handoff_steps": _handoff_steps(mode),
-        "grok_imagine_url": "https://grok.com/imagine",
-    }
-
-    if context == "clip" and subject.get("last_frame_recap"):
-        packet["last_frame_recap"] = subject["last_frame_recap"]
-        mv = subject.get("momentum_vector") or {}
-        if mv:
-            packet["momentum_vector"] = mv
-
-    slug = subject.get("batch_slug") or subject.get("sequence_slug")
-    if slug:
-        packet["slug_link"] = slug
-
-    return packet
-
-
-def _handoff_steps(mode: str) -> list[str]:
-    if mode == "image_prompt":
-        return [
-            "1. Paste prompt + VIDEO_PIPELINE_SPEC into grok.com/imagine (Image)",
-            "2. Attach reference plate if listed",
-            "3. On QA ≥7, lock plate and run i2v pass",
-        ]
-    if mode == "image_to_video":
-        return [
-            "1. Attach locked reference plate first",
-            "2. Paste i2v prompt with MOTION_VECTOR block",
-            "3. Enable native audio — verify Sound Layer sync",
-        ]
-    return [
-        "1. Paste full video prompt with Sound Layer",
-        "2. Set duration 8–12s, native audio on",
-        "3. Record result via: sfw record or sequence run",
-    ]
-
-
-def bridge_to_markdown(packet: dict[str, Any]) -> str:
-    lines = [
-        f"# Imagine Execution Bridge — {packet['subject_id']}",
-        "",
-        f"**Context:** {packet['context']} · **Mode:** `{packet['mode']}`",
-        f"**Models:** `{packet['image_model']}` → `{packet['video_model']}`",
-        f"**Aspect:** {packet.get('aspect_ratio', '16:9')}",
-        "",
-        "## VIDEO_PIPELINE_SPEC",
-        "```",
-        packet["video_pipeline_spec"],
-        "```",
-        "",
-        "## Prompt",
-        packet["prompt"],
-        "",
-    ]
-
-    if packet.get("last_frame_recap"):
-        lines += ["## LAST_FRAME_RECAP", packet["last_frame_recap"], ""]
-    if packet.get("momentum_vector"):
-        mv = packet["momentum_vector"]
-        lines += [
-            "## MOMENTUM_VECTOR",
-            f"- last_action: {mv.get('last_action', '')}",
-            f"- emotional_state: {mv.get('emotional_state', '')}",
-            f"- camera_velocity: {mv.get('camera_velocity', '')}",
-            "",
-        ]
-
-    if packet["reference_hints"]:
-        lines += ["## Reference", *[f"- {h}" for h in packet["reference_hints"]], ""]
-
-    lines += [
-        "## Sound Layer",
-        packet["sound_layer"],
-        "",
-        "## Handoff steps",
-        *[f"{s}" for s in packet["handoff_steps"]],
-        "",
-        f"Open: {packet['grok_imagine_url']}",
-    ]
-    if packet.get("slug_link"):
-        lines.append(f"Studio slug: `{packet['slug_link']}`")
-    return "\n".join(lines)
-
-
-def bridge_to_clipboard(packet: dict[str, Any]) -> str:
-    """Single copy-paste block for grok.com/imagine."""
-    parts = [
-        packet["video_pipeline_spec"],
-        "",
-        packet["prompt"],
-        "",
-        packet["sound_layer"],
-    ]
-    if packet["reference_hints"]:
-        parts.append("")
-        parts.extend(packet["reference_hints"])
-    if packet.get("last_frame_recap"):
-        parts += ["", f"LAST_FRAME_RECAP: {packet['last_frame_recap']}"]
-    return "\n".join(parts)
-
-
-def _normalize_execution_mode(subject: dict[str, Any], mode: str | None) -> str:
-    raw = mode or subject.get("recommended_mode") or subject.get("decision", {}).get("mode")
-    if not raw:
-        raw = "video_prompt"
-    # Map legacy bridge modes
-    aliases = {
-        "image": "image_prompt",
-        "still": "image_prompt",
-        "i2v": "image_to_video",
-        "video": "video_prompt",
-        "t2v": "video_prompt",
-    }
-    normalized = aliases.get(str(raw), str(raw))
-    if normalized not in EXECUTION_MODES:
-        return "video_prompt"
-    return normalized
-
-
-def _agent_handoff_steps(surface: str, execution_mode: str) -> list[str]:
-    if surface == "grok_com_imagine":
-        return _handoff_steps(
-            "image_prompt"
-            if execution_mode in ("image_prompt", "image_edit")
-            else ("image_to_video" if execution_mode == "image_to_video" else "video_prompt")
-        )
-    if surface == "xai_api":
-        return [
-            "1. Run: python tools/cinematic_studio_cli.py imagine verify",
-            "2. Submit via sfw run / sequence run / imagine submit with packet prompt + models",
-            "3. Attach job_id to directors_notes_log; reconcile quota",
-            "4. return_path: record QA score and artifact path",
-        ]
-    if surface == "grok_agent_acp":
-        return [
-            "1. Confirm plugin skills loaded (grok-imagine-cinematic-studio) in ACP session",
-            "2. Execute Imagine tools or CLI per execution_mode (no TUI-only modals)",
-            "3. Save outputs under artifacts/; log tool results",
-            "4. return_path: QA Guardian + Project Bible update",
-        ]
-    # grok_build_tools (default)
-    if execution_mode in ("image_prompt", "image_edit"):
-        return [
-            "1. Call image_gen or image_edit with packet prompt + references",
-            "2. Set aspect_ratio from packet; save under artifacts/",
-            "3. On QA ≥7, lock plate before any i2v spend",
-            "4. return_path: sfw record or plate lock + Director's Notes",
-        ]
-    if execution_mode in ("image_to_video", "reference_to_video"):
-        return [
-            "1. Attach locked reference plate as frame-1 source",
-            "2. Call image_to_video (or reference_to_video) with motion prompt + Sound Layer",
-            "3. Prefer 6–10s shots; native audio when pipeline requires",
-            "4. return_path: sequence run / sfw record + chain QA if extend",
-        ]
-    return [
-        "1. Prefer still→i2v when plate exists; else craft first frame then animate",
-        "2. Call image_to_video with Sound Layer; duration 6–10s preferred",
-        "3. Save artifact; do not claim success without tool result",
-        "4. return_path: QA Guardian + Director's Notes",
-    ]
-
-
-def _default_return_path(surface: str, context: str) -> str:
-    if context == "clip":
-        return "sequence run / chain QA + Continuity Guardian update"
-    if surface == "xai_api":
-        return "sfw record <batch> <shot> --score … --credits …"
-    if surface == "grok_com_imagine":
-        return "Download result → sfw record or sequence handoff JSON + QA"
-    return "artifacts/ path + Director's Notes + QA Guardian"
+    """Classic grok.com/imagine bridge packet (soft mode)."""
+    return build_handoff(
+        subject,
+        context=context,
+        video_model=video_model,
+        prompt=prompt,
+        state=state,
+        agent_mode=False,
+    )
 
 
 def build_agent_mode_handoff(
@@ -316,80 +385,119 @@ def build_agent_mode_handoff(
     execution_mode: str | None = None,
     video_model: str | None = None,
     prompt: str | None = None,
-    quota_note: str = "Confirm remaining quota before video spend; prefer Fast mode when quality allows",
+    quota_note: str = (
+        "Confirm remaining quota before video spend; prefer Fast mode when quality allows"
+    ),
     return_path: str | None = None,
     dna_inject: str | None = None,
     qa_gate: str = "still QA ≥7 before hero video; chain QA Go before extend",
     state: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Build official imagine_agent_mode_handoff packet (protocol v3.7.1)."""
-    surface = target_surface.strip()
-    if surface not in TARGET_SURFACES:
-        raise ValueError(
-            f"invalid target_surface: {target_surface!r}; "
-            f"expected one of {sorted(TARGET_SURFACES)}"
-        )
-
-    base = build_bridge_packet(
+    """Official imagine_agent_mode_handoff packet (protocol v3.7.1)."""
+    return build_handoff(
         subject,
         context=context,
+        target_surface=target_surface,
+        execution_mode=execution_mode,
         video_model=video_model,
         prompt=prompt,
+        quota_note=quota_note,
+        return_path=return_path,
+        dna_inject=dna_inject,
+        qa_gate=qa_gate,
         state=state,
+        agent_mode=True,
     )
-    mode = _normalize_execution_mode(subject, execution_mode or base.get("mode"))
-    is_video = mode in ("image_to_video", "video_prompt", "reference_to_video")
-
-    packet: dict[str, Any] = {
-        "packet_type": "imagine_agent_mode_handoff",
-        "protocol_version": PROTOCOL_VERSION,
-        "studio_version": STUDIO_COMPATIBILITY_VERSION,
-        "target_surface": surface,
-        "execution_mode": mode,
-        "context": base["context"],
-        "subject_id": base["subject_id"],
-        "video_model": base["video_model"],
-        "image_model": base["image_model"],
-        "aspect_ratio": base.get("aspect_ratio", "16:9"),
-        "video_pipeline_spec": base["video_pipeline_spec"] if is_video else base.get("video_pipeline_spec", ""),
-        "prompt": base["prompt"],
-        "reference_hints": base["reference_hints"],
-        "sound_layer": base["sound_layer"] if is_video else base.get("sound_layer", ""),
-        "model_stack": {
-            "chat": DEFAULT_XAI_CHAT_MODEL,
-            "build": DEFAULT_XAI_BUILD_MODEL,
-            "imagine_image": base.get("image_model") or DEFAULT_IMAGINE_IMAGE_MODEL,
-            "imagine_video": base.get("video_model") or DEFAULT_IMAGINE_VIDEO_MODEL,
-        },
-        "quota_note": quota_note,
-        "return_path": return_path or _default_return_path(surface, context),
-        "handoff_steps": _agent_handoff_steps(surface, mode),
-        "qa_gate": qa_gate,
-        "grok_imagine_url": base.get("grok_imagine_url", "https://grok.com/imagine"),
-    }
-
-    if dna_inject or subject.get("dna_inject"):
-        packet["dna_inject"] = dna_inject or subject.get("dna_inject")
-
-    if base.get("last_frame_recap"):
-        packet["last_frame_recap"] = base["last_frame_recap"]
-    if base.get("momentum_vector"):
-        packet["momentum_vector"] = base["momentum_vector"]
-    amv = subject.get("audio_momentum_vector")
-    if amv:
-        packet["audio_momentum_vector"] = amv
-    if base.get("slug_link"):
-        packet["slug_link"] = base["slug_link"]
-
-    return packet
 
 
-def agent_mode_handoff_to_markdown(packet: dict[str, Any]) -> str:
-    """Human/agent-readable Imagine Agent Mode Handoff document."""
+# ---------------------------------------------------------------------------
+# Unified renderers
+# ---------------------------------------------------------------------------
+
+
+def _momentum_lines(mv: dict[str, Any]) -> list[str]:
+    return [
+        "## MOMENTUM_VECTOR",
+        f"- last_action: {mv.get('last_action', mv.get('action', ''))}",
+        f"- emotional_state: {mv.get('emotional_state', mv.get('emotion', ''))}",
+        f"- camera_velocity: {mv.get('camera_velocity', mv.get('camera', ''))}",
+        "",
+    ]
+
+
+def handoff_to_markdown(packet: dict[str, Any]) -> str:
+    """Render classic or agent-mode packet as markdown."""
+    if packet.get("packet_type") == PACKET_TYPE_IMAGINE_AGENT_MODE:
+        return _agent_mode_markdown(packet)
+    return _classic_bridge_markdown(packet)
+
+
+def handoff_to_clipboard(packet: dict[str, Any]) -> str:
+    """
+    Single copy-paste block for generation UIs.
+
+    Uses the packet itself (pipeline + prompt + sound + refs) — no second rebuild.
+    """
+    parts: list[str] = []
+    pipeline = packet.get("video_pipeline_spec") or ""
+    if pipeline:
+        parts.extend([str(pipeline), ""])
+    parts.append(str(packet.get("prompt", "")))
+    sound = packet.get("sound_layer") or ""
+    if sound:
+        parts.extend(["", str(sound)])
+    hints = packet.get("reference_hints") or []
+    if hints:
+        parts.append("")
+        parts.extend(str(h) for h in hints)
+    if packet.get("last_frame_recap"):
+        parts.extend(["", f"LAST_FRAME_RECAP: {packet['last_frame_recap']}"])
+    return "\n".join(parts)
+
+
+def _classic_bridge_markdown(packet: dict[str, Any]) -> str:
+    lines = [
+        f"# Imagine Execution Bridge — {packet['subject_id']}",
+        "",
+        f"**Context:** {packet['context']} · **Mode:** `{packet.get('mode', packet.get('execution_mode', ''))}`",
+        f"**Models:** `{packet['image_model']}` → `{packet['video_model']}`",
+        f"**Aspect:** {packet.get('aspect_ratio', '16:9')}",
+        "",
+        "## VIDEO_PIPELINE_SPEC",
+        "```",
+        str(packet.get("video_pipeline_spec", "")),
+        "```",
+        "",
+        "## Prompt",
+        str(packet.get("prompt", "")),
+        "",
+    ]
+    if packet.get("last_frame_recap"):
+        lines += ["## LAST_FRAME_RECAP", str(packet["last_frame_recap"]), ""]
+    if isinstance(packet.get("momentum_vector"), dict):
+        lines += _momentum_lines(packet["momentum_vector"])
+    hints = packet.get("reference_hints") or []
+    if hints:
+        lines += ["## Reference", *[f"- {h}" for h in hints], ""]
+    lines += [
+        "## Sound Layer",
+        str(packet.get("sound_layer", "")),
+        "",
+        "## Handoff steps",
+        *[str(s) for s in packet.get("handoff_steps") or []],
+        "",
+        f"Open: {packet.get('grok_imagine_url', GROK_IMAGINE_URL)}",
+    ]
+    if packet.get("slug_link"):
+        lines.append(f"Studio slug: `{packet['slug_link']}`")
+    return "\n".join(lines)
+
+
+def _agent_mode_markdown(packet: dict[str, Any]) -> str:
     lines = [
         f"# Imagine Agent Mode Handoff v{packet.get('protocol_version', PROTOCOL_VERSION)}",
         "",
-        f"**Packet:** `{packet.get('packet_type', 'imagine_agent_mode_handoff')}`",
+        f"**Packet:** `{packet.get('packet_type', PACKET_TYPE_IMAGINE_AGENT_MODE)}`",
         f"**Studio:** v{packet.get('studio_version', STUDIO_COMPATIBILITY_VERSION)}",
         f"**Subject:** `{packet.get('subject_id')}` · **Context:** {packet.get('context')}",
         f"**Target surface:** `{packet.get('target_surface')}`",
@@ -420,16 +528,8 @@ def agent_mode_handoff_to_markdown(packet: dict[str, Any]) -> str:
         lines += ["## DNA inject", str(packet["dna_inject"]), ""]
     if packet.get("last_frame_recap"):
         lines += ["## LAST_FRAME_RECAP", str(packet["last_frame_recap"]), ""]
-    if packet.get("momentum_vector"):
-        mv = packet["momentum_vector"]
-        if isinstance(mv, dict):
-            lines += [
-                "## MOMENTUM_VECTOR",
-                f"- last_action: {mv.get('last_action', mv.get('action', ''))}",
-                f"- emotional_state: {mv.get('emotional_state', mv.get('emotion', ''))}",
-                f"- camera_velocity: {mv.get('camera_velocity', mv.get('camera', ''))}",
-                "",
-            ]
+    if isinstance(packet.get("momentum_vector"), dict):
+        lines += _momentum_lines(packet["momentum_vector"])
 
     hints = packet.get("reference_hints") or []
     if hints:
@@ -449,15 +549,26 @@ def agent_mode_handoff_to_markdown(packet: dict[str, Any]) -> str:
         str(packet.get("return_path", "")),
         "",
         "## Handoff steps",
-        *[f"{s}" for s in packet.get("handoff_steps") or []],
+        *[str(s) for s in packet.get("handoff_steps") or []],
         "",
     ]
     if packet.get("target_surface") == "grok_com_imagine":
-        lines.append(f"Open: {packet.get('grok_imagine_url', 'https://grok.com/imagine')}")
+        lines.append(f"Open: {packet.get('grok_imagine_url', GROK_IMAGINE_URL)}")
     if packet.get("slug_link"):
         lines.append(f"Studio slug: `{packet['slug_link']}`")
     lines.append("")
-    lines.append(
-        "_Canonical protocol: references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md_"
-    )
+    lines.append(f"_Canonical protocol: {CANONICAL_PROTOCOL_DOC}_")
     return "\n".join(lines)
+
+
+# Back-compat aliases
+def bridge_to_markdown(packet: dict[str, Any]) -> str:
+    return handoff_to_markdown(packet)
+
+
+def bridge_to_clipboard(packet: dict[str, Any]) -> str:
+    return handoff_to_clipboard(packet)
+
+
+def agent_mode_handoff_to_markdown(packet: dict[str, Any]) -> str:
+    return handoff_to_markdown(packet)

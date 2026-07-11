@@ -8,6 +8,19 @@ import sys
 from pathlib import Path
 from typing import Any
 
+# Resolve studio tools/ so we can import the canonical handoff schema
+_SCRIPT = Path(__file__).resolve()
+_STUDIO_ROOT = _SCRIPT.parents[4]  # .../.grok/skills/<skill>/scripts → repo root
+_TOOLS = _STUDIO_ROOT / "tools"
+if _TOOLS.is_dir() and str(_TOOLS) not in sys.path:
+    sys.path.insert(0, str(_TOOLS))
+
+from handoff_schema import (  # noqa: E402
+    MODEL_STACK_KEYS,
+    PACKET_TYPE_IMAGINE_AGENT_MODE,
+    imagine_agent_mode_packet_schema,
+)
+
 PACKET_TYPES: dict[str, dict[str, Any]] = {
     "identity_lock_handoff": {
         "required": (
@@ -51,46 +64,8 @@ PACKET_TYPES: dict[str, dict[str, Any]] = {
             "emotional_residue",
         ),
     },
-    "imagine_agent_mode_handoff": {
-        "required": (
-            "packet_type",
-            "protocol_version",
-            "studio_version",
-            "target_surface",
-            "execution_mode",
-            "subject_id",
-            "prompt",
-            "reference_hints",
-            "model_stack",
-            "quota_note",
-            "return_path",
-            "handoff_steps",
-        ),
-        "target_surfaces": frozenset(
-            {
-                "grok_build_tools",
-                "grok_agent_acp",
-                "grok_com_imagine",
-                "xai_api",
-            }
-        ),
-        "execution_modes": frozenset(
-            {
-                "image_prompt",
-                "image_edit",
-                "image_to_video",
-                "video_prompt",
-                "reference_to_video",
-            }
-        ),
-        "video_modes": frozenset(
-            {
-                "image_to_video",
-                "video_prompt",
-                "reference_to_video",
-            }
-        ),
-    },
+    # Surfaces / modes come from tools/handoff_schema.py — do not re-list here
+    PACKET_TYPE_IMAGINE_AGENT_MODE: imagine_agent_mode_packet_schema(),
 }
 
 
@@ -153,7 +128,7 @@ def validate_packet(data: dict[str, Any]) -> list[str]:
         if not str(data.get("emotional_residue", "")).strip():
             issues.append("empty required field: emotional_residue")
 
-    if packet_type == "imagine_agent_mode_handoff":
+    if packet_type == PACKET_TYPE_IMAGINE_AGENT_MODE:
         if not str(data.get("subject_id", "")).strip():
             issues.append("empty required field: subject_id")
         if not str(data.get("prompt", "")).strip():
@@ -167,10 +142,13 @@ def validate_packet(data: dict[str, Any]) -> list[str]:
         if not isinstance(data.get("reference_hints"), list):
             issues.append("reference_hints: must be an array")
         stack = data.get("model_stack")
+        stack_keys = schema.get("model_stack_keys") or MODEL_STACK_KEYS
         if not isinstance(stack, dict):
             issues.append("model_stack: must be an object")
-        elif not any(str(stack.get(k, "")).strip() for k in ("imagine_image", "imagine_video", "chat")):
-            issues.append("model_stack: need at least one of chat/imagine_image/imagine_video")
+        elif not any(str(stack.get(k, "")).strip() for k in stack_keys):
+            issues.append(
+                "model_stack: need at least one of " + "/".join(stack_keys)
+            )
         steps = data.get("handoff_steps")
         if not isinstance(steps, list) or len(steps) < 1:
             issues.append("handoff_steps: need at least one step")
@@ -179,10 +157,9 @@ def validate_packet(data: dict[str, Any]) -> list[str]:
         if not str(data.get("return_path", "")).strip():
             issues.append("empty required field: return_path")
         if mode in schema.get("video_modes", ()):
-            if not str(data.get("video_pipeline_spec", "")).strip():
-                issues.append("video modes require video_pipeline_spec")
-            if not str(data.get("sound_layer", "")).strip():
-                issues.append("video modes require sound_layer")
+            for field in schema.get("video_required") or ("video_pipeline_spec", "sound_layer"):
+                if not str(data.get(field, "")).strip():
+                    issues.append(f"video modes require {field}")
 
     return issues
 

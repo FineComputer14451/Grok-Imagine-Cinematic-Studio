@@ -12,6 +12,7 @@ from cli.shared import (  # noqa: E402
     AGENT_ROLE_CARDS,
     AGENTS,
     EXPECTED_ROLE_CARD_COUNT,
+    ROLE_CARD_SHARED_DOCS,
     core_agent_count,
     get_role_card_path,
     list_role_card_files,
@@ -39,9 +40,31 @@ def test_production_pipeline_agents() -> None:
 def test_role_cards_on_disk() -> None:
     cards = list_role_card_files()
     assert len(cards) == EXPECTED_ROLE_CARD_COUNT
+    listed_names = {p.name for p in cards}
+    expected_names = set(AGENT_ROLE_CARDS.values())
+    assert listed_names == expected_names, (
+        f"extras={sorted(listed_names - expected_names)}; "
+        f"missing={sorted(expected_names - listed_names)}"
+    )
     for name, rel in AGENT_ROLE_CARDS.items():
         path = AGENTS_DIR / rel
         assert path.is_file(), f"Missing role card for {name}: {rel}"
+
+
+def test_shared_agent_docs_excluded_from_role_cards() -> None:
+    """Non-role protocol/model docs must stay in ROLE_CARD_SHARED_DOCS."""
+    card_names = {p.name for p in list_role_card_files()}
+    for shared in ROLE_CARD_SHARED_DOCS:
+        path = AGENTS_DIR / shared
+        if path.is_file():
+            assert shared not in card_names, f"{shared} incorrectly listed as a Role Card"
+    # Protocol + model layer docs that ship with the suite
+    for required_shared in (
+        "MODEL_LAYER_v3.7.1.md",
+        "IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md",
+    ):
+        assert required_shared in ROLE_CARD_SHARED_DOCS
+        assert (AGENTS_DIR / required_shared).is_file()
 
 
 def test_role_card_lookup() -> None:
