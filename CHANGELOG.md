@@ -4,10 +4,16 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.8.2] - 2026-07-11
+
 ### Added
 - **Generation handoff readiness** — semantic checks for `imagine_agent_mode_handoff` (motion cues, references, return_path); validator warnings; `imagine agent-handoff --strict-handoff`. Helper: `evaluate_imagine_handoff_readiness`.
 - **Post-delivery pipeline readiness** — `evaluate_delivery_pipeline_readiness`; `--strict-delivery` on `sequence polish` / `sequence deliver` (soft by default).
 - **Validator `--strict-handoff`** — handoff-packet-validator treats agent-mode readiness blockers as hard failures (exit 1); default remains warn-only.
+- **Streamlit Community Cloud deploy** — root `requirements.txt` + `runtime.txt` (Python 3.12), `.streamlit/config.toml` + secrets example, secrets→env key resolution, cloud banner, and `docs/guides/streamlit_cloud_deploy.md`.
+
+### Changed
+- **Studio version** — `VERSION` / plugin catalog / compatibility → **3.8.2**
 
 ## [3.8.1] - 2026-07-11
 
