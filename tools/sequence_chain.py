@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from aspect_presets import apply_aspect_to_clip, DEFAULT_ASPECT
+from identity_drift import report_to_drift_evidence
 from models import (
     DEFAULT_IMAGINE_VIDEO_MODEL,
     build_video_pipeline_spec,
@@ -253,6 +254,9 @@ def build_handoff_from_clip(
     clip: dict[str, Any],
     *,
     memory_bank: dict[str, Any] | None = None,
+    character_slug: str | None = None,
+    dna_version: int = 1,
+    attempt: int = 1,
 ) -> dict[str, Any]:
     """Generate handoff packet for the next clip in the chain."""
     packet: dict[str, Any] = {
@@ -273,10 +277,34 @@ def build_handoff_from_clip(
             "Propagate AUDIO_MOMENTUM_VECTOR for native audio continuity",
             "Maintain reference_image_id unless deliberate scene change",
             "Run chain QA before approving next clip",
+            "Identity Continuity: require drift_evidence (ICP-02/03) before claiming extend-ready; "
+            "run: python tools/cinematic_studio_cli.py sequence drift-score",
         ],
     }
     if memory_bank is not None:
         packet["memory_bank"] = ensure_memory_bank(memory_bank)
+
+    report = clip.get("identity_drift")
+    if isinstance(report, dict) and report.get("drift_score") is not None:
+        slug = (
+            character_slug
+            or (clip.get("character_slug") or "")
+            or (report.get("character_slug") or "")
+            or "unknown"
+        )
+        packet["drift_evidence"] = report_to_drift_evidence(
+            report,
+            character_slug=str(slug),
+            dna_version=dna_version,
+            attempt=attempt,
+            reference_hint=str(clip.get("reference_image_id") or ""),
+        )
+        # Mirror score into continuity_state for Continuity Guardian (ICP-05)
+        cont = dict(packet.get("continuity_state") or {})
+        cont["drift_evidence_status"] = packet["drift_evidence"]["status"]
+        cont["drift_score"] = packet["drift_evidence"]["score"]
+        packet["continuity_state"] = cont
+
     return packet
 
 
