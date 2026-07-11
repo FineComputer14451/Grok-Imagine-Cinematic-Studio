@@ -553,6 +553,18 @@ def resolve_still_paths(
     return ref, cur
 
 
+def _image_rgb_pixels(im: Any) -> list[tuple[int, ...]]:
+    """
+    Pixel list for RGB images without Pillow 14 getdata deprecation.
+
+    Prefer Image.get_flattened_data() (Pillow ≥10.x); fall back to getdata().
+    """
+    getter = getattr(im, "get_flattened_data", None)
+    if callable(getter):
+        return list(getter())
+    return list(im.getdata())  # pragma: no cover — older Pillow
+
+
 def compare_stills_soft(
     ref_path: str, clip_path: str
 ) -> tuple[float, dict[str, Any]] | None:
@@ -570,8 +582,8 @@ def compare_stills_soft(
     except OSError:
         return None
 
-    px_a = list(a.getdata())
-    px_b = list(b.getdata())
+    px_a = _image_rgb_pixels(a)
+    px_b = _image_rgb_pixels(b)
     n = len(px_a)
     if not n or n != len(px_b):
         return None

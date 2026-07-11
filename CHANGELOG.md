@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Fixed
+- **Still compare** — use Pillow `get_flattened_data()` instead of deprecated `getdata()` in `compare_stills_soft`.
+
 ## [3.8.2] - 2026-07-11
 
 ### Added
