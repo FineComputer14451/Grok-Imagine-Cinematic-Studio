@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Grok Imagine Cinematic Studio — Streamlit Web UI (multi-page).
+Grok Imagine Cinematic Studio — Streamlit Web UI (multi-page, Grok 4.5).
 """
 
 from __future__ import annotations
@@ -25,7 +25,10 @@ apply_styles()
 
 with st.sidebar:
     st.markdown(f"### 🎥 Cinematic Studio v{rt.STUDIO_VERSION}")
-    st.caption(f"{rt.core_agent_count()}-agent production · DNA · Sequences · Quota")
+    st.caption(
+        f"{rt.core_agent_count()}-agent production · DNA · Sequences · Quota · Grok **4.5**"
+    )
+    rt.render_sidebar_stack()
 
 pages = [
     st.Page(dashboard.render, title="Dashboard", icon="📊", url_path="dashboard", default=True),

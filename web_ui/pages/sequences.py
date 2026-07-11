@@ -9,6 +9,11 @@ from lib import runtime as rt
 
 def render() -> None:
     st.header("🎬 Sequences")
+    st.caption(
+        f"Long-form extend/stitch · studio v{rt.STUDIO_VERSION} · "
+        f"video `{st.session_state.get('video_model', rt.DEFAULT_IMAGINE_VIDEO_MODEL)}` · "
+        "Chain QA before every extend"
+    )
     if not rt.SEQ_AVAILABLE:
         st.error("Sequence module unavailable")
         return

@@ -10,6 +10,10 @@ from lib import session as sess
 
 def render() -> None:
     st.header("💰 Quota & Budget")
+    st.caption(
+        "Video spend is `grok-imagine-*` only · chat orchestration is **Grok 4.5** "
+        "(not billed as Imagine seconds)."
+    )
     snapshot = sess.session_quota_snapshot()
     if not snapshot:
         st.error("Quota module unavailable")
@@ -26,9 +30,13 @@ def render() -> None:
     c4.metric("Risk", risk["risk_level"].title())
 
     st.caption(
-        f"Tokens ~{est['estimated_tokens']:,} · "
-        f"Video model: {est.get('video_model', st.session_state.video_model)}"
+        f"Tokens ~{est.get('estimated_tokens', 0):,} · "
+        f"Video: `{est.get('video_model', st.session_state.video_model)}` · "
+        f"Chat: `{st.session_state.chat_model}` · "
+        f"Reasoning: {st.session_state.get('reasoning_level', 'high')}"
     )
+    if "1.5" in str(st.session_state.video_model):
+        st.info("1.5 selected — higher $/sec for native audio. Prefer 1.0 when silent/post-mix is fine.")
 
     if st.button("Apply tier to project state"):
         rt.set_budget(tier=st.session_state.quota_tier)

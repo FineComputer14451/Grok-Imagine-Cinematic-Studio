@@ -10,6 +10,11 @@ from lib import runtime as rt
 
 def render() -> None:
     st.header("Imagine Production")
+    st.caption(
+        f"Video: `{st.session_state.get('video_model', rt.DEFAULT_IMAGINE_VIDEO_MODEL)}` · "
+        f"Chat: `{st.session_state.get('chat_model', rt.DEFAULT_XAI_CHAT_MODEL)}` · "
+        "Prefer still → i2v · 1.0 cost default · 1.5 when native audio required"
+    )
     if not rt.SEQ_AVAILABLE:
         st.error("Studio tools unavailable in this environment.")
         return

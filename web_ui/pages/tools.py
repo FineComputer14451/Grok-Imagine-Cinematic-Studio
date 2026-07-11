@@ -12,7 +12,28 @@ from lib import runtime as rt
 
 def render() -> None:
     st.header("🛠️ Tools")
+    st.caption(f"Studio v{rt.STUDIO_VERSION} · Grok 4.5 stack · CLI helpers")
 
+    st.subheader("🤖 Models verify")
+    col_m1, col_m2 = st.columns([1, 2])
+    with col_m1:
+        if st.button("Run models verify", width="stretch", key="tools_models_verify"):
+            rt.cached_models_verify.clear()
+            st.session_state["_tools_verify"] = rt.cached_models_verify()
+    with col_m2:
+        result = st.session_state.get("_tools_verify") or (
+            rt.cached_models_verify() if rt.MODELS_AVAILABLE else {}
+        )
+        if result.get("ok"):
+            st.success("Grok 4.5 cinematic+Build stack compatible")
+        elif result:
+            st.warning("Compatibility issues — see details")
+            for issue in result.get("issues") or []:
+                st.markdown(f"- {issue}")
+        else:
+            st.caption("Click to verify registry + CLI pin.")
+
+    st.divider()
     st.subheader("🔌 Plugin")
     if st.button("Refresh plugin details", key="tools_plugin_refresh"):
         rt.cached_plugin_details.clear()

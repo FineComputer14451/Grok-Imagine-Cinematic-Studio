@@ -47,20 +47,19 @@ def _render_phase_outline(story: str) -> None:
     )
     st.markdown(
         """
-**Phase 1 — Pre-Production**
-- Mega Production Architect → Production Bible
-- Identity Lock Specialist → Character DNA lock
-- Production Designer → Environment & set references
+**Phase 1 — Pre-Production (Grok 4.5)**
+- Mega Production Architect → Production Bible + `model_stack` + `VIDEO_PIPELINE_SPEC`
+- Character DNA → Identity Lock · Reference Curator (tiers)
+- Optional Animatic Director (≤20% budget)
 
 **Phase 2 — Core Production**
-- Director of Photography + Performance & Emotion Director → Key sequences
-- Cinematic Sequence Extender → Long-form 1.5 extend/stitch
-- Continuity Guardian + QA Guardian → Chain QA gates
+- Prompt Master + DoP + Performance → stills first, then I2V
+- Sequence Director + Extender → long-form (1.0 cost default; 1.5 for native audio)
+- Continuity + Chain QA / QA Guardian → go/no-go gates
 
 **Phase 3 — Polish & Delivery**
-- Sonic Architect + Foley Specialist → Native audio design
-- Key Art Designer + Trailer Director → Marketing assets
-- AI Polish Director → Final upscale & delivery polish
+- Assembly Editor → Color Grade → AI Polish Director (local upscale)
+- Sonic/Foley when 1.5 or post mix · cinematic-ffmpeg for delivery crops
 """
     )
 
@@ -90,6 +89,7 @@ def _render_phase_outline(story: str) -> None:
 def render() -> None:
     st.header("📝 Production")
     st.caption(f"Activation phrase: `{rt.ACTIVATION_PHRASE}`")
+    st.markdown(rt.stack_banner_markdown())
 
     story = st.text_area(
         "Describe your cinematic vision",

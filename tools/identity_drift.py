@@ -74,11 +74,25 @@ def score_identity_drift(
     clip_toks = _tokens(clip_text)
 
     if not dna:
-        penalties.append(4.0)
-        factors.append("No DNA profile — high identity risk")
-        if len(prompt.split()) < 4:
-            penalties.append(0.5)
-            factors.append("Thin prompt without DNA")
+        # No DNA: still allow dry-run / early plates when a reference + prompt exist.
+        # Penalty maps via _drift_to_qa_score (QA = 10 - drift); critical floor is 7.0.
+        word_n = len(prompt.split())
+        if ref_id and word_n >= 6:
+            penalties.append(2.5)  # QA ≈ 7.5 — pass critical with monitoring
+            factors.append(
+                "No DNA profile — reference_image_id + solid prompt (lock DNA before long-form)"
+            )
+        elif ref_id and word_n >= 4:
+            penalties.append(3.0)  # QA ≈ 7.0 — critical floor
+            factors.append(
+                "No DNA profile — reference_image_id + prompt (recommend DNA lock)"
+            )
+        else:
+            penalties.append(4.0)  # QA ≈ 6.0 — no_go critical
+            factors.append("No DNA profile — high identity risk")
+            if word_n < 4:
+                penalties.append(0.5)
+                factors.append("Thin prompt without DNA")
     else:
         if dna.get("identity_lock_status") != "locked":
             penalties.append(1.0)

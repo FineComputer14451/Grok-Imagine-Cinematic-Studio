@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 import streamlit as st
 from openai import OpenAI
@@ -17,6 +18,9 @@ STUDIO_VERSION = "3.7.1"
 ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
 AGENTS_DIR = ROOT / "references" / "agents"
 ROLE_CARD_PREVIEW_CHARS = 4000
+MIN_GROK_BUILD_CLI = "0.2.93"
+DOCS_MODELS = "references/MODELS.md"
+DOCS_MODEL_LAYER = "references/agents/MODEL_LAYER_v3.7.1.md"
 
 try:
     from cli.production import build_activation_prompt, build_production_bible, production_context
@@ -95,10 +99,17 @@ try:
     from imagine_jobs import job_summary, list_jobs
     from imagine_regions import IMAGINE_REGIONS, get_active_region, set_imagine_region
     from models import (
+        DEFAULT_IMAGINE_IMAGE_MODEL,
         DEFAULT_IMAGINE_VIDEO_MODEL,
+        DEFAULT_XAI_BUILD_MODEL,
         DEFAULT_XAI_CHAT_MODEL,
         IMAGINE_VIDEO_MODELS,
+        MIN_GROK_BUILD_CLI_VERSION,
+        ROLE_DEFAULTS,
+        STACK_CONTRACT,
         XAI_CHAT_MODELS,
+        build_video_pipeline_spec,
+        model_stack_summary,
         verify_model_compatibility,
     )
 
@@ -110,6 +121,7 @@ try:
     DASHBOARD_AVAILABLE = True
     IMAGINE_AVAILABLE = True
     REGIONS_AVAILABLE = True
+    MIN_GROK_BUILD_CLI = MIN_GROK_BUILD_CLI_VERSION
 except ImportError:
     DNA_AVAILABLE = False
     SEQ_AVAILABLE = False
@@ -121,15 +133,134 @@ except ImportError:
     REGIONS_AVAILABLE = False
     IMAGINE_REGIONS = {}
     DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video"
+    DEFAULT_IMAGINE_IMAGE_MODEL = "grok-imagine-image"
     DEFAULT_XAI_CHAT_MODEL = "grok-4.5"
+    DEFAULT_XAI_BUILD_MODEL = "grok-4.5"
     IMAGINE_VIDEO_MODELS = {}
     XAI_CHAT_MODELS = {}
+    STACK_CONTRACT = {"cinematic": "grok-4.5", "build": "grok-4.5", "cli": "grok-4.5"}
+    ROLE_DEFAULTS = dict(STACK_CONTRACT)
+    MIN_GROK_BUILD_CLI = "0.2.93"
+
+    def model_stack_summary(**kwargs):  # type: ignore[misc]
+        return {
+            "cinematic": DEFAULT_XAI_CHAT_MODEL,
+            "build": DEFAULT_XAI_BUILD_MODEL,
+            "cli": DEFAULT_XAI_CHAT_MODEL,
+            "imagine_video": DEFAULT_IMAGINE_VIDEO_MODEL,
+            "imagine_image": DEFAULT_IMAGINE_IMAGE_MODEL,
+        }
+
+    def build_video_pipeline_spec(model=None):  # type: ignore[misc]
+        m = model or DEFAULT_IMAGINE_VIDEO_MODEL
+        native = "1.5" in str(m)
+        return (
+            f'[VIDEO_PIPELINE_SPEC: model="{m}", resolution="720p", '
+            f'clip_length="8-12s preferred", native_audio={str(native).lower()}, '
+            f'reference_image_fidelity=high, '
+            f'extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", '
+            f"stitch_priority=high]"
+        )
+
+    def verify_model_compatibility():  # type: ignore[misc]
+        return {"ok": False, "issues": ["models registry unavailable"], "warnings": []}
 
 
 def core_agent_count() -> int:
     if not AGENTS:
         return 23
     return _core_agent_count()
+
+
+def ordered_chat_model_slugs() -> list[str]:
+    """Prefer grok-4.5 first (cinematic default); 4.3 is opt-in 1M."""
+    if not XAI_CHAT_MODELS:
+        return [DEFAULT_XAI_CHAT_MODEL]
+    keys = list(XAI_CHAT_MODELS.keys())
+    preferred = DEFAULT_XAI_CHAT_MODEL
+    if preferred in keys:
+        return [preferred] + [k for k in keys if k != preferred]
+    return keys
+
+
+def ordered_video_model_slugs() -> list[str]:
+    """Prefer cost-default 1.0 (`grok-imagine-video`) before 1.5 native audio."""
+    if not IMAGINE_VIDEO_MODELS:
+        return [DEFAULT_IMAGINE_VIDEO_MODEL]
+    keys = list(IMAGINE_VIDEO_MODELS.keys())
+    preferred = DEFAULT_IMAGINE_VIDEO_MODEL
+    if preferred in keys:
+        return [preferred] + [k for k in keys if k != preferred]
+    return keys
+
+
+def format_chat_model_label(slug: str) -> str:
+    meta = XAI_CHAT_MODELS.get(slug, {})
+    label = meta.get("label", slug)
+    use = meta.get("use_case", "")
+    role = meta.get("role", "")
+    badge = ""
+    if slug == DEFAULT_XAI_CHAT_MODEL or role == "default":
+        badge = " ★ default"
+    elif role == "long_context":
+        badge = " · 1M opt-in"
+    ctx = meta.get("context_tokens")
+    ctx_s = f" · {ctx // 1000}k ctx" if isinstance(ctx, int) else ""
+    return f"{label}{badge}{ctx_s}" + (f" — {use}" if use else "")
+
+
+def format_video_model_label(slug: str) -> str:
+    meta = IMAGINE_VIDEO_MODELS.get(slug, {})
+    label = meta.get("label", slug)
+    price = meta.get("usd_per_second")
+    native = meta.get("native_audio")
+    bits = [label]
+    if price is not None:
+        bits.append(f"${price}/sec")
+    if native:
+        bits.append("native audio")
+    elif slug == DEFAULT_IMAGINE_VIDEO_MODEL:
+        bits.append("cost default")
+    return " · ".join(bits)
+
+
+def session_model_stack() -> dict[str, Any]:
+    """Stack reflecting current Streamlit session + registry defaults."""
+    chat = st.session_state.get("chat_model", DEFAULT_XAI_CHAT_MODEL)
+    video = st.session_state.get("video_model", DEFAULT_IMAGINE_VIDEO_MODEL)
+    base = model_stack_summary() if MODELS_AVAILABLE else model_stack_summary()
+    if isinstance(base, dict):
+        out = dict(base)
+    else:
+        out = {}
+    out["cinematic"] = chat
+    out["build"] = DEFAULT_XAI_BUILD_MODEL
+    out["imagine_video"] = video
+    out["session_reasoning"] = st.session_state.get("reasoning_level", "high")
+    out["prompt_cache_key"] = st.session_state.get("prompt_cache_key") or None
+    return out
+
+
+def stack_banner_markdown() -> str:
+    chat = st.session_state.get("chat_model", DEFAULT_XAI_CHAT_MODEL)
+    video = st.session_state.get("video_model", DEFAULT_IMAGINE_VIDEO_MODEL)
+    reason = st.session_state.get("reasoning_level", "high")
+    cache = st.session_state.get("prompt_cache_key") or "—"
+    return (
+        f"**Grok 4.5 stack** · studio **v{STUDIO_VERSION}**  \n"
+        f"Chat: `{chat}` · Video: `{video}` · Reasoning: **{reason}** · "
+        f"`prompt_cache_key`: `{cache}`  \n"
+        f"Build/coding: `{DEFAULT_XAI_BUILD_MODEL}` · CLI ≥ **{MIN_GROK_BUILD_CLI}** · "
+        f"4.3 = 1M **opt-in only**"
+    )
+
+
+@st.cache_data(ttl=120, show_spinner=False)
+def cached_models_verify() -> dict[str, Any]:
+    try:
+        return verify_model_compatibility()
+    except Exception as exc:  # noqa: BLE001
+        return {"ok": False, "issues": [str(exc)], "warnings": []}
 
 
 def list_role_card_options() -> list[tuple[str, Path]]:
@@ -141,7 +272,9 @@ def list_role_card_options() -> list[tuple[str, Path]]:
         return [
             (p.stem.replace("_", " "), p)
             for p in sorted(AGENTS_DIR.glob("*.md"))
-            if p.stem != "AGENT_INDEX"
+            if p.stem not in {"AGENT_INDEX", "MODEL_LAYER_v3.7.1", "MODEL_LAYER_v3.6.7"}
+            and not p.stem.startswith("IMAGINE_AGENT")
+            and not p.stem.startswith("MODEL_LAYER")
         ]
 
 
@@ -181,10 +314,33 @@ def cached_plugin_details() -> str:
         return "Grok CLI not available in this environment."
 
 
+def render_sidebar_stack() -> None:
+    """Compact Model Layer strip for the sidebar."""
+    st.markdown(
+        f'<div class="stack-badge">Grok 4.5 · v{STUDIO_VERSION}</div>',
+        unsafe_allow_html=True,
+    )
+    st.caption(
+        f"Chat `{st.session_state.get('chat_model', DEFAULT_XAI_CHAT_MODEL)}` · "
+        f"Video `{st.session_state.get('video_model', DEFAULT_IMAGINE_VIDEO_MODEL)}`"
+    )
+    if MODELS_AVAILABLE:
+        vr = cached_models_verify()
+        if vr.get("ok"):
+            st.success("models verify ✅", icon="✅")
+        else:
+            st.warning("models verify ⚠️")
+    with st.expander("Activation", expanded=False):
+        st.code(ACTIVATION_PHRASE, language=None)
+        st.caption("Paste MASTER_PROMPT.md in Grok Build, then use this phrase.")
+
+
 def render_footer() -> None:
     st.divider()
     st.caption(
-        f"Grok Imagine Cinematic Studio v{STUDIO_VERSION} · "
-        f"Grok 4.5 cinematic+Build · optional 4.3 (1M) · Imagine 1.0/1.5 · "
+        f"Grok Imagine Cinematic Studio **v{STUDIO_VERSION}** · "
+        f"**Grok 4.5** cinematic+Build · optional **4.3** (1M) · Imagine **1.0** cost / **1.5** audio · "
+        f"CLI ≥ {MIN_GROK_BUILD_CLI} · "
+        f"`{DOCS_MODEL_LAYER}` · `{DOCS_MODELS}` · "
         f"Install: `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`"
     )

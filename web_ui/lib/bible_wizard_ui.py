@@ -63,7 +63,7 @@ def _collect_field_widgets(stage: dict[str, Any], answers: dict[str, Any]) -> No
                 key=wkey,
             )
         elif key == "video_model" and rt.MODELS_AVAILABLE and rt.IMAGINE_VIDEO_MODELS:
-            options = list(rt.IMAGINE_VIDEO_MODELS.keys())
+            options = rt.ordered_video_model_slugs()
             # Also allow short aliases users type in CLI
             for alias in ("1.0", "1.5", "grok-imagine-video", "grok-imagine-video-1.5"):
                 if alias not in options:
@@ -71,16 +71,34 @@ def _collect_field_widgets(stage: dict[str, Any], answers: dict[str, Any]) -> No
             idx = 0
             if current in options:
                 idx = options.index(current)
+            elif current is None and rt.DEFAULT_IMAGINE_VIDEO_MODEL in options:
+                idx = options.index(rt.DEFAULT_IMAGINE_VIDEO_MODEL)
             answers[key] = st.selectbox(
-                label, options, index=idx, help=help_txt, key=wkey
+                label,
+                options,
+                index=idx,
+                help=(help_txt or "") + " · 1.0 cost default; 1.5 for native audio",
+                key=wkey,
+                format_func=lambda s: (
+                    rt.format_video_model_label(s)
+                    if s in rt.IMAGINE_VIDEO_MODELS
+                    else s
+                ),
             )
         elif key == "chat_model" and rt.MODELS_AVAILABLE and rt.XAI_CHAT_MODELS:
-            options = list(rt.XAI_CHAT_MODELS.keys())
+            options = rt.ordered_chat_model_slugs()
             idx = 0
             if current in options:
                 idx = options.index(current)
+            elif rt.DEFAULT_XAI_CHAT_MODEL in options:
+                idx = options.index(rt.DEFAULT_XAI_CHAT_MODEL)
             answers[key] = st.selectbox(
-                label, options, index=idx, help=help_txt, key=wkey
+                label,
+                options,
+                index=idx,
+                help=(help_txt or "") + " · grok-4.5 default; grok-4.3 = 1M opt-in only",
+                key=wkey,
+                format_func=rt.format_chat_model_label,
             )
         elif key in ("logline", "characters_text", "world_text", "tech_notes"):
             answers[key] = st.text_area(

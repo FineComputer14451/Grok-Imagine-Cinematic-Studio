@@ -1,4 +1,4 @@
-"""Production defaults, models, and API configuration."""
+"""Production defaults, Grok 4.5 Model Layer, and API configuration."""
 
 from __future__ import annotations
 
@@ -10,9 +10,71 @@ from lib import session as sess
 
 def render() -> None:
     st.header("⚙️ Settings")
+    st.caption("Session defaults for Production, Quota, and Imagine. Orchestration defaults to **Grok 4.5**.")
 
     opts = sess.PRODUCTION_OPTIONS
 
+    st.subheader("Model Layer (Grok 4.5 · studio v3.7.1)")
+    st.markdown(rt.stack_banner_markdown())
+
+    if rt.MODELS_AVAILABLE:
+        video_models = rt.ordered_video_model_slugs()
+        chat_models = rt.ordered_chat_model_slugs()
+        st.session_state.chat_model = st.selectbox(
+            "xAI Chat / orchestration model",
+            chat_models,
+            index=sess.select_index(chat_models, st.session_state.chat_model),
+            format_func=rt.format_chat_model_label,
+            help="Default: grok-4.5 (cinematic + Build). Use grok-4.3 only for 1M-context Bibles.",
+        )
+        st.session_state.video_model = st.selectbox(
+            "Imagine Video model",
+            video_models,
+            index=sess.select_index(video_models, st.session_state.video_model),
+            format_func=rt.format_video_model_label,
+            help="Cost default is 1.0 (grok-imagine-video). Use 1.5 when native audio is required.",
+        )
+        st.session_state.reasoning_level = st.select_slider(
+            "Preferred reasoning (Grok 4.5)",
+            options=opts["reasoning_levels"],
+            value=st.session_state.get("reasoning_level", "high"),
+            help="High for Bibles, QA, Identity Lock, Sequence Director. Medium for routine prompts.",
+        )
+        st.session_state.prompt_cache_key = st.text_input(
+            "prompt_cache_key (project slug)",
+            value=st.session_state.get("prompt_cache_key", ""),
+            placeholder="my-film-slug",
+            help="Stable key for multi-turn grok-4.5 agent loops — reduces cost on repeated context.",
+        )
+        with st.expander("VIDEO_PIPELINE_SPEC (from registry)", expanded=False):
+            st.code(
+                rt.build_video_pipeline_spec(st.session_state.video_model),
+                language=None,
+            )
+        with st.expander("Model stack JSON", expanded=False):
+            st.json(rt.session_model_stack())
+        col_v, col_c = st.columns(2)
+        with col_v:
+            if st.button("Run models verify", width="stretch"):
+                rt.cached_models_verify.clear()
+                result = rt.cached_models_verify()
+                if result.get("ok"):
+                    st.success("Model compatibility OK")
+                else:
+                    st.error("Compatibility issues")
+                for issue in result.get("issues") or []:
+                    st.markdown(f"- {issue}")
+                for warn in result.get("warnings") or []:
+                    st.caption(f"⚠️ {warn}")
+        with col_c:
+            st.caption(
+                f"Registry: `{rt.DOCS_MODELS}` · Layer: `{rt.DOCS_MODEL_LAYER}` · "
+                f"CLI ≥ {rt.MIN_GROK_BUILD_CLI}"
+            )
+    else:
+        st.warning("Model registry unavailable — tools/models.py failed to import.")
+
+    st.divider()
     st.subheader("Production defaults")
     st.session_state.genre = st.selectbox(
         "Genre",
@@ -24,27 +86,6 @@ def render() -> None:
         opts["directors"],
         index=sess.select_index(opts["directors"], st.session_state.director),
     )
-    if rt.MODELS_AVAILABLE:
-        video_models = list(rt.IMAGINE_VIDEO_MODELS.keys())
-        chat_models = list(rt.XAI_CHAT_MODELS.keys())
-        st.session_state.video_model = st.selectbox(
-            "Imagine Video Model",
-            video_models,
-            index=sess.select_index(video_models, st.session_state.video_model),
-            format_func=lambda s: (
-                f"{rt.IMAGINE_VIDEO_MODELS[s]['label']} "
-                f"(${rt.IMAGINE_VIDEO_MODELS[s]['usd_per_second']}/sec"
-                f"{', native audio' if rt.IMAGINE_VIDEO_MODELS[s].get('native_audio') else ''})"
-            ),
-        )
-        st.session_state.chat_model = st.selectbox(
-            "xAI Chat Model",
-            chat_models,
-            index=sess.select_index(chat_models, st.session_state.chat_model),
-            format_func=lambda s: (
-                f"{rt.XAI_CHAT_MODELS[s]['label']} — {rt.XAI_CHAT_MODELS[s]['use_case']}"
-            ),
-        )
     st.session_state.duration = st.slider(
         "Duration (seconds)", 15, 180, st.session_state.duration, step=5
     )
@@ -80,11 +121,11 @@ def render() -> None:
         "XAI API Key",
         type="password",
         key="xai_api_key",
-        help="Or set XAI_API_KEY in the environment.",
+        help="Or set XAI_API_KEY in the environment. Used for live chat + Imagine API calls.",
     )
     st.caption(
-        "Stack: cinematic+Build `grok-4.5` · optional 1M `grok-4.3` · "
-        "CLI ≥ 0.2.93 — see `references/MODELS_v3.6.md`"
+        "Never treat Imagine image/video slugs as chat models. "
+        "Orchestration = `grok-4.5` · video/image spend = `grok-imagine-*` only."
     )
 
     st.divider()
@@ -92,7 +133,7 @@ def render() -> None:
     st.session_state.nsfw_opt_in = st.checkbox(
         "Enable NSFW planning tools",
         value=st.session_state.nsfw_opt_in,
-        help="Unlocks the NSFW page. Explicit activation still required in Grok.",
+        help="Unlocks the NSFW page. Explicit ErosForge activation still required in Grok.",
     )
     if st.session_state.nsfw_opt_in:
         st.caption("Open the **NSFW** page to plan batches and extensions.")

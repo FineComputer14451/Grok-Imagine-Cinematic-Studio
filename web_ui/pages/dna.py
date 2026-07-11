@@ -80,7 +80,15 @@ def render() -> None:
         inj_char = st.selectbox("Character", [c["name"] for c in chars])
         inj_mode = st.selectbox(
             "Mode",
-            ["cinematic", "compact", "close_up", "sequence_starter", "video_1.5"],
+            [
+                "cinematic",
+                "compact",
+                "close_up",
+                "sequence_starter",
+                "video_1.0",
+                "video_1.5",
+            ],
+            help="video_1.0 = cost-default video inject · video_1.5 = native-audio / micro-detail",
         )
         inj_base = st.text_area("Base Prompt (optional)", height=80)
         if st.button("Generate Injection Block"):

@@ -22,6 +22,19 @@ def test_runtime_imports() -> None:
     assert callable(rt.validate_answers)
     assert callable(rt.summary_and_next_steps)
     assert callable(rt.build_notes)
+    assert rt.DEFAULT_XAI_CHAT_MODEL == "grok-4.5"
+    assert rt.DEFAULT_IMAGINE_VIDEO_MODEL == "grok-imagine-video"
+    assert callable(rt.ordered_chat_model_slugs)
+    assert callable(rt.ordered_video_model_slugs)
+    assert callable(rt.stack_banner_markdown)
+    assert callable(rt.session_model_stack)
+    assert callable(rt.cached_models_verify)
+    if rt.MODELS_AVAILABLE and rt.XAI_CHAT_MODELS:
+        ordered = rt.ordered_chat_model_slugs()
+        assert ordered[0] == "grok-4.5"
+    if rt.MODELS_AVAILABLE and rt.IMAGINE_VIDEO_MODELS:
+        v_ordered = rt.ordered_video_model_slugs()
+        assert v_ordered[0] == "grok-imagine-video"
 
 
 def test_session_helpers() -> None:
@@ -31,6 +44,9 @@ def test_session_helpers() -> None:
     assert sess.clip_story("a" * 20, 10).endswith("…")
     assert "genres" in sess.PRODUCTION_OPTIONS
     assert sess.SESSION_DEFAULTS["genre"] in sess.PRODUCTION_OPTIONS["genres"]
+    assert sess.SESSION_DEFAULTS["chat_model"] == "grok-4.5"
+    assert sess.SESSION_DEFAULTS["reasoning_level"] == "high"
+    assert "reasoning_levels" in sess.PRODUCTION_OPTIONS
 
 
 def test_page_modules_import() -> None:
