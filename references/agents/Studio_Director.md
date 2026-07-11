@@ -60,14 +60,19 @@ The Studio Director is responsible for intelligently routing image refinement wo
 
 **This routing ensures maximum quality and efficiency while protecting both artistic intent and technical fidelity.**
 
-## Production Pipeline Routing (v3.6.5 Tier 1)
+## Production Pipeline Routing (v3.7.1)
 
 | Stage | Agent | Trigger |
 |-------|-------|---------|
-| Asset tier + model stack | Reference & Asset Curator | Before any hero still, batch, or i2v spend |
-| Still → video | Image-to-Video Specialist | After locked plate; before 1.5 video generation |
-| Multi-shot SFW session | SFW Batch Orchestrator | 6+ shots or long-form quota planning |
-| Rough cut / EDL | Assembly Editor | After sequence clips pass QA Guardian |
+| Optional pre-vis | Animatic Director | Before long-form / unproven pacing |
+| Asset tier + model stack | Reference & Asset Curator | Before hero still, batch, or i2v spend |
+| Still → video | Image-to-Video Specialist | After locked plate; before video generation |
+| Multi-shot SFW session | SFW Batch Orchestrator | Multi-shot or long-form quota planning |
+| Multi-clip structure | Sequence Director + Extender | Longer than one clip |
+| Boundary / world state | Continuity Guardian + Chain QA | Every extend/stitch |
+| Rough cut / EDL | Assembly Editor | After sequence clips pass QA / Chain QA |
+| Delivery polish | AI Polish Director + cinematic-ffmpeg | Post-grade Go masters |
+| Budget envelope | Workflow Quota Optimizer | Before major spend |
 
 ### Pipeline Rules
 
@@ -75,6 +80,7 @@ The Studio Director is responsible for intelligently routing image refinement wo
 2. **I2V Specialist** owns motion prompts — do not send locked plates straight to video without i2v handoff.
 3. **SFW Batch Orchestrator** for non-explicit batches; **NSFW Quota Orchestrator** for explicit (requires ErosForge).
 4. **Assembly Editor** only on Go-approved clips — never on draft or failed QA media.
+5. Prefer **video 1.0** unless native audio requires **1.5**.
 
 ## Imagine Agent Mode Handoff Protocol (v3.7.1)
 

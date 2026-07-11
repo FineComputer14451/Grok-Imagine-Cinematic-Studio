@@ -48,42 +48,42 @@ Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.7.1)** block.
 | Agent | Role Card | Activation |
 |-------|-----------|------------|
 | Studio Director v3.7.1 | `Studio_Director.md` | `ACTIVATE STUDIO DIRECTOR` · `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` |
-| Mega Production Architect v3.6.5 | `Mega_Production_Architect.md` | `ACTIVATE MEGA_PRODUCTION_ARCHITECT` |
+| Mega Production Architect v3.7.1 | `Mega_Production_Architect.md` | `ACTIVATE MEGA_PRODUCTION_ARCHITECT` |
 
 ## Visual & Camera
 
 | Agent | Role Card | Activation |
 |-------|-----------|------------|
-| Director of Photography v3.6.5 | `Director_of_Photography_DoP_v3.5.md` | `ACTIVATE DOP` |
-| Color Grading Supervisor v3.6.5 | `Post_Production_Color_Grading_Supervisor_v3.5.md` | `ACTIVATE COLOR_GRADING` |
-| Production Designer v3.6.5 | `Production_Designer_Set_Decorator_v3.5.md` | `ACTIVATE PRODUCTION_DESIGNER` |
+| Director of Photography v3.7.1 | `Director_of_Photography_DoP_v3.5.md` | `ACTIVATE DOP` · `CINEMATIC LIGHTING MODE` |
+| Color Grading Supervisor v3.7.1 | `Post_Production_Color_Grading_Supervisor_v3.5.md` | `ACTIVATE COLOR_GRADING` · `PROTECT SKIN TONES` |
+| Production Designer v3.7.1 | `Production_Designer_Set_Decorator_v3.5.md` | `ACTIVATE PRODUCTION_DESIGNER` · `WORLD BUILD MODE` |
 
 ## Story & Performance
 
 | Agent | Role Card | Activation |
 |-------|-----------|------------|
-| Character DNA Extractor v3.6.5 | `Character_DNA_Extractor_v3.5.md` | `ACTIVATE CHARACTER_DNA_EXTRACTOR` |
-| Performance & Emotion Director v3.6.5 | `Performance_Emotion_Director.md` | `ACTIVATE PERFORMANCE_EMOTION` |
-| Identity Lock Specialist v3.6.5 | `Identity_Lock_Specialist.md` | `ACTIVATE IDENTITY_LOCK` |
-| Narrative Arc Strategist v3.6.5 | `Narrative_Arc_Pacing_Strategist_v3.5.md` | `ACTIVATE NARRATIVE_ARC` |
-| Sequence Director v3.6.5 | `Sequence_Director.md` | `ACTIVATE SEQUENCE_DIRECTOR` |
-| Cinematic Sequence Extender v3.6.5 | `Cinematic_Sequence_Extender.md` | `ACTIVATE SEQUENCE_EXTENDER` |
+| Character DNA Extractor v3.7.1 | `Character_DNA_Extractor_v3.5.md` | `ACTIVATE CHARACTER_DNA_EXTRACTOR` · `FORENSIC DNA MODE` |
+| Performance & Emotion Director v3.7.1 | `Performance_Emotion_Director.md` | `ACTIVATE PERFORMANCE_EMOTION` · `MAXIMUM_SUBTEXT` |
+| Identity Lock Specialist v3.7.1 | `Identity_Lock_Specialist.md` | `ACTIVATE IDENTITY_LOCK` · `CHECK DRIFT` · `LOCK CHARACTER` |
+| Narrative Arc Strategist v3.7.1 | `Narrative_Arc_Pacing_Strategist_v3.5.md` | `ACTIVATE NARRATIVE_ARC` · `ACTIVATE NARRATIVE_STRATEGIST` |
+| Sequence Director v3.7.1 | `Sequence_Director.md` | `ACTIVATE SEQUENCE_DIRECTOR` · `BREAK INTO CLIPS` |
+| Cinematic Sequence Extender v3.7.1 | `Cinematic_Sequence_Extender.md` | `ACTIVATE SEQUENCE_EXTENDER` · `EXTEND SEQUENCE TO 90s` |
 
 ## Technical & Continuity
 
 | Agent | Role Card | Activation |
 |-------|-----------|------------|
-| Continuity Guardian v3.6.5 | `Continuity_Consistency_Guardian.md` | `ACTIVATE CONTINUITY_GUARDIAN` |
-| QA Guardian v3.6.5 | `Quality_Assurance_Guardian_v3.5.md` | `ACTIVATE QA_GUARDIAN` |
-| Imagine Prompt Master v3.6.5 | `Imagine_Prompt_Master.md` | `ACTIVATE IMAGINE_PROMPT_MASTER` |
-| Workflow & Quota Optimizer v3.6.5 | `Workflow_Quota_Optimizer.md` | `ACTIVATE WORKFLOW_OPTIMIZER` |
+| Continuity Guardian v3.7.1 | `Continuity_Consistency_Guardian.md` | `ACTIVATE CONTINUITY_GUARDIAN` · `CHECK CONTINUITY` |
+| QA Guardian v3.7.1 | `Quality_Assurance_Guardian_v3.5.md` | `ACTIVATE QA_GUARDIAN` · `RUN QA REVIEW` · `RUN CHAIN QA REVIEW` |
+| Imagine Prompt Master v3.7.1 | `Imagine_Prompt_Master.md` | `ACTIVATE IMAGINE_PROMPT_MASTER` · `OPTIMIZE PROMPT` |
+| Workflow & Quota Optimizer v3.7.1 | `Workflow_Quota_Optimizer.md` | `ACTIVATE WORKFLOW_OPTIMIZER` · `SHOW QUOTA DASHBOARD` |
 
 ## Audio (Native 1.5)
 
 | Agent | Role Card | Activation |
 |-------|-----------|------------|
-| Sonic Architect v3.6.5 | `Sonic_Architect_Native_Audio_Virtuoso.md` | `ACTIVATE SONIC_ARCHITECT` |
-| Foley Specialist v3.6.5 | `Foley_Sound_Design_Specialist_v3.5.md` | `ACTIVATE FOLEY_SPECIALIST` |
+| Sonic Architect v3.7.1 | `Sonic_Architect_Native_Audio_Virtuoso.md` | `ACTIVATE SONIC_ARCHITECT` · `ACTIVATE NATIVE_AUDIO` |
+| Foley Specialist v3.7.1 | `Foley_Sound_Design_Specialist_v3.5.md` | `ACTIVATE FOLEY_SPECIALIST` · `DESIGN FOLEY FOR` |
 
 ## Action, VFX & Marketing
 
@@ -99,7 +99,7 @@ Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.7.1)** block.
 
 | Agent | Role Card | Activation |
 |-------|-----------|------------|
-| AI Polish Director v3.6.5 | `AI_Polish_Director.md` | `ACTIVATE AI_POLISH_DIRECTOR` |
+| AI Polish Director v3.7.1 | `AI_Polish_Director.md` | `ACTIVATE AI_POLISH_DIRECTOR` · `RUN FINAL POLISH PASS` · `UPSCALE FOR DELIVERY` |
 
 ---
 
@@ -107,24 +107,26 @@ Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.7.1)** block.
 
 | Agent | Role Card | Skill | Activation |
 |-------|-----------|-------|------------|
-| Reference & Asset Curator v3.6.5 | `Reference_Asset_Curator.md` | `reference-asset-curator` | `ACTIVATE REFERENCE_CURATOR` |
-| Image-to-Video Specialist v3.6.5 | `Image_to_Video_Specialist.md` | `image-to-video-specialist` | `ACTIVATE I2V_SPECIALIST` |
-| SFW Batch Orchestrator v1.0 | `SFW_Batch_Orchestrator.md` | `sfw-batch-orchestrator` | `ACTIVATE SFW_BATCH_ORCHESTRATOR` |
-| Assembly Editor v3.6.5 | `Assembly_Editor.md` | `assembly-editor` | `ACTIVATE ASSEMBLY_EDITOR` |
+| Animatic Director v3.7.1 | — (pipeline skill) | `animatic-director` | `ACTIVATE ANIMATIC DIRECTOR` · `PLAN ANIMATIC` |
+| Reference & Asset Curator v3.7.1 | `Reference_Asset_Curator.md` | `reference-asset-curator` | `ACTIVATE REFERENCE_CURATOR` · `LOCK HERO PLATE` |
+| Image-to-Video Specialist v3.7.1 | `Image_to_Video_Specialist.md` | `image-to-video-specialist` | `ACTIVATE I2V_SPECIALIST` · `BUILD I2V PROMPT` |
+| SFW Batch Orchestrator v3.7.1 | `SFW_Batch_Orchestrator.md` | `sfw-batch-orchestrator` | `ACTIVATE SFW_BATCH_ORCHESTRATOR` · `PLAN SFW BATCH` |
+| Assembly Editor v3.7.1 | `Assembly_Editor.md` | `assembly-editor` | `ACTIVATE ASSEMBLY_EDITOR` · `EXPORT EDL` |
 | Multi-Character Identity Arbiter v3.6.5 | `Multi_Character_Identity_Arbiter.md` | `multi-character-identity-arbiter` | `ACTIVATE MULTI_CHARACTER_ARBITER` |
 
-**Order of operations:** Reference Curator → (i2i if needed) → I2V Specialist → generation/QA → Assembly Editor → color → polish.
+**Order of operations:** Animatic (optional) → Reference Curator → (i2i if needed) → I2V Specialist → generation/QA → Assembly Editor → color → polish.
 
 ---
 
-## Refinement (i2i)
+## Refinement (i2i) & Upload Recreation
 
-| Agent | Role Card | Skill | Activation |
-|-------|-----------|-------|------------|
+| Agent / Skill | Role Card | Skill | Activation |
+|---------------|-----------|-------|------------|
+| AI Image Recreation v3.7.1 | — (skill protocols) | `ai-image-recreation` | `ACTIVATE AI_IMAGE_RECREATION` |
 | I2I Cinematic Refiner v3.6.5 | `I2I_Cinematic_Refiner.md` | `i2i-cinematic-refiner` | `ACTIVATE I2I CINEMATIC REFINER` |
 | I2I Refiner v3.6.5 | `I2I_Refiner.md` | `i2i-refiner` | `ACTIVATE I2I REFINER` |
 
-Studio Director routes standard refinement to I2I Cinematic Refiner; explicit/intimate content goes to I2I Refiner + ErosForge.
+**Upload recreation** (`ai-image-recreation`) handles user-uploaded stills (style transfer, enhance, design sheets, pre-video plates) via `image_edit`. Session Grok outputs use `generated-image-editor` (user-global). Studio Director routes multi-pass cinematic polish to I2I Cinematic Refiner; explicit/intimate content goes to I2I Refiner + ErosForge.
 
 ---
 
@@ -181,7 +183,7 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 | Skill | Type | Activation |
 |-------|------|------------|
 | `ai-polish-director` | Agent | `ACTIVATE AI_POLISH_DIRECTOR` |
-| `chain-qa-protocol` | Pipeline | `RUN CHAIN QA REVIEW` |
+| `chain-qa-protocol` | Pipeline (v3.7.1) | `RUN CHAIN QA REVIEW` |
 | `cinematic-ffmpeg` | Tool | After Assembly Editor + polish |
 | `animatic-director` | Pipeline | `ACTIVATE ANIMATIC DIRECTOR` |
 | `handoff-packet-validator` | Tool | Before extend / i2v handoffs |

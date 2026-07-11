@@ -14,7 +14,7 @@ Full Imagine runtime for Grok Imagine Cinematic Studio — closes the planner-to
    python tools/cinematic_studio_cli.py imagine verify
    ```
 2. **API key** — `export XAI_API_KEY=...` (omit for dry-run mock mode)
-3. **Activate skills:** `imagine-prompt-master`, `imagine-execution-bridge`, `studio-director` (Imagine Agent Mode Handoff), `sfw-batch-orchestrator`, `reference-asset-curator`, `image-to-video-specialist`, `chain-qa-protocol`
+3. **Activate skills:** `imagine-prompt-master`, `imagine-execution-bridge`, `studio-director` (Imagine Agent Mode Handoff), `sfw-batch-orchestrator`, `reference-asset-curator`, `image-to-video-specialist`, `chain-qa-protocol`. For **user-uploaded** still recreation / style transfer before i2v: `ai-image-recreation`.
 
 ## Plan → Generate → QA Loop
 

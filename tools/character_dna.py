@@ -20,9 +20,16 @@ from project_state import load_project_state, save_project_state
 from studio_paths import CHARACTERS_DIR
 
 SCHEMA_VERSION = "1.0"
-STUDIO_AGENT_VERSION = "v3.6"
+STUDIO_AGENT_VERSION = "v3.7.1"
 
-PROMPT_MODES = ("compact", "cinematic", "close_up", "sequence_starter", "video_1.5")
+PROMPT_MODES = (
+    "compact",
+    "cinematic",
+    "close_up",
+    "sequence_starter",
+    "video_1.0",
+    "video_1.5",
+)
 
 
 def slugify(name: str) -> str:
@@ -144,11 +151,18 @@ def build_prompt_blocks(dna: dict[str, Any]) -> dict[str, str]:
 
     ref_ids = dna.get("reference_image_ids", [])
     ref_clause = f" reference_image_id={ref_ids[0]}" if ref_ids else ""
-    video_15 = (
-        f"{variable} Grok Imagine Video 1.5 native. {name}: {core}. {facial}. "
-        f"Physics-realistic motion. {motion or movement}. "
+    motion_clause = motion or movement
+    video_10 = (
+        f"{variable} Grok Imagine Video 1.0 (cost default). {name}: {core}. {facial}. "
+        f"Physics-realistic motion. {motion_clause}. "
         f"reference_image_fidelity=high, primary_ref_weight={primary_w}{ref_clause}. "
-        f"Identity drift prevention active."
+        f"Identity drift prevention active. Prefer locked hero plate as first frame."
+    )
+    video_15 = (
+        f"{variable} Grok Imagine Video 1.5 native audio capable. {name}: {core}. {facial}. "
+        f"Physics-realistic motion with audio-ready performance. {motion_clause}. "
+        f"reference_image_fidelity=high, primary_ref_weight={primary_w}{ref_clause}. "
+        f"Identity drift prevention active. Sync breath/micro-expression if dialogue."
     )
 
     return {
@@ -156,6 +170,7 @@ def build_prompt_blocks(dna: dict[str, Any]) -> dict[str, str]:
         "cinematic": cinematic.strip(),
         "close_up": close_up.strip(),
         "sequence_starter": sequence_starter.strip(),
+        "video_1.0": video_10.strip(),
         "video_1.5": video_15.strip(),
     }
 
@@ -204,6 +219,15 @@ def dna_to_markdown(dna: dict[str, Any], prompts: dict[str, str] | None = None) 
         "",
         "## Prompt Injection — Cinematic",
         f"```\n{prompts['cinematic']}\n```",
+        "",
+        "## Prompt Injection — Close-up",
+        f"```\n{prompts['close_up']}\n```",
+        "",
+        "## Prompt Injection — Sequence Starter",
+        f"```\n{prompts['sequence_starter']}\n```",
+        "",
+        "## Prompt Injection — Video 1.0",
+        f"```\n{prompts['video_1.0']}\n```",
         "",
         "## Prompt Injection — Video 1.5",
         f"```\n{prompts['video_1.5']}\n```",

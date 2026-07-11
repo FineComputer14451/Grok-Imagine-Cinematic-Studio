@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Assembly Editor — rough-cut EDL export from QA-approved sequence clips.
+Assembly Editor (studio v3.7.1 / Grok 4.5) — rough-cut EDL export from QA-approved clips.
+
+Orchestration defaults to grok-4.5; no Imagine spend. See skill assembly-editor.
 """
 
 from __future__ import annotations
@@ -13,6 +15,7 @@ from typing import Any
 from studio_paths import ARTIFACTS_DIR, EDL_DIR, SEQUENCES_DIR
 
 SCHEMA_VERSION = "1.0"
+STUDIO_AGENT_VERSION = "v3.7.1"
 
 
 def _now_iso() -> str:
@@ -90,6 +93,8 @@ def build_edl(
 
     return {
         "schema_version": SCHEMA_VERSION,
+        "studio_agent_version": STUDIO_AGENT_VERSION,
+        "cut_name": f"ROUGH_CUT_{seq.get('slug', 'sequence')}",
         "sequence_name": seq.get("sequence_name"),
         "slug": seq.get("slug"),
         "created_at": _now_iso(),
@@ -103,7 +108,15 @@ def build_edl(
         "director_cut_priorities": _director_priorities(seq, entries, pacing_notes),
         "handoff": {
             "color_grade": "Apply sequence color_grade notes before polish",
-            "ai_polish": [e["clip_id"] for e in entries if e.get("chain_qa_score", 0) >= 8],
+            "ai_polish": [
+                e["clip_id"]
+                for e in entries
+                if (e.get("chain_qa_score") or 0) >= 8
+            ],
+            "next_agents": [
+                "Post-Production Color Grading Supervisor",
+                "AI Polish Director",
+            ],
         },
     }
 

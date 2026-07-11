@@ -15,7 +15,7 @@
 - **Mature CLI + Web UI** — model pickers, native audio toggle, 720p/duration, live cost estimation, **Guided Production Bible wizard** (`create-bible --wizard` / Web Guided Bible Creator)
 - **Native Grok Imagine Video 1.5 Pipeline** — image-to-video, one-pass audio, extend/stitch, Fast mode (1.0 remains cost default)
 - **Grok Build + unified Grok 4.5 stack** — CLI default `grok-4.5` (fork `grok-build`, min CLI **0.2.93**); cinematic + coding API `grok-4.5`; optional 1M `grok-4.3` (legacy coding: `grok-build-0.1`)
-- **Plugin marketplace** — 46 skills + 11 commands; release-pin hygiene for catalog commits
+- **Plugin marketplace** — 48 skills + 11 commands; release-pin hygiene for catalog commits
 - v3.5 heritage retained: Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop
 
 ---
@@ -109,7 +109,7 @@ python tools/cinematic_studio_cli.py nsfw report
 - **Localization & Subtitle Specialist v3.6** — Cultural adaptation, SDH subtitles & multi-language support (synced to 1.5 audio)
 
 ### Post-Production & Delivery
-- **AI Polish Director v3.6** — Final delivery polish specialist (720p → 1080p/4K upscale, face restoration, artifact cleanup via `ai-video-upscaler` skill; activate after QA Go + color grade)
+- **AI Polish Director v3.7.1** — Final delivery polish specialist (Grok 4.5; 720p → 1080p/4K-class upscale, face restoration, presets via `ai-video-upscaler` + `sequence polish`; activate after QA Go + color grade)
 
 ### Specialist (Opt-in)
 - **ErosForge NSFW Director v3.6** — Adult/R-rated content specialist (1.5-optimized erotic motion + synced intimate audio; activate explicitly with `ACTIVATE EROSFORGE`)

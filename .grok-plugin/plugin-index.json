@@ -5,6 +5,10 @@
       "components": {
         "skills": [
           {
+            "name": "ai-image-recreation",
+            "description": "AI recreation editing style transfer enhancement and variation of user-uploaded images via Grok Imagine image_edit and…"
+          },
+          {
             "name": "ai-polish-director",
             "description": "Final delivery polish agent for Grok Imagine Cinematic Studio. Runs post-QA upscale face restoration and artifact clean…"
           },
@@ -42,7 +46,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.6.7. Installs updates and verifies the full skill suite plus CLI to…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.7.1. Installs updates and verifies the full skill suite plus CLI to…"
           },
           {
             "name": "continuity-consistency-guardian",
@@ -166,7 +170,7 @@
           },
           {
             "name": "skill-agent-architect",
-            "description": "Skill & Agent Architect for the Grok-Imagine-Cinematic-Studio ecosystem. Helps design, draft, refine and document custo…"
+            "description": "Skill and Agent Architect for the Grok Imagine Cinematic Studio ecosystem. Helps design, draft, refine and document cus…"
           },
           {
             "name": "sonic-architect-native-audio-virtuoso",

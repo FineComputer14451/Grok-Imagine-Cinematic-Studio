@@ -35,7 +35,7 @@ Always begin: **"Starting Cinematic Studio Meta Installer v3.7.1…"**
 
 ## Install Methods (choose one)
 
-Both methods ship the same **46+ skills** (plugin suite). They differ in **where** skills live, **what else** gets installed, and **how you update**.
+Both methods ship the same **48 skills** (plugin suite). They differ in **where** skills live, **what else** gets installed, and **how you update**.
 
 | | **Method A — Meta installer / zip** | **Method B — Grok plugin** |
 |---|-------------------------------------|----------------------------|

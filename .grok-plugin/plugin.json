@@ -20,6 +20,7 @@
     "production bible"
   ],
   "skills": [
+    ".grok/skills/ai-image-recreation",
     ".grok/skills/ai-polish-director",
     ".grok/skills/ai-video-upscaler",
     ".grok/skills/animatic-director",

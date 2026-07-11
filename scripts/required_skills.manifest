@@ -1,4 +1,4 @@
-# Grok Imagine Cinematic Studio v3.6.7 — skill manifest
+# Grok Imagine Cinematic Studio v3.7.1 — skill manifest
 # One skill per line. Append " # core" for skills required by verify.
 
 grok-imagine-cinematic-studio # core
@@ -8,42 +8,44 @@ studio-director # core
 quality-assurance-guardian # core
 identity-lock-specialist # core
 workflow-quota-optimizer # core
+ai-image-recreation
+ai-polish-director
+animatic-director
+arc-replan-copilot
+assembly-editor
+chain-qa-protocol
 character-dna-extractor
+cinematic-ffmpeg
+cinematic-studio-meta-installer
 continuity-consistency-guardian
 director-of-photography
 director-of-photography-v3-3
 erosforge-nsfw-director
 foley-sound-design-specialist
+github-repo-manager
+handoff-packet-validator
 i2i-cinematic-refiner
 i2i-refiner
+image-to-video-specialist
+imagine-execution-bridge
 imagine-prompt-master
 key-art-poster-designer
 localization-subtitle-specialist
 mega-production-architect
+multi-character-identity-arbiter
 narrative-arc-pacing-strategist
+nsfw-chain-qa-protocol
 nsfw-quota-orchestrator
 nsfw-sequence-extender
-nsfw-chain-qa-protocol
 performance-emotion-director
 post-production-color-grading-supervisor
+production-bible-workflow
 production-designer-set-decorator
+reference-asset-curator
 sequence-director
+sfw-batch-orchestrator
+skill-agent-architect
 sonic-architect-native-audio-virtuoso
 stunt-action-choreographer
 trailer-teaser-director
 vfx-sfx-supervisor
-ai-polish-director
-animatic-director
-assembly-editor
-chain-qa-protocol
-cinematic-ffmpeg
-cinematic-studio-meta-installer
-github-repo-manager
-handoff-packet-validator
-image-to-video-specialist
-imagine-execution-bridge
-production-bible-workflow
-reference-asset-curator
-sfw-batch-orchestrator
-arc-replan-copilot
-multi-character-identity-arbiter

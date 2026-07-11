@@ -27,12 +27,19 @@ python tools/cinematic_studio_cli.py sequence edl "Act 1"
 python tools/cinematic_studio_cli.py sequence edl "Act 1" --output artifacts/edl/custom.json
 ```
 
-## AI Polish
+## AI Polish (v3.7.1 · Grok 4.5)
+
+Skill: `ai-polish-director` · Role Card: `references/agents/AI_Polish_Director.md` · Presets: `.grok/skills/ai-polish-director/references/polish_presets.md`
+
+Activate: `ACTIVATE AI_POLISH_DIRECTOR` · `RUN FINAL POLISH PASS` (only after QA Go + color grade)
 
 ```bash
 python tools/cinematic_studio_cli.py sequence polish "Act 1" --scale 2 --face-restore
 python tools/cinematic_studio_cli.py sequence polish "Act 1" --dry-run
+python tools/cinematic_studio_cli.py sequence polish "Act 1" --clip clip_001 --face-restore
 ```
+
+Outputs: `artifacts/polished/{slug}/` + `polish_manifest.json` (includes `polish_spec` / Bible log line).
 
 ## Delivery
 

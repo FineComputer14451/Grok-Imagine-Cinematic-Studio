@@ -1,6 +1,8 @@
-# Chain QA Checklist v3.6 — Extend/Stitch Gate
+# Chain QA Checklist v3.7.1 — Extend/Stitch Gate (Grok 4.5)
 
 Run **before** approving any clip for extension or final stitch. Complements the standard 16-point QA.
+
+Skill: `chain-qa-protocol` · Code: `tools/sequence_chain.py` · Assist: `sequence qa-assist`
 
 **Pass threshold:** weighted score ≥ 7.0  
 **Critical checks** (any below 7.0 = automatic No-Go): `last_frame_continuity`, `audio_momentum_sync`, `character_drift_boundary`, `transition_readiness`

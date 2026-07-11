@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """
-Animatic Director — draft stills → motion tests → hero promotion workflow.
+Animatic Director (studio v3.7.1 / Grok 4.5) — draft stills → motion tests → hero promotion.
+
+Orchestration defaults to grok-4.5. Prefer 1.0 video for cheap motion probes.
+See skill animatic-director.
 """
 
 from __future__ import annotations
@@ -18,6 +21,7 @@ from quota_optimizer import estimate_clip_cost
 from studio_paths import ANIMATIC_DIR
 
 SCHEMA_VERSION = "1.0"
+STUDIO_AGENT_VERSION = "v3.7.1"
 
 TIER_MODELS: dict[str, dict[str, str]] = {
     "draft": {"image": DEFAULT_IMAGINE_IMAGE_MODEL, "video": "grok-imagine-video"},
@@ -119,6 +123,7 @@ def plan_animatic(
 
     return {
         "schema_version": SCHEMA_VERSION,
+        "studio_agent_version": STUDIO_AGENT_VERSION,
         "title": title,
         "slug": slugify(title),
         "target_duration_seconds": target_duration,

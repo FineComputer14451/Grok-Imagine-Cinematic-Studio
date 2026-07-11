@@ -52,7 +52,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 - **NSFW Sequence Extender** (v3.6.4) — 30–120s+ sensual extension, prompt chains, erotic pacing, artifact QA
 
 ### v3.6.5 — Plugin Marketplace, Model Verification & Refinements (2026-06)
-- **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (46 skills + commands) for `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
+- **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (48 skills + commands) for `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
 - **Imagine 1.0 as default** — `grok-imagine-video` ($0.05/sec); 1.5 opt-in for native audio ($0.08/sec)
 - **`models verify`** CLI — validates Grok 4.5 cinematic+Build + optional 4.3 + Imagine 1.0/1.5 registry
 - **CLI modularization** — extracted `tools/cli/{models,bible,studio,production,...}_commands.py`; slimmer main entrypoint
@@ -99,7 +99,7 @@ cinematic-studio plugin catalog check --release
 ```
 
 ### 3. Grok Build Plugin Marketplace (Recommended for Grok CLI)
-Install the full Grok plugin suite (**46 skills** + 11 slash commands) as a Grok plugin:
+Install the full Grok plugin suite (**48 skills** + 11 slash commands) as a Grok plugin:
 
 ```bash
 # Install directly from GitHub (simplest)
@@ -140,7 +140,7 @@ streamlit run web_ui/app.py
 
 ```
 Studio Director v3.7.1 + Mega Production Architect v3.6.5  (Role Cards; studio v3.7.1 · Grok 4.5)
-├── .grok-plugin/                 # Marketplace + plugin manifests (46 skills) — managed via `cinematic-studio plugin catalog`
+├── .grok-plugin/                 # Marketplace + plugin manifests (48 skills) — managed via `cinematic-studio plugin catalog`
 ├── references/agents/            # Role Cards + AGENT_INDEX + MODEL_LAYER_v3.7.1 + Handoff protocol
 ├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, models.py, bible_stages, imagine_bridge
 ├── tools/cinematic_studio_cli.py   # CLI: create-bible --wizard, dna, sequence, quota, nsfw, models, imagine, plugin catalog
@@ -149,7 +149,7 @@ Studio Director v3.7.1 + Mega Production Architect v3.6.5  (Role Cards; studio v
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT_v3.6.md         # Main activation prompt (v3.7.1 · Grok 4.5)
 ├── scripts/                      # thin shims (release/verify); real catalog work via `cinematic-studio plugin catalog`
-└── .grok/skills/                 # 46+ custom Grok skills (primary runtime)
+└── .grok/skills/                 # 48 custom Grok skills (primary runtime)
 ```
 
 **Key v3.7.1 Components:**

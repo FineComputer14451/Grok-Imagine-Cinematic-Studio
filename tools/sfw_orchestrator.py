@@ -33,6 +33,7 @@ from sfw_config import (  # noqa: F401 — re-exported
     SFW_ASSET_MODEL_MAP,
     SHOT_TIER_OPTIONS,
     SHOT_TIERS,
+    STUDIO_AGENT_VERSION,
 )
 from sfw_decisions import (  # noqa: F401 — re-exported
     decide_generation_mode,
@@ -159,6 +160,8 @@ def plan_batch(
         "batch_id": batch_id,
         "slug": slug,
         "title": title,
+        "schema_version": SCHEMA_VERSION,
+        "studio_agent_version": STUDIO_AGENT_VERSION,
         "tier": tier,
         "budget_credits": budget_credits,
         "retry_reserve_credits": round(retry_reserve, 1),

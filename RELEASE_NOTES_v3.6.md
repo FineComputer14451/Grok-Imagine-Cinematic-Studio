@@ -48,9 +48,9 @@
 
 ## v3.6.5 Patch (June 24–26, 2026)
 
-- **Grok plugin marketplace support** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (46 skills + 11 commands); `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
+- **Grok plugin marketplace support** — `.grok-plugin/marketplace.json`, `plugin.json`, `plugin-index.json` (skill catalog; **48 skills** as of suite + `ai-image-recreation`); `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio`
 - **`scripts/generate_plugin_index.py`** — auto-generates the skill/command catalog for the Grok plugin system
-- **README.md refresh** — v3.6.5 alignment, 46-skill suite docs, model stack everywhere, updated architecture, project structure, agent listings, CLI/Web UI examples, and links
+- **README.md refresh** — v3.6.5+ alignment, full skill suite docs, model stack everywhere, updated architecture, project structure, agent listings, CLI/Web UI examples, and links
 - **Web UI Streamlit fixes** — migrated all `use_container_width=True` (dataframes, buttons, forms) to `width="stretch"` for newer Streamlit compatibility; minor robustness update in dashboard
 - **CHANGELOG.md** updated with detailed entries for 3.6.5 and post-release refinements
 - **Repo hygiene** — removed deprecated `agents/` dir and stale mirrors; canonical Role Cards stay in `references/agents/`
@@ -90,7 +90,7 @@ See `CHANGELOG.md` for full details.
 - Per-second 1.5 video quota modeling + Fast mode → quality pass strategies
 
 ### Complete Skill Layer (`.grok/skills/`) + Plugin Marketplace
-- **46 skills** in the Grok plugin catalog (core cinematic agents + i2i + NSFW + delivery + meta)
+- **48 skills** in the Grok plugin catalog (core cinematic agents + i2i + upload recreation + NSFW + delivery + meta)
 - `.grok-plugin/` marketplace support for one-command `grok plugin install`
 - `scripts/generate_plugin_index.py` keeps the skill + command index fresh
 - Consistent markdown formatting across all skill files (SKILL.md)
@@ -121,7 +121,7 @@ See `CHANGELOG.md` for full details.
 - `stunt-action-choreographer/SKILL.md`
 - `vfx-sfx-supervisor/SKILL.md`
 
-**v3.6.5+ additions:** `cinematic-studio-meta-installer`, `github-repo-manager`, `assembly-editor`, `animatic-director`, `reference-asset-curator`, `image-to-video-specialist`, `sfw-batch-orchestrator`, `chain-qa-protocol`, `handoff-packet-validator`, `cinematic-ffmpeg`, `ai-polish-director`, `production-bible-workflow`, `nsfw-*` variants, `arc-replan-copilot`, `multi-character-identity-arbiter`, and more (full 46 in `.grok-plugin/plugin-index.json`).
+**v3.6.5+ additions:** `cinematic-studio-meta-installer`, `github-repo-manager`, `assembly-editor`, `animatic-director`, `reference-asset-curator`, `image-to-video-specialist`, `sfw-batch-orchestrator`, `chain-qa-protocol`, `handoff-packet-validator`, `cinematic-ffmpeg`, `ai-polish-director`, `production-bible-workflow`, `nsfw-*` variants, `arc-replan-copilot`, `multi-character-identity-arbiter`, `ai-image-recreation`, and more (full 48 in `.grok-plugin/plugin-index.json`).
 
 ### Documentation Updates
 - `MASTER_PROMPT_v3.6.md` — Activation prompt (unified Grok 4.5 stack + 1.5 + v3.6.7 wizard pointers)
@@ -164,7 +164,7 @@ See `Quick_Start_Guide.md` for full onboarding (model stack, wizard, plugin mark
 
 ---
 
-**v3.6.7 "Odyssey Native"** adds the guided Production Bible wizard and catalog release-pin hygiene on top of the **unified Grok 4.5** cinematic+Build stack (optional Grok 4.3 1M) and **v3.6.5+** plugin marketplace (now 46 skills).
+**v3.6.7 "Odyssey Native"** adds the guided Production Bible wizard and catalog release-pin hygiene on top of the **unified Grok 4.5** cinematic+Build stack (optional Grok 4.3 1M) and **v3.6.5+** plugin marketplace (now **48 skills**, including `ai-image-recreation`).
 
 v3.6 "Odyssey Native" (1.5 native video + audio + unified Grok 4.5 stack + wizard) marks the biggest leap in cinematic quality, audio-visual integration, and system completeness since the original studio launch.
 

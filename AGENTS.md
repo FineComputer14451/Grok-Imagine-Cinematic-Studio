@@ -32,7 +32,7 @@ This workspace is designed for advanced **Grok 4.5** agent workflows, with heavy
 │       │   ├── scripts/         # Optional: executable helpers
 │       │   ├── references/      # Optional: long-form docs, production bibles, agent defs
 │       │   └── assets/          # Optional: templates, reference images, etc.
-├── .grok-plugin/                # Plugin manifests (marketplace.json, plugin.json, plugin-index.json — 46 skills + commands)
+├── .grok-plugin/                # Plugin manifests (marketplace.json, plugin.json, plugin-index.json — 48 skills + commands)
 ├── artifacts/                   # All generated outputs (images, docs, videos, code)
 ├── scripts/                     # Install/verify/update helpers + thin shims
 ├── web_ui/                      # Streamlit dashboard (model pickers, quota sim, DNA/sequence tools)
@@ -161,7 +161,7 @@ If native Imagine tools are unavailable, use `imagine-execution-bridge` / CLI (`
 - Pre-publish plugin gate: `cinematic-studio plugin catalog check --release` or `bash scripts/verify_plugins.sh --release` (passes when pin == HEAD or pin is ancestor with only catalog paths after it)
 - Dev/test deps: `pip install -r requirements-dev.txt` then `pytest`
 - Use `cinematic-studio-meta-installer` skill for full bootstrap/verify in agent sessions
-- The **46 skills + slash commands** (in `commands/`) are the primary way to extend Grok Build with studio capabilities
+- The **48 skills + slash commands** (in `commands/`) are the primary way to extend Grok Build with studio capabilities
 
 ### Memory & Personalization
 
@@ -217,13 +217,13 @@ CLI: `cinematic-studio imagine agent-handoff` (or `python tools/cinematic_studio
 
 **Rules:** Prefer tools when available; block video without I2V motion block on locked plates; never silent NSFW handoff (route ErosForge first).
 
-## AI Polish Director (Post-Production)
+## AI Polish Director (Post-Production · v3.7.1 / Grok 4.5)
 
-The **AI Polish Director** is the final post-production agent, activated after QA approval and color grading. It handles delivery-ready video enhancement using the `ai-video-upscaler` skill.
+The **AI Polish Director** is the final post-production agent, activated after QA approval and color grading. It handles delivery-ready video enhancement using the `ai-video-upscaler` skill and `sequence polish` CLI. Orchestration on **`grok-4.5`**; upscale is local (not Imagine API).
 
 **When to activate:**
 
-- Final delivery upscale (720p native 1.5 → 1080p or 4K)
+- Final delivery upscale (720p native → 1080p or 4K-class)
 - Face restoration on character close-ups
 - Artifact cleanup before client delivery or festival submission
 
@@ -231,27 +231,28 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 
 - `ACTIVATE AI_POLISH_DIRECTOR`
 - `RUN FINAL POLISH PASS`
-- `UPSCALE FOR DELIVERY`
+- `UPSCALE FOR DELIVERY` · `POLISH HERO SHOTS ONLY` · `FACE RESTORE PASS`
 
 **Workflow:**
 
-1. Confirm QA Guardian has issued Go/No-Go approval
-2. Run `bash .grok/skills/ai-video-upscaler/scripts/install_models.sh` if models are not yet installed
-3. Execute upscale via the skill scripts (GPU path preferred, pure-Python fallback available):
+1. Confirm QA Guardian has issued Go (and color grade or Director waiver)
+2. Prefer sequence CLI when a sequence exists:
    ```bash
+   python tools/cinematic_studio_cli.py sequence polish "Act 1" --scale 2 --face-restore
+   python tools/cinematic_studio_cli.py sequence polish "Act 1" --dry-run
+   ```
+3. Or install models once and run upscaler scripts:
+   ```bash
+   bash .grok/skills/ai-video-upscaler/scripts/install_models.sh
    python .grok/skills/ai-video-upscaler/scripts/ai_video_upscale.py \
      --input artifacts/source_clip.mp4 \
-     --output artifacts/polished_clip.mp4 \
+     --output artifacts/polished/clip.mp4 \
      --scale 2 --face-restore
    ```
-4. For batch or long sequences, use the async variant:
-   ```bash
-   python .grok/skills/ai-video-upscaler/scripts/ai_video_upscale_async.py \
-     --input artifacts/sequence/ --output artifacts/polished/ --scale 2
-   ```
-5. Hand polished output back to Studio Director for final sign-off
+4. Batch/async: `ai_video_upscale_async.py` on a directory; pure-Python fallback: `ai_video_upscale_pure.py`
+5. Log `[POLISH_SPEC: …]` in the Project Bible; hand polished masters to Studio Director for sign-off (then `sequence deliver` / `cinematic-ffmpeg`)
 
-**Role Card:** `references/agents/AI_Polish_Director.md`
+**Role Card:** `references/agents/AI_Polish_Director.md` · **Skill:** `.grok/skills/ai-polish-director/SKILL.md` · **Presets:** `references/polish_presets.md`
 
 ## When to Load Specific Skills
 
@@ -268,11 +269,11 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 | **Quota & Efficiency** | `workflow-quota-optimizer` | Long-form sessions, cost/quota management, production planning |
 | **NSFW Batch Orchestration** | `nsfw-quota-orchestrator` | Quota-aware erotic image+video batches (with ErosForge) |
 | **NSFW Sequence Extension** | `nsfw-sequence-extender` | Sensual 30–120s+ extension, erotic pacing, artifact QA |
-| **GitHub Management** | `github-repo-manager` | Create repo, push, PRs, issues, file operations on GitHub |
+| **GitHub Management** | `github-repo-manager` | Git lifecycle, PRs, releases, skill/plugin catalog pin hygiene (Grok 4.5 / v3.7.1) |
 | **Video / Audio** | `cinematic-ffmpeg`, `ffmpeg` | Trimming, merging, subtitles, compression, GIFs, storyboards |
 | **Documents** | `pdf`, `docx`, `pptx`, `xlsx` | Professional document or presentation creation |
 | **Memory** | `memory-edit` | Personal facts/preferences worth remembering |
-| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **46-skill** plugin suite |
+| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **48-skill** plugin suite |
 | **AI Polish & Delivery** | `ai-polish-director`, `assembly-editor`, `cinematic-ffmpeg` | Post-QA upscale, EDL assembly, social crops |
 | **Pre-viz & Assets** | `animatic-director`, `reference-asset-curator`, `image-to-video-specialist` | Previs, hero routing, i2v before 1.5 spend |
 | **Batch Orchestration** | `sfw-batch-orchestrator` | Quota-aware SFW hero-first shot batches |
@@ -284,10 +285,10 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 - Primary project: **Grok Imagine Cinematic Studio** **v3.7.1** — unified **Grok 4.5** stack + Imagine Agent Mode Handoff + guided Bible wizard + related skills.
 - All generated artifacts **must** be saved under `artifacts/` (repo root).
 - Project skills live in `.grok/skills/`; user-global skills in `~/.grok/skills/`.
-- Plugin marketplace lives in `.grok-plugin/` (46 skills + commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
+- Plugin marketplace lives in `.grok-plugin/` (48 skills + commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - Workspace supports SFW cinematic work and NSFW/erotic pipelines (**ErosForge only when explicitly activated**).
 - **Model stack:** cinematic + Build/coding default **`grok-4.5`**; optional 1M **`grok-4.3`**; Imagine **1.0** default; `VIDEO_PIPELINE_SPEC` wired everywhere; **1.5** for native-audio workflows.
-- Full suite: **46/46** skills + Role Cards on Grok 4.5 orchestration default.
+- Full suite: **48/48** skills + Role Cards on Grok 4.5 orchestration default (includes `ai-image-recreation` for user-upload recreation).
 - Recent **3.7.1:** Imagine Agent Mode Handoff (Studio Director + main skill + CLI). **3.6.7:** guided Bible wizard, catalog pin hygiene, cinematic chat default unified on `grok-4.5`.
 - Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, RELEASE_NOTES, MODELS, Quick Start).
 

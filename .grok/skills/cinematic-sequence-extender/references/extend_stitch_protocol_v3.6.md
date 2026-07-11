@@ -1,10 +1,21 @@
-# Extend & Stitch Protocol v3.6 — Grok Imagine Video 1.5
+# Extend & Stitch Protocol v3.7.1 — Grok Imagine Video 1.0/1.5
 
-Authoritative protocol for low-degradation long-form chaining (60–180s+).
+Authoritative protocol for low-degradation long-form chaining (60–180s+).  
+Orchestration: **Grok 4.5**. Skill: `cinematic-sequence-extender`.
+
+**Video default:** `grok-imagine-video` (1.0 cost). Use **1.5** when native audio / rich AMV is required.
 
 ---
 
 ## Locked Variables
+
+**Cost default (1.0):**
+
+```
+[VIDEO_PIPELINE_SPEC: model="grok-imagine-video", resolution="720p", clip_length="8-12s preferred", native_audio=false, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]
+```
+
+**Native audio (1.5):**
 
 ```
 [VIDEO_PIPELINE_SPEC: model="grok-imagine-video-1.5", resolution="720p", clip_length="8-12s preferred", native_audio=true, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]

@@ -62,6 +62,8 @@ CHAIN_QA_CRITICAL = frozenset({
     "character_drift_boundary",
     "transition_readiness",
 })
+# Skill / protocol branding (studio v3.7.1 · Grok 4.5 orchestration)
+CHAIN_QA_PROTOCOL_VERSION = "v3.7.1"
 
 
 def slugify(name: str) -> str:
@@ -379,6 +381,7 @@ def run_chain_qa(
     """
     result: dict[str, Any] = {
         "clip_id": clip["clip_id"],
+        "protocol_version": CHAIN_QA_PROTOCOL_VERSION,
         "evaluated_at": _now_iso(),
         "checks": {},
         "weighted_score": None,

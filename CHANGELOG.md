@@ -5,6 +5,34 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **`ai-image-recreation` in plugin suite (Grok 4.5)** — user-upload recreation / style transfer / enhance / design sheets / pre-video plates via `image_edit` + multi-pass protocol; ported into `.grok/skills/ai-image-recreation/` with prompt library + adult cheat sheet; catalog **48 skills** (`plugin.json`, `plugin-index.json`, `required_skills.manifest` parity including `skill-agent-architect`)
+- **Character DNA Extractor → Grok 4.5 / v3.7.1** — full skill rewrite (forensic modes, design-sheet bridge, multi-cast path, `video_1.0` inject); template + Role Card refresh; `tools/character_dna.py` `STUDIO_AGENT_VERSION` **v3.7.1** + prompt modes `video_1.0` / `video_1.5`
+- **AI Polish Director → Grok 4.5 / v3.7.1** — full skill rewrite (delivery presets, post-upscale gates, sequence polish CLI + upscaler paths); Role Card + `polish_presets.md`; `sequence_polish.py` embeds `polish_spec` / Bible log line; suite package confirmed in plugin catalog (`plugin.json` / index / `required_skills.manifest`) with skill `references/`
+- **GitHub Repo Manager → Grok 4.5 / v3.7.1** — full skill rewrite (safety gates, plugin catalog pin protocol, skill-suite parity, conventional commits); fixed `validate-all-skills.sh` / `prepare-release.sh` / `repo-status.sh`; added `references/plugin_catalog_release.md`
+- **Cinematic FFmpeg → Grok 4.5 / v3.7.1** — skill rewrite + frontmatter fix (no colons in description; aspect ratios as 9x16/1x1/16x9); sequence deliver CLI + delivery checklist
+- **Handoff Packet Validator → Grok 4.5 / v3.7.1** — full skill rewrite (gate policy, generate-then-validate flows, Studio Director block rules); `references/packet_types.md` field cheat sheet
+- **Assembly Editor → Grok 4.5 / v3.7.1** — full skill rewrite (EDL CLI, pacing rules, hero polish handoff); Role Card refresh; `assembly_editor.py` stamps `studio_agent_version` + `cut_name`
+- **Animatic Director → Grok 4.5 / v3.7.1** — full skill rewrite (tier strategy, budget gate, CLI plan/promote, motion-probe rules); `animatic_orchestrator.py` stamps `studio_agent_version`
+- **SFW Batch Orchestrator → Grok 4.5 / v3.7.1** — full skill rewrite (hero-first tiers, mode decisions, retry policy, full `sfw` CLI); Role Card refresh; batch plans stamp `studio_agent_version`
+- **Reference Asset Curator → Grok 4.5 / v3.7.1** — full skill rewrite (tier matrix aligned to 1.0 video default, ASSET_MANIFEST + handoff validate, SFW/NSFW maps); Role Card refresh
+- **Image-to-Video Specialist → Grok 4.5 / v3.7.1** — full skill rewrite (hard gates, motion tiers, 1.0 default / 1.5 audio, VIDEO_PIPELINE_SPEC, extend-prompt CLI); Role Card refresh
+- **Chain QA Protocol → Grok 4.5 / v3.7.1** — full skill rewrite (10-point weights, critical floor, qa-assist/regen CLI, output report); checklist v3.7.1; `CHAIN_QA_PROTOCOL_VERSION` on results
+- **Sequence Director → Grok 4.5 / v3.7.1** — full skill rewrite (dependency graph, full `sequence` CLI map, temp/replan/health, 1.0 video default); Role Card refresh
+- **Cinematic Sequence Extender → Grok 4.5 / v3.7.1** — full skill rewrite (hard rules, handoff fields, failure recovery, 1.0/1.5 pipeline specs); Role Card + extend_stitch_protocol updated for cost-default 1.0
+- **Workflow Quota Optimizer → Grok 4.5 / v3.7.1** — full skill rewrite (risk levels, Fast→quality-pass, full `quota` CLI, 1.0 default economics); Role Card + pricing_model notes; `STUDIO_AGENT_VERSION`
+- **Continuity Consistency Guardian → Grok 4.5 / v3.7.1** — full skill rewrite (memory banks, boundary checklist, continuity-diff/memory CLI, Chain QA ownership); Role Card refresh
+- **Studio Director → Grok 4.5 / v3.7.1 (enhanced)** — expanded skill (full pipeline order, i2i/handoff rules, hard blocks, specialist map); Role Card pipeline table aligned to animatic/quota/chain/extend
+- **Quality Assurance Guardian → Grok 4.5 / v3.7.1** — full skill rewrite (16-point + chain 10-point dual gate, thresholds, hard blocks, report template); Role Card refresh
+- **Identity Lock Specialist → Grok 4.5 / v3.7.1** — full skill rewrite (lock/inject CLI, drift gates, multi-cast, video_1.0/1.5 inject, hard blocks); Role Card refresh
+- **Imagine Prompt Master → Grok 4.5 / v3.7.1** — full skill rewrite (Ultimate Template, DNA inject modes, 1.0/1.5 video schema, artifact lexicon, output report); Role Card refresh
+- **Mega Production Architect → Grok 4.5 / v3.7.1** — full skill rewrite (Bible package, 1.0 video default, create-bible CLI, roadmap order, i2i routing); Role Card refresh
+- **Director of Photography → Grok 4.5 / v3.7.1** — full skill rewrite (motivated lighting, camera/lens, physics-aware motion, motif lock, prompt handoff); Role Card refresh
+- **Performance Emotion Director → Grok 4.5 / v3.7.1** — full skill rewrite (subtext layers, micro-timing, sequence temp CLI, intimate path); Role Card refresh
+- **Production Designer Set Decorator → Grok 4.5 / v3.7.1** — full skill rewrite (Environment DNA, prop bank, practicals for DoP, continuity CLI); Role Card refresh
+- **Post-Production Color Grading Supervisor → Grok 4.5 / v3.7.1** — full skill rewrite (grade design checklist, skin protection, stitch-safe unity, pipeline before AI Polish); Role Card refresh
+- **Narrative Arc Pacing Strategist → Grok 4.5 / v3.7.1** — full skill rewrite (beat structure, pacing heatmap, temp CLI, quota-aware structure); Role Card refresh
+- **Sonic Architect Native Audio Virtuoso → Grok 4.5 / v3.7.1** — full skill rewrite (1.0 vs 1.5 audio paths, multi-layer Sound Layer, AMV for stitches); Role Card refresh
+- **Foley Sound Design Specialist → Grok 4.5 / v3.7.1** — full skill rewrite (Sound DNA, physics/perspective checklist, Sound Layer SFX paste, intimate path); Role Card refresh
 - **Arc replan co-pilot (roadmap #12)** — `tools/arc_replan.py` replans remaining beats and temperature curve after mid-sequence failure; CLI `sequence replan plan|apply`; skill `arc-replan-copilot` (final long-form continuity roadmap item)
 - **Stitch artifact lexicon (roadmap #11)** — `tools/stitch_artifact_lexicon.py` vocabulary + negative/positive packs for flicker/morph/halo; CLI `sequence artifact-lexicon`; re-gen prompts consume suggested packs
 - **Long-form health dashboard (roadmap #10)** — `tools/sequence_health_dashboard.py` aggregates chain QA, drift/seam/AMV, regen, temperature, continuity diffs, remaining cost; CLI `sequence health` with `--json` / `--markdown`

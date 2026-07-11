@@ -1,7 +1,9 @@
-# Pricing Model v3.6 — xAI Imagine & Grok Build
+# Pricing Model v3.7.1 — xAI Imagine & Grok Build (Grok 4.5)
 
-Official xAI per-second/per-image pricing for quota planning. Canonical registry: `tools/models.py` and `references/MODELS_v3.6.md`.
+Official xAI per-second/per-image pricing for quota planning. Skill: `workflow-quota-optimizer`.  
+Canonical registry: `tools/models.py` and `references/MODELS_v3.6.md`.
 
+**Prefer video 1.0 ($0.05/s) unless native audio requires 1.5 ($0.08/s).**  
 Override via `.quota_config.json` in project root.
 
 ---

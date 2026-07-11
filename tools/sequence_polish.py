@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-AI Polish Director hook — upscale approved sequence clips for delivery.
+AI Polish Director hook (studio v3.7.1 / Grok 4.5) — upscale approved sequence clips for delivery.
+
+Orchestration defaults to grok-4.5; execution is local via ai-video-upscaler (not Imagine API).
 """
 
 from __future__ import annotations
@@ -135,16 +137,30 @@ def polish_sequence(
         clip["polish_meta"] = {**result, "polished_at": _now_iso()}
         results.append({"clip_id": cid, **result})
 
+    polish_spec = {
+        "preset": "custom",
+        "scale": scale,
+        "face_restore": face_restore,
+        "face_restore_policy": "flag_or_hero_shot",
+        "studio_version": "v3.7.1",
+        "engine": "ai-video-upscaler",
+    }
     manifest = {
         "sequence_name": seq.get("sequence_name"),
         "slug": slug,
         "polished_at": _now_iso(),
         "scale": scale,
         "face_restore": face_restore,
+        "polish_spec": polish_spec,
         "clips_polished": len(results),
         "clips_skipped": skipped,
         "output_dir": str(out_dir),
         "results": results,
+        "bible_log_line": (
+            f"[POLISH_SPEC: preset=custom, scale={scale}, "
+            f"face_restore={str(face_restore).lower()}, method=sequence_polish, "
+            f"studio=v3.7.1, sequence=\"{seq.get('sequence_name', slug)}\"]"
+        ),
     }
     manifest_path = out_dir / "polish_manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2))
