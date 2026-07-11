@@ -6,6 +6,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Added
 - **Specialist-order checklist** — optional `specialist_checklist` on agent-mode handoffs; `--checklist` on `imagine agent-handoff`; GHR-09/GHR-10 in readiness (incomplete steps block under `--strict-handoff`).
+- **Color → polish handoff** — `sequence color-grade set/show`, structured `color_grade` on sequences, CG-01 readiness, `polish --require-color-grade`, grade stamped into polish manifest.
 
 ### Fixed
 - **Still compare** — use Pillow `get_flattened_data()` instead of deprecated `getdata()` in `compare_stills_soft`.

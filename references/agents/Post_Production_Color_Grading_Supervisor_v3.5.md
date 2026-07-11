@@ -51,6 +51,23 @@ Always: **Base grade** + optional **Creative accent**.
 - Emotional impact description  
 - Handoff to AI Polish / VFX / Director  
 
+## Sequence handoff (to AI Polish)
+
+Persist grade direction on the sequence before polish:
+
+```bash
+python tools/cinematic_studio_cli.py sequence color-grade set "Seq Name" \
+  --notes "base: soft contrast; accent: cool rim" \
+  --lut "Kodak-inspired print" \
+  --temp "cool night → warm practicals" \
+  --motif "teal shadow / amber practical" \
+  --status approved
+# or Director waiver:
+python tools/cinematic_studio_cli.py sequence color-grade set "Seq Name" --waive
+```
+
+AI Polish reads `color_grade` into the polish manifest. Polish readiness flags missing grade as **CG-01** (warn; hard with `sequence polish --require-color-grade`).
+
 ## Activation
 
 `ACTIVATE COLOR_GRADING` · `DESIGN GRADE FOR [mood]` · `FILM STOCK [name]` · `PROTECT SKIN TONES`  

@@ -7,6 +7,7 @@ import shutil
 from pathlib import Path
 from typing import Any, Literal
 
+from color_grade import color_grade_is_usable, color_grade_summary, extract_color_grade
 from studio_paths import EDL_DIR, POLISHED_DIR, SEQUENCES_DIR
 
 Stage = Literal["polish", "deliver"]
@@ -48,10 +49,12 @@ def evaluate_delivery_pipeline_readiness(
     *,
     stage: Stage,
     approved_only: bool = True,
+    require_color_grade: bool = False,
 ) -> dict[str, Any]:
     """
     pass=False only when blockers present.
     Soft by default at CLI; --strict-delivery exits 1 on blockers.
+    require_color_grade: treat missing/unusable color grade as blocker (polish stage).
     """
     slug = str(seq.get("slug") or "sequence")
     name = str(seq.get("sequence_name") or slug)
@@ -60,6 +63,8 @@ def evaluate_delivery_pipeline_readiness(
     fixes: list[str] = []
 
     eligible = _eligible_clips(seq, approved_only=approved_only)
+    grade = extract_color_grade(seq)
+    grade_ok = color_grade_is_usable(grade)
 
     if not _edl_exists(slug):
         warnings.append(
@@ -77,14 +82,30 @@ def evaluate_delivery_pipeline_readiness(
             fixes.append(
                 "Run chain QA to Go, or pass explicit --clip list after approval"
             )
-        if (
-            seq.get("color_grade") is None
-            and not (seq.get("grade_notes") or seq.get("lut"))
-        ):
-            warnings.append(
-                "No color_grade/grade_notes/lut on sequence — "
-                "color pass recommended before hero polish"
+        if not grade_ok:
+            msg = (
+                "No usable color grade on sequence (notes/LUT/temp or status=waived) — "
+                "Color Grading Supervisor pass recommended before hero polish"
             )
+            fix = (
+                f'Run: python tools/cinematic_studio_cli.py sequence color-grade "{name}" '
+                f'--notes "…" --lut "…"   # or --waive'
+            )
+            if require_color_grade:
+                blockers.append(f"CG-01: {msg}")
+                fixes.append(fix)
+            else:
+                warnings.append(f"CG-01: {msg}")
+                fixes.append(fix)
+        elif grade:
+            summary = color_grade_summary(grade)
+            if summary:
+                warnings.append(f"CG-02: color grade present — {summary}")
+            if str(grade.get("status") or "").lower() == "draft":
+                warnings.append(
+                    "CG-03: color_grade.status=draft — consider status=approved "
+                    "before final hero polish"
+                )
 
     elif stage == "deliver":
         if not _has_polished_media(slug):
@@ -110,6 +131,8 @@ def evaluate_delivery_pipeline_readiness(
         "stage": stage,
         "slug": slug,
         "eligible_count": len(eligible),
+        "color_grade_usable": grade_ok,
+        "color_grade_summary": color_grade_summary(grade) if grade else "",
         "blockers": blockers,
         "warnings": warnings,
         "fixes": fixes,

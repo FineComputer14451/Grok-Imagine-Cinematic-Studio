@@ -137,6 +137,10 @@ def polish_sequence(
         clip["polish_meta"] = {**result, "polished_at": _now_iso()}
         results.append({"clip_id": cid, **result})
 
+    from color_grade import color_grade_summary, extract_color_grade
+
+    grade = extract_color_grade(seq)
+    grade_summary = color_grade_summary(grade)
     polish_spec = {
         "preset": "custom",
         "scale": scale,
@@ -144,6 +148,7 @@ def polish_sequence(
         "face_restore_policy": "flag_or_hero_shot",
         "studio_version": "v3.7.1",
         "engine": "ai-video-upscaler",
+        "color_grade_summary": grade_summary,
     }
     manifest = {
         "sequence_name": seq.get("sequence_name"),
@@ -152,6 +157,7 @@ def polish_sequence(
         "scale": scale,
         "face_restore": face_restore,
         "polish_spec": polish_spec,
+        "color_grade": grade,
         "clips_polished": len(results),
         "clips_skipped": skipped,
         "output_dir": str(out_dir),
@@ -159,7 +165,9 @@ def polish_sequence(
         "bible_log_line": (
             f"[POLISH_SPEC: preset=custom, scale={scale}, "
             f"face_restore={str(face_restore).lower()}, method=sequence_polish, "
-            f"studio=v3.7.1, sequence=\"{seq.get('sequence_name', slug)}\"]"
+            f"studio=v3.7.1, sequence=\"{seq.get('sequence_name', slug)}\""
+            + (f", color_grade=\"{grade_summary}\"" if grade_summary else "")
+            + "]"
         ),
     }
     manifest_path = out_dir / "polish_manifest.json"

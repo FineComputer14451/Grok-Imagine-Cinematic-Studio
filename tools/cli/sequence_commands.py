@@ -618,6 +618,77 @@ def register(app: typer.Typer) -> None:
             for f in ready["fixes"]:
                 console.print(f"  → {f}")
 
+    color_app = typer.Typer(
+        help="Color grade notes for Color Grading Supervisor → AI Polish handoff"
+    )
+    app.add_typer(color_app, name="color-grade")
+
+    @color_app.command("set")
+    def seq_color_grade_set(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+        notes: str = typer.Option("", "--notes", "-n", help="Grade notes / look description"),
+        lut: str = typer.Option("", "--lut", "-l", help="LUT name or direction"),
+        temperature: str = typer.Option(
+            "", "--temp", "-t", help="Emotional / color temperature"
+        ),
+        motif: str = typer.Option("", "--motif", "-m", help="Visual motif accents"),
+        skin: str = typer.Option(
+            "protect skin tones", "--skin", help="Skin protection note"
+        ),
+        status: str = typer.Option(
+            "draft", "--status", help="pending|draft|approved|waived"
+        ),
+        waive: bool = typer.Option(
+            False, "--waive", help="Director waiver of formal color pass"
+        ),
+    ):
+        """Set sequence color_grade for polish handoff."""
+        from color_grade import apply_color_grade, color_grade_summary
+
+        seq = require_sequence(name)
+        grade = apply_color_grade(
+            seq,
+            notes=notes,
+            lut=lut,
+            emotional_temperature=temperature,
+            skin_protection=skin,
+            motif=motif,
+            status=status,
+            waive=waive,
+        )
+        save_sequence(seq)
+        console.print(
+            Panel(
+                color_grade_summary(grade) or json.dumps(grade, indent=2),
+                title=f"Color grade — {seq.get('sequence_name')}",
+                border_style="magenta",
+            )
+        )
+
+    @color_app.command("show")
+    def seq_color_grade_show(
+        name: str = typer.Argument(..., help="Sequence name or slug"),
+    ):
+        """Show sequence color_grade (or legacy grade_notes/lut)."""
+        from color_grade import color_grade_summary, extract_color_grade
+
+        seq = require_sequence(name)
+        grade = extract_color_grade(seq)
+        if not grade:
+            console.print("[yellow]No color grade set[/yellow]")
+            console.print(
+                f'[dim]Set with: sequence color-grade set "{name}" '
+                f'--notes "…" --lut "…"[/dim]'
+            )
+            raise typer.Exit(0)
+        console.print(
+            Panel(
+                json.dumps(grade, indent=2),
+                title=f"Color grade — {seq.get('sequence_name')} · {color_grade_summary(grade)}",
+                border_style="magenta",
+            )
+        )
+
     @app.command("polish")
     def seq_polish(
         name: str = typer.Argument(..., help="Sequence name or slug"),
@@ -630,17 +701,25 @@ def register(app: typer.Typer) -> None:
             "--strict-delivery",
             help="Exit 1 if pipeline readiness fails (no Go clips / not ready to polish)",
         ),
+        require_color_grade: bool = typer.Option(
+            False,
+            "--require-color-grade",
+            help="Exit 1 if no usable color grade notes/LUT (CG-01 blocker)",
+        ),
     ):
         """AI Polish pass — upscale approved clips via ai-video-upscaler."""
         from delivery_readiness import evaluate_delivery_pipeline_readiness
 
         seq = require_sequence(name)
         ready = evaluate_delivery_pipeline_readiness(
-            seq, stage="polish", approved_only=True
+            seq,
+            stage="polish",
+            approved_only=True,
+            require_color_grade=require_color_grade,
         )
         _print_delivery_readiness(ready)
-        if strict_delivery and not ready.get("pass"):
-            console.print("[red]Delivery readiness failed (--strict-delivery)[/red]")
+        if (strict_delivery or require_color_grade) and not ready.get("pass"):
+            console.print("[red]Delivery readiness failed[/red]")
             raise typer.Exit(1)
 
         manifest = polish_sequence(
@@ -651,11 +730,17 @@ def register(app: typer.Typer) -> None:
             dry_run=dry_run,
         )
         save_sequence(seq)
+        grade_line = ""
+        if manifest.get("color_grade"):
+            from color_grade import color_grade_summary
+
+            grade_line = f"\nColor: {color_grade_summary(manifest.get('color_grade'))}"
         console.print(Panel(
             f"Polished: {manifest['clips_polished']} clips\n"
             f"Skipped: {len(manifest.get('clips_skipped', []))}\n"
             f"Output: {manifest['output_dir']}\n"
-            f"Manifest: {manifest['output_dir']}/polish_manifest.json",
+            f"Manifest: {manifest['output_dir']}/polish_manifest.json"
+            + grade_line,
             title=f"AI Polish — {seq['sequence_name']}",
             border_style="green",
         ))

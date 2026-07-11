@@ -91,6 +91,17 @@ Best paired with: Quality Assurance Guardian, Color Grading Supervisor, Assembly
 
 Prefer Assembly EDL before polish. For automation, use `sequence polish --strict-delivery` so polish does not run with zero Go/approved clips. After polish, delivery uses `sequence deliver --strict-delivery` if polished media must exist.
 
+### Color grade handoff (CG-01)
+
+Read `seq.color_grade` (or legacy `grade_notes` / `lut`) before upscale. Notes are stamped into `polish_manifest.json` for audit.  
+
+```bash
+sequence color-grade set "Seq" --notes "teal shadows, warm skin" --lut "SoftPrint" --status approved
+sequence polish "Seq" --require-color-grade   # hard-fail if grade missing
+```
+
+If grade is missing, readiness warns (CG-01) or blocks with `--require-color-grade`. Prefer Color Grading Supervisor pass (or `--waive`) before hero polish.
+
 ## CLI & Scripts
 
 ```bash
