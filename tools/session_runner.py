@@ -9,6 +9,10 @@ from typing import Any, Literal
 
 from artifact_pipeline import register_artifact_from_result
 from batch_runner import BatchPipeline, execute_shot, nsfw_pipeline, sfw_pipeline
+from spend_readiness import (
+    evaluate_generation_spend_readiness,
+    spend_hard_fail_reasons,
+)
 
 PipelineName = Literal["sfw", "nsfw"]
 
@@ -45,9 +49,6 @@ def run_batch_session(
     strict_motion: bool = False,
 ) -> dict[str, Any]:
     """Run up to `count` next shots sequentially."""
-    from motion_readiness import evaluate_motion_brief_readiness
-    from plate_readiness import evaluate_plate_lock_readiness
-
     batch = _load_batch(pipeline, batch_slug)
     pipe = _pipeline(pipeline)
     queue = _get_next(pipeline, batch, count=count)
@@ -63,35 +64,51 @@ def run_batch_session(
     results: list[dict[str, Any]] = []
     for shot in queue:
         shot_id = shot["shot_id"]
-        # Refresh shot from batch (queue may be a shallow copy)
-        live = next((s for s in batch.get("shots", []) if s.get("shot_id") == shot_id), shot)
-        plate = evaluate_plate_lock_readiness(live)
-        if not plate.get("pass"):
-            msg = "; ".join(plate.get("blockers") or ["plate not ready"])
-            if strict_plate:
-                results.append({
-                    "shot_id": shot_id,
-                    "status": "failed",
-                    "error": f"plate lock: {msg}",
-                })
-                if stop_on_fail:
-                    break
-                continue
-            # Soft: annotate and continue
-            live.setdefault("plate_readiness_warnings", plate.get("blockers") or [])
-        motion = evaluate_motion_brief_readiness(live, strict=strict_motion)
-        if not motion.get("pass"):
-            msg = "; ".join(motion.get("blockers") or ["motion brief not ready"])
-            if strict_motion:
-                results.append({
-                    "shot_id": shot_id,
-                    "status": "failed",
-                    "error": f"motion brief: {msg}",
-                })
-                if stop_on_fail:
-                    break
-                continue
-            live.setdefault("motion_readiness_warnings", motion.get("blockers") or [])
+        live = next(
+            (s for s in batch.get("shots", []) if s.get("shot_id") == shot_id),
+            shot,
+        )
+        spend = evaluate_generation_spend_readiness(
+            live, strict_motion=strict_motion
+        )
+        hard = spend_hard_fail_reasons(
+            spend, strict_plate=strict_plate, strict_motion=strict_motion
+        )
+        if hard:
+            plate = spend.get("plate") or {}
+            motion = spend.get("motion") or {}
+            parts = []
+            if "plate" in hard:
+                parts.append(
+                    "plate lock: "
+                    + "; ".join(plate.get("blockers") or ["not ready"])
+                )
+            if "motion" in hard:
+                parts.append(
+                    "motion brief: "
+                    + "; ".join(motion.get("blockers") or ["not ready"])
+                )
+            results.append({
+                "shot_id": shot_id,
+                "status": "failed",
+                "error": "; ".join(parts),
+                "spend_readiness": {
+                    "plate": {
+                        "pass": plate.get("pass"),
+                        "blockers": plate.get("blockers"),
+                        "warnings": plate.get("warnings"),
+                    },
+                    "motion": {
+                        "pass": motion.get("pass"),
+                        "blockers": motion.get("blockers"),
+                        "warnings": motion.get("warnings"),
+                    },
+                },
+            })
+            if stop_on_fail:
+                break
+            continue
+
         try:
             result = execute_shot(
                 batch, shot_id,
@@ -105,6 +122,9 @@ def run_batch_session(
                     pipeline=pipeline,
                 )
                 result["artifact_path"] = str(artifact.get("local_path", ""))
+            # Annotate result only — do not mutate batch shot dicts
+            plate = spend.get("plate") or {}
+            motion = spend.get("motion") or {}
             if plate.get("blockers") or plate.get("warnings"):
                 result["plate_readiness"] = {
                     "pass": plate.get("pass"),

@@ -362,19 +362,10 @@ def build_handoff(
         packet["specialist_checklist"] = normalize_specialist_checklist(
             state.get("specialist_checklist")
         )
-    # Plate lock fields from batch shot (shot-fields model; no required manifest)
-    for key in (
-        "plate_status",
-        "plate_asset_id",
-        "plate_path",
-        "reference_image_id",
-        "reference_image_url",
-        "source_asset_id",
-        "motion_vector",
-        "motion_tier",
-        "i2v_motion_block",
-        "motion_block",
-    ):
+    # Spend-related shot fields → agent-mode packet (single contract)
+    from readiness_common import SUBJECT_HANDOFF_FIELDS
+
+    for key in SUBJECT_HANDOFF_FIELDS:
         val = subject.get(key)
         if val is not None and val != "" and key not in packet:
             packet[key] = val

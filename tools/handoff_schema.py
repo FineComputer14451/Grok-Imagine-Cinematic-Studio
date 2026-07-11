@@ -90,6 +90,23 @@ def is_video_execution_mode(mode: str | None) -> bool:
     return mode in VIDEO_EXECUTION_MODES
 
 
+def resolve_execution_mode(
+    subject: dict[str, Any] | None,
+    *,
+    execution_mode: str | None = None,
+) -> str:
+    """Resolve execution mode from explicit override or subject fields (batch/shot)."""
+    subj = subject if isinstance(subject, dict) else {}
+    mode = (
+        execution_mode
+        or subj.get("execution_mode")
+        or subj.get("recommended_mode")
+        or (subj.get("decision") or {}).get("mode")
+        or ""
+    )
+    return str(mode).strip()
+
+
 def normalize_execution_mode(
     raw: str | None,
     *,

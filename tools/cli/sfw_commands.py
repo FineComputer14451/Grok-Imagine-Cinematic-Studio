@@ -14,17 +14,6 @@ from rich.table import Table
 from batch_runner import execute_sfw_shot
 from session_runner import run_batch_session
 from imagine_client import ImagineAPIError
-from motion_readiness import (
-    MOTION_TIERS,
-    evaluate_motion_brief_readiness,
-    normalize_motion_tier,
-)
-from plate_readiness import (
-    PLATE_OK,
-    PLATE_STATUSES,
-    evaluate_plate_lock_readiness,
-    normalize_plate_status,
-)
 from quality_pass_scheduler import apply_quality_pass_promotion, get_pending_quality_passes
 from sfw_orchestrator import (
     batch_to_markdown,
@@ -42,58 +31,11 @@ from sfw_orchestrator import (
 from project_state import load_project_state
 
 from cli.shared import console
-
-
-def _find_shot(batch: dict, shot_id: str) -> dict | None:
-    for s in batch.get("shots", []):
-        if s.get("shot_id") == shot_id:
-            return s
-    return None
-
-
-def _print_plate_report(report: dict) -> None:
-    for w in report.get("warnings") or []:
-        console.print(f"[yellow]⚠️  {w}[/yellow]")
-    if report.get("blockers"):
-        for b in report["blockers"]:
-            console.print(f"[yellow]⚠️  plate blocker: {b}[/yellow]")
-        if report.get("fixes"):
-            console.print("[dim]Fixes:[/dim]")
-            for fix in report["fixes"]:
-                console.print(f"  → {fix}")
-
-
-def _plate_preflight(shot: dict, *, strict_plate: bool) -> dict:
-    report = evaluate_plate_lock_readiness(shot)
-    _print_plate_report(report)
-    if strict_plate and not report.get("pass"):
-        console.print("[red]Plate lock readiness failed (--strict-plate)[/red]")
-        raise typer.Exit(1)
-    return report
-
-
-def _print_motion_report(report: dict) -> None:
-    for w in report.get("warnings") or []:
-        console.print(f"[yellow]⚠️  {w}[/yellow]")
-    if report.get("blockers"):
-        for b in report["blockers"]:
-            console.print(f"[yellow]⚠️  motion blocker: {b}[/yellow]")
-        if report.get("fixes"):
-            console.print("[dim]Fixes:[/dim]")
-            for fix in report["fixes"]:
-                console.print(f"  → {fix}")
-
-
-def _motion_preflight(shot: dict, *, strict_motion: bool) -> dict:
-    report = evaluate_motion_brief_readiness(shot, strict=strict_motion)
-    _print_motion_report(report)
-    if strict_motion and not report.get("pass"):
-        console.print("[red]Motion brief readiness failed (--strict-motion)[/red]")
-        raise typer.Exit(1)
-    return report
+from cli.spend_preflight import find_shot, preflight_spend, register_plate_motion_commands
 
 
 def register(app: typer.Typer) -> None:
+    register_plate_motion_commands(app, load_batch=load_batch, save_batch=save_batch)
     @app.command("plan")
     def sfw_plan(
         title: str = typer.Argument(..., help="Batch title"),
@@ -219,168 +161,6 @@ def register(app: typer.Typer) -> None:
         ))
 
 
-    plate_app = typer.Typer(help="Plate lock status for still→video spend")
-    app.add_typer(plate_app, name="plate")
-
-    @plate_app.command("set")
-    def sfw_plate_set(
-        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
-        shot_id: str = typer.Argument(..., help="Shot ID"),
-        status: str = typer.Option(
-            ...,
-            "--status",
-            help="draft | approved | locked",
-        ),
-        path: str = typer.Option(None, "--path", help="Local plate path"),
-        asset_id: str = typer.Option(None, "--asset-id", help="Curator / plate asset id"),
-        reference_image_id: str = typer.Option(
-            None, "--reference-image-id", help="Imagine reference_image_id"
-        ),
-    ):
-        """Set plate_status (and optional path/ids) on a batch shot."""
-        normalized = normalize_plate_status(status)
-        if normalized is None or normalized not in PLATE_STATUSES:
-            console.print(
-                f"[red]Invalid --status:[/red] {status!r}\n"
-                f"Expected one of: {', '.join(sorted(PLATE_STATUSES))}"
-            )
-            raise typer.Exit(1)
-        batch = load_batch(batch_name)
-        shot = _find_shot(batch, shot_id)
-        if not shot:
-            console.print(f"[red]Shot not found:[/red] {shot_id}")
-            raise typer.Exit(1)
-        shot["plate_status"] = normalized
-        if path:
-            shot["plate_path"] = path
-        if asset_id:
-            shot["plate_asset_id"] = asset_id
-            if not shot.get("reference_image_id"):
-                shot["reference_image_id"] = asset_id
-        if reference_image_id:
-            shot["reference_image_id"] = reference_image_id
-        if normalized in PLATE_OK:
-            shot["has_reference"] = True
-        save_batch(batch)
-        console.print(
-            Panel(
-                f"Shot: {shot_id}\n"
-                f"plate_status: {normalized}\n"
-                f"plate_path: {shot.get('plate_path') or '—'}\n"
-                f"plate_asset_id: {shot.get('plate_asset_id') or '—'}\n"
-                f"reference_image_id: {shot.get('reference_image_id') or '—'}\n\n"
-                f"OK for still→video: {normalized in PLATE_OK}",
-                title="Plate set",
-                border_style="green" if normalized in PLATE_OK else "yellow",
-            )
-        )
-
-    @plate_app.command("show")
-    def sfw_plate_show(
-        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
-        shot_id: str = typer.Argument(..., help="Shot ID"),
-    ):
-        """Show plate fields and readiness for a shot."""
-        batch = load_batch(batch_name)
-        shot = _find_shot(batch, shot_id)
-        if not shot:
-            console.print(f"[red]Shot not found:[/red] {shot_id}")
-            raise typer.Exit(1)
-        report = evaluate_plate_lock_readiness(shot)
-        console.print(
-            Panel(
-                f"Shot: {shot_id}\n"
-                f"Mode: {report.get('execution_mode') or shot.get('recommended_mode') or '—'}\n"
-                f"plate_status: {shot.get('plate_status') or '—'}\n"
-                f"plate_path: {shot.get('plate_path') or '—'}\n"
-                f"plate_asset_id: {shot.get('plate_asset_id') or '—'}\n"
-                f"reference_image_id: {shot.get('reference_image_id') or '—'}\n"
-                f"has_reference: {shot.get('has_reference')}\n"
-                f"Readiness pass: {report.get('pass')}",
-                title="Plate show",
-                border_style="green" if report.get("pass") else "yellow",
-            )
-        )
-        _print_plate_report(report)
-
-    motion_app = typer.Typer(help="Structured MOTION_VECTOR brief for video spend")
-    app.add_typer(motion_app, name="motion")
-
-    @motion_app.command("set")
-    def sfw_motion_set(
-        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
-        shot_id: str = typer.Argument(..., help="Shot ID"),
-        action: str = typer.Option(..., "--action", help="Subject action / motion"),
-        camera: str = typer.Option(..., "--camera", help="Camera move"),
-        emotion: str = typer.Option(..., "--emotion", help="Emotional beat"),
-        tier: str = typer.Option(
-            None, "--tier", help="micro | medium | kinetic (optional)"
-        ),
-    ):
-        """Set motion_vector {action, camera, emotion} on a batch shot."""
-        batch = load_batch(batch_name)
-        shot = _find_shot(batch, shot_id)
-        if not shot:
-            console.print(f"[red]Shot not found:[/red] {shot_id}")
-            raise typer.Exit(1)
-        shot["motion_vector"] = {
-            "action": action.strip(),
-            "camera": camera.strip(),
-            "emotion": emotion.strip(),
-        }
-        if tier is not None:
-            nt = normalize_motion_tier(tier)
-            if nt is None:
-                console.print(
-                    f"[red]Invalid --tier:[/red] {tier!r}\n"
-                    f"Expected one of: {', '.join(sorted(MOTION_TIERS))}"
-                )
-                raise typer.Exit(1)
-            shot["motion_tier"] = nt
-        save_batch(batch)
-        report = evaluate_motion_brief_readiness(shot, strict=True)
-        console.print(
-            Panel(
-                f"Shot: {shot_id}\n"
-                f"action: {shot['motion_vector']['action']}\n"
-                f"camera: {shot['motion_vector']['camera']}\n"
-                f"emotion: {shot['motion_vector']['emotion']}\n"
-                f"motion_tier: {shot.get('motion_tier') or '—'}\n"
-                f"Complete triple: {report.get('complete_triple')}",
-                title="Motion set",
-                border_style="green" if report.get("complete_triple") else "yellow",
-            )
-        )
-
-    @motion_app.command("show")
-    def sfw_motion_show(
-        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
-        shot_id: str = typer.Argument(..., help="Shot ID"),
-    ):
-        """Show motion brief and readiness for a shot."""
-        batch = load_batch(batch_name)
-        shot = _find_shot(batch, shot_id)
-        if not shot:
-            console.print(f"[red]Shot not found:[/red] {shot_id}")
-            raise typer.Exit(1)
-        report = evaluate_motion_brief_readiness(shot, strict=False)
-        mv = report.get("motion_vector") or {}
-        console.print(
-            Panel(
-                f"Shot: {shot_id}\n"
-                f"Mode: {report.get('execution_mode') or shot.get('recommended_mode') or '—'}\n"
-                f"action: {mv.get('action') or '—'}\n"
-                f"camera: {mv.get('camera') or '—'}\n"
-                f"emotion: {mv.get('emotion') or '—'}\n"
-                f"motion_tier: {shot.get('motion_tier') or '—'}\n"
-                f"Complete triple: {report.get('complete_triple')}\n"
-                f"Readiness pass (soft): {report.get('pass')}",
-                title="Motion show",
-                border_style="green" if report.get("pass") else "yellow",
-            )
-        )
-        _print_motion_report(report)
-
     @app.command("run")
     def sfw_run(
         batch_name: str = typer.Argument(..., help="Batch slug or ID"),
@@ -400,12 +180,13 @@ def register(app: typer.Typer) -> None:
     ):
         """Execute a batch shot via Imagine API (image / i2v / video)."""
         batch = load_batch(batch_name)
-        shot = _find_shot(batch, shot_id)
+        shot = find_shot(batch, shot_id)
         if not shot:
             console.print(f"[red]Shot not found:[/red] {shot_id}")
             raise typer.Exit(1)
-        _plate_preflight(shot, strict_plate=strict_plate)
-        _motion_preflight(shot, strict_motion=strict_motion)
+        preflight_spend(
+            shot, strict_plate=strict_plate, strict_motion=strict_motion
+        )
         try:
             result = execute_sfw_shot(
                 batch, shot_id,

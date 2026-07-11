@@ -81,7 +81,8 @@ def test_partial_triple_with_free_text_soft() -> None:
     assert any("MB-01" in w for w in r["warnings"])
 
 
-def test_extract_aliases() -> None:
+def test_extract_canonical_block_keys_only() -> None:
+    # Sequence momentum aliases must NOT silently map into i2v brief
     mv = extract_motion_vector(
         {
             "i2v_motion_block": {
@@ -91,4 +92,14 @@ def test_extract_aliases() -> None:
             }
         }
     )
-    assert is_complete_motion_triple(mv)
+    assert not is_complete_motion_triple(mv)
+    mv2 = extract_motion_vector(
+        {
+            "motion_vector": {
+                "action": "walk",
+                "camera": "orbit",
+                "emotion": "calm",
+            }
+        }
+    )
+    assert is_complete_motion_triple(mv2)

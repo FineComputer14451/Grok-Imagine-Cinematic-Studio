@@ -11,6 +11,7 @@ from handoff_schema import (
 )
 from motion_readiness import MOTION_CUES, evaluate_motion_brief_readiness
 from plate_readiness import evaluate_plate_lock_readiness
+from readiness_common import empty_readiness_report, merge_readiness, recompute_pass
 from specialist_order import evaluate_specialist_order
 from studio_paths import STUDIO_ROOT
 
@@ -53,127 +54,75 @@ def evaluate_imagine_handoff_readiness(
     """
     Semantic readiness for imagine_agent_mode_handoff.
 
-    pass=False only when blockers present. warnings alone keep pass=True.
-    strict_motion=True (CLI --strict-handoff): require full motion_vector triple.
+    pass=False only when blockers present. Soft CLI still emits unless --strict-handoff.
+    strict_motion=True: require full motion_vector triple (same as --strict-handoff).
     """
     if packet.get("packet_type") != PACKET_TYPE_IMAGINE_AGENT_MODE:
-        return {
-            "pass": True,
-            "strict": True,
-            "skipped": True,
-            "warnings": [],
-            "blockers": [],
-            "fixes": [],
-            "checks": [],
-        }
+        return empty_readiness_report(skipped=True)
 
-    warnings: list[str] = []
-    blockers: list[str] = []
-    fixes: list[str] = []
-    checks: list[dict[str, Any]] = []
+    report = empty_readiness_report(strict=True)
     mode = str(packet.get("execution_mode") or "")
     refs = packet.get("reference_hints")
     if not isinstance(refs, list):
         refs = []
 
+    motion: dict[str, Any] = empty_readiness_report(skipped=True)
+    plate: dict[str, Any] = empty_readiness_report(skipped=True)
+    order: dict[str, Any] = empty_readiness_report(skipped=True)
+
     if is_video_execution_mode(mode):
         if mode in ("image_to_video", "reference_to_video") and len(refs) == 0:
-            blockers.append(
+            report["blockers"].append(
                 f"GHR-02: reference_hints empty for still→video mode ({mode})"
             )
-            fixes.append(
+            report["fixes"].append(
                 "Add locked plate reference_image_id / path to reference_hints"
             )
-        # GHR-03 — motion brief (structured preferred; free-text soft fallback)
         motion = evaluate_motion_brief_readiness(
             packet, execution_mode=mode, strict=strict_motion
         )
-        for w in motion.get("warnings") or []:
-            if w not in warnings:
-                warnings.append(w if w.startswith("MB-") else f"GHR-03: {w}")
-        for b in motion.get("blockers") or []:
-            # Keep MB-* ids; map legacy message under GHR-03 when unstructured miss
-            if b not in blockers:
-                blockers.append(b)
-        for f in motion.get("fixes") or []:
-            if f not in fixes:
-                fixes.append(f)
-        checks.extend(motion.get("checks") or [])
-    else:
-        motion = {
-            "pass": True,
-            "skipped": True,
-            "warnings": [],
-            "blockers": [],
-            "fixes": [],
-            "checks": [],
-        }
+        merge_readiness(report, motion)
 
     ret = str(packet.get("return_path") or "")
     if not _has_cue(ret, RETURN_CUES):
-        blockers.append(
+        report["blockers"].append(
             "GHR-04: return_path missing re-entry cue "
             "(qa/record/chain/artifact/sfw/sequence/…)"
         )
-        fixes.append(
+        report["fixes"].append(
             "Set return_path e.g. 'sfw record + QA Guardian' or 'chain QA'"
         )
 
     quota = str(packet.get("quota_note") or "").strip().lower()
     if quota in PLACEHOLDER_QUOTA:
-        warnings.append("GHR-05: quota_note looks like a placeholder")
-        fixes.append("Replace quota_note with a real budget/Fast-mode note")
+        report["warnings"].append("GHR-05: quota_note looks like a placeholder")
+        report["fixes"].append("Replace quota_note with a real budget/Fast-mode note")
 
     current = studio_version or _studio_version()
     pkt_ver = str(packet.get("studio_version") or "").strip()
     if pkt_ver and current and pkt_ver != current:
-        warnings.append(
+        report["warnings"].append(
             f"GHR-06: studio_version={pkt_ver!r} differs from current {current!r}"
         )
 
     proto = str(packet.get("protocol_version") or "").strip()
     if proto and proto not in PROTOCOL_OK and proto != current:
-        warnings.append(
+        report["warnings"].append(
             f"GHR-07: protocol_version={proto!r} not in known allowlist"
         )
 
     steps = packet.get("handoff_steps")
     if isinstance(steps, list) and len(steps) < 2:
-        warnings.append("GHR-08: handoff_steps has fewer than 2 steps")
+        report["warnings"].append("GHR-08: handoff_steps has fewer than 2 steps")
 
-    # GHR-09 / GHR-10 — specialist order (DNA→Lock→Curator→Prompt→I2V)
     order = evaluate_specialist_order(packet, execution_mode=mode)
-    warnings.extend(order.get("warnings") or [])
-    blockers.extend(order.get("blockers") or [])
-    for f in order.get("fixes") or []:
-        if f not in fixes:
-            fixes.append(f)
-    checks.extend(order.get("checks") or [])
+    merge_readiness(report, order)
 
-    # GHR-11 — plate lock (approved/locked) for still→video modes
     plate = evaluate_plate_lock_readiness(packet, execution_mode=mode)
-    for w in plate.get("warnings") or []:
-        if w not in warnings:
-            warnings.append(w)
-    for b in plate.get("blockers") or []:
-        # Prefix with GHR-11 for handoff lineage when not already PL-*
-        label = b if b.startswith("PL-") or b.startswith("GHR-") else f"GHR-11: {b}"
-        if label not in blockers and b not in blockers:
-            blockers.append(b if b.startswith("PL-") else label)
-    for f in plate.get("fixes") or []:
-        if f not in fixes:
-            fixes.append(f)
-    checks.extend(plate.get("checks") or [])
+    merge_readiness(report, plate)
 
-    return {
-        "pass": len(blockers) == 0,
-        "strict": True,
-        "skipped": False,
-        "warnings": warnings,
-        "blockers": blockers,
-        "fixes": fixes,
-        "checks": checks,
-        "specialist_order": order,
-        "plate_lock": plate,
-        "motion_brief": motion,
-    }
+    recompute_pass(report)
+    report["specialist_order"] = order
+    report["plate_lock"] = plate
+    report["motion_brief"] = motion
+    return report

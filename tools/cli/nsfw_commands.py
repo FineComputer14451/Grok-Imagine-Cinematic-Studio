@@ -46,9 +46,13 @@ from sequence_chain import get_clip
 
 from cli.helpers import require_clip, require_sequence
 from cli.shared import AGENTS_DIR, STUDIO_ROOT, console
+from cli.spend_preflight import find_shot, preflight_spend, register_plate_motion_commands
 
 
 def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
+    register_plate_motion_commands(
+        nsfw_app, load_batch=load_batch, save_batch=save_batch
+    )
     @nsfw_app.command("plan")
     def nsfw_plan(
         title: str = typer.Argument(..., help="Batch title"),
@@ -227,36 +231,15 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
     ):
         """Execute a batch shot via Imagine API (image / i2v / video)."""
         from imagine_client import ImagineAPIError
-        from motion_readiness import evaluate_motion_brief_readiness
-        from plate_readiness import evaluate_plate_lock_readiness
 
         batch = load_batch(batch_name)
-        shot = next((s for s in batch.get("shots", []) if s.get("shot_id") == shot_id), None)
+        shot = find_shot(batch, shot_id)
         if not shot:
             console.print(f"[red]Shot not found:[/red] {shot_id}")
             raise typer.Exit(1)
-        plate = evaluate_plate_lock_readiness(shot)
-        for w in plate.get("warnings") or []:
-            console.print(f"[yellow]⚠️  {w}[/yellow]")
-        for b in plate.get("blockers") or []:
-            console.print(f"[yellow]⚠️  plate blocker: {b}[/yellow]")
-        if plate.get("fixes") and plate.get("blockers"):
-            for fix in plate["fixes"]:
-                console.print(f"  → {fix}")
-        if strict_plate and not plate.get("pass"):
-            console.print("[red]Plate lock readiness failed (--strict-plate)[/red]")
-            raise typer.Exit(1)
-        motion = evaluate_motion_brief_readiness(shot, strict=strict_motion)
-        for w in motion.get("warnings") or []:
-            console.print(f"[yellow]⚠️  {w}[/yellow]")
-        for b in motion.get("blockers") or []:
-            console.print(f"[yellow]⚠️  motion blocker: {b}[/yellow]")
-        if motion.get("fixes") and motion.get("blockers"):
-            for fix in motion["fixes"]:
-                console.print(f"  → {fix}")
-        if strict_motion and not motion.get("pass"):
-            console.print("[red]Motion brief readiness failed (--strict-motion)[/red]")
-            raise typer.Exit(1)
+        preflight_spend(
+            shot, strict_plate=strict_plate, strict_motion=strict_motion
+        )
         try:
             result = execute_nsfw_shot(
                 batch, shot_id,

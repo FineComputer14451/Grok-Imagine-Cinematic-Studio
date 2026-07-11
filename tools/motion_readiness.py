@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from handoff_schema import is_video_execution_mode
-from plate_readiness import resolve_execution_mode
+from handoff_schema import is_video_execution_mode, resolve_execution_mode
+from readiness_common import empty_readiness_report
 
 # Shared free-text cues (GHR-03 fallback). Canonical list lives here.
 MOTION_CUES = (
@@ -53,7 +53,10 @@ def normalize_motion_tier(raw: Any) -> str | None:
 
 
 def extract_motion_vector(subject: dict[str, Any] | None) -> dict[str, str]:
-    """Return normalized action/camera/emotion strings (may be empty)."""
+    """Return normalized action/camera/emotion strings (may be empty).
+
+    Only canonical keys are read — no silent sequence-momentum aliasing.
+    """
     subj = subject if isinstance(subject, dict) else {}
     out = {k: "" for k in MOTION_TRIPLE_KEYS}
     for key in MOTION_BLOCK_KEYS:
@@ -61,14 +64,7 @@ def extract_motion_vector(subject: dict[str, Any] | None) -> dict[str, str]:
         if not isinstance(val, dict):
             continue
         for k in MOTION_TRIPLE_KEYS:
-            # accept common aliases inside dict
             raw = val.get(k)
-            if raw is None and k == "action":
-                raw = val.get("last_action") or val.get("subject")
-            if raw is None and k == "camera":
-                raw = val.get("camera_velocity") or val.get("camera_move")
-            if raw is None and k == "emotion":
-                raw = val.get("emotional_state") or val.get("emotion_state")
             if raw is not None and str(raw).strip():
                 out[k] = str(raw).strip()
         if any(out.values()):
@@ -98,16 +94,61 @@ def build_motion_vector(
     emotion: str,
     motion_tier: str | None = None,
 ) -> dict[str, Any]:
-    """Build a canonical motion_vector (+ optional tier wrapper fields)."""
-    mv = {
-        "action": (action or "").strip(),
-        "camera": (camera or "").strip(),
-        "emotion": (emotion or "").strip(),
+    """Build shot fields: motion_vector dict + optional motion_tier."""
+    fields: dict[str, Any] = {
+        "motion_vector": {
+            "action": (action or "").strip(),
+            "camera": (camera or "").strip(),
+            "emotion": (emotion or "").strip(),
+        }
     }
     tier = normalize_motion_tier(motion_tier)
     if tier:
-        return {"motion_vector": mv, "motion_tier": tier}
-    return {"motion_vector": mv}
+        fields["motion_tier"] = tier
+    return fields
+
+
+def apply_motion_vector_to_shot(
+    shot: dict[str, Any],
+    *,
+    action: str,
+    camera: str,
+    emotion: str,
+    motion_tier: str | None = None,
+) -> dict[str, Any]:
+    """Mutate shot with motion fields; return shot."""
+    fields = build_motion_vector(
+        action=action, camera=camera, emotion=emotion, motion_tier=motion_tier
+    )
+    shot.update(fields)
+    return shot
+
+
+def _finish(
+    *,
+    strict: bool,
+    skipped: bool,
+    warnings: list[str],
+    blockers: list[str],
+    fixes: list[str],
+    checks: list[dict[str, Any]],
+    mv: dict[str, str],
+    complete: bool,
+    mode: str,
+) -> dict[str, Any]:
+    report = empty_readiness_report(
+        skipped=skipped,
+        strict=strict,
+        warnings=warnings,
+        blockers=blockers,
+        fixes=fixes,
+        checks=checks,
+        motion_vector=mv,
+        complete_triple=complete,
+        execution_mode=mode,
+    )
+    report["pass"] = len(blockers) == 0
+    return report
 
 
 def evaluate_motion_brief_readiness(
@@ -151,36 +192,34 @@ def evaluate_motion_brief_readiness(
     )
 
     if not is_video_execution_mode(mode):
-        return {
-            "pass": True,
-            "strict": strict,
-            "skipped": True,
-            "warnings": warnings,
-            "blockers": blockers,
-            "fixes": fixes,
-            "checks": checks,
-            "motion_vector": mv,
-            "complete_triple": complete,
-            "execution_mode": mode,
-        }
+        return _finish(
+            strict=strict,
+            skipped=True,
+            warnings=warnings,
+            blockers=blockers,
+            fixes=fixes,
+            checks=checks,
+            mv=mv,
+            complete=complete,
+            mode=mode,
+        )
 
     if complete:
         if not tier:
             warnings.append(
                 "MB-04: motion_tier unset (optional micro|medium|kinetic)"
             )
-        return {
-            "pass": True,
-            "strict": strict,
-            "skipped": False,
-            "warnings": warnings,
-            "blockers": blockers,
-            "fixes": fixes,
-            "checks": checks,
-            "motion_vector": mv,
-            "complete_triple": True,
-            "execution_mode": mode,
-        }
+        return _finish(
+            strict=strict,
+            skipped=False,
+            warnings=warnings,
+            blockers=blockers,
+            fixes=fixes,
+            checks=checks,
+            mv=mv,
+            complete=True,
+            mode=mode,
+        )
 
     missing = [k for k in MOTION_TRIPLE_KEYS if not mv.get(k)]
     fix_cli = (
@@ -193,18 +232,17 @@ def evaluate_motion_brief_readiness(
             f"prefer full MOTION_VECTOR (missing: {', '.join(missing) or 'all'})"
         )
         fixes.append(fix_cli)
-        return {
-            "pass": True,
-            "strict": strict,
-            "skipped": False,
-            "warnings": warnings,
-            "blockers": blockers,
-            "fixes": fixes,
-            "checks": checks,
-            "motion_vector": mv,
-            "complete_triple": False,
-            "execution_mode": mode,
-        }
+        return _finish(
+            strict=strict,
+            skipped=False,
+            warnings=warnings,
+            blockers=blockers,
+            fixes=fixes,
+            checks=checks,
+            mv=mv,
+            complete=False,
+            mode=mode,
+        )
 
     if free_text and strict:
         blockers.append(
@@ -223,15 +261,14 @@ def evaluate_motion_brief_readiness(
             "or add MOTION_VECTOR language to prompt"
         )
 
-    return {
-        "pass": len(blockers) == 0,
-        "strict": strict,
-        "skipped": False,
-        "warnings": warnings,
-        "blockers": blockers,
-        "fixes": fixes,
-        "checks": checks,
-        "motion_vector": mv,
-        "complete_triple": False,
-        "execution_mode": mode,
-    }
+    return _finish(
+        strict=strict,
+        skipped=False,
+        warnings=warnings,
+        blockers=blockers,
+        fixes=fixes,
+        checks=checks,
+        mv=mv,
+        complete=False,
+        mode=mode,
+    )
