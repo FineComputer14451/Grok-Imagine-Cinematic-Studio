@@ -21,7 +21,11 @@ from continuity_diff import (
     format_continuity_diff_table_rows,
 )
 from extend_regen import apply_regen_plan, ensure_clip_regen, plan_regen, prepare_regen_run
-from identity_drift import DEFAULT_DRIFT_THRESHOLD, score_identity_drift
+from identity_drift import (
+    DEFAULT_DRIFT_THRESHOLD,
+    evaluate_identity_strict_gate,
+    score_identity_drift,
+)
 from quota_optimizer import estimate_sequence_cost
 from imagine_client import is_dry_run
 from seam_report import build_seam_report
@@ -150,14 +154,37 @@ def register(app: typer.Typer) -> None:
         name: str = typer.Argument(..., help="Sequence name or slug"),
         clip: str = typer.Option(..., "--clip", "-c", help="Source clip ID"),
         output: str = typer.Option(None, "--output", "-o"),
+        strict_identity: bool = typer.Option(
+            False,
+            "--strict-identity",
+            help="Exit 1 if drift evidence missing or identity risk (opt-in hard fail)",
+        ),
     ):
         """Generate extend/stitch handoff packet from a clip."""
         seq, seq_path = require_sequence_bundle(name)
         source = require_clip(seq, clip)
+
+        if strict_identity:
+            gate = evaluate_identity_strict_gate(clip=source)
+            if not gate.get("pass"):
+                console.print(
+                    f"[red]Identity strict gate failed[/red] "
+                    f"(status={gate.get('status')}, score={gate.get('score')})"
+                )
+                for r in gate.get("reasons") or []:
+                    console.print(f"  • {r}")
+                if gate.get("fixes"):
+                    console.print("[yellow]Fixes:[/yellow]")
+                    for fix in gate["fixes"]:
+                        console.print(f"  → {fix}")
+                raise typer.Exit(1)
+
         handoff = build_handoff_from_clip(source, memory_bank=seq.get("memory_bank"))
         out_path = Path(output) if output else seq_path.parent / f"handoff_{clip}.json"
         out_path.write_text(json.dumps(handoff, indent=2))
         console.print(f"[green]✅ Handoff packet:[/green] {out_path}")
+        if strict_identity:
+            console.print("[dim]Identity strict gate: pass[/dim]")
         console.print(Panel(json.dumps(handoff, indent=2)[:2000], title="Handoff Preview", border_style="cyan"))
 
     @app.command("extend-prompt")
@@ -167,16 +194,39 @@ def register(app: typer.Typer) -> None:
         beat: str = typer.Option(..., "--beat", "-b", help="Next narrative beat"),
         character: str = typer.Option("", "--character", help="CHARACTER_DNA injection block"),
         output: str = typer.Option(None, "--output", "-o"),
+        strict_identity: bool = typer.Option(
+            False,
+            "--strict-identity",
+            help="Exit 1 if drift evidence missing or identity risk (opt-in hard fail)",
+        ),
     ):
         """Build Grok Imagine Video 1.5 extend prompt for the next clip."""
         seq = require_sequence(name)
         source = require_clip(seq, clip)
+
+        if strict_identity:
+            gate = evaluate_identity_strict_gate(clip=source)
+            if not gate.get("pass"):
+                console.print(
+                    f"[red]Identity strict gate failed[/red] "
+                    f"(status={gate.get('status')}, score={gate.get('score')})"
+                )
+                for r in gate.get("reasons") or []:
+                    console.print(f"  • {r}")
+                if gate.get("fixes"):
+                    console.print("[yellow]Fixes:[/yellow]")
+                    for fix in gate["fixes"]:
+                        console.print(f"  → {fix}")
+                raise typer.Exit(1)
+
         prompt = build_extend_prompt(seq, source, beat, character_injection=character)
         if output:
             Path(output).write_text(prompt)
             console.print(f"[green]✅ Extend prompt saved:[/green] {output}")
         else:
             console.print(Panel(prompt, title="1.5 Extend Prompt", border_style="green"))
+        if strict_identity:
+            console.print("[dim]Identity strict gate: pass[/dim]")
 
     @app.command("qa")
     def seq_qa(
