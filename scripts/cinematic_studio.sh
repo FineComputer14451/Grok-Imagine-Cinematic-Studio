@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Grok Imagine Cinematic Studio v3.8.0 — meta installer entry point
+# Grok Imagine Cinematic Studio v3.8.1 — meta installer entry point
 # https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio
 #
 # Usage:

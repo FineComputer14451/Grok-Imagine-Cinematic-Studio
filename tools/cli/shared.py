@@ -15,8 +15,8 @@ from studio_paths import AGENTS_DIR, STUDIO_ROOT
 def _read_studio_version() -> str:
     vf = STUDIO_ROOT / "VERSION"
     if vf.is_file():
-        return vf.read_text(encoding="utf-8").strip() or "3.8.0"
-    return "3.8.0"
+        return vf.read_text(encoding="utf-8").strip() or "3.8.1"
+    return "3.8.1"
 
 
 STUDIO_VERSION = _read_studio_version()
@@ -148,6 +148,7 @@ ROLE_CARD_SHARED_DOCS = frozenset({
     "MODEL_LAYER_v3.6.7.md",  # pointer → MODEL_LAYER_v3.7.1.md
     "MODEL_LAYER_v3.7.1.md",
     "IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md",
+    "IDENTITY_CONTINUITY_PROTOCOL_v3.8.md",
 })
 EXPECTED_ROLE_CARD_COUNT = len(AGENT_ROLE_CARDS)
 
