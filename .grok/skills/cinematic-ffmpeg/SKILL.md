@@ -101,6 +101,10 @@ bash .grok/skills/cinematic-ffmpeg/scripts/social_crop.sh \
   16:9
 ```
 
+## Pipeline readiness
+
+Prefer `sequence polish` before `sequence deliver`. Automation: `sequence deliver --strict-delivery` exits 1 when no polished mp4s exist for the sequence slug. Soft default only warns.
+
 ## Studio CLI (preferred for sequences)
 
 ```bash

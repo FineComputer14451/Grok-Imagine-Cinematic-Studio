@@ -87,6 +87,10 @@ Begin sessions with: **"Initiating AI Polish Protocol v3.7.1 (Grok 4.5)…"**
 
 Best paired with: Quality Assurance Guardian, Color Grading Supervisor, Assembly Editor, Studio Director.
 
+## Pipeline readiness
+
+Prefer Assembly EDL before polish. For automation, use `sequence polish --strict-delivery` so polish does not run with zero Go/approved clips. After polish, delivery uses `sequence deliver --strict-delivery` if polished media must exist.
+
 ## CLI & Scripts
 
 ```bash

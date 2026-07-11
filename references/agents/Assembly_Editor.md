@@ -58,6 +58,10 @@ Sequence Extender (clip plan) → Generation + QA
 5. **Issues** — trim / replace / re-gen  
 6. **Next Activation** — color, polish, trailer, or deliver  
 
+## Pipeline readiness
+
+Order: **EDL → polish → deliver**. Export EDL before polish when possible. Automation may use `sequence polish --strict-delivery` / `sequence deliver --strict-delivery` so missing Go clips or polished media fail closed.
+
 ## CLI
 
 ```bash

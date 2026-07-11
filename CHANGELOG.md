@@ -6,6 +6,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Added
 - **Generation handoff readiness** — semantic checks for `imagine_agent_mode_handoff` (motion cues, references, return_path); validator warnings; `imagine agent-handoff --strict-handoff`. Helper: `evaluate_imagine_handoff_readiness`.
+- **Post-delivery pipeline readiness** — `evaluate_delivery_pipeline_readiness`; `--strict-delivery` on `sequence polish` / `sequence deliver` (soft by default).
 
 ## [3.8.1] - 2026-07-11
 

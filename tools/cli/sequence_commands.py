@@ -608,6 +608,16 @@ def register(app: typer.Typer) -> None:
             console.print(Markdown(edl_to_markdown(edl)[:3000]))
 
 
+    def _print_delivery_readiness(ready: dict) -> None:
+        for w in ready.get("warnings") or []:
+            console.print(f"[yellow]⚠️  {w}[/yellow]")
+        for b in ready.get("blockers") or []:
+            console.print(f"[yellow]⚠️  readiness blocker: {b}[/yellow]")
+        if ready.get("fixes"):
+            console.print("[dim]Fixes:[/dim]")
+            for f in ready["fixes"]:
+                console.print(f"  → {f}")
+
     @app.command("polish")
     def seq_polish(
         name: str = typer.Argument(..., help="Sequence name or slug"),
@@ -615,9 +625,24 @@ def register(app: typer.Typer) -> None:
         face_restore: bool = typer.Option(False, "--face-restore"),
         clip: list[str] = typer.Option(None, "--clip", "-c", help="Polish specific clips only"),
         dry_run: bool = typer.Option(False, "--dry-run"),
+        strict_delivery: bool = typer.Option(
+            False,
+            "--strict-delivery",
+            help="Exit 1 if pipeline readiness fails (no Go clips / not ready to polish)",
+        ),
     ):
         """AI Polish pass — upscale approved clips via ai-video-upscaler."""
+        from delivery_readiness import evaluate_delivery_pipeline_readiness
+
         seq = require_sequence(name)
+        ready = evaluate_delivery_pipeline_readiness(
+            seq, stage="polish", approved_only=True
+        )
+        _print_delivery_readiness(ready)
+        if strict_delivery and not ready.get("pass"):
+            console.print("[red]Delivery readiness failed (--strict-delivery)[/red]")
+            raise typer.Exit(1)
+
         manifest = polish_sequence(
             seq,
             scale=scale,
@@ -642,9 +667,24 @@ def register(app: typer.Typer) -> None:
         formats: str = typer.Option("16:9", "--formats", "-f", help="Comma-separated: 16:9,9:16,1:1"),
         all_clips: bool = typer.Option(False, "--all-clips"),
         dry_run: bool = typer.Option(False, "--dry-run"),
+        strict_delivery: bool = typer.Option(
+            False,
+            "--strict-delivery",
+            help="Exit 1 if no polished media / not ready to deliver",
+        ),
     ):
         """Build delivery masters — concat + social crops via cinematic-ffmpeg."""
+        from delivery_readiness import evaluate_delivery_pipeline_readiness
+
         seq = require_sequence(name)
+        ready = evaluate_delivery_pipeline_readiness(
+            seq, stage="deliver", approved_only=not all_clips
+        )
+        _print_delivery_readiness(ready)
+        if strict_delivery and not ready.get("pass"):
+            console.print("[red]Delivery readiness failed (--strict-delivery)[/red]")
+            raise typer.Exit(1)
+
         fmt_list = [x.strip() for x in formats.split(",") if x.strip()]
         manifest = deliver_sequence(
             seq,
