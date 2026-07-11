@@ -19,9 +19,13 @@ def render() -> None:
         st.error("Studio tools unavailable in this environment.")
         return
 
+    rt.sync_xai_api_key_to_environ()
     dry = ir.dry_run_active()
     if dry:
-        st.info("No `XAI_API_KEY` — dry-run mode active (mock URLs). Set key in Settings for live generation.")
+        st.info(
+            "No `XAI_API_KEY` — dry-run mode active (mock URLs). "
+            "Set key in **Settings**, or on Streamlit Cloud use **App settings → Secrets**."
+        )
 
     tab_jobs, tab_sfw, tab_execute, tab_refs, tab_run, tab_delivery = st.tabs(
         ["Job queue", "SFW plan", "Batch execute", "Reference plates", "Sequence run", "Delivery"]

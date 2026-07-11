@@ -29,6 +29,10 @@ def test_runtime_imports() -> None:
     assert callable(rt.stack_banner_markdown)
     assert callable(rt.session_model_stack)
     assert callable(rt.cached_models_verify)
+    assert callable(rt.is_streamlit_cloud)
+    assert callable(rt.resolve_xai_api_key)
+    assert callable(rt.sync_xai_api_key_to_environ)
+    assert rt.is_streamlit_cloud() is False  # local/dev path
     if rt.MODELS_AVAILABLE and rt.XAI_CHAT_MODELS:
         ordered = rt.ordered_chat_model_slugs()
         assert ordered[0] == "grok-4.5"

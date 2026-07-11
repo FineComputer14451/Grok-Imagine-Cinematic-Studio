@@ -1,0 +1,19 @@
+# Grok Imagine Cinematic Studio — Streamlit config (local + Community Cloud)
+
+[theme]
+primaryColor = "#7C3AED"
+backgroundColor = "#0B0F19"
+secondaryBackgroundColor = "#151B2B"
+textColor = "#E8ECF4"
+font = "sans serif"
+
+[server]
+headless = true
+enableCORS = false
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"

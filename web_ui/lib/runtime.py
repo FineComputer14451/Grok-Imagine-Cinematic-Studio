@@ -285,8 +285,54 @@ def read_role_card_preview(path: Path, limit: int = ROLE_CARD_PREVIEW_CHARS) -> 
     return text[:limit].rstrip() + "\n\n…"
 
 
+def is_streamlit_cloud() -> bool:
+    """Detect Streamlit Community Cloud (or compatible hosted runtime)."""
+    if os.getenv("STREAMLIT_SHARING_MODE"):
+        return True
+    if os.getenv("STREAMLIT_RUNTIME_ENV", "").lower() == "cloud":
+        return True
+    if os.getenv("IS_STREAMLIT_CLOUD", "").lower() in {"1", "true", "yes"}:
+        return True
+    # Community Cloud mounts the repo under /mount/src/<app>
+    try:
+        return Path("/mount/src").is_dir() and str(ROOT).startswith("/mount/src")
+    except OSError:
+        return False
+
+
+def resolve_xai_api_key() -> str:
+    """Resolve xAI API key: session override → env → Streamlit secrets (Cloud)."""
+    session_key = str(st.session_state.get("xai_api_key") or "").strip()
+    if session_key:
+        return session_key
+    env_key = (os.getenv("XAI_API_KEY") or "").strip()
+    if env_key:
+        return env_key
+    try:
+        secrets = st.secrets
+        if "XAI_API_KEY" in secrets:
+            return str(secrets["XAI_API_KEY"]).strip()
+        if "xai" in secrets:
+            nested = secrets["xai"]
+            if "api_key" in nested:
+                return str(nested["api_key"]).strip()
+            if "XAI_API_KEY" in nested:
+                return str(nested["XAI_API_KEY"]).strip()
+    except Exception:  # noqa: BLE001 — secrets missing/unavailable is normal locally
+        pass
+    return ""
+
+
+def sync_xai_api_key_to_environ() -> str:
+    """Export resolved key to os.environ so tools/imagine_client dry-run checks work."""
+    key = resolve_xai_api_key()
+    if key:
+        os.environ["XAI_API_KEY"] = key
+    return key
+
+
 def get_grok_client() -> OpenAI | None:
-    api_key = os.getenv("XAI_API_KEY") or st.session_state.get("xai_api_key", "")
+    api_key = sync_xai_api_key_to_environ()
     if not api_key:
         return None
     return OpenAI(api_key=api_key, base_url="https://api.x.ai/v1")

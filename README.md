@@ -156,10 +156,21 @@ After skill/command changes, run `pin` and commit the `.grok-plugin/` files atom
 
 ### 4. Streamlit Web UI
 ```bash
-pip install -r requirements-streamlit.txt
+pip install -r requirements.txt   # or requirements-streamlit.txt (same stack)
 streamlit run web_ui/app.py
 ```
 (Imagine video model selector, xAI chat model picker (`grok-4.5` default / `grok-4.3` 1M opt-in), live per-second cost simulator)
+
+#### Streamlit Community Cloud
+
+Deploy the same app from GitHub without running a local server:
+
+1. [share.streamlit.io](https://share.streamlit.io) → **New app**
+2. Repo + branch → **Main file path:** `web_ui/app.py`
+3. Optional: **Secrets** → `XAI_API_KEY = "…"` (see `.streamlit/secrets.toml.example`)
+4. Full walkthrough: [`docs/guides/streamlit_cloud_deploy.md`](docs/guides/streamlit_cloud_deploy.md)
+
+Cloud uses root `requirements.txt` + `runtime.txt` (`python-3.12`). Filesystem is ephemeral — prefer local clone for lasting DNA/sequences.
 
 ---
 

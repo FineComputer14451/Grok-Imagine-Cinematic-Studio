@@ -121,11 +121,24 @@ def render() -> None:
         "XAI API Key",
         type="password",
         key="xai_api_key",
-        help="Or set XAI_API_KEY in the environment. Used for live chat + Imagine API calls.",
+        help=(
+            "Session override. Resolution order: this field → XAI_API_KEY env → "
+            "Streamlit secrets (Community Cloud App settings → Secrets)."
+        ),
     )
+    resolved = bool(rt.resolve_xai_api_key())
+    if resolved and not str(st.session_state.get("xai_api_key") or "").strip():
+        st.success("API key loaded from environment or Streamlit secrets (not shown).")
+    elif not resolved:
+        st.info(
+            "No key yet — Imagine stays in dry-run. On Streamlit Community Cloud, add "
+            "`XAI_API_KEY = \"…\"` under **App settings → Secrets** "
+            "(see `.streamlit/secrets.toml.example`)."
+        )
     st.caption(
         "Never treat Imagine image/video slugs as chat models. "
-        "Orchestration = `grok-4.5` · video/image spend = `grok-imagine-*` only."
+        "Orchestration = `grok-4.5` · video/image spend = `grok-imagine-*` only. "
+        "Do not commit secrets; `.streamlit/secrets.toml` is gitignored."
     )
 
     st.divider()

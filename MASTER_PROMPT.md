@@ -33,8 +33,9 @@ python tools/cinematic_studio_cli.py create-bible --wizard   # optional guided s
 
 ### Method 2: Web UI (Best Visual Experience)
 ```bash
-pip install -r requirements-streamlit.txt
+pip install -r requirements.txt
 streamlit run web_ui/app.py
+# Cloud: Main file web_ui/app.py — see docs/guides/streamlit_cloud_deploy.md
 ```
 (Now includes Imagine Model selector: 1.0 (default, cost-effective), 1.5 Native (for audio), resolution, duration, native audio toggle, real-time cost simulator)
 

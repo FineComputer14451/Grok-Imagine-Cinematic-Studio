@@ -14,6 +14,14 @@ def render() -> None:
     )
     st.markdown(rt.stack_banner_markdown())
 
+    if rt.is_streamlit_cloud():
+        st.info(
+            "**Streamlit Community Cloud** — filesystem is ephemeral: DNA, sequences, and "
+            "batches created here may reset on reboot. Prefer secrets for `XAI_API_KEY` "
+            "(Settings). Full local workflow: clone the repo and run "
+            "`streamlit run web_ui/app.py`."
+        )
+
     if not rt.DASHBOARD_AVAILABLE:
         st.error("Dashboard module unavailable in this environment.")
         return

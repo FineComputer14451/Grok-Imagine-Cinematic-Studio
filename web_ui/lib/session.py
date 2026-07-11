@@ -71,6 +71,8 @@ def init_session_defaults() -> None:
         video = st.session_state.get("video_model")
         if video not in rt.IMAGINE_VIDEO_MODELS:
             st.session_state.video_model = rt.DEFAULT_IMAGINE_VIDEO_MODEL
+    # Streamlit Community Cloud secrets → env for imagine_client / CLI subprocesses
+    rt.sync_xai_api_key_to_environ()
 
 
 def clip_story(text: str, max_len: int) -> str:
