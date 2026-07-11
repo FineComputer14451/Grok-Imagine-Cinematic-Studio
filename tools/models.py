@@ -187,7 +187,7 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
     },
 }
 
-STUDIO_COMPATIBILITY_VERSION = "3.8.2"
+STUDIO_COMPATIBILITY_VERSION = "3.8.3"
 
 # Role → slug (unique by construction; no duplicate bag)
 REQUIRED_MODEL_ROLES: dict[str, str] = {
