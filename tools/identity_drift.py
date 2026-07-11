@@ -128,6 +128,176 @@ def normalize_drift_evidence(value: Any) -> list[dict[str, Any]]:
     return []
 
 
+_DEFAULT_STRICT_FIXES = (
+    "Run: python tools/cinematic_studio_cli.py sequence drift-score "
+    '"<Seq>" --clip <clip_id> --dna characters/{slug}/dna.json',
+    "Attach drift_evidence (ICP-02/03); see "
+    "references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md",
+)
+
+
+def _evaluate_one_evidence(
+    item: dict[str, Any],
+    *,
+    threshold: float,
+) -> dict[str, Any]:
+    """Evaluate a single drift_evidence object under strict rules."""
+    status = str(item.get("status") or "").strip() or "incomplete"
+    score_raw = item.get("score", item.get("drift_score"))
+    try:
+        score = float(score_raw) if score_raw is not None else None
+    except (TypeError, ValueError):
+        score = None
+
+    fixes = list(_DEFAULT_STRICT_FIXES)
+
+    if status == "incomplete":
+        return {
+            "pass": False,
+            "status": "incomplete",
+            "score": score,
+            "reasons": ["drift_evidence status=incomplete"],
+            "fixes": fixes,
+        }
+    if status == "skipped":
+        return {
+            "pass": False,
+            "status": "skipped",
+            "score": score,
+            "reasons": [
+                "drift_evidence status=skipped — strict mode does not allow skip"
+            ],
+            "fixes": fixes + ["Remove --strict-identity or run drift-score"],
+        }
+    if status == "risk":
+        reasons = [f"identity risk (status=risk, score={score})"]
+        summary = (item.get("signals") or {}).get("summary") or ""
+        if summary:
+            reasons.append(str(summary))
+        risk_fixes = list(fixes)
+        risk_fixes.append("Reinforce DNA anchors / re-lock identity before extend")
+        return {
+            "pass": False,
+            "status": "risk",
+            "score": score,
+            "reasons": reasons,
+            "fixes": risk_fixes,
+        }
+    if status != "pass":
+        return {
+            "pass": False,
+            "status": status or "incomplete",
+            "score": score,
+            "reasons": [f"unknown or non-pass status={status!r}"],
+            "fixes": fixes,
+        }
+    if score is not None and score >= threshold:
+        return {
+            "pass": False,
+            "status": "risk",
+            "score": score,
+            "reasons": [f"score {score} >= threshold {threshold} despite status=pass"],
+            "fixes": fixes + ["Re-run sequence drift-score and refresh evidence"],
+        }
+    return {
+        "pass": True,
+        "status": "pass",
+        "score": score,
+        "reasons": [],
+        "fixes": [],
+    }
+
+
+def evaluate_identity_strict_gate(
+    *,
+    clip: dict[str, Any],
+    drift_evidence: dict | list | None = None,
+    threshold: float = DEFAULT_DRIFT_THRESHOLD,
+) -> dict[str, Any]:
+    """
+    Opt-in strict identity gate for extend-path CLI.
+
+    Fail on missing/incomplete/skipped evidence or risk (score >= threshold).
+    """
+    thr = float(threshold)
+    items = normalize_drift_evidence(drift_evidence)
+
+    if not items:
+        report = clip.get("identity_drift")
+        if isinstance(report, dict) and report.get("drift_score") is not None:
+            slug = (
+                str(clip.get("character_slug") or "")
+                or str(report.get("character_slug") or "")
+                or "unknown"
+            )
+            item = report_to_drift_evidence(
+                report,
+                character_slug=slug,
+                reference_hint=str(clip.get("reference_image_id") or ""),
+            )
+            if report.get("pass") is False:
+                item["status"] = "risk"
+            scorer_fixes = [str(f) for f in (report.get("fixes") or []) if f]
+            if scorer_fixes:
+                item["notes"] = "; ".join(scorer_fixes)
+            items = [item]
+
+    if not items:
+        return {
+            "pass": False,
+            "strict": True,
+            "status": "missing",
+            "reasons": [
+                "No drift_evidence and no clip identity_drift score — "
+                "run sequence drift-score"
+            ],
+            "fixes": list(_DEFAULT_STRICT_FIXES),
+            "score": None,
+            "threshold": thr,
+        }
+
+    order = {
+        "missing": 4,
+        "skipped": 3,
+        "incomplete": 2,
+        "risk": 1,
+        "pass": 0,
+    }
+    worst_status = "pass"
+    all_reasons: list[str] = []
+    all_fixes: list[str] = []
+    scores: list[float] = []
+    overall_pass = True
+
+    for item in items:
+        one = _evaluate_one_evidence(item, threshold=thr)
+        if item.get("notes") and not one["pass"]:
+            for part in str(item["notes"]).split(";"):
+                part = part.strip()
+                if part and part not in one["fixes"]:
+                    one["fixes"].append(part)
+        if not one["pass"]:
+            overall_pass = False
+        if order.get(one["status"], 0) >= order.get(worst_status, 0):
+            worst_status = one["status"]
+        all_reasons.extend(one.get("reasons") or [])
+        for f in one.get("fixes") or []:
+            if f not in all_fixes:
+                all_fixes.append(f)
+        if one.get("score") is not None:
+            scores.append(float(one["score"]))
+
+    return {
+        "pass": overall_pass,
+        "strict": True,
+        "status": "pass" if overall_pass else worst_status,
+        "reasons": all_reasons,
+        "fixes": all_fixes,
+        "score": max(scores) if scores else None,
+        "threshold": thr,
+    }
+
+
 _TOKEN_RE = re.compile(r"[a-z0-9']+")
 
 
