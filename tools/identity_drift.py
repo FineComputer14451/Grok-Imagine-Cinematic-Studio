@@ -10,9 +10,123 @@ v1: metadata heuristics; optional still paths for hybrid mode via soft PIL impor
 from __future__ import annotations
 
 import re
+from datetime import datetime, timezone
 from typing import Any
 
 DEFAULT_DRIFT_THRESHOLD = 2.5
+
+DRIFT_EVIDENCE_SCHEMA_VERSION = "1.0"
+DRIFT_EVIDENCE_PROTOCOL = "IDENTITY_CONTINUITY_PROTOCOL"
+DRIFT_EVIDENCE_PROTOCOL_VERSION = "1.0"
+DRIFT_EVIDENCE_TOOL = "sequence drift-score"
+DRIFT_EVIDENCE_STATUSES = frozenset({"pass", "risk", "incomplete", "skipped"})
+DRIFT_EVIDENCE_REQUIRED_FIELDS = (
+    "schema_version",
+    "protocol",
+    "protocol_version",
+    "clip_id",
+    "character_slug",
+    "scored_at",
+    "tool",
+    "score",
+    "threshold",
+    "status",
+    "attempt",
+)
+
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
+
+def status_from_report(report: dict[str, Any]) -> str:
+    if report.get("pass") is True:
+        return "pass"
+    return "risk"
+
+
+def report_to_drift_evidence(
+    report: dict[str, Any],
+    *,
+    character_slug: str,
+    dna_version: int = 1,
+    attempt: int = 1,
+    reference_hint: str = "",
+    notes: str = "",
+    scored_at: str | None = None,
+    tool: str = DRIFT_EVIDENCE_TOOL,
+) -> dict[str, Any]:
+    factors = [str(f) for f in (report.get("factors") or []) if f]
+    fixes = [str(f) for f in (report.get("fixes") or []) if f]
+    summary_parts = factors[:3] if factors else []
+    if fixes:
+        summary_parts.append("fixes: " + "; ".join(fixes[:2]))
+    score = float(report.get("drift_score", report.get("score", 0.0)) or 0.0)
+    threshold = float(report.get("threshold", DEFAULT_DRIFT_THRESHOLD) or DEFAULT_DRIFT_THRESHOLD)
+    status = status_from_report(report)
+    return {
+        "schema_version": DRIFT_EVIDENCE_SCHEMA_VERSION,
+        "protocol": DRIFT_EVIDENCE_PROTOCOL,
+        "protocol_version": DRIFT_EVIDENCE_PROTOCOL_VERSION,
+        "clip_id": str(report.get("clip_id") or ""),
+        "character_slug": character_slug,
+        "scored_at": scored_at or _now_iso(),
+        "tool": tool,
+        "score": score,
+        "threshold": threshold,
+        "status": status,
+        "baseline": {
+            "dna_slug": character_slug,
+            "dna_version": int(dna_version),
+            "reference_hint": reference_hint or "",
+        },
+        "signals": {
+            "summary": "; ".join(summary_parts) if summary_parts else f"drift_score={score}",
+            "flags": factors[:8],
+        },
+        "attempt": int(attempt),
+        "notes": notes or "",
+    }
+
+
+def incomplete_drift_evidence(
+    *,
+    clip_id: str,
+    character_slug: str,
+    attempt: int = 1,
+    notes: str = "Drift score not run",
+) -> dict[str, Any]:
+    return {
+        "schema_version": DRIFT_EVIDENCE_SCHEMA_VERSION,
+        "protocol": DRIFT_EVIDENCE_PROTOCOL,
+        "protocol_version": DRIFT_EVIDENCE_PROTOCOL_VERSION,
+        "clip_id": clip_id,
+        "character_slug": character_slug,
+        "scored_at": _now_iso(),
+        "tool": DRIFT_EVIDENCE_TOOL,
+        "score": 0.0,
+        "threshold": DEFAULT_DRIFT_THRESHOLD,
+        "status": "incomplete",
+        "baseline": {
+            "dna_slug": character_slug,
+            "dna_version": 1,
+            "reference_hint": "",
+        },
+        "signals": {"summary": notes, "flags": ["incomplete"]},
+        "attempt": int(attempt),
+        "notes": notes,
+    }
+
+
+def normalize_drift_evidence(value: Any) -> list[dict[str, Any]]:
+    if value is None:
+        return []
+    if isinstance(value, dict):
+        return [value]
+    if isinstance(value, list):
+        return [x for x in value if isinstance(x, dict)]
+    return []
+
 
 _TOKEN_RE = re.compile(r"[a-z0-9']+")
 
