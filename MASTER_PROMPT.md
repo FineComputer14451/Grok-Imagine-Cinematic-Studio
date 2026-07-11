@@ -1,8 +1,8 @@
-# Grok Imagine Cinematic Studio v3.7.1
+# Grok Imagine Cinematic Studio v3.8.0
 
 **The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (cinematic + coding default) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
-**Version:** 3.7.1 "Odyssey Native" (July 2026)  
+**Version:** 3.8.0 "Odyssey Native" (July 2026)  
 **Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
 **Key Improvements:** Unified Grok 4.5 cinematic+Build default (optional Grok 4.3 1M), Grok Build ≥ 0.2.93, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
 

@@ -2,17 +2,23 @@
   <img src="assets/banner.jpg" alt="Grok Imagine Cinematic Studio Banner" width="100%">
 </p>
 
-# 🎬 Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native"
+# 🎬 Grok Imagine Cinematic Studio v3.8.0 "Odyssey Native"
 
 **The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (cinematic + coding default) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
 Transform any story into emotionally powerful, production-ready cinematic video with **Imagine Video 1.0** ($0.05/sec) or **1.5 native image-to-video** with one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
-[![Version](https://img.shields.io/badge/version-3.7.1-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
+[![Version](https://img.shields.io/badge/version-3.8.0-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Grok](https://img.shields.io/badge/Grok-4.5%20cinematic%2BBuild%20%C2%B7%20optional%204.3%201M%20%C2%B7%20Imagine-purple)](https://x.ai)
 
 ---
+
+## ✨ What's New in v3.8.0
+
+- **Plugin modularity** — marketplace ships recommended full suite + five satellite packs (`core`, `camera-image`, `sequence-narrative`, `nsfw`, `delivery-post`) from `config/plugin_packs.yaml`
+- **`plugin packs` CLI** — list pack membership; pack-aware catalog generation and pin
+- **Declutter `full_suite_wins`** — dual full-suite + satellite installs drop satellite skill dupes
 
 ## ✨ What's New in v3.7.1
 
@@ -271,6 +277,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ---
 
-*Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (cinematic + coding), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5*
+*Grok Imagine Cinematic Studio v3.8.0 "Odyssey Native" — Built for Grok Build 0.2.93+, Grok 4.5 (cinematic + coding), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5*
 
-*Last updated: July 10, 2026 — v3.7.1*
+*Last updated: July 11, 2026 — v3.8.0*
