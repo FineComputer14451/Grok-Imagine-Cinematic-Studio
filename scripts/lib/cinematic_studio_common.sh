@@ -757,8 +757,10 @@ cinematic_studio_declutter_usage() {
     cat <<'USAGE'
 Usage: cinematic_studio.sh declutter [options]
 
-Remove Method A skill copies that duplicate the installed Grok plugin, and
-prune old ~/.grok/skills-backup-* directories.
+Remove Method A skill copies that duplicate the installed Grok plugin,
+prune old ~/.grok/skills-backup-* directories, and when the full suite plugin
+is installed drop overlapping skills from satellite pack installs
+(full_suite_wins — never removes skills from the full suite).
 
 Options:
   --dry-run           Show what would be removed (default if DEClutter not forced)
@@ -912,10 +914,110 @@ cinematic_studio_declutter() {
     fi
 
     echo ""
+
+    # --- full_suite_wins: satellite skill dups lose when full suite is installed ---
+    local plugins_root="${GROK_PLUGINS_DIR:-$HOME/.grok/installed-plugins}"
+    local full_install=""
+    local sat_install=""
+    local satellite_skill=""
+    local plugin_name=""
+    local plugin_json=""
+    local install_dir=""
+    local sat_name=""
+    local sat_dupes=0
+    local removed_sat_skills=0
+    local -a sat_roots=()
+    local -a sat_names=(
+        grok-imagine-cinematic-core
+        grok-imagine-camera-image
+        grok-imagine-sequence-narrative
+        grok-imagine-nsfw
+        grok-imagine-delivery-post
+    )
+
+    echo "→ full_suite_wins (satellite vs full suite under installed-plugins):"
+    if [[ ! -d "$plugins_root" ]]; then
+        echo "  (no installed-plugins dir: $plugins_root — skip)"
+    else
+        while IFS= read -r install_dir; do
+            [[ -z "$install_dir" ]] && continue
+            plugin_json=""
+            if [[ -f "$install_dir/plugin.json" ]]; then
+                plugin_json="$install_dir/plugin.json"
+            elif [[ -f "$install_dir/.grok-plugin/plugin.json" ]]; then
+                plugin_json="$install_dir/.grok-plugin/plugin.json"
+            else
+                continue
+            fi
+
+            plugin_name=""
+            if command -v python3 >/dev/null 2>&1; then
+                plugin_name="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8")).get("name") or "")' "$plugin_json" 2>/dev/null || true)"
+            elif command -v jq >/dev/null 2>&1; then
+                plugin_name="$(jq -r '.name // empty' "$plugin_json" 2>/dev/null || true)"
+            else
+                plugin_name="$(sed -n 's/.*"name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$plugin_json" 2>/dev/null | head -n1 || true)"
+            fi
+            plugin_name="${plugin_name//$'\r'/}"
+            plugin_name="${plugin_name//$'\n'/}"
+            [[ -z "${plugin_name:-}" ]] && continue
+
+            if [[ "$plugin_name" == "grok-imagine-cinematic-studio" ]]; then
+                if [[ -d "$install_dir/.grok/skills" ]]; then
+                    full_install="$install_dir"
+                fi
+                continue
+            fi
+
+            for sat_name in "${sat_names[@]}"; do
+                if [[ "$plugin_name" == "$sat_name" ]]; then
+                    if [[ -d "$install_dir/.grok/skills" ]]; then
+                        sat_roots+=("$install_dir")
+                    fi
+                    break
+                fi
+            done
+        done < <(find "$plugins_root" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort)
+
+        if [[ -z "$full_install" && ${#sat_roots[@]} -gt 0 ]]; then
+            echo "  satellites only (${#sat_roots[@]}) — skip full_suite_wins (full suite not installed)"
+        elif [[ -n "$full_install" && ${#sat_roots[@]} -eq 0 ]]; then
+            echo "  full suite present; no satellite installs — nothing to do"
+        elif [[ -z "$full_install" ]]; then
+            echo "  (no full suite or satellite installs detected)"
+        else
+            echo "  full: $full_install"
+            echo "  satellites: ${#sat_roots[@]}"
+            for sat_install in "${sat_roots[@]}"; do
+                echo "  satellite: $sat_install"
+                while IFS= read -r satellite_skill; do
+                    [[ -z "$satellite_skill" ]] && continue
+                    if [[ -d "$full_install/.grok/skills/$satellite_skill" ]]; then
+                        echo "  - drop satellite skill: $satellite_skill ($sat_install)"
+                        sat_dupes=$((sat_dupes + 1))
+                        if [[ $apply -eq 1 ]]; then
+                            rm -rf "$sat_install/.grok/skills/$satellite_skill"
+                            removed_sat_skills=$((removed_sat_skills + 1))
+                        fi
+                    fi
+                done < <(find "$sat_install/.grok/skills" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' 2>/dev/null | sort)
+            done
+            if [[ $sat_dupes -eq 0 ]]; then
+                echo "  (no overlapping satellite skills)"
+            elif [[ $apply -eq 1 ]]; then
+                echo "✅ Removed $removed_sat_skills satellite skill duplicate(s) (full suite wins)"
+            else
+                echo "Would remove $sat_dupes satellite skill(s) (re-run with --apply)"
+            fi
+        fi
+    fi
+
+    echo ""
     echo "Summary"
     echo "-------"
     if [[ $apply -eq 1 ]]; then
         echo "  Skills removed:  $removed_skills"
+        echo "  Satellite skill dups removed: $removed_sat_skills"
         echo "  Backups removed: $removed_backups"
         echo "  User skills kept: $kept_user"
         echo ""
