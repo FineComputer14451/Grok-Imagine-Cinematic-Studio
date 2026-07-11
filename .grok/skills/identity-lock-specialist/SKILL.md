@@ -87,12 +87,28 @@ python tools/cinematic_studio_cli.py dna inject --name "Character Name" --mode v
 
 Prefer **video_1.0** inject for cost-default video; **video_1.5** when native audio / performance micro-detail needs it. Do not paraphrase locked blocks.
 
+## Identity Continuity Protocol (required)
+
+**Doc:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
+You own **ICP-02, ICP-03, ICP-07** (and ICP-01 with DNA Extractor).
+
+Before every extend or re-gen:
+
+1. `sequence drift-score "Seq" --clip <id> --dna characters/{slug}/dna.json`
+2. Ensure handoff includes `drift_evidence` (from clip `identity_drift` via mapper / `build_handoff_from_clip`)
+3. `status=risk` (≥ 2.5) → recommend fix; do not invent a pass
+4. Validate: `python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py <handoff.json>` (warnings OK; fix errors)
+
+Soft-align Hard Blocks: drift > 3.0 means **you** withhold video/extend approval until corrected — CLI does not hard-block generation in this protocol.
+
 ## Key Protocols
 
 | Protocol | Rule |
 |----------|------|
 | **CHARACTER_DNA_VARIABLE** | Every prompt includes `[CHARACTER_DNA:NAME_vX]` |
-| **DRIFT_SCORE_GATE** | Drift > 2.5 → correct; > 3.0 → new anchor / re-gen still |
+| **DRIFT_SCORE_GATE** | Drift > 2.5 → `status=risk` + correct; > 3.0 → new anchor / agent withhold video |
+| **IDENTITY_CONTINUITY** | ICP-02/03 before every extend; fill `drift_evidence` |
 | **ANCHOR_ROTATION** | Rotate approved hero stills carefully; never drop primary casually |
 | **MULTI_CHARACTER_DNA** | Up to 6 profiles; cast arbitration for shared frames |
 | **TRANSFORMATION_TRACKING** | Story-driven change only via versioned DNA delta |
@@ -106,9 +122,9 @@ Drift = (Visual Similarity + Facial Landmark Match + Clothing/Prop Consistency +
 
 | Score | Action |
 |-------|--------|
-| ≤ 2.5 | Proceed; monitor |
-| > 2.5 | Raise primary ref weight; tighten anchors; flag revision |
-| > 3.0 | Force new anchor still or re-lock DNA; **block video** until fixed |
+| ≤ 2.5 | Proceed; monitor (`status=pass`) |
+| > 2.5 | Raise primary ref weight; tighten anchors; flag revision (`status=risk`) |
+| > 3.0 | Force new anchor still or re-lock DNA; **agent** withholds video until fixed (CLI does not hard-block) |
 
 Evidence helpers:
 
@@ -130,14 +146,15 @@ Activate: `ACTIVATE MULTI_CHARACTER_ARBITER` — then re-check per-character dri
 
 When ErosForge is active: track body proportions, clothing displacement, intimate positioning memory, and post-scene state **for consistency only** — clinical, non-sensational. Hand off detailed intimacy physics to ErosForge / NSFW Sequence Extender.
 
-## Hard Blocks
+## Hard Blocks (agent judgment — not CLI hard gates)
 
 | Condition | Action |
 |-----------|--------|
 | Unlocked / missing DNA for hero | Extract → handoff → lock first |
-| Drift > 3.0 | No i2v / no extend until corrected |
+| Drift > 3.0 | You withhold i2v / extend approval until corrected; run ICP-07 |
 | Inject stripped from prompt | Reject handoff to Prompt Master / I2V |
 | Multi-cast without arbitration | Run cast arbitrate first |
+| Missing `drift_evidence` on extend | Do not claim Lock-approved; run ICP-02/03 |
 
 ## Studio State Fields
 

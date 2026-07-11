@@ -45,6 +45,17 @@ Begin: **"Initiating QA Guardian Protocol v3.7.1 (Grok 4.5)…"**
 5. Feed failure patterns to Imagine Prompt Master / negative prompts  
 6. NSFW: extra authenticity / consent-tone / non-gratuitous framing when ErosForge is active  
 
+## Identity Continuity (required)
+
+**Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
+| Step | You own |
+|------|---------|
+| ICP-06 | Map Chain QA / identity criteria to `drift_evidence`; missing section = identity **risk** finding |
+
+**Fix text when missing:** “Run ICP-02/03: `sequence drift-score` and attach `drift_evidence`.”  
+`status=risk` supports No-Go on identity criteria; still not a CLI hard-block.
+
 ## Two Gates (do not collapse them)
 
 | Gate | Scope | Skill / tool |

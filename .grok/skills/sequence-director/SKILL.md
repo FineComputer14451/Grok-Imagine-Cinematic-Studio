@@ -59,6 +59,11 @@ Begin: **"Initiating Sequence Director Protocol v3.7.1 (Grok 4.5)…"**
 5. After chain QA No-Go, identity drift lock, or temp fail: activate **arc-replan-copilot** (`sequence replan`) without rewriting the Production Bible  
 6. Hand off clean blueprints to **Cinematic Sequence Extender**  
 
+## Identity Continuity (routing)
+
+Long-form clip graphs must include a pre-extend **identity continuity** dependency: Identity Lock completes ICP-02/03 (`drift_evidence`) before Extender ICP-04.  
+Protocol: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
 ## Clip Breaking Rules
 
 | Beat type | Duration |

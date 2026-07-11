@@ -71,6 +71,16 @@ Begin: **"Initiating Continuity Protocol v3.7.1 (Grok 4.5)…"**
 | **Emotional flow** | Temperature vs prior beat (with Performance / temp gate) |
 | **NSFW state** (opt-in) | Undress level, body position, marks — ErosForge only |
 
+## Identity Continuity (required)
+
+**Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
+| Step | You own |
+|------|---------|
+| ICP-05 | Mirror `drift_evidence.status` / score into `continuity_state`; flag worsening trend across clips |
+
+Prefer handoff `drift_evidence` as source of truth; clip `identity_drift` is the raw scorer log.
+
 ## Boundary Checklist (every stitch)
 
 - [ ] Prop positions/states match `continuity_state`  

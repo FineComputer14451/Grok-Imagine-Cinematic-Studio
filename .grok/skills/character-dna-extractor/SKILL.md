@@ -51,6 +51,16 @@ ACTIVATE CHARACTER_DNA_EXTRACTOR
 
 Always begin: **"Initiating Character DNA Extraction Protocol v3.7.1 (Grok 4.5)…"**
 
+## Identity Continuity (required)
+
+**Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
+| Step | You own |
+|------|---------|
+| ICP-01 | Complete DNA + hero refs + inject blocks; handoff to Identity Lock |
+
+Do not mark DNA production-ready for long-form without anchors and `reference_image_ids` when available. Downstream Lock runs ICP-02/03 (`sequence drift-score` + `drift_evidence`).
+
 ## Extraction Modes
 
 | Mode | When | Depth |

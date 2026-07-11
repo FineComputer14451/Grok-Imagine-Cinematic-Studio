@@ -74,6 +74,12 @@ Weights from `CHAIN_QA_CHECKS` in `tools/sequence_chain.py`:
 
 Critical set: `last_frame_continuity`, `audio_momentum_sync`, `character_drift_boundary`, `transition_readiness`.
 
+## Identity Continuity (ICP-06)
+
+When scoring `character_drift_boundary` / identity criteria, require handoff `drift_evidence` (or clip `identity_drift`).  
+If missing → finding: run ICP-02/03 (`sequence drift-score`).  
+Protocol: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY_CONTINUITY_PROTOCOL: v1.0]`
+
 ## Prerequisites (handoff)
 
 Clip / packet should include:
