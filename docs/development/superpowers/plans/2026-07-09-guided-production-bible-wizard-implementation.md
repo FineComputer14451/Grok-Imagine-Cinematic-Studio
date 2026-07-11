@@ -244,7 +244,7 @@ Gate behind same try/import pattern as `PRODUCTION_AVAILABLE` or a dedicated `BI
 | File | Change |
 |------|--------|
 | `.grok/skills/production-bible-workflow/SKILL.md` | Note optional `create-bible --wizard`; keep existing direct examples as primary |
-| `README.md` / `Quick_Start_Guide.md` | One short subsection if they document `create-bible` |
+| `README.md` / `docs/guides/Quick_Start_Guide.md` | One short subsection if they document `create-bible` |
 | Design spec | Status stays “ready”; optional link to this plan |
 
 No plugin catalog pin required unless a skill file under `.grok/skills/` changes content that is indexed — if skill body changes, run usual verify; catalog pin only if plugin index content hashes change per project rules.

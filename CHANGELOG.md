@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Changed
+- **Repo layout (Grok 4.5 hygiene)** — human docs moved under `docs/{guides,templates,releases,archive,development}/`; root keeps lean `README` / `AGENTS` / `CHANGELOG` / `MASTER_PROMPT.md` with compatibility stubs for old paths; `references/MODELS.md` alias; `MODEL_LAYER_v3.6.7` archived; see `docs/REPOSITORY_LAYOUT.md`
+
 ### Added
 - **`ai-image-recreation` in plugin suite (Grok 4.5)** — user-upload recreation / style transfer / enhance / design sheets / pre-video plates via `image_edit` + multi-pass protocol; ported into `.grok/skills/ai-image-recreation/` with prompt library + adult cheat sheet; catalog **48 skills** (`plugin.json`, `plugin-index.json`, `required_skills.manifest` parity including `skill-agent-architect`)
 - **Character DNA Extractor → Grok 4.5 / v3.7.1** — full skill rewrite (forensic modes, design-sheet bridge, multi-cast path, `video_1.0` inject); template + Role Card refresh; `tools/character_dna.py` `STUDIO_AGENT_VERSION` **v3.7.1** + prompt modes `video_1.0` / `video_1.5`
@@ -53,7 +56,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Skill hygiene (46 skills)** — `required_skills.manifest` adds `arc-replan-copilot` + `multi-character-identity-arbiter` (parity with disk / `plugin.json`); docs and marketplace copy updated from 44 → 46 skills (AGENTS, README, MASTER_PROMPT, RELEASE_NOTES, installation guide).
 - **Cinematic chat default → `grok-4.5`** — `STACK_CONTRACT["cinematic"]` unified with Build/CLI on `grok-4.5`; `grok-4.3` remains opt-in for 1M context (`--chat-model grok-4.3` / alias `long-context`). Alias `cinematic` now resolves to `grok-4.5`. `models verify` warns on unified chat defaults instead of failing.
 - **Docs & Role Cards** — MODELS, AGENTS, README, MASTER_PROMPT, Quick Start, Project Bible, RELEASE_NOTES, Studio Director / Mega / Prompt Master / Sequence / Quota / AGENT_INDEX, commands, Web UI, config example aligned to unified default.
-- **Agents + skills enhanced for Grok 4.5** — new `references/agents/MODEL_LAYER_v3.6.7.md`; all Role Cards embed Model Layer; all skills carry stack tables and 4.5 operating rules.
+- **Agents + skills enhanced for Grok 4.5** — new `references/agents/MODEL_LAYER_v3.7.1.md`; all Role Cards embed Model Layer; all skills carry stack tables and 4.5 operating rules.
 
 ---
 
@@ -193,12 +196,12 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Changed
 - `AGENTS.md` restored and updated for v3.6 with AI Polish Director section
-- `MASTER_PROMPT_v3.6.md` updated to 23 agents with post-production activation commands
+- `MASTER_PROMPT.md` updated to 23 agents with post-production activation commands
 - `grok-imagine-cinematic-studio` skill updated to reference 23-agent suite
-- `Quick_Start_Guide.md` Phase 4 now includes final delivery polish step
+- `docs/guides/Quick_Start_Guide.md` Phase 4 now includes final delivery polish step
 
 ### Fixed
-- Restored stub placeholder content in `AGENTS.md`, `references/agents/AGENT_INDEX.md`, and `references/agents/MASTER_PROMPT_v3.6.md`
+- Restored stub placeholder content in `AGENTS.md`, `references/agents/AGENT_INDEX.md`, and `references/agents/MASTER_PROMPT.md`
 
 ---
 
@@ -222,7 +225,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
   - Better agent detection logic
 - Updated documentation:
   - Revised `README.md` (accurate 22-agent count, Role Card emphasis)
-  - Updated `Quick_Start_Guide.md` v2.0 with improved workflow and specialist table
+  - Updated `docs/guides/Quick_Start_Guide.md` v2.0 with improved workflow and specialist table
 - Full `grok-imagine-cinematic-studio` skill pulled with latest `MASTER_PROMPT_v3.5.md`
 
 ### Changed

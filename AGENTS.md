@@ -33,19 +33,22 @@ This workspace is designed for advanced **Grok 4.5** agent workflows, with heavy
 │       │   ├── references/      # Optional: long-form docs, production bibles, agent defs
 │       │   └── assets/          # Optional: templates, reference images, etc.
 ├── .grok-plugin/                # Plugin manifests (marketplace.json, plugin.json, plugin-index.json — 48 skills + commands)
-├── artifacts/                   # All generated outputs (images, docs, videos, code)
+├── artifacts/                   # Generated outputs (gitignored contents; keep .gitkeep)
 ├── scripts/                     # Install/verify/update helpers + thin shims
 ├── web_ui/                      # Streamlit dashboard (model pickers, quota sim, DNA/sequence tools)
 ├── tools/                       # CLI + model registry (models.py is canonical stack)
-├── references/                  # MODELS_v3.6.md, agents/, handoff protocols
+├── references/                  # MODELS.md · MODELS_v3.6.md · agents/ Role Cards
+├── docs/                        # Human docs: guides/, templates/, releases/, archive/
 ├── commands/                    # Slash commands for Grok Build plugin
+├── characters/ · sequences/     # Runtime DNA / sequence state (gitignored contents)
+├── sfw_batches/ · nsfw_batches/ # Runtime batch plans (gitignored contents)
 ├── AGENTS.md                    # This file (you are here)
-├── README.md                    # Human-facing overview (keep in sync)
-├── CHANGELOG.md
-├── RELEASE_NOTES_v3.6.md
-├── Quick_Start_Guide.md
-└── (other: config/, examples/, VERSION, etc.)
+├── README.md · MASTER_PROMPT.md # Overview + chat activation (Grok 4.5)
+├── CHANGELOG.md · VERSION
+└── (other: config/, examples/, tests/, assets/)
 ```
+
+Full map: `docs/REPOSITORY_LAYOUT.md`.
 
 User-global skills (all projects): `~/.grok/skills/`.  
 User config: `~/.grok/config.toml`.
@@ -290,7 +293,7 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 - **Model stack:** cinematic + Build/coding default **`grok-4.5`**; optional 1M **`grok-4.3`**; Imagine **1.0** default; `VIDEO_PIPELINE_SPEC` wired everywhere; **1.5** for native-audio workflows.
 - Full suite: **48/48** skills + Role Cards on Grok 4.5 orchestration default (includes `ai-image-recreation` for user-upload recreation).
 - Recent **3.7.1:** Imagine Agent Mode Handoff (Studio Director + main skill + CLI). **3.6.7:** guided Bible wizard, catalog pin hygiene, cinematic chat default unified on `grok-4.5`.
-- Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, RELEASE_NOTES, MODELS, Quick Start).
+- Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, `docs/releases/`, `references/MODELS.md`, `docs/guides/Quick_Start_Guide.md`).
 
 ## Quick Start for New Tasks
 

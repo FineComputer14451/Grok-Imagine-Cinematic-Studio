@@ -316,7 +316,7 @@ cinematic_studio_install_tree() {
         cinematic_studio_install_scripts "$payload"
     fi
 
-    for doc in AGENTS.md MASTER_PROMPT_v3.6.md; do
+    for doc in AGENTS.md MASTER_PROMPT.md; do
         if payload="$(cinematic_studio_resolve_payload_path "$root" "$doc")"; then
             cp "$payload" "$PROJECT_DIR/"
         fi

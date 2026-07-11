@@ -83,7 +83,7 @@ def register(app: typer.Typer) -> None:
                     console.print(f"  [red]• {name}[/red]")
                 issues += 1
 
-        core_files = ["MASTER_PROMPT_v3.6.md", "README.md", "Quick_Start_Guide.md"]
+        core_files = ["MASTER_PROMPT.md", "README.md", "docs/guides/Quick_Start_Guide.md"]
         for f in core_files:
             if (STUDIO_ROOT / f).exists():
                 console.print(f"[green]✅ {f} present[/green]")

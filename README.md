@@ -73,7 +73,7 @@ Transform any story into emotionally powerful, production-ready cinematic video 
 ## 🚀 Quick Start
 
 ### 1. Fastest: Master Prompt Activation (Recommended)
-1. Copy the content of [`MASTER_PROMPT_v3.6.md`](MASTER_PROMPT_v3.6.md)
+1. Copy the content of [`MASTER_PROMPT.md`](MASTER_PROMPT.md)
 2. Paste into a new **Grok 4.5** chat (default) or **Grok 4.3** for long 1M Bibles (enable reasoning=medium/high for complex productions)
 3. Type: `Activate Grok Imagine Cinematic Studio v3.7.1`
 
@@ -147,7 +147,7 @@ Studio Director v3.7.1 + Mega Production Architect v3.6.5  (Role Cards; studio v
 ├── references/MODELS_v3.6.md   # Grok Build + xAI model registry (Grok 4.5 default)
 ├── web_ui/app.py                 # Streamlit + Guided Bible Creator + model pickers
 ├── examples/                     # Production Bible templates
-├── MASTER_PROMPT_v3.6.md         # Main activation prompt (v3.7.1 · Grok 4.5)
+├── MASTER_PROMPT.md         # Main activation prompt (v3.7.1 · Grok 4.5)
 ├── scripts/                      # thin shims (release/verify); real catalog work via `cinematic-studio plugin catalog`
 └── .grok/skills/                 # 48 custom Grok skills (primary runtime)
 ```
@@ -155,7 +155,7 @@ Studio Director v3.7.1 + Mega Production Architect v3.6.5  (Role Cards; studio v
 **Key v3.7.1 Components:**
 - `references/agents/` — Role Cards (labels remain v3.6.5 in CLI registry; Studio Director **v3.7.1**)
 - `references/agents/MODEL_LAYER_v3.7.1.md` — Grok 4.5 operating rules for every agent/skill
-- `MASTER_PROMPT_v3.6.md` — Activation with Grok 4.5 stack + Imagine Agent Mode Handoff
+- `MASTER_PROMPT.md` — Activation with Grok 4.5 stack + Imagine Agent Mode Handoff
 - `tools/cli/bible_stages.py` — Guided Production Bible wizard (CLI `--wizard` + Web UI)
 - `references/agents/AGENT_INDEX.md` — Quick reference + activation presets
 - `.grok-plugin/` — Marketplace support for `grok plugin install` + release-pin hygiene
@@ -212,31 +212,35 @@ Studio Director v3.7.1 + Mega Production Architect v3.6.5  (Role Cards; studio v
 
 ```
 Grok-Imagine-Cinematic-Studio/
-├── .grok-plugin/                 # Grok plugin manifests (marketplace.json, plugin.json, generated index)
-├── references/agents/            # Authoritative Role Cards (v3.6.5+) + AGENT_INDEX.md
-├── examples/                     # Production Bible templates
-├── tools/                        # cinematic_studio_cli.py + cli/ submodules + models.py
-├── web_ui/                       # Streamlit dashboard (1.5 model pickers, quota sim)
-├── scripts/                      # install/verify/update helpers + thin shims (catalog generation via CLI)
-├── commands/                     # Slash command docs for Grok (cinematic, dna, nsfw, etc.)
-├── MASTER_PROMPT_v3.6.md
-├── Quick_Start_Guide.md
-├── RELEASE_NOTES_v3.6.md
-├── CHANGELOG.md
-└── AGENTS.md                     # Agent/coding guidelines (this workspace)
+├── .grok/skills/                 # 48 studio skills (agent-only)
+├── .grok-plugin/                 # Marketplace manifests + pin
+├── references/agents/            # Role Cards + MODEL_LAYER_v3.7.1 + AGENT_INDEX
+├── references/MODELS.md          # Model registry guide (alias → MODELS_v3.6.md)
+├── docs/                         # Human docs (guides, templates, releases, archive)
+│   ├── guides/                   # Quick Start, Upgrade, Installation
+│   ├── templates/                # Production Bible, kink library
+│   └── releases/                 # RELEASE_NOTES_v3.7.1.md
+├── tools/                        # cinematic_studio_cli.py + models.py + cli/
+├── web_ui/ · scripts/ · commands/ · examples/ · tests/
+├── MASTER_PROMPT.md              # Chat activation (Grok 4.5)
+├── CHANGELOG.md · AGENTS.md · VERSION
+└── characters/ · sequences/ · artifacts/   # Runtime (CLI paths; contents mostly gitignored)
 ```
+
+Layout details: [docs/REPOSITORY_LAYOUT.md](docs/REPOSITORY_LAYOUT.md) · [docs/README.md](docs/README.md)
 
 ---
 
 ## 🔗 Useful Links
 
-- [Quick Start Guide](Quick_Start_Guide.md)
+- [Documentation index](docs/README.md)
+- [Quick Start Guide](docs/guides/Quick_Start_Guide.md)
 - [Agent Index (v3.7.1)](references/agents/AGENT_INDEX.md)
-- [Production Bible Template](Project_Bible_Template.md)
+- [Production Bible Template](docs/templates/Project_Bible_Template.md)
 - [CHANGELOG](CHANGELOG.md)
-- [RELEASE_NOTES_v3.6.md](RELEASE_NOTES_v3.6.md)
-- [Upgrade Guide](UPGRADE_GUIDE.md)
-- [Slash Commands Reference](commands/) — for cinematic, dna, nsfw, quota, validate etc. inside Grok
+- [Release notes v3.7.1](docs/releases/RELEASE_NOTES_v3.7.1.md)
+- [Upgrade Guide](docs/guides/UPGRADE_GUIDE.md)
+- [Slash Commands Reference](commands/) — cinematic, dna, nsfw, quota, validate, etc.
 
 ---
 

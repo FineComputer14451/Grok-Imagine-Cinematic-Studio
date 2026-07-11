@@ -65,7 +65,7 @@ if [[ -f "$REPO_ROOT/requirements.txt" ]]; then
     cp "$REPO_ROOT/requirements.txt" "$STAGING/"
 fi
 
-for doc in AGENTS.md MASTER_PROMPT_v3.6.md; do
+for doc in AGENTS.md MASTER_PROMPT.md; do
     if [[ -f "$REPO_ROOT/$doc" ]]; then
         cp "$REPO_ROOT/$doc" "$STAGING/"
     fi

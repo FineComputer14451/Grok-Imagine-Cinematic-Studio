@@ -38,15 +38,15 @@ grok-imagine-cinematic-studio/
 ├── CONTRIBUTING.md
 ├── CONTRIBUTORS.md
 ├── Example_Production_Bible_Example.md
-├── Kink_Specific_Cinematic_Template_Library_v3.3.md
+├── docs/templates/Kink_Specific_Cinematic_Template_Library.md
 ├── LICENSE
 ├── MASTER_PROMPT_v3.4.md
 ├── MASTER_PROMPT_v3.5.md
-├── Project_Bible_Template.md
-├── Quick_Start_Guide.md
+├── docs/templates/Project_Bible_Template.md
+├── docs/guides/Quick_Start_Guide.md
 ├── README.md
 ├── RELEASE_NOTES_v3.5.md
-├── UPGRADE_GUIDE.md
+├── docs/guides/UPGRADE_GUIDE.md
 ├── requirements-streamlit.txt
 ├── requirements.txt
 └── (other root files)
