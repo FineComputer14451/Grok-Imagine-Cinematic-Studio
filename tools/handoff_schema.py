@@ -15,8 +15,10 @@ from __future__ import annotations
 
 from typing import Any
 
-# Keep aligned with STUDIO_COMPATIBILITY_VERSION when protocol and studio ship together.
-PROTOCOL_VERSION = "3.7.1"
+from models import STUDIO_COMPATIBILITY_VERSION
+
+# Protocol ships with the studio release; single source so pins cannot drift.
+PROTOCOL_VERSION = STUDIO_COMPATIBILITY_VERSION
 PACKET_TYPE_IMAGINE_AGENT_MODE = "imagine_agent_mode_handoff"
 
 # Human-readable protocol — single doc of record (skill mirrors are pointers only)
@@ -127,9 +129,46 @@ def normalize_target_surface(surface: str) -> str:
 
 
 def imagine_agent_mode_packet_schema() -> dict[str, Any]:
-    """Schema fragment for PACKET_TYPES['imagine_agent_mode_handoff']."""
+    """
+    Declarative schema for PACKET_TYPES['imagine_agent_mode_handoff'].
+
+    Consumed by the handoff validator's data-driven engine (no packet-type
+    special-case branches for agent-mode fields).
+
+    Keys:
+      required   — must be present
+      nonempty   — must be non-empty strings after strip
+      enums      — field → allowed frozenset
+      typed      — field → type rule (list | list_min | object_any_of | …)
+      when       — conditional rules when field ∈ set
+    """
     return {
         "required": IMAGINE_AGENT_MODE_REQUIRED_FIELDS,
+        "nonempty": (
+            "subject_id",
+            "prompt",
+            "quota_note",
+            "return_path",
+            "protocol_version",
+            "studio_version",
+        ),
+        "enums": {
+            "target_surface": TARGET_SURFACES,
+            "execution_mode": EXECUTION_MODES,
+        },
+        "typed": {
+            "reference_hints": "list",
+            "handoff_steps": {"list_min": 1},
+            "model_stack": {"object_any_of": MODEL_STACK_KEYS},
+        },
+        "when": (
+            {
+                "field": "execution_mode",
+                "in": VIDEO_EXECUTION_MODES,
+                "nonempty": IMAGINE_AGENT_MODE_VIDEO_REQUIRED_FIELDS,
+            },
+        ),
+        # kept for callers that still read these keys directly
         "target_surfaces": TARGET_SURFACES,
         "execution_modes": EXECUTION_MODES,
         "video_modes": VIDEO_EXECUTION_MODES,

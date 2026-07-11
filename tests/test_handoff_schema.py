@@ -24,7 +24,9 @@ from imagine_bridge import (  # noqa: E402
     EXECUTION_MODES as BRIDGE_MODES,
     TARGET_SURFACES as BRIDGE_SURFACES,
     PROTOCOL_VERSION as BRIDGE_PROTOCOL,
+    handoff_steps,
 )
+from models import STUDIO_COMPATIBILITY_VERSION  # noqa: E402
 
 
 def test_surfaces_and_modes_nonempty() -> None:
@@ -86,6 +88,19 @@ def test_packet_schema_fragment() -> None:
 
 def test_packet_type_constant() -> None:
     assert PACKET_TYPE_IMAGINE_AGENT_MODE == "imagine_agent_mode_handoff"
+
+
+def test_protocol_version_tracks_studio() -> None:
+    assert PROTOCOL_VERSION == STUDIO_COMPATIBILITY_VERSION
+    assert BRIDGE_PROTOCOL == STUDIO_COMPATIBILITY_VERSION
+
+
+def test_handoff_steps_for_all_surfaces() -> None:
+    for surface in sorted(TARGET_SURFACES):
+        for mode in ("image_prompt", "image_to_video", "video_prompt"):
+            steps = handoff_steps(surface, mode)
+            assert isinstance(steps, list) and len(steps) >= 3
+            assert all(isinstance(s, str) and s.strip() for s in steps)
 
 
 def test_canonical_protocol_doc_is_single_source() -> None:

@@ -124,6 +124,73 @@ def test_invalid_imagine_agent_mode_missing_pipeline() -> None:
         "handoff_steps": ["1. generate"],
     })
     assert result.returncode == 1
+    combined = result.stdout + result.stderr
+    assert "video_pipeline_spec" in combined or "video modes require" in combined
+
+
+def test_invalid_imagine_agent_mode_enum() -> None:
+    result = run_validator({
+        "packet_type": "imagine_agent_mode_handoff",
+        "protocol_version": "3.7.1",
+        "studio_version": "3.7.1",
+        "target_surface": "not_a_surface",
+        "execution_mode": "image_prompt",
+        "subject_id": "shot_001",
+        "prompt": "Still",
+        "reference_hints": [],
+        "model_stack": {"chat": "grok-4.5"},
+        "quota_note": "ok",
+        "return_path": "record",
+        "handoff_steps": ["1. image_gen"],
+    })
+    assert result.returncode == 1
+    assert "target_surface" in (result.stdout + result.stderr)
+
+
+def test_valid_imagine_agent_mode_image_no_video_fields() -> None:
+    """Image modes do not require video_pipeline_spec / sound_layer."""
+    result = run_validator({
+        "packet_type": "imagine_agent_mode_handoff",
+        "protocol_version": "3.7.1",
+        "studio_version": "3.7.1",
+        "target_surface": "grok_build_tools",
+        "execution_mode": "image_prompt",
+        "subject_id": "shot_still",
+        "prompt": "Hero key art",
+        "reference_hints": [],
+        "model_stack": {"imagine_image": "grok-imagine-image"},
+        "quota_note": "still only",
+        "return_path": "plate lock",
+        "handoff_steps": ["1. image_gen"],
+    })
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_apply_schema_rules_unit() -> None:
+    """Engine is importable and data-driven without special-casing packet types."""
+    sys.path.insert(0, str(ROOT / "tools"))
+    sys.path.insert(0, str(VALIDATOR.parent))
+    # load module by path
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("validate_handoff", VALIDATOR)
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    schema = {
+        "required": ("a",),
+        "nonempty": ("b",),
+        "enums": {"c": frozenset({"x", "y"})},
+        "typed": {"d": {"list_min": 1}},
+        "when": ({"field": "c", "in": frozenset({"x"}), "nonempty": ("e",)},),
+    }
+    issues = mod.apply_schema_rules({"a": 1, "b": "ok", "c": "x", "d": ["1"], "e": "yes"}, schema)
+    assert issues == []
+    issues = mod.apply_schema_rules({"a": 1, "b": "", "c": "z", "d": []}, schema)
+    assert any("empty required field: b" in i for i in issues)
+    assert any("invalid c" in i for i in issues)
+    assert any("d:" in i for i in issues)
 
 
 if __name__ == "__main__":
@@ -134,4 +201,7 @@ if __name__ == "__main__":
     test_invalid_intimacy_missing_residue()
     test_valid_imagine_agent_mode_handoff()
     test_invalid_imagine_agent_mode_missing_pipeline()
+    test_invalid_imagine_agent_mode_enum()
+    test_valid_imagine_agent_mode_image_no_video_fields()
+    test_apply_schema_rules_unit()
     print("All handoff validator tests passed")

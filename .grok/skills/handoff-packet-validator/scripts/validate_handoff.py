@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Validate agent handoff JSON packets for Cinematic Studio."""
+"""Validate agent handoff JSON packets for Cinematic Studio.
+
+Field checks are data-driven from each packet schema (required / nonempty /
+enums / typed / when). Packet-type special cases only remain where structure is
+unique and not expressible as field rules (e.g. momentum key shape).
+"""
 
 from __future__ import annotations
 
@@ -16,7 +21,6 @@ if _TOOLS.is_dir() and str(_TOOLS) not in sys.path:
     sys.path.insert(0, str(_TOOLS))
 
 from handoff_schema import (  # noqa: E402
-    MODEL_STACK_KEYS,
     PACKET_TYPE_IMAGINE_AGENT_MODE,
     imagine_agent_mode_packet_schema,
 )
@@ -31,6 +35,10 @@ PACKET_TYPES: dict[str, dict[str, Any]] = {
             "prompt_injection",
             "key_consistency_anchors",
         ),
+        "nonempty": ("character_name", "slug"),
+        "typed": {
+            "key_consistency_anchors": {"list_min": 1},
+        },
     },
     "sequence_extend_handoff": {
         "required": (
@@ -40,7 +48,11 @@ PACKET_TYPES: dict[str, dict[str, Any]] = {
             "momentum_vector",
             "audio_momentum_vector",
         ),
-        "momentum_keys": ("action", "camera", "emotion"),
+        "nonempty": ("source_clip_id", "last_frame_recap"),
+        "typed": {
+            "momentum_vector": {"object_keys": ("action", "camera", "emotion")},
+            "audio_momentum_vector": "dict",
+        },
     },
     "asset_manifest_entry": {
         "required": (
@@ -51,8 +63,11 @@ PACKET_TYPES: dict[str, dict[str, Any]] = {
             "video_model",
             "status",
         ),
-        "tier_values": frozenset({"hero", "standard", "draft"}),
-        "status_values": frozenset({"draft", "approved", "locked"}),
+        "nonempty": ("asset_id",),
+        "enums": {
+            "tier": frozenset({"hero", "standard", "draft"}),
+            "status": frozenset({"draft", "approved", "locked"}),
+        },
     },
     "intimacy_state_handoff": {
         "required": (
@@ -63,19 +78,120 @@ PACKET_TYPES: dict[str, dict[str, Any]] = {
             "clothing_displacement_log",
             "emotional_residue",
         ),
+        "nonempty": ("source_clip_id", "emotional_residue"),
+        "typed": {
+            "intimacy_physics_state": "dict",
+            "post_scene_state": "dict",
+            "clothing_displacement_log": "list",
+        },
     },
-    # Surfaces / modes come from tools/handoff_schema.py — do not re-list here
+    # Declarative agent-mode schema from tools/handoff_schema.py
     PACKET_TYPE_IMAGINE_AGENT_MODE: imagine_agent_mode_packet_schema(),
 }
 
 
-def _check_momentum_vector(mv: Any, label: str, issues: list[str]) -> None:
-    if not isinstance(mv, dict):
-        issues.append(f"{label}: must be an object")
+def _nonempty(value: Any) -> bool:
+    return bool(str(value).strip()) if value is not None else False
+
+
+def _apply_typed_rule(
+    field: str,
+    value: Any,
+    rule: Any,
+    issues: list[str],
+) -> None:
+    """Apply a single typed field rule; mutates issues."""
+    if rule == "list":
+        if not isinstance(value, list):
+            issues.append(f"{field}: must be an array")
         return
-    for key in ("action", "camera", "emotion"):
-        if not str(mv.get(key, "")).strip():
-            issues.append(f"{label}: missing or empty '{key}'")
+    if rule == "dict":
+        if not isinstance(value, dict):
+            issues.append(f"{field}: must be an object")
+        return
+    if not isinstance(rule, dict):
+        issues.append(f"{field}: unknown typed rule {rule!r}")
+        return
+
+    if "list_min" in rule:
+        min_n = int(rule["list_min"])
+        if not isinstance(value, list) or len(value) < min_n:
+            issues.append(f"{field}: need at least {min_n} item(s)")
+        return
+
+    if "object_keys" in rule:
+        if not isinstance(value, dict):
+            issues.append(f"{field}: must be an object")
+            return
+        for key in rule["object_keys"]:
+            if not _nonempty(value.get(key, "")):
+                issues.append(f"{field}: missing or empty '{key}'")
+        return
+
+    if "object_any_of" in rule:
+        keys = tuple(rule["object_any_of"])
+        if not isinstance(value, dict):
+            issues.append(f"{field}: must be an object")
+        elif not any(_nonempty(value.get(k, "")) for k in keys):
+            issues.append(f"{field}: need at least one of " + "/".join(keys))
+        return
+
+    issues.append(f"{field}: unknown typed rule keys {sorted(rule)}")
+
+
+def apply_schema_rules(data: dict[str, Any], schema: dict[str, Any]) -> list[str]:
+    """
+    Data-driven field validation from a packet schema dict.
+
+    Supported schema keys: required, nonempty, enums, typed, when.
+    """
+    issues: list[str] = []
+
+    for field in schema.get("required", ()):
+        if field not in data:
+            issues.append(f"missing required field: {field}")
+
+    for field in schema.get("nonempty", ()):
+        if not _nonempty(data.get(field, "")):
+            issues.append(f"empty required field: {field}")
+
+    for field, allowed in schema.get("enums", {}).items():
+        val = data.get(field)
+        # Only enforce when field is present or required/nonempty
+        if field not in data and field not in schema.get("required", ()) and field not in schema.get(
+            "nonempty", ()
+        ):
+            continue
+        if val not in allowed:
+            issues.append(f"invalid {field}: {val}")
+
+    typed = schema.get("typed") or {}
+    for field, rule in typed.items():
+        if field not in data and field not in schema.get("required", ()):
+            continue
+        _apply_typed_rule(field, data.get(field), rule, issues)
+
+    for cond in schema.get("when") or ():
+        when_field = cond.get("field")
+        allowed = cond.get("in")
+        if when_field is None or allowed is None:
+            continue
+        # allow "in" as schema key name for frozenset stored on schema
+        if isinstance(allowed, str):
+            allowed = schema.get(allowed, frozenset())
+        if data.get(when_field) not in allowed:
+            continue
+        for field in cond.get("nonempty") or ():
+            if not _nonempty(data.get(field, "")):
+                # match prior agent-mode messaging for video fields
+                if when_field == "execution_mode" and "video" in str(allowed).lower():
+                    issues.append(f"video modes require {field}")
+                else:
+                    issues.append(f"empty required field: {field}")
+        for field, rule in (cond.get("typed") or {}).items():
+            _apply_typed_rule(field, data.get(field), rule, issues)
+
+    return issues
 
 
 def validate_packet(data: dict[str, Any]) -> list[str]:
@@ -90,77 +206,7 @@ def validate_packet(data: dict[str, Any]) -> list[str]:
         issues.append(f"unknown packet_type: {packet_type}")
         return issues
 
-    for field in schema["required"]:
-        if field not in data:
-            issues.append(f"missing required field: {field}")
-        elif field in ("last_frame_recap", "character_name", "asset_id") and not str(data[field]).strip():
-            issues.append(f"empty required field: {field}")
-
-    if packet_type == "sequence_extend_handoff":
-        _check_momentum_vector(data.get("momentum_vector"), "momentum_vector", issues)
-        amv = data.get("audio_momentum_vector")
-        if not isinstance(amv, dict):
-            issues.append("audio_momentum_vector: must be an object")
-
-    if packet_type == "asset_manifest_entry":
-        tier = data.get("tier")
-        if tier not in schema.get("tier_values", ()):
-            issues.append(f"invalid tier: {tier}")
-        status = data.get("status")
-        if status not in schema.get("status_values", ()):
-            issues.append(f"invalid status: {status}")
-
-    if packet_type == "identity_lock_handoff":
-        anchors = data.get("key_consistency_anchors")
-        if not isinstance(anchors, list) or len(anchors) < 1:
-            issues.append("key_consistency_anchors: need at least one anchor")
-
-    if packet_type == "intimacy_state_handoff":
-        if not str(data.get("source_clip_id", "")).strip():
-            issues.append("empty required field: source_clip_id")
-        if not isinstance(data.get("intimacy_physics_state"), dict):
-            issues.append("intimacy_physics_state: must be an object")
-        if not isinstance(data.get("post_scene_state"), dict):
-            issues.append("post_scene_state: must be an object")
-        log = data.get("clothing_displacement_log")
-        if not isinstance(log, list):
-            issues.append("clothing_displacement_log: must be an array")
-        if not str(data.get("emotional_residue", "")).strip():
-            issues.append("empty required field: emotional_residue")
-
-    if packet_type == PACKET_TYPE_IMAGINE_AGENT_MODE:
-        if not str(data.get("subject_id", "")).strip():
-            issues.append("empty required field: subject_id")
-        if not str(data.get("prompt", "")).strip():
-            issues.append("empty required field: prompt")
-        surface = data.get("target_surface")
-        if surface not in schema.get("target_surfaces", ()):
-            issues.append(f"invalid target_surface: {surface}")
-        mode = data.get("execution_mode")
-        if mode not in schema.get("execution_modes", ()):
-            issues.append(f"invalid execution_mode: {mode}")
-        if not isinstance(data.get("reference_hints"), list):
-            issues.append("reference_hints: must be an array")
-        stack = data.get("model_stack")
-        stack_keys = schema.get("model_stack_keys") or MODEL_STACK_KEYS
-        if not isinstance(stack, dict):
-            issues.append("model_stack: must be an object")
-        elif not any(str(stack.get(k, "")).strip() for k in stack_keys):
-            issues.append(
-                "model_stack: need at least one of " + "/".join(stack_keys)
-            )
-        steps = data.get("handoff_steps")
-        if not isinstance(steps, list) or len(steps) < 1:
-            issues.append("handoff_steps: need at least one step")
-        if not str(data.get("quota_note", "")).strip():
-            issues.append("empty required field: quota_note")
-        if not str(data.get("return_path", "")).strip():
-            issues.append("empty required field: return_path")
-        if mode in schema.get("video_modes", ()):
-            for field in schema.get("video_required") or ("video_pipeline_spec", "sound_layer"):
-                if not str(data.get(field, "")).strip():
-                    issues.append(f"video modes require {field}")
-
+    issues.extend(apply_schema_rules(data, schema))
     return issues
 
 
