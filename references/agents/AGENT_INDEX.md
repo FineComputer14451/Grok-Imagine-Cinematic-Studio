@@ -149,7 +149,7 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 |---|--------|---------|
 | 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.7.1` |
 | 2 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
-| 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
+| 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` + Identity Continuity (`sequence drift-score` / ICP) |
 | 4 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
 | 4b | Multi-Cast Identity | `ACTIVATE MULTI_CHARACTER_ARBITER` + `ACTIVATE IDENTITY_LOCK` |
 | 5 | Native Audio Pass | `ACTIVATE SONIC_ARCHITECT` + `GENERATE_NATIVE_AUDIO_SEQUENCE` |
@@ -177,6 +177,8 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 - `1.5 AUDIO-SYNCED MICRO-EXPRESSIONS`
 
 ---
+
+**Identity Continuity Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` (required wiring for Lock / Extender / Continuity / QA on long-form extends).
 
 ## Supporting Skills (Tier 1)
 

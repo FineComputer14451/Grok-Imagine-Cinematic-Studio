@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Added
+- **Identity Continuity Protocol v1.0** — deepen existing long-form agents: canonical ICP (`references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`), `drift_evidence` handoff mapping from clip `identity_drift`, warn-only validator checks (no new agents; no CLI hard-block).
+
 ## [3.8.0] - 2026-07-11
 
 ### Added

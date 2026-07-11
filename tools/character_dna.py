@@ -261,7 +261,8 @@ def build_handoff_packet(dna: dict[str, Any]) -> dict[str, Any]:
             "Load dna_profile into Character Memory Bank",
             "Set identity_lock_status to 'locked'",
             "Enforce reference_weights on all Imagine Prompt Master outputs",
-            "Calculate drift score before every generation; reject if > 2.5 without correction",
+            "Run sequence drift-score before every extend; fill drift_evidence (ICP-02/03); status=risk when score >= 2.5 — recommend correction; agent may withhold approval (CLI does not hard-block). Protocol: IDENTITY_CONTINUITY_PROTOCOL v1.0",
+            "Cite references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md on long-form handoffs",
             "Propagate CHARACTER_DNA variable verbatim in all handoff packets",
         ],
     }
