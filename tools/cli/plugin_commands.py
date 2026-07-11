@@ -23,6 +23,11 @@ from plugin_catalog import (
     sync_marketplace_sha,
     write_artifacts,
 )
+from plugin_packs import (
+    PACK_IDS,
+    load_plugin_packs,
+    validate_plugin_packs,
+)
 from studio_paths import PLUGIN_MARKETPLACE_PATH
 
 # Re-import paths for clarity
@@ -141,6 +146,66 @@ def catalog_pin():
         "[dim]Next: git add .grok-plugin/ && commit (catalog files only). "
         "Then: plugin catalog check --release[/dim]"
     )
+
+
+@plugin_app.command("packs")
+def plugin_packs(
+    json_output: bool = typer.Option(
+        False,
+        "--json",
+        "-j",
+        help="Dump raw plugin_packs.yaml config as JSON",
+    ),
+):
+    """List modular plugin packs and the full-suite plugin name."""
+    try:
+        cfg = load_plugin_packs()
+    except Exception as e:
+        console.print(f"[red]ERROR: cannot load plugin packs: {e}[/red]")
+        raise typer.Exit(1)
+
+    errors = validate_plugin_packs(cfg)
+    if errors:
+        console.print("[bold red]❌ Plugin pack config invalid[/bold red]")
+        for err in errors:
+            console.print(f"  [red]• {err}[/red]")
+        raise typer.Exit(1)
+
+    if json_output:
+        print(json.dumps(cfg, indent=2))
+        return
+
+    full = cfg.get("full_plugin") or {}
+    full_name = full.get("name") or "?"
+    full_display = full.get("display_name") or full_name
+    console.print(f"[bold]Full suite:[/bold] {full_name}")
+    if full_display and full_display != full_name:
+        console.print(f"  [dim]{full_display}[/dim]")
+    console.print()
+
+    packs = cfg.get("packs") or {}
+    table = Table(title="Plugin Packs", box=box.ROUNDED)
+    table.add_column("ID", style="cyan")
+    table.add_column("Name", style="green")
+    table.add_column("Skills", justify="right")
+    table.add_column("Commands", justify="right")
+    table.add_column("Requires", style="yellow")
+
+    for pid in PACK_IDS:
+        pack = packs.get(pid) or {}
+        skills = pack.get("skills") or []
+        commands = pack.get("commands") or []
+        requires = pack.get("requires") or []
+        req_str = ", ".join(requires) if requires else "—"
+        table.add_row(
+            pid,
+            pack.get("name") or "?",
+            str(len(skills)),
+            str(len(commands)),
+            req_str,
+        )
+
+    console.print(table)
 
 
 @plugin_app.command("status")
