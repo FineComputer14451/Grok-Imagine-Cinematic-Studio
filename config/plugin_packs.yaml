@@ -1,0 +1,124 @@
+version: "1"
+# studio_version is advisory; generator may prefer VERSION file
+full_plugin:
+  name: grok-imagine-cinematic-studio
+  recommended: true
+  display_name: "Grok Imagine Cinematic Studio (Full Suite)"
+  description: >-
+    Full 23-agent cinematic suite — all skills and slash commands.
+    Recommended one-click install.
+
+packs:
+  core:
+    name: grok-imagine-cinematic-core
+    display_name: "Cinematic Studio Core"
+    description: >-
+      Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.
+    requires: []
+    skills:
+      - grok-imagine-cinematic-studio
+      - studio-director
+      - mega-production-architect
+      - production-bible-workflow
+      - cinematic-studio-meta-installer
+      - skill-agent-architect
+      - github-repo-manager
+      - character-dna-extractor
+      - identity-lock-specialist
+      - multi-character-identity-arbiter
+      - imagine-prompt-master
+      - imagine-execution-bridge
+      - handoff-packet-validator
+      - workflow-quota-optimizer
+      - quality-assurance-guardian
+      - chain-qa-protocol
+    commands:
+      - cinematic
+      - dna
+      - imagine
+      - dashboard
+      - validate
+      - quota
+      - intelligence
+      - automation
+      - sfw
+
+  camera-image:
+    name: grok-imagine-camera-image
+    display_name: "Cinematic Studio Camera & Image"
+    description: >-
+      DoP, production design, i2i, key art, reference curator, and i2v specialist.
+    requires: [core]
+    skills:
+      - director-of-photography
+      - director-of-photography-v3-3
+      - production-designer-set-decorator
+      - i2i-cinematic-refiner
+      - i2i-refiner
+      - ai-image-recreation
+      - key-art-poster-designer
+      - reference-asset-curator
+      - image-to-video-specialist
+    commands: []
+
+  sequence-narrative:
+    name: grok-imagine-sequence-narrative
+    display_name: "Cinematic Studio Sequence & Narrative"
+    description: >-
+      Long-form sequence, continuity, performance, audio, action/VFX, and SFW batches.
+    requires: [core]
+    skills:
+      - sequence-director
+      - cinematic-sequence-extender
+      - narrative-arc-pacing-strategist
+      - arc-replan-copilot
+      - animatic-director
+      - continuity-consistency-guardian
+      - performance-emotion-director
+      - trailer-teaser-director
+      - sonic-architect-native-audio-virtuoso
+      - foley-sound-design-specialist
+      - localization-subtitle-specialist
+      - stunt-action-choreographer
+      - vfx-sfx-supervisor
+      - sfw-batch-orchestrator
+    commands: []
+
+  nsfw:
+    name: grok-imagine-nsfw
+    display_name: "Cinematic Studio NSFW (Opt-in)"
+    description: >-
+      Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.
+    requires: [core]
+    skills:
+      - erosforge-nsfw-director
+      - nsfw-quota-orchestrator
+      - nsfw-sequence-extender
+      - nsfw-chain-qa-protocol
+    commands:
+      - nsfw
+
+  delivery-post:
+    name: grok-imagine-delivery-post
+    display_name: "Cinematic Studio Delivery & Post"
+    description: >-
+      Assembly EDL, color grade, AI polish, upscale, and cinematic ffmpeg delivery.
+    requires: [core]
+    skills:
+      - assembly-editor
+      - post-production-color-grading-supervisor
+      - ai-polish-director
+      - ai-video-upscaler
+      - cinematic-ffmpeg
+    commands:
+      - delivery
+
+declutter:
+  full_suite_plugin: grok-imagine-cinematic-studio
+  policy: full_suite_wins
+  satellite_plugin_names:
+    - grok-imagine-cinematic-core
+    - grok-imagine-camera-image
+    - grok-imagine-sequence-narrative
+    - grok-imagine-nsfw
+    - grok-imagine-delivery-post
