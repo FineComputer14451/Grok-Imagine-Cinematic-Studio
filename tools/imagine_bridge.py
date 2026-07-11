@@ -370,6 +370,10 @@ def build_handoff(
         "reference_image_id",
         "reference_image_url",
         "source_asset_id",
+        "motion_vector",
+        "motion_tier",
+        "i2v_motion_block",
+        "motion_block",
     ):
         val = subject.get(key)
         if val is not None and val != "" and key not in packet:

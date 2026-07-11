@@ -219,9 +219,15 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
             "--strict-plate",
             help="Exit 1 if still→video plate not approved/locked",
         ),
+        strict_motion: bool = typer.Option(
+            False,
+            "--strict-motion",
+            help="Exit 1 if video shot lacks complete motion_vector triple",
+        ),
     ):
         """Execute a batch shot via Imagine API (image / i2v / video)."""
         from imagine_client import ImagineAPIError
+        from motion_readiness import evaluate_motion_brief_readiness
         from plate_readiness import evaluate_plate_lock_readiness
 
         batch = load_batch(batch_name)
@@ -239,6 +245,17 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
                 console.print(f"  → {fix}")
         if strict_plate and not plate.get("pass"):
             console.print("[red]Plate lock readiness failed (--strict-plate)[/red]")
+            raise typer.Exit(1)
+        motion = evaluate_motion_brief_readiness(shot, strict=strict_motion)
+        for w in motion.get("warnings") or []:
+            console.print(f"[yellow]⚠️  {w}[/yellow]")
+        for b in motion.get("blockers") or []:
+            console.print(f"[yellow]⚠️  motion blocker: {b}[/yellow]")
+        if motion.get("fixes") and motion.get("blockers"):
+            for fix in motion["fixes"]:
+                console.print(f"  → {fix}")
+        if strict_motion and not motion.get("pass"):
+            console.print("[red]Motion brief readiness failed (--strict-motion)[/red]")
             raise typer.Exit(1)
         try:
             result = execute_nsfw_shot(
@@ -275,6 +292,11 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
             "--strict-plate",
             help="Exit 1 if a still→video shot lacks approved/locked plate",
         ),
+        strict_motion: bool = typer.Option(
+            False,
+            "--strict-motion",
+            help="Exit 1 if video shot lacks complete motion_vector triple",
+        ),
     ):
         """Run automated NSFW session — execute next priority shots."""
         summary = run_batch_session(
@@ -284,6 +306,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
             dry_run=dry_run,
             stop_on_fail=stop_on_fail,
             strict_plate=strict_plate,
+            strict_motion=strict_motion,
         )
         table = Table(title=f"NSFW Session — {batch_name}", box=box.SIMPLE)
         table.add_column("Shot", style="cyan")

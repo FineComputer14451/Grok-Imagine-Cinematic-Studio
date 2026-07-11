@@ -374,7 +374,10 @@ def register(app: typer.Typer) -> None:
             console.print(f"[red]{exc}[/red]")
             raise typer.Exit(1) from exc
 
-        ready = evaluate_imagine_handoff_readiness(packet)
+        # --strict-handoff also requires complete motion_vector triple (MB-02)
+        ready = evaluate_imagine_handoff_readiness(
+            packet, strict_motion=strict_handoff
+        )
         for w in ready.get("warnings") or []:
             console.print(f"[yellow]⚠️  {w}[/yellow]")
         if ready.get("blockers"):

@@ -66,7 +66,10 @@ def test_video_without_motion_cues_blocks() -> None:
         )
     )
     assert r["pass"] is False
-    assert any("motion" in b.lower() or "i2v" in b.lower() for b in r["blockers"])
+    assert any(
+        "MB-03" in b or "motion" in b.lower() or "i2v" in b.lower()
+        for b in r["blockers"]
+    )
 
 
 def test_video_with_motion_and_refs_passes() -> None:
@@ -81,9 +84,49 @@ def test_video_with_motion_and_refs_passes() -> None:
             handoff_steps=["1. image_to_video", "2. save", "3. QA"],
             plate_status="locked",
             reference_image_id="plate_001",
+            motion_vector={
+                "action": "coat flutters, hero turns",
+                "camera": "slow dolly in",
+                "emotion": "resolve",
+            },
+            motion_tier="medium",
         )
     )
     assert r["pass"] is True
+
+
+def test_video_free_text_motion_soft_passes_with_warning() -> None:
+    r = evaluate_imagine_handoff_readiness(
+        _base(
+            execution_mode="video_prompt",
+            prompt="Slow dolly push-in, first frame locked",
+            video_pipeline_spec='[VIDEO_PIPELINE_SPEC: model="grok-imagine-video"]',
+            sound_layer="room tone",
+            reference_hints=["plate_1"],
+            return_path="run QA Guardian",
+            handoff_steps=["1. generate", "2. record"],
+        ),
+        strict_motion=False,
+    )
+    assert r["pass"] is True
+    assert any("MB-01" in w for w in r["warnings"])
+
+
+def test_video_free_text_motion_strict_blocks() -> None:
+    r = evaluate_imagine_handoff_readiness(
+        _base(
+            execution_mode="video_prompt",
+            prompt="Slow dolly push-in, first frame locked",
+            video_pipeline_spec='[VIDEO_PIPELINE_SPEC: model="grok-imagine-video"]',
+            sound_layer="room tone",
+            reference_hints=["plate_1"],
+            return_path="run QA Guardian",
+            handoff_steps=["1. generate", "2. record"],
+        ),
+        strict_motion=True,
+    )
+    assert r["pass"] is False
+    assert any("MB-02" in b for b in r["blockers"])
 
 
 def test_i2v_without_plate_status_blocks() -> None:

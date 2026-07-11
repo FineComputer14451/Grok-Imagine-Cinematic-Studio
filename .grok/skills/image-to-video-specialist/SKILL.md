@@ -47,11 +47,16 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for motion v
 
 ```bash
 sfw plate set <batch> <shot> --status locked --path artifacts/plates/hero.png
-sfw run <batch> <shot> --strict-plate
+sfw motion set <batch> <shot> \
+  --action "coat flutters, she turns" \
+  --camera "slow dolly in" \
+  --emotion "resolve under pressure" \
+  --tier medium
+sfw run <batch> <shot> --strict-plate --strict-motion
 imagine agent-handoff --batch … --shot … --strict-handoff
 ```
 
-Soft by default (warnings only). `has_reference` alone does not pass PL-01/PL-02.
+Soft by default (warnings only). `has_reference` alone does not pass PL-01/PL-02. Free-text motion cues alone do not pass under `--strict-motion` / `--strict-handoff` (need full triple).
 
 ## Activation
 

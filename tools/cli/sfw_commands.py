@@ -14,6 +14,11 @@ from rich.table import Table
 from batch_runner import execute_sfw_shot
 from session_runner import run_batch_session
 from imagine_client import ImagineAPIError
+from motion_readiness import (
+    MOTION_TIERS,
+    evaluate_motion_brief_readiness,
+    normalize_motion_tier,
+)
 from plate_readiness import (
     PLATE_OK,
     PLATE_STATUSES,
@@ -63,6 +68,27 @@ def _plate_preflight(shot: dict, *, strict_plate: bool) -> dict:
     _print_plate_report(report)
     if strict_plate and not report.get("pass"):
         console.print("[red]Plate lock readiness failed (--strict-plate)[/red]")
+        raise typer.Exit(1)
+    return report
+
+
+def _print_motion_report(report: dict) -> None:
+    for w in report.get("warnings") or []:
+        console.print(f"[yellow]⚠️  {w}[/yellow]")
+    if report.get("blockers"):
+        for b in report["blockers"]:
+            console.print(f"[yellow]⚠️  motion blocker: {b}[/yellow]")
+        if report.get("fixes"):
+            console.print("[dim]Fixes:[/dim]")
+            for fix in report["fixes"]:
+                console.print(f"  → {fix}")
+
+
+def _motion_preflight(shot: dict, *, strict_motion: bool) -> dict:
+    report = evaluate_motion_brief_readiness(shot, strict=strict_motion)
+    _print_motion_report(report)
+    if strict_motion and not report.get("pass"):
+        console.print("[red]Motion brief readiness failed (--strict-motion)[/red]")
         raise typer.Exit(1)
     return report
 
@@ -277,6 +303,84 @@ def register(app: typer.Typer) -> None:
         )
         _print_plate_report(report)
 
+    motion_app = typer.Typer(help="Structured MOTION_VECTOR brief for video spend")
+    app.add_typer(motion_app, name="motion")
+
+    @motion_app.command("set")
+    def sfw_motion_set(
+        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+        shot_id: str = typer.Argument(..., help="Shot ID"),
+        action: str = typer.Option(..., "--action", help="Subject action / motion"),
+        camera: str = typer.Option(..., "--camera", help="Camera move"),
+        emotion: str = typer.Option(..., "--emotion", help="Emotional beat"),
+        tier: str = typer.Option(
+            None, "--tier", help="micro | medium | kinetic (optional)"
+        ),
+    ):
+        """Set motion_vector {action, camera, emotion} on a batch shot."""
+        batch = load_batch(batch_name)
+        shot = _find_shot(batch, shot_id)
+        if not shot:
+            console.print(f"[red]Shot not found:[/red] {shot_id}")
+            raise typer.Exit(1)
+        shot["motion_vector"] = {
+            "action": action.strip(),
+            "camera": camera.strip(),
+            "emotion": emotion.strip(),
+        }
+        if tier is not None:
+            nt = normalize_motion_tier(tier)
+            if nt is None:
+                console.print(
+                    f"[red]Invalid --tier:[/red] {tier!r}\n"
+                    f"Expected one of: {', '.join(sorted(MOTION_TIERS))}"
+                )
+                raise typer.Exit(1)
+            shot["motion_tier"] = nt
+        save_batch(batch)
+        report = evaluate_motion_brief_readiness(shot, strict=True)
+        console.print(
+            Panel(
+                f"Shot: {shot_id}\n"
+                f"action: {shot['motion_vector']['action']}\n"
+                f"camera: {shot['motion_vector']['camera']}\n"
+                f"emotion: {shot['motion_vector']['emotion']}\n"
+                f"motion_tier: {shot.get('motion_tier') or '—'}\n"
+                f"Complete triple: {report.get('complete_triple')}",
+                title="Motion set",
+                border_style="green" if report.get("complete_triple") else "yellow",
+            )
+        )
+
+    @motion_app.command("show")
+    def sfw_motion_show(
+        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+        shot_id: str = typer.Argument(..., help="Shot ID"),
+    ):
+        """Show motion brief and readiness for a shot."""
+        batch = load_batch(batch_name)
+        shot = _find_shot(batch, shot_id)
+        if not shot:
+            console.print(f"[red]Shot not found:[/red] {shot_id}")
+            raise typer.Exit(1)
+        report = evaluate_motion_brief_readiness(shot, strict=False)
+        mv = report.get("motion_vector") or {}
+        console.print(
+            Panel(
+                f"Shot: {shot_id}\n"
+                f"Mode: {report.get('execution_mode') or shot.get('recommended_mode') or '—'}\n"
+                f"action: {mv.get('action') or '—'}\n"
+                f"camera: {mv.get('camera') or '—'}\n"
+                f"emotion: {mv.get('emotion') or '—'}\n"
+                f"motion_tier: {shot.get('motion_tier') or '—'}\n"
+                f"Complete triple: {report.get('complete_triple')}\n"
+                f"Readiness pass (soft): {report.get('pass')}",
+                title="Motion show",
+                border_style="green" if report.get("pass") else "yellow",
+            )
+        )
+        _print_motion_report(report)
+
     @app.command("run")
     def sfw_run(
         batch_name: str = typer.Argument(..., help="Batch slug or ID"),
@@ -288,6 +392,11 @@ def register(app: typer.Typer) -> None:
             "--strict-plate",
             help="Exit 1 if still→video plate not approved/locked",
         ),
+        strict_motion: bool = typer.Option(
+            False,
+            "--strict-motion",
+            help="Exit 1 if video shot lacks complete motion_vector triple",
+        ),
     ):
         """Execute a batch shot via Imagine API (image / i2v / video)."""
         batch = load_batch(batch_name)
@@ -296,6 +405,7 @@ def register(app: typer.Typer) -> None:
             console.print(f"[red]Shot not found:[/red] {shot_id}")
             raise typer.Exit(1)
         _plate_preflight(shot, strict_plate=strict_plate)
+        _motion_preflight(shot, strict_motion=strict_motion)
         try:
             result = execute_sfw_shot(
                 batch, shot_id,
@@ -334,6 +444,11 @@ def register(app: typer.Typer) -> None:
             "--strict-plate",
             help="Exit 1 if a still→video shot lacks approved/locked plate",
         ),
+        strict_motion: bool = typer.Option(
+            False,
+            "--strict-motion",
+            help="Exit 1 if video shot lacks complete motion_vector triple",
+        ),
     ):
         """Run automated session — execute next priority shots in order."""
         summary = run_batch_session(
@@ -343,6 +458,7 @@ def register(app: typer.Typer) -> None:
             dry_run=dry_run,
             stop_on_fail=stop_on_fail,
             strict_plate=strict_plate,
+            strict_motion=strict_motion,
         )
         table = Table(title=f"SFW Session — {batch_name}", box=box.SIMPLE)
         table.add_column("Shot", style="cyan")

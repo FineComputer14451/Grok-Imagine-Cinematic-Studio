@@ -9,26 +9,14 @@ from handoff_schema import (
     PACKET_TYPE_IMAGINE_AGENT_MODE,
     is_video_execution_mode,
 )
+from motion_readiness import MOTION_CUES, evaluate_motion_brief_readiness
 from plate_readiness import evaluate_plate_lock_readiness
 from specialist_order import evaluate_specialist_order
 from studio_paths import STUDIO_ROOT
 
-MOTION_CUES = (
-    "motion",
-    "camera",
-    "dolly",
-    "pan",
-    "tilt",
-    "track",
-    "ken burns",
-    "first frame",
-    "i2v",
-    "extend",
-    "momentum",
-    "lip-sync",
-    "lip sync",
-    "physics",
-)
+# Re-export for tests / callers that imported MOTION_CUES from here
+__all__ = ("MOTION_CUES", "evaluate_imagine_handoff_readiness")
+
 RETURN_CUES = (
     "qa",
     "record",
@@ -60,11 +48,13 @@ def evaluate_imagine_handoff_readiness(
     packet: dict[str, Any],
     *,
     studio_version: str | None = None,
+    strict_motion: bool = False,
 ) -> dict[str, Any]:
     """
     Semantic readiness for imagine_agent_mode_handoff.
 
     pass=False only when blockers present. warnings alone keep pass=True.
+    strict_motion=True (CLI --strict-handoff): require full motion_vector triple.
     """
     if packet.get("packet_type") != PACKET_TYPE_IMAGINE_AGENT_MODE:
         return {
@@ -82,7 +72,6 @@ def evaluate_imagine_handoff_readiness(
     fixes: list[str] = []
     checks: list[dict[str, Any]] = []
     mode = str(packet.get("execution_mode") or "")
-    prompt = str(packet.get("prompt") or "")
     refs = packet.get("reference_hints")
     if not isinstance(refs, list):
         refs = []
@@ -95,21 +84,30 @@ def evaluate_imagine_handoff_readiness(
             fixes.append(
                 "Add locked plate reference_image_id / path to reference_hints"
             )
-        motion_ok = _has_cue(prompt, MOTION_CUES)
-        for key in ("i2v_motion_block", "motion_vector", "motion_block"):
-            val = packet.get(key)
-            if isinstance(val, dict) and any(str(v).strip() for v in val.values()):
-                motion_ok = True
-            if isinstance(val, str) and val.strip():
-                motion_ok = True
-        if not motion_ok:
-            blockers.append(
-                "GHR-03: video mode prompt lacks motion/I2V cues "
-                "(e.g. dolly, first frame, momentum, lip-sync)"
-            )
-            fixes.append(
-                "Activate I2V Specialist; add MOTION_VECTOR language to prompt"
-            )
+        # GHR-03 — motion brief (structured preferred; free-text soft fallback)
+        motion = evaluate_motion_brief_readiness(
+            packet, execution_mode=mode, strict=strict_motion
+        )
+        for w in motion.get("warnings") or []:
+            if w not in warnings:
+                warnings.append(w if w.startswith("MB-") else f"GHR-03: {w}")
+        for b in motion.get("blockers") or []:
+            # Keep MB-* ids; map legacy message under GHR-03 when unstructured miss
+            if b not in blockers:
+                blockers.append(b)
+        for f in motion.get("fixes") or []:
+            if f not in fixes:
+                fixes.append(f)
+        checks.extend(motion.get("checks") or [])
+    else:
+        motion = {
+            "pass": True,
+            "skipped": True,
+            "warnings": [],
+            "blockers": [],
+            "fixes": [],
+            "checks": [],
+        }
 
     ret = str(packet.get("return_path") or "")
     if not _has_cue(ret, RETURN_CUES):
@@ -177,4 +175,5 @@ def evaluate_imagine_handoff_readiness(
         "checks": checks,
         "specialist_order": order,
         "plate_lock": plate,
+        "motion_brief": motion,
     }

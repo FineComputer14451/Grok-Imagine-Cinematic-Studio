@@ -34,6 +34,13 @@ You own motion content that satisfies readiness: non-empty plate `reference_hint
 
 **Plate status:** Confirm Curator set `plate_status` to **approved** or **locked** on the batch shot before i2v. Soft warnings always; hard-fail with `sfw run --strict-plate` or `--strict-handoff` (PL-01/PL-02). Draft plates must not burn video credits.
 
+**Motion brief:** Always emit structured `motion_vector` with nonempty **action**, **camera**, **emotion** (optional `motion_tier`: micro|medium|kinetic). Free-text alone is a soft fallback (MB-01); production spend should use:
+
+```bash
+sfw motion set <batch> <shot> --action "…" --camera "…" --emotion "…" --tier medium
+sfw run <batch> <shot> --strict-plate --strict-motion
+```
+
 ## Handoff Partners
 
 | Direction | Agent | Packet |

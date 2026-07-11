@@ -119,10 +119,17 @@ python tools/cinematic_studio_cli.py sfw plate set hero-session shot_hero_001 \
   --status approved --path artifacts/plates/hero.png
 python tools/cinematic_studio_cli.py sfw plate show hero-session shot_hero_001
 
+# Structured MOTION_VECTOR before video (soft free-text fallback; hard with --strict-motion)
+python tools/cinematic_studio_cli.py sfw motion set hero-session shot_hero_001 \
+  --action "coat flutters, she turns" \
+  --camera "slow dolly in" \
+  --emotion "resolve" \
+  --tier medium
+
 # Execute / session (API key required for real spend; dry-run when supported)
 python tools/cinematic_studio_cli.py sfw run hero-session shot_hero_001
-python tools/cinematic_studio_cli.py sfw run hero-session shot_hero_001 --strict-plate
-python tools/cinematic_studio_cli.py sfw session hero-session --strict-plate
+python tools/cinematic_studio_cli.py sfw run hero-session shot_hero_001 --strict-plate --strict-motion
+python tools/cinematic_studio_cli.py sfw session hero-session --strict-plate --strict-motion
 
 python tools/cinematic_studio_cli.py sfw record hero-session shot_hero_001 \
   --score 8.5 --credits 12

@@ -42,8 +42,10 @@ def run_batch_session(
     stop_on_fail: bool = True,
     cache_artifacts: bool = True,
     strict_plate: bool = False,
+    strict_motion: bool = False,
 ) -> dict[str, Any]:
     """Run up to `count` next shots sequentially."""
+    from motion_readiness import evaluate_motion_brief_readiness
     from plate_readiness import evaluate_plate_lock_readiness
 
     batch = _load_batch(pipeline, batch_slug)
@@ -77,6 +79,19 @@ def run_batch_session(
                 continue
             # Soft: annotate and continue
             live.setdefault("plate_readiness_warnings", plate.get("blockers") or [])
+        motion = evaluate_motion_brief_readiness(live, strict=strict_motion)
+        if not motion.get("pass"):
+            msg = "; ".join(motion.get("blockers") or ["motion brief not ready"])
+            if strict_motion:
+                results.append({
+                    "shot_id": shot_id,
+                    "status": "failed",
+                    "error": f"motion brief: {msg}",
+                })
+                if stop_on_fail:
+                    break
+                continue
+            live.setdefault("motion_readiness_warnings", motion.get("blockers") or [])
         try:
             result = execute_shot(
                 batch, shot_id,
@@ -95,6 +110,12 @@ def run_batch_session(
                     "pass": plate.get("pass"),
                     "blockers": plate.get("blockers"),
                     "warnings": plate.get("warnings"),
+                }
+            if motion.get("blockers") or motion.get("warnings"):
+                result["motion_readiness"] = {
+                    "pass": motion.get("pass"),
+                    "blockers": motion.get("blockers"),
+                    "warnings": motion.get("warnings"),
                 }
             results.append(result)
         except Exception as exc:
