@@ -64,9 +64,16 @@ python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py artifac
 
 | Exit | Meaning |
 |------|---------|
-| `0` | Valid |
+| `0` | Valid (may include ⚠️ warnings) |
 | `1` | Schema / JSON structure errors |
 | `2` | Usage or file not found |
+
+## Identity Continuity (`drift_evidence`)
+
+For `sequence_extend_handoff` and `identity_lock_handoff`, missing or incomplete
+`drift_evidence` produces **warnings** (exit 0). Invalid `status` enums are **errors**.
+Protocol: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`  
+CLI: `sequence drift-score`
 
 ### Generate packets then validate
 

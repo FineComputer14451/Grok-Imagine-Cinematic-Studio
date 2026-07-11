@@ -193,6 +193,80 @@ def test_apply_schema_rules_unit() -> None:
     assert any("d:" in i for i in issues)
 
 
+def _minimal_extend(**overrides):
+    base = {
+        "packet_type": "sequence_extend_handoff",
+        "source_clip_id": "clip_001",
+        "last_frame_recap": "Wide shot, hero mid-stride",
+        "momentum_vector": {"action": "walking", "camera": "dolly in", "emotion": "tense"},
+        "audio_momentum_vector": {"dialogue": "none", "sfx": "rain"},
+    }
+    base.update(overrides)
+    return base
+
+
+def test_extend_missing_drift_evidence_warns_but_exits_0() -> None:
+    result = run_validator(_minimal_extend())
+    assert result.returncode == 0, result.stdout + result.stderr
+    out = result.stdout + result.stderr
+    assert "drift_evidence" in out.lower() or "⚠️" in out
+
+
+def test_extend_with_valid_drift_evidence_ok() -> None:
+    result = run_validator(_minimal_extend(drift_evidence={
+        "schema_version": "1.0",
+        "protocol": "IDENTITY_CONTINUITY_PROTOCOL",
+        "protocol_version": "1.0",
+        "clip_id": "clip_001",
+        "character_slug": "liora",
+        "scored_at": "2026-07-11T00:00:00+00:00",
+        "tool": "sequence drift-score",
+        "score": 1.0,
+        "threshold": 2.5,
+        "status": "pass",
+        "baseline": {"dna_slug": "liora", "dna_version": 1},
+        "attempt": 1,
+    }))
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_drift_evidence_invalid_status_is_error() -> None:
+    result = run_validator(_minimal_extend(drift_evidence={
+        "schema_version": "1.0",
+        "protocol": "IDENTITY_CONTINUITY_PROTOCOL",
+        "protocol_version": "1.0",
+        "clip_id": "clip_001",
+        "character_slug": "liora",
+        "scored_at": "2026-07-11T00:00:00+00:00",
+        "tool": "sequence drift-score",
+        "score": 1.0,
+        "threshold": 2.5,
+        "status": "banana",
+        "baseline": {"dna_slug": "liora", "dna_version": 1},
+        "attempt": 1,
+    }))
+    assert result.returncode == 1
+
+
+def test_drift_evidence_skipped_without_reason_warns() -> None:
+    result = run_validator(_minimal_extend(drift_evidence={
+        "schema_version": "1.0",
+        "protocol": "IDENTITY_CONTINUITY_PROTOCOL",
+        "protocol_version": "1.0",
+        "clip_id": "clip_001",
+        "character_slug": "liora",
+        "scored_at": "2026-07-11T00:00:00+00:00",
+        "tool": "sequence drift-score",
+        "score": 0.0,
+        "threshold": 2.5,
+        "status": "skipped",
+        "baseline": {"dna_slug": "liora", "dna_version": 1},
+        "attempt": 1,
+    }))
+    assert result.returncode == 0
+    assert "skipped" in (result.stdout + result.stderr).lower()
+
+
 if __name__ == "__main__":
     test_valid_sequence_handoff()
     test_invalid_missing_recap()
@@ -204,4 +278,8 @@ if __name__ == "__main__":
     test_invalid_imagine_agent_mode_enum()
     test_valid_imagine_agent_mode_image_no_video_fields()
     test_apply_schema_rules_unit()
+    test_extend_missing_drift_evidence_warns_but_exits_0()
+    test_extend_with_valid_drift_evidence_ok()
+    test_drift_evidence_invalid_status_is_error()
+    test_drift_evidence_skipped_without_reason_warns()
     print("All handoff validator tests passed")

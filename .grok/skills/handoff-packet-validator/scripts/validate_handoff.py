@@ -89,6 +89,27 @@ PACKET_TYPES: dict[str, dict[str, Any]] = {
     PACKET_TYPE_IMAGINE_AGENT_MODE: imagine_agent_mode_packet_schema(),
 }
 
+# Identity Continuity Protocol: warn-only when drift_evidence is missing/incomplete
+EXTEND_PACKET_TYPES_WARN_IF_NO_DRIFT = frozenset({
+    "sequence_extend_handoff",
+    "identity_lock_handoff",
+})
+
+DRIFT_EVIDENCE_STATUSES = frozenset({"pass", "risk", "incomplete", "skipped"})
+DRIFT_EVIDENCE_REQUIRED = (
+    "schema_version",
+    "protocol",
+    "protocol_version",
+    "clip_id",
+    "character_slug",
+    "scored_at",
+    "tool",
+    "score",
+    "threshold",
+    "status",
+    "attempt",
+)
+
 
 def _nonempty(value: Any) -> bool:
     return bool(str(value).strip()) if value is not None else False
@@ -194,19 +215,94 @@ def apply_schema_rules(data: dict[str, Any], schema: dict[str, Any]) -> list[str
     return issues
 
 
-def validate_packet(data: dict[str, Any]) -> list[str]:
+def _iter_drift_evidence_items(data: dict[str, Any]) -> list[dict[str, Any]]:
+    raw = data.get("drift_evidence")
+    if raw is None:
+        return []
+    if isinstance(raw, dict):
+        return [raw]
+    if isinstance(raw, list):
+        return [x for x in raw if isinstance(x, dict)]
+    return []
+
+
+def validate_drift_evidence_section(data: dict[str, Any]) -> tuple[list[str], list[str]]:
+    """
+    Returns (issues, warnings) for drift_evidence.
+
+    Missing section on extend / identity-lock packets → warning only.
+    Invalid status enum when section present → hard issue.
+    Incomplete fields, skipped without reason, risk/incomplete status → warnings.
+    """
+    issues: list[str] = []
+    warnings: list[str] = []
+    packet_type = data.get("packet_type")
+    raw = data.get("drift_evidence", "__missing__")
+
+    if raw == "__missing__" or raw is None:
+        if packet_type in EXTEND_PACKET_TYPES_WARN_IF_NO_DRIFT:
+            warnings.append(
+                "drift_evidence missing — run sequence drift-score (ICP-02/03); "
+                "see references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md"
+            )
+        return issues, warnings
+
+    if not isinstance(raw, (dict, list)):
+        issues.append("drift_evidence: must be an object or array of objects")
+        return issues, warnings
+
+    items = _iter_drift_evidence_items(data)
+    if isinstance(raw, list) and not items:
+        issues.append("drift_evidence: array must contain objects")
+        return issues, warnings
+
+    for i, item in enumerate(items):
+        prefix = (
+            f"drift_evidence[{i}]"
+            if len(items) > 1 or isinstance(raw, list)
+            else "drift_evidence"
+        )
+        for field in DRIFT_EVIDENCE_REQUIRED:
+            if field not in item:
+                warnings.append(f"{prefix}: missing field '{field}' (incomplete evidence)")
+        status = item.get("status")
+        if status is not None and status not in DRIFT_EVIDENCE_STATUSES:
+            issues.append(f"{prefix}: invalid status: {status}")
+        if status == "skipped" and not str(item.get("skipped_reason") or "").strip():
+            warnings.append(f"{prefix}: status=skipped requires skipped_reason")
+        if status == "risk":
+            warnings.append(
+                f"{prefix}: status=risk score={item.get('score')} "
+                f"(threshold={item.get('threshold')}) — recommend ICP-07 fix"
+            )
+        if status == "incomplete":
+            warnings.append(f"{prefix}: status=incomplete — run sequence drift-score")
+        baseline = item.get("baseline")
+        if isinstance(baseline, dict) and not str(baseline.get("dna_slug") or "").strip():
+            warnings.append(f"{prefix}: baseline.dna_slug empty")
+        elif baseline is None and "baseline" not in item:
+            warnings.append(f"{prefix}: missing baseline.dna_slug")
+
+    return issues, warnings
+
+
+def validate_packet_with_warnings(data: dict[str, Any]) -> tuple[list[str], list[str]]:
+    """Return (hard issues, soft warnings). Hard issues fail validation."""
     issues: list[str] = []
     packet_type = data.get("packet_type")
     if not packet_type:
-        issues.append("missing packet_type")
-        return issues
-
+        return ["missing packet_type"], []
     schema = PACKET_TYPES.get(packet_type)
     if not schema:
-        issues.append(f"unknown packet_type: {packet_type}")
-        return issues
-
+        return [f"unknown packet_type: {packet_type}"], []
     issues.extend(apply_schema_rules(data, schema))
+    drift_issues, warnings = validate_drift_evidence_section(data)
+    issues.extend(drift_issues)
+    return issues, warnings
+
+
+def validate_packet(data: dict[str, Any]) -> list[str]:
+    issues, _warnings = validate_packet_with_warnings(data)
     return issues
 
 
@@ -230,14 +326,19 @@ def main() -> int:
         print("Root must be a JSON object", file=sys.stderr)
         return 1
 
-    issues = validate_packet(data)
+    issues, warnings = validate_packet_with_warnings(data)
+    for w in warnings:
+        print(f"⚠️  {w}")
     if issues:
         print(f"❌ Handoff validation failed ({path.name})")
         for issue in issues:
             print(f"  • {issue}")
         return 1
 
-    print(f"✅ Handoff valid: {data.get('packet_type')}")
+    if warnings:
+        print(f"✅ Handoff valid with warnings: {data.get('packet_type')}")
+    else:
+        print(f"✅ Handoff valid: {data.get('packet_type')}")
     return 0
 
 
