@@ -152,6 +152,97 @@ def discover_skills() -> list[dict[str, str]]:
     return items
 
 
+# Production-department taxonomy for declutter / catalog browsing only.
+# Flat skill dirs under .grok/skills/ remain the install layout (plugin format).
+SKILL_TAXONOMY: dict[str, tuple[str, ...]] = {
+    "Core / Orchestration": (
+        "grok-imagine-cinematic-studio",
+        "studio-director",
+        "mega-production-architect",
+        "production-bible-workflow",
+        "cinematic-studio-meta-installer",
+        "skill-agent-architect",
+        "github-repo-manager",
+    ),
+    "Camera & Image": (
+        "director-of-photography",
+        "director-of-photography-v3-3",
+        "imagine-prompt-master",
+        "i2i-cinematic-refiner",
+        "i2i-refiner",
+        "ai-image-recreation",
+        "key-art-poster-designer",
+        "reference-asset-curator",
+    ),
+    "Identity & Continuity": (
+        "character-dna-extractor",
+        "identity-lock-specialist",
+        "multi-character-identity-arbiter",
+        "continuity-consistency-guardian",
+        "performance-emotion-director",
+        "production-designer-set-decorator",
+    ),
+    "Sequence & Narrative": (
+        "sequence-director",
+        "cinematic-sequence-extender",
+        "narrative-arc-pacing-strategist",
+        "arc-replan-copilot",
+        "animatic-director",
+        "image-to-video-specialist",
+        "trailer-teaser-director",
+    ),
+    "Audio": (
+        "sonic-architect-native-audio-virtuoso",
+        "foley-sound-design-specialist",
+        "localization-subtitle-specialist",
+    ),
+    "Action & VFX": (
+        "stunt-action-choreographer",
+        "vfx-sfx-supervisor",
+    ),
+    "Batch & Quota": (
+        "workflow-quota-optimizer",
+        "sfw-batch-orchestrator",
+        "nsfw-quota-orchestrator",
+    ),
+    "NSFW (explicit activation)": (
+        "erosforge-nsfw-director",
+        "nsfw-sequence-extender",
+        "nsfw-chain-qa-protocol",
+    ),
+    "QA, Handoff & Delivery": (
+        "quality-assurance-guardian",
+        "chain-qa-protocol",
+        "handoff-packet-validator",
+        "imagine-execution-bridge",
+        "assembly-editor",
+        "post-production-color-grading-supervisor",
+        "ai-polish-director",
+        "ai-video-upscaler",
+        "cinematic-ffmpeg",
+    ),
+}
+
+
+def skill_taxonomy_groups(skill_names: list[str] | None = None) -> dict[str, list[str]]:
+    """Return ordered taxonomy groups for the given skill names (or all known)."""
+    names = set(skill_names if skill_names is not None else [])
+    if skill_names is None:
+        names = {s["name"] for s in discover_skills()}
+
+    grouped: dict[str, list[str]] = {}
+    claimed: set[str] = set()
+    for group, members in SKILL_TAXONOMY.items():
+        present = [m for m in members if m in names]
+        grouped[group] = present
+        claimed.update(present)
+
+    other = sorted(n for n in names if n not in claimed)
+    if other:
+        grouped["Other / uncategorized"] = other
+    return grouped
+
+
 def discover_commands() -> list[dict[str, str]]:
     items: list[dict[str, str]] = []
     if not COMMANDS_DIR.is_dir():

@@ -160,6 +160,8 @@ If native Imagine tools are unavailable, use `imagine-execution-bridge` / CLI (`
 - Or via marketplace: `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio` then install by name
 - Regenerate index after skill changes: `cinematic-studio plugin catalog pin` (or `python scripts/generate_plugin_index.py` for plain generation only)
 - Validate plugin: `bash scripts/verify_plugins.sh` (or `cinematic-studio plugin catalog check`)
+- Declutter dual Method A+B skill installs: `bash scripts/cinematic_studio.sh declutter --apply` (or `cinematic-studio plugin declutter --apply`) — see `references/SKILLS_TAXONOMY.md`
+- Browse skill groups: `cinematic-studio plugin list --grouped`
 - Release catalog pin: commit content first → `cinematic-studio plugin catalog pin` (or `bash scripts/release_plugin_catalog.sh`) → commit **only** `.grok-plugin/` (install SHA = content revision; pin-only tip is expected)
 - Pre-publish plugin gate: `cinematic-studio plugin catalog check --release` or `bash scripts/verify_plugins.sh --release` (passes when pin == HEAD or pin is ancestor with only catalog paths after it)
 - Dev/test deps: `pip install -r requirements-dev.txt` then `pytest`

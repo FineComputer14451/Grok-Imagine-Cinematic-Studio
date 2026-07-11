@@ -48,7 +48,7 @@ Both methods ship the same **48 skills** (plugin suite). They differ in **where*
 
 **Default for this skill:** Method A — you run the meta installer yourself.
 
-**Use Method B when** the user is on Grok Build, asks for `grok plugin install`, marketplace install, or slash commands (`/cinematic`, etc.). Tell them plugin install does **not** populate `~/Grok-Cinematic-Projects/`; run Method A afterward if they need the CLI, references, or `verify --all` against `~/.grok/skills/`.
+**Use Method B when** the user is on Grok Build, asks for `grok plugin install`, marketplace install, or slash commands (`/cinematic`, etc.). Tell them plugin install does **not** populate `~/Grok-Cinematic-Projects/`; run Method A afterward if they need the CLI, references, or tools — but **do not leave dual skill copies**: if the plugin is primary, run `bash scripts/cinematic_studio.sh declutter --apply` so studio skills live only under `installed-plugins/`. Verify with `verify --plugin` (not `verify --all` on empty Method A skills).
 
 ## Method A — Meta Installer (default action)
 
@@ -143,6 +143,7 @@ After a successful install, confirm all of the following:
 | Nested zip from GitHub Releases | Handled automatically — do not manually flatten |
 | `models verify` fails | Ensure `~/Grok-Cinematic-Projects/tools/` exists; re-run install |
 | Old skills after update | Run `update` (creates timestamped backup in `~/.grok/skills-backup-*`) |
+| Dual Method A+B skill clutter | `bash scripts/cinematic_studio.sh declutter --apply --keep-backups 1` |
 | Curl install in sandbox | Use local repo path `bash scripts/cinematic_studio.sh install` |
 | Still defaulting to dual-stack / 4.3 cinematic | Re-copy `config/grok-build.example.toml`; run `models verify` |
 

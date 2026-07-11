@@ -67,6 +67,7 @@ docs/
 | `references/MODELS_v3.6.md` | Same guide (historical filename; still valid) |
 | `references/agents/MODEL_LAYER_v3.7.1.md` | Embeddable stack for skills/Role Cards |
 | `references/agents/*.md` | Role Cards |
+| `references/SKILLS_TAXONOMY.md` | Skill groups + dual-install declutter rules |
 
 ## What not to put in root
 

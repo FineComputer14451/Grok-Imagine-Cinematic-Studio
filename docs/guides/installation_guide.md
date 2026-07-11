@@ -12,9 +12,25 @@ Two supported install paths. Both ship the same **48 skills**; choose based on h
 | **Verify** | `cinematic_studio.sh verify` / `verify --all` | `cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
 | **Update** | `cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` |
 
-You can use **both**: plugin for Grok Build slash commands, Method A for CLI tools and Production Bible references.
+You can use **both**, but **do not dual-load the 48 studio skills**:
 
-**Skill parity:** `scripts/required_skills.manifest` lists the same 48 skills as `.grok-plugin/plugin-index.json`.
+| Goal | Use |
+|------|-----|
+| Skills + slash commands in Grok Build | **Method B only** for skills |
+| CLI tools, references, Production Bibles | Method A **or** a git clone (`~/Grok-Cinematic-Projects` / this repo) |
+| Avoid skill triple-loading | Keep studio skills out of `~/.grok/skills/` when the plugin is installed |
+
+If you already ran Method A **and** installed the plugin, declutter:
+
+```bash
+bash scripts/cinematic_studio.sh declutter --dry-run
+bash scripts/cinematic_studio.sh declutter --apply --keep-backups 1
+```
+
+That removes Method A copies of the 48 studio skills (plugin keeps them) and prunes old `~/.grok/skills-backup-*` folders. User-global skills (`help`, `create-skill`, `docx`, …) stay in `~/.grok/skills/`.
+
+**Skill parity:** `scripts/required_skills.manifest` lists the same 48 skills as `.grok-plugin/plugin-index.json`.  
+**Taxonomy (browse groups):** `references/SKILLS_TAXONOMY.md` · `cinematic-studio plugin list --grouped`
 
 ### Path overrides (Method A)
 
@@ -146,7 +162,9 @@ cp ~/Grok-Cinematic-Projects/config/grok-build.example.toml ~/.grok/config.toml
 | Nested zip from GitHub Releases | Handled automatically — do not manually flatten |
 | `models verify` fails | Ensure `~/Grok-Cinematic-Projects/tools/` exists; re-run Method A |
 | Old skills after update | Method A `update` backs up to `~/.grok/skills-backup-*` first |
-| Plugin installed but no CLI | Run Method A or clone repo to `~/Grok-Cinematic-Projects/` |
+| Skills appear twice / Grok skill list is huge | Dual Method A+B — run `declutter --apply` |
+| Many `~/.grok/skills-backup-*` dirs | `declutter --apply --keep-backups 1` |
+| Plugin installed but no CLI | Run Method A **without** needing skill copies, or clone repo to `~/Grok-Cinematic-Projects/` |
 | Curl blocked in sandbox | Use local repo: `bash scripts/cinematic_studio.sh install` |
 
 ## Verify tiers

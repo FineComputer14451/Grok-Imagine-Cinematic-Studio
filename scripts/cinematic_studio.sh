@@ -7,6 +7,7 @@
 #   ./scripts/cinematic_studio.sh install
 #   ./scripts/cinematic_studio.sh update
 #   ./scripts/cinematic_studio.sh verify [--all|--plugin]
+#   ./scripts/cinematic_studio.sh declutter [--dry-run|--apply]
 #   ./scripts/cinematic_studio.sh version
 #
 # One-liner (curl):
@@ -48,12 +49,17 @@ Usage:
   cinematic_studio.sh update           Update with backup of existing skills
   cinematic_studio.sh verify [--all|--plugin]
                                      Verify core (default), all manifest skills, or Grok plugin install
+  cinematic_studio.sh declutter [opts]
+                                     Remove Method A skill copies that duplicate the plugin;
+                                     prune old ~/.grok/skills-backup-* dirs
   cinematic_studio.sh version          Print installed release version
 
 Examples:
   ./scripts/cinematic_studio.sh install
   ./scripts/cinematic_studio.sh verify --all
   ./scripts/cinematic_studio.sh verify --plugin
+  ./scripts/cinematic_studio.sh declutter --dry-run
+  ./scripts/cinematic_studio.sh declutter --apply --keep-backups 1
   bash <(curl -sL $CINEMATIC_RAW_BASE/scripts/cinematic_studio.sh) install
 EOF
 }
@@ -108,6 +114,10 @@ cmd_version() {
     echo "Grok Imagine Cinematic Studio v${CINEMATIC_STUDIO_VERSION}"
 }
 
+cmd_declutter() {
+    cinematic_studio_declutter "$@"
+}
+
 main() {
     local cmd="${1:-}"
     shift || true
@@ -116,6 +126,7 @@ main() {
         install) cmd_install "$@" ;;
         update) cmd_update "$@" ;;
         verify) cmd_verify "$@" ;;
+        declutter) cmd_declutter "$@" ;;
         version) cmd_version "$@" ;;
         -h|--help|help|"") usage ;;
         *)

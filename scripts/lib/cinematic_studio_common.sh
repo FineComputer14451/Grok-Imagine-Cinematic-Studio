@@ -747,3 +747,185 @@ cinematic_studio_print_next_steps() {
         echo "Verify install: $PROJECT_DIR/scripts/cinematic_studio.sh verify"
     fi
 }
+# ---------------------------------------------------------------------------
+# Declutter local install (plugin vs ~/.grok/skills dual-install hygiene)
+# ---------------------------------------------------------------------------
+# Prefer Method B (plugin) for studio skills when the plugin is installed.
+# Keep only user-global skills under ~/.grok/skills/; prune old Method A backups.
+
+cinematic_studio_declutter_usage() {
+    cat <<'USAGE'
+Usage: cinematic_studio.sh declutter [options]
+
+Remove Method A skill copies that duplicate the installed Grok plugin, and
+prune old ~/.grok/skills-backup-* directories.
+
+Options:
+  --dry-run           Show what would be removed (default if DEClutter not forced)
+  --apply             Actually delete duplicates and old backups
+  --keep-backups N    Keep N most recent skills-backup-* dirs (default: 1)
+  --keep-skills-copy  Do not remove studio skills from ~/.grok/skills/
+  --prune-backups-only  Only prune skills-backup-* (no skill dir changes)
+USAGE
+}
+
+cinematic_studio_declutter() {
+    local dry_run=1
+    local apply=0
+    local keep_backups=1
+    local keep_skills_copy=0
+    local prune_backups_only=0
+    local plugin_root=""
+    local skill=""
+    local removed_skills=0
+    local removed_backups=0
+    local kept_user=0
+    local backup=""
+    local -a plugin_skills=()
+    local -a to_remove=()
+    local -a backups=()
+    local -a keep_list=()
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --dry-run) dry_run=1; apply=0; shift ;;
+            --apply) apply=1; dry_run=0; shift ;;
+            --keep-backups)
+                keep_backups="${2:-1}"
+                shift 2
+                ;;
+            --keep-skills-copy) keep_skills_copy=1; shift ;;
+            --prune-backups-only) prune_backups_only=1; shift ;;
+            -h|--help|help)
+                cinematic_studio_declutter_usage
+                return 0
+                ;;
+            *)
+                echo "❌ Unknown declutter option: $1"
+                cinematic_studio_declutter_usage
+                return 1
+                ;;
+        esac
+    done
+
+    echo "🧹 Cinematic Studio declutter v${CINEMATIC_STUDIO_VERSION}"
+    echo "=============================================="
+    if [[ $dry_run -eq 1 ]]; then
+        echo "Mode: DRY-RUN (pass --apply to execute)"
+    else
+        echo "Mode: APPLY"
+    fi
+    echo "Skills dir: $SKILLS_DIR"
+    echo ""
+
+    plugin_root="$(cinematic_studio_resolve_plugin_root 2>/dev/null || true)"
+
+    if [[ -n "$plugin_root" ]]; then
+        echo "→ Plugin install found: $plugin_root"
+        while IFS= read -r skill; do
+            [[ -n "$skill" ]] && plugin_skills+=("$skill")
+        done < <(find "$plugin_root/.grok/skills" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' 2>/dev/null | sort)
+        echo "  Plugin skills: ${#plugin_skills[@]}"
+    else
+        echo "→ No grok-imagine-cinematic-studio plugin install detected"
+        echo "  Skipping skill de-duplication (nothing to replace Method A copies)."
+        keep_skills_copy=1
+    fi
+    echo ""
+
+    if [[ $prune_backups_only -eq 0 && $keep_skills_copy -eq 0 && ${#plugin_skills[@]} -gt 0 ]]; then
+        echo "→ Studio skills duplicated under $SKILLS_DIR (remove; plugin owns these):"
+        for skill in "${plugin_skills[@]}"; do
+            if [[ -d "$SKILLS_DIR/$skill" ]]; then
+                to_remove+=("$skill")
+                echo "  - $skill"
+            fi
+        done
+        if [[ ${#to_remove[@]} -eq 0 ]]; then
+            echo "  (none — already clean)"
+        fi
+        echo ""
+        echo "→ User-global skills kept under $SKILLS_DIR:"
+        if [[ -d "$SKILLS_DIR" ]]; then
+            while IFS= read -r skill; do
+                [[ -z "$skill" ]] && continue
+                local is_plugin=0
+                for ps in "${plugin_skills[@]}"; do
+                    if [[ "$ps" == "$skill" ]]; then
+                        is_plugin=1
+                        break
+                    fi
+                done
+                if [[ $is_plugin -eq 0 ]]; then
+                    echo "  + $skill"
+                    kept_user=$((kept_user + 1))
+                fi
+            done < <(find "$SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' 2>/dev/null | sort)
+        fi
+        if [[ $kept_user -eq 0 ]]; then
+            echo "  (none found)"
+        fi
+        echo ""
+
+        if [[ $apply -eq 1 && ${#to_remove[@]} -gt 0 ]]; then
+            for skill in "${to_remove[@]}"; do
+                rm -rf "$SKILLS_DIR/$skill"
+                removed_skills=$((removed_skills + 1))
+            done
+            echo "✅ Removed $removed_skills duplicate studio skill(s) from $SKILLS_DIR"
+        elif [[ ${#to_remove[@]} -gt 0 ]]; then
+            echo "Would remove ${#to_remove[@]} skill(s) (re-run with --apply)"
+        fi
+        echo ""
+    fi
+
+    # Prune old Method A update backups
+    shopt -s nullglob
+    backups=("$HOME"/.grok/skills-backup-*)
+    shopt -u nullglob
+
+    if [[ ${#backups[@]} -eq 0 ]]; then
+        echo "→ No skills-backup-* directories found"
+    else
+        # Sort by name (timestamp suffix) descending = newest first
+        mapfile -t backups < <(printf '%s\n' "${backups[@]}" | sort -r)
+        echo "→ skills-backup directories: ${#backups[@]} (keeping newest $keep_backups)"
+        local i=0
+        for backup in "${backups[@]}"; do
+            i=$((i + 1))
+            if [[ $i -le $keep_backups ]]; then
+                keep_list+=("$backup")
+                echo "  keep: $backup"
+            else
+                echo "  drop: $backup"
+                if [[ $apply -eq 1 ]]; then
+                    rm -rf "$backup"
+                    removed_backups=$((removed_backups + 1))
+                fi
+            fi
+        done
+        if [[ $apply -eq 0 && ${#backups[@]} -gt $keep_backups ]]; then
+            echo "Would remove $((${#backups[@]} - keep_backups)) backup dir(s) (re-run with --apply)"
+        elif [[ $apply -eq 1 ]]; then
+            echo "✅ Removed $removed_backups old backup dir(s)"
+        fi
+    fi
+
+    echo ""
+    echo "Summary"
+    echo "-------"
+    if [[ $apply -eq 1 ]]; then
+        echo "  Skills removed:  $removed_skills"
+        echo "  Backups removed: $removed_backups"
+        echo "  User skills kept: $kept_user"
+        echo ""
+        echo "Preferred layout after declutter:"
+        echo "  • Studio skills  → plugin (~/.grok/installed-plugins/...)"
+        echo "  • User globals   → ~/.grok/skills/ (help, create-skill, docx, …)"
+        echo "  • Verify         → bash scripts/cinematic_studio.sh verify --plugin"
+    else
+        echo "  Dry-run complete. Apply with:"
+        echo "    bash scripts/cinematic_studio.sh declutter --apply"
+    fi
+    echo ""
+}

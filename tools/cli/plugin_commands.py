@@ -179,23 +179,85 @@ def plugin_status(json_output: bool = typer.Option(False, "--json")):
 
 
 @plugin_app.command("list")
-def plugin_list():
+def plugin_list(
+    grouped: bool = typer.Option(
+        False,
+        "--grouped",
+        "-g",
+        help="Group skills by production department (taxonomy)",
+    ),
+):
     """List skills and commands that would be published in the plugin index."""
     skills = discover_skills()
     commands = discover_commands()
 
-    console.print(f"[bold]{len(skills)} skills[/bold]")
-    for s in skills[:10]:
-        console.print(f"  • {s['name']}")
-    if len(skills) > 10:
-        console.print(f"  ... +{len(skills)-10} more")
+    if grouped:
+        from plugin_catalog import skill_taxonomy_groups
+
+        groups = skill_taxonomy_groups([s["name"] for s in skills])
+        console.print(f"[bold]{len(skills)} skills[/bold] (grouped)\n")
+        for group_name, names in groups.items():
+            if not names:
+                continue
+            console.print(f"[cyan]{group_name}[/cyan] ({len(names)})")
+            for name in names:
+                console.print(f"  • {name}")
+            console.print()
+    else:
+        console.print(f"[bold]{len(skills)} skills[/bold]")
+        for s in skills:
+            console.print(f"  • {s['name']}")
 
     if commands:
         console.print(f"\n[bold]{len(commands)} commands[/bold]")
-        for c in commands[:8]:
+        for c in commands:
             console.print(f"  • {c['name']}")
-        if len(commands) > 8:
-            console.print(f"  ... +{len(commands)-8} more")
+
+
+@plugin_app.command("declutter")
+def plugin_declutter(
+    apply: bool = typer.Option(
+        False,
+        "--apply",
+        help="Actually remove duplicates (default is dry-run)",
+    ),
+    keep_backups: int = typer.Option(
+        1,
+        "--keep-backups",
+        help="Number of newest ~/.grok/skills-backup-* dirs to keep",
+    ),
+    keep_skills_copy: bool = typer.Option(
+        False,
+        "--keep-skills-copy",
+        help="Do not remove studio skills from ~/.grok/skills/",
+    ),
+):
+    """Declutter dual Method A+B installs (delegates to cinematic_studio.sh).
+
+    When the Grok plugin is installed, studio skills under ~/.grok/skills/ are
+    redundant and triple-load in Grok Build. This removes those copies and
+    prunes old Method A update backups.
+    """
+    import subprocess
+    from pathlib import Path
+
+    script = Path(__file__).resolve().parents[2] / "scripts" / "cinematic_studio.sh"
+    if not script.is_file():
+        console.print(f"[red]Missing installer script: {script}[/red]")
+        raise typer.Exit(1)
+
+    cmd = ["bash", str(script), "declutter"]
+    if apply:
+        cmd.append("--apply")
+    else:
+        cmd.append("--dry-run")
+    cmd.extend(["--keep-backups", str(keep_backups)])
+    if keep_skills_copy:
+        cmd.append("--keep-skills-copy")
+
+    result = subprocess.run(cmd, check=False)
+    if result.returncode != 0:
+        raise typer.Exit(result.returncode)
 
 
 def register(app: typer.Typer) -> None:
