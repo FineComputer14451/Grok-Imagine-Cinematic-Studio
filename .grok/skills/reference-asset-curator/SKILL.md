@@ -128,6 +128,8 @@ python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py \
 
 Never unlock casually mid-sequence without Continuity / Identity Lock review.
 
+Batch shots use the same statuses via `plate_status` (CLI `sfw plate set`). Video spend under `--strict-plate` requires **approved** or **locked**.
+
 ## Reference Weights
 
 - Primary ref weight default **0.85**  
@@ -143,9 +145,13 @@ python tools/cinematic_studio_cli.py models verify
 python tools/cinematic_studio_cli.py quota estimate --duration 60 --images 8
 python tools/cinematic_studio_cli.py animatic promote "board" --frame frame_002 --tier hero
 python tools/cinematic_studio_cli.py sfw plan "Hero Session" --shot "hero:Cover"
+
+# Plate status on batch shots (approved|locked required for i2v under --strict-plate)
+python tools/cinematic_studio_cli.py sfw plate set <batch> <shot> --status locked --path artifacts/plates/x.png
+python tools/cinematic_studio_cli.py sfw run <batch> <shot> --strict-plate
 ```
 
-SFW/NSFW `plan_batch` / `create_shot` apply curator maps automatically — still **confirm** hero locks before video.
+SFW/NSFW `plan_batch` / `create_shot` apply curator maps automatically — still **confirm** hero locks (`plate_status`) before video. Helper: `tools/plate_readiness.py`.
 
 ## Deliverables
 

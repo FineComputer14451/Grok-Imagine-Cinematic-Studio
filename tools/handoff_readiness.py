@@ -9,6 +9,7 @@ from handoff_schema import (
     PACKET_TYPE_IMAGINE_AGENT_MODE,
     is_video_execution_mode,
 )
+from plate_readiness import evaluate_plate_lock_readiness
 from specialist_order import evaluate_specialist_order
 from studio_paths import STUDIO_ROOT
 
@@ -151,6 +152,21 @@ def evaluate_imagine_handoff_readiness(
             fixes.append(f)
     checks.extend(order.get("checks") or [])
 
+    # GHR-11 — plate lock (approved/locked) for still→video modes
+    plate = evaluate_plate_lock_readiness(packet, execution_mode=mode)
+    for w in plate.get("warnings") or []:
+        if w not in warnings:
+            warnings.append(w)
+    for b in plate.get("blockers") or []:
+        # Prefix with GHR-11 for handoff lineage when not already PL-*
+        label = b if b.startswith("PL-") or b.startswith("GHR-") else f"GHR-11: {b}"
+        if label not in blockers and b not in blockers:
+            blockers.append(b if b.startswith("PL-") else label)
+    for f in plate.get("fixes") or []:
+        if f not in fixes:
+            fixes.append(f)
+    checks.extend(plate.get("checks") or [])
+
     return {
         "pass": len(blockers) == 0,
         "strict": True,
@@ -160,4 +176,5 @@ def evaluate_imagine_handoff_readiness(
         "fixes": fixes,
         "checks": checks,
         "specialist_order": order,
+        "plate_lock": plate,
     }

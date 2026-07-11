@@ -43,6 +43,16 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for motion v
 | Video mode without Sound Layer when 1.5 audio | Add AUDIO_CUE / sound_layer |
 | Complex multi-action in one 6–10s clip | Split shots or simplify |
 
+**CLI enforcement (opt-in):** set `plate_status` on the batch shot, then use `--strict-plate` / `--strict-handoff`:
+
+```bash
+sfw plate set <batch> <shot> --status locked --path artifacts/plates/hero.png
+sfw run <batch> <shot> --strict-plate
+imagine agent-handoff --batch … --shot … --strict-handoff
+```
+
+Soft by default (warnings only). `has_reference` alone does not pass PL-01/PL-02.
+
 ## Activation
 
 ```

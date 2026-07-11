@@ -14,6 +14,12 @@ from rich.table import Table
 from batch_runner import execute_sfw_shot
 from session_runner import run_batch_session
 from imagine_client import ImagineAPIError
+from plate_readiness import (
+    PLATE_OK,
+    PLATE_STATUSES,
+    evaluate_plate_lock_readiness,
+    normalize_plate_status,
+)
 from quality_pass_scheduler import apply_quality_pass_promotion, get_pending_quality_passes
 from sfw_orchestrator import (
     batch_to_markdown,
@@ -31,6 +37,34 @@ from sfw_orchestrator import (
 from project_state import load_project_state
 
 from cli.shared import console
+
+
+def _find_shot(batch: dict, shot_id: str) -> dict | None:
+    for s in batch.get("shots", []):
+        if s.get("shot_id") == shot_id:
+            return s
+    return None
+
+
+def _print_plate_report(report: dict) -> None:
+    for w in report.get("warnings") or []:
+        console.print(f"[yellow]⚠️  {w}[/yellow]")
+    if report.get("blockers"):
+        for b in report["blockers"]:
+            console.print(f"[yellow]⚠️  plate blocker: {b}[/yellow]")
+        if report.get("fixes"):
+            console.print("[dim]Fixes:[/dim]")
+            for fix in report["fixes"]:
+                console.print(f"  → {fix}")
+
+
+def _plate_preflight(shot: dict, *, strict_plate: bool) -> dict:
+    report = evaluate_plate_lock_readiness(shot)
+    _print_plate_report(report)
+    if strict_plate and not report.get("pass"):
+        console.print("[red]Plate lock readiness failed (--strict-plate)[/red]")
+        raise typer.Exit(1)
+    return report
 
 
 def register(app: typer.Typer) -> None:
@@ -159,15 +193,109 @@ def register(app: typer.Typer) -> None:
         ))
 
 
+    plate_app = typer.Typer(help="Plate lock status for still→video spend")
+    app.add_typer(plate_app, name="plate")
+
+    @plate_app.command("set")
+    def sfw_plate_set(
+        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+        shot_id: str = typer.Argument(..., help="Shot ID"),
+        status: str = typer.Option(
+            ...,
+            "--status",
+            help="draft | approved | locked",
+        ),
+        path: str = typer.Option(None, "--path", help="Local plate path"),
+        asset_id: str = typer.Option(None, "--asset-id", help="Curator / plate asset id"),
+        reference_image_id: str = typer.Option(
+            None, "--reference-image-id", help="Imagine reference_image_id"
+        ),
+    ):
+        """Set plate_status (and optional path/ids) on a batch shot."""
+        normalized = normalize_plate_status(status)
+        if normalized is None or normalized not in PLATE_STATUSES:
+            console.print(
+                f"[red]Invalid --status:[/red] {status!r}\n"
+                f"Expected one of: {', '.join(sorted(PLATE_STATUSES))}"
+            )
+            raise typer.Exit(1)
+        batch = load_batch(batch_name)
+        shot = _find_shot(batch, shot_id)
+        if not shot:
+            console.print(f"[red]Shot not found:[/red] {shot_id}")
+            raise typer.Exit(1)
+        shot["plate_status"] = normalized
+        if path:
+            shot["plate_path"] = path
+        if asset_id:
+            shot["plate_asset_id"] = asset_id
+            if not shot.get("reference_image_id"):
+                shot["reference_image_id"] = asset_id
+        if reference_image_id:
+            shot["reference_image_id"] = reference_image_id
+        if normalized in PLATE_OK:
+            shot["has_reference"] = True
+        save_batch(batch)
+        console.print(
+            Panel(
+                f"Shot: {shot_id}\n"
+                f"plate_status: {normalized}\n"
+                f"plate_path: {shot.get('plate_path') or '—'}\n"
+                f"plate_asset_id: {shot.get('plate_asset_id') or '—'}\n"
+                f"reference_image_id: {shot.get('reference_image_id') or '—'}\n\n"
+                f"OK for still→video: {normalized in PLATE_OK}",
+                title="Plate set",
+                border_style="green" if normalized in PLATE_OK else "yellow",
+            )
+        )
+
+    @plate_app.command("show")
+    def sfw_plate_show(
+        batch_name: str = typer.Argument(..., help="Batch slug or ID"),
+        shot_id: str = typer.Argument(..., help="Shot ID"),
+    ):
+        """Show plate fields and readiness for a shot."""
+        batch = load_batch(batch_name)
+        shot = _find_shot(batch, shot_id)
+        if not shot:
+            console.print(f"[red]Shot not found:[/red] {shot_id}")
+            raise typer.Exit(1)
+        report = evaluate_plate_lock_readiness(shot)
+        console.print(
+            Panel(
+                f"Shot: {shot_id}\n"
+                f"Mode: {report.get('execution_mode') or shot.get('recommended_mode') or '—'}\n"
+                f"plate_status: {shot.get('plate_status') or '—'}\n"
+                f"plate_path: {shot.get('plate_path') or '—'}\n"
+                f"plate_asset_id: {shot.get('plate_asset_id') or '—'}\n"
+                f"reference_image_id: {shot.get('reference_image_id') or '—'}\n"
+                f"has_reference: {shot.get('has_reference')}\n"
+                f"Readiness pass: {report.get('pass')}",
+                title="Plate show",
+                border_style="green" if report.get("pass") else "yellow",
+            )
+        )
+        _print_plate_report(report)
+
     @app.command("run")
     def sfw_run(
         batch_name: str = typer.Argument(..., help="Batch slug or ID"),
         shot_id: str = typer.Argument(..., help="Shot ID to execute"),
         dry_run: bool = typer.Option(False, "--dry-run"),
         prompt: str = typer.Option(None, "--prompt", "-p", help="Override generation prompt"),
+        strict_plate: bool = typer.Option(
+            False,
+            "--strict-plate",
+            help="Exit 1 if still→video plate not approved/locked",
+        ),
     ):
         """Execute a batch shot via Imagine API (image / i2v / video)."""
         batch = load_batch(batch_name)
+        shot = _find_shot(batch, shot_id)
+        if not shot:
+            console.print(f"[red]Shot not found:[/red] {shot_id}")
+            raise typer.Exit(1)
+        _plate_preflight(shot, strict_plate=strict_plate)
         try:
             result = execute_sfw_shot(
                 batch, shot_id,
@@ -201,6 +329,11 @@ def register(app: typer.Typer) -> None:
         count: int = typer.Option(3, "--count", "-n", help="Max shots to run"),
         dry_run: bool = typer.Option(False, "--dry-run"),
         stop_on_fail: bool = typer.Option(True, "--stop-on-fail/--continue-on-fail"),
+        strict_plate: bool = typer.Option(
+            False,
+            "--strict-plate",
+            help="Exit 1 if a still→video shot lacks approved/locked plate",
+        ),
     ):
         """Run automated session — execute next priority shots in order."""
         summary = run_batch_session(
@@ -209,6 +342,7 @@ def register(app: typer.Typer) -> None:
             count=count,
             dry_run=dry_run,
             stop_on_fail=stop_on_fail,
+            strict_plate=strict_plate,
         )
         table = Table(title=f"SFW Session — {batch_name}", box=box.SIMPLE)
         table.add_column("Shot", style="cyan")

@@ -214,11 +214,32 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         shot_id: str = typer.Argument(..., help="Shot ID to execute"),
         dry_run: bool = typer.Option(False, "--dry-run"),
         prompt: str = typer.Option(None, "--prompt", "-p", help="Override generation prompt"),
+        strict_plate: bool = typer.Option(
+            False,
+            "--strict-plate",
+            help="Exit 1 if still→video plate not approved/locked",
+        ),
     ):
         """Execute a batch shot via Imagine API (image / i2v / video)."""
         from imagine_client import ImagineAPIError
+        from plate_readiness import evaluate_plate_lock_readiness
 
         batch = load_batch(batch_name)
+        shot = next((s for s in batch.get("shots", []) if s.get("shot_id") == shot_id), None)
+        if not shot:
+            console.print(f"[red]Shot not found:[/red] {shot_id}")
+            raise typer.Exit(1)
+        plate = evaluate_plate_lock_readiness(shot)
+        for w in plate.get("warnings") or []:
+            console.print(f"[yellow]⚠️  {w}[/yellow]")
+        for b in plate.get("blockers") or []:
+            console.print(f"[yellow]⚠️  plate blocker: {b}[/yellow]")
+        if plate.get("fixes") and plate.get("blockers"):
+            for fix in plate["fixes"]:
+                console.print(f"  → {fix}")
+        if strict_plate and not plate.get("pass"):
+            console.print("[red]Plate lock readiness failed (--strict-plate)[/red]")
+            raise typer.Exit(1)
         try:
             result = execute_nsfw_shot(
                 batch, shot_id,
@@ -249,6 +270,11 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         count: int = typer.Option(3, "--count", "-n"),
         dry_run: bool = typer.Option(False, "--dry-run"),
         stop_on_fail: bool = typer.Option(True, "--stop-on-fail/--continue-on-fail"),
+        strict_plate: bool = typer.Option(
+            False,
+            "--strict-plate",
+            help="Exit 1 if a still→video shot lacks approved/locked plate",
+        ),
     ):
         """Run automated NSFW session — execute next priority shots."""
         summary = run_batch_session(
@@ -257,6 +283,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
             count=count,
             dry_run=dry_run,
             stop_on_fail=stop_on_fail,
+            strict_plate=strict_plate,
         )
         table = Table(title=f"NSFW Session — {batch_name}", box=box.SIMPLE)
         table.add_column("Shot", style="cyan")

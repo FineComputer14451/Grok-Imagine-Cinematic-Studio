@@ -114,9 +114,15 @@ python tools/cinematic_studio_cli.py sfw list
 python tools/cinematic_studio_cli.py sfw next "hero-session"
 python tools/cinematic_studio_cli.py sfw decide --shot "hero:high:Cover frame"
 
+# Plate lock before still→video (approved|locked; soft by default)
+python tools/cinematic_studio_cli.py sfw plate set hero-session shot_hero_001 \
+  --status approved --path artifacts/plates/hero.png
+python tools/cinematic_studio_cli.py sfw plate show hero-session shot_hero_001
+
 # Execute / session (API key required for real spend; dry-run when supported)
 python tools/cinematic_studio_cli.py sfw run hero-session shot_hero_001
-python tools/cinematic_studio_cli.py sfw session hero-session
+python tools/cinematic_studio_cli.py sfw run hero-session shot_hero_001 --strict-plate
+python tools/cinematic_studio_cli.py sfw session hero-session --strict-plate
 
 python tools/cinematic_studio_cli.py sfw record hero-session shot_hero_001 \
   --score 8.5 --credits 12

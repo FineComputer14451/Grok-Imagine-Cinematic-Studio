@@ -79,9 +79,27 @@ def test_video_with_motion_and_refs_passes() -> None:
             reference_hints=["reference_image_id: plate_001"],
             return_path="sfw record + chain QA",
             handoff_steps=["1. image_to_video", "2. save", "3. QA"],
+            plate_status="locked",
+            reference_image_id="plate_001",
         )
     )
     assert r["pass"] is True
+
+
+def test_i2v_without_plate_status_blocks() -> None:
+    r = evaluate_imagine_handoff_readiness(
+        _base(
+            execution_mode="image_to_video",
+            prompt="Slow dolly push-in, first frame locked, motion on coat",
+            video_pipeline_spec='[VIDEO_PIPELINE_SPEC: model="grok-imagine-video"]',
+            sound_layer="ambience rain",
+            reference_hints=["reference_image_id: plate_001"],
+            return_path="chain QA then sequence record",
+            handoff_steps=["1. image_to_video", "2. QA", "3. record"],
+        )
+    )
+    assert r["pass"] is False
+    assert any("PL-01" in b or "plate_status" in b.lower() for b in r["blockers"])
 
 
 def test_weak_return_path_blocks() -> None:

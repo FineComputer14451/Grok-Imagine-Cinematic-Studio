@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Added
+- **Plate lock readiness** — `evaluate_plate_lock_readiness` for still→video (`image_to_video` / `reference_to_video`); shot fields `plate_status` (`draft`|`approved`|`locked`); `sfw plate set/show`; soft warnings always; hard-fail with `--strict-plate` on `sfw`/`nsfw` `run`/`session` and plate blockers under `imagine agent-handoff --strict-handoff`.
+
 ## [3.8.3] - 2026-07-11
 
 ### Added

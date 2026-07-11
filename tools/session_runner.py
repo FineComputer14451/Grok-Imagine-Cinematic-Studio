@@ -41,8 +41,11 @@ def run_batch_session(
     dry_run: bool | None = None,
     stop_on_fail: bool = True,
     cache_artifacts: bool = True,
+    strict_plate: bool = False,
 ) -> dict[str, Any]:
     """Run up to `count` next shots sequentially."""
+    from plate_readiness import evaluate_plate_lock_readiness
+
     batch = _load_batch(pipeline, batch_slug)
     pipe = _pipeline(pipeline)
     queue = _get_next(pipeline, batch, count=count)
@@ -58,6 +61,22 @@ def run_batch_session(
     results: list[dict[str, Any]] = []
     for shot in queue:
         shot_id = shot["shot_id"]
+        # Refresh shot from batch (queue may be a shallow copy)
+        live = next((s for s in batch.get("shots", []) if s.get("shot_id") == shot_id), shot)
+        plate = evaluate_plate_lock_readiness(live)
+        if not plate.get("pass"):
+            msg = "; ".join(plate.get("blockers") or ["plate not ready"])
+            if strict_plate:
+                results.append({
+                    "shot_id": shot_id,
+                    "status": "failed",
+                    "error": f"plate lock: {msg}",
+                })
+                if stop_on_fail:
+                    break
+                continue
+            # Soft: annotate and continue
+            live.setdefault("plate_readiness_warnings", plate.get("blockers") or [])
         try:
             result = execute_shot(
                 batch, shot_id,
@@ -71,6 +90,12 @@ def run_batch_session(
                     pipeline=pipeline,
                 )
                 result["artifact_path"] = str(artifact.get("local_path", ""))
+            if plate.get("blockers") or plate.get("warnings"):
+                result["plate_readiness"] = {
+                    "pass": plate.get("pass"),
+                    "blockers": plate.get("blockers"),
+                    "warnings": plate.get("warnings"),
+                }
             results.append(result)
         except Exception as exc:
             results.append({

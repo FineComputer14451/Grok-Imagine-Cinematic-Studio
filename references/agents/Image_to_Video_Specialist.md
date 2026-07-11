@@ -28,9 +28,11 @@ Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **hig
 - Flag re-refinement before video spend  
 - Default to **1.0** video; opt into **1.5** only for native audio / Director  
 
-## Handoff readiness (GHR-02 / GHR-03)
+## Handoff readiness (GHR-02 / GHR-03 / plate lock)
 
 You own motion content that satisfies readiness: non-empty plate `reference_hints` and explicit motion/I2V cues in the prompt or motion block. Director may run `--strict-handoff` before video spend.
+
+**Plate status:** Confirm Curator set `plate_status` to **approved** or **locked** on the batch shot before i2v. Soft warnings always; hard-fail with `sfw run --strict-plate` or `--strict-handoff` (PL-01/PL-02). Draft plates must not burn video credits.
 
 ## Handoff Partners
 

@@ -36,6 +36,21 @@ Maps: `SFW_ASSET_MODEL_MAP` · `NSFW_ASSET_MODEL_MAP` · aliases/pricing in `too
 - Archive **approved plates** with version labels  
 - Reject assets that fail Identity Lock before video spend  
 - Maintain **ASSET_MANIFEST** in the Project Bible (+ optional JSON)  
+- Set batch shot **`plate_status`** (`draft` → `approved` / `locked`) before still→video spend  
+
+## Plate lock readiness (PL-01 / PL-02)
+
+Machine gate (soft by default): still→video modes require `plate_status` in **{approved, locked}**.  
+`has_reference=true` alone is **not** enough.
+
+```bash
+sfw plate set <batch> <shot> --status approved --path artifacts/plates/hero.png
+sfw plate set <batch> <shot> --status locked --asset-id CHAR_SCENE_001
+sfw run <batch> <shot> --strict-plate          # hard-fail if not approved/locked
+imagine agent-handoff --batch … --shot … --strict-handoff   # includes plate blockers
+```
+
+Helper: `tools/plate_readiness.py` · design: `docs/development/superpowers/specs/2026-07-11-plate-lock-readiness-design.md`.
 
 ## Handoff Partners
 
