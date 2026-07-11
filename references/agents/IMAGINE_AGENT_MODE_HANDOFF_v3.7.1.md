@@ -169,6 +169,19 @@ python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py handoff
 
 ---
 
+## Handoff readiness (semantic quality)
+
+Structural validation is not enough. Run semantic readiness before spend:
+
+```bash
+python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py packet.json
+python tools/cinematic_studio_cli.py imagine agent-handoff ... --strict-handoff
+```
+
+**Blockers (strict):** empty `reference_hints` on i2v/ref-to-video; video without motion/I2V cues; weak `return_path` (must mention qa/record/chain/artifact/sfw/sequence/…).  
+**Warnings:** placeholder `quota_note`; `studio_version` mismatch; short `handoff_steps`.  
+Helper: `evaluate_imagine_handoff_readiness` in `tools/handoff_readiness.py`.
+
 ## CLI
 
 ```bash

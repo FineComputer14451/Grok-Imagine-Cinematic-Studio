@@ -106,6 +106,26 @@ def test_valid_imagine_agent_mode_handoff() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
 
 
+def test_agent_mode_readiness_warns_on_weak_return_path() -> None:
+    result = run_validator({
+        "packet_type": "imagine_agent_mode_handoff",
+        "protocol_version": "3.7.1",
+        "studio_version": "3.8.1",
+        "target_surface": "grok_build_tools",
+        "execution_mode": "image_prompt",
+        "subject_id": "shot_001",
+        "prompt": "Hero in rain",
+        "reference_hints": [],
+        "model_stack": {"chat": "grok-4.5"},
+        "quota_note": "1 still",
+        "return_path": "done",
+        "handoff_steps": ["1. gen", "2. save"],
+    })
+    assert result.returncode == 0
+    out = (result.stdout + result.stderr).lower()
+    assert "readiness" in out or "return_path" in out or "⚠️" in result.stdout
+
+
 def test_invalid_imagine_agent_mode_missing_pipeline() -> None:
     result = run_validator({
         "packet_type": "imagine_agent_mode_handoff",

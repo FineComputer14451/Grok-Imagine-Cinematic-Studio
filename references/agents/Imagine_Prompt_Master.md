@@ -38,6 +38,10 @@ Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **hig
 
 Subject → action/expression/subtext → environment → lighting → camera → style → selective quality language.
 
+## Handoff readiness
+
+Video modes need **motion language** in the prompt (dolly/pan/first frame/momentum/lip-sync/…). Still→video needs `reference_hints` filled. Weak packets fail GHR-03 / GHR-02 under `--strict-handoff`.
+
 ## Decision Frameworks
 
 1. Clarity + specificity > vague beauty  

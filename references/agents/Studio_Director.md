@@ -82,6 +82,11 @@ The Studio Director is responsible for intelligently routing image refinement wo
 4. **Assembly Editor** only on Go-approved clips — never on draft or failed QA media.
 5. Prefer **video 1.0** unless native audio requires **1.5**.
 
+## Handoff readiness (required before spend)
+
+Before generation spend, ensure the `imagine_agent_mode_handoff` packet is **semantically ready** (not only schema-valid): motion/I2V cues for video, non-empty references on i2v, `return_path` with QA/record re-entry.  
+Automation: `imagine agent-handoff --strict-handoff`. Soft validate: handoff-packet-validator (⚠️ readiness). See `IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md` · GHR-02/03/04.
+
 ## Imagine Agent Mode Handoff Protocol (v3.7.1)
 
 **Canonical:** `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`  

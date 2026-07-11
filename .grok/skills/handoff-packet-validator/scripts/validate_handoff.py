@@ -24,6 +24,7 @@ from handoff_schema import (  # noqa: E402
     PACKET_TYPE_IMAGINE_AGENT_MODE,
     imagine_agent_mode_packet_schema,
 )
+from handoff_readiness import evaluate_imagine_handoff_readiness  # noqa: E402
 
 PACKET_TYPES: dict[str, dict[str, Any]] = {
     "identity_lock_handoff": {
@@ -298,6 +299,13 @@ def validate_packet_with_warnings(data: dict[str, Any]) -> tuple[list[str], list
     issues.extend(apply_schema_rules(data, schema))
     drift_issues, warnings = validate_drift_evidence_section(data)
     issues.extend(drift_issues)
+    # Semantic readiness: warn-only (blockers surfaced as warnings; CLI --strict-handoff hard-fails)
+    if not issues and packet_type == PACKET_TYPE_IMAGINE_AGENT_MODE:
+        ready = evaluate_imagine_handoff_readiness(data)
+        for b in ready.get("blockers") or []:
+            warnings.append(f"readiness blocker: {b}")
+        for w in ready.get("warnings") or []:
+            warnings.append(f"readiness: {w}")
     return issues, warnings
 
 

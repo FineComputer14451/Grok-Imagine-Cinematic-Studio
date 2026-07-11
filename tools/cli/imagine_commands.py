@@ -325,8 +325,15 @@ def register(app: typer.Typer) -> None:
         format: str = typer.Option("markdown", "--format", "-f", help="markdown | json | clipboard"),
         mode: str = typer.Option(None, "--mode", help="Override execution_mode"),
         output: str = typer.Option(None, "--output", "-o"),
+        strict_handoff: bool = typer.Option(
+            False,
+            "--strict-handoff",
+            help="Exit 1 if semantic readiness fails (blockers); do not write output",
+        ),
     ):
         """Emit official Imagine Agent Mode Handoff packet (protocol v3.7.1)."""
+        from handoff_readiness import evaluate_imagine_handoff_readiness
+
         try:
             subject, context = resolve_handoff_subject(
                 batch=batch, shot_id=shot_id, sequence=sequence, clip=clip
@@ -352,6 +359,20 @@ def register(app: typer.Typer) -> None:
         except ValueError as exc:
             console.print(f"[red]{exc}[/red]")
             raise typer.Exit(1) from exc
+
+        ready = evaluate_imagine_handoff_readiness(packet)
+        for w in ready.get("warnings") or []:
+            console.print(f"[yellow]⚠️  {w}[/yellow]")
+        if ready.get("blockers"):
+            for b in ready["blockers"]:
+                console.print(f"[yellow]⚠️  readiness blocker: {b}[/yellow]")
+            if ready.get("fixes"):
+                console.print("[dim]Fixes:[/dim]")
+                for fix in ready["fixes"]:
+                    console.print(f"  → {fix}")
+        if strict_handoff and not ready.get("pass"):
+            console.print("[red]Handoff readiness failed (--strict-handoff)[/red]")
+            raise typer.Exit(1)
 
         if format == "json":
             text = json.dumps(packet, indent=2)

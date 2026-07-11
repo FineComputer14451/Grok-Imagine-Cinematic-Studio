@@ -75,6 +75,13 @@ For `sequence_extend_handoff` and `identity_lock_handoff`, missing or incomplete
 Protocol: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`  
 CLI: `sequence drift-score`
 
+## Generation handoff readiness (`imagine_agent_mode_handoff`)
+
+After schema OK, semantic readiness runs as **warnings** (exit 0): empty i2v
+references, video without motion cues, weak `return_path`, placeholder quota, etc.
+Hard-fail automation: `imagine agent-handoff --strict-handoff`.
+Helper: `tools/handoff_readiness.py` · Protocol: `IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`
+
 ### Generate packets then validate
 
 ```bash
