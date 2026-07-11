@@ -49,7 +49,12 @@ def register(app: typer.Typer) -> None:
         pdf.cell(0, 8, f"Genre: {project.get('genre', 'N/A')}", ln=True)
         pdf.cell(0, 8, f"Date: {datetime.now().strftime('%Y-%m-%d')}", ln=True)
         pdf.ln(5)
-        pdf.cell(0, 8, "Status: Production in progress with 23-agent studio", ln=True)
+        pdf.cell(
+            0,
+            8,
+            f"Status: Production in progress — studio v{STUDIO_VERSION} · Grok 4.5 · 23-agent core",
+            ln=True,
+        )
 
         pdf.output(output)
         console.print(f"[green]✅ PDF Report generated:[/green] {output}")
@@ -112,7 +117,15 @@ def register(app: typer.Typer) -> None:
 
         model_result = verify_model_compatibility()
         if model_result["compatible"]:
-            console.print("[green]✅ Model stack compatible[/green]")
+            stack = model_result.get("model_stack") or {}
+            console.print(
+                "[green]✅ Model stack compatible[/green] "
+                f"(chat [bold]{stack.get('xai_chat', 'grok-4.5')}[/bold] · "
+                f"video {stack.get('imagine_video', 'grok-imagine-video')} · "
+                f"Grok 4.5 · v{STUDIO_VERSION})"
+            )
+            for warn in model_result.get("warnings") or []:
+                console.print(f"  [yellow]• {warn}[/yellow]")
         else:
             console.print("[red]❌ Model compatibility issues[/red]")
             for issue in model_result["issues"]:
@@ -120,7 +133,9 @@ def register(app: typer.Typer) -> None:
             issues += 1
 
         if issues == 0:
-            console.print(f"\n[bold green]✅ Validation passed (v{STUDIO_VERSION})[/bold green]")
+            console.print(
+                f"\n[bold green]✅ Validation passed (v{STUDIO_VERSION} · Grok 4.5)[/bold green]"
+            )
         else:
             console.print(f"\n[yellow]Validation completed with {issues} issue(s)[/yellow]")
             raise typer.Exit(1)

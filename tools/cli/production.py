@@ -79,16 +79,19 @@ def build_activation_prompt(
 
 {chr(10).join(meta_lines)}
 
-You are now running the full **23-agent** Grok Imagine Cinematic Studio v3.6 with complete Role Cards loaded from `references/agents/`.
+You are now running the full **23-agent** Grok Imagine Cinematic Studio **v{STUDIO_VERSION}** with complete Role Cards from `references/agents/`.
+
+**Model Layer (Grok 4.5):** orchestration + Build default **`grok-4.5`**; optional **`grok-4.3`** only for 1M-context Bibles/memory banks. Imagine video **1.0** cost default; **1.5** when native audio is required. Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Bibles, QA, Identity Lock, and Sequence Director.
 
 {ctx['pipeline_spec']}
 
 Please begin by:
-1. Confirming activation
+1. Confirming activation and model stack
 2. Asking for my first creative decision, or
-3. Immediately building a detailed Production Bible using the Mega Production Architect
+3. Immediately building a detailed Production Bible (lock `model_stack` + `VIDEO_PIPELINE_SPEC`)
 
-Pipelines available: Character DNA (`dna`), Sequence Chain (`sequence`), Quota Optimizer (`quota`).
+Pipelines: Character DNA (`dna`) · Sequence (`sequence`) · Quota (`quota`) · Imagine Agent Mode Handoff (`imagine agent-handoff`) · SFW/NSFW batch when needed.
+Prefer still → i2v on locked plates before long video spend.
 """
 
 
@@ -146,5 +149,10 @@ def build_production_bible(
         ],
         "created": datetime.now().isoformat(),
         "status": "Ready for production",
-        "notes": notes or "Generated via Grok Imagine Cinematic Studio CLI. Use Web UI for visual simulation and live Grok API.",
+        "notes": notes
+        or (
+            "Generated via Grok Imagine Cinematic Studio CLI v"
+            f"{STUDIO_VERSION} (Grok 4.5 stack; opt-in grok-4.3 for 1M). "
+            "Use Web UI for visual simulation and live Grok API."
+        ),
     }

@@ -1,14 +1,21 @@
-"""Shared CLI constants and helpers."""
+"""Shared CLI constants and helpers (Grok 4.5 · studio v3.7.1)."""
 
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
 
 from studio_paths import AGENTS_DIR, STUDIO_ROOT
 
 STUDIO_VERSION = "3.7.1"
+ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
+MODEL_LAYER_DOC = "references/agents/MODEL_LAYER_v3.7.1.md"
+MODELS_DOC = "references/MODELS.md"
+MASTER_PROMPT_DOC = "MASTER_PROMPT.md"
 console = Console()
 
 DIRECTOR_SIGNATURES = {
@@ -173,3 +180,69 @@ def get_role_card_path(agent_name: str) -> Path | None:
         if stem == needle or needle in stem or stem in needle:
             return path
     return None
+
+
+def format_stack_panel(stack: dict[str, Any] | None = None) -> Panel:
+    """Rich panel for the Grok 4.5 model stack (status / activate / stack cmd)."""
+    try:
+        from models import (
+            RECOMMENDED_GROK_BUILD_CLI_VERSION,
+            build_video_pipeline_spec,
+            model_stack_summary,
+        )
+    except ImportError:
+        return Panel(
+            "[red]models registry unavailable[/red]",
+            title="Model Stack",
+            border_style="red",
+        )
+
+    s = stack or model_stack_summary()
+    body = (
+        f"[bold cyan]Grok 4.5[/bold cyan] cinematic+Build · studio [bold]v{STUDIO_VERSION}[/bold]\n\n"
+        f"  Grok Build CLI: [green]{s.get('grok_build_cli_default', 'grok-4.5')}[/green] "
+        f"(+ fork {s.get('grok_build_cli_fork', 'grok-build')}, "
+        f"≥ {s.get('grok_build_cli_min_version', RECOMMENDED_GROK_BUILD_CLI_VERSION)})\n"
+        f"  xAI Chat: [green]{s.get('xai_chat', 'grok-4.5')}[/green] "
+        f"| Build API: [green]{s.get('xai_build', 'grok-4.5')}[/green]\n"
+        f"  Imagine Video: [green]{s.get('imagine_video', 'grok-imagine-video')}[/green] "
+        f"| Image: {s.get('imagine_image', 'grok-imagine-image')}\n\n"
+        f"[dim]1M opt-in: --chat-model grok-4.3 · "
+        f"Video 1.0 cost default · 1.5 native audio · "
+        f"{MODEL_LAYER_DOC}[/dim]\n\n"
+        f"{build_video_pipeline_spec(s.get('imagine_video'))}"
+    )
+    return Panel.fit(
+        body,
+        title="Model Layer (Grok 4.5 · studio v3.7.1)",
+        border_style="cyan",
+    )
+
+
+def format_stack_table(stack: dict[str, Any] | None = None) -> Table:
+    """Compact key/value table of the resolved model stack."""
+    try:
+        from models import model_stack_summary
+    except ImportError:
+        t = Table(title="Model Stack")
+        t.add_column("Key")
+        t.add_column("Value")
+        t.add_row("error", "models unavailable")
+        return t
+
+    s = stack or model_stack_summary()
+    table = Table(title=f"Model Stack · Grok 4.5 · v{STUDIO_VERSION}", show_header=True)
+    table.add_column("Layer", style="cyan")
+    table.add_column("Slug", style="green")
+    rows = [
+        ("Orchestration (default)", s.get("xai_chat", "grok-4.5")),
+        ("Build / coding API", s.get("xai_build", "grok-4.5")),
+        ("Grok Build CLI", s.get("grok_build_cli_default", "grok-4.5")),
+        ("CLI fork", s.get("grok_build_cli_fork", "grok-build")),
+        ("CLI min version", s.get("grok_build_cli_min_version", "0.2.93")),
+        ("Imagine Video", s.get("imagine_video", "grok-imagine-video")),
+        ("Imagine Image", s.get("imagine_image", "grok-imagine-image")),
+    ]
+    for k, v in rows:
+        table.add_row(k, str(v))
+    return table

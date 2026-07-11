@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Grok Imagine Cinematic Studio CLI v3.7.1 — Enhanced Edition
-Professional multi-agent cinematic production toolkit with Role Card integration
-"""
+"""Grok Imagine Cinematic Studio CLI v3.7.1 — Grok 4.5 stack (wiring only)."""
 
 from __future__ import annotations
 
@@ -13,34 +10,39 @@ import typer
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from cli.animatic_commands import register as register_animatic_commands  # noqa: E402
 from cli.bible_commands import register as register_bible_commands  # noqa: E402
 from cli.dna_commands import register as register_dna_commands  # noqa: E402
-from cli.models_commands import models_app  # noqa: E402
-from cli.animatic_commands import register as register_animatic_commands  # noqa: E402
 from cli.imagine_commands import register as register_imagine_commands  # noqa: E402
+from cli.models_commands import models_app  # noqa: E402
 from cli.nsfw_commands import register as register_nsfw_commands  # noqa: E402
-from cli.quota_commands import register as register_quota_commands  # noqa: E402
-from cli.sfw_commands import register as register_sfw_commands  # noqa: E402
 from cli.plugin_commands import register as register_plugin_commands  # noqa: E402
+from cli.quota_commands import register as register_quota_commands  # noqa: E402
 from cli.report_commands import register as register_report_commands  # noqa: E402
 from cli.sequence_commands import register as register_sequence_commands  # noqa: E402
+from cli.sfw_commands import register as register_sfw_commands  # noqa: E402
+from cli.shared import STUDIO_VERSION  # noqa: E402
 from cli.studio_commands import register as register_studio_commands  # noqa: E402
 
 app = typer.Typer(
     name="cinematic-studio",
-    help="🎥 Grok Imagine Cinematic Studio v3.6 — Full 23-Agent Cinematic Production CLI",
+    help=(
+        f"🎥 Grok Imagine Cinematic Studio v{STUDIO_VERSION} — "
+        "Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5 · 23-agent CLI"
+    ),
     add_completion=False,
     rich_markup_mode="rich",
+    no_args_is_help=True,
 )
 
-dna_app = typer.Typer(help="Character DNA extraction, Identity Lock handoff, and prompt injection")
-seq_app = typer.Typer(help="Long-form 1.5 extend/stitch sequencing, handoffs, and chain QA")
-quota_app = typer.Typer(help="Per-second 1.5 quota estimation, budgeting, and optimization")
-nsfw_app = typer.Typer(help="Quota-aware NSFW batch planning, sequence extension, and daily reports")
-extend_app = typer.Typer(help="Sensual sequence extension 30-120s+ from reference frame or short clip")
-sfw_app = typer.Typer(help="SFW batch planning with hero-first tiers and Reference Curator routing")
-imagine_app = typer.Typer(help="Imagine API jobs — submit, poll, and track generation queue")
-animatic_app = typer.Typer(help="Animatic pre-vis boards and hero promotion workflow")
+dna_app = typer.Typer(help="Character DNA, Identity Lock handoff, prompt injection")
+seq_app = typer.Typer(help="Long-form extend/stitch, chain QA, health (1.0 cost · 1.5 audio)")
+quota_app = typer.Typer(help="Quota estimation, budgeting, optimization")
+nsfw_app = typer.Typer(help="NSFW batch planning, extension, daily reports")
+extend_app = typer.Typer(help="Sensual sequence extension 30–120s+")
+sfw_app = typer.Typer(help="SFW hero-first batches + Reference Curator routing")
+imagine_app = typer.Typer(help="Imagine jobs, bridge, agent-handoff")
+animatic_app = typer.Typer(help="Animatic pre-vis and hero promotion")
 
 app.add_typer(dna_app, name="dna")
 app.add_typer(seq_app, name="sequence")

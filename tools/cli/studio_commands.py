@@ -1,8 +1,6 @@
-"""Core studio status, agents, and role card CLI commands."""
+"""Core studio status, agents, role cards, and Grok 4.5 stack CLI commands."""
 
 from __future__ import annotations
-
-from datetime import datetime
 
 import typer
 from rich import box
@@ -19,10 +17,16 @@ from cli.dashboard import (
     render_studio_dashboard,
 )
 from cli.shared import (
+    ACTIVATION_PHRASE,
     AGENTS,
+    MASTER_PROMPT_DOC,
+    MODEL_LAYER_DOC,
+    MODELS_DOC,
     STUDIO_VERSION,
     console,
     core_agent_count,
+    format_stack_panel,
+    format_stack_table,
     get_role_card_path,
     list_role_card_files,
     total_agent_count,
@@ -64,32 +68,69 @@ def register(app: typer.Typer) -> None:
 
     @app.command()
     def status():
-        """Show current studio status"""
+        """Show studio status and Grok 4.5 model stack."""
         stack = model_stack_summary()
-        console.print(Panel.fit(
-            f"[bold cyan]🎥 Grok Imagine Cinematic Studio v{STUDIO_VERSION}[/bold cyan]\n"
-            "[green]Status:[/green] Enhanced CLI Active\n"
-            f"[green]Agents:[/green] {core_agent_count()} core + {total_agent_count() - core_agent_count()} specialists\n"
-            "[green]Role Cards:[/green] Loaded from references/agents/\n"
-            "[green]Mode:[/green] Production Ready\n\n"
-            "[bold]Model Stack[/bold]\n"
-            f"  Grok Build CLI: {stack['grok_build_cli_default']} (+ fork {stack['grok_build_cli_fork']})\n"
-            f"  xAI Chat: {stack['xai_chat']} | Build API: {stack['xai_build']}\n"
-            f"  Imagine Video: {stack['imagine_video']} | Image: {stack['imagine_image']}",
-            title="Studio Status",
-            border_style="cyan",
-        ))
+        console.print(
+            Panel.fit(
+                f"[bold cyan]🎥 Grok Imagine Cinematic Studio v{STUDIO_VERSION}[/bold cyan]\n"
+                "[green]Status:[/green] Enhanced CLI Active · Grok 4.5 orchestration\n"
+                f"[green]Agents:[/green] {core_agent_count()} core + "
+                f"{total_agent_count() - core_agent_count()} specialists\n"
+                "[green]Role Cards:[/green] Loaded from references/agents/\n"
+                f"[green]Activation:[/green] {ACTIVATION_PHRASE}\n"
+                f"[dim]Docs: {MASTER_PROMPT_DOC} · {MODEL_LAYER_DOC} · {MODELS_DOC}[/dim]",
+                title="Studio Status",
+                border_style="cyan",
+            )
+        )
+        console.print(format_stack_table(stack))
 
     @app.command()
     def version():
-        """Show CLI version"""
-        console.print(f"[bold]cinematic-studio[/bold] v{STUDIO_VERSION} (July 2026)")
+        """Show CLI and model stack version."""
+        stack = model_stack_summary()
+        console.print(
+            f"[bold]cinematic-studio[/bold] v{STUDIO_VERSION} · "
+            f"Grok [bold]4.5[/bold] cinematic+Build · "
+            f"chat [green]{stack.get('xai_chat')}[/green] · "
+            f"video [green]{stack.get('imagine_video')}[/green] · "
+            f"CLI ≥ {stack.get('grok_build_cli_min_version', '0.2.93')} · July 2026"
+        )
+
+    @app.command(name="stack")
+    def stack_cmd(
+        json_output: bool = typer.Option(False, "--json", help="Emit model_stack JSON"),
+    ):
+        """Print the locked Grok 4.5 model stack and VIDEO_PIPELINE_SPEC."""
+        stack = model_stack_summary()
+        if json_output:
+            import json
+
+            from models import build_video_pipeline_spec
+
+            console.print(
+                json.dumps(
+                    {
+                        "studio_version": STUDIO_VERSION,
+                        "model_stack": stack,
+                        "video_pipeline_spec": build_video_pipeline_spec(
+                            stack.get("imagine_video")
+                        ),
+                    },
+                    indent=2,
+                )
+            )
+            return
+        console.print(format_stack_panel(stack))
 
     @app.command(name="list-agents")
     def list_agents():
-        """List all agents grouped by category"""
+        """List all agents grouped by category (Role Card labels · studio v3.7.1)."""
         table = Table(
-            title=f"🎬 Grok Imagine Cinematic Studio — {core_agent_count()} Core Agents",
+            title=(
+                f"🎬 Grok Imagine Cinematic Studio v{STUDIO_VERSION} — "
+                f"{core_agent_count()} Core Agents · Grok 4.5"
+            ),
             box=box.ROUNDED,
         )
         table.add_column("Category", style="bold cyan", no_wrap=True)
@@ -102,7 +143,9 @@ def register(app: typer.Typer) -> None:
         console.print(table)
         console.print(
             f"\n[italic dim]Core: {core_agent_count()} · "
-            f"Total roster: {total_agent_count()} (incl. i2i + opt-in NSFW)[/italic dim]"
+            f"Total roster: {total_agent_count()} (incl. i2i + opt-in NSFW) · "
+            f"Role Card labels may show v3.6.5; studio release is v{STUDIO_VERSION} · "
+            f"orchestration default grok-4.5[/italic dim]"
         )
 
     @app.command(name="list-role-cards")
@@ -123,7 +166,10 @@ def register(app: typer.Typer) -> None:
             table.add_row(card.stem.replace("_", " "), str(card))
 
         console.print(table)
-        console.print(f"\n[green]Total Role Cards:[/green] {len(cards)}")
+        console.print(
+            f"\n[green]Total Role Cards:[/green] {len(cards)} · "
+            f"Model Layer: {MODEL_LAYER_DOC}"
+        )
 
     @app.command(name="show-role-card")
     def show_role_card(
@@ -136,14 +182,31 @@ def register(app: typer.Typer) -> None:
             return
 
         content = card_path.read_text()
-        console.print(Panel(Markdown(content[:3000]), title=f"📋 {card_path.stem}", border_style="blue", expand=False))
+        console.print(
+            Panel(
+                Markdown(content[:3000]),
+                title=f"📋 {card_path.stem}",
+                border_style="blue",
+                expand=False,
+            )
+        )
 
     @app.command()
     def activate():
-        """Print the official activation command"""
-        console.print(Panel(
-            f"[bold]Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}[/bold]\n\n"
-            "Load the master prompt first, then paste the activation command.",
-            title="🚀 Activation",
-            border_style="magenta",
-        ))
+        """Print the official Grok 4.5 activation command and stack."""
+        console.print(
+            Panel(
+                f"[bold]{ACTIVATION_PHRASE}[/bold]\n\n"
+                f"1. Paste [cyan]{MASTER_PROMPT_DOC}[/cyan] into a Grok 4.5 chat\n"
+                "2. Run the activation phrase above\n"
+                "3. Lock Bible with [cyan]create-bible[/cyan] / "
+                "[cyan]create-bible --wizard[/cyan]\n"
+                "4. Prefer still → i2v; video [green]1.0[/green] cost default · "
+                "[green]1.5[/green] for native audio\n"
+                f"5. Verify stack: [cyan]models verify[/cyan] · [cyan]stack[/cyan]\n\n"
+                f"[dim]{MODEL_LAYER_DOC} · optional 1M: --chat-model grok-4.3[/dim]",
+                title="🚀 Activation · Grok 4.5",
+                border_style="magenta",
+            )
+        )
+        console.print(format_stack_table())

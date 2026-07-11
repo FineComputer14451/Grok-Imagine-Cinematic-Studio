@@ -17,11 +17,15 @@ from cli.shared import console
 
 
 def resolve_chat_model_cli(slug: str | None) -> str:
-    """Resolve --chat-model for CLI; warn on unknown non-empty slugs."""
+    """Resolve --chat-model for CLI; warn on unknown non-empty slugs.
+
+    Default is grok-4.5 (cinematic). Use grok-4.3 / long-context only for 1M Bibles.
+    """
     resolved, known = normalize_chat_model(slug)
     if slug and str(slug).strip() and not known:
         console.print(
-            f"[yellow]Unknown chat model {slug!r}; using {resolved}[/yellow]"
+            f"[yellow]Unknown chat model {slug!r}; using {resolved} "
+            f"(cinematic default grok-4.5)[/yellow]"
         )
     return resolved
 

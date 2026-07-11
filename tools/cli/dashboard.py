@@ -136,15 +136,19 @@ def _header_panel(snapshot: dict[str, Any]) -> Panel:
     project = snapshot["project"]
     title = project["title"]
     genre = project.get("genre") or "—"
+    stack = snapshot.get("studio", {}).get("model_stack") or {}
+    chat = stack.get("xai_chat", "grok-4.5")
+    video = stack.get("imagine_video", "grok-imagine-video")
     lines = [
         f"[bold cyan]🎥 Grok Imagine Cinematic Studio v{snapshot['studio_version']}[/bold cyan]",
-        f"[dim]{snapshot['generated_at']}[/dim]",
+        f"[dim]{snapshot['generated_at']} · Grok 4.5 orchestration[/dim]",
         "",
         f"[bold]Project:[/bold] {title}",
         f"[bold]Genre:[/bold] {genre}",
         f"[bold]Bible:[/bold] {'loaded' if project['has_bible'] else 'not started'}",
+        f"[bold]Stack:[/bold] chat [green]{chat}[/green] · video [green]{video}[/green]",
     ]
-    return Panel("\n".join(lines), title="Studio Dashboard", border_style="cyan", box=box.ROUNDED)
+    return Panel("\n".join(lines), title="Studio Dashboard · Grok 4.5", border_style="cyan", box=box.ROUNDED)
 
 
 def _studio_health_table(snapshot: dict[str, Any]) -> Table:
@@ -162,6 +166,8 @@ def _studio_health_table(snapshot: dict[str, Any]) -> Table:
     models = "[green]compatible[/green]" if studio["models_compatible"] else "[red]issues[/red]"
     table.add_row("Models", models)
     stack = studio["model_stack"]
+    table.add_row("Chat (4.5)", stack.get("xai_chat", "—"))
+    table.add_row("Build", stack.get("xai_build", "—"))
     table.add_row("Video", stack.get("imagine_video", "—"))
     table.add_row("Image", stack.get("imagine_image", "—"))
     return table

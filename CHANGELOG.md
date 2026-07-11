@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Changed
+- **CLI → Grok 4.5** — root help/status/version/activate for v3.7.1 stack; new `stack` + `models stack`; ordered `models list` (4.5 / 1.0 first); validate shows chat+video; activation prompt embeds Model Layer; dashboard health shows chat/build
 - **Web UI → Grok 4.5** — sidebar Model Layer badge + `models verify`; Settings chat/video ordered with **4.5** / **1.0** defaults, reasoning + `prompt_cache_key`; Dashboard session stack metrics; Tools verify; DNA `video_1.0` inject; Production/Imagine/Quota captions; bible wizard uses ordered model pickers
 - **Repo layout (Grok 4.5 hygiene)** — human docs moved under `docs/{guides,templates,releases,archive,development}/`; root keeps lean `README` / `AGENTS` / `CHANGELOG` / `MASTER_PROMPT.md` with compatibility stubs for old paths; `references/MODELS.md` alias; `MODEL_LAYER_v3.6.7` archived; see `docs/REPOSITORY_LAYOUT.md`
 
