@@ -99,10 +99,10 @@ cinematic-studio plugin catalog check --release
 ```
 
 ### 3. Grok Build Plugin Marketplace (Recommended for Grok CLI)
-Install the full Grok plugin suite (**48 skills** + 11 slash commands) as a Grok plugin:
+Install the full Grok plugin suite (**48 skills** + 11 slash commands) as a Grok plugin (**recommended**):
 
 ```bash
-# Install directly from GitHub (simplest)
+# Install directly from GitHub (simplest — full suite)
 grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
 
 # Or add as a marketplace source and install by name
@@ -114,10 +114,31 @@ grok plugin marketplace update
 grok plugin update grok-imagine-cinematic-studio
 ```
 
-Catalog lives in `.grok-plugin/marketplace.json`.
+#### Plugin install matrix (v3.8.0 modular packs)
 
-**Plugin catalog commands (new in recent refactor):**
+Marketplace lists **6 plugins** from one repo (`config/plugin_packs.yaml`). Prefer the **full suite** unless you intentionally want a smaller satellite set.
+
+| Plugin | Pack id | Skills | Notes |
+|--------|---------|--------|--------|
+| **`grok-imagine-cinematic-studio`** | *(full)* | 48 | **Recommended** one-click install — all skills + slash commands |
+| `grok-imagine-cinematic-core` | `core` | 16 | Orchestration, DNA, Imagine runtime, QA, quota, meta |
+| `grok-imagine-camera-image` | `camera-image` | 9 | DoP, production design, i2i, key art, i2v — soft-requires **core** |
+| `grok-imagine-sequence-narrative` | `sequence-narrative` | 14 | Sequence, continuity, performance, audio, action/VFX, SFW batches — soft-requires **core** |
+| `grok-imagine-nsfw` | `nsfw` | 4 | Opt-in ErosForge + NSFW quota/sequence/chain QA — soft-requires **core** |
+| `grok-imagine-delivery-post` | `delivery-post` | 5 | Assembly, color grade, AI polish, upscale, ffmpeg — soft-requires **core** |
+
 ```bash
+# List packs from a repo checkout
+cinematic-studio plugin packs
+```
+
+If full suite **and** a satellite pack are both installed, declutter uses **`full_suite_wins`** (keeps full suite, drops satellite skill dupes). See `docs/guides/installation_guide.md`.
+
+Catalog lives in `.grok-plugin/marketplace.json` (full + 5 packs). Satellite manifests: `.grok-plugin/packs/<id>/plugin.json`.
+
+**Plugin catalog commands:**
+```bash
+cinematic-studio plugin packs                # full suite + pack matrix
 cinematic-studio plugin catalog pin          # regenerate + pin SHA for release
 cinematic-studio plugin catalog check        # verify freshness
 cinematic-studio plugin catalog check --release  # pre-publish gate

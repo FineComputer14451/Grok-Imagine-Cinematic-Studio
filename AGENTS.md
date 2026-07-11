@@ -2,7 +2,7 @@
 
 **This file provides context and instructions for AI coding agents and assistants working in this workspace.**
 
-**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.7.1**, unified **Grok 4.5** cinematic+Build stack with optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, guided Production Bible wizard, Grok Build ≥ **0.2.93**, plugin marketplace, AI Polish Director)  
+**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.8.0**, unified **Grok 4.5** cinematic+Build stack with optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
 **Canonical Source:** https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/AGENTS.md
 
 Think of this as the single source of truth for how to interact with this Grok/xAI agent environment. Paths below are **repo-relative** unless noted; sandboxes may root at `/home/workdir/` or a local clone (e.g. `~/Grok-Imagine-Cinematic-Studio`).
@@ -32,7 +32,7 @@ This workspace is designed for advanced **Grok 4.5** agent workflows, with heavy
 │       │   ├── scripts/         # Optional: executable helpers
 │       │   ├── references/      # Optional: long-form docs, production bibles, agent defs
 │       │   └── assets/          # Optional: templates, reference images, etc.
-├── .grok-plugin/                # Plugin manifests (marketplace.json, plugin.json, plugin-index.json — 48 skills + commands)
+├── .grok-plugin/                # Marketplace multi-plugin (full suite + 5 packs), plugin.json, plugin-index.json, packs/
 ├── artifacts/                   # Generated outputs (gitignored contents; keep .gitkeep)
 ├── scripts/                     # Install/verify/update helpers + thin shims
 ├── web_ui/                      # Streamlit dashboard (model pickers, quota sim, DNA/sequence tools)
@@ -156,11 +156,13 @@ If native Imagine tools are unavailable, use `imagine-execution-bridge` / CLI (`
 
 ### Grok Plugins & Marketplace
 
-- Install/update the full Cinematic Studio: `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`
+- Install/update the full Cinematic Studio (recommended): `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`
 - Or via marketplace: `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio` then install by name
+- **Multi-plugin packs (v3.8.0):** marketplace lists **6 plugins** (full suite + satellites `core`, `camera-image`, `sequence-narrative`, `nsfw`, `delivery-post`) from `config/plugin_packs.yaml`. Prefer full suite; list packs with `cinematic-studio plugin packs`. See `references/SKILLS_TAXONOMY.md` and install matrix in `docs/guides/installation_guide.md`.
 - Regenerate index after skill changes: `cinematic-studio plugin catalog pin` (or `python scripts/generate_plugin_index.py` for plain generation only)
 - Validate plugin: `bash scripts/verify_plugins.sh` (or `cinematic-studio plugin catalog check`)
 - Declutter dual Method A+B skill installs: `bash scripts/cinematic_studio.sh declutter --apply` (or `cinematic-studio plugin declutter --apply`) — see `references/SKILLS_TAXONOMY.md`
+- Declutter **full suite + satellite packs:** policy **`full_suite_wins`** keeps the full suite and removes satellite skill dupes
 - Browse skill groups: `cinematic-studio plugin list --grouped`
 - Release catalog pin: commit content first → `cinematic-studio plugin catalog pin` (or `bash scripts/release_plugin_catalog.sh`) → commit **only** `.grok-plugin/` (install SHA = content revision; pin-only tip is expected)
 - Pre-publish plugin gate: `cinematic-studio plugin catalog check --release` or `bash scripts/verify_plugins.sh --release` (passes when pin == HEAD or pin is ancestor with only catalog paths after it)
@@ -287,14 +289,14 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 
 ## Project-Specific Notes
 
-- Primary project: **Grok Imagine Cinematic Studio** **v3.7.1** — unified **Grok 4.5** stack + Imagine Agent Mode Handoff + guided Bible wizard + related skills.
+- Primary project: **Grok Imagine Cinematic Studio** **v3.8.0** — unified **Grok 4.5** stack + Imagine Agent Mode Handoff + guided Bible wizard + **plugin modularity packs**.
 - All generated artifacts **must** be saved under `artifacts/` (repo root).
 - Project skills live in `.grok/skills/`; user-global skills in `~/.grok/skills/`.
-- Plugin marketplace lives in `.grok-plugin/` (48 skills + commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
+- Plugin marketplace lives in `.grok-plugin/` (full suite + 5 packs, 48 skills + commands). Install full suite via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - Workspace supports SFW cinematic work and NSFW/erotic pipelines (**ErosForge only when explicitly activated**).
 - **Model stack:** cinematic + Build/coding default **`grok-4.5`**; optional 1M **`grok-4.3`**; Imagine **1.0** default; `VIDEO_PIPELINE_SPEC` wired everywhere; **1.5** for native-audio workflows.
 - Full suite: **48/48** skills + Role Cards on Grok 4.5 orchestration default (includes `ai-image-recreation` for user-upload recreation).
-- Recent **3.7.1:** Imagine Agent Mode Handoff (Studio Director + main skill + CLI). **3.6.7:** guided Bible wizard, catalog pin hygiene, cinematic chat default unified on `grok-4.5`.
+- Recent **3.8.0:** marketplace multi-plugin packs + packs CLI + declutter `full_suite_wins`. **3.7.1:** Imagine Agent Mode Handoff. **3.6.7:** guided Bible wizard, catalog pin hygiene, cinematic chat default unified on `grok-4.5`.
 - Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, `docs/releases/`, `references/MODELS.md`, `docs/guides/Quick_Start_Guide.md`).
 
 ## Quick Start for New Tasks
@@ -315,4 +317,4 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 **This AGENTS.md is the canonical reference for all AI agents operating in this environment.**  
 Update it whenever workflows, skills, or best practices evolve (e.g. new skills, plugin changes, model updates, or doc releases).
 
-*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.7.1 · Grok 4.5)*
+*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.8.0 · Grok 4.5)*

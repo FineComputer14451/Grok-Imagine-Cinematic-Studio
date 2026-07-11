@@ -1,4 +1,4 @@
-# Skills & Plugin Taxonomy — v3.7.1
+# Skills & Plugin Taxonomy — v3.8.0
 
 Canonical **install layout** stays flat: `.grok/skills/<name>/SKILL.md` (required by Grok plugin format). This file is the **mental model** for browsing, declutter, and docs — not a second on-disk hierarchy.
 
@@ -6,7 +6,8 @@ Canonical **install layout** stays flat: `.grok/skills/<name>/SKILL.md` (require
 
 | Surface | Path | What belongs here |
 |---------|------|-------------------|
-| **Plugin (Method B)** | `~/.grok/installed-plugins/grok-imagine-cinematic-studio-*/` | All **48** studio skills + slash commands |
+| **Plugin (Method B)** | `~/.grok/installed-plugins/grok-imagine-cinematic-studio-*/` | All **48** studio skills + slash commands (full suite) |
+| **Plugin packs (satellites)** | `~/.grok/installed-plugins/grok-imagine-*-*/` | Filtered pack views of the same skill tree (see Marketplace packs) |
 | **User-global skills** | `~/.grok/skills/` | Non-plugin skills only (`help`, `create-skill`, `docx`, `imagine`, …) |
 | **Repo / workspace** | `<clone>/.grok/skills/` | Authoritative source for development |
 | **Method A projects** | `~/Grok-Cinematic-Projects/` | CLI tools, references, config — **not** a second skill tree when plugin is primary |
@@ -21,15 +22,36 @@ bash scripts/cinematic_studio.sh declutter --apply --keep-backups 1
 # or: python tools/cinematic_studio_cli.py plugin declutter --apply
 ```
 
+When full suite + satellite packs are both present, policy **`full_suite_wins`** keeps the full suite and removes satellite skill duplicates.
+
 ## Marketplace
 
-Single marketplace source for this product:
+Single marketplace source for this product (multi-plugin catalog):
 
 - **Source name:** `Grok-Imagine-Cinematic-Studio` (git URL of this repo)
-- **Plugin name:** `grok-imagine-cinematic-studio`
-- **Catalog:** `.grok-plugin/marketplace.json` + `plugin.json` + `plugin-index.json`
+- **Full suite (recommended):** `grok-imagine-cinematic-studio`
+- **Catalog:** `.grok-plugin/marketplace.json` + root `plugin.json` + `plugin-index.json` + pack manifests under `.grok-plugin/packs/`
 
-Pin protocol: `references` via github-repo-manager / `plugin catalog pin` (content commit → pin → catalog-only commit).
+Pin protocol: github-repo-manager / `plugin catalog pin` (content commit → pin → catalog-only commit).
+
+## Marketplace packs (v3.8.0)
+
+Pack definitions and declutter policy live in **`config/plugin_packs.yaml`**. Catalog generation emits **6 marketplace plugins** (1 full suite + 5 satellites) that share one git SHA. Skills remain exclusive across packs (validated at generate time).
+
+| Pack id | Plugin name | Role |
+|---------|-------------|------|
+| *(full)* | `grok-imagine-cinematic-studio` | Recommended — all 48 skills + commands |
+| `core` | `grok-imagine-cinematic-core` | Orchestration, DNA, Imagine runtime, QA, quota, meta |
+| `camera-image` | `grok-imagine-camera-image` | DoP, production design, i2i, key art, i2v (requires `core`) |
+| `sequence-narrative` | `grok-imagine-sequence-narrative` | Sequence, continuity, performance, audio, action/VFX, SFW (requires `core`) |
+| `nsfw` | `grok-imagine-nsfw` | Opt-in ErosForge + NSFW tools (requires `core`) |
+| `delivery-post` | `grok-imagine-delivery-post` | Assembly, color, polish, upscale, ffmpeg (requires `core`) |
+
+```bash
+cinematic-studio plugin packs
+```
+
+Satellite manifests: `.grok-plugin/packs/<pack_id>/plugin.json`.
 
 ## Skill groups (48)
 
@@ -77,7 +99,8 @@ Browse with: `cinematic-studio plugin list --grouped`
 ## Related
 
 - Manifest: `scripts/required_skills.manifest`
+- Pack config: `config/plugin_packs.yaml`
 - Plugin pin: `.grok/skills/github-repo-manager/references/plugin_catalog_release.md`
 - Install: `docs/guides/installation_guide.md`
 
-*v3.7.1 · Grok 4.5 · July 2026*
+*v3.8.0 · Grok 4.5 · July 2026*

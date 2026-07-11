@@ -4,62 +4,16 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
-### Changed
-- **CLI → Grok 4.5** — root help/status/version/activate for v3.7.1 stack; new `stack` + `models stack`; ordered `models list` (4.5 / 1.0 first); validate shows chat+video; activation prompt embeds Model Layer; dashboard health shows chat/build
-- **Web UI → Grok 4.5** — sidebar Model Layer badge + `models verify`; Settings chat/video ordered with **4.5** / **1.0** defaults, reasoning + `prompt_cache_key`; Dashboard session stack metrics; Tools verify; DNA `video_1.0` inject; Production/Imagine/Quota captions; bible wizard uses ordered model pickers
-- **Repo layout (Grok 4.5 hygiene)** — human docs moved under `docs/{guides,templates,releases,archive,development}/`; root keeps lean `README` / `AGENTS` / `CHANGELOG` / `MASTER_PROMPT.md` with compatibility stubs for old paths; `references/MODELS.md` alias; `MODEL_LAYER_v3.6.7` archived; see `docs/REPOSITORY_LAYOUT.md`
+## [3.8.0] - 2026-07-11
 
 ### Added
-- **Skills / plugin declutter** — `cinematic_studio.sh declutter` (+ `plugin declutter`) removes Method A skill copies that duplicate the Grok plugin and prunes old `~/.grok/skills-backup-*`; `plugin list --grouped` + `references/SKILLS_TAXONOMY.md` for department taxonomy; install docs warn against dual-loading the 48 studio skills
-- **`ai-image-recreation` in plugin suite (Grok 4.5)** — user-upload recreation / style transfer / enhance / design sheets / pre-video plates via `image_edit` + multi-pass protocol; ported into `.grok/skills/ai-image-recreation/` with prompt library + adult cheat sheet; catalog **48 skills** (`plugin.json`, `plugin-index.json`, `required_skills.manifest` parity including `skill-agent-architect`)
-- **Character DNA Extractor → Grok 4.5 / v3.7.1** — full skill rewrite (forensic modes, design-sheet bridge, multi-cast path, `video_1.0` inject); template + Role Card refresh; `tools/character_dna.py` `STUDIO_AGENT_VERSION` **v3.7.1** + prompt modes `video_1.0` / `video_1.5`
-- **AI Polish Director → Grok 4.5 / v3.7.1** — full skill rewrite (delivery presets, post-upscale gates, sequence polish CLI + upscaler paths); Role Card + `polish_presets.md`; `sequence_polish.py` embeds `polish_spec` / Bible log line; suite package confirmed in plugin catalog (`plugin.json` / index / `required_skills.manifest`) with skill `references/`
-- **GitHub Repo Manager → Grok 4.5 / v3.7.1** — full skill rewrite (safety gates, plugin catalog pin protocol, skill-suite parity, conventional commits); fixed `validate-all-skills.sh` / `prepare-release.sh` / `repo-status.sh`; added `references/plugin_catalog_release.md`
-- **Cinematic FFmpeg → Grok 4.5 / v3.7.1** — skill rewrite + frontmatter fix (no colons in description; aspect ratios as 9x16/1x1/16x9); sequence deliver CLI + delivery checklist
-- **Handoff Packet Validator → Grok 4.5 / v3.7.1** — full skill rewrite (gate policy, generate-then-validate flows, Studio Director block rules); `references/packet_types.md` field cheat sheet
-- **Assembly Editor → Grok 4.5 / v3.7.1** — full skill rewrite (EDL CLI, pacing rules, hero polish handoff); Role Card refresh; `assembly_editor.py` stamps `studio_agent_version` + `cut_name`
-- **Animatic Director → Grok 4.5 / v3.7.1** — full skill rewrite (tier strategy, budget gate, CLI plan/promote, motion-probe rules); `animatic_orchestrator.py` stamps `studio_agent_version`
-- **SFW Batch Orchestrator → Grok 4.5 / v3.7.1** — full skill rewrite (hero-first tiers, mode decisions, retry policy, full `sfw` CLI); Role Card refresh; batch plans stamp `studio_agent_version`
-- **Reference Asset Curator → Grok 4.5 / v3.7.1** — full skill rewrite (tier matrix aligned to 1.0 video default, ASSET_MANIFEST + handoff validate, SFW/NSFW maps); Role Card refresh
-- **Image-to-Video Specialist → Grok 4.5 / v3.7.1** — full skill rewrite (hard gates, motion tiers, 1.0 default / 1.5 audio, VIDEO_PIPELINE_SPEC, extend-prompt CLI); Role Card refresh
-- **Chain QA Protocol → Grok 4.5 / v3.7.1** — full skill rewrite (10-point weights, critical floor, qa-assist/regen CLI, output report); checklist v3.7.1; `CHAIN_QA_PROTOCOL_VERSION` on results
-- **Sequence Director → Grok 4.5 / v3.7.1** — full skill rewrite (dependency graph, full `sequence` CLI map, temp/replan/health, 1.0 video default); Role Card refresh
-- **Cinematic Sequence Extender → Grok 4.5 / v3.7.1** — full skill rewrite (hard rules, handoff fields, failure recovery, 1.0/1.5 pipeline specs); Role Card + extend_stitch_protocol updated for cost-default 1.0
-- **Workflow Quota Optimizer → Grok 4.5 / v3.7.1** — full skill rewrite (risk levels, Fast→quality-pass, full `quota` CLI, 1.0 default economics); Role Card + pricing_model notes; `STUDIO_AGENT_VERSION`
-- **Continuity Consistency Guardian → Grok 4.5 / v3.7.1** — full skill rewrite (memory banks, boundary checklist, continuity-diff/memory CLI, Chain QA ownership); Role Card refresh
-- **Studio Director → Grok 4.5 / v3.7.1 (enhanced)** — expanded skill (full pipeline order, i2i/handoff rules, hard blocks, specialist map); Role Card pipeline table aligned to animatic/quota/chain/extend
-- **Quality Assurance Guardian → Grok 4.5 / v3.7.1** — full skill rewrite (16-point + chain 10-point dual gate, thresholds, hard blocks, report template); Role Card refresh
-- **Identity Lock Specialist → Grok 4.5 / v3.7.1** — full skill rewrite (lock/inject CLI, drift gates, multi-cast, video_1.0/1.5 inject, hard blocks); Role Card refresh
-- **Imagine Prompt Master → Grok 4.5 / v3.7.1** — full skill rewrite (Ultimate Template, DNA inject modes, 1.0/1.5 video schema, artifact lexicon, output report); Role Card refresh
-- **Mega Production Architect → Grok 4.5 / v3.7.1** — full skill rewrite (Bible package, 1.0 video default, create-bible CLI, roadmap order, i2i routing); Role Card refresh
-- **Director of Photography → Grok 4.5 / v3.7.1** — full skill rewrite (motivated lighting, camera/lens, physics-aware motion, motif lock, prompt handoff); Role Card refresh
-- **Performance Emotion Director → Grok 4.5 / v3.7.1** — full skill rewrite (subtext layers, micro-timing, sequence temp CLI, intimate path); Role Card refresh
-- **Production Designer Set Decorator → Grok 4.5 / v3.7.1** — full skill rewrite (Environment DNA, prop bank, practicals for DoP, continuity CLI); Role Card refresh
-- **Post-Production Color Grading Supervisor → Grok 4.5 / v3.7.1** — full skill rewrite (grade design checklist, skin protection, stitch-safe unity, pipeline before AI Polish); Role Card refresh
-- **Narrative Arc Pacing Strategist → Grok 4.5 / v3.7.1** — full skill rewrite (beat structure, pacing heatmap, temp CLI, quota-aware structure); Role Card refresh
-- **Sonic Architect Native Audio Virtuoso → Grok 4.5 / v3.7.1** — full skill rewrite (1.0 vs 1.5 audio paths, multi-layer Sound Layer, AMV for stitches); Role Card refresh
-- **Foley Sound Design Specialist → Grok 4.5 / v3.7.1** — full skill rewrite (Sound DNA, physics/perspective checklist, Sound Layer SFX paste, intimate path); Role Card refresh
-- **Arc replan co-pilot (roadmap #12)** — `tools/arc_replan.py` replans remaining beats and temperature curve after mid-sequence failure; CLI `sequence replan plan|apply`; skill `arc-replan-copilot` (final long-form continuity roadmap item)
-- **Stitch artifact lexicon (roadmap #11)** — `tools/stitch_artifact_lexicon.py` vocabulary + negative/positive packs for flicker/morph/halo; CLI `sequence artifact-lexicon`; re-gen prompts consume suggested packs
-- **Long-form health dashboard (roadmap #10)** — `tools/sequence_health_dashboard.py` aggregates chain QA, drift/seam/AMV, regen, temperature, continuity diffs, remaining cost; CLI `sequence health` with `--json` / `--markdown`
-- **Continuity diff CLI (roadmap #9)** — `tools/continuity_diff.py` clip-to-clip and clip-vs-memory-bank continuity reports; CLI `sequence continuity-diff` for Continuity Guardian / QA
-- **Multi-character identity arbiter (roadmap #8)** — `tools/multi_character_arbiter.py` primary/secondary DNA weights, conflict rules, multi inject blocks; CLI `sequence cast arbitrate|inject`; skill + Role Card
-- **Emotional temperature gate (roadmap #7)** — `tools/emotional_temperature.py` normalizes `emotional_temperature_curve`, infers observed temp, flags flat/spike/off-plan; CLI `sequence temp set|show|gate`; extend prompts may include planned temperature
-- **Audio momentum integrity (roadmap #6)** — `tools/audio_momentum.py` diffs AMV across stitches (dialogue/SFX/music/lip-sync); Chain QA Assist uses evidence for `audio_momentum_sync`; CLI `sequence amv-check`
-- **Extend re-gen loop (roadmap #5)** — `tools/extend_regen.py` builds fix prompts from chain QA + drift/seam + memory bank; per-clip/sequence attempt budget; CLI `sequence regen plan|apply|run` (run spends one attempt via existing sequence runner)
-- **Sequence memory bank (roadmap #4)** — `tools/sequence_memory.py`; `sequence.json` `memory_bank` (schema 1.0+1.1); handoff/extend-prompt embed running cast/prop/lighting/audio state; CLI `sequence memory show|sync`
-- **Long-form continuity evidence loop (v1)** — `tools/identity_drift.py`, `tools/seam_report.py`; Chain QA Assist v2 blends drift + seam into SFW scores with `evidence` block; CLI `sequence drift-score`, `sequence seam-report`, and `qa-assist --dna`
-
-### Fixed
+- **Plugin modularity (full suite + 5 packs)** — marketplace lists **6 plugins** from `config/plugin_packs.yaml`: recommended full suite `grok-imagine-cinematic-studio` plus satellites **core**, **camera-image**, **sequence-narrative**, **nsfw**, **delivery-post**. Pack manifests under `.grok-plugin/packs/<id>/plugin.json`; exclusive skill membership validated across packs.
+- **Plugin packs CLI** — `cinematic-studio plugin packs` lists full suite + pack skill/command counts and soft `requires`; catalog generation writes pack-aware marketplace entries and satellite manifests.
+- **Declutter `full_suite_wins`** — when full suite and one or more satellite packs are both installed, declutter prefers the full suite and removes satellite skill dupes (`config/plugin_packs.yaml` → `declutter.policy: full_suite_wins`).
 
 ### Changed
-- **Plugin/docs hygiene (46 skills + unified 4.5 copy)** — `plugin.json` / `marketplace.json` descriptions no longer market dual-stack; marketplace skill count **44 → 46**; AGENTS/README/UPGRADE_GUIDE registry lines aligned.
-- **All agents → Grok 4.5** — remaining **18** skills that lacked Model Layer now embed `## Model Layer (Grok 4.5 · studio v3.6.7)` (DoP v3.3, Performance, Foley, Key Art, Trailer, Stunt, VFX, Localization, Narrative Arc, Color Grading, Production Designer, Continuity Guardian, i2i refiners, NSFW chain QA, AI video upscaler, cinematic-ffmpeg, Mega Production Architect). Full suite: **46/46** skills + all Role Cards on Grok 4.5 orchestration default (`grok-4.3` 1M opt-in only).
-- **Docs: public stack copy → unified Grok 4.5** — README hero/badge/aliases/footer, Quick Start, MASTER_PROMPT, RELEASE_NOTES, UPGRADE_GUIDE, CONTRIBUTING, `commands/cinematic.md`, `scripts/lib/cinematic_studio_common.sh` no longer market dual-stack (4.3-as-cinematic); code already had `STACK_CONTRACT` on `grok-4.5`.
-- **Skill hygiene (46 skills)** — `required_skills.manifest` adds `arc-replan-copilot` + `multi-character-identity-arbiter` (parity with disk / `plugin.json`); docs and marketplace copy updated from 44 → 46 skills (AGENTS, README, MASTER_PROMPT, RELEASE_NOTES, installation guide).
-- **Cinematic chat default → `grok-4.5`** — `STACK_CONTRACT["cinematic"]` unified with Build/CLI on `grok-4.5`; `grok-4.3` remains opt-in for 1M context (`--chat-model grok-4.3` / alias `long-context`). Alias `cinematic` now resolves to `grok-4.5`. `models verify` warns on unified chat defaults instead of failing.
-- **Docs & Role Cards** — MODELS, AGENTS, README, MASTER_PROMPT, Quick Start, Project Bible, RELEASE_NOTES, Studio Director / Mega / Prompt Master / Sequence / Quota / AGENT_INDEX, commands, Web UI, config example aligned to unified default.
-- **Agents + skills enhanced for Grok 4.5** — new `references/agents/MODEL_LAYER_v3.7.1.md`; all Role Cards embed Model Layer; all skills carry stack tables and 4.5 operating rules.
+- **Studio version** — `VERSION` / plugin manifests → **3.8.0**
+- **Install / taxonomy docs** — README + installation guide pack install matrix; `references/SKILLS_TAXONOMY.md` marketplace packs section; AGENTS marketplace multi-plugin + declutter note
 
 ---
 
