@@ -9,10 +9,6 @@
 </p>
 
 <p align="center">
-  <img src="assets/logo.jpg" alt="Grok Imagine Cinematic Studio Logo" width="260">
-</p>
-
-<p align="center">
   <strong>Logline → Production Bible → Character DNA Lock → Physics-Aware Sequences → Color Grade → AI Polish → Delivery</strong><br>
   <em>Emotionally powerful, identity-locked, production-ready cinematic content at Hollywood standards.</em>
 </p>
