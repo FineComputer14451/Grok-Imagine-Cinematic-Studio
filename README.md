@@ -191,7 +191,9 @@ Grok Imagine Cinematic Studio v3.8.3  (Studio Director + 23+ Agents · Grok 4.5 
 
 ## 🎨 Visual Identity & Branding
 
-The studio presents a premium Hollywood-grade aesthetic with a custom cinematic banner featuring a massive camera lens, holographic AI elements, gold/teal accents, and film-production elegance.
+**Refreshed Premium Cinematic Banner (v3.8.3)**
+
+A brand new Hollywood-grade banner has been created specifically for v3.8.3. It features a massive cinematic camera lens with holographic AI elements, gold/teal accents, and premium film production aesthetics. The banner has been updated in `assets/banner.jpg`.
 
 The included `assets/logo.jpg` and `assets/favicon.jpg` complete the visual identity for Web UI and repository presentation.
 
