@@ -63,8 +63,8 @@ These **Mermaid diagrams** are the current, live representation of the system. T
 
 ```mermaid
 flowchart TB
-    subgraph User["👤 User Layer"]
-        User["Grok Chat / Build CLI"]
+    subgraph UserLayer["👤 User Layer"]
+        GrokChat["Grok Chat / Build CLI"]
         Activate["Activate Studio v3.8.3<br/>or 'start cinematic production'"]
     end
 
