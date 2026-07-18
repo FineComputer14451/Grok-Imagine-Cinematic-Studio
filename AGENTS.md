@@ -280,7 +280,7 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 | **Video / Audio** | `cinematic-ffmpeg`, `ffmpeg` | Trimming, merging, subtitles, compression, GIFs, storyboards |
 | **Documents** | `pdf`, `docx`, `pptx`, `xlsx` | Professional document or presentation creation |
 | **Memory** | `memory-edit` | Personal facts/preferences worth remembering |
-| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **48-skill** plugin suite |
+| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **48-skill** suite (v3.8.3; packs + declutter `full_suite_wins`) |
 | **AI Polish & Delivery** | `ai-polish-director`, `assembly-editor`, `cinematic-ffmpeg` | Post-QA upscale, EDL assembly, social crops |
 | **Pre-viz & Assets** | `animatic-director`, `reference-asset-curator`, `image-to-video-specialist` | Previs, hero routing, i2v before 1.5 spend |
 | **Batch Orchestration** | `sfw-batch-orchestrator` | Quota-aware SFW hero-first shot batches |

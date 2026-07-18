@@ -10,6 +10,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Changed
 - **Spend readiness facade** — `evaluate_generation_spend_readiness` + shared CLI preflight (`cli/spend_preflight.py`); plate/motion set/show on **both** SFW and NSFW; session runner no longer mutates shot dicts; `resolve_execution_mode` on `handoff_schema`; motion extract uses canonical keys only (no silent momentum aliasing).
+- **Cinematic Studio Meta Installer → v3.8.3** — skill + `install_paths` + wrapper stamp aligned with studio release; Method B pack matrix, declutter `full_suite_wins`, activation/release asset names; plugin index regenerated; installation guide zip/activation strings updated.
 
 ## [3.8.3] - 2026-07-11
 
