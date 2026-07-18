@@ -59,28 +59,123 @@ See full details in [CHANGELOG.md](CHANGELOG.md).
 
 ## 🏗️ System Architecture (v3.8.3)
 
-**Core Philosophy**: A modular "studio" of specialized agents that collaborate under the **Studio Director**, with strong handoff protocols, identity locking, and production gates. The system bridges high-level creative direction (Grok chat / Build) with low-level execution (Imagine Image/Video 1.5).
+**Core Philosophy**: A modular "studio" of specialized agents that collaborate under the **Studio Director**, with strong handoff protocols, identity locking, readiness gates, and production discipline. The system bridges high-level creative direction (Grok chat/Build) with low-level execution (Imagine Image/Video 1.5) while maintaining full traceability and quota awareness.
 
-### Visual Architecture (Illustrative)
+### Updated Architecture Diagrams (v3.8.3)
 
-> **Note**: Architecture diagrams below reflect core modularity (v3.3 concept). The fundamental structure — Studio Director orchestration, Role Cards, plugin marketplace, CLI + Web UI, and 48 runtime skills — remains the foundation of v3.8.3.
+These **Mermaid diagrams** are the current, live representation of the system. They reflect the plugin pack architecture, Imagine Agent Mode Handoff, Identity Continuity Protocol, color-grade → polish pipeline, and all readiness gates introduced through v3.8.3.
 
-![System Architecture](assets/system_architecture_v3.3.png)
+```mermaid
+flowchart TB
+    subgraph User["👤 User Layer"]
+        User["Grok Chat / Build CLI"]
+        Activate["Activate Studio v3.8.3<br/>or 'start cinematic production'"]
+    end
 
-![Orchestration Flow](assets/orchestration_flow_v3.3.png)
+    subgraph Orchestration["🎬 Orchestration Layer"]
+        SD["Studio Director<br/>Orchestration, Handoff Decisions<br/>& Specialist Coordination"]
+        MPA["Mega Production Architect<br/>Production Bible + Execution Roadmap"]
+    end
+
+    subgraph Specialists["🧠 23+ Specialist Agents & Role Cards"]
+        direction TB
+        IL["Identity Lock Specialist<br/>+ Continuity Protocol v1.0"]
+        SEQ["Sequence Director + Extender<br/>Long-form 1.5 chaining"]
+        PROMPT["Imagine Prompt Master"]
+        DOP["Director of Photography"]
+        NSFW["ErosForge NSFW Director"]
+        POLISH["AI Polish Director<br/>Upscale + Face Restoration"]
+        QA["Quality Assurance Guardian<br/>16-point + Chain QA"]
+        QUOTA["Workflow Quota Optimizer"]
+        VFX["VFX & SFX Supervisor"]
+        SOUND["Sonic Architect / Foley"]
+        OTHER["Stunt, Performance, Key Art,<br/>Trailer, Production Design..."]
+    end
+
+    subgraph Core["⚙️ Core Systems & Protocols (v3.8.3)"]
+        PB["Production Bible + Guided Wizard<br/>(CLI + Streamlit Web UI)"]
+        DNA["Character DNA Pipeline<br/>Extract → Lock → Inject"]
+        HANDOFF["Imagine Agent Mode Handoff<br/>+ Packet Validators"]
+        PLUGIN["Plugin Packs & Marketplace<br/>Full Suite + 5 Satellite Packs<br/>(full_suite_wins declutter)"]
+        READINESS["Readiness Gates<br/>Plate / Motion / Identity / Spend / Delivery<br/>(--strict-* flags)"]
+        COLOR["Color Grade Handoff<br/>→ Polish Pipeline"]
+    end
+
+    subgraph Tools["🛠️ Tools, CLI & Interfaces"]
+        CLI["cinematic-studio CLI<br/>(models, dna, sequence, quota, nsfw, plugin...)"]
+        WEBUI["Streamlit Web UI<br/>Guided Bible • DNA Bank • Cost Estimator"]
+        SKILLS["48 Custom Grok Skills<br/>(.grok/skills/)"]
+    end
+
+    subgraph Execution["🎥 Execution Layer"]
+        IMAGINE["xAI Imagine<br/>Image + Video 1.5<br/>(Native Audio + Physics)"]
+    end
+
+    subgraph Post["✨ Post-Production & Delivery"]
+        QA2["QA Guardian Review"]
+        COLOR2["Color Grade"]
+        POLISH2["AI Polish Director"]
+        DELIVER["Delivery + Marketing Assets<br/>(Key Art, Trailers)"]
+    end
+
+    Activate --> SD
+    SD <--> MPA
+    MPA --> PB --> DNA
+    DNA --> HANDOFF
+    HANDOFF --> READINESS
+    READINESS --> IMAGINE
+    IMAGINE --> QA2 --> COLOR2 --> POLISH2 --> DELIVER
+
+    SD -.-> Specialists
+    Specialists -.-> Core
+    Core --> Tools
+    Tools --> Execution
+    Execution --> Post
+
+    classDef primary fill:#1e3a5f,stroke:#4a90d9,color:#fff
+    classDef accent fill:#2d5a3d,stroke:#5cb85c,color:#fff
+    class SD,MPA primary
+    class HANDOFF,READINESS,PLUGIN accent
+```
+
+**Orchestration & Production Flow (v3.8.3)**
+
+```mermaid
+flowchart TD
+    Start["Start New Project<br/>(Activate Studio v3.8.3)"] --> Bible["Build & Lock<br/>Production Bible<br/>(VIDEO_PIPELINE_SPEC 1.5)"]
+    Bible --> DNA["Character DNA<br/>Extract → Lock → Inject<br/>(Identity Continuity Protocol)"]
+    DNA --> PreProd["Pre-Production<br/>Concepts, Mood Boards, DoP Language"]
+    PreProd --> Principal["Principal Photography<br/>Sequence Director + Specialists<br/>(Stunts / VFX / Sound / NSFW)"]
+    Principal --> Handoff["Imagine Agent Mode Handoff<br/>(Validated Packet + Surface Routing)"]
+    Handoff --> Generate["Imagine Video 1.5 Generation<br/>(Native Audio + Physics)"]
+    Generate --> Gates["Readiness Gates Check<br/>(Plate / Motion / Identity / QA)"]
+    Gates --> Review["QA Guardian + Specialist Checklist Review"]
+    Review --> Color["Color Grade Handoff<br/>(sequence color-grade set)"]
+    Color --> Polish["AI Polish Director<br/>(Upscale + Face Restore + Delivery Polish)"]
+    Polish --> Deliver["Final Delivery + Marketing<br/>(Key Art / Trailer Director)"]
+
+    classDef step fill:#0f172a,stroke:#64748b,color:#e0f2fe
+    class Start,Bible,DNA,PreProd,Principal,Handoff,Generate,Gates,Review,Color,Polish,Deliver step
+```
+
+> **Legacy Visual References** (v3.3 concept diagrams still illustrate the overall modular spirit):
+> ![System Architecture](assets/system_architecture_v3.3.png)
+> ![Orchestration Flow](assets/orchestration_flow_v3.3.png)
+
+**Updated ASCII Overview (v3.8.3)**
 
 ``` 
 Grok Imagine Cinematic Studio v3.8.3  (Studio Director + 23+ Agents · Grok 4.5 primary)
 ├── .grok-plugin/                 # Marketplace manifests + plugin packs (full suite + 5 satellites)
-├── references/agents/            # 23+ Role Cards, AGENT_INDEX, MODEL_LAYER_v3.7.1+, handoff protocols, IDENTITY_CONTINUITY_PROTOCOL
-├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, models.py, bible_stages, imagine_bridge, handoff_schema, cli/
-├── tools/cinematic_studio_cli.py   # Unified CLI: create-bible --wizard, dna, sequence, quota, nsfw, imagine, models, plugin, validate...
-├── references/MODELS_v3.6.md   # Dual-stack registry (grok-4.5 cinematic default + Grok Build)
-├── web_ui/app.py                 # Streamlit dashboard: Guided Bible, DNA bank, sequence mgmt, live cost estimation
-├── examples/                     # Production Bible templates & sample projects
+├── references/agents/            # 23+ Role Cards, AGENT_INDEX, MODEL_LAYER, IDENTITY_CONTINUITY_PROTOCOL, IMAGINE_AGENT_MODE_HANDOFF
+├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, bible_stages, imagine_bridge, handoff_schema, cli/
+├── tools/cinematic_studio_cli.py   # Unified CLI (create-bible --wizard, dna, sequence, quota, nsfw, imagine, plugin, validate...)
+├── references/MODELS_v3.6.md   # Dual-stack registry (grok-4.5 cinematic default)
+├── web_ui/app.py                 # Streamlit: Guided Bible, DNA bank, sequence dashboard, live cost estimation
+├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT.md              # Primary activation prompt (v3.8+ compatible)
-├── scripts/                      # Release helpers, verify, thin shims
-└── .grok/skills/                 # 48 custom Grok skills (runtime engine for all agents)
+├── scripts/                      # Release helpers & verify shims
+└── .grok/skills/                 # 48 custom Grok skills (runtime engine)
 ```
 
 **Key v3.8.3 Components**
@@ -90,7 +185,7 @@ Grok Imagine Cinematic Studio v3.8.3  (Studio Director + 23+ Agents · Grok 4.5 
 - `tools/cli/bible_stages.py` + Web UI — Guided Production Bible wizard (multi-stage TTY or beautiful form UI)
 - `tools/imagine_bridge.py` + handoff validators — Build validated `imagine_agent_mode_handoff` packets
 - `.grok-plugin/` + `config/plugin_packs.yaml` — Full marketplace + pack system with `full_suite_wins` declutter
-- `cinematic-studio` CLI — Power-user automation, plugin catalog management, preflight checks
+- `cinematic-studio` CLI — Power-user automation, plugin catalog management, preflight checks, strict gate enforcement
 
 ---
 
