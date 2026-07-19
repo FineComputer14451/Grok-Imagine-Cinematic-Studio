@@ -14,6 +14,7 @@ from cli.tui.actions import (  # noqa: E402
     LAUNCHER_ORDER,
     actions_for,
     answers_to_argv,
+    menu_rows,
     reject_forbidden_argv,
     static_allowed_argvs,
     validate_answers,
@@ -100,3 +101,21 @@ def test_v3_static_allowlist_includes_validate_stack() -> None:
     assert ("stack",) in allowed
     # form-based estimate is not field-less static
     assert ("quota", "sequence") not in allowed
+
+
+def test_cockpit_menu_rows_include_group_separators() -> None:
+    rows = menu_rows("cockpit")
+    kinds = [k for k, _ in rows]
+    assert kinds.count("group") >= 4  # Setup, Quota, DNA, Sequence, Health
+    groups = [p for k, p in rows if k == "group"]
+    assert "Setup" in groups
+    assert "DNA" in groups
+    assert "Sequence" in groups
+    assert "Health" in groups
+    # actions still present after separators
+    actions = [p.id for k, p in rows if k == "action"]
+    assert "bible_create" in actions
+    assert "dna_lock" in actions
+    # launcher has no group separators
+    launch = menu_rows("launcher")
+    assert all(k == "action" for k, _ in launch)

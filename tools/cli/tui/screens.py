@@ -21,9 +21,9 @@ from textual.worker import Worker, WorkerState
 
 from cli.tui.actions import (
     ActionSpec,
-    actions_for,
     default_answers,
     get_action,
+    menu_rows,
     summarize_action,
     validate_answers,
 )
@@ -231,18 +231,27 @@ class ActionListScreen(StudioScreen):
     def compose(self) -> ComposeResult:
         yield Header()
         yield Label(self.hint_text, id=self.hint_id)
-        yield ListView(
-            *[
+        items: list[ListItem] = []
+        for kind, payload in menu_rows(self.surface):
+            if kind == "group":
+                assert isinstance(payload, str)
+                items.append(
+                    ListItem(
+                        Label(f"[bold]── {payload} ──[/bold]"),
+                        id=f"grp-{payload.lower().replace(' ', '-')}",
+                        disabled=True,
+                    )
+                )
+                continue
+            assert isinstance(payload, ActionSpec)
+            spec = payload
+            items.append(
                 ListItem(
-                    Label(
-                        f"{spec.label}  [dim]{self._subtitle(spec)}[/dim]"
-                    ),
+                    Label(f"{spec.label}  [dim]{self._subtitle(spec)}[/dim]"),
                     id=f"act-{spec.id}",
                 )
-                for spec in actions_for(self.surface)
-            ],
-            id=self.list_id,
-        )
+            )
+        yield ListView(*items, id=self.list_id)
         yield Footer()
 
     def _subtitle(self, spec: ActionSpec) -> str:
@@ -252,6 +261,8 @@ class ActionListScreen(StudioScreen):
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         item_id = event.item.id or ""
+        if item_id.startswith("grp-"):
+            return
         action_id = item_id.removeprefix("act-")
         try:
             spec = get_action(action_id)

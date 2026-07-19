@@ -71,3 +71,16 @@ def test_run_action_validation_failure() -> None:
     result = run_action("bible_create", {"title": ""})
     assert result.returncode != 0
     assert "required" in result.stderr.lower() or "validation" in result.stderr.lower()
+
+
+def test_run_action_validate_and_stack_succeed() -> None:
+    """Smoke: v3 health actions hit real CLI via allowlisted runner."""
+    v = run_action("validate", timeout=60.0)
+    assert v.returncode == 0
+    assert v.argv == ["validate"]
+    assert "Validation" in v.stdout or "passed" in v.stdout.lower() or "skills" in v.stdout.lower()
+
+    s = run_action("stack", timeout=30.0)
+    assert s.returncode == 0
+    assert s.argv == ["stack"]
+    assert "grok-4.5" in s.stdout or "VIDEO_PIPELINE" in s.stdout or "Model" in s.stdout

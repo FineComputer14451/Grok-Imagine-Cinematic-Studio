@@ -41,6 +41,16 @@ class FormField:
     positive: bool = False  # for numeric: must be > 0
 
 
+# Display labels for cockpit group separators (v3 UX)
+COCKPIT_GROUP_LABELS: dict[str, str] = {
+    "setup": "Setup",
+    "dna": "DNA",
+    "sequence": "Sequence",
+    "quota": "Quota",
+    "health": "Health",
+}
+
+
 @dataclass(frozen=True)
 class ActionSpec:
     id: str
@@ -50,6 +60,7 @@ class ActionSpec:
     surfaces: frozenset[str]
     fields: tuple[FormField, ...] = ()
     needs_confirm: bool = False
+    group: str = ""  # cockpit section id; empty = no separator
 
     @property
     def is_launcher(self) -> bool:
@@ -114,17 +125,17 @@ LAUNCHER_ORDER: tuple[str, ...] = (
     "plugin_list",
 )
 
-# Setup → DNA → Sequence → Quota → Health (v3 scaffold)
+# Setup → Quota → DNA → Sequence → Health (contiguous groups for separators)
 COCKPIT_ORDER: tuple[str, ...] = (
     "bible_create",
     "quota_budget",
+    "quota_sequence_estimate",
     "dna_init",
     "dna_lock",
     "dna_handoff",
     "sequence_init",
     "sequence_add_clip",
     "sequence_handoff",
-    "quota_sequence_estimate",
     "models_verify",
     "validate",
     "stack",
@@ -160,6 +171,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("models", "verify"),
         surfaces=frozenset({"launcher", "cockpit"}),
         needs_confirm=False,
+        group="health",
     ),
     "validate": ActionSpec(
         id="validate",
@@ -168,6 +180,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("validate",),
         surfaces=frozenset({"launcher", "cockpit"}),
         needs_confirm=False,
+        group="health",
     ),
     "stack": ActionSpec(
         id="stack",
@@ -176,6 +189,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("stack",),
         surfaces=frozenset({"launcher", "cockpit"}),
         needs_confirm=False,
+        group="health",
     ),
     "quota_dashboard": ActionSpec(
         id="quota_dashboard",
@@ -242,6 +256,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("create-bible",),
         surfaces=frozenset({"cockpit"}),
         needs_confirm=True,
+        group="setup",
         fields=(
             _f("title", "Project title", required=True),
             _f("genre", "Genre", default="Cinematic", flag="--genre"),
@@ -268,6 +283,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("dna", "init"),
         surfaces=frozenset({"cockpit"}),
         needs_confirm=True,
+        group="dna",
         fields=(
             _f("name", "Character name", required=True),
             _f("core", "Core identity", flag="--core", help="--core"),
@@ -284,6 +300,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("dna", "lock"),
         surfaces=frozenset({"cockpit"}),
         needs_confirm=True,
+        group="dna",
         fields=(_f("name", "Character name or slug", required=True),),
     ),
     "dna_handoff": ActionSpec(
@@ -293,6 +310,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("dna", "handoff"),
         surfaces=frozenset({"cockpit"}),
         needs_confirm=True,
+        group="dna",
         fields=(
             _f("name", "Character name or slug", required=True),
             _f("output", "Output handoff.json path", flag="-o"),
@@ -305,6 +323,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("sequence", "init"),
         surfaces=frozenset({"cockpit"}),
         needs_confirm=True,
+        group="sequence",
         fields=(
             _f("name", "Sequence name", required=True),
             _f(
@@ -326,6 +345,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("sequence", "add-clip"),
         surfaces=frozenset({"cockpit"}),
         needs_confirm=True,
+        group="sequence",
         fields=(
             _f("name", "Sequence name or slug", required=True),
             _f("prompt", "Clip prompt", required=True, flag="-p"),
@@ -367,6 +387,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("sequence", "handoff"),
         surfaces=frozenset({"cockpit"}),
         needs_confirm=True,
+        group="sequence",
         fields=(
             _f("name", "Sequence name or slug", required=True),
             _f("clip", "Source clip ID", required=True, flag="-c"),
@@ -380,6 +401,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("quota", "budget"),
         surfaces=frozenset({"cockpit"}),
         needs_confirm=True,
+        group="quota",
         fields=(
             _f(
                 "tier",
@@ -405,6 +427,7 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("quota", "sequence"),
         surfaces=frozenset({"cockpit"}),
         needs_confirm=False,
+        group="quota",
         fields=(_f("name", "Sequence name or slug", required=True),),
     ),
 }
@@ -425,6 +448,22 @@ def actions_for(surface: Surface) -> list[ActionSpec]:
         if surface in spec.surfaces:
             out.append(spec)
     return out
+
+
+def menu_rows(surface: Surface) -> list[tuple[str, str | ActionSpec]]:
+    """Build menu rows: ('group', label) separators and ('action', ActionSpec).
+
+    Group separators appear only for cockpit when ActionSpec.group is set.
+    """
+    rows: list[tuple[str, str | ActionSpec]] = []
+    last_group = ""
+    for spec in actions_for(surface):
+        if surface == "cockpit" and spec.group and spec.group != last_group:
+            last_group = spec.group
+            title = COCKPIT_GROUP_LABELS.get(spec.group, spec.group)
+            rows.append(("group", title))
+        rows.append(("action", spec))
+    return rows
 
 
 def default_answers(action_id: str) -> dict[str, str]:
