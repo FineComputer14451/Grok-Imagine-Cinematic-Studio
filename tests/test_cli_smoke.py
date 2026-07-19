@@ -27,9 +27,26 @@ def test_main_help() -> None:
     assert "quota" in result.stdout
     assert "dashboard" in result.stdout
     assert "memory" in result.stdout
+    assert "ui" in result.stdout
     assert "Grok 4.5" in result.stdout or "4.5" in result.stdout
     ver = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     assert ver in result.stdout
+
+
+def test_ui_help() -> None:
+    result = run_cli("ui", "--help")
+    assert result.returncode == 0, result.stderr
+    assert (
+        "interactive" in result.stdout.lower()
+        or "tui" in result.stdout.lower()
+        or "terminal" in result.stdout.lower()
+    )
+
+
+def test_main_help_lists_ui() -> None:
+    result = run_cli("--help")
+    assert result.returncode == 0
+    assert "ui" in result.stdout
 
 
 def test_status_and_stack_show_grok_45() -> None:

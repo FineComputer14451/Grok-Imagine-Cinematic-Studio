@@ -23,6 +23,7 @@ from cli.sequence_commands import register as register_sequence_commands  # noqa
 from cli.sfw_commands import register as register_sfw_commands  # noqa: E402
 from cli.shared import STUDIO_VERSION  # noqa: E402
 from cli.studio_commands import register as register_studio_commands  # noqa: E402
+from cli.tui_commands import register as register_tui_commands  # noqa: E402
 
 app = typer.Typer(
     name="cinematic-studio",
@@ -65,6 +66,7 @@ register_imagine_commands(imagine_app)
 register_animatic_commands(animatic_app)
 register_report_commands(app)
 register_plugin_commands(app)
+register_tui_commands(app)
 
 if __name__ == "__main__":
     app()
