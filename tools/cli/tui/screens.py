@@ -283,7 +283,9 @@ class CockpitMenuScreen(ActionListScreen):
     surface = "cockpit"
     list_id = "cockpit-list"
     hint_id = "cockpit-hint"
-    hint_text = "Cockpit — production workflows · Enter to open · Esc back · h home"
+    hint_text = (
+        "Cockpit — scaffold (Bible/DNA/Sequence/Quota) · Enter · Esc back · h home"
+    )
 
 
 class FormScreen(StudioScreen):
@@ -325,7 +327,7 @@ class FormScreen(StudioScreen):
         return out
 
     def _try_submit(self) -> None:
-        """Validate and open Confirm (shared by Submit button and Enter in inputs)."""
+        """Validate then Confirm (mutating) or run immediately (read-only forms)."""
         answers = self._collect()
         errors = validate_answers(self.action_id, answers)
         err_widget = self.query_one("#form-errors", Static)
@@ -333,8 +335,18 @@ class FormScreen(StudioScreen):
             err_widget.update(format_form_errors(errors))
             return
         err_widget.update("")
-        self.app.push_screen(
-            ConfirmScreen(action_id=self.action_id, answers=answers)
+        if self.spec.needs_confirm:
+            self.app.push_screen(
+                ConfirmScreen(action_id=self.action_id, answers=answers)
+            )
+            return
+        # Read-only form (e.g. dna show) — skip Confirm, run async.
+        start_action_run(
+            self.app,
+            self.action_id,
+            answers,
+            label=self.spec.label,
+            dismiss_confirm_form=False,
         )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
@@ -522,14 +534,15 @@ class HelpScreen(ModalScreen[None]):
                         "",
                         "r  Refresh dashboard",
                         "l  Open launcher",
-                        "c  Open cockpit (Bible / DNA / Sequence / Quota / Models)",
+                        "c  Open cockpit (Bible / DNA / Sequence scaffold / Quota / Health)",
                         "h  Pop to home",
                         "Esc  Back",
                         "?  This help",
                         "q  Quit",
                         "",
-                        "Launcher runs safe read-only CLI commands only.",
-                        "Cockpit forms confirm before write. No spend / wizard in TUI.",
+                        "Launcher: read-only status, lists, validate, stack, show DNA/sequence.",
+                        "Cockpit: scaffold writes (init/lock/add-clip/handoff) + estimates.",
+                        "Mutating forms confirm before write. No spend / wizard in TUI.",
                         "y/n on confirm run/cancel.",
                         "CLI runs on a background worker (UI stays responsive).",
                         "After a run, Esc from output returns to Cockpit (no re-confirm).",

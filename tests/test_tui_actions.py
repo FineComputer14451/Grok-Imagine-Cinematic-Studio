@@ -60,6 +60,8 @@ def test_no_action_emits_forbidden_tokens() -> None:
     samples = {
         "status": {},
         "models_verify": {},
+        "validate": {},
+        "stack": {},
         "bible_create": {
             "title": "T",
             "genre": "Cinematic",
@@ -68,11 +70,33 @@ def test_no_action_emits_forbidden_tokens() -> None:
             "output": "production_bible.json",
         },
         "dna_init": {"name": "N", "core": "c", "facial": "", "hair": "", "clothing": "", "emotion": ""},
+        "dna_lock": {"name": "N"},
         "sequence_init": {"name": "S", "duration": "60", "genre": ""},
+        "sequence_add_clip": {
+            "name": "S",
+            "prompt": "p",
+            "duration": "10",
+            "recap": "",
+            "aspect": "9:16",
+            "ref": "",
+            "transition": "invisible_edit",
+            "action": "",
+            "emotion": "",
+            "dialogue": "",
+        },
         "quota_budget": {"tier": "custom", "remaining": "1"},
+        "quota_sequence_estimate": {"name": "S"},
     }
     for aid, ans in samples.items():
         assert validate_answers(aid, ans) == []
         argv = answers_to_argv(aid, ans)
         for tok in FORBIDDEN_ARGV_TOKENS:
             assert tok not in argv
+
+
+def test_v3_static_allowlist_includes_validate_stack() -> None:
+    allowed = static_allowed_argvs()
+    assert ("validate",) in allowed
+    assert ("stack",) in allowed
+    # form-based estimate is not field-less static
+    assert ("quota", "sequence") not in allowed

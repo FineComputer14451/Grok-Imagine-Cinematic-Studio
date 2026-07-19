@@ -5,8 +5,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **TUI cockpit v3 scaffold** — DNA lock/handoff, sequence add-clip/handoff, quota sequence estimate, validate/stack, launcher DNA/sequence show; still no spend/wizard (`tools/cli/tui/actions.py`).
 - **TUI RunningScreen (async CLI)** — launcher and cockpit actions run on Textual worker threads with a “Running…” screen so the UI stays responsive (`tools/cli/tui/screens.py`).
-- **TUI cockpit v3 design** — scaffold expansion draft (DNA lock, sequence add-clip, validate/stack, still no spend): `docs/development/superpowers/specs/2026-07-19-cli-tui-cockpit-v3-scaffold-design.md`.
+- **TUI cockpit v3 design** — scaffold expansion draft: `docs/development/superpowers/specs/2026-07-19-cli-tui-cockpit-v3-scaffold-design.md`.
 - **Plate lock readiness** — `evaluate_plate_lock_readiness` for still→video (`image_to_video` / `reference_to_video`); shot fields `plate_status` (`draft`|`approved`|`locked`); `sfw plate set/show`; soft warnings always; hard-fail with `--strict-plate` on `sfw`/`nsfw` `run`/`session` and plate blockers under `imagine agent-handoff --strict-handoff`.
 - **Motion brief readiness** — `evaluate_motion_brief_readiness` for all video modes; structured `motion_vector` {action, camera, emotion} preferred; free-text MOTION_CUES soft fallback (MB-01); `--strict-motion` / `--strict-handoff` require full triple (MB-02); `sfw motion set/show`.
 

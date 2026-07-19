@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-19  
 **Topic:** Expand `cinematic-studio ui` Cockpit with more **non-spend** production scaffold actions  
-**Status:** Design draft — ready for implementation planning  
+**Status:** Implemented (registry + forms + tests; still no spend)  
 **Depends on:** v2 cockpit ([2026-07-19-cli-tui-full-cockpit-design.md](./2026-07-19-cli-tui-full-cockpit-design.md)) + post-v2 polish (`6e926b2`: I1 re-confirm fix, I2 async workers, M1/M4 form UX)  
 **Approach:** Extend unified `ActionSpec` registry + existing Form → Confirm → Running → Output path
 

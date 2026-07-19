@@ -95,29 +95,43 @@ VALID_QUOTA_TIERS: frozenset[str] = frozenset(
     {"supergrok_pro", "supergrok_heavy", "custom"}
 )
 
+VALID_ASPECTS: frozenset[str] = frozenset({"16:9", "9:16", "1:1"})
+
 # Stable display order per surface
 LAUNCHER_ORDER: tuple[str, ...] = (
     "status",
     "dashboard_compact",
     "models_list",
     "models_verify",
+    "validate",
+    "stack",
     "quota_dashboard",
     "dna_list",
+    "dna_show",
     "sequence_list",
+    "sequence_show",
     "imagine_list",
     "plugin_list",
 )
 
+# Setup → DNA → Sequence → Quota → Health (v3 scaffold)
 COCKPIT_ORDER: tuple[str, ...] = (
     "bible_create",
-    "dna_init",
-    "sequence_init",
     "quota_budget",
+    "dna_init",
+    "dna_lock",
+    "dna_handoff",
+    "sequence_init",
+    "sequence_add_clip",
+    "sequence_handoff",
+    "quota_sequence_estimate",
     "models_verify",
+    "validate",
+    "stack",
 )
 
 ACTIONS: dict[str, ActionSpec] = {
-    # --- launcher (read-only, no form) ---
+    # --- read-only / health (field-less) ---
     "status": ActionSpec(
         id="status",
         label="Studio status",
@@ -144,6 +158,22 @@ ACTIONS: dict[str, ActionSpec] = {
         label="Models Verify",
         description="Check model stack compatibility",
         base_argv=("models", "verify"),
+        surfaces=frozenset({"launcher", "cockpit"}),
+        needs_confirm=False,
+    ),
+    "validate": ActionSpec(
+        id="validate",
+        label="Studio validate",
+        description="Docs, skills, models, workspace paths",
+        base_argv=("validate",),
+        surfaces=frozenset({"launcher", "cockpit"}),
+        needs_confirm=False,
+    ),
+    "stack": ActionSpec(
+        id="stack",
+        label="Model stack",
+        description="Locked Grok 4.5 stack + VIDEO_PIPELINE_SPEC",
+        base_argv=("stack",),
         surfaces=frozenset({"launcher", "cockpit"}),
         needs_confirm=False,
     ),
@@ -182,7 +212,29 @@ ACTIONS: dict[str, ActionSpec] = {
         base_argv=("plugin", "list"),
         surfaces=frozenset({"launcher"}),
     ),
-    # --- cockpit (mutating / forms) ---
+    # --- read-only with form (no confirm) ---
+    "dna_show": ActionSpec(
+        id="dna_show",
+        label="Show DNA",
+        description="Display a Character DNA profile",
+        base_argv=("dna", "show"),
+        surfaces=frozenset({"launcher"}),
+        needs_confirm=False,
+        fields=(
+            _f("name", "Character name or slug", required=True),
+            _f("mode", "Inject mode (optional)", flag="-m"),
+        ),
+    ),
+    "sequence_show": ActionSpec(
+        id="sequence_show",
+        label="Show sequence",
+        description="Display a sequence blueprint",
+        base_argv=("sequence", "show"),
+        surfaces=frozenset({"launcher"}),
+        needs_confirm=False,
+        fields=(_f("name", "Sequence name or slug", required=True),),
+    ),
+    # --- cockpit mutating / forms ---
     "bible_create": ActionSpec(
         id="bible_create",
         label="Create Production Bible",
@@ -225,6 +277,27 @@ ACTIONS: dict[str, ActionSpec] = {
             _f("emotion", "Emotional baseline", flag="--emotion", help="--emotion"),
         ),
     ),
+    "dna_lock": ActionSpec(
+        id="dna_lock",
+        label="Lock Character DNA",
+        description="Import DNA into Identity Lock memory bank",
+        base_argv=("dna", "lock"),
+        surfaces=frozenset({"cockpit"}),
+        needs_confirm=True,
+        fields=(_f("name", "Character name or slug", required=True),),
+    ),
+    "dna_handoff": ActionSpec(
+        id="dna_handoff",
+        label="DNA Identity Handoff",
+        description="Generate Identity Lock handoff packet",
+        base_argv=("dna", "handoff"),
+        surfaces=frozenset({"cockpit"}),
+        needs_confirm=True,
+        fields=(
+            _f("name", "Character name or slug", required=True),
+            _f("output", "Output handoff.json path", flag="-o"),
+        ),
+    ),
     "sequence_init": ActionSpec(
         id="sequence_init",
         label="Init Sequence",
@@ -244,6 +317,60 @@ ACTIONS: dict[str, ActionSpec] = {
                 omit_if_empty=False,
             ),
             _f("genre", "Genre", flag="-g"),
+        ),
+    ),
+    "sequence_add_clip": ActionSpec(
+        id="sequence_add_clip",
+        label="Add Sequence Clip",
+        description="Add a clip to the sequence chain",
+        base_argv=("sequence", "add-clip"),
+        surfaces=frozenset({"cockpit"}),
+        needs_confirm=True,
+        fields=(
+            _f("name", "Sequence name or slug", required=True),
+            _f("prompt", "Clip prompt", required=True, flag="-p"),
+            _f(
+                "duration",
+                "Clip duration (seconds)",
+                default="10",
+                flag="-d",
+                coerce="int",
+                positive=True,
+                omit_if_empty=False,
+            ),
+            _f("recap", "LAST_FRAME_RECAP", flag="-r"),
+            _f(
+                "aspect",
+                "Aspect (16:9|9:16|1:1)",
+                default="16:9",
+                flag="-a",
+                choices=VALID_ASPECTS,
+                omit_if_empty=False,
+            ),
+            _f("ref", "reference_image_id", flag="--ref"),
+            _f(
+                "transition",
+                "Transition",
+                default="invisible_edit",
+                flag="-t",
+                omit_if_empty=False,
+            ),
+            _f("action", "Momentum: last action", flag="--action"),
+            _f("emotion", "Momentum: emotional state", flag="--emotion"),
+            _f("dialogue", "Audio momentum: dialogue", flag="--dialogue"),
+        ),
+    ),
+    "sequence_handoff": ActionSpec(
+        id="sequence_handoff",
+        label="Sequence Clip Handoff",
+        description="Generate extend/stitch handoff from a clip",
+        base_argv=("sequence", "handoff"),
+        surfaces=frozenset({"cockpit"}),
+        needs_confirm=True,
+        fields=(
+            _f("name", "Sequence name or slug", required=True),
+            _f("clip", "Source clip ID", required=True, flag="-c"),
+            _f("output", "Output path", flag="-o"),
         ),
     ),
     "quota_budget": ActionSpec(
@@ -270,6 +397,15 @@ ACTIONS: dict[str, ActionSpec] = {
                 coerce="float",
             ),
         ),
+    ),
+    "quota_sequence_estimate": ActionSpec(
+        id="quota_sequence_estimate",
+        label="Estimate Sequence Quota",
+        description="Estimate cost for an existing sequence (no spend)",
+        base_argv=("quota", "sequence"),
+        surfaces=frozenset({"cockpit"}),
+        needs_confirm=False,
+        fields=(_f("name", "Sequence name or slug", required=True),),
     ),
 }
 

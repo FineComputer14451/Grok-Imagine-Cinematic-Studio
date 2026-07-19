@@ -21,15 +21,34 @@ from cli.tui.forms import (  # noqa: E402
 def test_cockpit_order_and_ids() -> None:
     assert COCKPIT_ORDER == (
         "bible_create",
-        "dna_init",
-        "sequence_init",
         "quota_budget",
+        "dna_init",
+        "dna_lock",
+        "dna_handoff",
+        "sequence_init",
+        "sequence_add_clip",
+        "sequence_handoff",
+        "quota_sequence_estimate",
         "models_verify",
+        "validate",
+        "stack",
     )
     assert set(COCKPIT_WORKFLOWS) == set(COCKPIT_ORDER)
     assert COCKPIT_WORKFLOWS["models_verify"].fields == ()
     assert COCKPIT_WORKFLOWS["models_verify"].needs_confirm is False
-    for wid in ("bible_create", "dna_init", "sequence_init", "quota_budget"):
+    assert COCKPIT_WORKFLOWS["validate"].needs_confirm is False
+    assert COCKPIT_WORKFLOWS["stack"].needs_confirm is False
+    assert COCKPIT_WORKFLOWS["quota_sequence_estimate"].needs_confirm is False
+    for wid in (
+        "bible_create",
+        "dna_init",
+        "dna_lock",
+        "dna_handoff",
+        "sequence_init",
+        "sequence_add_clip",
+        "sequence_handoff",
+        "quota_budget",
+    ):
         assert COCKPIT_WORKFLOWS[wid].needs_confirm is True
         assert COCKPIT_WORKFLOWS[wid].fields
 
@@ -100,6 +119,74 @@ def test_models_verify_argv() -> None:
     assert answers_to_argv("models_verify", {}) == ["models", "verify"]
 
 
+def test_v3_dna_lock_and_handoff_argv() -> None:
+    assert answers_to_argv("dna_lock", {"name": "Liora"}) == ["dna", "lock", "Liora"]
+    assert answers_to_argv("dna_handoff", {"name": "Liora", "output": ""}) == [
+        "dna",
+        "handoff",
+        "Liora",
+    ]
+    assert answers_to_argv(
+        "dna_handoff", {"name": "Liora", "output": "artifacts/h.json"}
+    ) == ["dna", "handoff", "Liora", "-o", "artifacts/h.json"]
+    assert validate_answers("dna_lock", {"name": ""})
+
+
+def test_v3_sequence_add_clip_argv() -> None:
+    answers = {
+        "name": "Act 1",
+        "prompt": "hero walks in",
+        "duration": "10",
+        "recap": "",
+        "aspect": "16:9",
+        "ref": "LIORA_CU_001",
+        "transition": "invisible_edit",
+        "action": "walk",
+        "emotion": "calm",
+        "dialogue": "",
+    }
+    assert validate_answers("sequence_add_clip", answers) == []
+    argv = answers_to_argv("sequence_add_clip", answers)
+    assert argv[:3] == ["sequence", "add-clip", "Act 1"]
+    assert "-p" in argv and "hero walks in" in argv
+    assert "-d" in argv and "10" in argv
+    assert "--ref" in argv and "LIORA_CU_001" in argv
+    assert "--action" in argv and "walk" in argv
+    assert "--dialogue" not in argv
+    assert "run" not in argv
+    bad = {**answers, "aspect": "21:9"}
+    assert validate_answers("sequence_add_clip", bad)
+
+
+def test_v3_sequence_handoff_and_quota_estimate() -> None:
+    assert answers_to_argv(
+        "sequence_handoff", {"name": "Act 1", "clip": "clip_001", "output": ""}
+    ) == ["sequence", "handoff", "Act 1", "-c", "clip_001"]
+    assert answers_to_argv("quota_sequence_estimate", {"name": "Act 1"}) == [
+        "quota",
+        "sequence",
+        "Act 1",
+    ]
+    assert "record" not in answers_to_argv(
+        "quota_sequence_estimate", {"name": "Act 1"}
+    )
+
+
+def test_v3_validate_stack_show() -> None:
+    assert answers_to_argv("validate", {}) == ["validate"]
+    assert answers_to_argv("stack", {}) == ["stack"]
+    assert answers_to_argv("dna_show", {"name": "Liora", "mode": ""}) == [
+        "dna",
+        "show",
+        "Liora",
+    ]
+    assert answers_to_argv("sequence_show", {"name": "Act 1"}) == [
+        "sequence",
+        "show",
+        "Act 1",
+    ]
+
+
 def test_no_forbidden_tokens_in_any_happy_path() -> None:
     samples = {
         "bible_create": {
@@ -117,9 +204,29 @@ def test_no_forbidden_tokens_in_any_happy_path() -> None:
             "clothing": "",
             "emotion": "",
         },
+        "dna_lock": {"name": "N"},
+        "dna_handoff": {"name": "N", "output": ""},
         "sequence_init": {"name": "S", "duration": "60", "genre": ""},
+        "sequence_add_clip": {
+            "name": "S",
+            "prompt": "p",
+            "duration": "10",
+            "recap": "",
+            "aspect": "16:9",
+            "ref": "",
+            "transition": "invisible_edit",
+            "action": "",
+            "emotion": "",
+            "dialogue": "",
+        },
+        "sequence_handoff": {"name": "S", "clip": "c1", "output": ""},
         "quota_budget": {"tier": "custom", "remaining": "1"},
+        "quota_sequence_estimate": {"name": "S"},
         "models_verify": {},
+        "validate": {},
+        "stack": {},
+        "dna_show": {"name": "N", "mode": ""},
+        "sequence_show": {"name": "S"},
     }
     for wid, ans in samples.items():
         assert validate_answers(wid, ans) == []
