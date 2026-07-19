@@ -22,7 +22,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.3. Installs updates and verifies the full 48-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.4. Installs updates and verifies the full 48-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -244,7 +244,7 @@
           }
         ]
       },
-      "sha": "b8c315d6dc2a012e6257de3a8047411fe64e7d25"
+      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
     },
     "grok-imagine-cinematic-core": {
       "components": {
@@ -267,7 +267,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.3. Installs updates and verifies the full 48-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.4. Installs updates and verifies the full 48-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -353,7 +353,7 @@
           }
         ]
       },
-      "sha": "b8c315d6dc2a012e6257de3a8047411fe64e7d25"
+      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -396,7 +396,7 @@
           }
         ]
       },
-      "sha": "b8c315d6dc2a012e6257de3a8047411fe64e7d25"
+      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -459,7 +459,7 @@
           }
         ]
       },
-      "sha": "b8c315d6dc2a012e6257de3a8047411fe64e7d25"
+      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
     },
     "grok-imagine-nsfw": {
       "components": {
@@ -488,7 +488,7 @@
           }
         ]
       },
-      "sha": "b8c315d6dc2a012e6257de3a8047411fe64e7d25"
+      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -521,7 +521,7 @@
           }
         ]
       },
-      "sha": "b8c315d6dc2a012e6257de3a8047411fe64e7d25"
+      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
     }
   }
 }
