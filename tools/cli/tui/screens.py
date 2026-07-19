@@ -111,16 +111,28 @@ class CommandOutputScreen(Screen[None]):
         Binding("q", "quit_app", "Quit"),
     ]
 
-    def __init__(self, entry: LauncherEntry, result: CommandResult) -> None:
+    def __init__(
+        self,
+        result: CommandResult,
+        *,
+        label: str | None = None,
+        argv: list[str] | None = None,
+        entry: LauncherEntry | None = None,
+    ) -> None:
         super().__init__()
+        if entry is not None:
+            label = entry.label
+            argv = list(entry.argv)
         self.entry = entry
+        self.label = label or "Command"
+        self.argv = list(argv or result.argv)
         self.result = result
 
     def compose(self) -> ComposeResult:
         yield Header()
         code = self.result.returncode
         status = "OK" if code == 0 and not self.result.timed_out else f"FAIL ({code})"
-        title = f"{self.entry.label} · {status} · `{' '.join(self.entry.argv)}`"
+        title = f"{self.label} · {status} · `{' '.join(self.argv)}`"
         body = self.result.stdout
         if self.result.stderr:
             body = (body + "\n\n--- stderr ---\n" + self.result.stderr).strip()

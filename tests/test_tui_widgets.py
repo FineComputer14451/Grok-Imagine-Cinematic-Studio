@@ -8,7 +8,17 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
 from cli.dashboard import build_studio_dashboard  # noqa: E402
-from cli.tui.widgets import format_error_panel, format_home_markdown  # noqa: E402
+from cli.tui.widgets import (  # noqa: E402
+    format_error_panel,
+    format_form_errors,
+    format_home_markdown,
+)
+
+
+def test_format_form_errors() -> None:
+    text = format_form_errors(["Title is required", "Bad tier"])
+    assert "Title is required" in text
+    assert "Bad tier" in text
 
 
 def test_format_home_markdown_from_live_snapshot() -> None:

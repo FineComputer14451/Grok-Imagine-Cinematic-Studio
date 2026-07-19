@@ -9,6 +9,15 @@ def format_error_panel(message: str) -> str:
     return f"## Error\n\n{message}\n\nPress **r** to retry · **q** to quit."
 
 
+def format_form_errors(errors: list[str]) -> str:
+    if not errors:
+        return ""
+    lines = ["**Validation errors:**", ""]
+    for e in errors:
+        lines.append(f"- {e}")
+    return "\n".join(lines)
+
+
 def format_home_markdown(snapshot: dict[str, Any]) -> str:
     project = snapshot.get("project") or {}
     studio = snapshot.get("studio") or {}
