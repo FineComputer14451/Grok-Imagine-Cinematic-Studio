@@ -24,3 +24,11 @@ def test_format_error_panel() -> None:
     text = format_error_panel("boom")
     assert "boom" in text
     assert "Error" in text or "error" in text.lower()
+
+
+def test_studio_tui_importable() -> None:
+    from cli.tui.app import StudioTUI, run_tui
+
+    assert callable(run_tui)
+    app = StudioTUI(interval=5.0)
+    assert app.refresh_interval == 5.0
