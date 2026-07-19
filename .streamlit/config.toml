@@ -9,7 +9,8 @@ font = "sans serif"
 
 [server]
 headless = true
-enableCORS = false
+# Keep XSRF on; Streamlit overrides enableCORS=false when XSRF is true.
+enableCORS = true
 enableXsrfProtection = true
 
 [browser]

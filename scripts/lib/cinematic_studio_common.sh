@@ -757,6 +757,8 @@ cinematic_studio_print_next_steps() {
         if [[ -f "$PROJECT_DIR/requirements.txt" ]]; then
             echo "   Deps (venv recommended on Kali): python3 -m venv $PROJECT_DIR/.venv && \\"
             echo "     $PROJECT_DIR/.venv/bin/pip install -r $PROJECT_DIR/requirements.txt"
+            echo "   TUI: cinematic-studio ui  (needs textual from requirements.txt)"
+            echo "   Web UI (repo checkout): streamlit run web_ui/app.py"
         fi
     fi
     if [[ -f "$PROJECT_DIR/config/grok-build.example.toml" ]]; then

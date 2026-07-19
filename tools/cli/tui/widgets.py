@@ -60,7 +60,7 @@ def format_home_markdown(snapshot: dict[str, Any]) -> str:
         f"- SFW / NSFW batches: {production.get('sfw_batches', 0)} / "
         f"{production.get('nsfw_batches', 0)}",
         "",
-        "_Keys: **r** refresh · **l** launcher · **?** help · **q** quit_",
+        "_Keys: **r** refresh · **l** launcher · **c** cockpit · **?** help · **q** quit_",
     ]
 
     # Compact sequence / character lines

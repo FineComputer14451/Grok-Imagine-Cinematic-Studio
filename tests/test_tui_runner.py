@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 from cli.tui.runner import (  # noqa: E402
     cli_script_path,
     repo_root,
+    run_action,
     run_cli_command,
 )
 
@@ -42,3 +43,31 @@ def test_run_cli_command_timeout_sets_flag() -> None:
     assert result.timed_out is True
     assert result.returncode != 0
     assert "timed out" in result.stderr.lower() or "timed out" in result.stdout.lower()
+
+
+def test_run_cli_command_rejects_freeform_argv() -> None:
+    result = run_cli_command(["create-bible", "Hacked", "--wizard"])
+    assert result.returncode != 0
+    assert "allowlist" in result.stderr.lower() or "forbidden" in result.stderr.lower()
+
+
+def test_run_cli_command_rejects_mutating_dynamic_argv() -> None:
+    # Even without forbidden tokens, non-static argv is denied.
+    result = run_cli_command(["dna", "list", "extra"])
+    assert result.returncode != 0
+    assert "allowlist" in result.stderr.lower()
+
+
+def test_run_action_status_succeeds() -> None:
+    result = run_action("status", timeout=30.0)
+    assert result.timed_out is False
+    assert result.returncode == 0
+    assert result.action_id == "status"
+    assert result.argv == ["status"]
+    assert result.stdout
+
+
+def test_run_action_validation_failure() -> None:
+    result = run_action("bible_create", {"title": ""})
+    assert result.returncode != 0
+    assert "required" in result.stderr.lower() or "validation" in result.stderr.lower()

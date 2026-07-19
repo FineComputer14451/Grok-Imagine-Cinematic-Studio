@@ -29,13 +29,27 @@ def register(app: typer.Typer) -> None:
         try:
             import textual  # noqa: F401
         except ImportError as exc:
+            py = sys.executable
             console.print(
                 "[red]Textual is required for the TUI.[/red]\n"
-                "Install with: [bold]pip install 'textual>=0.47.0'[/bold] "
-                "(or pip install -r requirements.txt)"
+                f"Python in use: [bold]{py}[/bold]\n"
+                "Install with:\n"
+                f"  [bold]{py} -m pip install 'textual>=0.47.0'[/bold]\n"
+                "or (project venv):\n"
+                "  [bold]pip install -r requirements.txt[/bold]\n"
+                "Then re-run: [bold]cinematic-studio ui[/bold]"
             )
             raise typer.Exit(1) from exc
 
-        from cli.tui.app import run_tui
+        try:
+            from cli.tui.app import run_tui
+        except ImportError as exc:
+            console.print(
+                "[red]Failed to load the studio TUI package.[/red]\n"
+                f"{exc}\n"
+                "Re-install/update tools: [bold]cinematic-studio update[/bold] "
+                "or set [bold]CINEMATIC_PROJECT_DIR[/bold] to a full checkout."
+            )
+            raise typer.Exit(1) from exc
 
         run_tui(interval=interval)

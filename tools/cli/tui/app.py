@@ -17,7 +17,8 @@ class StudioTUI(App[None]):
     #launcher-hint { padding: 1 2; color: $text-muted; }
     #out-title { padding: 1 2; text-style: bold; }
     #out-body { padding: 0 2 1 2; }
-    #cockpit-hint, #form-title, #form-errors, #confirm-body, #confirm-hint {
+    #cockpit-hint, #launcher-hint, #form-title, #form-desc, #form-errors,
+    #confirm-body, #confirm-hint {
         padding: 0 2;
     }
     #form-fields { height: 1fr; padding: 0 2; }

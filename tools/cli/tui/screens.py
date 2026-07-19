@@ -18,17 +18,51 @@ from textual.widgets import (
     Static,
 )
 
-from cli.tui.catalog import LAUNCHER_CATALOG, LauncherEntry
-from cli.tui.forms import (
-    COCKPIT_ORDER,
-    COCKPIT_WORKFLOWS,
-    answers_to_argv,
+from cli.tui.actions import (
+    ActionSpec,
+    actions_for,
     default_answers,
+    get_action,
     summarize_action,
     validate_answers,
 )
-from cli.tui.runner import CommandResult, run_cli_command
+from cli.tui.runner import CommandResult, run_action
 from cli.tui.widgets import format_error_panel, format_form_errors, format_home_markdown
+
+
+class StudioScreen(Screen[None]):
+    """Shared back / quit / help bindings for nested TUI screens."""
+
+    BINDINGS = [
+        Binding("escape", "close", "Back"),
+        Binding("h", "pop_home", "Home"),
+        Binding("q", "quit_app", "Quit"),
+        Binding("question_mark", "help", "Help"),
+    ]
+
+    def action_close(self) -> None:
+        self.app.pop_screen()
+
+    def action_pop_home(self) -> None:
+        """Pop until HomeScreen (or root)."""
+        while len(self.app.screen_stack) > 1 and not isinstance(
+            self.app.screen, HomeScreen
+        ):
+            self.app.pop_screen()
+
+    def action_quit_app(self) -> None:
+        self.app.exit()
+
+    def action_help(self) -> None:
+        self.app.push_screen(HelpScreen())
+
+    def _show_result(self, result: CommandResult, *, label: str, argv: list[str]) -> None:
+        self.app.push_screen(CommandOutputScreen(result=result, label=label, argv=argv))
+
+    def _run_action(self, action_id: str, answers: dict[str, str] | None = None) -> None:
+        spec = get_action(action_id)
+        result = run_action(action_id, answers)
+        self._show_result(result, label=spec.label, argv=list(result.argv))
 
 
 class HomeScreen(Screen[None]):
@@ -40,7 +74,6 @@ class HomeScreen(Screen[None]):
         Binding("c", "cockpit", "Cockpit"),
         Binding("q", "quit_app", "Quit"),
         Binding("question_mark", "help", "Help"),
-        Binding("h", "home", "Home"),
     ]
 
     def compose(self) -> ComposeResult:
@@ -71,117 +104,77 @@ class HomeScreen(Screen[None]):
     def action_help(self) -> None:
         self.app.push_screen(HelpScreen())
 
-    def action_home(self) -> None:
-        pass  # already home
-
     def action_quit_app(self) -> None:
         self.app.exit()
 
 
-class LauncherScreen(Screen[None]):
-    """Pick a safe CLI command."""
+class ActionListScreen(StudioScreen):
+    """Pick an action from a surface (launcher or cockpit)."""
 
-    BINDINGS = [
-        Binding("escape", "close", "Back"),
-        Binding("h", "close", "Home"),
-        Binding("q", "quit_app", "Quit"),
-        Binding("question_mark", "help", "Help"),
-    ]
+    surface: str = "launcher"
+    list_id: str = "action-list"
+    hint_id: str = "list-hint"
+    hint_text: str = ""
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Label("Launcher — Enter to run · Esc back", id="launcher-hint")
-        yield ListView(
-            *[
-                ListItem(
-                    Label(f"{e.label}  [dim]{' '.join(e.argv)}[/dim]"),
-                    id=f"entry-{e.id}",
-                )
-                for e in LAUNCHER_CATALOG
-            ],
-            id="launcher-list",
-        )
-        yield Footer()
-
-    def on_list_view_selected(self, event: ListView.Selected) -> None:
-        item_id = event.item.id or ""
-        entry_id = item_id.removeprefix("entry-")
-        entry = next((e for e in LAUNCHER_CATALOG if e.id == entry_id), None)
-        if entry is None:
-            return
-        self._run_entry(entry)
-
-    def _run_entry(self, entry: LauncherEntry) -> None:
-        result = run_cli_command(list(entry.argv))
-        self.app.push_screen(CommandOutputScreen(entry=entry, result=result))
-
-    def action_close(self) -> None:
-        self.app.pop_screen()
-
-    def action_help(self) -> None:
-        self.app.push_screen(HelpScreen())
-
-    def action_quit_app(self) -> None:
-        self.app.exit()
-
-
-class CockpitMenuScreen(Screen[None]):
-    """Production workflows: Bible / DNA / Sequence / Quota / Models."""
-
-    BINDINGS = [
-        Binding("escape", "close", "Back"),
-        Binding("h", "close", "Home"),
-        Binding("q", "quit_app", "Quit"),
-        Binding("question_mark", "help", "Help"),
-    ]
-
-    def compose(self) -> ComposeResult:
-        yield Header()
-        yield Label(
-            "Cockpit — production workflows · Enter to open · Esc back",
-            id="cockpit-hint",
-        )
+        yield Label(self.hint_text, id=self.hint_id)
         yield ListView(
             *[
                 ListItem(
                     Label(
-                        f"{COCKPIT_WORKFLOWS[wid].label}  "
-                        f"[dim]{COCKPIT_WORKFLOWS[wid].description}[/dim]"
+                        f"{spec.label}  [dim]{self._subtitle(spec)}[/dim]"
                     ),
-                    id=f"wf-{wid}",
+                    id=f"act-{spec.id}",
                 )
-                for wid in COCKPIT_ORDER
+                for spec in actions_for(self.surface)
             ],
-            id="cockpit-list",
+            id=self.list_id,
         )
         yield Footer()
 
+    def _subtitle(self, spec: ActionSpec) -> str:
+        if spec.has_form:
+            return spec.description
+        return " ".join(spec.base_argv)
+
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         item_id = event.item.id or ""
-        wid = item_id.removeprefix("wf-")
-        spec = COCKPIT_WORKFLOWS.get(wid)
-        if spec is None:
+        action_id = item_id.removeprefix("act-")
+        try:
+            spec = get_action(action_id)
+        except KeyError:
             return
-        if not spec.fields and not spec.needs_confirm:
-            argv = answers_to_argv(wid, {})
-            result = run_cli_command(argv)
-            self.app.push_screen(
-                CommandOutputScreen(result=result, label=spec.label, argv=argv)
-            )
+        if self.surface not in spec.surfaces:
             return
-        self.app.push_screen(FormScreen(workflow_id=wid))
-
-    def action_close(self) -> None:
-        self.app.pop_screen()
-
-    def action_help(self) -> None:
-        self.app.push_screen(HelpScreen())
-
-    def action_quit_app(self) -> None:
-        self.app.exit()
+        if not spec.has_form and not spec.needs_confirm:
+            self._run_action(action_id, {})
+            return
+        if not spec.has_form and spec.needs_confirm:
+            self.app.push_screen(ConfirmScreen(action_id=action_id, answers={}))
+            return
+        self.app.push_screen(FormScreen(action_id=action_id))
 
 
-class FormScreen(Screen[None]):
+class LauncherScreen(ActionListScreen):
+    """Pick a safe read-only CLI command."""
+
+    surface = "launcher"
+    list_id = "launcher-list"
+    hint_id = "launcher-hint"
+    hint_text = "Launcher — Enter to run · Esc back · h home"
+
+
+class CockpitMenuScreen(ActionListScreen):
+    """Production workflows: Bible / DNA / Sequence / Quota / Models."""
+
+    surface = "cockpit"
+    list_id = "cockpit-list"
+    hint_id = "cockpit-hint"
+    hint_text = "Cockpit — production workflows · Enter to open · Esc back · h home"
+
+
+class FormScreen(StudioScreen):
     """Collect answers for a cockpit workflow."""
 
     BINDINGS = [
@@ -189,10 +182,10 @@ class FormScreen(Screen[None]):
         Binding("q", "quit_app", "Quit"),
     ]
 
-    def __init__(self, workflow_id: str) -> None:
+    def __init__(self, action_id: str) -> None:
         super().__init__()
-        self.workflow_id = workflow_id
-        self.spec = COCKPIT_WORKFLOWS[workflow_id]
+        self.action_id = action_id
+        self.spec = get_action(action_id)
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -200,7 +193,7 @@ class FormScreen(Screen[None]):
         yield Label(self.spec.description, id="form-desc")
         yield Static("", id="form-errors")
         with VerticalScroll(id="form-fields"):
-            answers = default_answers(self.workflow_id)
+            answers = default_answers(self.action_id)
             for field in self.spec.fields:
                 yield Label(f"{field.label}" + (" *" if field.required else ""))
                 yield Input(
@@ -225,24 +218,18 @@ class FormScreen(Screen[None]):
             return
         if event.button.id == "form-submit":
             answers = self._collect()
-            errors = validate_answers(self.workflow_id, answers)
+            errors = validate_answers(self.action_id, answers)
             err_widget = self.query_one("#form-errors", Static)
             if errors:
                 err_widget.update(format_form_errors(errors))
                 return
             err_widget.update("")
             self.app.push_screen(
-                ConfirmScreen(workflow_id=self.workflow_id, answers=answers)
+                ConfirmScreen(action_id=self.action_id, answers=answers)
             )
 
-    def action_close(self) -> None:
-        self.app.pop_screen()
 
-    def action_quit_app(self) -> None:
-        self.app.exit()
-
-
-class ConfirmScreen(Screen[None]):
+class ConfirmScreen(StudioScreen):
     """Confirm argv before running a mutating cockpit workflow."""
 
     BINDINGS = [
@@ -253,15 +240,15 @@ class ConfirmScreen(Screen[None]):
         Binding("q", "quit_app", "Quit"),
     ]
 
-    def __init__(self, workflow_id: str, answers: dict[str, str]) -> None:
+    def __init__(self, action_id: str, answers: dict[str, str]) -> None:
         super().__init__()
-        self.workflow_id = workflow_id
+        self.action_id = action_id
         self.answers = answers
-        self.spec = COCKPIT_WORKFLOWS[workflow_id]
+        self.spec = get_action(action_id)
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Static(summarize_action(self.workflow_id, self.answers), id="confirm-body")
+        yield Static(summarize_action(self.action_id, self.answers), id="confirm-body")
         yield Label("y / Enter = run · n / Esc = cancel", id="confirm-hint")
         yield Button("Run", id="confirm-run", variant="primary")
         yield Button("Cancel", id="confirm-cancel")
@@ -274,28 +261,18 @@ class ConfirmScreen(Screen[None]):
             self.action_confirm()
 
     def action_confirm(self) -> None:
-        argv = answers_to_argv(self.workflow_id, self.answers)
-        result = run_cli_command(argv)
-        self.app.push_screen(
-            CommandOutputScreen(
-                result=result,
-                label=self.spec.label,
-                argv=argv,
-            )
+        result = run_action(self.action_id, self.answers)
+        self._show_result(
+            result, label=self.spec.label, argv=list(result.argv)
         )
 
-    def action_close(self) -> None:
-        self.app.pop_screen()
 
-    def action_quit_app(self) -> None:
-        self.app.exit()
-
-
-class CommandOutputScreen(Screen[None]):
+class CommandOutputScreen(StudioScreen):
     """Show captured CLI output."""
 
     BINDINGS = [
         Binding("escape", "close", "Back"),
+        Binding("h", "pop_home", "Home"),
         Binding("q", "quit_app", "Quit"),
     ]
 
@@ -303,17 +280,12 @@ class CommandOutputScreen(Screen[None]):
         self,
         result: CommandResult,
         *,
-        label: str | None = None,
-        argv: list[str] | None = None,
-        entry: LauncherEntry | None = None,
+        label: str,
+        argv: list[str],
     ) -> None:
         super().__init__()
-        if entry is not None:
-            label = entry.label
-            argv = list(entry.argv)
-        self.entry = entry
-        self.label = label or "Command"
-        self.argv = list(argv or result.argv)
+        self.label = label
+        self.argv = list(argv)
         self.result = result
 
     def compose(self) -> ComposeResult:
@@ -330,12 +302,6 @@ class CommandOutputScreen(Screen[None]):
             yield Static(title, id="out-title")
             yield Static(body, id="out-body")
         yield Footer()
-
-    def action_close(self) -> None:
-        self.app.pop_screen()
-
-    def action_quit_app(self) -> None:
-        self.app.exit()
 
 
 class HelpScreen(ModalScreen[None]):
@@ -356,7 +322,7 @@ class HelpScreen(ModalScreen[None]):
                         "r  Refresh dashboard",
                         "l  Open launcher",
                         "c  Open cockpit (Bible / DNA / Sequence / Quota / Models)",
-                        "h  Home / back",
+                        "h  Pop to home",
                         "Esc  Back",
                         "?  This help",
                         "q  Quit",
@@ -364,6 +330,7 @@ class HelpScreen(ModalScreen[None]):
                         "Launcher runs safe read-only CLI commands only.",
                         "Cockpit forms confirm before write. No spend / wizard in TUI.",
                         "y/n on confirm run/cancel.",
+                        "All runs go through the action allowlist (no free-form argv).",
                         "Wizards and spend flows stay on the classic CLI.",
                     ]
                 ),
