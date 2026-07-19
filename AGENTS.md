@@ -2,7 +2,7 @@
 
 **This file provides context and instructions for AI coding agents and assistants working in this workspace.**
 
-**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.8.0**, unified **Grok 4.5** cinematic+Build stack with optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
+**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.8.4**, unified **Grok 4.5** cinematic+Build stack with optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, interactive CLI TUI, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
 **Canonical Source:** https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/AGENTS.md
 
 Think of this as the single source of truth for how to interact with this Grok/xAI agent environment. Paths below are **repo-relative** unless noted; sandboxes may root at `/home/workdir/` or a local clone (e.g. `~/Grok-Imagine-Cinematic-Studio`).
@@ -280,7 +280,7 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 | **Video / Audio** | `cinematic-ffmpeg`, `ffmpeg` | Trimming, merging, subtitles, compression, GIFs, storyboards |
 | **Documents** | `pdf`, `docx`, `pptx`, `xlsx` | Professional document or presentation creation |
 | **Memory** | `memory-edit` | Personal facts/preferences worth remembering |
-| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **48-skill** suite (v3.8.3; packs + declutter `full_suite_wins`) |
+| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **48-skill** suite (v3.8.4; packs + declutter `full_suite_wins`) |
 | **AI Polish & Delivery** | `ai-polish-director`, `assembly-editor`, `cinematic-ffmpeg` | Post-QA upscale, EDL assembly, social crops |
 | **Pre-viz & Assets** | `animatic-director`, `reference-asset-curator`, `image-to-video-specialist` | Previs, hero routing, i2v before 1.5 spend |
 | **Batch Orchestration** | `sfw-batch-orchestrator` | Quota-aware SFW hero-first shot batches |
@@ -289,14 +289,14 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 
 ## Project-Specific Notes
 
-- Primary project: **Grok Imagine Cinematic Studio** **v3.8.0** — unified **Grok 4.5** stack + Imagine Agent Mode Handoff + guided Bible wizard + **plugin modularity packs**.
+- Primary project: **Grok Imagine Cinematic Studio** **v3.8.4** — unified **Grok 4.5** stack + Imagine Agent Mode Handoff + interactive CLI TUI + guided Bible wizard + **plugin modularity packs**.
 - All generated artifacts **must** be saved under `artifacts/` (repo root).
 - Project skills live in `.grok/skills/`; user-global skills in `~/.grok/skills/`.
 - Plugin marketplace lives in `.grok-plugin/` (full suite + 5 packs, 48 skills + commands). Install full suite via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - Workspace supports SFW cinematic work and NSFW/erotic pipelines (**ErosForge only when explicitly activated**).
 - **Model stack:** cinematic + Build/coding default **`grok-4.5`**; optional 1M **`grok-4.3`**; Imagine **1.0** default; `VIDEO_PIPELINE_SPEC` wired everywhere; **1.5** for native-audio workflows.
 - Full suite: **48/48** skills + Role Cards on Grok 4.5 orchestration default (includes `ai-image-recreation` for user-upload recreation).
-- Recent **3.8.0:** marketplace multi-plugin packs + packs CLI + declutter `full_suite_wins`. **3.7.1:** Imagine Agent Mode Handoff. **3.6.7:** guided Bible wizard, catalog pin hygiene, cinematic chat default unified on `grok-4.5`.
+- Recent **3.8.4:** interactive CLI TUI (`cinematic-studio ui`) + plate/motion spend readiness. **3.8.3:** specialist-order + color→polish. **3.8.0:** marketplace multi-plugin packs + declutter `full_suite_wins`. **3.7.1:** Imagine Agent Mode Handoff.
 - Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, `docs/releases/`, `references/MODELS.md`, `docs/guides/Quick_Start_Guide.md`).
 
 ## Quick Start for New Tasks
@@ -317,4 +317,4 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 **This AGENTS.md is the canonical reference for all AI agents operating in this environment.**  
 Update it whenever workflows, skills, or best practices evolve (e.g. new skills, plugin changes, model updates, or doc releases).
 
-*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.8.0 · Grok 4.5)*
+*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.8.4 · Grok 4.5)*

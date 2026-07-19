@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Cinematic Studio Meta Installer v3.8.3 — skill wrapper
+# Cinematic Studio Meta Installer v3.8.4 — skill wrapper
 # Delegates to a verified studio root, PROJECT_DIR install, or curl fallback.
 #
 

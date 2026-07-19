@@ -15,8 +15,8 @@ from studio_paths import AGENTS_DIR, STUDIO_ROOT
 def _read_studio_version() -> str:
     vf = STUDIO_ROOT / "VERSION"
     if vf.is_file():
-        return vf.read_text(encoding="utf-8").strip() or "3.8.3"
-    return "3.8.3"
+        return vf.read_text(encoding="utf-8").strip() or "3.8.4"
+    return "3.8.4"
 
 
 STUDIO_VERSION = _read_studio_version()
