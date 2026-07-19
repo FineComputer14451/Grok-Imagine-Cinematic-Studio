@@ -5,3 +5,4 @@ fpdf2>=2.7.0
 pyyaml>=6.0
 streamlit>=1.36.0
 openai>=1.0.0
+textual>=0.47.0
