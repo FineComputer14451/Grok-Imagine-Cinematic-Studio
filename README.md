@@ -256,8 +256,9 @@ cinematic-studio quota estimate --video-seconds 45 --tier heavy
 cinematic-studio plugin catalog
 cinematic-studio plugin packs
 
-# Interactive terminal UI (dashboard + safe command launcher)
+# Interactive terminal UI (dashboard + launcher + cockpit)
 cinematic-studio ui
+# Cockpit (press c): Create Bible, DNA init, Sequence init, Quota budget, Models verify
 # or: python tools/cinematic_studio_cli.py ui --interval 5
 ```
 
@@ -326,7 +327,7 @@ Deployable to Streamlit Community Cloud (see `docs/guides/streamlit_cloud_deploy
 ## 🔧 CLI & Tooling Highlights
 
 - `cinematic-studio create-bible --wizard` — Interactive guided Production Bible
-- `cinematic-studio ui` — Interactive terminal TUI (live dashboard + safe command launcher)
+- `cinematic-studio ui` — Interactive terminal TUI (live dashboard + safe launcher + cockpit; press `c` for Create Bible, DNA init, Sequence init, Quota budget, Models verify)
 - `cinematic-studio dna ...` — Full character DNA lifecycle (init, extract, lock, handoff, inject)
 - `cinematic-studio sequence ...` — Init, add clips, handoff, extend, qa, color-grade, polish, deliver
 - `cinematic-studio quota ...` — Estimate, dashboard, optimize, record spend
