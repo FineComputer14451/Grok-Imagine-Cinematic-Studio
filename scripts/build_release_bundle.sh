@@ -25,7 +25,8 @@ cleanup() {
 }
 trap cleanup EXIT
 
-mkdir -p "$STAGING/.grok/skills" "$STAGING/references" "$STAGING/tools/cli" "$STAGING/config" "$STAGING/scripts/lib"
+mkdir -p "$STAGING/.grok/skills" "$STAGING/references" "$STAGING/tools/cli" \
+    "$STAGING/config" "$STAGING/scripts/lib" "$STAGING/scripts/wrappers"
 
 cinematic_studio_read_manifest "$SCRIPT_DIR/required_skills.manifest" "all" skills
 
@@ -59,13 +60,19 @@ fi
 for script in "${CINEMATIC_INSTALLER_SCRIPTS[@]}"; do
     [[ -f "$REPO_ROOT/scripts/$script" ]] && cp "$REPO_ROOT/scripts/$script" "$STAGING/scripts/"
 done
-cp "$REPO_ROOT/scripts/lib/cinematic_studio_common.sh" "$STAGING/scripts/lib/"
+for libf in cinematic_studio_common.sh install_cli_wrappers.sh; do
+    [[ -f "$REPO_ROOT/scripts/lib/$libf" ]] && cp "$REPO_ROOT/scripts/lib/$libf" "$STAGING/scripts/lib/"
+done
+if [[ -d "$REPO_ROOT/scripts/wrappers" ]]; then
+    cp -r "$REPO_ROOT/scripts/wrappers/." "$STAGING/scripts/wrappers/"
+    chmod +x "$STAGING/scripts/wrappers/"* 2>/dev/null || true
+fi
 
 if [[ -f "$REPO_ROOT/requirements.txt" ]]; then
     cp "$REPO_ROOT/requirements.txt" "$STAGING/"
 fi
 
-for doc in AGENTS.md MASTER_PROMPT.md; do
+for doc in AGENTS.md MASTER_PROMPT.md VERSION; do
     if [[ -f "$REPO_ROOT/$doc" ]]; then
         cp "$REPO_ROOT/$doc" "$STAGING/"
     fi

@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Grok Imagine Cinematic Studio — unified CLI entrypoint
+#
+#   cinematic-studio install|update|verify|declutter   → meta installer
+#   cinematic-studio <any other args>                  → Python CLI
+#
+# Override project root with CINEMATIC_PROJECT_DIR.
+# Override Python CLI path with CINEMATIC_CLI_PY.
+#
+set -euo pipefail
+
+PROJECT_DIR="${CINEMATIC_PROJECT_DIR:-$HOME/Grok-Cinematic-Projects}"
+
+_meta_sh() {
+    local sh="${PROJECT_DIR}/scripts/cinematic_studio.sh"
+    if [[ -f "$sh" ]]; then
+        printf '%s\n' "$sh"
+        return 0
+    fi
+    return 1
+}
+
+_cli_py() {
+    if [[ -n "${CINEMATIC_CLI_PY:-}" && -f "${CINEMATIC_CLI_PY}" ]]; then
+        printf '%s\n' "$CINEMATIC_CLI_PY"
+        return 0
+    fi
+    local py="${PROJECT_DIR}/tools/cinematic_studio_cli.py"
+    if [[ -f "$py" ]]; then
+        printf '%s\n' "$py"
+        return 0
+    fi
+    return 1
+}
+
+_python() {
+    if [[ -x "${PROJECT_DIR}/.venv/bin/python" ]]; then
+        printf '%s\n' "${PROJECT_DIR}/.venv/bin/python"
+    elif command -v python3 >/dev/null 2>&1; then
+        printf '%s\n' "python3"
+    else
+        printf '%s\n' "python"
+    fi
+}
+
+case "${1:-}" in
+    install|update|verify|declutter)
+        sh="$(_meta_sh)" || {
+            echo "❌ meta installer not found under ${PROJECT_DIR}/scripts" >&2
+            echo "   Set CINEMATIC_PROJECT_DIR or run: bash scripts/cinematic_studio.sh install" >&2
+            exit 1
+        }
+        exec bash "$sh" "$@"
+        ;;
+    *)
+        cli="$(_cli_py)" || {
+            echo "❌ cinematic_studio_cli.py not found under ${PROJECT_DIR}/tools" >&2
+            echo "   Run: cinematic-studio install" >&2
+            exit 1
+        }
+        exec "$(_python)" "$cli" "$@"
+        ;;
+esac

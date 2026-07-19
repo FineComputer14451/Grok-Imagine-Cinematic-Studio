@@ -210,12 +210,17 @@ cinematic_studio_install_scripts() {
     [[ -d "$scripts_src" ]] || return 1
 
     echo "→ Installing meta-installer scripts to $PROJECT_DIR/scripts ..."
-    mkdir -p "$PROJECT_DIR/scripts/lib"
+    mkdir -p "$PROJECT_DIR/scripts/lib" "$PROJECT_DIR/scripts/wrappers"
     for f in "${CINEMATIC_INSTALLER_SCRIPTS[@]}"; do
         [[ -f "$scripts_src/$f" ]] && cp "$scripts_src/$f" "$PROJECT_DIR/scripts/"
     done
-    [[ -f "$scripts_src/lib/cinematic_studio_common.sh" ]] && \
-        cp "$scripts_src/lib/cinematic_studio_common.sh" "$PROJECT_DIR/scripts/lib/"
+    for f in cinematic_studio_common.sh install_cli_wrappers.sh; do
+        [[ -f "$scripts_src/lib/$f" ]] && cp "$scripts_src/lib/$f" "$PROJECT_DIR/scripts/lib/"
+    done
+    if [[ -d "$scripts_src/wrappers" ]]; then
+        cp -r "$scripts_src/wrappers/." "$PROJECT_DIR/scripts/wrappers/"
+        chmod +x "$PROJECT_DIR/scripts/wrappers/"* 2>/dev/null || true
+    fi
 }
 
 cinematic_studio_fetch_github_main() {
@@ -316,72 +321,23 @@ cinematic_studio_install_tree() {
         cinematic_studio_install_scripts "$payload"
     fi
 
-    for doc in AGENTS.md MASTER_PROMPT.md VERSION; do
+    for doc in AGENTS.md MASTER_PROMPT.md; do
         if payload="$(cinematic_studio_resolve_payload_path "$root" "$doc")"; then
             cp "$payload" "$PROJECT_DIR/"
         fi
     done
 
-    # Ensure VERSION matches this installer release even if bundle omitted it
-    if [[ ! -f "$PROJECT_DIR/VERSION" ]] || \
-       [[ "$(tr -d '[:space:]' <"$PROJECT_DIR/VERSION" 2>/dev/null || true)" != "$CINEMATIC_STUDIO_VERSION" ]]; then
-        printf '%s\n' "$CINEMATIC_STUDIO_VERSION" >"$PROJECT_DIR/VERSION"
+    # Installer is the source of truth for project VERSION (CLI reads this file).
+    if payload="$(cinematic_studio_resolve_payload_path "$root" "VERSION")" && [[ -f "$payload" ]]; then
+        local bundle_ver
+        bundle_ver="$(tr -d '[:space:]' <"$payload" 2>/dev/null || true)"
+        if [[ -n "$bundle_ver" && "$bundle_ver" != "$CINEMATIC_STUDIO_VERSION" ]]; then
+            echo "⚠️  Bundle VERSION ($bundle_ver) differs from installer ($CINEMATIC_STUDIO_VERSION); pinning installer version."
+        fi
     fi
+    printf '%s\n' "$CINEMATIC_STUDIO_VERSION" >"$PROJECT_DIR/VERSION"
 
     cinematic_studio_install_cli_wrappers
-}
-
-# Install ~/.grok/bin wrappers:
-#   cinematic-studio         → Python CLI (models, dna, sequence, plugin, …)
-#   cinematic-studio-install → shell meta installer (install/update/verify/declutter)
-cinematic_studio_install_cli_wrappers() {
-    local bin_dir="${HOME}/.grok/bin"
-    local local_bin="${HOME}/.local/bin"
-    local cli_sh="$bin_dir/cinematic-studio"
-    local install_sh="$bin_dir/cinematic-studio-install"
-
-    mkdir -p "$bin_dir" "$local_bin"
-
-    cat >"$cli_sh" <<EOF
-#!/usr/bin/env bash
-# Grok Imagine Cinematic Studio CLI (Python) — models, dna, sequence, quota, plugin...
-set -euo pipefail
-PROJECT_DIR="\${CINEMATIC_PROJECT_DIR:-$PROJECT_DIR}"
-CLI_PY="\${CINEMATIC_CLI_PY:-\$PROJECT_DIR/tools/cinematic_studio_cli.py}"
-if [[ ! -f "\$CLI_PY" ]]; then
-  echo "❌ cinematic_studio_cli.py not found under \$PROJECT_DIR/tools" >&2
-  echo "   Re-run: bash scripts/cinematic_studio.sh install" >&2
-  exit 1
-fi
-if [[ -x "\$PROJECT_DIR/.venv/bin/python" ]]; then
-  PY="\$PROJECT_DIR/.venv/bin/python"
-elif command -v python3 >/dev/null 2>&1; then
-  PY="python3"
-else
-  PY="python"
-fi
-exec "\$PY" "\$CLI_PY" "\$@"
-EOF
-    chmod +x "$cli_sh"
-
-    cat >"$install_sh" <<EOF
-#!/usr/bin/env bash
-# Meta installer: install | update | verify | declutter | version
-set -euo pipefail
-PROJECT_DIR="\${CINEMATIC_PROJECT_DIR:-$PROJECT_DIR}"
-SH="\$PROJECT_DIR/scripts/cinematic_studio.sh"
-if [[ ! -f "\$SH" ]]; then
-  echo "❌ cinematic_studio.sh not found under \$PROJECT_DIR/scripts" >&2
-  exit 1
-fi
-exec bash "\$SH" "\$@"
-EOF
-    chmod +x "$install_sh"
-
-    ln -sfn "$cli_sh" "$local_bin/cinematic-studio"
-    ln -sfn "$install_sh" "$local_bin/cinematic-studio-install"
-
-    echo "→ CLI wrappers: $cli_sh  (+ cinematic-studio-install)"
 }
 
 cinematic_studio_missing_manifest_skills() {
@@ -797,8 +753,7 @@ cinematic_studio_print_next_steps() {
     echo "3. Type: Activate Grok Imagine Cinematic Studio v${CINEMATIC_STUDIO_VERSION}"
     if [[ -f "$PROJECT_DIR/tools/cinematic_studio_cli.py" ]]; then
         echo "4. CLI: cinematic-studio models verify"
-        echo "   (or: python $PROJECT_DIR/tools/cinematic_studio_cli.py models verify)"
-        echo "   Meta install commands: cinematic-studio-install verify --plugin"
+        echo "   Meta: cinematic-studio verify --plugin | install | update | declutter"
         if [[ -f "$PROJECT_DIR/requirements.txt" ]]; then
             echo "   Deps (venv recommended on Kali): python3 -m venv $PROJECT_DIR/.venv && \\"
             echo "     $PROJECT_DIR/.venv/bin/pip install -r $PROJECT_DIR/requirements.txt"
@@ -810,9 +765,29 @@ cinematic_studio_print_next_steps() {
     echo ""
     echo "Project folder: $PROJECT_DIR"
     if [[ -f "$PROJECT_DIR/scripts/cinematic_studio.sh" ]]; then
-        echo "Verify install: cinematic-studio-install verify   # or $PROJECT_DIR/scripts/cinematic_studio.sh verify"
+        echo "Verify install: cinematic-studio verify   # or $PROJECT_DIR/scripts/cinematic_studio.sh verify"
     fi
 }
+
+# CLI wrapper installer lives in install_cli_wrappers.sh (keeps this file smaller).
+_cs_self="${BASH_SOURCE[0]:-}"
+if [[ -z "$_cs_self" && -n "${0:-}" && "$0" != "bash" && "$0" != "-bash" ]]; then
+    _cs_self="$0"
+fi
+_cs_lib_dir=""
+if [[ -n "$_cs_self" && -f "$_cs_self" ]]; then
+    _cs_lib_dir="$(cd "$(dirname "$_cs_self")" && pwd)"
+fi
+if [[ -n "$_cs_lib_dir" && -f "$_cs_lib_dir/install_cli_wrappers.sh" ]]; then
+    # shellcheck source=install_cli_wrappers.sh
+    source "$_cs_lib_dir/install_cli_wrappers.sh"
+elif ! declare -F cinematic_studio_install_cli_wrappers >/dev/null 2>&1; then
+    cinematic_studio_install_cli_wrappers() {
+        echo "⚠️  install_cli_wrappers.sh not found; skipping CLI wrapper install"
+        return 0
+    }
+fi
+unset _cs_self _cs_lib_dir
 # ---------------------------------------------------------------------------
 # Declutter local install (plugin vs ~/.grok/skills dual-install hygiene)
 # ---------------------------------------------------------------------------
