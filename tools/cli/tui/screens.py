@@ -17,6 +17,7 @@ from textual.widgets import (
     Markdown,
     Static,
 )
+from textual.worker import Worker, WorkerState
 
 from cli.tui.actions import (
     ActionSpec,
@@ -28,6 +29,111 @@ from cli.tui.actions import (
 )
 from cli.tui.runner import CommandResult, run_action
 from cli.tui.widgets import format_error_panel, format_form_errors, format_home_markdown
+
+
+def pop_confirm_form_chain(app: object) -> None:
+    """Pop Confirm (+ Form if present) so Output dismiss lands on Cockpit/Launcher.
+
+    Call while Confirm is the active screen, before pushing CommandOutput.
+    Prevents Esc → Confirm re-running the same mutating argv (I1).
+    """
+    pop = getattr(app, "pop_screen", None)
+    if not callable(pop):
+        return
+    pop()  # leave Confirm
+    screen = getattr(app, "screen", None)
+    if isinstance(screen, FormScreen):
+        pop()  # leave Form → CockpitMenu or Launcher
+
+
+def present_confirmed_output(
+    app: object,
+    result: CommandResult,
+    *,
+    label: str,
+    argv: list[str],
+) -> None:
+    """After a confirm run: drop Confirm/Form, then show CommandOutput on the menu."""
+    pop_confirm_form_chain(app)
+    push = getattr(app, "push_screen", None)
+    if not callable(push):
+        return
+    push(CommandOutputScreen(result=result, label=label, argv=list(argv)))
+
+
+def start_action_run(
+    app: object,
+    action_id: str,
+    answers: dict[str, str] | None = None,
+    *,
+    label: str,
+    dismiss_confirm_form: bool = False,
+) -> None:
+    """Push RunningScreen (async worker). Optionally drop Confirm/Form first (I1+I2)."""
+    if dismiss_confirm_form:
+        pop_confirm_form_chain(app)
+    push = getattr(app, "push_screen", None)
+    if not callable(push):
+        return
+    push(
+        RunningScreen(
+            action_id=action_id,
+            answers=dict(answers or {}),
+            label=label,
+        )
+    )
+
+
+def finish_running_with_output(
+    app: object,
+    result: CommandResult,
+    *,
+    label: str,
+) -> None:
+    """Pop RunningScreen and push CommandOutput (call while Running is active)."""
+    pop = getattr(app, "pop_screen", None)
+    push = getattr(app, "push_screen", None)
+    if not callable(pop) or not callable(push):
+        return
+    pop()
+    push(
+        CommandOutputScreen(
+            result=result,
+            label=label,
+            argv=list(result.argv),
+        )
+    )
+
+
+def worker_result_or_error(
+    worker: Worker[CommandResult],
+    *,
+    action_id: str,
+    label: str,
+) -> CommandResult | None:
+    """Map a finished worker to CommandResult; None if still running / cancelled."""
+    if worker.state is WorkerState.SUCCESS:
+        result = worker.result
+        if isinstance(result, CommandResult):
+            return result
+        return CommandResult(
+            argv=[],
+            returncode=1,
+            stdout="",
+            stderr=f"Unexpected worker result for {label}",
+            action_id=action_id,
+        )
+    if worker.state is WorkerState.ERROR:
+        err = getattr(worker, "error", None)
+        msg = f"{type(err).__name__}: {err}" if err else "Worker failed"
+        return CommandResult(
+            argv=[],
+            returncode=1,
+            stdout="",
+            stderr=msg,
+            action_id=action_id,
+        )
+    return None
 
 
 class StudioScreen(Screen[None]):
@@ -60,9 +166,15 @@ class StudioScreen(Screen[None]):
         self.app.push_screen(CommandOutputScreen(result=result, label=label, argv=argv))
 
     def _run_action(self, action_id: str, answers: dict[str, str] | None = None) -> None:
+        """Launch CLI on a worker thread (I2 — does not block the UI loop)."""
         spec = get_action(action_id)
-        result = run_action(action_id, answers)
-        self._show_result(result, label=spec.label, argv=list(result.argv))
+        start_action_run(
+            self.app,
+            action_id,
+            answers,
+            label=spec.label,
+            dismiss_confirm_form=False,
+        )
 
 
 class HomeScreen(Screen[None]):
@@ -212,21 +324,30 @@ class FormScreen(StudioScreen):
             out[field.key] = widget.value
         return out
 
+    def _try_submit(self) -> None:
+        """Validate and open Confirm (shared by Submit button and Enter in inputs)."""
+        answers = self._collect()
+        errors = validate_answers(self.action_id, answers)
+        err_widget = self.query_one("#form-errors", Static)
+        if errors:
+            err_widget.update(format_form_errors(errors))
+            return
+        err_widget.update("")
+        self.app.push_screen(
+            ConfirmScreen(action_id=self.action_id, answers=answers)
+        )
+
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "form-cancel":
             self.action_close()
             return
         if event.button.id == "form-submit":
-            answers = self._collect()
-            errors = validate_answers(self.action_id, answers)
-            err_widget = self.query_one("#form-errors", Static)
-            if errors:
-                err_widget.update(format_form_errors(errors))
-                return
-            err_widget.update("")
-            self.app.push_screen(
-                ConfirmScreen(action_id=self.action_id, answers=answers)
-            )
+            self._try_submit()
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        """Enter in any field submits the form (M4)."""
+        event.stop()
+        self._try_submit()
 
 
 class ConfirmScreen(StudioScreen):
@@ -245,6 +366,7 @@ class ConfirmScreen(StudioScreen):
         self.action_id = action_id
         self.answers = answers
         self.spec = get_action(action_id)
+        self._started = False
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -261,10 +383,89 @@ class ConfirmScreen(StudioScreen):
             self.action_confirm()
 
     def action_confirm(self) -> None:
-        result = run_action(self.action_id, self.answers)
-        self._show_result(
-            result, label=self.spec.label, argv=list(result.argv)
+        if self._started:
+            return
+        self._started = True
+        # Drop Confirm (+ Form) then run async so UI stays responsive (I1 + I2).
+        start_action_run(
+            self.app,
+            self.action_id,
+            self.answers,
+            label=self.spec.label,
+            dismiss_confirm_form=True,
         )
+
+
+class RunningScreen(StudioScreen):
+    """Show 'Running…' while CLI executes on a worker thread (I2)."""
+
+    BINDINGS = [
+        Binding("escape", "close", "Back"),
+        Binding("q", "quit_app", "Quit"),
+    ]
+
+    def __init__(
+        self,
+        action_id: str,
+        answers: dict[str, str] | None = None,
+        *,
+        label: str,
+    ) -> None:
+        super().__init__()
+        self.action_id = action_id
+        self.answers = dict(answers or {})
+        self.label = label
+        self._busy = True
+        self._worker: Worker[CommandResult] | None = None
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Static(f"Running: {self.label}…", id="running-title")
+        yield Label(
+            "CLI is running in the background — UI stays responsive.\n"
+            "Please wait (Esc/q disabled until finished).",
+            id="running-hint",
+        )
+        yield Footer()
+
+    def on_mount(self) -> None:
+        self._worker = self.run_worker(
+            self._work,
+            name=f"cli-{self.action_id}",
+            group="cli-action",
+            description=self.label,
+            exclusive=True,
+            thread=True,
+            exit_on_error=False,
+        )
+
+    def _work(self) -> CommandResult:
+        return run_action(self.action_id, self.answers)
+
+    def action_close(self) -> None:
+        if self._busy:
+            return
+        super().action_close()
+
+    def action_quit_app(self) -> None:
+        if self._busy:
+            return
+        super().action_quit_app()
+
+    def on_worker_state_changed(self, event: Worker.StateChanged) -> None:
+        if self._worker is not None and event.worker is not self._worker:
+            return
+        if event.worker.name != f"cli-{self.action_id}":
+            return
+        result = worker_result_or_error(
+            event.worker,
+            action_id=self.action_id,
+            label=self.label,
+        )
+        if result is None:
+            return
+        self._busy = False
+        finish_running_with_output(self.app, result, label=self.label)
 
 
 class CommandOutputScreen(StudioScreen):
@@ -330,6 +531,8 @@ class HelpScreen(ModalScreen[None]):
                         "Launcher runs safe read-only CLI commands only.",
                         "Cockpit forms confirm before write. No spend / wizard in TUI.",
                         "y/n on confirm run/cancel.",
+                        "CLI runs on a background worker (UI stays responsive).",
+                        "After a run, Esc from output returns to Cockpit (no re-confirm).",
                         "All runs go through the action allowlist (no free-form argv).",
                         "Wizards and spend flows stay on the classic CLI.",
                     ]

@@ -19,6 +19,11 @@ def test_format_form_errors() -> None:
     text = format_form_errors(["Title is required", "Bad tier"])
     assert "Title is required" in text
     assert "Bad tier" in text
+    # Plain text for Static (not Markdown markers)
+    assert "**" not in text
+    assert "Validation errors:" in text
+    assert "•" in text
+    assert format_form_errors([]) == ""
 
 
 def test_format_home_markdown_from_live_snapshot() -> None:
@@ -45,8 +50,14 @@ def test_studio_tui_importable() -> None:
 
 
 def test_cockpit_screens_importable() -> None:
-    from cli.tui.screens import CockpitMenuScreen, ConfirmScreen, FormScreen
+    from cli.tui.screens import (
+        CockpitMenuScreen,
+        ConfirmScreen,
+        FormScreen,
+        RunningScreen,
+    )
 
     assert CockpitMenuScreen is not None
     assert FormScreen is not None
     assert ConfirmScreen is not None
+    assert RunningScreen is not None

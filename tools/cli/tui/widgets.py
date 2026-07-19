@@ -10,11 +10,12 @@ def format_error_panel(message: str) -> str:
 
 
 def format_form_errors(errors: list[str]) -> str:
+    """Plain text for Static widgets (not Markdown)."""
     if not errors:
         return ""
-    lines = ["**Validation errors:**", ""]
+    lines = ["Validation errors:", ""]
     for e in errors:
-        lines.append(f"- {e}")
+        lines.append(f"• {e}")
     return "\n".join(lines)
 
 

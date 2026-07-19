@@ -18,9 +18,10 @@ class StudioTUI(App[None]):
     #out-title { padding: 1 2; text-style: bold; }
     #out-body { padding: 0 2 1 2; }
     #cockpit-hint, #launcher-hint, #form-title, #form-desc, #form-errors,
-    #confirm-body, #confirm-hint {
+    #confirm-body, #confirm-hint, #running-title, #running-hint {
         padding: 0 2;
     }
+    #running-title { text-style: bold; padding-top: 1; }
     #form-fields { height: 1fr; padding: 0 2; }
     #help-dialog {
         width: 60;
