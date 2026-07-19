@@ -255,6 +255,10 @@ cinematic-studio quota estimate --video-seconds 45 --tier heavy
 # Plugin marketplace
 cinematic-studio plugin catalog
 cinematic-studio plugin packs
+
+# Interactive terminal UI (dashboard + safe command launcher)
+cinematic-studio ui
+# or: python tools/cinematic_studio_cli.py ui --interval 5
 ```
 
 See full command reference in the [Quick Start Guide](docs/guides/Quick_Start_Guide.md) and run `cinematic-studio --help`.
@@ -272,8 +276,7 @@ Beautiful dashboard featuring:
 - Sequence health dashboard
 - Model pickers (grok-4.5 / 1.5 video)
 
-Deployable to Streamlit Community Cloud (see `docs/guides/streamlit_cloud_deploy.md`).
-
+Deployable to Streamlit Community Cloud (see `docs/guides/streamlit_cloud_deploy.md`). For a lightweight in-terminal live dashboard + safe command launcher (no browser), use `cinematic-studio ui` instead.
 ### 5. Full Documentation
 
 - **[Quick Start Guide](docs/guides/Quick_Start_Guide.md)** — Detailed activation, workflow phases, specialist table, pro tips
@@ -323,6 +326,7 @@ Deployable to Streamlit Community Cloud (see `docs/guides/streamlit_cloud_deploy
 ## 🔧 CLI & Tooling Highlights
 
 - `cinematic-studio create-bible --wizard` — Interactive guided Production Bible
+- `cinematic-studio ui` — Interactive terminal TUI (live dashboard + safe command launcher)
 - `cinematic-studio dna ...` — Full character DNA lifecycle (init, extract, lock, handoff, inject)
 - `cinematic-studio sequence ...` — Init, add clips, handoff, extend, qa, color-grade, polish, deliver
 - `cinematic-studio quota ...` — Estimate, dashboard, optimize, record spend
