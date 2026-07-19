@@ -42,3 +42,11 @@ def test_studio_tui_importable() -> None:
     assert callable(run_tui)
     app = StudioTUI(interval=5.0)
     assert app.refresh_interval == 5.0
+
+
+def test_cockpit_screens_importable() -> None:
+    from cli.tui.screens import CockpitMenuScreen, ConfirmScreen, FormScreen
+
+    assert CockpitMenuScreen is not None
+    assert FormScreen is not None
+    assert ConfirmScreen is not None

@@ -11,12 +11,16 @@ class StudioTUI(App[None]):
     """Grok Imagine Cinematic Studio terminal UI."""
 
     TITLE = "Cinematic Studio"
-    SUB_TITLE = "Dashboard + Launcher"
+    SUB_TITLE = "Dashboard · Launcher · Cockpit"
     CSS = """
     #home-scroll { height: 1fr; }
     #launcher-hint { padding: 1 2; color: $text-muted; }
     #out-title { padding: 1 2; text-style: bold; }
     #out-body { padding: 0 2 1 2; }
+    #cockpit-hint, #form-title, #form-errors, #confirm-body, #confirm-hint {
+        padding: 0 2;
+    }
+    #form-fields { height: 1fr; padding: 0 2; }
     #help-dialog {
         width: 60;
         height: auto;
