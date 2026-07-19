@@ -2,8 +2,9 @@
 
 **Date:** 2026-07-19  
 **Topic:** Production workflow suite inside `cinematic-studio ui` (Textual)  
-**Status:** Design approved — ready for implementation planning  
+**Status:** Shipped (v2 cockpit) · polish I1/I2/M1/M4 in `6e926b2`  
 **Depends on:** v1 TUI ([2026-07-19-cli-interactive-tui-design.md](./2026-07-19-cli-interactive-tui-design.md)) — shipped  
+**Next:** [Cockpit v3 scaffold expansion](./2026-07-19-cli-tui-cockpit-v3-scaffold-design.md)  
 **Approach:** Form screens + pure argv mappers + confirm → existing `run_cli_command` / CLI
 
 ## Summary of Decisions

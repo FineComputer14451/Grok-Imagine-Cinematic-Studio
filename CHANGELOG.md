@@ -5,8 +5,15 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **TUI RunningScreen (async CLI)** — launcher and cockpit actions run on Textual worker threads with a “Running…” screen so the UI stays responsive (`tools/cli/tui/screens.py`).
+- **TUI cockpit v3 design** — scaffold expansion draft (DNA lock, sequence add-clip, validate/stack, still no spend): `docs/development/superpowers/specs/2026-07-19-cli-tui-cockpit-v3-scaffold-design.md`.
 - **Plate lock readiness** — `evaluate_plate_lock_readiness` for still→video (`image_to_video` / `reference_to_video`); shot fields `plate_status` (`draft`|`approved`|`locked`); `sfw plate set/show`; soft warnings always; hard-fail with `--strict-plate` on `sfw`/`nsfw` `run`/`session` and plate blockers under `imagine agent-handoff --strict-handoff`.
 - **Motion brief readiness** — `evaluate_motion_brief_readiness` for all video modes; structured `motion_vector` {action, camera, emotion} preferred; free-text MOTION_CUES soft fallback (MB-01); `--strict-motion` / `--strict-handoff` require full triple (MB-02); `sfw motion set/show`.
+
+### Fixed
+- **TUI confirm re-run hazard (I1)** — after a cockpit write, Confirm/Form are popped before Output so Esc cannot re-execute the same mutating argv.
+- **TUI form validation banner (M1)** — plain text on Static (no Markdown markers).
+- **TUI form Enter-to-submit (M4)** — Enter in any field shares Submit path (`_try_submit`).
 
 ### Changed
 - **Spend readiness facade** — `evaluate_generation_spend_readiness` + shared CLI preflight (`cli/spend_preflight.py`); plate/motion set/show on **both** SFW and NSFW; session runner no longer mutates shot dicts; `resolve_execution_mode` on `handoff_schema`; motion extract uses canonical keys only (no silent momentum aliasing).
