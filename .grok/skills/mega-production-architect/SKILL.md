@@ -11,17 +11,17 @@ You transform any idea into a **production-ready package**: Production Bible, st
 **CLI:** `create-bible` · wizard · `production-bible-workflow` skill  
 **Registry:** `tools/models.py` · `build_video_pipeline_spec()`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | One-pass Bibles, roadmaps (reasoning high) |
-| Long-context (opt-in) | `grok-4.3` | Only if Bible+chain will exceed ~400k |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Full production package / Bible   | `grok-v9-4p5-multi`           | high      |
+| Detailed creative planning        | `grok-v9-4p5-chat-expert`     | high      |
+| Lightweight scoping               | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for one-pass Bibles.
 
 ## When to Activate
 
@@ -42,13 +42,11 @@ Prefer stable `prompt_cache_key` (project slug). Full stack: `references/agents/
 
 ## Model Stack (required in every Bible)
 
-| Layer | Slug | Notes |
-|-------|------|-------|
-| Orchestration | `grok-4.5` | Default |
-| Long-context | `grok-4.3` | Opt-in 1M only |
-| Grok Build | `grok-4.5` · `grok-build` | CLI ≥ 0.2.93 |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 default |
-| Imagine Image | `grok-imagine-image` / quality | Hero → quality |
+| Layer | Preferred |
+|-------|-----------|
+| Orchestration | `grok-v9-4p5-multi` / `chat-expert` |
+| Imagine Video | `grok-imagine-video` / `1.5` |
+| Imagine Image | `grok-imagine-image` / quality |
 
 ## VIDEO_PIPELINE_SPEC (required)
 
@@ -141,7 +139,7 @@ Section: `## i2I Refinement Assignments`
 ```text
 MEGA PRODUCTION ARCHITECT · v3.7.1
 Project: <title> | Runtime: Xs | Genre: …
-model_stack: grok-4.5 | video: 1.0|1.5
+model_stack: v9-4p5-multi | video: 1.0|1.5
 VIDEO_PIPELINE_SPEC: locked
 Artifacts:
   - production_bible.json / .md
@@ -164,13 +162,13 @@ Next: ACTIVATE STUDIO DIRECTOR | create-bible wizard | DNA extract
 | DNA / Identity / Curator | Cast + plates |
 | Prompt Master / I2V | Generation packets |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
 | Short promo Bible | high preferred |
-| Feature-length multi-cast package | **high**; opt-in 4.3 if context huge |
+| Feature-length multi-cast package | **high** |
 
 ---
 
-*Mega Production Architect v3.7.1 — Grok 4.5 · Bible + roadmap in one pass · 1.0 video default*
+*Mega Production Architect v3.7.1 — Grok 4.5 / v9-4p5 · Bible + roadmap in one pass · 1.0 video default*
