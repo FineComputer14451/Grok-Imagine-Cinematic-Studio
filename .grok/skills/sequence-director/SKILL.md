@@ -11,17 +11,17 @@ description: Master of long-form cinematic sequencing and structural flow. Break
 **Extend protocol:** `.grok/skills/cinematic-sequence-extender/references/extend_stitch_protocol_v3.6.md`  
 **Chain QA:** `chain-qa-protocol` · **Engine:** `tools/sequence_chain.py` · CLI `sequence`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Clip structure, dependency order, replan after No-Go |
-| Long-context (opt-in) | `grok-4.3` | 1M multi-act memory banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Multi-clip orchestration / stitching | `grok-v9-4p5-multi`        | high      |
+| Single sequence creative decisions | `grok-v9-4p5-chat-expert`    | high      |
+| Lightweight health checks         | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for clip structure, dependency order, and replan after No-Go. Opt into `grok-4.3` only for 1M. Lock `VIDEO_PIPELINE_SPEC` from registry on every sequence. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for clip structure, dependency order, and replan after No-Go. Lock `VIDEO_PIPELINE_SPEC` from registry on every sequence.
 
 ## Philosophy
 
@@ -48,7 +48,7 @@ ACTIVATE SEQUENCE_DIRECTOR
 ACTIVATE ONLY Sequence Director, Cinematic Sequence Extender, Continuity Guardian, Identity Lock Specialist
 ```
 
-Begin: **"Initiating Sequence Director Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Sequence Director Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**
 
 ## Core Mandate
 
@@ -200,7 +200,7 @@ Next: generate clip_k | RUN CHAIN QA | ACTIVATE SEQUENCE_EXTENDER | replan
 | Assembly Editor | Rough cut after Go chain |
 | Studio Director | Final structure approval |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
@@ -210,4 +210,4 @@ Next: generate clip_k | RUN CHAIN QA | ACTIVATE SEQUENCE_EXTENDER | replan
 
 ---
 
-*Sequence Director v3.7.1 — Grok 4.5 · clip architecture · last-frame authority · chain QA gated*
+*Sequence Director v3.7.1 — Grok 4.5 / v9-4p5 · clip architecture · last-frame authority · chain QA gated*
