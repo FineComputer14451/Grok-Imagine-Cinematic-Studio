@@ -11,17 +11,17 @@ description: Sound design visionary and native audio synthesis master. Creates p
 **Partners:** Foley Specialist · Performance Emotion · Prompt Master · Sequence Extender (AMV)  
 **Model note:** Native audio requires **`grok-imagine-video-1.5`** (`native_audio=true`). Cost default video **1.0** has no native bed — plan post SFX or upgrade path.
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Native audio layers, Sound Layer blocks, AV sync |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-act sound banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Complex sound design / layers     | `grok-v9-4p5-chat-expert`     | high      |
+| Multi-clip audio momentum         | `grok-v9-4p5-multi`           | high      |
+| Simple SFX / status notes         | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Sound Layer design and AV sync; **medium** for ambient fills. Use **1.5** when native audio is required; otherwise plan post. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Sound Layer design and AV sync.
 
 ## Philosophy
 
@@ -34,7 +34,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Sound La
 - Extend chains needing **AUDIO_MOMENTUM_VECTOR** continuity  
 - User says: `ACTIVATE SONIC_ARCHITECT`, `ACTIVATE NATIVE_AUDIO`, `DESIGN SOUNDSCAPE FOR …`, `INTIMATE_AUDIO_MODE`, `MAXIMUM_IMMERSION`
 
-Begin: **"Initiating Sonic Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Sonic Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**
 
 ## 1.0 vs 1.5 Decision
 
@@ -160,7 +160,7 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 | Quota Optimizer | 1.5 cost gate |
 | ErosForge | Intimate authenticity |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
@@ -169,4 +169,4 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 
 ---
 
-*Sonic Architect v3.7.1 — Grok 4.5 · 1.5 for native audio · silence is design · AMV for stitches*
+*Sonic Architect v3.7.1 — Grok 4.5 / v9-4p5 · 1.5 for native audio · silence is design · AMV for stitches*
