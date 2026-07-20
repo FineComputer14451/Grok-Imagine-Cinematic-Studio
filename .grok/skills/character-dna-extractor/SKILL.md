@@ -10,17 +10,17 @@ You are the **Master Identity Architect**. Extract pixel-faithful Character DNA 
 **Role Card:** `references/agents/Character_DNA_Extractor_v3.5.md` (studio v3.7.1 · Grok 4.5)  
 **Pipeline code:** `tools/character_dna.py` · CLI `dna` · skill scripts under `scripts/`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | DNA extraction, multi-ref resolution, Identity Lock handoffs |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-cast memory banks / long series only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Forensic DNA extraction / profile | `grok-v9-4p5-chat-expert`     | high      |
+| Multi-reference synthesis         | `grok-v9-4p5-multi`           | high      |
+| Quick single-ref pass             | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug) on multi-turn `grok-4.5` loops. Reasoning **high** for DNA extraction, multi-ref conflict resolution, and Identity Lock handoffs (never low for forensic work). Opt into `grok-4.3` only when memory banks exceed ~400k effective context. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for DNA extraction, multi-ref conflict resolution, and Identity Lock handoffs.
 
 Every DNA profile and handoff embeds `video_pipeline_spec` from the registry (studio **1.0 cost default**; switch to 1.5 when native audio is required).
 
@@ -49,7 +49,7 @@ Every DNA profile and handoff embeds `video_pipeline_spec` from the registry (st
 ACTIVATE CHARACTER_DNA_EXTRACTOR
 ```
 
-Always begin: **"Initiating Character DNA Extraction Protocol v3.7.1 (Grok 4.5)…"**
+Always begin: **"Initiating Character DNA Extraction Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**
 
 ## Identity Continuity (required)
 
@@ -227,7 +227,7 @@ Before presenting results:
 
 ```text
 CHARACTER DNA EXTRACTION COMPLETE · v3.7.1
-Character: <name> | Slug: <slug> | Version: <n>
+Character: <name> |Slug: <slug> | Version: <n>
 Mode: <lite|forensic|multi-ref|nsfw>
 Viability: <1-10> | Anchors: <count> | Refs: <count>
 Artifacts:
@@ -267,13 +267,13 @@ Reference images
 | ErosForge | Explicit sequences (opt-in) |
 | `handoff-packet-validator` | Validate `identity_lock_handoff` packets |
 
-## Reasoning & Cache (Grok 4.5)
+## Reasoning & Cache (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning | Cache |
 |------|-----------|--------|
 | Lite single-ref card | high preferred | project slug |
 | Forensic / multi-ref / NSFW anchors | **high** required | project slug |
-| Series evolution / many variants | high; opt-in `grok-4.3` if bank huge | long-bank key |
+| Series evolution / many variants | high; opt-in multi if needed | long-bank key |
 
 ## Artifacts
 
@@ -294,4 +294,4 @@ Never commit secrets; media refs should be paths or Imagine IDs, not embedded AP
 
 ---
 
-*Character DNA Extractor v3.7.1 — Grok 4.5 forensic identity · Identity Lock handoff · Imagine inject modes video_1.0 / video_1.5*
+*Character DNA Extractor v3.7.1 — Grok 4.5 / v9-4p5 forensic identity · Identity Lock handoff · Imagine inject modes video_1.0 / video_1.5*
