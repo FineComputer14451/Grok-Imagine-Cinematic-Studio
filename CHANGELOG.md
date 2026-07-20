@@ -4,6 +4,13 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Added
+- **github-repo-manager v4.5** — Full Model Layer support for `grok-4-auto`, `grok-v9-4p5-multi`, and `grok-v9-4p5-chat-expert`.
+  - New authoritative Role Card (`references/agents/GitHub_Repo_Manager.md`)
+  - Updated `SKILL.md` with Model Layer table + `model_compatibility` block
+  - Model-aware connected-github-tools catalog
+  - Decision framework, safety rules, and Handoff Packet readiness for cinematic workflows
+
 ## [3.8.4] - 2026-07-19
 
 ### Added
