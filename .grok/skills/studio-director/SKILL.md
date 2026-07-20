@@ -10,17 +10,17 @@ description: Central production commander and visionary Studio Director. Orchest
 **Role Card:** `references/agents/Studio_Director.md`  
 **Handoff protocol:** `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md` (skill `references/` is a pointer only)
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Bibles, go/no-go, multi-agent loops, handoff surface choice |
-| Long-context (opt-in) | `grok-4.3` | 1M memory banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Full Studio / multi-agent orchestration | `grok-v9-4p5-multi`      | high      |
+| Creative direction / single decisions   | `grok-v9-4p5-chat-expert`| high      |
+| Routine status / light checks           | `grok-4-auto`            | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Bible locks, identity, QA go/no-go, and handoff surface choice. Opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Bible locks, identity, QA go/no-go, and handoff surface choice.
 
 ## Philosophy
 
