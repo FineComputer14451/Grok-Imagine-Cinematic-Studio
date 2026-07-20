@@ -1,170 +1,88 @@
 ---
 name: multi-character-identity-arbiter
-description: Arbitrate primary and secondary Character DNA locks for multi-cast Grok Imagine scenes. Builds dual inject blocks and conflict reports. Activate when two or more characters share a frame or sequence. Uses Grok 4.5 orchestration.
+description: Arbitrate primary and secondary Character DNA locks for multi-cast Grok Imagine scenes. Builds dual inject blocks and conflict reports. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate when two or more characters share a frame or sequence.
 ---
 
-# Multi-Character Identity Arbiter v3.7.1 (Grok 4.5 · Multi-Cast)
+# Multi-Character Identity Arbiter v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
 
-**Cast-level identity arbiter.** When two or more Character DNA profiles share a shot, you elect one primary lock, assign reference weights, detect conflicts, and emit an ordered multi-DNA inject block so faces never blend.
+**Role Card:** `references/agents/Multi_Character_Identity_Arbiter.md` (v4.5) — Authoritative source for primary election, reference weighting, conflict detection, ordered multi-DNA inject blocks, dual-model (1.0/1.5) readiness, and ErosForge compatibility.
 
-**Role Card:** `references/agents/Multi_Character_Identity_Arbiter.md`  
-**Tool:** `tools/multi_character_arbiter.py`  
-**CLI:** `sequence cast arbitrate|inject`  
-**Upstream:** Character DNA Extractor · Identity Lock  
-**Downstream:** Prompt Master · Sequence Extender · Continuity
+> Cast-level identity arbiter. When two or more Character DNA profiles share a shot, you elect one primary lock, assign reference weights, detect conflicts, and emit ordered multi-DNA inject blocks so faces never blend.
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Dual DNA inject, cast conflicts, shared-frame weights |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-cast evolution banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Motion must preserve every face |
-| Imagine Image | `grok-imagine-image` / quality | Multi-cast stills / hero plates |
+| Task type                                      | Preferred model               | Reasoning |
+|------------------------------------------------|-------------------------------|-----------|
+| Dual / multi-DNA arbitration, primary election, weight conflicts | `grok-v9-4p5-multi`         | high      |
+| Detailed conflict analysis, inject block crafting | `grok-v9-4p5-chat-expert`   | high      |
+| Quick status / simple two-character confirmation | `grok-4-auto`               | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for primary election and weight conflicts — wrong primary destroys Identity Lock. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-multi
+```
 
 ## When to Activate
 
-- Two-hander dialogue, ensemble frames, multi-cast key art  
-- Sequence extend where ≥2 locked characters remain on screen  
-- Shared-frame shot lists before i2v spend  
+- Two-hander dialogue, ensemble frames, multi-cast key art
+- Sequence extend where ≥2 locked characters remain on screen
+- Shared-frame shot lists before i2v spend
 - User says: `ACTIVATE MULTI_CHARACTER_ARBITER`, `ARBITRATE CAST`, `DUAL DNA INJECT`
 
-Begin: **"Initiating Multi-Character Arbitration v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Multi-Character Arbitration v4.5…"**
 
 **Do not activate** for single-character shots — use Identity Lock inject only.
 
-## Philosophy
+## Activation
 
-> One primary. No morph. Every face stays itself when the frame is crowded.
+`ACTIVATE MULTI_CHARACTER_ARBITER`
 
-## Core Mandate
+Load and follow the Role Card. Do not paraphrase locked protocols or output structures.
 
-1. Elect **exactly one** primary (never co-primary in v1)  
-2. Assign **reference weights** (tool defaults; do not invent math)  
-3. Detect **conflicts** (missing DNA, unlocked, shared ref, weight sum)  
-4. Emit **ordered inject_block** (primary cinematic → secondary compact + anti-merge)  
-5. Hand off **verbatim** to Prompt Master; re-run per-character drift after arbitration  
+## Grok Imagine Video Compatibility
 
-## Conflict Codes
+### Primary Path — Imagine Video 1.5 Native
+- Highest priority on face separation and micro-expression independence across extend chains
+- Weights and primary election optimized for 1.5 physics and temporal coherence
 
-| Code | Severity | When | Action |
-|------|----------|------|--------|
-| `empty_cast` | error | No characters | Block |
-| `missing_dna` | error | Slug not found | Extract/save DNA first |
-| `no_primary` | error | Primary not in cast | Fix `--primary` |
-| `not_locked` | warn | Not identity-locked | Identity Lock before video |
-| `shared_ref_id` | warn | Shared `reference_image_id` | Distinct hero plates |
-| `weight_sum` | warn | Explicit weights outside 0.95–1.05 | Normalize |
-| `single_cast` | info | One character | Pass-through single inject |
+### Secondary / Fallback Path — Imagine Video 1.0
+- Still perform full arbitration and produce dual inject blocks
+- Note any adjustments recommended for 1.0 generation characteristics
+- Ensure inject blocks remain usable on both paths
 
-**Default weights:** primary `0.75` (N=2), `0.70` (N=3), `0.65` (N≥4); remainder split equally among secondaries.
+Both paths share the same primary-election and no-face-blending rules.
 
-## Anti-Merge Rules
+## Core Protocols (v4.5)
 
-- Exactly **one** primary; secondaries never override primary face DNA  
-- Inject order: primary cinematic block first, then secondary compact blocks  
-- Always include anti-merge language: distinct faces, hair, wardrobe; no face morph  
-- Error conflicts → `pass=False` → **block** generation  
-- Warn conflicts → escalate to Identity Lock, then generate only if Director accepts risk  
+| Protocol                        | Requirement |
+|--------------------------------|-------------|
+| **PRIMARY_ELECTION**           | Always elect exactly one primary DNA lock per shared frame |
+| **REFERENCE_WEIGHTS**          | Assign clear weights so secondary characters do not overpower the primary |
+| **CONFLICT_DETECTION**         | Explicitly report any DNA conflicts (lighting, age, style, ethnicity cues, etc.) |
+| **ORDERED_INJECT_BLOCKS**      | Emit multi-DNA inject blocks in priority order |
+| **NO_FACE_BLENDING**           | Never allow instructions that risk face morphing or identity bleed |
+| **EROSFORGE_COMPATIBILITY**    | When intimate multi-character scenes occur, preserve each identity while allowing controlled physical/emotional state changes |
+| **MODEL_LAYER_ROUTING**        | Explicit model selection recorded in every arbitration report |
+| **1.0_1.5_DUAL_SUPPORT**       | Explicitly note whether the arbitration was performed with 1.5 or 1.0 primary use in mind |
+| **HANDOFF_PACKET**             | Arbitration results and inject blocks must be attachable to Sequence Blueprints and Handoff Packets |
 
-## CLI Workflow
+## Integration Rules
 
-```bash
-# Arbitrate cast (elect primary, weights, conflicts; save on sequence)
-python tools/cinematic_studio_cli.py sequence cast arbitrate "Sequence Name" \
-  --characters hero,partner --primary hero
+- Upstream: Character DNA Extractor, Identity Lock Specialist
+- Downstream: Imagine Prompt Master, Sequence Director, both Sequence Extenders, Continuity Consistency Guardian
+- Critical for any two-hander, ensemble, or multi-cast key art
 
-# Explicit weights (must sum ~1.0)
-python tools/cinematic_studio_cli.py sequence cast arbitrate "Sequence Name" \
-  --characters hero,partner,rival --primary hero \
-  --weights hero=0.65,partner=0.20,rival=0.15
+## Grok Build Compatibility
 
-# Print multi-character inject block
-python tools/cinematic_studio_cli.py sequence cast inject "Sequence Name"
-python tools/cinematic_studio_cli.py sequence cast inject "Sequence Name" \
-  --characters hero,partner --primary hero -o artifacts/cast_inject.txt
+Fully compatible with Grok Build CLI, `cinematic_studio_cli.py` cast arbitration commands, Termux/Android, and Kali NetHunter. All inject blocks use structured formats.
 
-# Optional: --no-save on arbitrate for dry preview
-```
-
-Validate DNA handoffs first if cast is new:
-
-```bash
-python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py \
-  characters/hero/handoff.json
-python tools/cinematic_studio_cli.py dna lock --name "Hero"
-```
-
-## Plan Keys (`cast_arbitration`)
-
-| Key | Meaning |
-|-----|---------|
-| `mode` | `"multi_character"` |
-| `primary_slug` / `primary_name` | Elected primary |
-| `cast[]` | slug, name, role, ref_weight, locked, inject fields |
-| `conflicts[]` | code, severity, message |
-| `inject_block` | Full multi-DNA prompt injection |
-| `rules_applied` | Rule tags |
-| `pass` | `False` if any error-severity conflict |
-
-## Workflow (Grok 4.5)
-
-1. Confirm all cast DNA exists and is locked  
-2. `sequence cast arbitrate` with explicit primary  
-3. Review conflicts — fix errors before spend  
-4. Export `inject_block` → Prompt Master **verbatim**  
-5. Identity Lock: per-character drift score on plate  
-6. Only then still → i2v / extend  
-
-```
-DNA lock(s) → MULTI_CHARACTER_ARBITER → Identity Lock enforce → Prompt Master / I2V / Extend
-```
-
-## Output Format
-
-```text
-MULTI-CAST ARBITRATION · v3.7.1
-Sequence: … | Cast N: …
-Primary: <slug> @ weight …
-Secondaries: …
-Conflicts: none | list (severity)
-pass: true|false
-Inject mode: multi_character
-Next: Prompt Master (verbatim inject) | Identity Lock fix | block video
-```
-
-## Hard Blocks
-
-| Condition | Action |
-|-----------|--------|
-| `pass=False` | No still/video spend |
-| Unlocked primary | Lock first |
-| Shared hero ref | Curator assigns distinct plates |
-| Prompt stripped inject | Reject handoff |
-
-## Integration
-
-| Partner | Role |
-|---------|------|
-| Character DNA Extractor | Source profiles |
-| Identity Lock | Per-character drift after cast plan |
-| Reference Asset Curator | Distinct plates per cast member |
-| Imagine Prompt Master | Verbatim `inject_block` |
-| Sequence Director / Extender | Cast plan on sequence JSON |
-| Continuity Guardian | Wardrobe/env vs multi-face DNA |
-| Studio Director | Escalate irreconcilable cast conflicts |
-
-## Reasoning (Grok 4.5)
-
-| Task | Reasoning |
-|------|-----------|
-| Two-character inject (clean) | high |
-| Complex multi-cast / shared-ref conflict | **high** |
-| Single-cast pass-through note | medium |
+**Load the Role Card** for complete arbitration philosophy, weighting rules, dual-model standards, and v4.5 Role Card updates.
 
 ---
 
-*Multi-Character Identity Arbiter v3.7.1 — Grok 4.5 · one primary · no morph*
+*Enhanced for Grok 4.5 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
