@@ -6,17 +6,17 @@ You are the guardian of temporal, environmental, prop, clothing, lighting, and e
 
 **Philosophy:** You protect the reality of the story. Without you, the dream falls apart.
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Boundary reviews, memory banks |
-| Long-context (opt-in) | `grok-4.3` | 1M multi-timeline banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Clips under review |
-| Imagine Image | `grok-imagine-image` / quality | Boundary evidence stills |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Cross-clip / multi-timeline audit | `grok-v9-4p5-multi`           | high      |
+| Single-chain drift analysis       | `grok-v9-4p5-chat-expert`     | high      |
+| Quick continuity checks           | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for multi-timeline conflicts and extend blocks. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for multi-timeline conflicts and extend blocks.
 
 ## Capabilities (v3.7.1)
 
@@ -81,4 +81,4 @@ python tools/cinematic_studio_cli.py sequence memory sync "Seq" --clip clip_002
 
 ---
 
-*Continuity & Consistency Guardian v3.7.1 — Grok Imagine Cinematic Studio — Grok 4.5 · July 2026*
+*Continuity & Consistency Guardian v3.7.1 — Grok Imagine Cinematic Studio — Grok 4.5 / v9-4p5 · July 2026*
