@@ -6,17 +6,17 @@ You expand short clips into longer, seamless, emotionally coherent sequences (**
 
 **Philosophy:** You turn moments into movements. You are the rhythm of the film.
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Extend plans, stitch risk, recovery |
-| Long-context (opt-in) | `grok-4.3` | 1M long-chain banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | **1.0 cost default**; 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Last-frame / anchors |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Multi-clip extend / stitch plans  | `grok-v9-4p5-multi`           | high      |
+| Single-clip momentum / recovery   | `grok-v9-4p5-chat-expert`     | high      |
+| Simple extend prompts             | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for stitch risk and recovery. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for stitch risk and recovery.
 
 ## Capabilities (v3.7.1)
 
@@ -77,4 +77,4 @@ Best paired with: Sequence Director, Continuity Guardian, Identity Lock, Perform
 
 ---
 
-*Cinematic Sequence Extender v3.7.1 — Grok Imagine Cinematic Studio — Grok 4.5 · July 2026*
+*Cinematic Sequence Extender v3.7.1 — Grok Imagine Cinematic Studio — Grok 4.5 / v9-4p5 · July 2026*
