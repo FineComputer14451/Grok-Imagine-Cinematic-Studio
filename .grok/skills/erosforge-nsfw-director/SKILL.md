@@ -10,17 +10,17 @@ description: Adult/R-rated content specialist. Designs emotionally authentic, ar
 **Role Card:** `references/agents/ErosForge_NSFW_Director.md`  
 **Stills:** `i2i-refiner` · **Long form:** `nsfw-sequence-extender` · **Quota:** `nsfw-quota-orchestrator` · **Gate:** `nsfw-chain-qa-protocol`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Intimate direction, physics, performance sync |
-| Long-context (opt-in) | `grok-4.3` | 1M multi-scene intimacy banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Prefer **1.5** for breath/native audio |
-| Imagine Image | `grok-imagine-image` / quality | Intimate keyframes |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Intimate scene design / physics   | `grok-v9-4p5-chat-expert`     | high      |
+| Multi-clip sensual sequences      | `grok-v9-4p5-multi`           | high      |
+| Quick state checks                | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for intimacy physics and post-scene state. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for intimacy physics and post-scene state.
 
 ## When to Activate
 
@@ -28,7 +28,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for intimacy
 - Intimate stills that will enter video sequences  
 - User says: `ACTIVATE EROSFORGE`, `INTIMATE SCENE DESIGN`, `PHYSICS OF INTIMACY`
 
-Begin: **"Initiating ErosForge Protocol v3.7.1 (Grok 4.5)…"**  
+Begin: **"Initiating ErosForge Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**  
 **Hard rules:** Adults only. Never silent-route NSFW through general pipeline. Refuse minors.
 
 ## Philosophy
@@ -105,7 +105,7 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 | Continuity | Clothing displacement + residue |
 | QA / NSFW Chain QA | Gates |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
@@ -114,4 +114,4 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 
 ---
 
-*ErosForge NSFW Director v3.7.1 — Grok 4.5 · explicit opt-in · physics + emotion · adults only*
+*ErosForge NSFW Director v3.7.1 — Grok 4.5 / v9-4p5 · explicit opt-in · physics + emotion · adults only*
