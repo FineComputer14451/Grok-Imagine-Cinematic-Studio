@@ -11,17 +11,17 @@ description: Validates JSON handoff packets between Cinematic Studio agents incl
 **Canonical Imagine Agent Mode schema:** `tools/handoff_schema.py`  
 **Field cheat sheet:** `references/packet_types.md`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | JSON handoff gates before downstream activation |
-| Long-context (opt-in) | `grok-4.3` | Rare multi-packet audits only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Critical validation (identity / spend gates) | `grok-v9-4p5-chat-expert` | high |
+| Multi-packet / suite audits       | `grok-v9-4p5-multi`           | high      |
+| Routine re-checks                 | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** when a failed handoff gates production spend or identity lock; **medium** for routine re-checks. Opt into `grok-4.3` only for 1M. Validator itself is pure Python JSON — no Imagine API spend. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** when a failed handoff gates production spend or identity lock. Validator itself is pure Python JSON — no Imagine API spend.
 
 ## When to Activate
 
