@@ -12,17 +12,17 @@ description: Real-time quota guardian and production economist for Grok Imagine 
 **Engine:** `tools/quota_optimizer.py` · CLI `quota`  
 **Registry rates:** `tools/models.py`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Cost envelopes, session budgets, model tier recommendations |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-day session banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Complex sequence cost / budgeting | `grok-v9-4p5-chat-expert`     | high      |
+| Multi-project / suite planning    | `grok-v9-4p5-multi`           | high      |
+| Quick status / simple estimates   | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for session budget locks and 1.0 vs 1.5 decisions; **medium** for routine estimates. Opt into `grok-4.3` only for 1M. Chat spend is `grok-4.5`; video spend is `grok-imagine-*` only. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for session budget locks and 1.0 vs 1.5 decisions.
 
 ## Philosophy
 
@@ -55,22 +55,20 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for session 
 | Image quality | $0.05 | ~5 |
 | Extend/stitch overhead | — | +~3/clip (config) |
 | Fast mode | — | ~55% of base video |
-| Chat `grok-4.5` | $2 / $6 per 1M ($0.50 cached in) | orchestration default |
-| Chat `grok-4.3` | $1.25 / $2.50 per 1M | 1M opt-in only |
 
 Override via `.quota_config.json`. Always re-check `models` / pricing tables if rates change.
 
-### Chat cost notes (Grok 4.5)
+### Chat cost notes (v9-4p5)
 
-- Imagine **seconds** dominate long-form cost; chat is secondary but non-zero on Heavy multi-agent sessions  
+- Imagine **seconds** dominate long-form cost; chat is secondary  
 - Use **`prompt_cache_key`** for multi-turn agent loops  
-- Recommend `grok-4.3` only when 1M context avoids expensive multi-pass Bible reloads  
+- Use `grok-4-auto` for routine estimates when high reasoning is not required  
 
 ## Risk Levels (budget used)
 
 | Level | Used | Action |
 |-------|------|--------|
-| **Low** | &lt;25% | Balanced mode; full plan OK |
+| **Low** | <25% | Balanced mode; full plan OK |
 | **Medium** | 25–49% | Fast for drafts; animatic before video |
 | **High** | 50–79% | Fewer agents; chain QA discipline; drop filler |
 | **Critical** | ≥80% | **Hero shots only**; Fast + selective quality pass; block exploration video |
@@ -172,7 +170,7 @@ Next: proceed | cut plan | animatic first | hero-only
 | Studio Director | Trade-off authority |
 | Mega Production Architect | Bible-level cost envelope |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
@@ -181,4 +179,4 @@ Next: proceed | cut plan | animatic first | hero-only
 
 ---
 
-*Workflow & Quota Optimizer v3.7.1 — Grok 4.5 · seconds cost more than words · estimate before generate*
+*Workflow & Quota Optimizer v3.7.1 — Grok 4.5 / v9-4p5 · seconds cost more than words · estimate before generate*
