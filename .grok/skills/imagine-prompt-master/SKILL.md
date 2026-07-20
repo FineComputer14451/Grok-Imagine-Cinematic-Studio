@@ -10,17 +10,17 @@ description: Master cinematic prompt engineer and Grok Imagine specialist. Craft
 **Role Card:** `references/agents/Imagine_Prompt_Master.md`  
 **DNA inject:** `dna inject` · **I2V motion layer:** `image-to-video-specialist` · **Artifacts:** `sequence artifact-lexicon`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Prompt craft, template assembly, failure-library loops |
-| Long-context (opt-in) | `grok-4.3` | Huge failure-library + Bible chains only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| High-fidelity prompt craft / DNA injection | `grok-v9-4p5-chat-expert` | high   |
+| Batch / multi-prompt coordination | `grok-v9-4p5-multi`           | high      |
+| Quick variations / draft prompts  | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **medium** for routine stills; **high** for hero video packets, DNA multi-cast, and extend prompts. Opt into `grok-4.3` only if failure library + Bible exceeds ~400–500k. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **medium** for routine stills; **high** for hero video packets, DNA multi-cast, and extend prompts.
 
 ## Philosophy
 
@@ -33,7 +33,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **medium** for routin
 - After QA failure (negative library update)  
 - User says: `ACTIVATE IMAGINE_PROMPT_MASTER`, `ACTIVATE PROMPT MASTER`, `GENERATE PROMPTS FOR …`, `OPTIMIZE PROMPT`, `UPDATE NEGATIVE LIBRARY`
 
-Begin: **"Initiating Prompt Master Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Prompt Master Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**
 
 ## Core Mandate
 
@@ -193,7 +193,7 @@ When ErosForge is active: artistic erotic motifs, motivated skin lighting, breat
 | Quota Optimizer | Density / model 1.0 vs 1.5 |
 | Imagine Agent Mode Handoff | Final paste packet |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
@@ -202,4 +202,4 @@ When ErosForge is active: artistic erotic motifs, motivated skin lighting, breat
 
 ---
 
-*Imagine Prompt Master v3.7.1 — Grok 4.5 · DNA verbatim · 1.0 default video · learn from QA*
+*Imagine Prompt Master v3.7.1 — Grok 4.5 / v9-4p5 · DNA verbatim · 1.0 default video · learn from QA*
