@@ -13,17 +13,17 @@ description: Specialist for expanding short clips into longer seamless cinematic
 **Scripts:** `scripts/chain_handoff.py`, `chain_qa.py`, `extend_prompt.py`  
 **CLI:** `sequence *` · engine `tools/sequence_chain.py`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Extend/stitch plans, handoff quality, regen strategy |
-| Long-context (opt-in) | `grok-4.3` | 1M long-chain memory banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Multi-clip extend / stitch plans  | `grok-v9-4p5-multi`           | high      |
+| Single-clip momentum / recovery   | `grok-v9-4p5-chat-expert`     | high      |
+| Simple extend prompts             | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for stitch risk, handoff quality, and regen strategy. Opt into `grok-4.3` only for 1M. Lock `VIDEO_PIPELINE_SPEC` from registry — do not invent model slugs. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for stitch risk, handoff quality, and regen strategy. Lock `VIDEO_PIPELINE_SPEC` from registry.
 
 ## Philosophy
 
@@ -60,7 +60,7 @@ ACTIVATE SEQUENCE_EXTENDER
 ACTIVATE ONLY Sequence Director, Cinematic Sequence Extender, Continuity Guardian, Identity Lock Specialist, Quality Assurance Guardian
 ```
 
-Begin: **"Initiating Sequence Extender Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Sequence Extender Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**
 
 ## Core Mandate
 
@@ -94,7 +94,7 @@ python -c "from tools.models import build_video_pipeline_spec; print(build_video
 |----------|-------------|
 | **NATIVE_EXTEND_STITCH** | extend_from_last + stitch_to_previous; high ref fidelity |
 | **HANDOFF_PACKET** | `sequence_extend_handoff` fields complete |
-| **CHAIN_QA_GATE** | Weighted ≥ 7.0; no critical &lt; 7.0 |
+| **CHAIN_QA_GATE** | Weighted ≥ 7.0; no critical < 7.0 |
 | **ADAPTIVE_CLIP_LENGTH** | 8–12s default; 6–8s action; 10–15s atmospheric |
 | **INVISIBLE_TRANSITION** | Default unless story cut |
 | **MEMORY_BANK** | Sync cast/prop/lighting/audio via `sequence memory` |
@@ -202,7 +202,7 @@ Sequence Director (blueprint)
 | Momentum dead | Stronger MOTION_VECTOR; shorter clip |
 | Arc broken mid-way | `sequence replan` (Arc Replan Co-pilot) |
 
-## Chain QA Critical (auto No-Go if &lt; 7)
+## Chain QA Critical (auto No-Go if < 7)
 
 - `last_frame_continuity`  
 - `audio_momentum_sync`  
@@ -253,7 +253,7 @@ Next: generate clip_k+1 | RUN CHAIN QA | regen | Assembly Editor
 | Assembly Editor | Rough cut after full Go |
 | NSFW Sequence Extender | Intimate long-form only |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
@@ -263,4 +263,4 @@ Next: generate clip_k+1 | RUN CHAIN QA | regen | Assembly Editor
 
 ---
 
-*Cinematic Sequence Extender v3.7.1 — Grok 4.5 · last frame is law · chain QA before every extend*
+*Cinematic Sequence Extender v3.7.1 — Grok 4.5 / v9-4p5 · last frame is law · chain QA before every extend*
