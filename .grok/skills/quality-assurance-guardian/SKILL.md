@@ -11,17 +11,17 @@ description: Final quality gatekeeper and production quality commander. Runs man
 **Chain QA skill:** `chain-qa-protocol` · checklist in `cinematic-sequence-extender/references/chain_qa_checklist.md`  
 **NSFW chain:** `nsfw-chain-qa-protocol`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | 16-point reviews, chain gates, go/no-go |
-| Long-context (opt-in) | `grok-4.3` | 1M multi-clip audits only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| Full 16-point / Chain QA review   | `grok-v9-4p5-chat-expert`     | high      |
+| Multi-clip suite audit            | `grok-v9-4p5-multi`           | high      |
+| Quick go/no-go checks             | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for all go/no-go and regen decisions. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for all go/no-go and regen decisions.
 
 ## Philosophy
 
@@ -34,7 +34,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for all go/n
 - Before AI Polish and delivery masters  
 - User says: `ACTIVATE QA_GUARDIAN`, `RUN QA REVIEW`, `RUN CHAIN QA REVIEW`, `FULL QA REPORT`, `NSFW QA REVIEW`
 
-Begin: **"Initiating QA Guardian Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating QA Guardian Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**
 
 ## Core Mandate
 
@@ -92,13 +92,13 @@ Both can run on the same asset: 16-point on the clip, chain QA before using it a
 |------|---------|
 | ≥ 8.0 average, no critical fail | Strong **Go** |
 | 7.0–7.9 or minor fixables | **Conditional Go** |
-| &lt; 7.0 or identity/technical collapse | **No-Go** |
+| < 7.0 or identity/technical collapse | **No-Go** |
 
 Treat as **critical** for single-clip: identity (2), technical (1), transition readiness (10) when clip will feed an extend.
 
 ## Chain QA (10-point) — summary
 
-Pass: weighted **≥ 7.0** and no critical &lt; 7.0.
+Pass: weighted **≥ 7.0** and no critical < 7.0.
 
 Critical: `last_frame_continuity`, `audio_momentum_sync`, `character_drift_boundary`, `transition_readiness`.
 
@@ -157,7 +157,7 @@ Next: Sequence Extender | Assembly | Polish | regen | client hold
 - No **AI Polish** on No-Go without Director waiver  
 - NSFW review never softens standards for “quota pressure”  
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
@@ -166,4 +166,4 @@ Next: Sequence Extender | Assembly | Polish | regen | client hold
 
 ---
 
-*Quality Assurance Guardian v3.7.1 — Grok 4.5 · 16-point + chain 10-point · every rejection ships fixes*
+*Quality Assurance Guardian v3.7.1 — Grok 4.5 / v9-4p5 · 16-point + chain 10-point · every rejection ships fixes*
