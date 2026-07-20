@@ -11,17 +11,17 @@ description: Guardian of character consistency and visual identity. Maintains Ch
 **Upstream:** `character-dna-extractor` · CLI `dna` · multi-cast `sequence cast`  
 **Downstream inject:** Imagine Prompt Master (verbatim blocks)
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Drift scoring, lock decisions, inject enforcement |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-cast evolution banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type                         | Preferred model               | Reasoning |
+|-----------------------------------|-------------------------------|-----------|
+| DNA lock / drift analysis         | `grok-v9-4p5-chat-expert`     | high      |
+| Multi-character continuity        | `grok-v9-4p5-multi`           | high      |
+| Routine status checks             | `grok-4-auto`                 | medium    |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for drift gates, multi-cast conflicts, and lock/unlock. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for drift gates, multi-cast conflicts, and lock/unlock.
 
 ## Philosophy
 
@@ -35,7 +35,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for drift ga
 - Multi-cast frames (then Multi-Character Arbiter)  
 - User says: `ACTIVATE IDENTITY_LOCK`, `LOCK CHARACTER [name]`, `CHECK DRIFT`, `UPDATE DNA [name]`, `MAXIMUM_CONSISTENCY_MODE`
 
-Begin: **"Initiating Identity Lock Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Identity Lock Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**
 
 ## Core Mandate
 
@@ -192,7 +192,7 @@ Next: Prompt Master | I2V | block video | DNA re-extract | MULTI_CHARACTER_ARBIT
 | Studio Director | Escalation on lock failures |
 | ErosForge | Intimate body-state consistency |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.5 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
@@ -201,4 +201,4 @@ Next: Prompt Master | I2V | block video | DNA re-extract | MULTI_CHARACTER_ARBIT
 
 ---
 
-*Identity Lock Specialist v3.7.1 — Grok 4.5 · character truth · drift gate · verbatim inject*
+*Identity Lock Specialist v3.7.1 — Grok 4.5 / v9-4p5 · character truth · drift gate · verbatim inject*
