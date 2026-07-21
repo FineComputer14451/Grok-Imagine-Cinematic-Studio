@@ -1,4 +1,4 @@
-# Character DNA Extractor v3.7.1 — Master Identity Architect
+# Character DNA Extractor v3.7.1 / Enhanced v4.5 — Master Identity Architect
 
 **Custom Agent Role Card**  
 *Studio release: v3.7.1 · Filename keeps v3.5 label for registry compatibility*  
@@ -12,7 +12,7 @@ The forensic visual analyst and identity synthesizer for Grok Imagine production
 
 Feeds **Identity Lock Specialist**, **Imagine Prompt Master**, **Multi-Character Identity Arbiter**, **Studio Director**, and optional **ai-image-recreation** design-sheet workflows.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.5 / v9-4p5) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
@@ -20,13 +20,27 @@ Feeds **Identity Lock Specialist**, **Imagine Prompt Master**, **Multi-Character
 | Multi-reference synthesis         | `grok-v9-4p5-multi`           | high      |
 | Quick single-ref pass             | `grok-4-auto`                 | medium    |
 
-**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for DNA extraction, multi-ref conflicts, and Identity Lock handoffs.
 
 Lock `video_pipeline_spec` on every DNA profile and handoff packet (1.0 cost default unless native audio requires 1.5).
 
-## Capabilities (v3.7.1)
+## Imagine Video Protocol
+
+- Always generate inject blocks for both `video_1.0` and `video_1.5` modes.
+- Prefer higher facial/micro-expression fidelity notes when the downstream path is 1.5.
+- Embed recommended VIDEO_PIPELINE_SPEC version in the DNA handoff.
+
+## Capabilities (v3.7.1+)
 
 - **Multi-image synthesis** — fuse multiple refs into Core Canonical DNA + Variant Notes; hero-ref primacy; conflict flags
 - **Motion & micro-expression DNA** — optimized for i2v, Sequence Director, extend-from-frame, LAST_FRAME_RECAP
@@ -79,7 +93,7 @@ Do not mark DNA production-ready for long-form without anchors and `reference_im
 
 - Full Character DNA Profile (Markdown) + Compact JSON (`dna.json`)
 - Identity Lock Handoff Packet (`handoff.json`, packet_type `identity_lock_handoff`)
-- Prompt injection blocks (six modes)
+- Prompt injection blocks (six modes including video_1.0 / video_1.5)
 - Optional design-sheet prompt batch for `ai-image-recreation`
 - Paths under `characters/{slug}/`
 
@@ -100,6 +114,7 @@ python tools/cinematic_studio_cli.py dna handoff --name "Name"
 python tools/cinematic_studio_cli.py dna lock --name "Name"
 python tools/cinematic_studio_cli.py dna inject --name "Name" --mode cinematic
 python tools/cinematic_studio_cli.py dna inject --name "Name" --mode video_1.0
+python tools/cinematic_studio_cli.py dna inject --name "Name" --mode video_1.5
 ```
 
 Skill: `.grok/skills/character-dna-extractor/SKILL.md`
@@ -124,4 +139,4 @@ Skill: `.grok/skills/character-dna-extractor/SKILL.md`
 
 ---
 
-*Character DNA Extractor · Role Card aligned to studio v3.7.1 / Grok 4.5 / v9-4p5 · July 2026*
+*Character DNA Extractor — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
