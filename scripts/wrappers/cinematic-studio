@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Grok Imagine Cinematic Studio — unified CLI entrypoint
 #
-#   cinematic-studio install|update|verify|declutter   → meta installer
-#   cinematic-studio <any other args>                  → Python CLI
+#   cinematic-studio install|update|verify|declutter|doctor → meta / doctor
+#   cinematic-studio <any other args>                     → Python CLI
 #
 # Override project root with CINEMATIC_PROJECT_DIR.
 # Override Python CLI path with CINEMATIC_CLI_PY.
@@ -44,7 +44,7 @@ _python() {
 }
 
 case "${1:-}" in
-    install|update|verify|declutter)
+    install|update|verify|declutter|doctor|grok-doctor|grok_doctor)
         sh="$(_meta_sh)" || {
             echo "❌ meta installer not found under ${PROJECT_DIR}/scripts" >&2
             echo "   Set CINEMATIC_PROJECT_DIR or run: bash scripts/cinematic_studio.sh install" >&2

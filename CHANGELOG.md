@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Added
+- **Grok Doctor** — `scripts/grok_doctor.sh`, `cinematic-studio doctor`, and `grok-doctor` PATH entry for Grok Build + Cinematic Studio health checks (`--quick`, `--json`, `--strict`)
+
 ## [3.8.6] - 2026-07-21
 
 ### Added

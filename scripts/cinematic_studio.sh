@@ -53,6 +53,7 @@ Usage:
                                      Remove Method A skill copies that duplicate the plugin;
                                      prune old ~/.grok/skills-backup-* dirs
   cinematic_studio.sh version          Print installed release version
+  cinematic_studio.sh doctor [opts]    Grok Build + Studio health check (alias: grok-doctor)
 
 Examples:
   ./scripts/cinematic_studio.sh install
@@ -60,6 +61,8 @@ Examples:
   ./scripts/cinematic_studio.sh verify --plugin
   ./scripts/cinematic_studio.sh declutter --dry-run
   ./scripts/cinematic_studio.sh declutter --apply --keep-backups 1
+  ./scripts/cinematic_studio.sh doctor
+  ./scripts/cinematic_studio.sh doctor --quick
   bash <(curl -sL $CINEMATIC_RAW_BASE/scripts/cinematic_studio.sh) install
 EOF
 }
@@ -118,6 +121,25 @@ cmd_declutter() {
     cinematic_studio_declutter "$@"
 }
 
+cmd_doctor() {
+    local doctor_sh=""
+    for doctor_sh in \
+        "${CINEMATIC_SCRIPT_DIR}/grok_doctor.sh" \
+        "${CINEMATIC_REPO_ROOT:-}/scripts/grok_doctor.sh" \
+        "${PROJECT_DIR:-}/scripts/grok_doctor.sh"; do
+        if [[ -n "$doctor_sh" && -f "$doctor_sh" ]]; then
+            # Prefer repo root for accurate VERSION / plugin pin checks
+            if [[ -z "${CINEMATIC_REPO_ROOT:-}" && -f "${CINEMATIC_SCRIPT_DIR}/../VERSION" ]]; then
+                export CINEMATIC_REPO_ROOT="$(cd "${CINEMATIC_SCRIPT_DIR}/.." && pwd)"
+            fi
+            exec bash "$doctor_sh" "$@"
+        fi
+    done
+    echo "❌ grok_doctor.sh not found" >&2
+    exit 1
+}
+
+
 main() {
     local cmd="${1:-}"
     shift || true
@@ -128,6 +150,7 @@ main() {
         verify) cmd_verify "$@" ;;
         declutter) cmd_declutter "$@" ;;
         version) cmd_version "$@" ;;
+        doctor|grok-doctor|grok_doctor) cmd_doctor "$@" ;;
         -h|--help|help|"") usage ;;
         *)
             echo "❌ Unknown command: $cmd"

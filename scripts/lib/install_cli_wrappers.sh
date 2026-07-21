@@ -63,6 +63,22 @@ cinematic_studio_install_cli_wrappers() {
         fi
     fi
 
+
+    # Grok Doctor (health check)
+    local doctor_src=""
+    for doctor_src in \
+        "${CINEMATIC_SCRIPT_DIR:-}/grok_doctor.sh" \
+        "${CINEMATIC_REPO_ROOT:-}/scripts/grok_doctor.sh" \
+        "${PROJECT_DIR:-}/scripts/grok_doctor.sh"; do
+        if [[ -n "$doctor_src" && -f "$doctor_src" ]]; then
+            install -m 755 "$doctor_src" "${bin_dir}/grok-doctor"
+            ln -sfn "${bin_dir}/grok-doctor" "${local_bin}/grok-doctor"
+            # Also allow: cinematic-studio doctor (via meta dispatcher)
+            echo "→ Grok Doctor: ${bin_dir}/grok-doctor"
+            break
+        fi
+    done
+
     if ! command -v cinematic-studio >/dev/null 2>&1; then
         echo "   Note: add ${bin_dir} or ${local_bin} to PATH"
         echo "   Absolute: ${dest} models verify"

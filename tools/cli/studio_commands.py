@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import subprocess
+from pathlib import Path
+
 import typer
 from rich import box
 from rich.markdown import Markdown
@@ -96,6 +99,36 @@ def register(app: typer.Typer) -> None:
             f"video [green]{stack.get('imagine_video')}[/green] · "
             f"CLI ≥ {stack.get('grok_build_cli_min_version', '0.2.93')} · July 2026"
         )
+
+    
+    @app.command("doctor")
+    def doctor(
+        quick: bool = typer.Option(False, "--quick", "-q", help="Skip pytest and full plugin verify"),
+        json_out: bool = typer.Option(False, "--json", help="Machine-readable JSON summary"),
+        strict: bool = typer.Option(False, "--strict", help="Exit 1 on warnings"),
+    ):
+        """Grok Doctor — health check for Grok Build + Cinematic Studio."""
+        from studio_paths import STUDIO_ROOT
+
+        doctor = STUDIO_ROOT / "scripts" / "grok_doctor.sh"
+        if not doctor.is_file():
+            # Method A layout
+            alt = Path.home() / "Grok-Cinematic-Projects" / "scripts" / "grok_doctor.sh"
+            doctor = alt if alt.is_file() else doctor
+        if not doctor.is_file():
+            console.print("[red]❌ grok_doctor.sh not found[/red]")
+            raise typer.Exit(1)
+
+        cmd = ["bash", str(doctor)]
+        if quick:
+            cmd.append("--quick")
+        if json_out:
+            cmd.append("--json")
+        if strict:
+            cmd.append("--strict")
+        env = dict(**__import__("os").environ)
+        env.setdefault("CINEMATIC_REPO_ROOT", str(STUDIO_ROOT))
+        raise SystemExit(subprocess.call(cmd, env=env))
 
     @app.command(name="stack")
     def stack_cmd(
