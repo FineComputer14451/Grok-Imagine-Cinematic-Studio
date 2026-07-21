@@ -10,6 +10,7 @@ CINEMATIC_INSTALLER_SCRIPTS=(
     install_cinematic_studio.sh
     update_cinematic_studio.sh
     verify_cinematic_studio.sh
+    grok_doctor.sh
     required_skills.manifest
 )
 

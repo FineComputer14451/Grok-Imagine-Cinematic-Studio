@@ -108,3 +108,11 @@ Activate Grok Imagine Cinematic Studio v3.8.6
 ```
 
 Or slash command `/cinematic` after plugin install.
+
+## Health check
+
+```bash
+grok-doctor
+cinematic-studio doctor
+bash scripts/grok_doctor.sh --quick
+```

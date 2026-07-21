@@ -312,6 +312,8 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 
 **Pro tip:** After any skill or plugin change, re-validate with `bash scripts/verify_cinematic_studio.sh` (it runs `models verify` too).
 
+**Health check:** `grok-doctor` or `cinematic-studio doctor` (full) · `grok-doctor --quick` · `bash scripts/grok_doctor.sh`.
+
 ---
 
 **This AGENTS.md is the canonical reference for all AI agents operating in this environment.**  

@@ -183,6 +183,20 @@ Optional Grok Build config:
 cp ~/Grok-Cinematic-Projects/config/grok-build.example.toml ~/.grok/config.toml
 ```
 
+## Health check (Grok Doctor)
+
+Run a full Grok Build + Cinematic Studio diagnostic:
+
+```bash
+grok-doctor                 # or: cinematic-studio doctor
+grok-doctor --quick         # skip pytest + plugin verify
+grok-doctor --json          # machine-readable summary
+bash scripts/grok_doctor.sh
+```
+
+Checks CLI version, auth/config, studio VERSION, `models verify`, plugin install,
+catalog pin, skills layout, git, API key presence, and optional pytest.
+
 ## Troubleshooting
 
 | Symptom | Fix |

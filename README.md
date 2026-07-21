@@ -41,6 +41,7 @@ Whether you’re crafting Marvel-style hero reveals, cyberpunk neon sequences, i
 
 ## 🚀 What’s New in v3.8.6
 
+- **Grok Doctor** — `grok-doctor` / `cinematic-studio doctor` for full environment diagnostics
 - **Full v4.5 Dual-Model Wave** — 16 core skills upgraded to a uniform **Grok 4.5 / v9-4p5** Model Layer (`grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert`) with explicit dual **Imagine Video 1.0 + 1.5 Native** docs and Role Cards
 - **Model registry hardened** — full `tools/models.py` API restored for CLI/handoff (`STUDIO_COMPATIBILITY_VERSION`, stack verify, pipeline spec) plus opt-in v9-4p5 chat models
 - **Generation Tracker CLI** — `cinematic-studio generation log|list|summary|report|update|import-jobs` for local Imagine spend ledger
