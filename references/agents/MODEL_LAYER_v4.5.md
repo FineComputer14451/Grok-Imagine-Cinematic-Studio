@@ -1,56 +1,106 @@
 # MODEL_LAYER_v4.5.md
 **Grok Imagine Cinematic Studio — Canonical Model Layer**  
-**Version:** 4.5 / v9-4p5 | **Schema:** tools/models.py 1.1  
-**Date:** 2026-07-20  
-**Owner:** Studio Director + Skill Agent Architect
+**Version:** 4.5.1 / v9-4p5 | **Schema:** tools/models.py 1.1+  
+**Date:** 2026-07-21  
+**Owner:** Studio Director + Skill Agent Architect + Team Leader
 
 ---
 
 ## Purpose
 
-This document is the single source of truth for how Cinematic Studio skills and agents should select, prefer, and declare compatibility with Grok models. All new and updated skills must reference this layer.
+This document is the single source of truth for how Cinematic Studio skills and agents should select, prefer, and declare compatibility with Grok models **and** Grok Imagine Video versions. All Role Cards and skills must reference this layer.
 
-It introduces first-class support for the three primary surface identifiers:
+It provides first-class support for:
 
-| Identifier                    | Short Name     | Primary Role                              |
-|-------------------------------|----------------|-------------------------------------------|
-| `grok-v9-4p5-chat-expert`     | Chat Expert    | Highest-quality single-agent reasoning    |
-| `grok-v9-4p5-multi`           | Multi          | Multi-agent orchestration & synthesis     |
-| `grok-4-auto`                 | Auto           | Balanced / automatic routing              |
+| Identifier                    | Short Name     | Primary Role                                      |
+|-------------------------------|----------------|---------------------------------------------------|
+| `grok-v9-4p5-chat-expert`     | Chat Expert    | Highest-quality single-agent reasoning & craft    |
+| `grok-v9-4p5-multi`           | Multi          | Multi-agent orchestration, synthesis & handoffs   |
+| `grok-4-auto`                 | Auto           | Balanced / automatic routing / draft / quota      |
+
+And for video generation:
+
+| Version                  | When to Prefer                                      | Key Capabilities                          |
+|--------------------------|-----------------------------------------------------|-------------------------------------------|
+| **Imagine Video 1.0**    | Default / cost-efficient / most sequences           | Strong motion vectors, reliable extends   |
+| **Imagine Video 1.5**    | Native audio required, physics fidelity, intimacy   | Native synchronized audio, better physics, micro-expressions, longer coherent motion |
 
 ---
 
-## Model Profiles
+## Model Profiles (Chat Layer)
 
 ### 1. grok-v9-4p5-chat-expert  (Default for most specialist work)
 
-- **Best for**: Deep reasoning, high-fidelity prompt engineering, Character DNA work, Identity Lock decisions, QA reviews, narrative architecture, single-agent creative direction.
-- **Strengths**: Reasoning depth, prompt quality, long-context fidelity, character consistency.
-- **Preferred agents**: Imagine Prompt Master, Character DNA Extractor, Identity Lock Specialist, Quality Assurance Guardian, Narrative Arc & Pacing Strategist, Director of Photography (detailed lighting design).
-- **Reasoning recommendation**: **high** for Bibles, locks, QA, and complex creative judgments.
+- **Best for**: Deep reasoning, high-fidelity prompt engineering, Character DNA extraction & injection, Identity Lock decisions, QA reviews, narrative architecture, detailed lighting / DoP design, Sonic design, NSFW authenticity.
+- **Strengths**: Reasoning depth, prompt quality, long-context fidelity, character consistency, subtle emotional subtext.
+- **Preferred agents**: Imagine Prompt Master, Character DNA Extractor, Identity Lock Specialist, Quality Assurance Guardian, Narrative Arc & Pacing Strategist, Director of Photography, Sonic Architect (complex layers), ErosForge NSFW Director.
+- **Reasoning recommendation**: **high** for Bibles, locks, QA, DNA, hero prompts, and complex creative judgments.
 - **Aliases**: `v9-4p5-chat-expert`, `chat-expert`, `4p5-expert`, `grok-4.5-expert`
 
 ### 2. grok-v9-4p5-multi  (Default for Team Leader / Full Studio Mode)
 
-- **Best for**: Multi-agent coordination, Team Leader synthesis, parallel specialist briefings, Handoff Packet assembly & Cross-Agent Consistency Audit, Sequence Director orchestration, Mega Production Architect planning.
-- **Strengths**: Multi-agent awareness, handoff integrity, parallel reasoning, final synthesis quality.
-- **Preferred agents**: Team Leader / Final Synthesizer, Studio Director (when in Full Studio or MAXIMUM_AGENTIC_MODE), Mega Production Architect, Sequence Director, Continuity & Consistency Guardian (cross-clip).
+- **Best for**: Multi-agent coordination, Team Leader synthesis, parallel specialist briefings, Handoff Packet assembly & Cross-Agent Consistency Audit, Sequence Director orchestration, Mega Production Architect planning, Continuity across clips.
+- **Strengths**: Multi-agent awareness, handoff integrity, parallel reasoning, final synthesis quality, long production memory.
+- **Preferred agents**: Team Leader / Final Synthesizer, Studio Director (Full Studio or MAXIMUM_AGENTIC_MODE), Mega Production Architect, Sequence Director, Continuity & Consistency Guardian (cross-clip), Cinematic Sequence Extender (chain planning).
 - **Reasoning recommendation**: **high** + agentic depth.
 - **Aliases**: `v9-4p5-multi`, `4p5-multi`, `multi`, `grok-4.5-multi`
 
 ### 3. grok-4-auto
 
-- **Best for**: Routine specialist tasks, draft / pre-vis passes, quota-sensitive sessions, rapid iteration where maximum reasoning is not required.
-- **Strengths**: Balanced speed vs quality, lower cost profile, good generalist.
-- **Preferred agents**: Animatic Director (draft boards), Reference Asset Curator (standard tier), Foley (routine), Localization (standard), any “draft” or “fast” mode.
-- **Reasoning recommendation**: medium (escalate to chat-expert or multi when quality gates fail).
+- **Best for**: Routine specialist tasks, draft / pre-vis / animatic passes, quota-sensitive sessions, rapid iteration, standard tier asset work, simple status & logging.
+- **Strengths**: Balanced speed vs quality, lower cost profile, good generalist, reliable for non-critical paths.
+- **Preferred agents**: Animatic Director (draft boards), Reference Asset Curator (standard tier), Foley (routine), Localization (standard), Generation Tracker, any “draft”, “fast”, or “quota” mode.
+- **Reasoning recommendation**: medium (escalate to chat-expert or multi when quality gates fail or hero work begins).
 - **Aliases**: `4-auto`, `auto`, `grok-auto`
 
 ---
 
-## Usage Rules for Skills
+## Imagine Video Protocol (1.0 vs 1.5 Native)
 
-Every skill SKILL.md that performs non-trivial reasoning should contain a short **Model Layer** section, for example:
+Every video-related Role Card and handoff **must** declare a `VIDEO_PIPELINE_SPEC`.
+
+### Default Recommendation
+- **Start with Imagine Video 1.0** unless one of the following is true:
+  - Native synchronized audio is required (dialogue, intimate sound, Foley-critical, music-synced)
+  - High physics fidelity or complex camera moves are needed
+  - Micro-expression timing or breath/audio sync is critical (especially NSFW / performance)
+  - User or Production Bible explicitly requests 1.5
+
+### VIDEO_PIPELINE_SPEC Templates
+
+**1.0 (Default – cost & reliability optimized)**
+```
+[VIDEO_PIPELINE_SPEC: model="grok-imagine-video", version="1.0", resolution="720p", clip_length="8-12s preferred", native_audio=false, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR", stitch_priority=high, audio_momentum=false]
+```
+
+**1.5 Native (when audio / physics / intimacy required)**
+```
+[VIDEO_PIPELINE_SPEC: model="grok-imagine-video-1.5", version="1.5", resolution="720p", clip_length="8-12s preferred", native_audio=true, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high, audio_momentum=true]
+```
+
+### Model Routing for Video Work
+
+| Task                                      | Preferred Chat Model          | Video Version | Notes |
+|-------------------------------------------|-------------------------------|---------------|-------|
+| Hero prompt craft / DNA inject            | grok-v9-4p5-chat-expert       | 1.0 or 1.5    | High reasoning |
+| Sequence planning / multi-clip orchestration | grok-v9-4p5-multi          | 1.0 default   | Use multi for chain |
+| Native audio design + AMV                 | grok-v9-4p5-chat-expert       | **1.5**       | Sonic Architect owns |
+| Draft / animatic / quota-tight            | grok-4-auto                   | 1.0           | Fast path |
+| Extend / stitch chain QA                  | grok-v9-4p5-multi             | Match previous| Continuity Guardian |
+| Intimate / ErosForge sequences            | grok-v9-4p5-chat-expert       | **1.5 preferred** | Physics + audio authenticity |
+
+### Critical Rules
+1. Never claim native audio capabilities on 1.0.
+2. Always carry `AUDIO_MOMENTUM_VECTOR` (AMV) when using 1.5 extends.
+3. I2V Specialist and Prompt Master must embed the chosen VIDEO_PIPELINE_SPEC.
+4. Sequence Extender and Continuity Guardian must validate version consistency across a chain.
+5. Quota Optimizer must surface cost delta (1.5 is higher) before major 1.5 spends.
+
+---
+
+## Usage Rules for Skills & Role Cards
+
+Every skill SKILL.md and every Role Card that performs non-trivial reasoning **must** contain a short **Model Layer** section:
 
 ```markdown
 ## Model Layer (Grok 4.5 / v9-4p5)
@@ -61,12 +111,19 @@ Every skill SKILL.md that performs non-trivial reasoning should contain a short 
 | Multi-agent / handoff work  | grok-v9-4p5-multi            | high      |
 | Draft / quota-sensitive     | grok-4-auto                  | medium    |
 
-Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 ```
 
-### Declaration in Frontmatter or Body (Recommended)
+Plus, when the agent touches video:
 
-Skills may also declare:
+```markdown
+## Imagine Video Protocol
+- Default: 1.0 unless native audio / physics / intimacy requires 1.5
+- Always emit VIDEO_PIPELINE_SPEC
+- Carry AUDIO_MOMENTUM_VECTOR on 1.5 extends
+```
+
+### Declaration (Recommended in frontmatter or body)
 
 ```yaml
 model_compatibility:
@@ -74,6 +131,9 @@ model_compatibility:
   - grok-v9-4p5-multi
   - grok-4-auto
 preferred_model: grok-v9-4p5-chat-expert   # or multi / auto
+imagine_video_support:
+  - "1.0"
+  - "1.5"
 ```
 
 ---
@@ -96,25 +156,20 @@ from tools.models import (
 
 ---
 
-## Migration Notes
+## Migration & Validation Notes
 
-- Previous default `grok-4.3` is retained as a legacy entry only.
-- Skills that hard-coded “Grok 4.5” or “grok-4.5” should now prefer the explicit v9-4p5 identifiers above.
-- Team Leader / Final Synthesizer and any Full Studio Mode orchestration should default to **grok-v9-4p5-multi**.
-- All Imagine Video / Image model selection remains unchanged (still driven by `IMAGINE_*_MODELS`).
-
----
-
-## Validation
-
-After updating skills or this registry:
+- All Role Cards in `references/agents/` have been enhanced (or are being enhanced) to this standard as of 2026-07-21.
+- Previous hard-coded “Grok 4.5” language should now use the explicit v9-4p5 identifiers.
+- Team Leader / Full Studio Mode orchestration **defaults to grok-v9-4p5-multi**.
+- Run after changes:
 
 ```bash
-python tools/models.py          # or via cinematic_studio_cli.py models verify
-bash .grok/skills/cinematic-skill-creator/scripts/validate_skill.sh <skill> --v4
+python tools/models.py
+python tools/cinematic_studio_cli.py models verify
+bash .grok/skills/cinematic-skill-creator/scripts/validate_skill.sh <skill> --v45
 ```
 
 ---
 
-**End of MODEL_LAYER_v4.5.md**  
-*Grok Imagine Cinematic Studio — Grok 4.5 / v9-4p5 Model Layer*
+**End of MODEL_LAYER_v4.5.md (v4.5.1)**  
+*Grok Imagine Cinematic Studio — Fully optimized for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
