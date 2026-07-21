@@ -30,6 +30,12 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - All upgraded skills now declare preferred model routing and dual Imagine Video support consistently
 - Handoff readiness `PROTOCOL_OK` includes **3.8.5**; role-card shared-doc allowlist updated
 
+### Changed (full systematic alignment)
+- **Complete dual-model wave** — all **51** suite skills now include `model_compatibility` + Grok 4.5 / v9-4p5 Model Layer + dual Imagine 1.0/1.5 notes
+- **STUDIO_AGENT_VERSION** unified to `v3.8.5` across DNA / quota / animatic / assembly / SFW tools
+- Canonical `references/MODELS.md` points at `MODEL_LAYER_v4.5.md`
+- Meta-installer skill body restored (full Method A/B docs) at v3.8.5
+
 ### Fixed
 - **`tools/models.py` API** — restore full registry helpers required by CLI/handoff (`STUDIO_COMPATIBILITY_VERSION`, `verify_model_compatibility`, stack summary, pricing tables) after the v3.8.5 slim rewrite; keep `grok-4.5` defaults and add opt-in v9-4p5 chat models
 

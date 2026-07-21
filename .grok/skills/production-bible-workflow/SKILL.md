@@ -1,26 +1,37 @@
 ---
 name: production-bible-workflow
-description: End-to-end Production Bible onboarding workflow for Grok Imagine Cinematic Studio. Guides create-bible DNA init sequence planning quota setup and validate through the CLI. Activate when starting a new project bootstrapping the studio or onboarding a production from zero. Uses Grok 4.5 orchestration.
+description: End-to-end Production Bible onboarding workflow for Grok Imagine Cinematic Studio. Guides create-bible DNA init sequence planning quota setup and validate through the CLI. Activate when starting a new project bootstrapping the studio or onboarding a production from zero. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Production Bible Workflow v3.7.1 (Grok 4.5 · Bible Onboarding)
+# Production Bible Workflow v3.8.5 (Grok 4.5 / v9-4p5 · Bible Onboarding)
 
 **New project bootstrap** — guided path from zero to a locked Production Bible, DNA, sequence, quota, and generation-ready handoff. Studio Director maintains the Bible after bootstrap.
 
 **CLI:** `create-bible` · `dna` · `sequence` · `quota` · `validate` · `models verify`  
 **Companions:** Mega Production Architect · Studio Director · production wizard (Web)
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Bible lock, model_stack, wizard orchestration |
-| Long-context (opt-in) | `grok-4.3` | 1M long Bible onboarding only (`--chat-model grok-4.3`) |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | **1.0 cost default**; 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Bible lock and model_stack; **medium** for wizard step copy. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-multi
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -28,7 +39,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Bible lo
 - Onboarding a production from zero  
 - User says: `START PRODUCTION BIBLE WORKFLOW`, `BOOTSTRAP NEW PROJECT`, `CREATE BIBLE WIZARD`
 
-Begin: **"Starting Production Bible Workflow v3.7.1 (Grok 4.5)…"**
+Begin: **"Starting Production Bible Workflow v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## Project Bible Must Lock
 
@@ -103,7 +114,7 @@ Validate pacing with draft stills / short motion probes (prefer video **1.0**).
 ## Phase 5 — Production activation
 
 ```
-Activate Grok Imagine Cinematic Studio v3.7.1
+Activate Grok Imagine Cinematic Studio v3.8.5
 ACTIVATE STUDIO_DIRECTOR
 ACTIVATE REFERENCE_CURATOR
 ACTIVATE SFW_BATCH_ORCHESTRATOR   # multi-shot SFW
@@ -176,4 +187,4 @@ Next: Studio Director | Animatic | Batch | Agent Mode Handoff
 
 ---
 
-*Production Bible Workflow v3.7.1 — Grok 4.5 · zero to locked Bible · still before video*
+*Production Bible Workflow v3.8.5 — Grok 4.5 / v9-4p5 · zero to locked Bible · still before video*

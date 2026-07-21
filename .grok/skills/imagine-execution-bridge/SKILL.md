@@ -1,9 +1,9 @@
 ---
 name: imagine-execution-bridge
-description: Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinematic Studio. Emits copy-paste VIDEO_PIPELINE_SPEC reference hints and native audio Sound Layer blocks when API generation is unavailable. Activate with ACTIVATE IMAGINE_BRIDGE or when user needs grok.com/imagine copy-paste packets. Uses Grok 4.5 orchestration.
+description: Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinematic Studio. Emits copy-paste VIDEO_PIPELINE_SPEC reference hints and native audio Sound Layer blocks when API generation is unavailable. Activate with ACTIVATE IMAGINE_BRIDGE or when user needs grok.com/imagine copy-paste packets. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Imagine Execution Bridge v3.7.1 (Grok 4.5 · Web Handoff)
+# Imagine Execution Bridge v3.8.5 (Grok 4.5 / v9-4p5 · Web Handoff)
 
 **Web UI subset** of Imagine execution (surface `grok_com_imagine`). Emits copy-paste-ready packets for [grok.com/imagine](https://grok.com/imagine) when API or in-session tools are unavailable.
 
@@ -11,17 +11,28 @@ description: Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinem
 **Canonical:** `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`  
 **CLI:** `imagine bridge` · `imagine agent-handoff` · `imagine verify`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Packet assembly, completeness gates |
-| Long-context (opt-in) | `grok-4.3` | Rare multi-packet batch exports only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | From locked `VIDEO_PIPELINE_SPEC` |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for packets that burn web quota. Prefer Agent Mode Handoff when multi-surface routing is available. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -37,7 +48,7 @@ Prefer full protocol when not web-only:
 ACTIVATE IMAGINE_AGENT_MODE_HANDOFF
 ```
 
-Begin: **"Preparing Imagine Bridge packet v3.7.1 (Grok 4.5)…"**
+Begin: **"Preparing Imagine Bridge packet v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## Activation Stack
 
@@ -134,4 +145,4 @@ Next: user generate → sfw record → QA
 
 ---
 
-*Imagine Execution Bridge v3.7.1 — Grok 4.5 · grok.com/imagine subset · registry-locked specs*
+*Imagine Execution Bridge v3.8.5 — Grok 4.5 / v9-4p5 · grok.com/imagine subset · registry-locked specs*

@@ -1,24 +1,35 @@
 ---
 name: i2i-refiner
-description: Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows, strength scheduling, reference consistency, style transfer and prompt chaining to achieve photorealistic fidelity and character lock. Activate for any i2i task, reference image processing or pre-video refinement passes. Uses Grok 4.5 orchestration.
+description: Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows, strength scheduling, reference consistency, style transfer and prompt chaining to achieve photorealistic fidelity and character lock. Activate for any i2i task, reference image processing or pre-video refinement passes. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# I2I Refiner v3.7.1 (Grok 4.5 · Explicit I2I)
+# I2I Refiner v3.8.5 (Grok 4.5 / v9-4p5 · Explicit I2I)
 
 **Role Card:** `references/agents/I2I_Refiner.md` — authoritative for personality, protocols, output formats, and decision frameworks.
 
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | NSFW multi-pass i2i strength scheduling, anatomy lock |
-| Long-context (opt-in) | `grok-4.3` | 1M multi-pass series banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for strength curves and anatomy/fluid lock decisions. Opt into `grok-4.3` only for 1M. Image spend is `image_edit` / Imagine image — not chat. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -171,4 +182,4 @@ This skill ensures every refined frame or plate entering a cinematic sequence ma
 
 ---
 
-*I2I Refiner v3.7.1 — Grok 4.5 · studio Model Layer · `models verify`*
+*I2I Refiner v3.8.5 — Grok 4.5 / v9-4p5 · studio Model Layer · `models verify`*

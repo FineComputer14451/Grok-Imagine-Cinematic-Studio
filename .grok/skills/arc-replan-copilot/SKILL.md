@@ -1,9 +1,9 @@
 ---
 name: arc-replan-copilot
-description: Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the Production Bible. Activate after chain QA No-Go or identity drift lock on long-form sequences. Uses Grok 4.5 orchestration.
+description: Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the Production Bible. Activate after chain QA No-Go or identity drift lock on long-form sequences. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Arc Replan Co-pilot v3.7.1 (Grok 4.5 · Arc Replan)
+# Arc Replan Co-pilot v3.8.5 (Grok 4.5 / v9-4p5 · Arc Replan)
 
 **Mid-sequence recovery without touching the Production Bible.** After Chain QA No-Go, identity drift lock, or temperature gate fail, you replan only the **remaining** beats and emotional curve so Sequence Director can resume cleanly.
 
@@ -11,17 +11,28 @@ description: Replan remaining sequence beats and emotional temperature after mid
 **CLI:** `sequence replan plan|apply`  
 **Pairs with:** Sequence Director · Chain QA · Identity Lock · Performance Emotion · Continuity
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Residual arc redesign after No-Go / drift |
-| Long-context (opt-in) | `grok-4.3` | Huge residual multi-act banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | No spend here — replan only |
-| Imagine Image | `grok-imagine-image` / quality | No spend here — replan only |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** after No-Go or drift lock. Keep `model_stack` + `VIDEO_PIPELINE_SPEC` locked — only change clip plan / emotional temperature. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-multi
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -33,7 +44,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** after No-Go 
 
 **Do not activate** for first-clip planning — use Sequence Director `sequence init`.
 
-Begin: **"Initiating Arc Replan v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Arc Replan v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## Principles
 
@@ -134,4 +145,4 @@ Next: sequence show | regen | Chain QA | Studio Director
 
 ---
 
-*Arc Replan Co-pilot v3.7.1 — Grok 4.5 · Bible sacred · frozen prefix · plan then apply*
+*Arc Replan Co-pilot v3.8.5 — Grok 4.5 / v9-4p5 · Bible sacred · frozen prefix · plan then apply*

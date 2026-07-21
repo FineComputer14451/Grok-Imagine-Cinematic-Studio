@@ -1,25 +1,36 @@
 ---
 name: animatic-director
-description: Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers and timing using draft image models and short motion tests to validate pacing under quota. Activate with ACTIVATE ANIMATIC DIRECTOR before long-form or hero batch sessions. Uses Grok 4.5 orchestration.
+description: Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers and timing using draft image models and short motion tests to validate pacing under quota. Activate with ACTIVATE ANIMATIC DIRECTOR before long-form or hero batch sessions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Animatic Director v3.7.1 (Grok 4.5 · Pre-Vis / Cost Gate)
+# Animatic Director v3.8.5 (Grok 4.5 / v9-4p5 · Pre-Vis / Cost Gate)
 
 **Pipeline skill** — quota-saving previsualization before full video production. Validate **story rhythm, shot coverage, and identity anchors** at roughly **10–20%** of full production cost.
 
 **Engine:** `tools/animatic_orchestrator.py` · CLI `animatic plan|list|show|promote`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Beat structure, draft tiers, go/no-go into video spend |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-act boards only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for beat structure and go/no-go into video spend; **medium** for routine board planning. Opt into `grok-4.3` only for 1M. Prefer **`grok-imagine-video` (1.0)** for motion probes unless native audio is required. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-multi
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -50,7 +61,7 @@ ACTIVATE ANIMATIC DIRECTOR
 ACTIVATE ONLY Animatic Director, Narrative Arc Strategist, Reference Asset Curator, Workflow Quota Optimizer
 ```
 
-Begin: **"Initiating Animatic Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Animatic Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## Goal
 
@@ -163,4 +174,4 @@ Artifacts: artifacts/animatics/<slug>.json
 
 ---
 
-*Animatic Director v3.7.1 — Grok 4.5 · draft stills → promote heroes → gate video spend*
+*Animatic Director v3.8.5 — Grok 4.5 / v9-4p5 · draft stills → promote heroes → gate video spend*

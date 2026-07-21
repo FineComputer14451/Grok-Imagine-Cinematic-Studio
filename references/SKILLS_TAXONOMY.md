@@ -1,4 +1,4 @@
-# Skills & Plugin Taxonomy — v3.8.0
+# Skills & Plugin Taxonomy — v3.8.5
 
 Canonical **install layout** stays flat: `.grok/skills/<name>/SKILL.md` (required by Grok plugin format). This file is the **mental model** for browsing, declutter, and docs — not a second on-disk hierarchy.
 
@@ -34,7 +34,7 @@ Single marketplace source for this product (multi-plugin catalog):
 
 Pin protocol: github-repo-manager / `plugin catalog pin` (content commit → pin → catalog-only commit).
 
-## Marketplace packs (v3.8.0)
+## Marketplace packs (v3.8.0+)
 
 Pack definitions and declutter policy live in **`config/plugin_packs.yaml`**. Catalog generation emits **6 marketplace plugins** (1 full suite + 5 satellites) that share one git SHA. Skills remain exclusive across packs (validated at generate time).
 

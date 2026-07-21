@@ -1,25 +1,36 @@
 ---
 name: ai-image-recreation
-description: AI recreation editing style transfer enhancement and variation of user-uploaded images via Grok Imagine image_edit and image_gen. Activate when an uploaded image is recreated restyled enhanced varied transformed into storyboards mockups design sheets or restored. Grok 4.5 orchestration with multi-pass refinement Identity Lock handoff and pre-video plate prep for SuperGrokPro and Cinematic Studio.
+description: AI recreation editing style transfer enhancement and variation of user-uploaded images via Grok Imagine image_edit and image_gen. Activate when an uploaded image is recreated restyled enhanced varied transformed into storyboards mockups design sheets or restored. Grok 4.5 orchestration with multi-pass refinement Identity Lock handoff and pre-video plate prep for SuperGrokPro and Cinematic Studio. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# AI Image Recreation v3.7.1 (Grok 4.5 · Imagine Image)
+# AI Image Recreation v3.8.5 (Grok 4.5 / v9-4p5 · Imagine Image)
 
 **Scope:** User-uploaded (or path-provided) reference images → faithful recreation, style transfer, enhancement, restoration, variation, and production-ready plates.
 
 **Sibling skills:** `generated-image-editor` (session Grok outputs by ID/path) · `i2i-cinematic-refiner` / `i2i-refiner` (multi-pass cinematic / explicit polish) · `imagine` (core tool craft) · `character-dna-extractor` (identity lock from refs)
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Intent parse, multi-pass planning, QA, handoffs |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-ref series / long memory banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug) on multi-turn `grok-4.5` loops. Reasoning **high** for identity-critical multi-pass and DNA handoffs; **medium** for routine style transfers; **low** only for trivial routing. Image spend is `image_edit` / `image_gen` (and video tools), never chat models as generators. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -46,7 +57,7 @@ Prefer stable `prompt_cache_key` (project slug) on multi-turn `grok-4.5` loops. 
 ACTIVATE AI_IMAGE_RECREATION
 ```
 
-Begin work with: **"Initiating AI Image Recreation Protocol v3.7.1 (Grok 4.5)…"**
+Begin work with: **"Initiating AI Image Recreation Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## Tool Map (Grok Build Imagine)
 
@@ -271,7 +282,7 @@ Next recommended: <iterate | DNA | i2i | i2v | Studio Director | done>
 | `references/prompt-library.md` | Templates: fidelity, styles, restore, variations, storyboard, product, adult |
 | `references/adult-cheat-sheet.md` | Fast intensity + category keywords |
 | `~/.grok/skills/imagine/SKILL.md` | Global image_gen / image_edit craft rules |
-| Studio `MODEL_LAYER_v3.7.1.md` | Canonical model stack |
+| Studio `MODEL_LAYER_v4.5.md` | Canonical model stack |
 
 ## Quality Bar
 
@@ -282,4 +293,4 @@ Next recommended: <iterate | DNA | i2i | i2v | Studio Director | done>
 
 ---
 
-*AI Image Recreation v3.7.1 — Grok 4.5 orchestration · Imagine image_edit / image_gen · SuperGrokPro + Cinematic Studio compatible*
+*AI Image Recreation v3.8.5 — Grok 4.5 / v9-4p5 orchestration · Imagine image_edit / image_gen · SuperGrokPro + Cinematic Studio compatible*

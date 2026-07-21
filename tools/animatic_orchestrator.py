@@ -21,7 +21,7 @@ from quota_optimizer import estimate_clip_cost
 from studio_paths import ANIMATIC_DIR
 
 SCHEMA_VERSION = "1.0"
-STUDIO_AGENT_VERSION = "v3.7.1"
+STUDIO_AGENT_VERSION = "v3.8.5"
 
 TIER_MODELS: dict[str, dict[str, str]] = {
     "draft": {"image": DEFAULT_IMAGINE_IMAGE_MODEL, "video": "grok-imagine-video"},

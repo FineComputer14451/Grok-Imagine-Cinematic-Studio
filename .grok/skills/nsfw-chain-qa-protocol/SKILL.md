@@ -1,9 +1,9 @@
 ---
 name: nsfw-chain-qa-protocol
-description: NSFW extend and stitch chain QA protocol for intimate Grok Imagine Video 1.5 sequences. Runs the weighted 8-point artifact-aware gate before approving clips for erotic extension or final stitch. Activate with RUN NSFW CHAIN QA REVIEW alongside ErosForge NSFW Sequence Extender and QA Guardian. Uses Grok 4.5 orchestration.
+description: NSFW extend and stitch chain QA protocol for intimate Grok Imagine Video 1.5 sequences. Runs the weighted 8-point artifact-aware gate before approving clips for erotic extension or final stitch. Activate with RUN NSFW CHAIN QA REVIEW alongside ErosForge NSFW Sequence Extender and QA Guardian. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# NSFW Chain QA Protocol v3.7.1 (Grok 4.5 · Intimate Chain Gate)
+# NSFW Chain QA Protocol v3.8.5 (Grok 4.5 / v9-4p5 · Intimate Chain Gate)
 
 **Pipeline skill** — weighted 8-point artifact-aware gate for explicit/intimate extend and stitch. Complements QA Guardian’s per-clip 16-point review; does **not** replace it.
 
@@ -11,17 +11,28 @@ description: NSFW extend and stitch chain QA protocol for intimate Grok Imagine 
 **Implementation:** `tools/nsfw_sequence_extender.py` (`NSFW_CHAIN_QA_CHECKS`)  
 **Script:** `.grok/skills/nsfw-chain-qa-protocol/scripts/nsfw_chain_qa.py`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Intimate go/no-go scoring (always high reasoning) |
-| Long-context (opt-in) | `grok-4.3` | 1M multi-clip intimate audits only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | Gate before further 1.0/1.5 spend |
-| Imagine Image | `grok-imagine-image` / quality | Plate re-locks if needed |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for all score + gate decisions (never low). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -37,7 +48,7 @@ ACTIVATE EROSFORGE
 RUN NSFW CHAIN QA REVIEW
 ```
 
-Begin: **"Running NSFW Chain QA Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Running NSFW Chain QA Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## Philosophy
 
@@ -146,4 +157,4 @@ Next: extend | regen | Arc Replan | stitch blocked
 
 ---
 
-*NSFW Chain QA Protocol v3.7.1 — Grok 4.5 · fail closed on criticals · no extend on No-Go*
+*NSFW Chain QA Protocol v3.8.5 — Grok 4.5 / v9-4p5 · fail closed on criticals · no extend on No-Go*

@@ -7,23 +7,28 @@ description: Activate the full Grok Imagine Cinematic Studio v3.8.5 Odyssey Nati
 
 **You are now in full Cinematic Studio v3.8.5 mode** (Grok 4.5 / v9-4p5 stack + guided Bible wizard + Imagine Agent Mode Handoff + Imagine Video 1.0/1.5 dual).
 
-## Model Layer (Grok 4.5 · studio v3.8.5)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` / `grok-v9-4p5-multi` | Full suite activation, multi-agent orchestration |
-| High-reasoning specialist | `grok-v9-4p5-chat-expert` | Deep Bible/QA/prompt craft |
-| Fast routing | `grok-4-auto` | Routine specialist hops |
-| Long-context (opt-in) | `grok-4.3` | 1M memory banks (`--chat-model grok-4.3`) |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v4.5.md` · `MODEL_LAYER_v3.7.1.md` · `tools/models.py`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
-This skill activates the complete **v3.8.5 "Odyssey Native"** production suite: **23 core agents** plus **9 specialists** (Tier 1 production pipeline, i2i refinement, opt-in NSFW) as a professional cinematic film studio with unified Grok 4.5 cinematic+Build default with optional 4.3 1M and native image-to-video + optional one-pass synchronized audio.
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-multi
+```
 
-The authoritative Role Cards for all agents are maintained in `references/agents/` (see `AGENT_INDEX.md`). These are the single source of truth. CLI agent labels remain **v3.6.5**; studio release is **v3.8.5** (v4.5 dual-model wave).
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## Available Agents (Role Cards v3.6.5+ · studio v3.8.5)
 
@@ -137,7 +142,7 @@ Studio Director **owns** surface selection and must not hand off video without I
 - NSFW via ErosForge + `nsfw-quota-orchestrator` + `nsfw-sequence-extender` (explicit only)
 - Quota-aware production with xAI per-second pricing (`workflow-quota-optimizer`)
 - **Grok 4.5 / v9-4p5 model stack** — CLI `grok-4.5` (min 0.2.93) / fork `grok-build`; opt-in `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto`; 1M `grok-4.3`; Imagine 1.0 default + 1.5 native audio (`tools/models.py`, `references/agents/MODEL_LAYER_v4.5.md`)
-- Plugin marketplace (48 skills + 11 commands) with release-pin hygiene
+- Plugin marketplace (51 skills + 11 commands) with release-pin hygiene
 - Authoritative Role Cards in `references/agents/` (each embeds Model Layer Grok 4.5)
 
 ## Quick Commands

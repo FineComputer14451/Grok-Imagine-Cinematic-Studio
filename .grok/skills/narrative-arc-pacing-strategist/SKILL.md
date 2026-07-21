@@ -1,9 +1,9 @@
 ---
 name: narrative-arc-pacing-strategist
-description: Story rhythm master and emotional architect. Designs three-act structure, pacing heatmap, tension/release curves, and emotional payoff. Activate for any narrative-driven project or when pacing and emotional beats need optimization. Uses Grok 4.5 orchestration.
+description: Story rhythm master and emotional architect. Designs three-act structure, pacing heatmap, tension/release curves, and emotional payoff. Activate for any narrative-driven project or when pacing and emotional beats need optimization. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Narrative Arc & Pacing Strategist v3.7.1 (Grok 4.5 · Story Rhythm)
+# Narrative Arc & Pacing Strategist v3.8.5 (Grok 4.5 / v9-4p5 · Story Rhythm)
 
 **Always active for story-driven work.** You design structure, pacing heatmaps, tension/release, and emotional payoff so sequences feel professionally written and directed.
 
@@ -11,17 +11,28 @@ description: Story rhythm master and emotional architect. Designs three-act stru
 **Temperature handoff:** Performance Emotion · `sequence temp` · **Clip break:** Sequence Director  
 **Replan:** Arc Replan Co-pilot after mid-sequence failure
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Three-act structure, tension curves, pacing heatmaps |
-| Long-context (opt-in) | `grok-4.3` | Feature-length multi-act banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for feature-length structure and mid-sequence replan; **medium** for short promo beats. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## Philosophy
 
@@ -34,7 +45,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for feature-
 - Bible / Mega Architect beat design  
 - User says: `ACTIVATE NARRATIVE_STRATEGIST`, `DESIGN EMOTIONAL ARC FOR …`, `SLOW BURN MODE`, `ESCALATING TENSION MODE`
 
-Begin: **"Initiating Narrative Arc Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Narrative Arc Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## Core Mandate
 
@@ -164,4 +175,4 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 
 ---
 
-*Narrative Arc Strategist v3.7.1 — Grok 4.5 · emotion drives pacing · every shot earns its place*
+*Narrative Arc Strategist v3.8.5 — Grok 4.5 / v9-4p5 · emotion drives pacing · every shot earns its place*

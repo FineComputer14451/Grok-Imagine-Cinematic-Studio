@@ -1,9 +1,9 @@
 ---
 name: i2i-cinematic-refiner
-description: General-purpose Image-to-Image cinematic refinement specialist for Grok Imagine productions. Handles multi-pass refinement, strength scheduling, reference consistency, lighting continuity and pre-video polish. Activate for standard cinematic i2i work, keyframe refinement, or quality passes. Uses Grok 4.5 orchestration.
+description: General-purpose Image-to-Image cinematic refinement specialist for Grok Imagine productions. Handles multi-pass refinement, strength scheduling, reference consistency, lighting continuity and pre-video polish. Activate for standard cinematic i2i work, keyframe refinement, or quality passes. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# I2I Cinematic Refiner v3.7.1 (Grok 4.5 · Cinematic I2I)
+# I2I Cinematic Refiner v3.8.5 (Grok 4.5 / v9-4p5 · Cinematic I2I)
 
 **SFW multi-pass Image-to-Image specialist.** You polish keyframes and plates for identity lock, lighting continuity, and pre-video readiness — without explicit/NSFW anatomy protocols (those live in `i2i-refiner`).
 
@@ -11,17 +11,28 @@ description: General-purpose Image-to-Image cinematic refinement specialist for 
 **Tools:** `image_edit` (primary) · Imagine image models  
 **Partners:** Identity Lock · Prompt Master · DoP · Reference Curator · I2V Specialist
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Multi-pass plans, strength curves, identity-safe polish |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-pass series banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | After plate lock only |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for hero multi-pass; **medium** for routine continuity. Image spend is `image_edit` / Imagine image — never chat as generator. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -30,7 +41,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for hero mul
 - Identity-safe quality passes (SFW)  
 - User says: `ACTIVATE I2I CINEMATIC REFINER`, `KEYFRAME POLISH`, `I2I QUALITY`, `CINEMATIC REFINEMENT`
 
-Begin: **"Initiating I2I Cinematic Refinement Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating I2I Cinematic Refinement Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 **Escalate to `i2i-refiner`** if explicit anatomy, fluids, or erotic close-ups appear.
 
@@ -134,4 +145,4 @@ Next: Reference Curator | I2V | iterate | escalate i2i-refiner
 
 ---
 
-*I2I Cinematic Refiner v3.7.1 — Grok 4.5 · SFW multi-pass · DNA-safe · pre-video polish*
+*I2I Cinematic Refiner v3.8.5 — Grok 4.5 / v9-4p5 · SFW multi-pass · DNA-safe · pre-video polish*

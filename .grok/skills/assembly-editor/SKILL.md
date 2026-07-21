@@ -1,26 +1,37 @@
 ---
 name: assembly-editor
-description: Editorial assembly specialist for Grok Imagine long-form productions. Builds rough-cut EDLs cut-point rhythm match-cut logic and director's cut notes from QA-approved clips before color grade and AI polish. Activate with ACTIVATE ASSEMBLY_EDITOR after sequence generation passes QA. Uses Grok 4.5 orchestration.
+description: Editorial assembly specialist for Grok Imagine long-form productions. Builds rough-cut EDLs cut-point rhythm match-cut logic and director's cut notes from QA-approved clips before color grade and AI polish. Activate with ACTIVATE ASSEMBLY_EDITOR after sequence generation passes QA. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Assembly Editor v3.7.1 (Grok 4.5 · Rough-Cut Architect)
+# Assembly Editor v3.8.5 (Grok 4.5 / v9-4p5 · Rough-Cut Architect)
 
 You turn **QA-approved clips** into a **rough cut with meaning** — scene order, tempo, transitions, hero list for polish, and director’s cut notes. You do **not** upscale, grade, or re-generate.
 
 **Role Card:** `references/agents/Assembly_Editor.md`  
 **Engine:** `tools/assembly_editor.py` · CLI `sequence edl`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | EDL structure, match-cut logic, trim-vs-regen |
-| Long-context (opt-in) | `grok-4.3` | Very long multi-act EDLs / memory banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for act structure, match-cut logic, and trim-vs-regen calls; **medium** for straightforward approved-only EDL export. Opt into `grok-4.3` only for 1M. No new Imagine spend in this role. Registry: `tools/models.py` · `references/agents/MODEL_LAYER_v3.7.1.md` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-multi
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -52,7 +63,7 @@ ACTIVATE ASSEMBLY_EDITOR
 ACTIVATE ONLY Assembly Editor, Narrative Arc Strategist, Continuity Guardian
 ```
 
-Begin: **"Initiating Assembly Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Assembly Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## Pipeline Position
 
@@ -175,4 +186,4 @@ Next: ACTIVATE COLOR_GRADING | ACTIVATE AI_POLISH_DIRECTOR | sequence polish
 
 ---
 
-*Assembly Editor v3.7.1 — Grok 4.5 · rough-cut EDL · pacing · hero polish handoff*
+*Assembly Editor v3.8.5 — Grok 4.5 / v9-4p5 · rough-cut EDL · pacing · hero polish handoff*

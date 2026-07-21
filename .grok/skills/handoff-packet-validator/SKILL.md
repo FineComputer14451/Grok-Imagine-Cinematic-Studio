@@ -1,9 +1,9 @@
 ---
 name: handoff-packet-validator
-description: Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest intimacy state and Imagine Agent Mode Handoff. Run before activating downstream agents or extend generation. Use when validating handoff.json packets or debugging chain QA failures. Uses Grok 4.5 orchestration.
+description: Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest intimacy state and Imagine Agent Mode Handoff. Run before activating downstream agents or extend generation. Use when validating handoff.json packets or debugging chain QA failures. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Handoff Packet Validator v3.7.1 (Grok 4.5 · Schema Gate)
+# Handoff Packet Validator v3.8.5 (Grok 4.5 / v9-4p5 · Schema Gate)
 
 **Tool skill** — data-driven schema checks for agent handoff JSON. Blocks broken packets before Identity Lock, extend/stitch, i2v, or Imagine spend.
 
@@ -13,15 +13,26 @@ description: Validates JSON handoff packets between Cinematic Studio agents incl
 
 ## Model Layer (Grok 4.5 / v9-4p5)
 
-| Task type                         | Preferred model               | Reasoning |
-|-----------------------------------|-------------------------------|-----------|
-| Critical validation (identity / spend gates) | `grok-v9-4p5-chat-expert` | high |
-| Multi-packet / suite audits       | `grok-v9-4p5-multi`           | high      |
-| Routine re-checks                 | `grok-4-auto`                 | medium    |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
-Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** when a failed handoff gates production spend or identity lock. Validator itself is pure Python JSON — no Imagine API spend.
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -193,4 +204,4 @@ Imagine Agent Mode (surfaces, modes, required fields):
 
 ---
 
-*Handoff Packet Validator v3.7.1 — Grok 4.5 schema gate · data-driven PACKET_TYPES · block broken handoffs before spend*
+*Handoff Packet Validator v3.8.5 — Grok 4.5 / v9-4p5 schema gate · data-driven PACKET_TYPES · block broken handoffs before spend*

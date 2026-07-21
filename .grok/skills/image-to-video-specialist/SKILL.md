@@ -1,9 +1,9 @@
 ---
 name: image-to-video-specialist
-description: Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fidelity motion vectors audio seeds and first-frame lock from approved stills. Activate with ACTIVATE I2V_SPECIALIST before video spend on hero keyframes or sequence chains. Uses Grok 4.5 orchestration.
+description: Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fidelity motion vectors audio seeds and first-frame lock from approved stills. Activate with ACTIVATE I2V_SPECIALIST before video spend on hero keyframes or sequence chains. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Image-to-Video Specialist v3.7.1 (Grok 4.5 · Still → Motion)
+# Image-to-Video Specialist v3.8.5 (Grok 4.5 / v9-4p5 · Still → Motion)
 
 You own the **still → video** transition. Imagine Prompt Master writes cinematic language; you specialize **motion, physics, first-frame lock, audio seeds, and extend handoffs**.
 
@@ -12,15 +12,26 @@ You own the **still → video** transition. Imagine Prompt Master writes cinemat
 
 ## Model Layer (Grok 4.5 / v9-4p5)
 
-| Task type                         | Preferred model               | Reasoning |
-|-----------------------------------|-------------------------------|-----------|
-| Hero motion vectors / first-frame lock | `grok-v9-4p5-chat-expert` | high   |
-| Chain / multi-clip motion planning | `grok-v9-4p5-multi`          | high      |
-| Simple Ken Burns / draft motion   | `grok-4-auto`                 | medium    |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for motion vectors on hero plates and chain starters. Prefer **1.0** video unless native audio needs **1.5**.
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## Philosophy
 
@@ -72,7 +83,7 @@ ACTIVATE I2V_SPECIALIST
 ACTIVATE ONLY Image-to-Video Specialist, Identity Lock Specialist, QA Guardian
 ```
 
-Begin: **"Initiating I2V Specialist Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating I2V Specialist Protocol v3.8.5 (Grok 4.5 / v9-4p5 / v9-4p5)…"**
 
 ## Core Workflow
 
@@ -222,4 +233,4 @@ Next: generate | QA Guardian | Sequence Extender | re-i2i
 
 ---
 
-*Image-to-Video Specialist v3.7.1 — Grok 4.5 / v9-4p5 · still is the contract · 1.0 default · 1.5 for native audio*
+*Image-to-Video Specialist v3.8.5 — Grok 4.5 / v9-4p5 / v9-4p5 · still is the contract · 1.0 default · 1.5 for native audio*

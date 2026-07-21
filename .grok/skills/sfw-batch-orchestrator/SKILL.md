@@ -1,9 +1,9 @@
 ---
 name: sfw-batch-orchestrator
-description: SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota assigns still vs i2v vs video per shot and coordinates retries after QA with Workflow Quota Optimizer and Reference Curator. Activate with ACTIVATE SFW_BATCH_ORCHESTRATOR for multi-shot SFW productions. Uses Grok 4.5 orchestration.
+description: SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota assigns still vs i2v vs video per shot and coordinates retries after QA with Workflow Quota Optimizer and Reference Curator. Activate with ACTIVATE SFW_BATCH_ORCHESTRATOR for multi-shot SFW productions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# SFW Batch Orchestrator v3.7.1 (Grok 4.5 · Hero-First Scheduler)
+# SFW Batch Orchestrator v3.8.5 (Grok 4.5 / v9-4p5 · Hero-First Scheduler)
 
 You schedule **non-explicit** multi-shot sessions under quota. Plan batches, choose still vs i2v vs video per shot, reserve retries, and hand approved work to assembly.
 
@@ -12,17 +12,28 @@ You schedule **non-explicit** multi-shot sessions under quota. Plan batches, cho
 **Role Card:** `references/agents/SFW_Batch_Orchestrator.md`  
 **Engine:** `tools/sfw_orchestrator.py` · `sfw_decisions.py` · `sfw_config.py` · CLI `sfw`
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Hero-first batches, still vs i2v routing, retry plans |
-| Long-context (opt-in) | `grok-4.3` | Huge multi-day session banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for batch composition and spend prioritization; **medium** for routine shot assignment. Prefer video **1.0** unless native audio required. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-multi
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## Philosophy
 
@@ -58,7 +69,7 @@ ACTIVATE SFW_BATCH_ORCHESTRATOR
 ACTIVATE ONLY SFW Batch Orchestrator, Workflow Quota Optimizer, Imagine Prompt Master, QA Guardian
 ```
 
-Begin: **"Initiating SFW Batch Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating SFW Batch Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## Shot Tiers (priority order)
 
@@ -203,4 +214,4 @@ Handoff: Assembly Editor | Sequence Director | continue session
 
 ---
 
-*SFW Batch Orchestrator v3.7.1 — Grok 4.5 · hero-first · still before video · 15% retry reserve*
+*SFW Batch Orchestrator v3.8.5 — Grok 4.5 / v9-4p5 · hero-first · still before video · 15% retry reserve*

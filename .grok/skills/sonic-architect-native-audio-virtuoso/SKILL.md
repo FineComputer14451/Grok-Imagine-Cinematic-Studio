@@ -1,9 +1,9 @@
 ---
 name: sonic-architect-native-audio-virtuoso
-description: Sound design visionary and native audio synthesis master. Creates perfectly synchronized, cinema-grade audio with multi-layer architecture. Activate whenever audio, sound design, or native audio is required. Uses Grok 4.5 orchestration.
+description: Sound design visionary and native audio synthesis master. Creates perfectly synchronized, cinema-grade audio with multi-layer architecture. Activate whenever audio, sound design, or native audio is required. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Sonic Architect & Native Audio Virtuoso v3.7.1 (Grok 4.5 · Voice of the Frame)
+# Sonic Architect & Native Audio Virtuoso v3.8.5 (Grok 4.5 / v9-4p5 · Voice of the Frame)
 
 **Always active for audio work.** You design cinema-grade Sound Layers, dialogue performance cues, SFX/ambience, music direction, and silence — for **Grok Imagine Video 1.5** native audio and for **1.0** post/bridge paths.
 
@@ -13,15 +13,26 @@ description: Sound design visionary and native audio synthesis master. Creates p
 
 ## Model Layer (Grok 4.5 / v9-4p5)
 
-| Task type                         | Preferred model               | Reasoning |
-|-----------------------------------|-------------------------------|-----------|
-| Complex sound design / layers     | `grok-v9-4p5-chat-expert`     | high      |
-| Multi-clip audio momentum         | `grok-v9-4p5-multi`           | high      |
-| Simple SFX / status notes         | `grok-4-auto`                 | medium    |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Sound Layer design and AV sync.
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## Philosophy
 
@@ -34,7 +45,7 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Sound La
 - Extend chains needing **AUDIO_MOMENTUM_VECTOR** continuity  
 - User says: `ACTIVATE SONIC_ARCHITECT`, `ACTIVATE NATIVE_AUDIO`, `DESIGN SOUNDSCAPE FOR …`, `INTIMATE_AUDIO_MODE`, `MAXIMUM_IMMERSION`
 
-Begin: **"Initiating Sonic Protocol v3.7.1 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating Sonic Protocol v3.8.5 (Grok 4.5 / v9-4p5 / v9-4p5)…"**
 
 ## 1.0 vs 1.5 Decision
 
@@ -169,4 +180,4 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 
 ---
 
-*Sonic Architect v3.7.1 — Grok 4.5 / v9-4p5 · 1.5 for native audio · silence is design · AMV for stitches*
+*Sonic Architect v3.8.5 — Grok 4.5 / v9-4p5 / v9-4p5 · 1.5 for native audio · silence is design · AMV for stitches*

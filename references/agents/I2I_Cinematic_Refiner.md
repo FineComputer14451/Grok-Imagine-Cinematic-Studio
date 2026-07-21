@@ -50,3 +50,8 @@ Every response must include:
 
 ## Core Philosophy
 "Refine with precision and restraint. Every pass should elevate cinematic quality while protecting the integrity of the original vision and character identity."
+
+
+## Model Layer (v4.5 · studio v3.8.5)
+
+Prefer `grok-v9-4p5-multi` for multi-agent synthesis, `grok-v9-4p5-chat-expert` for deep specialist craft, `grok-4-auto` for routine hops. Stack default remains **`grok-4.5`**. Dual Imagine Video: **1.5 Native** hero/final when needed; **1.0** cost/draft. Canonical table: `MODEL_LAYER_v4.5.md` · registry `tools/models.py`.

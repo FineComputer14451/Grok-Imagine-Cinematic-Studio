@@ -5,7 +5,7 @@
 
 ## Highlights
 
-16 core skills upgraded to a uniform **Grok 4.5 / v9-4p5 Model Layer** with explicit dual **Imagine Video 1.0 + 1.5 Native** support.
+Full suite dual-model alignment (all **51** skills; initial wave covered 16 core specialists, completed for remaining skills) to a uniform **Grok 4.5 / v9-4p5 Model Layer** with explicit dual **Imagine Video 1.0 + 1.5 Native** support.
 
 ### Identity & Continuity
 - `character-dna-extractor`
@@ -72,6 +72,15 @@ python tools/cinematic_studio_cli.py version   # should report 3.8.5
 python tools/cinematic_studio_cli.py validate
 bash scripts/cinematic_studio.sh verify
 ```
+
+
+## Post-tag alignment (repo main)
+
+- Skill suite **51** (added `cinematic-skill-creator`, `extend-frame-to-video`, `quota-dashboard`)
+- Full `model_compatibility` coverage across the suite
+- `tools/models.py` full registry API restored for CLI/handoff
+- Generation Tracker CLI (`cinematic-studio generation …`)
+- Docs / activation / installer cascade to **v3.8.5**
 
 ## Activation
 

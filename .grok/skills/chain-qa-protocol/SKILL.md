@@ -1,9 +1,9 @@
 ---
 name: chain-qa-protocol
-description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approving clips for extension or final stitch. Activate with RUN CHAIN QA REVIEW alongside Sequence Director and Cinematic Sequence Extender. Uses Grok 4.5 orchestration.
+description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approving clips for extension or final stitch. Activate with RUN CHAIN QA REVIEW alongside Sequence Director and Cinematic Sequence Extender. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Chain QA Protocol v3.7.1 (Grok 4.5 · Extend/Stitch Gate)
+# Chain QA Protocol v3.8.5 (Grok 4.5 / v9-4p5 · Extend/Stitch Gate)
 
 **Pipeline skill** — boundary continuity gate for multi-clip sequences. Complements QA Guardian’s **per-clip 16-point** review; does **not** replace it.
 
@@ -12,17 +12,28 @@ description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequ
 **Assist:** `tools/chain_qa_assist.py` · CLI `sequence qa` / `sequence qa-assist`  
 **NSFW variant:** `nsfw-chain-qa-protocol` (8-point artifact-aware)
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.5 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | 10-point chain gates, go/no-go before extend/stitch |
-| Long-context (opt-in) | `grok-4.3` | Very long multi-act health reviews only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
+| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Routine status / draft passes | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for go/no-go and regen vs conditional-fix. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+### Imagine Video dual-path (when this skill touches video)
+- **1.5 Native** — preferred for hero / final motion with audio when budget allows
+- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
 ## When to Activate
 
@@ -37,7 +48,7 @@ ACTIVATE ONLY Sequence Director, Cinematic Sequence Extender, Continuity Guardia
 RUN CHAIN QA REVIEW
 ```
 
-Begin: **"Initiating Chain QA Protocol v3.7.1 (Grok 4.5)…"**
+Begin: **"Initiating Chain QA Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
 
 ## When NOT Alone
 
@@ -182,4 +193,4 @@ Next: extend | fix handoff | regen plan | Assembly Editor (if final Go)
 
 ---
 
-*Chain QA Protocol v3.7.1 — Grok 4.5 · weighted 10-point stitch gate · critical floor 7.0*
+*Chain QA Protocol v3.8.5 — Grok 4.5 / v9-4p5 · weighted 10-point stitch gate · critical floor 7.0*
