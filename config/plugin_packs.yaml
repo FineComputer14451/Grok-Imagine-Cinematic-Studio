@@ -5,7 +5,7 @@ full_plugin:
   recommended: true
   display_name: "Grok Imagine Cinematic Studio (Full Suite)"
   description: >-
-    Full 23-agent cinematic suite — all skills and slash commands.
+    Full 23-agent cinematic suite — all 51 skills and slash commands.
     Recommended one-click install.
 
 packs:
@@ -30,8 +30,10 @@ packs:
       - imagine-execution-bridge
       - handoff-packet-validator
       - workflow-quota-optimizer
+      - quota-dashboard
       - quality-assurance-guardian
       - chain-qa-protocol
+      - cinematic-skill-creator
     commands:
       - cinematic
       - dna
@@ -70,6 +72,7 @@ packs:
     skills:
       - sequence-director
       - cinematic-sequence-extender
+      - extend-frame-to-video
       - narrative-arc-pacing-strategist
       - arc-replan-copilot
       - animatic-director

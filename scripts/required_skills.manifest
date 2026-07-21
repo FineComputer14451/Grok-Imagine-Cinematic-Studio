@@ -8,6 +8,7 @@ studio-director # core
 quality-assurance-guardian # core
 identity-lock-specialist # core
 workflow-quota-optimizer # core
+quota-dashboard
 ai-image-recreation
 ai-polish-director
 animatic-director
@@ -17,7 +18,9 @@ chain-qa-protocol
 character-dna-extractor
 cinematic-ffmpeg
 cinematic-studio-meta-installer
+cinematic-skill-creator
 continuity-consistency-guardian
+extend-frame-to-video
 director-of-photography
 director-of-photography-v3-3
 erosforge-nsfw-director

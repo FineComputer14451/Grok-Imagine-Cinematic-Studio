@@ -1,4 +1,4 @@
-# Cinematic Studio Meta Installer — Paths Reference v3.8.4 (Grok 4.5 · plugin suite + packs)
+# Cinematic Studio Meta Installer — Paths Reference v3.8.5 (Grok 4.5 · plugin suite + packs)
 
 ## Model stack (post-install)
 
@@ -13,11 +13,11 @@
 Config: `config/grok-build.example.toml` → `~/.grok/config.toml`  
 Verify: `python tools/cinematic_studio_cli.py models verify`  
 Model Layer: `references/agents/MODEL_LAYER_v3.7.1.md`  
-Studio release: **v3.8.4** (`VERSION`)
+Studio release: **v3.8.5** (`VERSION`)
 
 ## Install Methods
 
-Both paths can deliver the same skill suite (`scripts/required_skills.manifest` ≡ `.grok-plugin/plugin-index.json`, **48 skills**). Method B also lists **6 marketplace plugins** (full suite + 5 packs) from `config/plugin_packs.yaml`.
+Both paths can deliver the same skill suite (`scripts/required_skills.manifest` ≡ `.grok-plugin/plugin-index.json`, **51 skills**). Method B also lists **6 marketplace plugins** (full suite + 5 packs) from `config/plugin_packs.yaml`.
 
 ### Method A — Meta installer / release zip
 
@@ -31,7 +31,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagi
 bash scripts/cinematic_studio.sh install
 
 # Bootstrap zip (meta-installer only)
-unzip grok-imagine-cinematic-studio-meta-installer-v3.8.4.zip && ./bootstrap.sh
+unzip grok-imagine-cinematic-studio-meta-installer-v3.8.5.zip && ./bootstrap.sh
 ```
 
 Update: `bash scripts/cinematic_studio.sh update` (timestamped backup under `~/.grok/skills-backup-*`).
@@ -52,7 +52,7 @@ grok plugin install grok-imagine-cinematic-studio@finecomputer14451/grok-imagine
 
 | Plugin | Pack id | Role |
 |--------|---------|------|
-| `grok-imagine-cinematic-studio` | full suite (48) | Recommended |
+| `grok-imagine-cinematic-studio` | full suite (51) | Recommended |
 | `grok-imagine-cinematic-core` | `core` | Orchestration base |
 | `grok-imagine-camera-image` | `camera-image` | Camera / image |
 | `grok-imagine-sequence-narrative` | `sequence-narrative` | Sequence / narrative |
@@ -79,9 +79,9 @@ bash scripts/cinematic_studio.sh declutter --apply --keep-backups 1
 
 | Asset | Notes |
 |-------|--------|
-| Meta-installer zip | `grok-imagine-cinematic-studio-meta-installer-v3.8.4.zip` — skill + scripts; run `./bootstrap.sh` |
-| Full skills zip (latest) | `.../releases/latest/download/grok-imagine-cinematic-studio-skills-install-v3.8.4.zip` |
-| Full skills zip (versioned) | `.../releases/download/v3.8.4/grok-imagine-cinematic-studio-skills-install-v3.8.4.zip` |
+| Meta-installer zip | `grok-imagine-cinematic-studio-meta-installer-v3.8.5.zip` — skill + scripts; run `./bootstrap.sh` |
+| Full skills zip (latest) | `.../releases/latest/download/grok-imagine-cinematic-studio-skills-install-v3.8.5.zip` |
+| Full skills zip (versioned) | `.../releases/download/v3.8.5/grok-imagine-cinematic-studio-skills-install-v3.8.5.zip` |
 
 If a versioned zip is not published yet, use `latest` or install from a local clone of `main`.
 
@@ -104,7 +104,7 @@ If a versioned zip is not published yet, use `latest` or install from a local cl
 ## Activation
 
 ```
-Activate Grok Imagine Cinematic Studio v3.8.4
+Activate Grok Imagine Cinematic Studio v3.8.5
 ```
 
 Or slash command `/cinematic` after plugin install.

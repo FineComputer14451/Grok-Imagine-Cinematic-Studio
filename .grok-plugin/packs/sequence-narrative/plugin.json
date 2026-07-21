@@ -1,6 +1,6 @@
 {
   "name": "grok-imagine-sequence-narrative",
-  "version": "3.8.4",
+  "version": "3.8.5",
   "description": "Long-form sequence, continuity, performance, audio, action/VFX, and SFW batches.",
   "author": {
     "name": "FineComputer14451",
@@ -17,6 +17,7 @@
   "skills": [
     ".grok/skills/sequence-director",
     ".grok/skills/cinematic-sequence-extender",
+    ".grok/skills/extend-frame-to-video",
     ".grok/skills/narrative-arc-pacing-strategist",
     ".grok/skills/arc-replan-copilot",
     ".grok/skills/animatic-director",

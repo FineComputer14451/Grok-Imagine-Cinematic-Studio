@@ -6,13 +6,13 @@ Canonical **install layout** stays flat: `.grok/skills/<name>/SKILL.md` (require
 
 | Surface | Path | What belongs here |
 |---------|------|-------------------|
-| **Plugin (Method B)** | `~/.grok/installed-plugins/grok-imagine-cinematic-studio-*/` | All **48** studio skills + slash commands (full suite) |
+| **Plugin (Method B)** | `~/.grok/installed-plugins/grok-imagine-cinematic-studio-*/` | All **51** studio skills + slash commands (full suite) |
 | **Plugin packs (satellites)** | `~/.grok/installed-plugins/grok-imagine-*-*/` | Filtered pack views of the same skill tree (see Marketplace packs) |
 | **User-global skills** | `~/.grok/skills/` | Non-plugin skills only (`help`, `create-skill`, `docx`, `imagine`, …) |
 | **Repo / workspace** | `<clone>/.grok/skills/` | Authoritative source for development |
 | **Method A projects** | `~/Grok-Cinematic-Projects/` | CLI tools, references, config — **not** a second skill tree when plugin is primary |
 
-**Rule:** If the plugin is installed, do **not** also keep Method A copies of the same 48 skills under `~/.grok/skills/`. That triple-loads skills in Grok Build (workspace + plugin + user).
+**Rule:** If the plugin is installed, do **not** also keep Method A copies of the same 51 skills under `~/.grok/skills/`. That triple-loads skills in Grok Build (workspace + plugin + user).
 
 Declutter:
 
@@ -40,7 +40,7 @@ Pack definitions and declutter policy live in **`config/plugin_packs.yaml`**. Ca
 
 | Pack id | Plugin name | Role |
 |---------|-------------|------|
-| *(full)* | `grok-imagine-cinematic-studio` | Recommended — all 48 skills + commands |
+| *(full)* | `grok-imagine-cinematic-studio` | Recommended — all 51 skills + commands |
 | `core` | `grok-imagine-cinematic-core` | Orchestration, DNA, Imagine runtime, QA, quota, meta |
 | `camera-image` | `grok-imagine-camera-image` | DoP, production design, i2i, key art, i2v (requires `core`) |
 | `sequence-narrative` | `grok-imagine-sequence-narrative` | Sequence, continuity, performance, audio, action/VFX, SFW (requires `core`) |
@@ -53,12 +53,12 @@ cinematic-studio plugin packs
 
 Satellite manifests: `.grok-plugin/packs/<pack_id>/plugin.json`.
 
-## Skill groups (48)
+## Skill groups (51)
 
 Browse with: `cinematic-studio plugin list --grouped`
 
 ### Core / Orchestration
-`grok-imagine-cinematic-studio` · `studio-director` · `mega-production-architect` · `production-bible-workflow` · `cinematic-studio-meta-installer` · `skill-agent-architect` · `github-repo-manager`
+`grok-imagine-cinematic-studio` · `studio-director` · `mega-production-architect` · `production-bible-workflow` · `cinematic-studio-meta-installer` · `cinematic-skill-creator` · `skill-agent-architect` · `github-repo-manager`
 
 ### Camera & Image
 `director-of-photography` · `director-of-photography-v3-3` *(legacy; prefer primary DoP)* · `imagine-prompt-master` · `i2i-cinematic-refiner` *(SFW)* · `i2i-refiner` *(explicit)* · `ai-image-recreation` · `key-art-poster-designer` · `reference-asset-curator`
@@ -67,7 +67,7 @@ Browse with: `cinematic-studio plugin list --grouped`
 `character-dna-extractor` · `identity-lock-specialist` · `multi-character-identity-arbiter` · `continuity-consistency-guardian` · `performance-emotion-director` · `production-designer-set-decorator`
 
 ### Sequence & Narrative
-`sequence-director` · `cinematic-sequence-extender` · `narrative-arc-pacing-strategist` · `arc-replan-copilot` · `animatic-director` · `image-to-video-specialist` · `trailer-teaser-director`
+`sequence-director` · `cinematic-sequence-extender` · `extend-frame-to-video` · `narrative-arc-pacing-strategist` · `arc-replan-copilot` · `animatic-director` · `image-to-video-specialist` · `trailer-teaser-director`
 
 ### Audio
 `sonic-architect-native-audio-virtuoso` · `foley-sound-design-specialist` · `localization-subtitle-specialist`
@@ -76,7 +76,7 @@ Browse with: `cinematic-studio plugin list --grouped`
 `stunt-action-choreographer` · `vfx-sfx-supervisor`
 
 ### Batch & Quota
-`workflow-quota-optimizer` · `sfw-batch-orchestrator` · `nsfw-quota-orchestrator`
+`workflow-quota-optimizer` · `quota-dashboard` · `sfw-batch-orchestrator` · `nsfw-quota-orchestrator`
 
 ### NSFW (explicit activation only)
 `erosforge-nsfw-director` · `nsfw-sequence-extender` · `nsfw-chain-qa-protocol`
@@ -103,4 +103,4 @@ Browse with: `cinematic-studio plugin list --grouped`
 - Plugin pin: `.grok/skills/github-repo-manager/references/plugin_catalog_release.md`
 - Install: `docs/guides/installation_guide.md`
 
-*v3.8.0 · Grok 4.5 · July 2026*
+*v3.8.5 · Grok 4.5 / v9-4p5 · July 2026*

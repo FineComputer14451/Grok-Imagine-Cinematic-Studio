@@ -6,7 +6,7 @@
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.7.1 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.5 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
           },
           {
             "name": "studio-director",
@@ -22,7 +22,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.4. Installs updates and verifies the full 48-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.5. Installs updates and verifies the full 51-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -30,7 +30,7 @@
           },
           {
             "name": "github-repo-manager",
-            "description": "Expert GitHub repository manager and DevOps agent for complex AI multi-agent projects. Handles full git lifecycle, bran…"
+            "description": "Use for all GitHub repository management tasks including creating, listing, forking, file operations, branches, issues,…"
           },
           {
             "name": "character-dna-extractor",
@@ -58,7 +58,11 @@
           },
           {
             "name": "workflow-quota-optimizer",
-            "description": "Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimi…"
+            "description": "Real-time quota guardian and production economist for Grok Imagine. Per-second pricing, Fast mode optimization, sequenc…"
+          },
+          {
+            "name": "quota-dashboard",
+            "description": "Mobile-optimized Quota Dashboard for Grok Imagine with full Weekly SuperGrok Heavy Limit support. Tracks session usage…"
           },
           {
             "name": "quality-assurance-guardian",
@@ -67,6 +71,10 @@
           {
             "name": "chain-qa-protocol",
             "description": "Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approv…"
+          },
+          {
+            "name": "cinematic-skill-creator",
+            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
           },
           {
             "name": "director-of-photography",
@@ -98,7 +106,7 @@
           },
           {
             "name": "reference-asset-curator",
-            "description": "Reference and asset curator for Grok Imagine productions. Assigns hero standard or draft tiers routes grok-imagine-imag…"
+            "description": "Reference and asset curator for Grok Imagine productions. Assigns hero, standard or draft tiers, routes grok-imagine-im…"
           },
           {
             "name": "image-to-video-specialist",
@@ -110,7 +118,11 @@
           },
           {
             "name": "cinematic-sequence-extender",
-            "description": "Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native 1.5 extend/stitch,…"
+            "description": "Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native extend/stitch, cha…"
+          },
+          {
+            "name": "extend-frame-to-video",
+            "description": "Create cinematic rough-cut animatics and storyboards from Grok Imagine still sequences using Extend from Frame promptin…"
           },
           {
             "name": "narrative-arc-pacing-strategist",
@@ -126,7 +138,7 @@
           },
           {
             "name": "continuity-consistency-guardian",
-            "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual prop environmental and emotional continuity across…"
+            "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual, prop, environmental and emotional continuity acros…"
           },
           {
             "name": "performance-emotion-director",
@@ -162,7 +174,7 @@
           },
           {
             "name": "erosforge-nsfw-director",
-            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper 1.5…"
+            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper phy…"
           },
           {
             "name": "nsfw-quota-orchestrator",
@@ -200,7 +212,7 @@
         "commands": [
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.8.0 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.8.5 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
           },
           {
             "name": "dna",
@@ -244,14 +256,14 @@
           }
         ]
       },
-      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+      "sha": "403a424d101e70873fc1085251ece07af548bd48"
     },
     "grok-imagine-cinematic-core": {
       "components": {
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.7.1 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.5 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
           },
           {
             "name": "studio-director",
@@ -267,7 +279,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.4. Installs updates and verifies the full 48-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.5. Installs updates and verifies the full 51-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -275,7 +287,7 @@
           },
           {
             "name": "github-repo-manager",
-            "description": "Expert GitHub repository manager and DevOps agent for complex AI multi-agent projects. Handles full git lifecycle, bran…"
+            "description": "Use for all GitHub repository management tasks including creating, listing, forking, file operations, branches, issues,…"
           },
           {
             "name": "character-dna-extractor",
@@ -303,7 +315,11 @@
           },
           {
             "name": "workflow-quota-optimizer",
-            "description": "Real-time quota guardian and production economist for Grok Imagine Video 1.5. Per-second 720p pricing, Fast mode optimi…"
+            "description": "Real-time quota guardian and production economist for Grok Imagine. Per-second pricing, Fast mode optimization, sequenc…"
+          },
+          {
+            "name": "quota-dashboard",
+            "description": "Mobile-optimized Quota Dashboard for Grok Imagine with full Weekly SuperGrok Heavy Limit support. Tracks session usage…"
           },
           {
             "name": "quality-assurance-guardian",
@@ -312,12 +328,16 @@
           {
             "name": "chain-qa-protocol",
             "description": "Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approv…"
+          },
+          {
+            "name": "cinematic-skill-creator",
+            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
           }
         ],
         "commands": [
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.8.0 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.8.5 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
           },
           {
             "name": "dna",
@@ -353,7 +373,7 @@
           }
         ]
       },
-      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+      "sha": "403a424d101e70873fc1085251ece07af548bd48"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -388,7 +408,7 @@
           },
           {
             "name": "reference-asset-curator",
-            "description": "Reference and asset curator for Grok Imagine productions. Assigns hero standard or draft tiers routes grok-imagine-imag…"
+            "description": "Reference and asset curator for Grok Imagine productions. Assigns hero, standard or draft tiers, routes grok-imagine-im…"
           },
           {
             "name": "image-to-video-specialist",
@@ -396,7 +416,7 @@
           }
         ]
       },
-      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+      "sha": "403a424d101e70873fc1085251ece07af548bd48"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -407,7 +427,11 @@
           },
           {
             "name": "cinematic-sequence-extender",
-            "description": "Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native 1.5 extend/stitch,…"
+            "description": "Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native extend/stitch, cha…"
+          },
+          {
+            "name": "extend-frame-to-video",
+            "description": "Create cinematic rough-cut animatics and storyboards from Grok Imagine still sequences using Extend from Frame promptin…"
           },
           {
             "name": "narrative-arc-pacing-strategist",
@@ -423,7 +447,7 @@
           },
           {
             "name": "continuity-consistency-guardian",
-            "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual prop environmental and emotional continuity across…"
+            "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual, prop, environmental and emotional continuity acros…"
           },
           {
             "name": "performance-emotion-director",
@@ -459,14 +483,14 @@
           }
         ]
       },
-      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+      "sha": "403a424d101e70873fc1085251ece07af548bd48"
     },
     "grok-imagine-nsfw": {
       "components": {
         "skills": [
           {
             "name": "erosforge-nsfw-director",
-            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper 1.5…"
+            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper phy…"
           },
           {
             "name": "nsfw-quota-orchestrator",
@@ -488,7 +512,7 @@
           }
         ]
       },
-      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+      "sha": "403a424d101e70873fc1085251ece07af548bd48"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -521,7 +545,7 @@
           }
         ]
       },
-      "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+      "sha": "403a424d101e70873fc1085251ece07af548bd48"
     }
   }
 }

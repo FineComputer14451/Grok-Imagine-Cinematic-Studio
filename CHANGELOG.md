@@ -20,11 +20,18 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
   - New or upgraded v4.5 Role Cards under `references/agents/`
   - Updated Core Protocols (MODEL_LAYER_ROUTING, 1.0_1.5_DUAL_SUPPORT, EROSFORGE awareness where relevant)
   - Handoff Packet readiness
+- **Generation Tracker CLI** — `cinematic-studio generation log|list|summary|report|update|import-jobs` (`tools/generation_tracker.py`) for local Imagine spend ledger
+- **Shared agent docs** — `MODEL_LAYER_v4.5.md`, `IMAGINE_EXECUTION_BRIDGE.md` (excluded from role-card file counts)
 
 ### Changed
-- **Studio version** — `VERSION` → **3.8.5**
+- **Studio version** — `VERSION` → **3.8.5**; cascade across installer scripts, plugin packs, marketplace, AGENTS/README/MASTER_PROMPT, `/cinematic` command, meta-installer paths
+- **Skill suite 48 → 51** — add `cinematic-skill-creator`, `extend-frame-to-video`, `quota-dashboard` to full pack union + `required_skills.manifest`
 - Residual Grok 4.3 language removed from the upgraded skill set
 - All upgraded skills now declare preferred model routing and dual Imagine Video support consistently
+- Handoff readiness `PROTOCOL_OK` includes **3.8.5**; role-card shared-doc allowlist updated
+
+### Fixed
+- **`tools/models.py` API** — restore full registry helpers required by CLI/handoff (`STUDIO_COMPATIBILITY_VERSION`, `verify_model_compatibility`, stack summary, pricing tables) after the v3.8.5 slim rewrite; keep `grok-4.5` defaults and add opt-in v9-4p5 chat models
 
 ## [3.8.4] - 2026-07-19
 

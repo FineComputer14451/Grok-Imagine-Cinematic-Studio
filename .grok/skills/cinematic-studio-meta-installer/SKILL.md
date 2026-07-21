@@ -1,6 +1,6 @@
 ---
 name: cinematic-studio-meta-installer
-description: Meta installer for Grok Imagine Cinematic Studio v3.8.5. Installs updates and verifies the full 48-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.5 cinematic+Build stack with dual Imagine Video 1.0 + 1.5 Native support. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
+description: Meta installer for Grok Imagine Cinematic Studio v3.8.5. Installs updates and verifies the full 51-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.5 cinematic+Build stack with dual Imagine Video 1.0 + 1.5 Native support. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
 ---
 
 # Cinematic Studio Meta Installer v3.8.5 (Grok 4.5 · Meta Installer)

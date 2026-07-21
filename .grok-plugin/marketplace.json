@@ -1,6 +1,6 @@
 {
   "name": "finecomputer14451-cinematic-studio",
-  "description": "Grok Imagine Cinematic Studio v3.8.4 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post).",
+  "description": "Grok Imagine Cinematic Studio v3.8.5 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post).",
   "owner": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -8,13 +8,13 @@
   "plugins": [
     {
       "name": "grok-imagine-cinematic-studio",
-      "description": "Full 23-agent cinematic suite — all skills and slash commands. Recommended one-click install.",
+      "description": "Full 23-agent cinematic suite — all 51 skills and slash commands. Recommended one-click install.",
       "category": "creative",
-      "version": "3.8.4",
+      "version": "3.8.5",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+        "sha": "403a424d101e70873fc1085251ece07af548bd48"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -27,11 +27,11 @@
       "name": "grok-imagine-cinematic-core",
       "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.",
       "category": "creative",
-      "version": "3.8.4",
+      "version": "3.8.5",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+        "sha": "403a424d101e70873fc1085251ece07af548bd48"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -45,11 +45,11 @@
       "name": "grok-imagine-camera-image",
       "description": "DoP, production design, i2i, key art, reference curator, and i2v specialist.",
       "category": "creative",
-      "version": "3.8.4",
+      "version": "3.8.5",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+        "sha": "403a424d101e70873fc1085251ece07af548bd48"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -65,11 +65,11 @@
       "name": "grok-imagine-sequence-narrative",
       "description": "Long-form sequence, continuity, performance, audio, action/VFX, and SFW batches.",
       "category": "creative",
-      "version": "3.8.4",
+      "version": "3.8.5",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+        "sha": "403a424d101e70873fc1085251ece07af548bd48"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -85,11 +85,11 @@
       "name": "grok-imagine-nsfw",
       "description": "Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.",
       "category": "creative",
-      "version": "3.8.4",
+      "version": "3.8.5",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+        "sha": "403a424d101e70873fc1085251ece07af548bd48"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -105,11 +105,11 @@
       "name": "grok-imagine-delivery-post",
       "description": "Assembly EDL, color grade, AI polish, upscale, and cinematic ffmpeg delivery.",
       "category": "creative",
-      "version": "3.8.4",
+      "version": "3.8.5",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "7c46a778c9a28f11601b23b19a391688724fda81"
+        "sha": "403a424d101e70873fc1085251ece07af548bd48"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [

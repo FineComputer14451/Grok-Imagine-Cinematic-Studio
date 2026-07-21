@@ -11,7 +11,7 @@
 1. Pull / reinstall the repo or run `bash scripts/cinematic_studio.sh update` / `grok plugin update grok-imagine-cinematic-studio`
 2. Confirm `VERSION` is **3.7.1** and `python tools/cinematic_studio_cli.py models verify` shows Grok **4.5** cinematic+Build
 3. Set `~/.grok/config.toml` defaults: `[models] default = "grok-4.5"` · `[ui] fork_secondary_model = "grok-build"`
-4. Activation phrase: `Activate Grok Imagine Cinematic Studio v3.7.1`
+4. Activation phrase: `Activate Grok Imagine Cinematic Studio v3.8.5`
 5. Read `references/agents/MODEL_LAYER_v3.7.1.md` and `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`
 6. Re-pin plugin catalog after skill edits: `cinematic-studio plugin catalog pin`
 
@@ -123,7 +123,7 @@ python tools/cinematic_studio_cli.py models verify
 ### Step 2: Activate the New Studio
 In a new **Grok 4.5** chat (default) or **Grok 4.3** for very long Bibles, paste `MASTER_PROMPT.md` and type:
 ```
-Activate Grok Imagine Cinematic Studio v3.7.1
+Activate Grok Imagine Cinematic Studio v3.8.5
 ```
 
 Or use the powerful new mode:
@@ -178,7 +178,7 @@ Free-text logline/characters/world/tech notes roll into `notes`. Stages live in 
 
 ## Recommended New Workflow (v3.7.1)
 
-1. **Primary Activation** — `Activate Grok Imagine Cinematic Studio v3.7.1` or `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
+1. **Primary Activation** — `Activate Grok Imagine Cinematic Studio v3.8.5` or `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
 2. **Production Bible** — `create-bible "Title"` (scripts) or `create-bible --wizard` (guided TTY) / Web Guided Bible Creator
 3. **Use VIDEO_PIPELINE_SPEC** — 1.0 cost default; 1.5 when native audio is required
 4. **Activate Sonic Architect early** when native audio is important

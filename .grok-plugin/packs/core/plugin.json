@@ -1,6 +1,6 @@
 {
   "name": "grok-imagine-cinematic-core",
-  "version": "3.8.4",
+  "version": "3.8.5",
   "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.",
   "author": {
     "name": "FineComputer14451",
@@ -29,8 +29,10 @@
     ".grok/skills/imagine-execution-bridge",
     ".grok/skills/handoff-packet-validator",
     ".grok/skills/workflow-quota-optimizer",
+    ".grok/skills/quota-dashboard",
     ".grok/skills/quality-assurance-guardian",
-    ".grok/skills/chain-qa-protocol"
+    ".grok/skills/chain-qa-protocol",
+    ".grok/skills/cinematic-skill-creator"
   ],
   "commands": [
     "commands/cinematic.md",
