@@ -1,118 +1,102 @@
-# Grok Imagine Cinematic Studio — Agent Index v3.7.1
+# Grok Imagine Cinematic Studio — Agent Index
 
-**23 core agents** · **+10 specialists** (pipeline + i2i + NSFW opt-in) · **Studio v3.7.1** · **Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5** · July 2026
+**Enhanced for:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` + **Imagine Video 1.0 & 1.5 Native**  
+**Version:** 3.8.0 (Role Cards still carry v3.7.1 labels for CLI compatibility) · **Studio:** v3.8+  
+**Date:** 2026-07-21  
+**Canonical Model Layer:** `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1)
 
-> Agent display names keep the **v3.6.5** suffix (CLI registry / Role Card labels). Studio release version is **3.7.1**.
+> All agents below now reference the enhanced Model Layer. Prefer the three explicit v9-4p5 identifiers. Video work must declare `VIDEO_PIPELINE_SPEC` (1.0 default, 1.5 when native audio / physics / intimacy required).
 
 Authoritative Role Cards: `references/agents/*.md`  
-Shared model rules: `references/agents/MODEL_LAYER_v3.7.1.md`  
+Shared model rules: `references/agents/MODEL_LAYER_v4.5.md`  
 Imagine Agent Mode Handoff: `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`  
-Model registry: `tools/models.py`, `references/MODELS_v3.6.md`
+Identity Continuity: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`
 
 ---
 
-## Model Compatibility (Required — Grok 4.5 default)
+## Model Compatibility (Required)
 
-| Layer | Slug | Use |
-|-------|------|-----|
-| Grok Build CLI | `grok-4.5` (min CLI **0.2.93**) | Local agent / coding default |
-| Grok Build fork | `grok-build` | Code, skills, repo tooling |
-| xAI Chat (cinematic) | `grok-4.5` | Production Bibles (default); `grok-4.3` for 1M opt-in |
-| xAI Build / coding | `grok-4.5` | Agentic automation (legacy: `grok-build-0.1`) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 default; 1.5 native audio |
-| Imagine Image | `grok-imagine-image` | Reference stills |
-| Imagine Image Quality | `grok-imagine-image-quality` | Hero keyframes |
+| Layer | Preferred Identifier | Use |
+|-------|----------------------|-----|
+| Highest quality specialist | `grok-v9-4p5-chat-expert` | DNA, prompts, QA, DoP, Sonic, ErosForge |
+| Multi-agent / Team Leader | `grok-v9-4p5-multi` | Studio Director full mode, Sequence orchestration, synthesis |
+| Draft / quota / routine | `grok-4-auto` | Animatic, standard tier, fast iteration |
+| Video default | Imagine **1.0** | Most sequences |
+| Video when audio/physics critical | Imagine **1.5 Native** | Native audio, intimate, complex motion |
 
-**Grok 4.5 agent rules:** reasoning **high** for Bibles/QA/Identity Lock; stable `prompt_cache_key` per project; alias `cinematic` → `grok-4.5`. Never market `grok-4.3` as the cinematic default.
-
-Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`. Studio **cost default** is 1.0; use 1.5 when native audio is required:
-
-```
-[VIDEO_PIPELINE_SPEC: model="grok-imagine-video", resolution="720p", clip_length="8-12s preferred", native_audio=false, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]
-```
-
-1.5 native-audio variant:
-
-```
-[VIDEO_PIPELINE_SPEC: model="grok-imagine-video-1.5", resolution="720p", clip_length="8-12s preferred", native_audio=true, reference_image_fidelity=high, extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]
-```
-
-Verify: `python tools/cinematic_studio_cli.py models verify`
-
-Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.7.1)** block.
+Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 
 ---
 
 ## Core Leadership
 
-| Agent | Role Card | Activation |
-|-------|-----------|------------|
-| Studio Director v3.7.1 | `Studio_Director.md` | `ACTIVATE STUDIO DIRECTOR` · `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` |
-| Mega Production Architect v3.7.1 | `Mega_Production_Architect.md` | `ACTIVATE MEGA_PRODUCTION_ARCHITECT` |
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| Studio Director | `Studio_Director.md` | multi (full) / chat-expert (creative) | `ACTIVATE STUDIO DIRECTOR` · `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` |
+| Mega Production Architect | `Mega_Production_Architect.md` | multi | `ACTIVATE MEGA_PRODUCTION_ARCHITECT` |
 
 ## Visual & Camera
 
-| Agent | Role Card | Activation |
-|-------|-----------|------------|
-| Director of Photography v3.7.1 | `Director_of_Photography_DoP_v3.5.md` | `ACTIVATE DOP` · `CINEMATIC LIGHTING MODE` |
-| Color Grading Supervisor v3.7.1 | `Post_Production_Color_Grading_Supervisor_v3.5.md` | `ACTIVATE COLOR_GRADING` · `PROTECT SKIN TONES` |
-| Production Designer v3.7.1 | `Production_Designer_Set_Decorator_v3.5.md` | `ACTIVATE PRODUCTION_DESIGNER` · `WORLD BUILD MODE` |
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| Director of Photography | `Director_of_Photography_DoP_v3.5.md` | chat-expert | `ACTIVATE DOP` · `CINEMATIC LIGHTING MODE` |
+| Color Grading Supervisor | `Post_Production_Color_Grading_Supervisor_v3.5.md` | chat-expert | `ACTIVATE COLOR_GRADING` |
+| Production Designer | `Production_Designer_Set_Decorator_v3.5.md` | chat-expert | `ACTIVATE PRODUCTION_DESIGNER` |
 
 ## Story & Performance
 
-| Agent | Role Card | Activation |
-|-------|-----------|------------|
-| Character DNA Extractor v3.7.1 | `Character_DNA_Extractor_v3.5.md` | `ACTIVATE CHARACTER_DNA_EXTRACTOR` · `FORENSIC DNA MODE` |
-| Performance & Emotion Director v3.7.1 | `Performance_Emotion_Director.md` | `ACTIVATE PERFORMANCE_EMOTION` · `MAXIMUM_SUBTEXT` |
-| Identity Lock Specialist v3.7.1 | `Identity_Lock_Specialist.md` | `ACTIVATE IDENTITY_LOCK` · `CHECK DRIFT` · `LOCK CHARACTER` |
-| Narrative Arc Strategist v3.7.1 | `Narrative_Arc_Pacing_Strategist_v3.5.md` | `ACTIVATE NARRATIVE_ARC` · `ACTIVATE NARRATIVE_STRATEGIST` |
-| Sequence Director v3.7.1 | `Sequence_Director.md` | `ACTIVATE SEQUENCE_DIRECTOR` · `BREAK INTO CLIPS` |
-| Cinematic Sequence Extender v3.7.1 | `Cinematic_Sequence_Extender.md` | `ACTIVATE SEQUENCE_EXTENDER` · `EXTEND SEQUENCE TO 90s` |
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| Character DNA Extractor | `Character_DNA_Extractor_v3.5.md` | chat-expert | `ACTIVATE CHARACTER_DNA_EXTRACTOR` |
+| Performance & Emotion Director | `Performance_Emotion_Director.md` | chat-expert | `ACTIVATE PERFORMANCE_EMOTION` |
+| Identity Lock Specialist | `Identity_Lock_Specialist.md` | chat-expert | `ACTIVATE IDENTITY_LOCK` |
+| Narrative Arc Strategist | `Narrative_Arc_Pacing_Strategist_v3.5.md` | chat-expert | `ACTIVATE NARRATIVE_ARC` |
+| Sequence Director | `Sequence_Director.md` | multi | `ACTIVATE SEQUENCE_DIRECTOR` |
+| Cinematic Sequence Extender | `Cinematic_Sequence_Extender.md` | multi | `ACTIVATE SEQUENCE_EXTENDER` |
 
 ## Technical & Continuity
 
-| Agent | Role Card | Activation |
-|-------|-----------|------------|
-| Continuity Guardian v3.7.1 | `Continuity_Consistency_Guardian.md` | `ACTIVATE CONTINUITY_GUARDIAN` · `CHECK CONTINUITY` |
-| QA Guardian v3.7.1 | `Quality_Assurance_Guardian_v3.5.md` | `ACTIVATE QA_GUARDIAN` · `RUN QA REVIEW` · `RUN CHAIN QA REVIEW` |
-| Imagine Prompt Master v3.7.1 | `Imagine_Prompt_Master.md` | `ACTIVATE IMAGINE_PROMPT_MASTER` · `OPTIMIZE PROMPT` |
-| Workflow & Quota Optimizer v3.7.1 | `Workflow_Quota_Optimizer.md` | `ACTIVATE WORKFLOW_OPTIMIZER` · `SHOW QUOTA DASHBOARD` |
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| Continuity Guardian | `Continuity_Consistency_Guardian.md` | multi | `ACTIVATE CONTINUITY_GUARDIAN` |
+| QA Guardian | `Quality_Assurance_Guardian_v3.5.md` | chat-expert | `ACTIVATE QA_GUARDIAN` · `RUN QA REVIEW` |
+| Imagine Prompt Master | `Imagine_Prompt_Master.md` | chat-expert | `ACTIVATE IMAGINE_PROMPT_MASTER` |
+| Workflow & Quota Optimizer | `Workflow_Quota_Optimizer.md` | multi / auto | `ACTIVATE WORKFLOW_OPTIMIZER` |
 
 ## Audio (Native 1.5)
 
-| Agent | Role Card | Activation |
-|-------|-----------|------------|
-| Sonic Architect v3.7.1 | `Sonic_Architect_Native_Audio_Virtuoso.md` | `ACTIVATE SONIC_ARCHITECT` · `ACTIVATE NATIVE_AUDIO` |
-| Foley Specialist v3.7.1 | `Foley_Sound_Design_Specialist_v3.5.md` | `ACTIVATE FOLEY_SPECIALIST` · `DESIGN FOLEY FOR` |
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| Sonic Architect | `Sonic_Architect_Native_Audio_Virtuoso.md` | chat-expert | `ACTIVATE SONIC_ARCHITECT` · `ACTIVATE NATIVE_AUDIO` |
+| Foley Specialist | `Foley_Sound_Design_Specialist_v3.5.md` | chat-expert / auto | `ACTIVATE FOLEY_SPECIALIST` |
 
 ## Action, VFX & Marketing
 
-| Agent | Role Card | Activation |
-|-------|-----------|------------|
-| Stunt Choreographer v3.6.5 | `Stunt_Action_Choreographer_v3.5.md` | `ACTIVATE STUNT_CHOREOGRAPHER` |
-| VFX & SFX Supervisor v3.6.5 | `VFX_and_SFX_Supervisor_v3.5.md` | `ACTIVATE VFX_SFX_SUPERVISOR` |
-| Key Art Designer v3.6.5 | `Key_Art_Poster_Designer_v3.5.md` | `ACTIVATE KEY_ART_DESIGNER` |
-| Trailer Director v3.6.5 | `Trailer_Teaser_Director_v3.5.md` | `ACTIVATE TRAILER_DIRECTOR` |
-| Localization Specialist v3.6.5 | `Localization_Subtitle_Specialist_v3.5.md` | `ACTIVATE LOCALIZATION_SPECIALIST` |
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| Stunt Choreographer | `Stunt_Action_Choreographer_v3.5.md` | chat-expert | `ACTIVATE STUNT_CHOREOGRAPHER` |
+| VFX & SFX Supervisor | `VFX_and_SFX_Supervisor_v3.5.md` | chat-expert | `ACTIVATE VFX_SFX_SUPERVISOR` |
+| Key Art Designer | `Key_Art_Poster_Designer_v3.5.md` | chat-expert | `ACTIVATE KEY_ART_DESIGNER` |
+| Trailer Director | `Trailer_Teaser_Director_v3.5.md` | multi | `ACTIVATE TRAILER_DIRECTOR` |
+| Localization Specialist | `Localization_Subtitle_Specialist_v3.5.md` | auto | `ACTIVATE LOCALIZATION_SPECIALIST` |
 
 ## Post-Production
 
-| Agent | Role Card | Activation |
-|-------|-----------|------------|
-| AI Polish Director v3.7.1 | `AI_Polish_Director.md` | `ACTIVATE AI_POLISH_DIRECTOR` · `RUN FINAL POLISH PASS` · `UPSCALE FOR DELIVERY` |
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| AI Polish Director | `AI_Polish_Director.md` | chat-expert | `ACTIVATE AI_POLISH_DIRECTOR` · `RUN FINAL POLISH PASS` |
 
 ---
 
 ## Production Pipeline (Tier 1)
 
-| Agent | Role Card | Skill | Activation |
-|-------|-----------|-------|------------|
-| Animatic Director v3.7.1 | — (pipeline skill) | `animatic-director` | `ACTIVATE ANIMATIC DIRECTOR` · `PLAN ANIMATIC` |
-| Reference & Asset Curator v3.7.1 | `Reference_Asset_Curator.md` | `reference-asset-curator` | `ACTIVATE REFERENCE_CURATOR` · `LOCK HERO PLATE` |
-| Image-to-Video Specialist v3.7.1 | `Image_to_Video_Specialist.md` | `image-to-video-specialist` | `ACTIVATE I2V_SPECIALIST` · `BUILD I2V PROMPT` |
-| SFW Batch Orchestrator v3.7.1 | `SFW_Batch_Orchestrator.md` | `sfw-batch-orchestrator` | `ACTIVATE SFW_BATCH_ORCHESTRATOR` · `PLAN SFW BATCH` |
-| Assembly Editor v3.7.1 | `Assembly_Editor.md` | `assembly-editor` | `ACTIVATE ASSEMBLY_EDITOR` · `EXPORT EDL` |
-| Multi-Character Identity Arbiter v3.6.5 | `Multi_Character_Identity_Arbiter.md` | `multi-character-identity-arbiter` | `ACTIVATE MULTI_CHARACTER_ARBITER` |
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| Reference & Asset Curator | `Reference_Asset_Curator.md` | auto / chat-expert | `ACTIVATE REFERENCE_CURATOR` |
+| Image-to-Video Specialist | `Image_to_Video_Specialist.md` | chat-expert | `ACTIVATE I2V_SPECIALIST` |
+| SFW Batch Orchestrator | `SFW_Batch_Orchestrator.md` | multi | `ACTIVATE SFW_BATCH_ORCHESTRATOR` |
+| Assembly Editor | `Assembly_Editor.md` | multi | `ACTIVATE ASSEMBLY_EDITOR` |
+| Multi-Character Identity Arbiter | `Multi_Character_Identity_Arbiter.md` | chat-expert | `ACTIVATE MULTI_CHARACTER_ARBITER` |
 
 **Order of operations:** Animatic (optional) → Reference Curator → (i2i if needed) → I2V Specialist → generation/QA → Assembly Editor → color → polish.
 
@@ -120,44 +104,40 @@ Every Role Card embeds the **Model Layer (Grok 4.5 · studio v3.7.1)** block.
 
 ## Refinement (i2i) & Upload Recreation
 
-| Agent / Skill | Role Card | Skill | Activation |
-|---------------|-----------|-------|------------|
-| AI Image Recreation v3.7.1 | — (skill protocols) | `ai-image-recreation` | `ACTIVATE AI_IMAGE_RECREATION` |
-| I2I Cinematic Refiner v3.6.5 | `I2I_Cinematic_Refiner.md` | `i2i-cinematic-refiner` | `ACTIVATE I2I CINEMATIC REFINER` |
-| I2I Refiner v3.6.5 | `I2I_Refiner.md` | `i2i-refiner` | `ACTIVATE I2I REFINER` |
-
-**Upload recreation** (`ai-image-recreation`) handles user-uploaded stills (style transfer, enhance, design sheets, pre-video plates) via `image_edit`. Session Grok outputs use `generated-image-editor` (user-global). Studio Director routes multi-pass cinematic polish to I2I Cinematic Refiner; explicit/intimate content goes to I2I Refiner + ErosForge.
+| Agent / Skill | Role Card | Preferred Model | Activation |
+|---------------|-----------|-----------------|------------|
+| AI Image Recreation | — | chat-expert | `ACTIVATE AI_IMAGE_RECREATION` |
+| I2I Cinematic Refiner | `I2I_Cinematic_Refiner.md` | chat-expert | `ACTIVATE I2I CINEMATIC REFINER` |
+| I2I Refiner | `I2I_Refiner.md` | chat-expert | `ACTIVATE I2I REFINER` |
 
 ---
 
-## Specialist (Opt-in)
+## Specialist (Opt-in / NSFW)
 
-| Agent | Role Card | Skill | Activation |
-|-------|-----------|-------|------------|
-| ErosForge NSFW Director v3.6.5 | `ErosForge_NSFW_Director.md` | `erosforge-nsfw-director` | `ACTIVATE EROSFORGE` |
-| NSFW Quota Orchestrator v1.0 | `NSFW_Quota_Orchestrator.md` | `nsfw-quota-orchestrator` | `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` |
-| NSFW Sequence Extender v1.0 | `NSFW_Sequence_Extender.md` | `nsfw-sequence-extender` | `ACTIVATE NSFW_SEQUENCE_EXTENDER` |
-| NSFW Chain QA Protocol v1.0 | — | `nsfw-chain-qa-protocol` | `RUN NSFW CHAIN QA REVIEW` |
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| ErosForge NSFW Director | `ErosForge_NSFW_Director.md` | chat-expert | `ACTIVATE EROSFORGE` |
+| NSFW Quota Orchestrator | `NSFW_Quota_Orchestrator.md` | multi | `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` |
+| NSFW Sequence Extender | `NSFW_Sequence_Extender.md` | multi | `ACTIVATE NSFW_SEQUENCE_EXTENDER` |
 
-Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSFORGE` first.
+Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authenticity.
 
 ---
 
-## Activation Presets
+## Activation Presets (Updated)
 
 | # | Preset | Command |
 |---|--------|---------|
-| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.7.1` |
+| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.8` |
 | 2 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
-| 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` + Identity Continuity (`sequence drift-score` / ICP) |
+| 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | 4 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
-| 4b | Multi-Cast Identity | `ACTIVATE MULTI_CHARACTER_ARBITER` + `ACTIVATE IDENTITY_LOCK` |
 | 5 | Native Audio Pass | `ACTIVATE SONIC_ARCHITECT` + `GENERATE_NATIVE_AUDIO_SEQUENCE` |
 | 6 | Marketing Package | `ACTIVATE KEY_ART_DESIGNER` + `ACTIVATE TRAILER_DIRECTOR` |
 | 7 | QA + Delivery | `RUN QA REVIEW` → `ACTIVATE AI_POLISH_DIRECTOR` |
 | 8 | Quota Planning | `ACTIVATE WORKFLOW_OPTIMIZER` |
 | 9 | Final Delivery Polish | `RUN FINAL POLISH PASS` |
-| 10 | NSFW Quota Batch (Heavy) | `ACTIVATE EROSFORGE` → `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` |
+| 10 | NSFW Quota Batch | `ACTIVATE EROSFORGE` → `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` |
 | 11 | NSFW Sequence Extension | `ACTIVATE EROSFORGE` → `ACTIVATE NSFW_SEQUENCE_EXTENDER` |
 | 12 | Keyframe Polish | `ACTIVATE I2I CINEMATIC REFINER` |
 | 13 | Asset + Model Routing | `ACTIVATE REFERENCE_CURATOR` |
@@ -178,14 +158,14 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 
 ---
 
-**Identity Continuity Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` (required wiring for Lock / Extender / Continuity / QA on long-form extends).
+**Identity Continuity Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` (required for Lock / Extender / Continuity / QA on long-form).
 
 ## Supporting Skills (Tier 1)
 
 | Skill | Type | Activation |
 |-------|------|------------|
 | `ai-polish-director` | Agent | `ACTIVATE AI_POLISH_DIRECTOR` |
-| `chain-qa-protocol` | Pipeline (v3.7.1) | `RUN CHAIN QA REVIEW` |
+| `chain-qa-protocol` | Pipeline | `RUN CHAIN QA REVIEW` |
 | `cinematic-ffmpeg` | Tool | After Assembly Editor + polish |
 | `animatic-director` | Pipeline | `ACTIVATE ANIMATIC DIRECTOR` |
 | `handoff-packet-validator` | Tool | Before extend / i2v handoffs |
@@ -194,4 +174,4 @@ Requires explicit opt-in. NSFW orchestrator and extender require `ACTIVATE EROSF
 
 ---
 
-*Grok Imagine Cinematic Studio v3.7.1 "Odyssey Native" — 23 core agents + 10 specialists + Tier 1 skills (+ NSFW opt-in)*
+*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-07-21*
