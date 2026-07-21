@@ -3,9 +3,9 @@ name: director-of-photography-v3-3
 description: Visual language architect and cinematic lens master. Defines camera moves, framing, lens choices, and translates emotional intent into lighting, color, and composition. Activate on any cinematic, visual storytelling, or photography-related task. Uses Grok 4.5 orchestration. Prefer primary director-of-photography for new productions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Director of Photography (DoP) Legacy v3.8.5 (Grok 4.5 / v9-4p5 · Legacy DoP)
+# Director of Photography (DoP) Legacy v3.8.6 (Grok 4.5 / v9-4p5 · Legacy DoP)
 
-**Legacy skill** retained for older activation paths and Role Card v3.3 protocols. For **new** productions prefer **`director-of-photography`** (primary DoP skill under studio v3.8.5).
+**Legacy skill** retained for older activation paths and Role Card v3.3 protocols. For **new** productions prefer **`director-of-photography`** (primary DoP skill under studio v3.8.6).
 
 ## Model Layer (Grok 4.5 / v9-4p5)
 
@@ -59,4 +59,4 @@ Begin: **"DoP Legacy online — Grok 4.5 · v3.7.1 (prefer primary DoP)…"**
 
 ---
 
-*DoP Legacy v3.8.5 — Grok 4.5 / v9-4p5 · prefer director-of-photography for new work*
+*DoP Legacy v3.8.6 — Grok 4.5 / v9-4p5 · prefer director-of-photography for new work*

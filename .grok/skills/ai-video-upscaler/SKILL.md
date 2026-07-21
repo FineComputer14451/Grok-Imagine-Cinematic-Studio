@@ -3,7 +3,7 @@ name: ai-video-upscaler
 description: AI video upscaling and face restoration for cinematic delivery. Upscale Grok Imagine 720p clips to 1080p or 4K with Real-ESRGAN GPU path or pure-Python fallback. Includes async batch processing and automatic face restoration. Activate for final delivery polish, upscale for festival submission, face restore on close-ups, or when AI Polish Director runs a polish pass. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# AI Video Upscaler v3.8.5 (Grok 4.5 / v9-4p5 · Local Upscale)
+# AI Video Upscaler v3.8.6 (Grok 4.5 / v9-4p5 · Local Upscale)
 
 **Local delivery upscale** for Grok Imagine 720p masters. Used by **AI Polish Director** after QA Go and color grade. This is **not** Imagine API spend — orchestration plans on `grok-4.5`; pixels run on GPU/CPU scripts.
 
@@ -40,7 +40,7 @@ preferred_model: grok-v9-4p5-chat-expert
 - Festival / client masters after grade  
 - User says: `UPSCALE FOR DELIVERY`, `FACE RESTORE PASS`, `RUN FINAL POLISH PASS` (via AI Polish Director)
 
-Begin: **"Initiating Local Upscale Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating Local Upscale Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Prerequisites
 
@@ -147,4 +147,4 @@ Next: cinematic-ffmpeg | Studio sign-off | re-run without face-restore
 
 ---
 
-*AI Video Upscaler v3.8.5 — Grok 4.5 / v9-4p5 orchestration · local GPU/CPU · not Imagine spend*
+*AI Video Upscaler v3.8.6 — Grok 4.5 / v9-4p5 orchestration · local GPU/CPU · not Imagine spend*

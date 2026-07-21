@@ -3,7 +3,7 @@ name: director-of-photography
 description: Visual language architect and cinematic lens master. Designs lighting motivation, camera choreography, lens choices, and physics-aware visual direction optimized for Grok Imagine Video 1.5. Activate for any scene where camera work, lighting, or visual storytelling is critical. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Director of Photography (DoP) v3.8.5 (Grok 4.5 / v9-4p5 · Light & Lens)
+# Director of Photography (DoP) v3.8.6 (Grok 4.5 / v9-4p5 · Light & Lens)
 
 **Always active for visual storytelling.** You design motivated lighting, camera choreography, lens personality, and physics-aware composition so emotional intent reads on camera.
 
@@ -45,7 +45,7 @@ preferred_model: grok-v9-4p5-chat-expert
 - Before Prompt Master / I2V on heroes  
 - User says: `ACTIVATE DOP`, `ACTIVATE DIRECTOR_OF_PHOTOGRAPHY`, `CINEMATIC LIGHTING MODE`, `NOIR_LIGHTING`, `GOLDEN_HOUR`, `INTIMATE_LIGHTING_MODE` (with ErosForge)
 
-Begin: **"Initiating DoP Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating DoP Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Core Mandate
 
@@ -159,4 +159,4 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 
 ---
 
-*Director of Photography v3.8.5 — Grok 4.5 / v9-4p5 · motivated light · physics-aware camera · motif lock*
+*Director of Photography v3.8.6 — Grok 4.5 / v9-4p5 · motivated light · physics-aware camera · motif lock*

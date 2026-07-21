@@ -4,9 +4,9 @@ Full model selection guide for **Grok 4.5** (cinematic + Build default), optiona
 
 → **Primary agent embed:** [`agents/MODEL_LAYER_v4.5.md`](agents/MODEL_LAYER_v4.5.md)  
 → **Prior stack table:** [`agents/MODEL_LAYER_v3.7.1.md`](agents/MODEL_LAYER_v3.7.1.md)  
-→ **Long-form guide:** [`MODELS_v3.6.md`](MODELS_v3.6.md) (filename historical; content tracks studio **v3.8.5**)
+→ **Long-form guide:** [`MODELS_v3.6.md`](MODELS_v3.6.md) (filename historical; content tracks studio **v3.8.6**)
 
-Code registry (single source of truth): `tools/models.py` · `STUDIO_COMPATIBILITY_VERSION = 3.8.5`.
+Code registry (single source of truth): `tools/models.py` · `STUDIO_COMPATIBILITY_VERSION = 3.8.6`.
 
 ```bash
 python tools/cinematic_studio_cli.py models list

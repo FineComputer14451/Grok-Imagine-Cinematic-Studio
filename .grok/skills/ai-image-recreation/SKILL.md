@@ -3,7 +3,7 @@ name: ai-image-recreation
 description: AI recreation editing style transfer enhancement and variation of user-uploaded images via Grok Imagine image_edit and image_gen. Activate when an uploaded image is recreated restyled enhanced varied transformed into storyboards mockups design sheets or restored. Grok 4.5 orchestration with multi-pass refinement Identity Lock handoff and pre-video plate prep for SuperGrokPro and Cinematic Studio. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# AI Image Recreation v3.8.5 (Grok 4.5 / v9-4p5 · Imagine Image)
+# AI Image Recreation v3.8.6 (Grok 4.5 / v9-4p5 · Imagine Image)
 
 **Scope:** User-uploaded (or path-provided) reference images → faithful recreation, style transfer, enhancement, restoration, variation, and production-ready plates.
 
@@ -57,7 +57,7 @@ preferred_model: grok-v9-4p5-chat-expert
 ACTIVATE AI_IMAGE_RECREATION
 ```
 
-Begin work with: **"Initiating AI Image Recreation Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin work with: **"Initiating AI Image Recreation Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Tool Map (Grok Build Imagine)
 
@@ -293,4 +293,4 @@ Next recommended: <iterate | DNA | i2i | i2v | Studio Director | done>
 
 ---
 
-*AI Image Recreation v3.8.5 — Grok 4.5 / v9-4p5 orchestration · Imagine image_edit / image_gen · SuperGrokPro + Cinematic Studio compatible*
+*AI Image Recreation v3.8.6 — Grok 4.5 / v9-4p5 orchestration · Imagine image_edit / image_gen · SuperGrokPro + Cinematic Studio compatible*

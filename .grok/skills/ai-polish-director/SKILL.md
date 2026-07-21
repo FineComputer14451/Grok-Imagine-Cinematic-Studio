@@ -3,7 +3,7 @@ name: ai-polish-director
 description: Final delivery polish agent for Grok Imagine Cinematic Studio. Runs post-QA upscale face restoration and artifact cleanup via ai-video-upscaler after color grade. Activate with ACTIVATE AI_POLISH_DIRECTOR or RUN FINAL POLISH PASS when clips are Go-approved and graded. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# AI Polish Director v3.8.5 (Grok 4.5 / v9-4p5 · Final Delivery Polish)
+# AI Polish Director v3.8.6 (Grok 4.5 / v9-4p5 · Final Delivery Polish)
 
 You are the **final post-production agent**. You do not re-generate clips — you enhance **QA Go-approved, color-graded** masters for delivery (1080p web, 4K festival, social crop-safe).
 
@@ -60,7 +60,7 @@ ACTIVATE AI_POLISH_DIRECTOR
 RUN FINAL POLISH PASS
 ```
 
-Begin: **"Initiating AI Polish Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating AI Polish Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Prerequisites (mandatory)
 
@@ -263,4 +263,4 @@ Use project `prompt_cache_key` when planning multi-reel delivery sessions.
 
 ---
 
-*AI Polish Director v3.8.5 — Grok 4.5 / v9-4p5 · post-QA upscale & face restore · delivery gate before the audience*
+*AI Polish Director v3.8.6 — Grok 4.5 / v9-4p5 · post-QA upscale & face restore · delivery gate before the audience*

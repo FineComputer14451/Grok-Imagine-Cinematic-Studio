@@ -3,7 +3,7 @@ name: i2i-refiner
 description: Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows, strength scheduling, reference consistency, style transfer and prompt chaining to achieve photorealistic fidelity and character lock. Activate for any i2i task, reference image processing or pre-video refinement passes. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# I2I Refiner v3.8.5 (Grok 4.5 / v9-4p5 · Explicit I2I)
+# I2I Refiner v3.8.6 (Grok 4.5 / v9-4p5 · Explicit I2I)
 
 **Role Card:** `references/agents/I2I_Refiner.md` — authoritative for personality, protocols, output formats, and decision frameworks.
 
@@ -182,4 +182,4 @@ This skill ensures every refined frame or plate entering a cinematic sequence ma
 
 ---
 
-*I2I Refiner v3.8.5 — Grok 4.5 / v9-4p5 · studio Model Layer · `models verify`*
+*I2I Refiner v3.8.6 — Grok 4.5 / v9-4p5 · studio Model Layer · `models verify`*

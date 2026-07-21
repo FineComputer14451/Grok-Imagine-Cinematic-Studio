@@ -3,7 +3,7 @@ name: imagine-execution-bridge
 description: Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinematic Studio. Emits copy-paste VIDEO_PIPELINE_SPEC reference hints and native audio Sound Layer blocks when API generation is unavailable. Activate with ACTIVATE IMAGINE_BRIDGE or when user needs grok.com/imagine copy-paste packets. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Imagine Execution Bridge v3.8.5 (Grok 4.5 / v9-4p5 · Web Handoff)
+# Imagine Execution Bridge v3.8.6 (Grok 4.5 / v9-4p5 · Web Handoff)
 
 **Web UI subset** of Imagine execution (surface `grok_com_imagine`). Emits copy-paste-ready packets for [grok.com/imagine](https://grok.com/imagine) when API or in-session tools are unavailable.
 
@@ -48,7 +48,7 @@ Prefer full protocol when not web-only:
 ACTIVATE IMAGINE_AGENT_MODE_HANDOFF
 ```
 
-Begin: **"Preparing Imagine Bridge packet v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Preparing Imagine Bridge packet v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Activation Stack
 
@@ -145,4 +145,4 @@ Next: user generate → sfw record → QA
 
 ---
 
-*Imagine Execution Bridge v3.8.5 — Grok 4.5 / v9-4p5 · grok.com/imagine subset · registry-locked specs*
+*Imagine Execution Bridge v3.8.6 — Grok 4.5 / v9-4p5 · grok.com/imagine subset · registry-locked specs*

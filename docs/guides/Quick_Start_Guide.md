@@ -36,7 +36,7 @@ Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 ### Activate the Full Studio (Recommended)
 
 ```
-Activate Grok Imagine Cinematic Studio v3.8.5
+Activate Grok Imagine Cinematic Studio v3.8.6
 ```
 
 or
@@ -99,7 +99,7 @@ You can activate any agent directly:
 
 ### Phase 1: Activation & Planning
 1. **Activate the Full Studio**  
-   `Activate Grok Imagine Cinematic Studio v3.8.5`
+   `Activate Grok Imagine Cinematic Studio v3.8.6`
 
 2. **Start a New Project**  
    Provide title, logline, genre, tone, target length, and key characters.
@@ -146,7 +146,7 @@ You can activate any agent directly:
 ---
 
 **Pro Tip:** You can combine steps in one message:  
-> `"Activate Grok Imagine Cinematic Studio v3.8.5, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
+> `"Activate Grok Imagine Cinematic Studio v3.8.6, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
 
 ---
 
@@ -168,7 +168,7 @@ You can activate any agent directly:
 
 | Command                                           | Result                                      |
 |---------------------------------------------------|---------------------------------------------|
-| `Activate Grok Imagine Cinematic Studio v3.8.5`   | Load full v3.8.5 studio (Grok 4.5 + 1.5)   |
+| `Activate Grok Imagine Cinematic Studio v3.8.6`   | Load full v3.8.6 studio (Grok 4.5 + 1.5)   |
 | `create-bible --wizard`                           | Guided Production Bible (TTY interactive)   |
 | `Start new project`                               | Begin fresh production                      |
 | `GENERATE DIRECTOR'S CUT`                         | Refined version with notes                  |
@@ -198,7 +198,7 @@ You can activate any agent directly:
 
 **You are now ready to create professional cinematic productions with Grok 4.5 orchestration + Imagine Video 1.0/1.5 support.**
 
-Just say **"Activate Grok Imagine Cinematic Studio v3.8.5"** and begin. 🎥
+Just say **"Activate Grok Imagine Cinematic Studio v3.8.6"** and begin. 🎥
 
 ---
 

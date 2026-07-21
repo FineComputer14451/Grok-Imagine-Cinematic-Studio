@@ -3,7 +3,7 @@ name: post-production-color-grading-supervisor
 description: Final visual polish and color harmony master. Recommends LUTs, tracks visual motifs, ensures color continuity, and performs final grade simulation. Activate before any final delivery or when visual cohesion is critical. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Post-Production & Color Grading Supervisor v3.8.5 (Grok 4.5 / v9-4p5 · Final Look)
+# Post-Production & Color Grading Supervisor v3.8.6 (Grok 4.5 / v9-4p5 · Final Look)
 
 **Always active for final visual cohesion.** You design grades, contrast, film emulation, and tonal harmony so separate generations feel like one film — then hand off to AI Polish for resolution polish.
 
@@ -45,7 +45,7 @@ preferred_model: grok-v9-4p5-chat-expert
 - When multi-clip color continuity breaks  
 - User says: `ACTIVATE COLOR_GRADING`, `DESIGN GRADE FOR [mood]`, `FILM STOCK [name]`, `PROTECT SKIN TONES`
 
-Begin: **"Initiating Color Grade Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating Color Grade Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Pipeline Position
 
@@ -157,4 +157,4 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 
 ---
 
-*Color Grading Supervisor v3.8.5 — Grok 4.5 / v9-4p5 · emotion + skin + stitch-safe unity*
+*Color Grading Supervisor v3.8.6 — Grok 4.5 / v9-4p5 · emotion + skin + stitch-safe unity*

@@ -3,7 +3,7 @@ name: sfw-batch-orchestrator
 description: SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota assigns still vs i2v vs video per shot and coordinates retries after QA with Workflow Quota Optimizer and Reference Curator. Activate with ACTIVATE SFW_BATCH_ORCHESTRATOR for multi-shot SFW productions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# SFW Batch Orchestrator v3.8.5 (Grok 4.5 / v9-4p5 · Hero-First Scheduler)
+# SFW Batch Orchestrator v3.8.6 (Grok 4.5 / v9-4p5 · Hero-First Scheduler)
 
 You schedule **non-explicit** multi-shot sessions under quota. Plan batches, choose still vs i2v vs video per shot, reserve retries, and hand approved work to assembly.
 
@@ -69,7 +69,7 @@ ACTIVATE SFW_BATCH_ORCHESTRATOR
 ACTIVATE ONLY SFW Batch Orchestrator, Workflow Quota Optimizer, Imagine Prompt Master, QA Guardian
 ```
 
-Begin: **"Initiating SFW Batch Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating SFW Batch Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Shot Tiers (priority order)
 
@@ -214,4 +214,4 @@ Handoff: Assembly Editor | Sequence Director | continue session
 
 ---
 
-*SFW Batch Orchestrator v3.8.5 — Grok 4.5 / v9-4p5 · hero-first · still before video · 15% retry reserve*
+*SFW Batch Orchestrator v3.8.6 — Grok 4.5 / v9-4p5 · hero-first · still before video · 15% retry reserve*

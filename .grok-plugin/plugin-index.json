@@ -6,7 +6,7 @@
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.5 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
           },
           {
             "name": "studio-director",
@@ -22,7 +22,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.5. Installs updates and verifies the full 51-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 51-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -212,7 +212,7 @@
         "commands": [
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.8.5 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.8.6 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
           },
           {
             "name": "dna",
@@ -263,7 +263,7 @@
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.5 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
           },
           {
             "name": "studio-director",
@@ -279,7 +279,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.5. Installs updates and verifies the full 51-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 51-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -337,7 +337,7 @@
         "commands": [
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.8.5 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.8.6 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Ag…"
           },
           {
             "name": "dna",

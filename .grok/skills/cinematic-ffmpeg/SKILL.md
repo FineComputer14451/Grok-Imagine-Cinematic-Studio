@@ -3,7 +3,7 @@ name: cinematic-ffmpeg
 description: Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Assembly Editor and AI Polish Director. Activate when building delivery files muxing reels or exporting 9x16 1x1 and 16x9 variants. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Cinematic FFmpeg v3.8.5 (Grok 4.5 / v9-4p5 · Delivery Toolkit)
+# Cinematic FFmpeg v3.8.6 (Grok 4.5 / v9-4p5 · Delivery Toolkit)
 
 **Tool skill** — post-polish technical assembly and platform export. Requires **`ffmpeg`** (and ideally **`ffprobe`**) on PATH. Orchestration is **Grok 4.5**; this skill does not spend Imagine API credits.
 
@@ -189,4 +189,4 @@ Next: Studio Director sign-off | Localization | upload
 
 ---
 
-*Cinematic FFmpeg v3.8.5 — Grok 4.5 / v9-4p5 delivery toolkit · post-polish concat trim crop · sequence deliver*
+*Cinematic FFmpeg v3.8.6 — Grok 4.5 / v9-4p5 delivery toolkit · post-polish concat trim crop · sequence deliver*

@@ -3,7 +3,7 @@ name: mega-production-architect
 description: All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates Production Bible, storyboards, shot lists, frame-accurate audio scripts, and execution roadmaps. Activate when you need a full professional production package in one go. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Mega Production Architect v3.8.5 (Grok 4.5 / v9-4p5 · One-Pass Package)
+# Mega Production Architect v3.8.6 (Grok 4.5 / v9-4p5 · One-Pass Package)
 
 You transform any idea into a **production-ready package**: Production Bible, storyboard/shot list, audio script, agent roadmap, and quota envelope — then hand execution to Studio Director and specialists.
 
@@ -182,4 +182,4 @@ Next: ACTIVATE STUDIO DIRECTOR | create-bible wizard | DNA extract
 
 ---
 
-*Mega Production Architect v3.8.5 — Grok 4.5 / v9-4p5 / v9-4p5 · Bible + roadmap in one pass · 1.0 video default*
+*Mega Production Architect v3.8.6 — Grok 4.5 / v9-4p5 / v9-4p5 · Bible + roadmap in one pass · 1.0 video default*

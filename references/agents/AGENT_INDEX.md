@@ -1,7 +1,7 @@
 # Grok Imagine Cinematic Studio — Agent Index
 
 **Enhanced for:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` + **Imagine Video 1.0 & 1.5 Native**  
-**Version:** 3.8.5 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.8.5 · Full v4.5 dual-model wave  
+**Version:** 3.8.6 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.8.6 · Full v4.5 dual-model wave  
 **Date:** 2026-07-21  
 **Canonical Model Layer:** `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1)
 

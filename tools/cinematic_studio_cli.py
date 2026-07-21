@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grok Imagine Cinematic Studio CLI v3.8.5 — Grok 4.5 stack (wiring only)."""
+"""Grok Imagine Cinematic Studio CLI v3.8.6 — Grok 4.5 stack (wiring only)."""
 
 from __future__ import annotations
 

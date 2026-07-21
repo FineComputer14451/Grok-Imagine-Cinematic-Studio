@@ -4,6 +4,20 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.8.6] - 2026-07-21
+
+### Added
+- **Clean release packaging** for full dual-model completion (post–v3.8.5 systematic alignment)
+- Fresh install zips built from complete **51-skill** suite with full `model_compatibility` coverage
+
+### Changed
+- **Studio version** — `VERSION` → **3.8.6** (docs, installers, packs, activation, registry compatibility)
+- Activation phrase: `Activate Grok Imagine Cinematic Studio v3.8.6`
+- Handoff `PROTOCOL_OK` includes **3.8.6**; `STUDIO_COMPATIBILITY_VERSION` / `STUDIO_AGENT_VERSION` aligned
+
+### Notes
+- v3.8.5 remains the dual-model feature wave; **3.8.6** is the polished install/release pin after full-repo completion (models API restore, Generation Tracker, meta-installer restore, 51-skill dual-model finish).
+
 ## [3.8.5] - 2026-07-20
 
 ### Added

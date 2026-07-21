@@ -15,8 +15,8 @@ from studio_paths import AGENTS_DIR, STUDIO_ROOT
 def _read_studio_version() -> str:
     vf = STUDIO_ROOT / "VERSION"
     if vf.is_file():
-        return vf.read_text(encoding="utf-8").strip() or "3.8.5"
-    return "3.8.5"
+        return vf.read_text(encoding="utf-8").strip() or "3.8.6"
+    return "3.8.6"
 
 
 STUDIO_VERSION = _read_studio_version()
@@ -147,9 +147,9 @@ ROLE_CARD_SHARED_DOCS = frozenset({
     ROLE_CARD_INDEX_FILE,
     "MODEL_LAYER_v3.6.7.md",  # pointer → MODEL_LAYER_v3.7.1 / v4.5
     "MODEL_LAYER_v3.7.1.md",
-    "MODEL_LAYER_v4.5.md",  # v3.8.5 v9-4p5 dual-model layer
+    "MODEL_LAYER_v4.5.md",  # v3.8.6 v9-4p5 dual-model layer
     "IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md",
-    "IMAGINE_EXECUTION_BRIDGE.md",  # v3.8.5 surface-C bridge protocol
+    "IMAGINE_EXECUTION_BRIDGE.md",  # v3.8.6 surface-C bridge protocol
     "IDENTITY_CONTINUITY_PROTOCOL_v3.8.md",
 })
 EXPECTED_ROLE_CARD_COUNT = len(AGENT_ROLE_CARDS)

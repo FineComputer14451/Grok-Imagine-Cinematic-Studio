@@ -3,7 +3,7 @@ name: chain-qa-protocol
 description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approving clips for extension or final stitch. Activate with RUN CHAIN QA REVIEW alongside Sequence Director and Cinematic Sequence Extender. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Chain QA Protocol v3.8.5 (Grok 4.5 / v9-4p5 · Extend/Stitch Gate)
+# Chain QA Protocol v3.8.6 (Grok 4.5 / v9-4p5 · Extend/Stitch Gate)
 
 **Pipeline skill** — boundary continuity gate for multi-clip sequences. Complements QA Guardian’s **per-clip 16-point** review; does **not** replace it.
 
@@ -48,7 +48,7 @@ ACTIVATE ONLY Sequence Director, Cinematic Sequence Extender, Continuity Guardia
 RUN CHAIN QA REVIEW
 ```
 
-Begin: **"Initiating Chain QA Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating Chain QA Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## When NOT Alone
 
@@ -193,4 +193,4 @@ Next: extend | fix handoff | regen plan | Assembly Editor (if final Go)
 
 ---
 
-*Chain QA Protocol v3.8.5 — Grok 4.5 / v9-4p5 · weighted 10-point stitch gate · critical floor 7.0*
+*Chain QA Protocol v3.8.6 — Grok 4.5 / v9-4p5 · weighted 10-point stitch gate · critical floor 7.0*

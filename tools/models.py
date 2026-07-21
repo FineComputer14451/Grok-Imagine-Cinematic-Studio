@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.8.5 · Grok 4.5 + v9-4p5).
+Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.8.6 · Grok 4.5 + v9-4p5).
 
 Single source of truth for CLI, Web UI, quota optimizer, and documentation.
 
@@ -160,7 +160,7 @@ GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
 # ---------------------------------------------------------------------------
 
 XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
-    # --- v3.8.5 v9-4p5 surface family (opt-in aliases; grok-4.5 remains default) ---
+    # --- v3.8.6 v9-4p5 surface family (opt-in aliases; grok-4.5 remains default) ---
     "grok-v9-4p5-chat-expert": {
         "label": "Grok v9 4.5 Chat Expert",
         "context_tokens": 1_000_000,
@@ -295,7 +295,7 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
     },
 }
 
-STUDIO_COMPATIBILITY_VERSION = "3.8.5"
+STUDIO_COMPATIBILITY_VERSION = "3.8.6"
 
 # Role → slug (unique by construction; no duplicate bag)
 REQUIRED_MODEL_ROLES: dict[str, str] = {

@@ -3,7 +3,7 @@ name: handoff-packet-validator
 description: Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest intimacy state and Imagine Agent Mode Handoff. Run before activating downstream agents or extend generation. Use when validating handoff.json packets or debugging chain QA failures. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Handoff Packet Validator v3.8.5 (Grok 4.5 / v9-4p5 · Schema Gate)
+# Handoff Packet Validator v3.8.6 (Grok 4.5 / v9-4p5 · Schema Gate)
 
 **Tool skill** — data-driven schema checks for agent handoff JSON. Blocks broken packets before Identity Lock, extend/stitch, i2v, or Imagine spend.
 
@@ -204,4 +204,4 @@ Imagine Agent Mode (surfaces, modes, required fields):
 
 ---
 
-*Handoff Packet Validator v3.8.5 — Grok 4.5 / v9-4p5 schema gate · data-driven PACKET_TYPES · block broken handoffs before spend*
+*Handoff Packet Validator v3.8.6 — Grok 4.5 / v9-4p5 schema gate · data-driven PACKET_TYPES · block broken handoffs before spend*

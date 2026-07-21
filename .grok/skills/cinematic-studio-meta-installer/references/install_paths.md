@@ -1,4 +1,4 @@
-# Cinematic Studio Meta Installer — Paths Reference v3.8.5 (Grok 4.5 · plugin suite + packs)
+# Cinematic Studio Meta Installer — Paths Reference v3.8.6 (Grok 4.5 · plugin suite + packs)
 
 ## Model stack (post-install)
 
@@ -13,7 +13,7 @@
 Config: `config/grok-build.example.toml` → `~/.grok/config.toml`  
 Verify: `python tools/cinematic_studio_cli.py models verify`  
 Model Layer: `references/agents/MODEL_LAYER_v3.7.1.md`  
-Studio release: **v3.8.5** (`VERSION`)
+Studio release: **v3.8.6** (`VERSION`)
 
 ## Install Methods
 
@@ -31,7 +31,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagi
 bash scripts/cinematic_studio.sh install
 
 # Bootstrap zip (meta-installer only)
-unzip grok-imagine-cinematic-studio-meta-installer-v3.8.5.zip && ./bootstrap.sh
+unzip grok-imagine-cinematic-studio-meta-installer-v3.8.6.zip && ./bootstrap.sh
 ```
 
 Update: `bash scripts/cinematic_studio.sh update` (timestamped backup under `~/.grok/skills-backup-*`).
@@ -79,9 +79,9 @@ bash scripts/cinematic_studio.sh declutter --apply --keep-backups 1
 
 | Asset | Notes |
 |-------|--------|
-| Meta-installer zip | `grok-imagine-cinematic-studio-meta-installer-v3.8.5.zip` — skill + scripts; run `./bootstrap.sh` |
-| Full skills zip (latest) | `.../releases/latest/download/grok-imagine-cinematic-studio-skills-install-v3.8.5.zip` |
-| Full skills zip (versioned) | `.../releases/download/v3.8.5/grok-imagine-cinematic-studio-skills-install-v3.8.5.zip` |
+| Meta-installer zip | `grok-imagine-cinematic-studio-meta-installer-v3.8.6.zip` — skill + scripts; run `./bootstrap.sh` |
+| Full skills zip (latest) | `.../releases/latest/download/grok-imagine-cinematic-studio-skills-install-v3.8.6.zip` |
+| Full skills zip (versioned) | `.../releases/download/v3.8.6/grok-imagine-cinematic-studio-skills-install-v3.8.6.zip` |
 
 If a versioned zip is not published yet, use `latest` or install from a local clone of `main`.
 
@@ -104,7 +104,7 @@ If a versioned zip is not published yet, use `latest` or install from a local cl
 ## Activation
 
 ```
-Activate Grok Imagine Cinematic Studio v3.8.5
+Activate Grok Imagine Cinematic Studio v3.8.6
 ```
 
 Or slash command `/cinematic` after plugin install.

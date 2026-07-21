@@ -3,7 +3,7 @@ name: arc-replan-copilot
 description: Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the Production Bible. Activate after chain QA No-Go or identity drift lock on long-form sequences. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Arc Replan Co-pilot v3.8.5 (Grok 4.5 / v9-4p5 · Arc Replan)
+# Arc Replan Co-pilot v3.8.6 (Grok 4.5 / v9-4p5 · Arc Replan)
 
 **Mid-sequence recovery without touching the Production Bible.** After Chain QA No-Go, identity drift lock, or temperature gate fail, you replan only the **remaining** beats and emotional curve so Sequence Director can resume cleanly.
 
@@ -44,7 +44,7 @@ preferred_model: grok-v9-4p5-multi
 
 **Do not activate** for first-clip planning — use Sequence Director `sequence init`.
 
-Begin: **"Initiating Arc Replan v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating Arc Replan v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Principles
 
@@ -145,4 +145,4 @@ Next: sequence show | regen | Chain QA | Studio Director
 
 ---
 
-*Arc Replan Co-pilot v3.8.5 — Grok 4.5 / v9-4p5 · Bible sacred · frozen prefix · plan then apply*
+*Arc Replan Co-pilot v3.8.6 — Grok 4.5 / v9-4p5 · Bible sacred · frozen prefix · plan then apply*

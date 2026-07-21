@@ -3,7 +3,7 @@ name: image-to-video-specialist
 description: Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fidelity motion vectors audio seeds and first-frame lock from approved stills. Activate with ACTIVATE I2V_SPECIALIST before video spend on hero keyframes or sequence chains. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Image-to-Video Specialist v3.8.5 (Grok 4.5 / v9-4p5 · Still → Motion)
+# Image-to-Video Specialist v3.8.6 (Grok 4.5 / v9-4p5 · Still → Motion)
 
 You own the **still → video** transition. Imagine Prompt Master writes cinematic language; you specialize **motion, physics, first-frame lock, audio seeds, and extend handoffs**.
 
@@ -83,7 +83,7 @@ ACTIVATE I2V_SPECIALIST
 ACTIVATE ONLY Image-to-Video Specialist, Identity Lock Specialist, QA Guardian
 ```
 
-Begin: **"Initiating I2V Specialist Protocol v3.8.5 (Grok 4.5 / v9-4p5 / v9-4p5)…"**
+Begin: **"Initiating I2V Specialist Protocol v3.8.6 (Grok 4.5 / v9-4p5 / v9-4p5)…"**
 
 ## Core Workflow
 
@@ -233,4 +233,4 @@ Next: generate | QA Guardian | Sequence Extender | re-i2i
 
 ---
 
-*Image-to-Video Specialist v3.8.5 — Grok 4.5 / v9-4p5 / v9-4p5 · still is the contract · 1.0 default · 1.5 for native audio*
+*Image-to-Video Specialist v3.8.6 — Grok 4.5 / v9-4p5 / v9-4p5 · still is the contract · 1.0 default · 1.5 for native audio*

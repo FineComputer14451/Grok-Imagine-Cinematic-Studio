@@ -1,4 +1,4 @@
-# Skills & Plugin Taxonomy — v3.8.5
+# Skills & Plugin Taxonomy — v3.8.6
 
 Canonical **install layout** stays flat: `.grok/skills/<name>/SKILL.md` (required by Grok plugin format). This file is the **mental model** for browsing, declutter, and docs — not a second on-disk hierarchy.
 
@@ -103,4 +103,4 @@ Browse with: `cinematic-studio plugin list --grouped`
 - Plugin pin: `.grok/skills/github-repo-manager/references/plugin_catalog_release.md`
 - Install: `docs/guides/installation_guide.md`
 
-*v3.8.5 · Grok 4.5 / v9-4p5 · July 2026*
+*v3.8.6 · Grok 4.5 / v9-4p5 · July 2026*

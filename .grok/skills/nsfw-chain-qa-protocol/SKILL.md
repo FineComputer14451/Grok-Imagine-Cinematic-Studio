@@ -3,7 +3,7 @@ name: nsfw-chain-qa-protocol
 description: NSFW extend and stitch chain QA protocol for intimate Grok Imagine Video 1.5 sequences. Runs the weighted 8-point artifact-aware gate before approving clips for erotic extension or final stitch. Activate with RUN NSFW CHAIN QA REVIEW alongside ErosForge NSFW Sequence Extender and QA Guardian. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# NSFW Chain QA Protocol v3.8.5 (Grok 4.5 / v9-4p5 · Intimate Chain Gate)
+# NSFW Chain QA Protocol v3.8.6 (Grok 4.5 / v9-4p5 · Intimate Chain Gate)
 
 **Pipeline skill** — weighted 8-point artifact-aware gate for explicit/intimate extend and stitch. Complements QA Guardian’s per-clip 16-point review; does **not** replace it.
 
@@ -48,7 +48,7 @@ ACTIVATE EROSFORGE
 RUN NSFW CHAIN QA REVIEW
 ```
 
-Begin: **"Running NSFW Chain QA Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Running NSFW Chain QA Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Philosophy
 
@@ -157,4 +157,4 @@ Next: extend | regen | Arc Replan | stitch blocked
 
 ---
 
-*NSFW Chain QA Protocol v3.8.5 — Grok 4.5 / v9-4p5 · fail closed on criticals · no extend on No-Go*
+*NSFW Chain QA Protocol v3.8.6 — Grok 4.5 / v9-4p5 · fail closed on criticals · no extend on No-Go*

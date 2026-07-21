@@ -68,7 +68,7 @@ python tools/cinematic_studio_cli.py sfw record hero-session shot_hero_001 \
 python tools/cinematic_studio_cli.py sfw promote hero-session shot_hero_001  # two-pass
 ```
 
-### 6. Chat bridge (no API key) + Agent Mode Handoff (v3.7.1 / v3.8.5)
+### 6. Chat bridge (no API key) + Agent Mode Handoff (v3.7.1 / v3.8.6)
 
 ```bash
 # Classic web UI bridge (surface: grok_com_imagine)

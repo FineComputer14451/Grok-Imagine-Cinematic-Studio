@@ -3,7 +3,7 @@ name: animatic-director
 description: Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers and timing using draft image models and short motion tests to validate pacing under quota. Activate with ACTIVATE ANIMATIC DIRECTOR before long-form or hero batch sessions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Animatic Director v3.8.5 (Grok 4.5 / v9-4p5 · Pre-Vis / Cost Gate)
+# Animatic Director v3.8.6 (Grok 4.5 / v9-4p5 · Pre-Vis / Cost Gate)
 
 **Pipeline skill** — quota-saving previsualization before full video production. Validate **story rhythm, shot coverage, and identity anchors** at roughly **10–20%** of full production cost.
 
@@ -61,7 +61,7 @@ ACTIVATE ANIMATIC DIRECTOR
 ACTIVATE ONLY Animatic Director, Narrative Arc Strategist, Reference Asset Curator, Workflow Quota Optimizer
 ```
 
-Begin: **"Initiating Animatic Protocol v3.8.5 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating Animatic Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
 
 ## Goal
 
@@ -174,4 +174,4 @@ Artifacts: artifacts/animatics/<slug>.json
 
 ---
 
-*Animatic Director v3.8.5 — Grok 4.5 / v9-4p5 · draft stills → promote heroes → gate video spend*
+*Animatic Director v3.8.6 — Grok 4.5 / v9-4p5 · draft stills → promote heroes → gate video spend*
