@@ -1,6 +1,7 @@
-# Handoff Packet Types — Field Cheat Sheet (v3.7.1)
+# Handoff Packet Types — Field Cheat Sheet (v3.7.1 + Extend-Priority)
 
-Source of implementation: `scripts/validate_handoff.py` + `tools/handoff_schema.py` (Imagine Agent Mode).
+Source of implementation: `scripts/validate_handoff.py` + `tools/handoff_schema.py` (Imagine Agent Mode).  
+**July 2026:** `imagine_agent_mode_handoff` now defaults to Extend-from-Frame priority for multi-clip work.
 
 ## identity_lock_handoff
 
@@ -44,10 +45,19 @@ Producer: ErosForge / NSFW Sequence Extender. Opt-in only.
 
 ## imagine_agent_mode_handoff
 
-Canonical schema: `tools/handoff_schema.py` → `imagine_agent_mode_packet_schema()`.
+Canonical schema: `tools/handoff_schema.py` → `imagine_agent_mode_packet_schema()`.  
+**July 2026 Extend-Priority Default** (Team Leader): multi-clip work defaults to `generation_strategy: "extend_from_frame_chain"`.
 
 **Always required (nonempty where noted):**  
 `packet_type`, `protocol_version`, `studio_version`, `target_surface`, `execution_mode`, `subject_id`, `prompt`, `reference_hints` (list), `model_stack` (object with any of chat/build/imagine_image/imagine_video), `quota_note`, `return_path`, `handoff_steps` (≥1).
+
+**New / strengthened fields (multi-clip / extend path):**
+- `generation_strategy` (required for multi-clip) — default `"extend_from_frame_chain"`; allowed: `extend_from_frame_chain` | `independent_clip` | `hybrid`
+- `extend_protocol` (required for video extend) — `"LAST_FRAME + MOTION_VECTOR"` or `"LAST_FRAME + MOTION_VECTOR + AUDIO_CUE"`
+- `last_frame_recap`, `momentum_vector` (required on extend)
+- `audio_momentum_vector` (required on 1.5 / native-audio chains)
+- `quota_optimization` (strongly recommended) — prefer_extend_over_new_clip, estimated_savings_pct, max_new_independent_clips, buffer_remaining_pct
+- `chain_control` (recommended) — source_clip_id, max_extensions, dependency_graph, require_chain_qa_before_extend, min_chain_qa_score
 
 **Enums:**
 
@@ -55,16 +65,22 @@ Canonical schema: `tools/handoff_schema.py` → `imagine_agent_mode_packet_schem
 |-------|--------|
 | `target_surface` | `grok_build_tools`, `grok_agent_acp`, `grok_com_imagine`, `xai_api` |
 | `execution_mode` | `image_prompt`, `image_edit`, `image_to_video`, `video_prompt`, `reference_to_video` |
+| `generation_strategy` | `extend_from_frame_chain`, `independent_clip`, `hybrid` |
 
 **When `execution_mode` is video** (`image_to_video` \| `video_prompt` \| `reference_to_video`):  
-also require nonempty `video_pipeline_spec` and `sound_layer`.
+also require nonempty `video_pipeline_spec` and `sound_layer`.  
+When `generation_strategy` is `extend_from_frame_chain`, also require `last_frame_recap` + `momentum_vector`.
+
+**Canonical templates:**  
+`studio-director/references/templates/imagine_agent_mode_handoff_extend_priority.json`  
+`studio-director/references/templates/IMAGINE_AGENT_MODE_EXTEND_PRIORITY.md`
 
 Doc: `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`
 
 ## Exit codes
 
 | Code | Meaning |
-|------|---------|
+|------|--------|
 | 0 | Valid |
 | 1 | Validation / JSON errors |
 | 2 | Usage / missing file |

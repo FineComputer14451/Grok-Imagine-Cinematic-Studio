@@ -1,0 +1,82 @@
+{
+  "packet_type": "imagine_agent_mode_handoff",
+  "protocol_version": "4.5-extend-priority",
+  "studio_version": "3.8.6 / 4.5",
+  "target_surface": "grok_build_tools",
+  "execution_mode": "image_to_video",
+  "subject_id": "REPLACE_WITH_CLIP_OR_SHOT_ID",
+  "generation_strategy": "extend_from_frame_chain",
+  "extend_protocol": "LAST_FRAME + MOTION_VECTOR + AUDIO_CUE",
+
+  "prompt": "[PASTE Ultimate Template body from Imagine Prompt Master — must explicitly reference last-frame visual/emotional state]",
+  "reference_hints": [
+    "artifacts/approved/REPLACE_SOURCE_CLIP_last_frame.png"
+  ],
+  "last_frame_recap": "REPLACE: Detailed visual + emotional state of the approved last frame (composition, lighting, character pose/expression, camera, environment continuity).",
+  "momentum_vector": {
+    "action": "REPLACE: continuing action from previous clip",
+    "camera": "REPLACE: continuing camera trajectory and lens behavior",
+    "emotion": "REPLACE: emotional evolution / intensity change",
+    "physics_notes": "REPLACE: rain, fabric, particle, contact, or environmental continuity notes"
+  },
+  "audio_momentum_vector": {
+    "energy": "REPLACE: overall energy level and curve",
+    "tone": "REPLACE: emotional / genre tone",
+    "spatial": "REPLACE: L/R/center placement of key elements",
+    "intensity": 0.6
+  },
+
+  "video_pipeline_spec": "[VIDEO_PIPELINE_SPEC: model=\"grok-imagine-video-1.5\", version=\"1.5\", resolution=\"720p\", clip_length=\"8-12s\", native_audio=true, reference_image_fidelity=high, extend_protocol=\"LAST_FRAME + MOTION_VECTOR + AUDIO_CUE\", stitch_priority=high, audio_momentum=true]",
+
+  "sound_layer": "REPLACE: Native audio Sound Layer description that continues previous clip energy, tone, and spatial layout.",
+
+  "model_stack": {
+    "chat": "grok-v9-4p5-multi",
+    "imagine_video": "1.5"
+  },
+
+  "quota_optimization": {
+    "prefer_extend_over_new_clip": true,
+    "estimated_savings_pct": 40,
+    "max_new_independent_clips": 0,
+    "preferred_video_version": "1.5",
+    "fast_mode_allowed": false,
+    "buffer_remaining_pct": 15,
+    "rationale": "Pure extend-from-frame chain. No new independent generation. Preserves identity lock and reduces total billed seconds."
+  },
+
+  "chain_control": {
+    "source_clip_id": "REPLACE_SOURCE_CLIP_ID",
+    "max_extensions": 6,
+    "dependency_graph": ["SOURCE → THIS_CLIP"],
+    "require_chain_qa_before_extend": true,
+    "min_chain_qa_score": 8.0,
+    "allow_hard_cut": false
+  },
+
+  "qa_gate": {
+    "min_score": 8.0,
+    "require_chain_qa": true,
+    "identity_lock_status": "locked"
+  },
+
+  "quota_note": "Extend-only path. Estimated cost based on clip length @ 1.5. 15% buffer protected.",
+  "return_path": "artifacts/sequences/PROJECT/THIS_CLIP → RUN CHAIN QA → extract new last_frame → update momentum vectors → Sequence Director health check",
+  "handoff_steps": [
+    "1. Confirm source last_frame exists and passed previous Chain QA",
+    "2. Inject LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR into the prompt",
+    "3. Execute image_to_video / native extend on target surface using the approved last_frame as primary reference",
+    "4. On success → extract new last_frame + refresh momentum vectors",
+    "5. Run mandatory 10-point Chain QA before any further extension or stitch",
+    "6. Return updated packet + artifacts to Sequence Director / Studio Director"
+  ],
+  "dna_inject": "[OPTIONAL: Character DNA / Identity Lock inject block]",
+  "specialist_checklist": {
+    "sequence_director": true,
+    "cinematic_sequence_extender": true,
+    "i2v_specialist": true,
+    "workflow_quota_optimizer": true,
+    "continuity_consistency_guardian": true,
+    "sonic_architect": true
+  }
+}
