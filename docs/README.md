@@ -1,31 +1,50 @@
-# Documentation (Grok Imagine Cinematic Studio v3.7.1 · Grok 4.5)
+# Documentation
+## Grok Imagine Cinematic Studio v3.8.6
 
-Human-facing docs live here. Agent-only material stays under `.grok/skills/` and `references/agents/`.
+Official documentation index.
 
-## Layout
+---
 
-| Path | Contents |
-|------|----------|
-| **[guides/](guides/)** | Quick Start, Upgrade, Installation |
-| **[templates/](templates/)** | Production Bible, kink/NSFW template library |
-| **[releases/](releases/)** | Release notes by studio version |
-| **[archive/](archive/)** | Superseded docs (historical) |
-| **[development/](development/)** | Internal plans/specs (not user-facing) |
-| **[REPOSITORY_LAYOUT.md](REPOSITORY_LAYOUT.md)** | Current repo map for Grok 4.5 |
+## Start Here
 
-## Start here
+| Document | Description |
+|----------|-------------|
+| **[Official Overview](OFFICIAL_OVERVIEW.md)** | High-level introduction and capabilities |
+| **[User Guide](guides/USER_GUIDE.md)** | Complete end-to-end production workflow |
+| **[Architecture](ARCHITECTURE.md)** | System design, layers, protocols |
+| **[CLI Reference](CLI_REFERENCE.md)** | Full command reference |
+| **[Quick Start Guide](guides/Quick_Start_Guide.md)** | Fast onboarding |
 
-1. [Quick Start Guide](guides/docs/guides/Quick_Start_Guide.md)
-2. Root [README.md](../README.md) · [MASTER_PROMPT.md](../MASTER_PROMPT.md)
-3. [Model Layer](../references/agents/MODEL_LAYER_v3.7.1.md) · [MODELS registry](../references/MODELS.md)
-4. [Release notes v3.7.1](releases/RELEASE_NOTES_v3.7.1.md)
+---
 
-## Agent / plugin sources of truth
+## Additional Guides
 
-| Concern | Path |
-|---------|------|
+- [Upgrade Guide](guides/UPGRADE_GUIDE.md)
+- [Installation Guide](guides/installation_guide.md)
+- [Streamlit Cloud Deploy](guides/streamlit_cloud_deploy.md)
+
+## Templates
+
+- [Production Bible Template](templates/Project_Bible_Template.md)
+- [Kink / NSFW Cinematic Template Library](templates/Kink_Specific_Cinematic_Template_Library.md)
+
+## Releases
+
+- [Release Notes](releases/)
+- Root [CHANGELOG.md](../CHANGELOG.md)
+
+## Agent & Protocol Sources of Truth
+
+| Concern | Location |
+|---------|----------|
+| Role Cards & Agent Index | `references/agents/` |
+| Model Layer | `references/agents/MODEL_LAYER_v4.5.md` |
+| Imagine Agent Mode Handoff | `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md` |
 | Skills | `.grok/skills/` |
-| Plugin marketplace | `.grok-plugin/` |
-| Role Cards | `references/agents/` |
-| Model stack code | `tools/models.py` |
-| Agent instructions | `AGENTS.md` (repo root) |
+| Plugin Marketplace | `.grok-plugin/` |
+| Master Activation Prompt | `MASTER_PROMPT.md` |
+
+---
+
+**Version**: 3.8.6  
+**Last updated**: July 2026
