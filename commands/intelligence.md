@@ -52,6 +52,8 @@ Track estimated vs actual spend and burn-rate risk:
 python tools/cinematic_studio_cli.py quota sync
 python tools/cinematic_studio_cli.py quota sync --entries
 python tools/cinematic_studio_cli.py quota sync --json
+python tools/cinematic_studio_cli.py quota dashboard
+python tools/cinematic_studio_cli.py quota dashboard --json
 python tools/cinematic_studio_cli.py quota reconcile
 python tools/cinematic_studio_cli.py dashboard --compact
 ```

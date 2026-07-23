@@ -125,9 +125,58 @@ def register(app: typer.Typer) -> None:
                 console.print(f"  [{r['priority']}] {r['action']} — {r['savings']}")
 
     @app.command("dashboard")
-    def quota_dash():
-        """Show session quota dashboard."""
+    def quota_dash(
+        json_output: bool = typer.Option(False, "--json", help="Emit JSON dashboard"),
+    ):
+        """Show session quota dashboard (budget + recon cascade)."""
         dash = quota_dashboard()
+        recon = dash.get("reconciliation") or {}
+        try:
+            align = ledger_recon_alignment()
+        except Exception:
+            align = {"status": "idle", "hint": ""}
+
+        if json_output:
+            import json
+
+            console.print(
+                json.dumps(
+                    {**dash, "alignment": {
+                        "status": align.get("status"),
+                        "hint": align.get("hint"),
+                    }},
+                    indent=2,
+                    default=str,
+                )
+            )
+            return
+
+        cascade = recon.get("cascade_source") or "none"
+        cascade_labels = {
+            "generation_ledger": "ledger (primary)",
+            "imagine_jobs_actuals": "jobs (fallback)",
+            "history_est": "history est:N",
+            "record_spend": "manual record",
+            "mixed": "mixed (run quota sync)",
+            "none": "none",
+        }
+        burn_risk = dash.get("burn_rate_risk") or recon.get("risk_level") or "low"
+        risk_style = {
+            "low": "green",
+            "medium": "yellow",
+            "high": "red",
+            "critical": "bold red",
+        }.get(burn_risk, "white")
+        align_status = align.get("status") or "idle"
+        align_style = {
+            "aligned": "green",
+            "idle": "dim",
+            "mismatch": "red",
+            "stale": "yellow",
+            "orphan_recon": "yellow",
+            "mixed": "yellow",
+        }.get(align_status, "white")
+
         table = Table(title="📊 Quota Dashboard", box=box.ROUNDED)
         table.add_column("Metric", style="cyan")
         table.add_column("Value", style="white")
@@ -138,7 +187,24 @@ def register(app: typer.Typer) -> None:
             table.add_row("Budget Remaining", f"{dash['budget_remaining']} credits")
         if dash["budget_pct_used"] is not None:
             table.add_row("Session % of Budget", f"{dash['budget_pct_used']}%")
+        table.add_row("Cascade", cascade_labels.get(cascade, str(cascade)))
+        table.add_row(
+            "Ledger alignment",
+            f"[{align_style}]{align_status}[/{align_style}]",
+        )
+        if recon.get("entry_count") or recon.get("estimated_total") or recon.get("actual_total"):
+            table.add_row("Est. Total", f"{recon.get('estimated_total', 0)} credits")
+            table.add_row("Actual Total", f"{recon.get('actual_total', 0)} credits")
+            table.add_row("Variance", f"{recon.get('variance_pct', 0)}%")
+            table.add_row("Burn rate", f"{recon.get('burn_rate_multiplier', 1.0)}x")
+            table.add_row("Burn risk", f"[{risk_style}]{burn_risk}[/{risk_style}]")
+            table.add_row("Recon entries", str(recon.get("entry_count", 0)))
         console.print(table)
+        if align_status not in ("aligned", "idle") and align.get("hint"):
+            console.print(f"[dim]{align['hint']}[/dim]")
+        console.print(
+            "[dim]Rebuild cascade: cinematic-studio quota sync · detail: quota sync --entries[/dim]"
+        )
         if dash.get("recent_history"):
             console.print("\n[dim]Recent:[/dim]")
             for h in dash["recent_history"]:

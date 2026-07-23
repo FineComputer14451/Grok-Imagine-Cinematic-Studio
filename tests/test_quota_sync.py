@@ -298,6 +298,31 @@ def test_record_spend_after_cascade_marks_mixed() -> None:
     assert "quota sync" in align["hint"]
 
 
+def test_quota_dashboard_includes_cascade() -> None:
+    from quota_optimizer import quota_dashboard
+
+    state = _empty_state()
+    state["quota"]["reconciliation"] = default_reconciliation()
+    state["quota"]["reconciliation"]["sources"] = ["generation_ledger"]
+    state["quota"]["reconciliation"]["estimated_total"] = 3.0
+    state["quota"]["reconciliation"]["actual_total"] = 3.0
+    state["quota"]["reconciliation"]["entries"] = [
+        {
+            "estimated_credits": 3.0,
+            "actual_credits": 3.0,
+            "source": "generation_ledger",
+            "note": "ledger:t",
+        }
+    ]
+    with patch("project_state.load_project_state", return_value=state), patch(
+        "quota_optimizer.load_project_state", return_value=state
+    ), patch("quota_sync.load_project_state", return_value=state):
+        dash = quota_dashboard(state)
+    recon = dash.get("reconciliation") or {}
+    assert recon.get("cascade_source") == "generation_ledger"
+    assert recon.get("entry_count") == 1
+
+
 def test_load_ledger_is_canonical(tmp_path) -> None:
     from generation_tracker import load_ledger
 

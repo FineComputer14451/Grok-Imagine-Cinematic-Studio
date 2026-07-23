@@ -15,6 +15,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Dashboard / TUI / production report** — show recon **cascade source**, entry count, and burn rate (not only when burn ≠ 1.0).
 - **Cascade source honesty** — `record_generation_spend` maintains `sources`; summary infers cascade from entry sources when `sources` is missing; `mixed` when incremental spend overlays a cascade rebuild.
 - **`quota sync` ledger alignment row** — post-reconcile `ledger_recon_alignment` status (aligned / idle / mixed / stale / mismatch) in the table and under `--json` as `alignment` (same helper as Grok Doctor).
+- **`quota dashboard` + Web UI Quota page** — show recon cascade, burn risk, and (CLI) ledger alignment; `quota dashboard --json` includes alignment.
 - **Grok Doctor** is now a **Python check registry** (`tools/doctor.py` + `doctor_checks.py` + `doctor_types.py`) reusing `models.verify_model_compatibility`, `studio_health`, and `plugin_catalog`. Shell entrypoints are thin launchers; `cinematic-studio doctor` routes through the Python CLI (not the meta installer).
 - Doctor uses a **declarative `CheckSpec` registry** (`quick` / `skip_external` filter flags only — no fake PASS rows). Catalog **artifact** errors FAIL; pin-drift WARNs. Model stack summary is embedded in verify detail (no free PASS after FAIL).
 - `models.verify_model_compatibility` splits **`warnings`** (operational) vs **`notes`** (intentional stack info). Public helpers: `version_tuple`, `cli_version_at_least`, `probe_grok_cli`.

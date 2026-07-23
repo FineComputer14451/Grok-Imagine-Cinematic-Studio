@@ -38,6 +38,22 @@ def render() -> None:
     if "1.5" in str(st.session_state.video_model):
         st.info("1.5 selected — higher $/sec for native audio. Prefer 1.0 when silent/post-mix is fine.")
 
+    recon = dash.get("reconciliation") or {}
+    if recon:
+        st.subheader("Reconciliation (cascade)")
+        r1, r2, r3, r4 = st.columns(4)
+        r1.metric("Cascade", str(recon.get("cascade_source") or "none"))
+        r2.metric("Burn", f"{recon.get('burn_rate_multiplier', 1.0)}x")
+        r3.metric("Burn risk", str(dash.get("burn_rate_risk") or recon.get("risk_level") or "low"))
+        r4.metric("Entries", int(recon.get("entry_count") or 0))
+        st.caption(
+            f"Est {recon.get('estimated_total', 0)} · "
+            f"Act {recon.get('actual_total', 0)} · "
+            f"Variance {recon.get('variance_pct', 0)}% · "
+            f"Session spent {dash.get('session_spent', 0)} credits"
+        )
+        st.caption("CLI: `cinematic-studio quota sync` · doctor: section 13 Quota recon")
+
     if st.button("Apply tier to project state"):
         rt.set_budget(tier=st.session_state.quota_tier)
         st.success(f"Tier set: {st.session_state.quota_tier}")
