@@ -18,6 +18,7 @@ from typing import Any
 from models import build_video_pipeline_spec
 from project_state import load_project_state, save_project_state
 from studio_paths import CHARACTERS_DIR
+from wardrobe_lock import build_wardrobe_handoff_section, build_wardrobe_inject
 
 SCHEMA_VERSION = "1.0"
 STUDIO_AGENT_VERSION = "v3.8.6"
@@ -201,6 +202,30 @@ def dna_to_markdown(dna: dict[str, Any], prompts: dict[str, str] | None = None) 
         "",
         "## Clothing & Style",
         dna.get("clothing_style", "") or "_Pending extraction_",
+    ]
+    wardrobe = dna.get("wardrobe_lock")
+    if isinstance(wardrobe, dict):
+        lines += [
+            "",
+            "## Wardrobe Lock",
+            f"**Status:** {wardrobe.get('status', 'pending')}  ",
+            f"**Active look:** `{wardrobe.get('active_look_id', '')}`  ",
+        ]
+        if wardrobe.get("secondary_notes"):
+            lines += [f"**Secondary notes:** {wardrobe['secondary_notes']}", ""]
+        try:
+            inj = build_wardrobe_inject(wardrobe, slug=dna.get("slug") or "character")
+            if inj.get("compact"):
+                lines += [
+                    "### Wardrobe Inject — Compact",
+                    f"```\n{inj['compact']}\n```",
+                    "",
+                    "### Wardrobe Inject — Full",
+                    f"```\n{inj['full']}\n```",
+                ]
+        except Exception:
+            lines.append("_Wardrobe inject unavailable_")
+    lines += [
         "",
         "## Movement & Posture",
         dna.get("movement_posture", "") or "_Pending extraction_",
@@ -240,7 +265,7 @@ def dna_to_markdown(dna: dict[str, Any], prompts: dict[str, str] | None = None) 
 def build_handoff_packet(dna: dict[str, Any]) -> dict[str, Any]:
     """Build Identity Lock Handoff Packet from Character DNA Extractor output."""
     prompts = build_prompt_blocks(dna)
-    return {
+    packet: dict[str, Any] = {
         "packet_type": "identity_lock_handoff",
         "schema_version": SCHEMA_VERSION,
         "created_at": _now_iso(),
@@ -266,6 +291,16 @@ def build_handoff_packet(dna: dict[str, Any]) -> dict[str, Any]:
             "Propagate CHARACTER_DNA variable verbatim in all handoff packets",
         ],
     }
+    wardrobe = dna.get("wardrobe_lock")
+    if isinstance(wardrobe, dict):
+        section = build_wardrobe_handoff_section(wardrobe, slug=dna["slug"])
+        if section is not None:
+            packet["wardrobe"] = section
+            packet["identity_lock_instructions"] = list(packet["identity_lock_instructions"]) + [
+                "When wardrobe.status is locked, require wardrobe inject on primary-character prompts",
+                "Do not drop accessories or layer_order; clip wardrobe_state delta does not rewrite DNA without permanent re-lock",
+            ]
+    return packet
 
 
 def character_dir(slug: str) -> Path:
