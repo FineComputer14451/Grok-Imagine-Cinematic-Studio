@@ -293,6 +293,8 @@ def quota_sync_summary(state: dict[str, Any] | None = None) -> dict[str, Any]:
         state = load_project_state()
     recon = ensure_reconciliation(state)
     quota = state.get("quota", {})
+    sources = list(recon.get("sources") or [])
+    cascade = sources[0] if sources else "none"
     return {
         "session_spent": quota.get("session_spent", 0),
         "estimated_total": recon.get("estimated_total", 0),
@@ -301,5 +303,7 @@ def quota_sync_summary(state: dict[str, Any] | None = None) -> dict[str, Any]:
         "burn_rate_multiplier": recon.get("burn_rate_multiplier", 1.0),
         "risk_level": recon.get("risk_level", "low"),
         "entry_count": len(recon.get("entries", [])),
+        "sources": sources,
+        "cascade_source": cascade,
         "updated_at": recon.get("updated_at"),
     }

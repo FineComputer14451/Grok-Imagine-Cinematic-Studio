@@ -50,9 +50,13 @@ Track estimated vs actual spend and burn-rate risk:
 
 ```bash
 python tools/cinematic_studio_cli.py quota sync
+python tools/cinematic_studio_cli.py quota sync --entries
+python tools/cinematic_studio_cli.py quota sync --json
 python tools/cinematic_studio_cli.py quota reconcile
 python tools/cinematic_studio_cli.py dashboard --compact
 ```
+
+`quota sync` runs exclusive cascade (ledger → jobs with actuals → history `est:N`) and prints **cascade source**, burn-rate multiplier, and risk. Use `--entries` for per-row notes; `--json` for machine-readable summary + entries.
 
 Burn-rate risk (`low` / `medium` / `high` / `critical`) feeds `decide_generation_mode()` in SFW and NSFW orchestrators.
 
@@ -74,7 +78,7 @@ NSFW equivalent: `nsfw plan --two-pass`, `nsfw promote`, `nsfw quality-pending`.
 ## Verification
 
 - `imagine region` shows active region and failover chain.
-- `quota sync` reports variance % and burn-rate multiplier.
+- `quota sync` reports cascade source, variance %, and burn-rate multiplier.
 - `--two-pass` batches set `grok-imagine-video` on pass 1; promotion upgrades to `grok-imagine-video-1.5`.
 - Dashboard quota panel shows reconciliation when entries exist.
 

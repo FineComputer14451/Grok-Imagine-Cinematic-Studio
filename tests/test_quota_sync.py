@@ -64,6 +64,15 @@ def test_quota_sync_summary_shape() -> None:
     summary = quota_sync_summary()
     assert "burn_rate_multiplier" in summary
     assert "risk_level" in summary
+    assert "sources" in summary
+    assert "cascade_source" in summary
+    assert isinstance(summary["sources"], list)
+    assert summary["cascade_source"] in (
+        "none",
+        "generation_ledger",
+        "imagine_jobs_actuals",
+        "history_est",
+    ) or isinstance(summary["cascade_source"], str)
     assert get_burn_rate_risk() in ("low", "medium", "high", "critical")
 
 
@@ -124,6 +133,10 @@ def test_reconcile_uses_ledger_via_generation_tracker(tmp_path) -> None:
     assert recon["sources"] == ["generation_ledger"]
     assert len(recon["entries"]) == 2
     assert all(e.get("source") == "generation_ledger" for e in recon["entries"])
+    summary = quota_sync_summary(state)
+    assert summary["cascade_source"] == "generation_ledger"
+    assert summary["sources"] == ["generation_ledger"]
+    assert summary["entry_count"] == 2
 
 
 def test_reconcile_skips_est_only_jobs() -> None:

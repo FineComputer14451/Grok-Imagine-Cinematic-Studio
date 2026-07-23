@@ -192,25 +192,78 @@ def register(app: typer.Typer) -> None:
     @app.command("sync")
     def quota_sync_cmd(
         json_output: bool = typer.Option(False, "--json", help="Emit JSON summary"),
+        show_entries: bool = typer.Option(
+            False, "--entries", help="List recon entry notes (source-tagged)"
+        ),
     ):
-        """Reconcile estimated vs actual spend from jobs and history."""
+        """Reconcile estimated vs actual spend (exclusive cascade: ledger → jobs → history)."""
         recon = reconcile_from_jobs()
         summary = quota_sync_summary()
         if json_output:
             import json
-            console.print(json.dumps(summary, indent=2))
+
+            payload = {
+                **summary,
+                "entries": recon.get("entries") or [],
+            }
+            console.print(json.dumps(payload, indent=2))
             return
+
+        cascade = summary.get("cascade_source") or "none"
+        cascade_labels = {
+            "generation_ledger": "generation_ledger (primary)",
+            "imagine_jobs_actuals": "imagine_jobs (fallback)",
+            "history_est": "history est:N (fallback)",
+            "none": "none (empty)",
+        }
+        risk = summary.get("risk_level") or "low"
+        risk_style = {
+            "low": "green",
+            "medium": "yellow",
+            "high": "red",
+            "critical": "bold red",
+        }.get(risk, "white")
+
         table = Table(title="Quota Reconciliation", box=box.ROUNDED)
         table.add_column("Metric", style="cyan")
         table.add_column("Value")
+        table.add_row("Cascade source", cascade_labels.get(cascade, cascade))
+        table.add_row("Sources", ", ".join(summary.get("sources") or []) or "—")
         table.add_row("Estimated total", f"{summary['estimated_total']} credits")
         table.add_row("Actual total", f"{summary['actual_total']} credits")
         table.add_row("Variance", f"{summary['variance_pct']}%")
         table.add_row("Burn rate", f"{summary['burn_rate_multiplier']}x")
-        table.add_row("Risk level", summary["risk_level"])
+        table.add_row("Risk level", f"[{risk_style}]{risk}[/{risk_style}]")
         table.add_row("Entries", str(summary["entry_count"]))
         console.print(table)
-        console.print(f"[dim]Updated: {recon.get('updated_at')}[/dim]")
+        console.print(
+            f"[dim]Exclusive cascade: ledger → jobs (actuals) → history · "
+            f"Updated: {recon.get('updated_at')}[/dim]"
+        )
+
+        entries = recon.get("entries") or []
+        if show_entries and entries:
+            et = Table(title="Recon entries", box=box.SIMPLE)
+            et.add_column("Source", style="cyan")
+            et.add_column("Est", justify="right")
+            et.add_column("Act", justify="right")
+            et.add_column("Δ", justify="right")
+            et.add_column("Note")
+            for e in entries[:50]:
+                et.add_row(
+                    str(e.get("source") or "—"),
+                    str(e.get("estimated_credits", "")),
+                    str(e.get("actual_credits", "")),
+                    str(e.get("variance_credits", "")),
+                    str(e.get("note") or "")[:72],
+                )
+            console.print(et)
+            if len(entries) > 50:
+                console.print(f"[dim]… {len(entries) - 50} more (use --json for full)[/dim]")
+        elif entries and not show_entries:
+            console.print(
+                f"[dim]{len(entries)} entry(ies) · pass --entries to list notes[/dim]"
+            )
 
 
     @app.command("reconcile")
