@@ -14,6 +14,8 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - `models.verify_model_compatibility` splits **`warnings`** (operational) vs **`notes`** (intentional stack info). Public helpers: `version_tuple`, `cli_version_at_least`, `probe_grok_cli`.
 - **Model Layer stack lock** — all **52** suite skills now include the canonical **Stack default** line (`grok-4.5` cinematic+Build, CLI ≥ 0.2.93 / fork `grok-build`, opt-in 1M `grok-4.3`) above Registry · `models verify`. Closed the gap where 19 skills had the v9-4p5 table + `model_compatibility` but no explicit stack lock; `cinematic-skill-creator` also gained the full `model_compatibility` YAML block.
 - Marketplace catalog re-pinned after skill and script content revisions (install SHA on content commit; pin-only tip expected).
+- **Docs pass (v3.8.6)** — `Quick_Start_Guide.md` and `installation_guide.md` aligned to **52 skills**, core pack **19**, Model Layer v4.5, two-step catalog pin + in-repo `verify_plugins`/`release_plugin_catalog`, local plugin reinstall notes; `UPGRADE_GUIDE.md` current target **3.8.6**.
+
 
 ### Fixed
 - **`scripts/verify_plugins.sh` / `scripts/release_plugin_catalog.sh`** — prefer in-repo `python3 -m tools.cinematic_studio_cli` for catalog pin/check so release gates resolve **this** checkout’s git HEAD. PATH `cinematic-studio` often defaults to `~/Grok-Cinematic-Projects` (install tree, not always a git clone), which previously failed with `unable to resolve current git HEAD sha` and false pin-stale errors.

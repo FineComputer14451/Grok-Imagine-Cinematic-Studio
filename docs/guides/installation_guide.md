@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio v3.8.6 — Installation Guide
 
-Two supported install paths. Both can ship the same **51 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
+Two supported install paths. Both can ship the same **52 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
 
 ## Choose Your Install Method
 
@@ -8,11 +8,11 @@ Two supported install paths. Both can ship the same **51 skills**; choose based 
 |---|-------------------------------------|----------------------------|
 | **Best for** | Grok chat, agent sessions, CLI tools, scripted verify | Grok Build CLI, marketplace updates, slash commands |
 | **Skills location** | `~/.grok/skills/` | `~/.grok/installed-plugins/` (plugin-managed) |
-| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts | Full suite: 51 skills + 11 slash commands; or modular packs (see matrix) |
+| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts | Full suite: **52 skills** + 11 slash commands; or modular packs (see matrix) |
 | **Verify** | `cinematic_studio.sh verify` / `verify --all` | `cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
-| **Update** | `cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` |
+| **Update** | `cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` (or reinstall from a local clone — see below) |
 
-You can use **both**, but **do not dual-load the 51 studio skills**:
+You can use **both**, but **do not dual-load the 52 studio skills**:
 
 | Goal | Use |
 |------|-----|
@@ -27,11 +27,11 @@ bash scripts/cinematic_studio.sh declutter --dry-run
 bash scripts/cinematic_studio.sh declutter --apply --keep-backups 1
 ```
 
-That removes Method A copies of the 51 studio skills (plugin keeps them) and prunes old `~/.grok/skills-backup-*` folders. User-global skills (`help`, `create-skill`, `docx`, …) stay in `~/.grok/skills/`.
+That removes Method A copies of the 52 studio skills (plugin keeps them) and prunes old `~/.grok/skills-backup-*` folders. User-global skills (`help`, `create-skill`, `docx`, …) stay in `~/.grok/skills/`.
 
 **Pack overlap (`full_suite_wins`):** if both the **full suite** plugin and one or more **satellite packs** are installed, declutter prefers the full suite and removes satellite skill duplicates (`config/plugin_packs.yaml` → `declutter.policy: full_suite_wins`).
 
-**Skill parity:** `scripts/required_skills.manifest` lists the same 51 skills as `.grok-plugin/plugin-index.json`.  
+**Skill parity:** `scripts/required_skills.manifest` lists the same **52** skills as `.grok-plugin/plugin.json` / catalog generation.  
 **Taxonomy (browse groups):** `references/SKILLS_TAXONOMY.md` · `cinematic-studio plugin list --grouped` · `cinematic-studio plugin packs`
 
 ### Path overrides (Method A)
@@ -87,7 +87,7 @@ Creates a timestamped backup at `~/.grok/skills-backup-*` before replacing skill
 
 ```bash
 ./scripts/cinematic_studio.sh verify          # core skills (7) + model registry
-./scripts/cinematic_studio.sh verify --all    # full manifest (51 skills)
+./scripts/cinematic_studio.sh verify --all    # full manifest (52 skills)
 ```
 
 Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
@@ -108,8 +108,8 @@ Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
 
 | Plugin name | Pack id | Skills | Soft requires | Role |
 |-------------|---------|--------|---------------|------|
-| **`grok-imagine-cinematic-studio`** | *(full suite)* | 51 | — | **Recommended** one-click install |
-| `grok-imagine-cinematic-core` | `core` | 18 | — | Orchestration / DNA / Imagine / QA / quota / meta |
+| **`grok-imagine-cinematic-studio`** | *(full suite)* | **52** | — | **Recommended** one-click install |
+| `grok-imagine-cinematic-core` | `core` | **19** | — | Orchestration / DNA / wardrobe / Imagine / QA / quota / meta |
 | `grok-imagine-camera-image` | `camera-image` | 9 | `core` | DoP, design, i2i, key art, i2v |
 | `grok-imagine-sequence-narrative` | `sequence-narrative` | 15 | `core` | Sequence, continuity, performance, audio, action/VFX, SFW |
 | `grok-imagine-nsfw` | `nsfw` | 4 | `core` | Opt-in NSFW (ErosForge + NSFW QA/quota) |
@@ -141,13 +141,22 @@ grok plugin marketplace update
 grok plugin update grok-imagine-cinematic-studio
 ```
 
+**Local clone installs:** if the plugin was installed from a path (`grok plugin install /path/to/Grok-Imagine-Cinematic-Studio --trust`), `plugin update` may report *local symlink, already live* while the on-disk copy under `~/.grok/installed-plugins/` is still stale. Force a refresh:
+
+```bash
+grok plugin uninstall grok-imagine-cinematic-studio --confirm
+grok plugin install /path/to/Grok-Imagine-Cinematic-Studio --trust
+```
+
+Avoid dual installs of the same plugin name; uninstall until `grok plugin list` shows a single cinematic entry.
+
 ### Verification (Method B)
 
 ```bash
 bash scripts/cinematic_studio.sh verify --plugin
 ```
 
-Checks all 51 plugin skills, 11 slash commands (`/cinematic`, `/dna`, etc.), and model registry when CLI tools are present in the plugin checkout.
+Checks all **52** plugin skills, 11 slash commands (`/cinematic`, `/dna`, etc.), and model registry when CLI tools are present in the plugin checkout.
 
 Registry cross-check (optional):
 
@@ -158,7 +167,7 @@ cinematic-studio plugin packs
 
 Refresh the Skills page in Grok and confirm slash commands are available.
 
-**CLI gap:** Plugin install does not populate `~/Grok-Cinematic-Projects/`. Run Method A or clone the repo if you need the full `cinematic-studio` CLI (including `plugin catalog` / `plugin packs` commands), references, or local scripts. The core `cinematic-studio plugin catalog check` etc. work when the studio CLI is available.
+**CLI gap:** Plugin install does not populate `~/Grok-Cinematic-Projects/`. Run Method A or clone the repo if you need the full `cinematic-studio` CLI (including `plugin catalog` / `plugin packs` commands), references, or local scripts.
 
 ### Pack install notes (spike / layout)
 
@@ -209,32 +218,44 @@ catalog pin, skills layout, git, API key presence, and optional pytest.
 | Full suite + satellite pack both installed | Declutter **`full_suite_wins`** — keeps full suite, removes satellite skill dupes |
 | Many `~/.grok/skills-backup-*` dirs | `declutter --apply --keep-backups 1` |
 | Plugin installed but no CLI | Run Method A **without** needing skill copies, or clone repo to `~/Grok-Cinematic-Projects/` |
+| Local plugin skills look stale after git pull | Reinstall from clone (uninstall + `grok plugin install <repo> --trust`); `update` may no-op on local installs |
+| `unable to resolve current git HEAD sha` on catalog pin/check | Run from a **git clone** via `bash scripts/release_plugin_catalog.sh` / `bash scripts/verify_plugins.sh --release` (prefer in-repo CLI). PATH `cinematic-studio` often uses `~/Grok-Cinematic-Projects`, which is not a git repo |
 | Curl blocked in sandbox | Use local repo: `bash scripts/cinematic_studio.sh install` |
 
 ## Verify tiers
 
 - **core** (default) — 7 manifest skills marked `# core` in `required_skills.manifest`, plus `models verify`
-- **all** — all 51 manifest skills in `~/.grok/skills/` (Method A)
-- **plugin** — all 51 skills + 11 commands in the Grok plugin checkout (Method B; `verify --plugin`)
+- **all** — all **52** manifest skills in `~/.grok/skills/` (Method A)
+- **plugin** — all **52** skills + 11 commands in the Grok plugin checkout (Method B; `verify --plugin`)
 
 Core skills: `grok-imagine-cinematic-studio`, `ai-video-upscaler`, `cinematic-sequence-extender`, `studio-director`, `quality-assurance-guardian`, `identity-lock-specialist`, `workflow-quota-optimizer`
 
 **Plugin catalog management (for contributors):**
 
-After editing skills or commands:
+Order matters (install SHA must point at the **content** revision, not the pin commit):
+
+1. Commit skills / commands / docs content first  
+2. Pin from a **git clone** of this repository:
 
 ```bash
-cinematic-studio plugin catalog pin
+bash scripts/release_plugin_catalog.sh
+# equivalent: python3 -m tools.cinematic_studio_cli plugin catalog pin
 ```
 
-Pre-publish gate:
+3. Commit **only** catalog artifacts under `.grok-plugin/` (marketplace + plugin-index; packs as needed)  
+4. Pre-publish gate:
 
 ```bash
-cinematic-studio plugin catalog check --release
+bash scripts/verify_plugins.sh --release
+# or: python3 -m tools.cinematic_studio_cli plugin catalog check --release
 ```
+
+`scripts/verify_plugins.sh` and `scripts/release_plugin_catalog.sh` prefer the **in-repo** CLI so pin/check resolve this checkout’s `HEAD` (not a non-git install tree).
 
 ## See also
 
+- Quick start: `docs/guides/Quick_Start_Guide.md`
+- Skills taxonomy / packs: `references/SKILLS_TAXONOMY.md`
 - Agent/bootstrap workflows: `.grok/skills/cinematic-studio-meta-installer/SKILL.md`
 - Paths and release URLs: `.grok/skills/cinematic-studio-meta-installer/references/install_paths.md`
 - Main overview: `README.md`
