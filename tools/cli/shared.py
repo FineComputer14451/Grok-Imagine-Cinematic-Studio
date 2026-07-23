@@ -96,6 +96,7 @@ AGENTS = {
         "SFW Batch Orchestrator v1.0",
         "Assembly Editor v3.6.5",
         "Multi-Character Identity Arbiter v3.6.5",
+        "Costume & Wardrobe Continuity v4.5",
     ],
     "Specialist (Opt-in)": [
         "ErosForge NSFW Director v3.6.5",
@@ -117,6 +118,7 @@ AGENT_ROLE_CARDS: dict[str, str] = {
     "Sequence Director v3.6.5": "Sequence_Director.md",
     "Cinematic Sequence Extender v3.6.5": "Cinematic_Sequence_Extender.md",
     "Continuity & Consistency Guardian v3.6.5": "Continuity_Consistency_Guardian.md",
+    "Costume & Wardrobe Continuity v4.5": "Costume_Wardrobe_Continuity.md",
     "Quality Assurance Guardian v3.6.5": "Quality_Assurance_Guardian_v3.5.md",
     "Imagine Prompt Master v3.6.5": "Imagine_Prompt_Master.md",
     "Workflow & Quota Optimizer v3.6.5": "Workflow_Quota_Optimizer.md",
