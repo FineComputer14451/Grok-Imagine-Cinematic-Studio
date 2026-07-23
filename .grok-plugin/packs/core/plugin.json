@@ -25,6 +25,7 @@
     ".grok/skills/character-dna-extractor",
     ".grok/skills/identity-lock-specialist",
     ".grok/skills/multi-character-identity-arbiter",
+    ".grok/skills/costume-wardrobe-continuity",
     ".grok/skills/imagine-prompt-master",
     ".grok/skills/imagine-execution-bridge",
     ".grok/skills/handoff-packet-validator",

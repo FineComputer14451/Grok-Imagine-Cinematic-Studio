@@ -22,7 +22,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 51-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 52-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -43,6 +43,10 @@
           {
             "name": "multi-character-identity-arbiter",
             "description": "Arbitrate primary and secondary Character DNA locks for multi-cast Grok Imagine scenes. Builds dual inject blocks and c…"
+          },
+          {
+            "name": "costume-wardrobe-continuity",
+            "description": "Structured outfit DNA wardrobe lock and inject blocks nested on Character DNA for Grok Imagine stills i2v and extend ch…"
           },
           {
             "name": "imagine-prompt-master",
@@ -279,7 +283,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 51-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 52-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -300,6 +304,10 @@
           {
             "name": "multi-character-identity-arbiter",
             "description": "Arbitrate primary and secondary Character DNA locks for multi-cast Grok Imagine scenes. Builds dual inject blocks and c…"
+          },
+          {
+            "name": "costume-wardrobe-continuity",
+            "description": "Structured outfit DNA wardrobe lock and inject blocks nested on Character DNA for Grok Imagine stills i2v and extend ch…"
           },
           {
             "name": "imagine-prompt-master",

@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "grok-imagine-cinematic-studio",
-      "description": "Full 23-agent cinematic suite — all 51 skills and slash commands. Recommended one-click install.",
+      "description": "Full 23-agent cinematic suite — all 52 skills and slash commands. Recommended one-click install.",
       "category": "creative",
       "version": "3.8.6",
       "source": {

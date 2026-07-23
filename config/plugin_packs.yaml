@@ -26,6 +26,7 @@ packs:
       - character-dna-extractor
       - identity-lock-specialist
       - multi-character-identity-arbiter
+      - costume-wardrobe-continuity
       - imagine-prompt-master
       - imagine-execution-bridge
       - handoff-packet-validator
