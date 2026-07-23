@@ -59,6 +59,64 @@ def test_quota_sync_summary_shape() -> None:
     assert get_burn_rate_risk() in ("low", "medium", "high", "critical")
 
 
+def test_reconcile_includes_generation_ledger(tmp_path, monkeypatch) -> None:
+    """quota sync should aggregate generation_ledger.json by project."""
+    import json
+    from unittest.mock import patch
+
+    from quota_sync import reconcile_from_jobs
+
+    ledger = {
+        "schema_version": "1.0",
+        "entries": [
+            {
+                "project": "proj-a",
+                "status": "completed",
+                "credits_estimate": 10.0,
+                "credits_actual": 12.0,
+                "updated_at": "2026-07-23T00:00:00+00:00",
+            },
+            {
+                "project": "proj-a",
+                "status": "completed",
+                "credits_estimate": 5.0,
+                "credits_actual": 5.0,
+                "updated_at": "2026-07-23T01:00:00+00:00",
+            },
+            {
+                "project": "proj-b",
+                "status": "failed",
+                "credits_estimate": 2.0,
+                "credits_actual": 0.0,
+                "updated_at": "2026-07-23T02:00:00+00:00",
+            },
+        ],
+    }
+    ledger_path = tmp_path / "generation_ledger.json"
+    ledger_path.write_text(json.dumps(ledger), encoding="utf-8")
+
+    state: dict = {
+        "quota": {
+            "session_spent": 0,
+            "session_generations": 0,
+            "history": [],
+            "reconciliation": default_reconciliation(),
+        },
+        "imagine_jobs": {"jobs": {}},
+    }
+
+    with patch("quota_sync._ledger_path", return_value=ledger_path), patch(
+        "project_state.save_project_state", lambda *a, **k: None
+    ), patch("quota_sync.save_project_state", lambda *a, **k: None):
+        recon = reconcile_from_jobs(state)
+
+    assert recon["estimated_total"] == 17.0
+    assert recon["actual_total"] == 17.0
+    assert recon["burn_rate_multiplier"] == 1.0
+    assert any("ledger:proj-a" in (e.get("note") or "") for e in recon["entries"])
+    assert any("ledger:proj-b" in (e.get("note") or "") for e in recon["entries"])
+
+
 if __name__ == "__main__":
     test_burn_rate_risk_levels()
     test_record_generation_spend_variance()

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 from project_state import load_project_state, save_project_state
@@ -112,8 +113,83 @@ def get_burn_rate_risk(state: dict[str, Any] | None = None) -> str:
     return recon.get("risk_level", "low")
 
 
+def _ledger_path() -> Path:
+    """Resolve generation ledger path (repo artifacts or CWD)."""
+    try:
+        from studio_paths import ARTIFACTS_DIR
+
+        candidate = ARTIFACTS_DIR / "generation_ledger.json"
+        if candidate.is_file():
+            return candidate
+    except Exception:
+        pass
+    return Path("artifacts/generation_ledger.json")
+
+
+def _entries_from_generation_ledger() -> list[dict[str, Any]]:
+    """Aggregate generation_ledger.json by project for durable est/actual totals."""
+    import json
+    from collections import defaultdict
+
+    path = _ledger_path()
+    if not path.is_file():
+        return []
+
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+
+    by_proj: dict[str, dict[str, Any]] = defaultdict(
+        lambda: {"n": 0, "est": 0.0, "act": 0.0, "completed": 0, "failed": 0, "at": ""}
+    )
+    for e in data.get("entries") or []:
+        if not isinstance(e, dict):
+            continue
+        proj = e.get("project") or "(none)"
+        bucket = by_proj[proj]
+        bucket["n"] += 1
+        bucket["est"] += float(e.get("credits_estimate") or 0)
+        bucket["act"] += float(e.get("credits_actual") or 0)
+        status = e.get("status")
+        if status == "completed":
+            bucket["completed"] += 1
+        elif status == "failed":
+            bucket["failed"] += 1
+        at = e.get("updated_at") or e.get("created_at") or ""
+        if at and at > (bucket["at"] or ""):
+            bucket["at"] = at
+
+    out: list[dict[str, Any]] = []
+    for proj, b in sorted(by_proj.items(), key=lambda kv: -kv[1]["est"]):
+        est_f = round(float(b["est"]), 2)
+        act_f = round(float(b["act"]), 2)
+        if est_f == 0 and act_f == 0:
+            continue
+        out.append({
+            "at": b["at"] or _now_iso(),
+            "estimated_credits": est_f,
+            "actual_credits": act_f,
+            "variance_credits": round(act_f - est_f, 2),
+            "note": (
+                f"ledger:{proj} n={b['n']} "
+                f"completed={b['completed']} failed={b['failed']}"
+            ),
+            "job_id": None,
+            "shot_id": None,
+            "source": "generation_ledger",
+        })
+    return out
+
+
 def reconcile_from_jobs(state: dict[str, Any] | None = None) -> dict[str, Any]:
-    """Rebuild reconciliation totals from imagine jobs and quota history."""
+    """Rebuild reconciliation from generation ledger, billed jobs, and est: history.
+
+    Priority:
+    1. ``artifacts/generation_ledger.json`` aggregated by project (primary history)
+    2. Imagine jobs that have an explicit ``actual_credits`` (avoids est-only noise)
+    3. Session history notes containing ``est:N`` (manual pairs)
+    """
     if state is None:
         state = load_project_state()
 
@@ -122,15 +198,23 @@ def reconcile_from_jobs(state: dict[str, Any] | None = None) -> dict[str, Any]:
     recon["actual_total"] = 0.0
     recon["entries"] = []
 
+    for entry in _entries_from_generation_ledger():
+        recon["entries"].append(entry)
+        recon["estimated_total"] += float(entry["estimated_credits"])
+        recon["actual_total"] += float(entry["actual_credits"])
+
     jobs_state = state.get("imagine_jobs", {}).get("jobs", {})
     for job in jobs_state.values():
         meta = job.get("metadata") or {}
-        est = meta.get("estimated_credits") or job.get("estimated_credits")
-        actual = meta.get("actual_credits") or job.get("actual_credits")
-        if est is None and actual is None:
+        # Prefer explicit actuals so est-only seeds do not dilute burn-rate
+        actual = meta.get("actual_credits")
+        if actual is None:
+            actual = job.get("actual_credits")
+        if actual is None:
             continue
-        est_f = float(est or actual or 0)
-        act_f = float(actual or est or 0)
+        est = meta.get("estimated_credits") or job.get("estimated_credits")
+        est_f = float(est if est is not None else actual or 0)
+        act_f = float(actual)
         recon["entries"].append({
             "at": job.get("updated_at", _now_iso()),
             "estimated_credits": est_f,
@@ -139,6 +223,7 @@ def reconcile_from_jobs(state: dict[str, Any] | None = None) -> dict[str, Any]:
             "note": f"job:{job.get('job_id')}",
             "job_id": job.get("job_id"),
             "shot_id": job.get("shot_id"),
+            "source": "imagine_job",
         })
         recon["estimated_total"] += est_f
         recon["actual_total"] += act_f
@@ -157,6 +242,7 @@ def reconcile_from_jobs(state: dict[str, Any] | None = None) -> dict[str, Any]:
                         "actual_credits": act_f,
                         "variance_credits": round(act_f - est_f, 2),
                         "note": note,
+                        "source": "history",
                     })
                     recon["estimated_total"] += est_f
                     recon["actual_total"] += act_f
@@ -165,6 +251,7 @@ def reconcile_from_jobs(state: dict[str, Any] | None = None) -> dict[str, Any]:
     recon["actual_total"] = round(recon["actual_total"], 2)
     _recompute_burn_rate(recon)
     recon["updated_at"] = _now_iso()
+    recon["sources"] = ["generation_ledger", "imagine_jobs_actuals", "history_est"]
     save_project_state(state)
     return recon
 
