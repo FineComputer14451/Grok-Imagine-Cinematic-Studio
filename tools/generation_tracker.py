@@ -17,8 +17,9 @@ from models import (
     usd_to_credits,
     video_usd_per_second,
 )
+from studio_paths import ARTIFACTS_DIR, PROJECT_STATE_FILE
 
-LEDGER_PATH = Path("artifacts/generation_ledger.json")
+LEDGER_PATH = ARTIFACTS_DIR / "generation_ledger.json"
 MAX_ENTRIES = 2000
 SCHEMA_VERSION = "1.0"
 
@@ -79,7 +80,7 @@ def _save(data: dict[str, Any]) -> None:
 
 
 def _update_project_pointer(data: dict[str, Any]) -> None:
-    state_path = Path(".cinematic_project_state.json")
+    state_path = PROJECT_STATE_FILE
     try:
         state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
     except (json.JSONDecodeError, OSError):
@@ -95,6 +96,7 @@ def _update_project_pointer(data: dict[str, Any]) -> None:
         "updated_at": data.get("updated_at"),
     }
     try:
+        state_path.parent.mkdir(parents=True, exist_ok=True)
         state_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
     except OSError:
         pass
