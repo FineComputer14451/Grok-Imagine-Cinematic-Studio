@@ -136,8 +136,9 @@ def test_model_compatibility() -> None:
     assert result["min_grok_build_cli_version"] == "0.2.93"
     assert "required_roles" in result
     assert isinstance(result.get("warnings"), list)
-    # Unified stack emits an informational warning, not a hard failure
-    assert any("unified" in w for w in result["warnings"])
+    assert isinstance(result.get("notes"), list)
+    # Unified stack is an intentional note, not an operational warning / hard failure
+    assert any("unified" in n for n in result["notes"])
 
 
 if __name__ == "__main__":

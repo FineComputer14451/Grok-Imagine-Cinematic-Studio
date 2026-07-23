@@ -8,7 +8,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Grok Doctor** — `scripts/grok_doctor.sh`, `cinematic-studio doctor`, and `grok-doctor` PATH entry for Grok Build + Cinematic Studio health checks (`--quick`, `--json`, `--strict`)
 
 ### Changed
-- **Grok Doctor** is now a **Python check registry** (`tools/doctor.py`) reusing `models.verify_model_compatibility`, `studio_health`, and `plugin_catalog`. Shell entrypoints are thin launchers; `cinematic-studio doctor` routes through the Python CLI (not the meta installer).
+- **Grok Doctor** is now a **Python check registry** (`tools/doctor.py` + `doctor_checks.py` + `doctor_types.py`) reusing `models.verify_model_compatibility`, `studio_health`, and `plugin_catalog`. Shell entrypoints are thin launchers; `cinematic-studio doctor` routes through the Python CLI (not the meta installer).
+- Doctor uses a **declarative `CheckSpec` registry** (`quick` / `skip_external` filter flags only — no fake PASS rows). Catalog **artifact** errors FAIL; pin-drift WARNs. Model stack summary is embedded in verify detail (no free PASS after FAIL).
+- `models.verify_model_compatibility` splits **`warnings`** (operational) vs **`notes`** (intentional stack info). Public helpers: `version_tuple`, `cli_version_at_least`, `probe_grok_cli`.
 
 ## [3.8.6] - 2026-07-21
 

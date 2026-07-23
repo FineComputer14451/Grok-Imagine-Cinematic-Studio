@@ -122,32 +122,18 @@ cmd_declutter() {
 }
 
 cmd_doctor() {
-    # Meta entrypoint delegates to the Python doctor registry (same as cinematic-studio doctor).
-    local root="${CINEMATIC_REPO_ROOT:-}"
-    local cli=""
-    if [[ -z "$root" && -f "${CINEMATIC_SCRIPT_DIR}/../VERSION" ]]; then
-        root="$(cd "${CINEMATIC_SCRIPT_DIR}/.." && pwd)"
+    # Single resolution path: thin launcher owns CLI discovery.
+    local doctor_sh="${CINEMATIC_SCRIPT_DIR}/grok_doctor.sh"
+    if [[ ! -f "$doctor_sh" && -n "${PROJECT_DIR:-}" && -f "${PROJECT_DIR}/scripts/grok_doctor.sh" ]]; then
+        doctor_sh="${PROJECT_DIR}/scripts/grok_doctor.sh"
     fi
-    if [[ -z "$root" && -n "${PROJECT_DIR:-}" && -f "${PROJECT_DIR}/tools/cinematic_studio_cli.py" ]]; then
-        root="$PROJECT_DIR"
-    fi
-    for cli in \
-        "${root:+$root/tools/cinematic_studio_cli.py}" \
-        "${CINEMATIC_SCRIPT_DIR}/../tools/cinematic_studio_cli.py" \
-        "${PROJECT_DIR:-}/tools/cinematic_studio_cli.py"; do
-        if [[ -n "$cli" && -f "$cli" ]]; then
-            export CINEMATIC_REPO_ROOT="${CINEMATIC_REPO_ROOT:-$(cd "$(dirname "$cli")/.." && pwd)}"
-            if [[ -x "$(cd "$(dirname "$cli")/.." && pwd)/.venv/bin/python" ]]; then
-                exec "$(cd "$(dirname "$cli")/.." && pwd)/.venv/bin/python" "$cli" doctor "$@"
-            fi
-            exec python3 "$cli" doctor "$@"
+    if [[ -f "$doctor_sh" ]]; then
+        if [[ -z "${CINEMATIC_REPO_ROOT:-}" && -f "${CINEMATIC_SCRIPT_DIR}/../VERSION" ]]; then
+            export CINEMATIC_REPO_ROOT="$(cd "${CINEMATIC_SCRIPT_DIR}/.." && pwd)"
         fi
-    done
-    # PATH shim last (installed grok-doctor → same registry)
-    if [[ -f "${CINEMATIC_SCRIPT_DIR}/grok_doctor.sh" ]]; then
-        exec bash "${CINEMATIC_SCRIPT_DIR}/grok_doctor.sh" "$@"
+        exec bash "$doctor_sh" "$@"
     fi
-    echo "❌ cinematic_studio_cli.py not found for doctor" >&2
+    echo "❌ grok_doctor.sh not found" >&2
     exit 1
 }
 

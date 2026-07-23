@@ -466,14 +466,31 @@ def _parse_grok_cli_version(text: str) -> str | None:
     return match.group(1) if match else None
 
 
-def _version_tuple(version: str) -> tuple[int, ...]:
+def version_tuple(version: str) -> tuple[int, ...]:
+    """Parse a dotted numeric version for ordering (e.g. ``0.2.111``)."""
     return tuple(int(p) for p in version.split("."))
 
 
-def probe_grok_cli_version() -> str | None:
-    """Return installed `grok` version string, or None if unavailable."""
-    if not shutil.which("grok"):
-        return None
+# Back-compat alias (older imports / private use)
+_version_tuple = version_tuple
+
+
+def cli_version_at_least(installed: str, minimum: str) -> bool:
+    """True when ``installed`` ≥ ``minimum`` (dotted numeric semver-ish)."""
+    return version_tuple(installed) >= version_tuple(minimum)
+
+
+def probe_grok_cli() -> dict[str, str | None]:
+    """
+    Single probe of the ``grok`` binary.
+
+    Returns dict with keys:
+      path, version (X.Y.Z or None), display (first line), raw (stdout+stderr).
+    """
+    path = shutil.which("grok")
+    empty = {"path": path, "version": None, "display": None, "raw": None}
+    if not path:
+        return empty
     try:
         result = subprocess.run(
             ["grok", "--version"],
@@ -483,9 +500,21 @@ def probe_grok_cli_version() -> str | None:
             check=False,
         )
     except (OSError, subprocess.TimeoutExpired):
-        return None
-    blob = (result.stdout or "") + (result.stderr or "")
-    return _parse_grok_cli_version(blob)
+        return empty
+    blob = ((result.stdout or "") + (result.stderr or "")).strip()
+    line = blob.splitlines()[0] if blob else None
+    return {
+        "path": path,
+        "version": _parse_grok_cli_version(blob),
+        "display": line,
+        "raw": blob or None,
+    }
+
+
+def probe_grok_cli_version() -> str | None:
+    """Return installed `grok` version string, or None if unavailable."""
+    version = probe_grok_cli().get("version")
+    return version if isinstance(version, str) else None
 
 
 def _check_registry_aliases(
@@ -514,9 +543,16 @@ def _check_registry_aliases(
 
 
 def verify_model_compatibility() -> dict[str, Any]:
-    """Validate stack contract, registry integrity, and optional CLI version probe."""
+    """Validate stack contract, registry integrity, and optional CLI version probe.
+
+    Return keys include:
+      issues — hard failures (compatible=False when non-empty)
+      warnings — operational concerns (CLI missing/old, parse failures)
+      notes — intentional stack information (not doctor --strict failures)
+    """
     issues: list[str] = []
     warnings: list[str] = []
+    notes: list[str] = []
     stack = model_stack_summary()
 
     # Stack integrity: ROLE_DEFAULTS embeds STACK_CONTRACT
@@ -529,7 +565,7 @@ def verify_model_compatibility() -> dict[str, Any]:
 
     # Unified cinematic+build on 4.5 is intentional; note opt-in 1M path
     if DEFAULT_XAI_CHAT_MODEL == DEFAULT_XAI_BUILD_MODEL:
-        warnings.append(
+        notes.append(
             f"cinematic and build defaults are unified ({DEFAULT_XAI_CHAT_MODEL}); "
             "use --chat-model grok-4.3 (or long-context) for 1M-context Bibles"
         )
@@ -589,14 +625,20 @@ def verify_model_compatibility() -> dict[str, Any]:
         issues.append(f"VIDEO_PIPELINE_SPEC must reference {DEFAULT_IMAGINE_VIDEO_MODEL} by default")
 
     # Soft probe: recommended CLI version (never hard-fails missing binary)
-    installed = probe_grok_cli_version()
-    if installed is None:
+    probe = probe_grok_cli()
+    installed = probe.get("version")
+    if probe.get("path") is None:
         warnings.append(
             f"Grok Build CLI not found on PATH; recommend ≥ {RECOMMENDED_GROK_BUILD_CLI_VERSION}"
         )
+    elif installed is None:
+        warnings.append(
+            f"Could not parse Grok Build CLI version from {probe.get('raw')!r}; "
+            f"recommend ≥ {RECOMMENDED_GROK_BUILD_CLI_VERSION}"
+        )
     else:
         try:
-            if _version_tuple(installed) < _version_tuple(RECOMMENDED_GROK_BUILD_CLI_VERSION):
+            if not cli_version_at_least(str(installed), RECOMMENDED_GROK_BUILD_CLI_VERSION):
                 warnings.append(
                     f"Grok Build CLI {installed} < recommended {RECOMMENDED_GROK_BUILD_CLI_VERSION}"
                 )
@@ -613,6 +655,7 @@ def verify_model_compatibility() -> dict[str, Any]:
         "min_grok_build_cli_version": RECOMMENDED_GROK_BUILD_CLI_VERSION,
         "installed_grok_cli_version": installed,
         "warnings": warnings,
+        "notes": notes,
         "issues": issues,
     }
 

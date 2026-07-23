@@ -8,6 +8,13 @@
 #   grok-doctor
 #   bash scripts/grok_doctor.sh [--quick] [--json] [--strict]
 #
+# Resolution order (no hard-coded product clone paths):
+#   1. CINEMATIC_CLI_PY
+#   2. scripts/../tools (dev checkout / Method A scripts tree)
+#   3. CINEMATIC_REPO_ROOT/tools
+#   4. CINEMATIC_PROJECT_DIR or ~/Grok-Cinematic-Projects/tools
+#   5. cinematic-studio doctor (installed wrapper)
+#
 
 set -euo pipefail
 
@@ -19,19 +26,12 @@ _resolve_cli() {
     printf '%s\n' "${CINEMATIC_CLI_PY}"
     return 0
   fi
-  # Dev checkout / Method A scripts tree: scripts/../tools
   if [[ -f "${SCRIPT_DIR}/../tools/cinematic_studio_cli.py" ]]; then
     printf '%s\n' "${SCRIPT_DIR}/../tools/cinematic_studio_cli.py"
     return 0
   fi
   if [[ -n "${CINEMATIC_REPO_ROOT:-}" && -f "${CINEMATIC_REPO_ROOT}/tools/cinematic_studio_cli.py" ]]; then
     printf '%s\n' "${CINEMATIC_REPO_ROOT}/tools/cinematic_studio_cli.py"
-    return 0
-  fi
-  # Common clone location (prefer registry that includes tools/doctor.py)
-  if [[ -f "${HOME}/Grok-Imagine-Cinematic-Studio/tools/doctor.py" && \
-        -f "${HOME}/Grok-Imagine-Cinematic-Studio/tools/cinematic_studio_cli.py" ]]; then
-    printf '%s\n' "${HOME}/Grok-Imagine-Cinematic-Studio/tools/cinematic_studio_cli.py"
     return 0
   fi
   local project="${CINEMATIC_PROJECT_DIR:-$HOME/Grok-Cinematic-Projects}"
@@ -55,16 +55,13 @@ _python_for_cli() {
   fi
 }
 
-# 1) Direct Python registry when we can see a studio tree (never shell→shell).
 if cli_py="$(_resolve_cli)"; then
-  # Normalize to absolute path
   cli_py="$(cd "$(dirname "$cli_py")" && pwd)/$(basename "$cli_py")"
   root="$(cd "$(dirname "$cli_py")/.." && pwd)"
   export CINEMATIC_REPO_ROOT="${CINEMATIC_REPO_ROOT:-$root}"
   exec "$(_python_for_cli "$cli_py")" "$cli_py" doctor "$@"
 fi
 
-# 2) Installed unified wrapper (Method A PROJECT_DIR tools)
 if [[ "${GROK_DOCTOR_REENTRY:-}" != "1" ]] && command -v cinematic-studio >/dev/null 2>&1; then
   export GROK_DOCTOR_REENTRY=1
   exec cinematic-studio doctor "$@"
@@ -73,7 +70,7 @@ fi
 cat >&2 <<'EOF'
 ❌ Grok Doctor: cinematic_studio_cli.py not found
 
-  Set CINEMATIC_REPO_ROOT or CINEMATIC_CLI_PY, or install the studio:
+  Set CINEMATIC_REPO_ROOT, CINEMATIC_CLI_PY, or CINEMATIC_PROJECT_DIR, or install:
     bash scripts/cinematic_studio.sh install
 EOF
 exit 1

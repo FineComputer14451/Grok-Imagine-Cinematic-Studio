@@ -169,8 +169,12 @@ def models_verify():
     stack = result["model_stack"]
     warn_block = ""
     if result.get("warnings"):
-        warn_block = "\n\n[yellow]Warnings:[/yellow]\n" + "\n".join(
+        warn_block += "\n\n[yellow]Warnings:[/yellow]\n" + "\n".join(
             f"• {w}" for w in result["warnings"]
+        )
+    if result.get("notes"):
+        warn_block += "\n\n[dim]Notes:[/dim]\n" + "\n".join(
+            f"• {n}" for n in result["notes"]
         )
     installed = result.get("installed_grok_cli_version") or "not found"
     if result["compatible"]:

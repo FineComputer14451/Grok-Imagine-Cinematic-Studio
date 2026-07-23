@@ -14,6 +14,7 @@ if str(TOOLS) not in sys.path:
     sys.path.insert(0, str(TOOLS))
 
 from doctor import (  # noqa: E402
+    REGISTRY,
     CheckResult,
     DoctorReport,
     check_auth_and_config,
@@ -23,6 +24,7 @@ from doctor import (  # noqa: E402
     report_to_dict,
     run_doctor,
 )
+from doctor_checks import check_catalog_pin, check_model_stack  # noqa: E402
 from studio_health import (  # noqa: E402
     count_skills,
     skills_missing_model_compatibility,
@@ -124,11 +126,22 @@ def test_studio_health_helpers() -> None:
     assert n >= 40
     missing = skills_missing_model_compatibility()
     assert isinstance(missing, list)
-    # No crash; dupes may or may not exist on the host
     assert isinstance(user_studio_skill_dupes(), list)
 
 
-def test_run_doctor_skip_external_json_contract(tmp_path: Path) -> None:
+def test_registry_has_expected_ids() -> None:
+    ids = [s.id for s in REGISTRY]
+    assert "grok_cli" in ids
+    assert "pytest" in ids
+    assert "verify_plugin" in ids
+    # full_only flags present on slow checks
+    by_id = {s.id: s for s in REGISTRY}
+    assert by_id["pytest"].full_only and by_id["pytest"].external
+    assert by_id["verify_plugin"].full_only and by_id["verify_plugin"].external
+    assert not by_id["model_stack"].external
+
+
+def test_run_doctor_skip_external_omits_without_fake_pass(tmp_path: Path) -> None:
     home = tmp_path / "home"
     grok = home / ".grok"
     grok.mkdir(parents=True)
@@ -144,14 +157,24 @@ def test_run_doctor_skip_external_json_contract(tmp_path: Path) -> None:
         project_dir=tmp_path / "no-project",
         skip_external=True,
     )
-    payload = report_to_dict(report)
-    assert "checks" in payload
-    assert payload["repo_version"] == (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-    # models verify runs in-process without external binaries
+    names = [c.name for c in report.checks]
+    # External checks omitted — no synthetic PASS for grok binary
+    assert "grok binary" not in names
+    assert "gh auth" not in names
+    assert "gh" not in names
     assert any(c.name == "models verify" for c in report.checks)
     assert any(c.name == "repo skill dirs" for c in report.checks)
-    # JSON serializable
+    # quick skips full_only even if not external-only... verify/pytest are external+full
+    assert "verify --plugin" not in names
+    assert "pytest packs/agents" not in names
+    payload = report_to_dict(report)
+    assert payload["repo_version"] == (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     json.dumps(payload)
+
+
+def test_quick_skips_full_only_ids() -> None:
+    full_only_ids = {s.id for s in REGISTRY if s.full_only}
+    assert full_only_ids == {"verify_plugin", "pytest"}
 
 
 def test_cli_doctor_json_smoke() -> None:
@@ -165,26 +188,63 @@ def test_cli_doctor_json_smoke() -> None:
         check=False,
     )
     assert proc.returncode in (0, 1), proc.stderr
-    # stdout should be JSON even when warnings/fails exist
     data = json.loads(proc.stdout)
     assert "healthy" in data
     assert "checks" in data
     assert isinstance(data["pass"], int)
 
 
-def test_grok_cli_min_version_uses_registry(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Unparsable version must FAIL (no silent skip)."""
-    monkeypatch.setattr("doctor._which", lambda cmd: "/usr/bin/grok" if cmd == "grok" else None)
+def test_grok_cli_min_version_unparsable(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Unparsable version must FAIL (no silent skip); single probe path."""
     monkeypatch.setattr(
-        "doctor._run",
-        lambda *a, **k: type(
-            "P",
-            (),
-            {"stdout": "grok weird-build", "stderr": "", "returncode": 0},
-        )(),
+        "doctor_checks.probe_grok_cli",
+        lambda: {
+            "path": "/usr/bin/grok",
+            "version": None,
+            "display": "grok weird-build",
+            "raw": "grok weird-build",
+        },
     )
-    monkeypatch.setattr("doctor.probe_grok_cli_version", lambda: None)
     results = check_grok_cli(min_version="0.2.93")
     by_name = {r.name: r for r in results}
     assert by_name["grok binary"].status == "PASS"
     assert by_name["grok CLI min version"].status == "FAIL"
+
+
+def test_model_stack_no_free_pass_on_fail(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        "doctor_checks.verify_model_compatibility",
+        lambda: {
+            "compatible": False,
+            "issues": ["ROLE_DEFAULTS drifted"],
+            "warnings": [],
+            "notes": ["unified stack"],
+            "studio_version": "3.8.6",
+            "installed_grok_cli_version": "0.2.111",
+            "model_stack": {
+                "xai_chat": "grok-4.5",
+                "xai_build": "grok-4.5",
+                "imagine_video": "grok-imagine-video",
+                "imagine_image": "grok-imagine-image",
+            },
+        },
+    )
+    results = check_model_stack()
+    names = [r.name for r in results]
+    assert "model stack summary" not in names
+    assert any(r.name == "models verify" and r.status == "FAIL" for r in results)
+    # notes must not become WARN
+    assert not any(r.status == "WARN" for r in results)
+
+
+def test_shim_has_no_hardcoded_clone_path() -> None:
+    body = (ROOT / "scripts" / "grok_doctor.sh").read_text(encoding="utf-8")
+    assert "Grok-Imagine-Cinematic-Studio/tools/doctor.py" not in body
+    assert "CINEMATIC_PROJECT_DIR" in body
+
+
+def test_cmd_doctor_delegates_to_shim() -> None:
+    body = (ROOT / "scripts" / "cinematic_studio.sh").read_text(encoding="utf-8")
+    assert "grok_doctor.sh" in body
+    # No multi-path CLI hunt in cmd_doctor
+    assert 'for cli in' not in body
