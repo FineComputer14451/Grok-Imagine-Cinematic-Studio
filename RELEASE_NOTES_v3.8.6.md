@@ -7,7 +7,7 @@
 
 v3.8.5 introduced the **v4.5 Dual-Model Wave**. After that tag, main received:
 
-- Full **51-skill** `model_compatibility` coverage (not only the initial 16)
+- Full suite `model_compatibility` coverage (shipped as **51**, now **52** with Costume & Wardrobe Continuity)
 - Restored `tools/models.py` registry API for CLI / handoff
 - Generation Tracker CLI (`cinematic-studio generation …`)
 - Full meta-installer skill body restore
@@ -20,7 +20,7 @@ v3.8.5 introduced the **v4.5 Dual-Model Wave**. After that tag, main received:
 | Item | Detail |
 |------|--------|
 | Studio | **v3.8.6** |
-| Skills | **51** + 11 slash commands |
+| Skills | **52** + 11 slash commands (includes `costume-wardrobe-continuity`) |
 | Model layer | Grok 4.5 default · opt-in v9-4p5 multi/chat-expert/auto · dual Imagine 1.0/1.5 |
 | Install | Method A zip / Method B plugin · packs + declutter `full_suite_wins` |
 
@@ -38,7 +38,7 @@ bash <(curl -sL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine
 
 ### Release assets
 
-- `grok-imagine-cinematic-studio-skills-install-v3.8.6.zip` — full 51 skills
+- `grok-imagine-cinematic-studio-skills-install-v3.8.6.zip` — full **52** skills (install from `main` / latest pin)
 - `grok-imagine-cinematic-studio-meta-installer-v3.8.6.zip` — bootstrap skill + installer
 
 ## Verify

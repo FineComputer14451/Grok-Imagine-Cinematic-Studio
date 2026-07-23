@@ -58,10 +58,10 @@ Both methods can ship the same **52 skills** (plugin suite). They differ in **wh
 
 | Plugin name | Pack id | Skills | Soft requires | Role |
 |-------------|---------|--------|---------------|------|
-| **`grok-imagine-cinematic-studio`** | *(full suite)* | 48 | — | **Recommended** one-click install |
-| `grok-imagine-cinematic-core` | `core` | 16 | — | Orchestration / DNA / Imagine / QA / quota / meta |
+| **`grok-imagine-cinematic-studio`** | *(full suite)* | **52** | — | **Recommended** one-click install |
+| `grok-imagine-cinematic-core` | `core` | **19** | — | Orchestration / DNA / wardrobe / Imagine / QA / quota / meta |
 | `grok-imagine-camera-image` | `camera-image` | 9 | `core` | DoP, design, i2i, key art, i2v |
-| `grok-imagine-sequence-narrative` | `sequence-narrative` | 14 | `core` | Sequence, continuity, performance, audio, action/VFX, SFW |
+| `grok-imagine-sequence-narrative` | `sequence-narrative` | 15 | `core` | Sequence, continuity, performance, audio, action/VFX, SFW |
 | `grok-imagine-nsfw` | `nsfw` | 4 | `core` | Opt-in NSFW (ErosForge + NSFW QA/quota) |
 | `grok-imagine-delivery-post` | `delivery-post` | 5 | `core` | Assembly, color, polish, upscale, ffmpeg |
 
@@ -134,7 +134,7 @@ Curl equivalents work for every command — replace trailing `install` with `upd
 
 ### Declutter rules (v3.8.0+)
 
-1. **Method A + Method B:** removes Method A copies of the 48 studio skills (plugin keeps them); prunes old `~/.grok/skills-backup-*`. User-global skills (`help`, `create-skill`, …) stay in `~/.grok/skills/`.
+1. **Method A + Method B:** removes Method A copies of the **52** studio skills (plugin keeps them); prunes old `~/.grok/skills-backup-*`. User-global skills (`help`, `create-skill`, …) stay in `~/.grok/skills/`.
 2. **Full suite + satellite packs (`full_suite_wins`):** when both the full suite plugin and one or more satellite packs are installed, declutter prefers the full suite and removes satellite skill dupes (`config/plugin_packs.yaml` → `declutter.policy: full_suite_wins`).
 
 Always dry-run first when the user is unsure: `declutter --dry-run`.

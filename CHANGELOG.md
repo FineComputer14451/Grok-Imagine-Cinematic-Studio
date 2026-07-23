@@ -15,6 +15,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Model Layer stack lock** — all **52** suite skills now include the canonical **Stack default** line (`grok-4.5` cinematic+Build, CLI ≥ 0.2.93 / fork `grok-build`, opt-in 1M `grok-4.3`) above Registry · `models verify`. Closed the gap where 19 skills had the v9-4p5 table + `model_compatibility` but no explicit stack lock; `cinematic-skill-creator` also gained the full `model_compatibility` YAML block.
 - Marketplace catalog re-pinned after skill and script content revisions (install SHA on content commit; pin-only tip expected).
 - **Docs pass (v3.8.6)** — `Quick_Start_Guide.md` and `installation_guide.md` aligned to **52 skills**, core pack **19**, Model Layer v4.5, two-step catalog pin + in-repo `verify_plugins`/`release_plugin_catalog`, local plugin reinstall notes; `UPGRADE_GUIDE.md` current target **3.8.6**.
+- **Suite count sweep** — current-facing marketing/docs/skills say **52** (not 51/48): `MASTER_PROMPT`, release notes index + v3.8.6 notes, `OFFICIAL_OVERVIEW`, `ARCHITECTURE`, meta-installer pack matrix, `grok-imagine-cinematic-studio` skill; README Model Layer pointer → `MODEL_LAYER_v4.5.md`.
 
 
 ### Fixed

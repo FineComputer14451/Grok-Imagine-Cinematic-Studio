@@ -142,7 +142,7 @@ Studio Director **owns** surface selection and must not hand off video without I
 - NSFW via ErosForge + `nsfw-quota-orchestrator` + `nsfw-sequence-extender` (explicit only)
 - Quota-aware production with xAI per-second pricing (`workflow-quota-optimizer`)
 - **Grok 4.5 / v9-4p5 model stack** — CLI `grok-4.5` (min 0.2.93) / fork `grok-build`; opt-in `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto`; 1M `grok-4.3`; Imagine 1.0 default + 1.5 native audio (`tools/models.py`, `references/agents/MODEL_LAYER_v4.5.md`)
-- Plugin marketplace (51 skills + 11 commands) with release-pin hygiene
+- Plugin marketplace (52 skills + 11 commands) with release-pin hygiene
 - Authoritative Role Cards in `references/agents/` (each embeds Model Layer Grok 4.5)
 
 ## Quick Commands

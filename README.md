@@ -176,7 +176,7 @@ Grok Imagine Cinematic Studio v3.8.6  (Studio Director + 23+ Agents · Grok 4.5 
 
 **Key v3.8.6 Components**
 - `references/agents/` — Authoritative Role Cards + protocols (Studio Director owns orchestration & handoff decisions)
-- `references/agents/MODEL_LAYER_v3.7.1.md` + `IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` — Operating rules + drift detection for every skill/agent
+- `references/agents/MODEL_LAYER_v4.5.md` + `IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` — Operating rules + drift detection for every skill/agent
 - `MASTER_PROMPT.md` — Activation entrypoint with Grok 4.5 stack + Imagine Agent Mode Handoff
 - `tools/cli/bible_stages.py` + Web UI — Guided Production Bible wizard (multi-stage TTY or beautiful form UI)
 - `tools/imagine_bridge.py` + handoff validators — Build validated `imagine_agent_mode_handoff` packets
