@@ -10,6 +10,9 @@
 default = "grok-4.5"
 
 [ui]
+# Default render mode: "fullscreen" (full TUI) or "minimal" (scrollback-native)
+# Prefer fullscreen so plain `grok` does not open in Minimal mode.
+screen_mode = "fullscreen"
 # Secondary model for code/skills work when forking from creative sessions
 fork_secondary_model = "grok-build"
 
