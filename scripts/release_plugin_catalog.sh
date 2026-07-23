@@ -9,15 +9,25 @@
 
 set -euo pipefail
 
-cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$REPO_ROOT"
 
 echo "→ Pinning marketplace catalog to git HEAD..."
 
-if command -v cinematic-studio >/dev/null 2>&1; then
-    cinematic-studio plugin catalog pin
+# Prefer in-repo CLI so the pin SHA is this clone's HEAD. PATH cinematic-studio
+# often defaults to ~/Grok-Cinematic-Projects (install tree, not always a git repo).
+if [[ -f "$REPO_ROOT/tools/cinematic_studio_cli.py" ]]; then
+    PYTHONPATH="${REPO_ROOT}${PYTHONPATH:+:${PYTHONPATH}}" \
+        python3 -m tools.cinematic_studio_cli plugin catalog pin
+elif command -v cinematic-studio >/dev/null 2>&1; then
+    CINEMATIC_PROJECT_DIR="$REPO_ROOT" \
+    CINEMATIC_REPO_ROOT="$REPO_ROOT" \
+        cinematic-studio plugin catalog pin
 else
-    python3 -m tools.cinematic_studio_cli plugin catalog pin
+    echo "❌ No in-repo tools/cinematic_studio_cli.py and no cinematic-studio on PATH" >&2
+    exit 1
 fi
+
 
 cat <<'EOF'
 

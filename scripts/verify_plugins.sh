@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 #
 # Verify Grok plugin manifest, marketplace catalog, and installed plugin checkout.
-# Delegates catalog checks to:
-#   cinematic-studio plugin catalog check [--release]
+# Delegates catalog checks to the in-repo CLI (preferred) so release pin checks
+# resolve *this* checkout's git HEAD — PATH cinematic-studio often points at
+# ~/Grok-Cinematic-Projects, which may not be a git clone.
+#
+#   bash scripts/verify_plugins.sh
+#   bash scripts/verify_plugins.sh --release
 #
 
 set -euo pipefail
@@ -17,26 +21,44 @@ if [[ "${1:-}" == "--release" ]]; then
     release_mode=true
 fi
 
-echo "→ Validating plugin manifest..."
-grok plugin validate
+# Run plugin catalog check against this repository tree.
+# Prefer: python3 -m tools.cinematic_studio_cli (STUDIO_ROOT = this clone).
+# Fallback: cinematic-studio with CINEMATIC_PROJECT_DIR pinned to REPO_ROOT.
+run_catalog_check() {
+    local -a args=(plugin catalog check)
+    if $release_mode; then
+        args+=(--release)
+    fi
 
-echo "→ Checking marketplace catalog + plugin-index..."
-if command -v cinematic-studio >/dev/null 2>&1; then
-    if $release_mode; then
-        cinematic-studio plugin catalog check --release
-    else
-        cinematic-studio plugin catalog check
+    if [[ -f "$REPO_ROOT/tools/cinematic_studio_cli.py" ]]; then
+        # Ensure module imports resolve from this checkout even if PYTHONPATH is set.
+        PYTHONPATH="${REPO_ROOT}${PYTHONPATH:+:${PYTHONPATH}}" \
+            python3 -m tools.cinematic_studio_cli "${args[@]}"
+        return
     fi
+
+    if command -v cinematic-studio >/dev/null 2>&1; then
+        CINEMATIC_PROJECT_DIR="$REPO_ROOT" \
+        CINEMATIC_REPO_ROOT="$REPO_ROOT" \
+            cinematic-studio "${args[@]}"
+        return
+    fi
+
+    echo "❌ No in-repo tools/cinematic_studio_cli.py and no cinematic-studio on PATH" >&2
+    exit 1
+}
+
+echo "→ Validating plugin manifest..."
+if command -v grok >/dev/null 2>&1; then
+    grok plugin validate
 else
-    # Thin fallback to the canonical CLI module
-    if $release_mode; then
-        python3 -m tools.cinematic_studio_cli plugin catalog check --release
-    else
-        python3 -m tools.cinematic_studio_cli plugin catalog check
-    fi
+    echo "ℹ️  grok not on PATH — skipping grok plugin validate"
 fi
 
-if grok plugin details grok-imagine-cinematic-studio >/dev/null 2>&1; then
+echo "→ Checking marketplace catalog + plugin-index..."
+run_catalog_check
+
+if command -v grok >/dev/null 2>&1 && grok plugin details grok-imagine-cinematic-studio >/dev/null 2>&1; then
     echo "→ Verifying installed plugin checkout..."
     bash scripts/cinematic_studio.sh verify --plugin
 else
