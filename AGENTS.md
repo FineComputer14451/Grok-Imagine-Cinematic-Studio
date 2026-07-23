@@ -2,10 +2,19 @@
 
 **This file provides context and instructions for AI coding agents and assistants working in this workspace.**
 
-**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.8.6**, unified **Grok 4.5** cinematic+Build stack with optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, interactive CLI TUI, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
+**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.8.6**, unified **Grok 4.5** registry defaults + **v9-4p5 / grok-4-auto** specialist Model Layer, optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, Identity Continuity Protocol, interactive CLI TUI, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
 **Canonical Source:** https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/AGENTS.md
 
 Think of this as the single source of truth for how to interact with this Grok/xAI agent environment. Paths below are **repo-relative** unless noted; sandboxes may root at `/home/workdir/` or a local clone (e.g. `~/Grok-Imagine-Cinematic-Studio`).
+
+**Version legend (read once):**
+
+| Stamp | Meaning |
+|-------|---------|
+| **Studio v3.8.6** | Current product / packaging version — use this for activation and docs |
+| **Model Layer v4.5** | Canonical chat + Imagine routing (`MODEL_LAYER_v4.5.md`) |
+| **Feature history (3.7.1 / 3.8.x)** | When a capability landed (e.g. Handoff in 3.7.1); not the operating studio pin |
+| **Role Card labels (v3.6.5–v4.5)** | Per-card revision tags; AGENT_INDEX is authoritative |
 
 ## Workspace Overview
 
@@ -15,11 +24,12 @@ This workspace is designed for advanced **Grok 4.5** agent workflows, with heavy
 - High-quality cinematic image/video generation pipelines (Grok Imagine 1.0 / 1.5)
 - Document, presentation, and media production
 - GitHub repository management and open-source contribution
-- Animal welfare legal research & advocacy tooling (supporting user's ongoing work)
 
-**Core principle:** Use the appropriate skill or tool for every task. Do not reinvent wheels that skills already handle. Prefer existing skills over ad-hoc scripts.
+**Core principle:** Use the appropriate skill or tool for every task. Do not reinvent wheels that skills already handle. Prefer existing skills over ad-hoc scripts. Prefer **skill directory slugs** (e.g. `studio-director`) over display titles when activating.
 
-**Orchestration default:** All multi-agent direction, Production Bibles, coding, and Grok Build sessions use **`grok-4.5`** unless the user or Studio Director explicitly opts into **`grok-4.3`** for 1M-context memory banks.
+**Orchestration default (registry):** Multi-agent direction, Production Bibles, coding, and Grok Build sessions lock **`grok-4.5`** via `tools/models.py` unless the user or Studio Director opts into **`grok-4.3`** for 1M-context memory banks.
+
+**Specialist Model Layer (Role Cards / skills):** When v9-4p5 identifiers are available in the session, prefer them per `MODEL_LAYER_v4.5.md` — multi-agent → `grok-v9-4p5-multi`; specialist craft → `grok-v9-4p5-chat-expert`; draft/quota → `grok-4-auto`. Registry default remains **`grok-4.5`** for stack locks and Build CLI.
 
 ## Directory Structure
 
@@ -55,7 +65,9 @@ User config: `~/.grok/config.toml`.
 
 ## Grok 4.5 Model Layer (Required Knowledge)
 
-Canonical registry: `tools/models.py` · `references/MODELS_v3.6.md` · `references/agents/MODEL_LAYER_v3.7.1.md`.
+Canonical registry: `tools/models.py` · `references/MODELS_v3.6.md` · **`references/agents/MODEL_LAYER_v4.5.md`** (v4.5.1).  
+Legacy archive only: `references/agents/MODEL_LAYER_v3.7.1.md` (do not use for new work).  
+Agent slug / Role Card map: `references/agents/AGENT_INDEX.md`.
 
 Verify:
 
@@ -64,9 +76,11 @@ python tools/cinematic_studio_cli.py models list
 python tools/cinematic_studio_cli.py models verify
 ```
 
+### Registry defaults (stack lock / Build / Bible)
+
 | Layer | Default Slug | When to Use |
 |-------|--------------|-------------|
-| **Orchestration (default)** | `grok-4.5` | Production Bibles, multi-agent direction, agent loops (500k context) |
+| **Orchestration (registry default)** | `grok-4.5` | Production Bible `model_stack`, multi-agent direction lock, agent loops (~500k context) |
 | **Long-context (opt-in)** | `grok-4.3` | 1M memory banks only — `--chat-model grok-4.3` or alias `long-context` |
 | **Grok Build CLI** | `grok-4.5` | Default agent (coding / agentic); min CLI **0.2.93** |
 | **Grok Build fork** | `grok-build` | Code, skills, repo tooling (`fork_secondary_model`) |
@@ -78,15 +92,30 @@ python tools/cinematic_studio_cli.py models verify
 **Aliases:** `cinematic` / `build` / `coding` / `4.5` / `grok-4.5-latest` / `grok-build-latest` → **`grok-4.5`**.  
 **1M aliases:** `long-context` / `4.3` / `grok-4` → **`grok-4.3`**.
 
+### Specialist Model Layer (v4.5 dual-model wave)
+
+When the session exposes these identifiers, **prefer them for Role Card work** (skills already embed this table). Registry default for Bibles/Build remains **`grok-4.5`**.
+
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-agent orchestration, handoffs, sequence chains | `grok-v9-4p5-multi` | high |
+| Specialist craft (DNA, prompts, QA, DoP, Sonic, ErosForge) | `grok-v9-4p5-chat-expert` | high |
+| Draft / animatic / quota-sensitive / routine routing | `grok-4-auto` | medium |
+
+**Aliases (specialist):** `v9-4p5-multi` / `4p5-multi` · `v9-4p5-chat-expert` / `chat-expert` · `4-auto` / `auto`.
+
 ### Grok 4.5 operating rules
 
-1. **Default all orchestration** to `grok-4.5` unless the user or Studio Director explicitly needs 1M context.
-2. **Reasoning:** prefer **high** for Bibles, QA, Identity Lock, Sequence Director; **medium** for routine prompt drafts; **low** only for trivial routing. Grok 4.5 defaults to high.
-3. **Prompt cache:** use a stable `prompt_cache_key` per production (project slug) on multi-turn agent loops to reduce cost.
-4. **Do not** treat Imagine models as chat models — video/image spend is `grok-imagine-*` only.
-5. Every Production Bible must lock `model_stack` + `VIDEO_PIPELINE_SPEC` from the registry helpers.
-6. Opt into `grok-4.3` only when memory banks / long chains exceed ~400k effective context.
-7. Do **not** treat CLI version `0.2.93` as an API model slug — it is the **Grok Build binary** version.
+1. **Lock the stack** to `grok-4.5` (registry) unless the user or Studio Director needs 1M context (`grok-4.3`).
+2. **Route specialists** with Model Layer v4.5 when v9-4p5 / `grok-4-auto` are available; fall back to `grok-4.5` when they are not.
+3. **Reasoning:** prefer **high** for Bibles, QA, Identity Lock, Sequence Director; **medium** for routine prompt drafts; **low** only for trivial routing. Grok 4.5 defaults to high.
+4. **Prompt cache:** use a stable `prompt_cache_key` per production (project slug) on multi-turn agent loops to reduce cost.
+5. **Do not** treat Imagine models as chat models — video/image spend is `grok-imagine-*` only.
+6. Every Production Bible must lock `model_stack` + `VIDEO_PIPELINE_SPEC` from the registry helpers (`build_video_pipeline_spec` in `tools/models.py`).
+7. Opt into `grok-4.3` only when memory banks / long chains exceed ~400k effective context.
+8. Do **not** treat CLI version `0.2.93` as an API model slug — it is the **Grok Build binary** version.
+9. **Identity Continuity:** apply `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` on multi-clip character work (drift gates before extend/stitch spend).
+10. **Plate & motion readiness:** before video spend, prefer locked plates + motion briefs (`plate_status`, `motion_vector`; CLI gates `--strict-plate`, `--strict-motion`, `--strict-handoff` when enforcing).
 
 Local config (`~/.grok/config.toml`) — see `config/grok-build.example.toml`:
 
@@ -113,8 +142,40 @@ When working with or creating skills:
 3. **Never** create `README.md`, `CHANGELOG.md`, or human-facing docs inside skill directories — skills are agent-only.
 4. Keep `SKILL.md` concise (< ~500 lines). Move detailed content, agent personalities, production bibles, and long references to `references/`.
 5. New **project** skills go in `.grok/skills/<name>/`. User-global skills go in `~/.grok/skills/<name>/`.
-6. Studio skills should embed the **Model Layer (Grok 4.5)** block (see `references/agents/MODEL_LAYER_v3.7.1.md`).
+6. Studio skills should embed the **Model Layer (Grok 4.5 / v9-4p5)** block (see `references/agents/MODEL_LAYER_v4.5.md`).
 7. Validate after creation / change: `bash scripts/verify_cinematic_studio.sh` (and skill-specific validators when available).
+
+## Core Agent Skill Slugs
+
+**23 Role-Card core agents** power the department; **51 skills** power agents + specialists (i2i, batch, chain QA, polish, packs, etc.). Full activation table: `references/agents/AGENT_INDEX.md`.
+
+| Display name | Skill slug (activate this) |
+|--------------|----------------------------|
+| Studio Director | `studio-director` |
+| Mega Production Architect | `mega-production-architect` |
+| Director of Photography | `director-of-photography` |
+| Production Designer | `production-designer-set-decorator` |
+| Color Grading Supervisor | `post-production-color-grading-supervisor` |
+| Performance & Emotion Director | `performance-emotion-director` |
+| Identity Lock Specialist | `identity-lock-specialist` |
+| Narrative Arc Pacing Strategist | `narrative-arc-pacing-strategist` |
+| Sequence Director | `sequence-director` |
+| Cinematic Sequence Extender | `cinematic-sequence-extender` |
+| Continuity Guardian | `continuity-consistency-guardian` |
+| Imagine Prompt Master | `imagine-prompt-master` |
+| Quality Assurance Guardian | `quality-assurance-guardian` |
+| Workflow Quota Optimizer | `workflow-quota-optimizer` |
+| Sonic Architect | `sonic-architect-native-audio-virtuoso` |
+| Foley Specialist | `foley-sound-design-specialist` |
+| Stunt Action Choreographer | `stunt-action-choreographer` |
+| VFX & SFX Supervisor | `vfx-sfx-supervisor` |
+| Key Art Designer | `key-art-poster-designer` |
+| Trailer Director | `trailer-teaser-director` |
+| Localization Specialist | `localization-subtitle-specialist` |
+| AI Polish Director | `ai-polish-director` |
+| ErosForge NSFW Director | `erosforge-nsfw-director` |
+
+**High-traffic specialists (not all are in the “23” core list):** `character-dna-extractor`, `multi-character-identity-arbiter`, `image-to-video-specialist`, `reference-asset-curator`, `animatic-director`, `assembly-editor`, `sfw-batch-orchestrator`, `nsfw-quota-orchestrator`, `nsfw-sequence-extender`, `chain-qa-protocol`, `nsfw-chain-qa-protocol`, `handoff-packet-validator`, `imagine-execution-bridge`, `ai-video-upscaler`, `cinematic-ffmpeg`, `i2i-refiner`, `i2i-cinematic-refiner`, `ai-image-recreation`, `arc-replan-copilot`, `quota-dashboard`, `production-bible-workflow`, `skill-agent-architect`, `cinematic-skill-creator`, `cinematic-studio-meta-installer`, `github-repo-manager`, `extend-frame-to-video`, `grok-imagine-cinematic-studio`.
 
 ## Common Workflows & Commands
 
@@ -134,15 +195,17 @@ When working with or creating skills:
 - **AI recreation / style transfer / enhancement** of uploaded images: Activate `ai-image-recreation`
 - **Extract Character DNA** for consistency: Activate `character-dna-extractor`
 - **Extend cinematic sequences** (60–120s+): Activate `cinematic-sequence-extender` or `extend-frame-to-video`
-- **Refine / iterate on previously generated images**: `generated-image-editor`
+- **Refine / iterate on previously generated images**: `generated-image-editor` (user-global when present)
 - **Upscale video for final delivery** (720p → 1080p/4K, face restoration): Activate `ai-video-upscaler`
 - Video / audio processing: Activate `cinematic-ffmpeg` or use `ffmpeg` / bash
-- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (23-agent + specialist suite, **v3.7.1**)
+- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (23-agent core + specialist suite, **studio v3.8.6**)
 - **Planning → generation handoff**: Studio Director **Imagine Agent Mode Handoff** (see below)
 
 If native Imagine tools are unavailable, use `imagine-execution-bridge` / CLI (`imagine submit`, `sfw run`, `sequence run`) with a locked `VIDEO_PIPELINE_SPEC`.
 
 ### Document Tasks
+
+Document skills are typically **session / user-global** (not always in the 51-skill project suite). Use when available:
 
 - PDF: `pdf` skill
 - Word (.docx): `docx` skill
@@ -189,9 +252,9 @@ For any complex visual storytelling, film-style image sequences, video productio
 **Primary activation command:**  
 `Activate Grok Imagine Cinematic Studio v3.8.6` or `Start cinematic production`
 
-This engages the full **23 specialized agents** (v3.6.5 Role Cards under studio **v3.7.1**; Studio Director owns **Imagine Agent Mode Handoff**) including:
+This engages the full **23 specialized agents** (Role Cards labeled v3.6.5–v4.5 under studio **v3.8.6**; Studio Director owns **Imagine Agent Mode Handoff**) plus pipeline specialists. **51 skills** implement the department. Core list:
 
-- Studio Director, Mega Production Architect
+- Studio Director (`studio-director`), Mega Production Architect (`mega-production-architect`)
 - Director of Photography, Production Designer, Color Grading Supervisor
 - Performance & Emotion Director, Identity Lock Specialist, Narrative Arc Pacing Strategist
 - Sequence Director, Cinematic Sequence Extender, Continuity Guardian
@@ -199,13 +262,14 @@ This engages the full **23 specialized agents** (v3.6.5 Role Cards under studio 
 - Sonic Architect, Foley Specialist
 - Stunt Action Choreographer, VFX & SFX Supervisor
 - Key Art Designer, Trailer Director, Localization Specialist
-- **AI Polish Director** (final post-production upscale & restoration)
-- ErosForge NSFW Director (when appropriate)
+- **AI Polish Director** (`ai-polish-director`) — final post-production upscale & restoration
+- ErosForge NSFW Director (`erosforge-nsfw-director`) — only when explicitly activated
 
-Specialist activation patterns: cinematic studio skill references and `references/agents/AGENT_INDEX.md`.  
-Model Layer for Role Cards: `references/agents/MODEL_LAYER_v3.7.1.md`.
+Specialist activation patterns: cinematic studio skill references and **`references/agents/AGENT_INDEX.md`**.  
+Model Layer for Role Cards: **`references/agents/MODEL_LAYER_v4.5.md`**.  
+Identity Continuity: **`references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`**.
 
-## Imagine Agent Mode Handoff (v3.7.1)
+## Imagine Agent Mode Handoff (landed v3.7.1 · current studio v3.8.6)
 
 Studio Director routes planning → generation so pipeline context is never dropped.
 
@@ -222,11 +286,11 @@ Packet type: `imagine_agent_mode_handoff` (validated by `handoff-packet-validato
 Canonical doc: `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`.  
 CLI: `cinematic-studio imagine agent-handoff` (or `python tools/cinematic_studio_cli.py imagine agent-handoff`).
 
-**Rules:** Prefer tools when available; block video without I2V motion block on locked plates; never silent NSFW handoff (route ErosForge first).
+**Rules:** Prefer tools when available; block video without I2V motion block on locked plates; never silent NSFW handoff (route ErosForge first). Enforce plate/motion/handoff readiness when CLI strict flags or Production Bible require it.
 
-## AI Polish Director (Post-Production · v3.7.1 / Grok 4.5)
+## AI Polish Director (Post-Production · Grok 4.5)
 
-The **AI Polish Director** is the final post-production agent, activated after QA approval and color grading. It handles delivery-ready video enhancement using the `ai-video-upscaler` skill and `sequence polish` CLI. Orchestration on **`grok-4.5`**; upscale is local (not Imagine API).
+The **AI Polish Director** is the final post-production agent, activated after QA approval and color grading. It handles delivery-ready video enhancement using the `ai-video-upscaler` skill and `sequence polish` CLI. Orchestration on **`grok-4.5`** (or specialist chat-expert when available); upscale is local (not Imagine API).
 
 **When to activate:**
 
@@ -263,50 +327,54 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 
 ## When to Load Specific Skills
 
+Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md` + `ls .grok/skills/`.
+
 | Category | Skill | When to Activate |
 |----------|-------|------------------|
 | **Skill Development** | `create-skill`, `cinematic-skill-creator` | Creating, updating, or validating skills (generic vs studio) |
-| **Cinematic Production** | `grok-imagine-cinematic-studio` | Full multi-agent film-style workflows, production bibles, long sequences |
-| **Imagine Handoff** | `imagine-execution-bridge`, Studio Director handoff | grok.com/imagine packets or Agent Mode routing |
-| **Video Upscale & Polish** | `ai-video-upscaler` | Final delivery upscale, face restoration, artifact cleanup |
-| **Image Recreation & Editing** | `ai-image-recreation`, `generated-image-editor` | Style transfer, enhancement, variation, iterative refinement |
-| **Character Consistency** | `character-dna-extractor` | Forensic DNA extraction, Identity Lock handoff, prompt injection |
-| **Sequence Extension** | `cinematic-sequence-extender`, `extend-frame-to-video` | Extending stills into video, rough-cut animatics, continuing clips |
+| **Full Studio / Director** | `grok-imagine-cinematic-studio`, `studio-director`, `mega-production-architect` | Full multi-agent workflows, Bibles, campaign orchestration |
+| **Imagine Handoff** | `imagine-execution-bridge`, `handoff-packet-validator`, Studio Director handoff | grok.com/imagine packets, Agent Mode routing, packet validation |
+| **Video Upscale & Polish** | `ai-polish-director`, `ai-video-upscaler` | Final delivery upscale, face restoration, artifact cleanup |
+| **Image Recreation & Editing** | `ai-image-recreation`, `generated-image-editor`, `i2i-refiner`, `i2i-cinematic-refiner` | Style transfer, enhancement, variation, iterative refinement |
+| **Character Consistency** | `character-dna-extractor`, `identity-lock-specialist`, `multi-character-identity-arbiter` | DNA extraction, Identity Lock, multi-cast arbitration |
+| **Sequence & Story** | `sequence-director`, `cinematic-sequence-extender`, `extend-frame-to-video`, `narrative-arc-pacing-strategist`, `arc-replan-copilot` | Long-form sequencing, extend/stitch, pacing, mid-chain replan |
+| **Camera / Set / Performance** | `director-of-photography` (prefer over legacy `director-of-photography-v3-3`), `production-designer-set-decorator`, `performance-emotion-director` | Lighting, environments, acting beats |
+| **Continuity & QA** | `continuity-consistency-guardian`, `quality-assurance-guardian`, `chain-qa-protocol`, `nsfw-chain-qa-protocol` | Continuity, 16-point QA, extend/stitch gates |
+| **Prompts & Assets** | `imagine-prompt-master`, `reference-asset-curator`, `image-to-video-specialist`, `key-art-poster-designer` | Prompt craft, tiers, i2v motion, key art |
+| **Audio** | `sonic-architect-native-audio-virtuoso`, `foley-sound-design-specialist` | Native audio layers, foley |
+| **Action / VFX / Trailer** | `stunt-action-choreographer`, `vfx-sfx-supervisor`, `trailer-teaser-director` | Stunts, VFX, teasers |
+| **Post & Delivery** | `assembly-editor`, `post-production-color-grading-supervisor`, `ai-polish-director`, `cinematic-ffmpeg` | EDL, grade, polish, social crops |
+| **Pre-viz & Batch** | `animatic-director`, `sfw-batch-orchestrator`, `nsfw-quota-orchestrator` | Previs before 1.5 spend; SFW/NSFW batch plans |
+| **NSFW (explicit only)** | `erosforge-nsfw-director`, `nsfw-sequence-extender`, `nsfw-quota-orchestrator`, `nsfw-chain-qa-protocol` | R-rated/intimate work only when user activates ErosForge |
+| **Quota & Dashboard** | `workflow-quota-optimizer`, `quota-dashboard` | Cost/quota planning and visual reports |
 | **Custom Agents** | `custom-grok-cinematic-agent`, `skill-agent-architect` | Drafting Role Cards / bespoke agents |
-| **Quota & Efficiency** | `workflow-quota-optimizer` | Long-form sessions, cost/quota management, production planning |
-| **NSFW Batch Orchestration** | `nsfw-quota-orchestrator` | Quota-aware erotic image+video batches (with ErosForge) |
-| **NSFW Sequence Extension** | `nsfw-sequence-extender` | Sensual 30–120s+ extension, erotic pacing, artifact QA |
-| **GitHub Management** | `github-repo-manager` | Git lifecycle, PRs, releases, skill/plugin catalog pin hygiene (Grok 4.5 / v3.7.1) |
-| **Video / Audio** | `cinematic-ffmpeg`, `ffmpeg` | Trimming, merging, subtitles, compression, GIFs, storyboards |
-| **Documents** | `pdf`, `docx`, `pptx`, `xlsx` | Professional document or presentation creation |
+| **GitHub Management** | `github-repo-manager` | Git lifecycle, PRs, releases, skill/plugin catalog pin hygiene |
+| **Documents** | `pdf`, `docx`, `pptx`, `xlsx` | Professional docs (session skills when available) |
 | **Memory** | `memory-edit` | Personal facts/preferences worth remembering |
 | **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **51-skill** suite (v3.8.6; packs + declutter `full_suite_wins`) |
-| **AI Polish & Delivery** | `ai-polish-director`, `assembly-editor`, `cinematic-ffmpeg` | Post-QA upscale, EDL assembly, social crops |
-| **Pre-viz & Assets** | `animatic-director`, `reference-asset-curator`, `image-to-video-specialist` | Previs, hero routing, i2v before 1.5 spend |
-| **Batch Orchestration** | `sfw-batch-orchestrator` | Quota-aware SFW hero-first shot batches |
-| **Chain QA & Handoffs** | `chain-qa-protocol`, `handoff-packet-validator` | 10-point extend/stitch QA gates; JSON handoff validation |
+| **Localization** | `localization-subtitle-specialist` | SDH, multi-language, cultural adaptation |
 | **Production Bible** | `production-bible-workflow` | Guided create-bible / DNA / sequence / quota onboarding |
 
 ## Project-Specific Notes
 
-- Primary project: **Grok Imagine Cinematic Studio** **v3.8.6** — unified **Grok 4.5** stack (opt-in **v9-4p5** multi/chat-expert) + dual Imagine Video **1.0 / 1.5** + Imagine Agent Mode Handoff + interactive CLI TUI + guided Bible wizard + **plugin modularity packs**.
+- Primary project: **Grok Imagine Cinematic Studio** **v3.8.6** — registry default **`grok-4.5`** + specialist **v9-4p5 / grok-4-auto** Model Layer + dual Imagine Video **1.0 / 1.5** + Imagine Agent Mode Handoff + Identity Continuity + interactive CLI TUI + guided Bible wizard + **plugin modularity packs**.
 - All generated artifacts **must** be saved under `artifacts/` (repo root).
 - Project skills live in `.grok/skills/`; user-global skills in `~/.grok/skills/`.
 - Plugin marketplace lives in `.grok-plugin/` (full suite + 5 packs, 51 skills + commands). Install full suite via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - Workspace supports SFW cinematic work and NSFW/erotic pipelines (**ErosForge only when explicitly activated**).
-- **Model stack:** cinematic + Build/coding default **`grok-4.5`**; optional 1M **`grok-4.3`**; Imagine **1.0** default; `VIDEO_PIPELINE_SPEC` wired everywhere; **1.5** for native-audio workflows.
-- Full suite: **51/51** skills + Role Cards on Grok 4.5 orchestration default (includes `ai-image-recreation` for user-upload recreation).
-- Recent **3.8.6:** Full v4.5 dual-model wave (Grok 4.5 / v9-4p5 · Imagine 1.0 + 1.5), model registry hardening, Generation Tracker CLI. **3.8.4:** interactive CLI TUI (`cinematic-studio ui`) + plate/motion spend readiness. **3.8.3:** specialist-order + color→polish. **3.8.0:** marketplace multi-plugin packs + declutter `full_suite_wins`. **3.7.1:** Imagine Agent Mode Handoff.
-- Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, `docs/releases/`, `references/MODELS.md`, `docs/guides/Quick_Start_Guide.md`).
+- **Model stack:** cinematic + Build/coding registry default **`grok-4.5`**; specialist routing **v9-4p5 / grok-4-auto** when available; optional 1M **`grok-4.3`**; Imagine **1.0** default; `VIDEO_PIPELINE_SPEC` via registry helpers; **1.5** for native-audio / high-physics / intimacy workflows.
+- Full suite: **51/51** skills + Role Cards (includes `ai-image-recreation` for user-upload recreation).
+- **Recent history:** **3.8.6** — Full v4.5 dual-model wave, model registry hardening, Generation Tracker CLI, Grok Doctor. **3.8.4** — interactive CLI TUI (`cinematic-studio ui`) + plate/motion spend readiness. **3.8.3** — specialist-order + color→polish. **3.8.1** — Identity Continuity Protocol. **3.8.0** — marketplace multi-plugin packs + declutter `full_suite_wins`. **3.7.1** — Imagine Agent Mode Handoff.
+- Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, `docs/releases/`, `references/MODELS.md`, `references/agents/MODEL_LAYER_v4.5.md`, `docs/guides/Quick_Start_Guide.md`).
 
 ## Quick Start for New Tasks
 
 1. Clarify the goal with the user if ambiguous.
-2. Confirm model stack: default **`grok-4.5`**; only use **`grok-4.3`** when 1M context is required.
-3. Check if an existing skill covers it (`ls .grok/skills/` or `ls ~/.grok/skills/`, or read relevant SKILL.md). For plugin users: `.grok-plugin/plugin-index.json` or `grok plugin details grok-imagine-cinematic-studio`.
+2. Confirm model stack: registry default **`grok-4.5`**; specialist v9-4p5 / `grok-4-auto` when available; only use **`grok-4.3`** when 1M context is required.
+3. Check if an existing skill covers it (`ls .grok/skills/` or `ls ~/.grok/skills/`, skill-slug table above, or `references/agents/AGENT_INDEX.md`). For plugin users: `.grok-plugin/plugin-index.json` or `grok plugin details grok-imagine-cinematic-studio`.
 4. If no skill exists and the task is repeatable/specialized → create one with `create-skill` / `cinematic-skill-creator` (or extend via cinematic-studio-meta-installer).
 5. Execute with the correct tools / skill activation. Prefer native Grok plugin commands (`grok plugin ...`) and studio CLI (`cinematic-studio` / `python tools/cinematic_studio_cli.py ...`).
-6. For generation: prefer in-session Imagine tools; otherwise handoff packet (Agent Mode Handoff / Execution Bridge) or API CLI.
+6. For generation: prefer in-session Imagine tools; otherwise handoff packet (Agent Mode Handoff / Execution Bridge) or API CLI. Enforce plate/motion readiness before video spend.
 7. Save all outputs to `artifacts/`.
 8. In the **final response**, use appropriate render components (when available) and provide clear, actionable output.
 
@@ -319,4 +387,4 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 **This AGENTS.md is the canonical reference for all AI agents operating in this environment.**  
 Update it whenever workflows, skills, or best practices evolve (e.g. new skills, plugin changes, model updates, or doc releases).
 
-*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.8.6 · Grok 4.5)*
+*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.8.6 · Grok 4.5 / Model Layer v4.5)*
