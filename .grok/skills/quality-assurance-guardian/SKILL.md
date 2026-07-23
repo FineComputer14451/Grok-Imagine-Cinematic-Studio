@@ -17,6 +17,7 @@ description: Final quality gatekeeper and production quality commander. Runs man
 | Multi-clip suite audit / sequence-level health  | `grok-v9-4p5-multi`         | high      |
 | Quick go/no-go checks / routine validation      | `grok-4-auto`               | medium    |
 
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml

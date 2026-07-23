@@ -17,6 +17,7 @@ description: Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans
 | Single-batch craft, i2v decision logic, retry strategy design | `grok-v9-4p5-chat-expert`   | high      |
 | Quick status / simple quota checks             | `grok-4-auto`               | medium    |
 
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml

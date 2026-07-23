@@ -23,7 +23,16 @@ For general-purpose skills outside this repo, use the base `skill-creator`.
 | Multi-skill / suite architecture | `grok-v9-4p5-multi`       | high      |
 | Quick scaffold / validation  | `grok-4-auto`                | medium    |
 
-**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md`
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
 
 ## When to Activate
 

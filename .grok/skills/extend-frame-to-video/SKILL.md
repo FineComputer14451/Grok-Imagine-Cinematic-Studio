@@ -17,6 +17,7 @@ description: Create cinematic rough-cut animatics and storyboards from Grok Imag
 | Single-sequence extend planning, prompt crafting, Ken Burns design | `grok-v9-4p5-chat-expert`   | high      |
 | Quick status / simple assembly checks          | `grok-4-auto`               | medium    |
 
+**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
