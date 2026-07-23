@@ -251,20 +251,41 @@ def build_wardrobe_handoff_section(
 
 
 def lock_wardrobe(wardrobe: dict[str, Any]) -> dict[str, Any]:
-    issues = validate_wardrobe_lock(wardrobe)
-    # allow lock even with empty garments; only hard-fail invalid enums / active look
-    # status is pending before lock — strip status errors for pending→locked transition
-    if any("active_look" in i for i in issues):
-        raise ValueError("; ".join(issues))
-    if any("condition" in i for i in issues):
-        raise ValueError("; ".join(issues))
-    if any("schema_version" in i for i in issues):
-        raise ValueError("; ".join(issues))
-    # Ignore Invalid status for allowed transition states; fail other status errors
-    if wardrobe.get("status") not in (None, "pending", "drift_review", "locked"):
-        status_issues = [i for i in issues if "Invalid status" in i]
-        if status_issues:
-            raise ValueError("; ".join(issues))
+    """Hard-fail structured validation then set status=locked.
+
+    Unlike validate_wardrobe_lock (soft reporting), this raises ValueError on any
+    condition that would make a lock unsafe. Empty garments are allowed.
+    Allowed pre-lock status values: None, pending, drift_review, locked (re-lock).
+    """
+    if not isinstance(wardrobe, dict):
+        raise ValueError("wardrobe_lock must be an object")
+    if wardrobe.get("schema_version") != WARDROBE_SCHEMA_VERSION:
+        raise ValueError(
+            f"Unsupported wardrobe schema_version: {wardrobe.get('schema_version')!r}; "
+            f"expected {WARDROBE_SCHEMA_VERSION!r}"
+        )
+    looks = wardrobe.get("looks")
+    if not isinstance(looks, list):
+        raise ValueError("looks must be a list")
+    if active_look(wardrobe) is None:
+        raise ValueError(
+            f"active_look_id {wardrobe.get('active_look_id')!r} does not match any look"
+        )
+    for i, look in enumerate(looks):
+        if not isinstance(look, dict):
+            raise ValueError(f"looks[{i}] must be an object")
+        cond = look.get("condition_default", "worn")
+        if cond not in CONDITION_VALUES:
+            raise ValueError(
+                f"looks[{i}] invalid condition_default: {cond!r}; "
+                f"allowed={sorted(CONDITION_VALUES)}"
+            )
+    status = wardrobe.get("status")
+    if status not in (None, "pending", "drift_review", "locked"):
+        raise ValueError(
+            f"Invalid status for lock: {status!r}; "
+            f"allowed before lock: None, pending, drift_review, locked"
+        )
     wardrobe["status"] = "locked"
     wardrobe["locked_at"] = _now_iso()
     return wardrobe

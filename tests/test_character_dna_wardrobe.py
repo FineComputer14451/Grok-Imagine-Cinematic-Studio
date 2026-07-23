@@ -19,6 +19,35 @@ def test_handoff_omits_wardrobe_when_absent() -> None:
     assert "wardrobe" not in packet or packet.get("wardrobe") is None
 
 
+def test_handoff_omits_wardrobe_when_pending() -> None:
+    dna = create_dna_scaffold(
+        "Marcus",
+        core_identity="detective",
+        facial_dna="tired hazel eyes",
+        clothing_style="placeholder",
+    )
+    dna["wardrobe_lock"] = create_wardrobe_lock(
+        label="Trench",
+        silhouette="long coat",
+        garments=[
+            {
+                "id": "coat",
+                "name": "brown trench",
+                "category": "outerwear",
+                "colors": ["brown"],
+                "materials": ["twill"],
+                "details": "frayed cuffs",
+                "layer_index": 1,
+            }
+        ],
+        layer_order=["coat"],
+        condition_default="worn",
+    )
+    assert dna["wardrobe_lock"]["status"] == "pending"
+    packet = build_handoff_packet(dna)
+    assert "wardrobe" not in packet or packet.get("wardrobe") is None
+
+
 def test_handoff_includes_wardrobe_when_locked() -> None:
     dna = create_dna_scaffold(
         "Marcus",

@@ -65,6 +65,46 @@ def test_validate_active_look_must_exist() -> None:
     assert any("active_look" in i.lower() or "active_look_id" in i for i in issues)
 
 
+def test_lock_wardrobe_rejects_bad_active_look() -> None:
+    w = create_wardrobe_lock()
+    w["active_look_id"] = "missing_look"
+    try:
+        lock_wardrobe(w)
+        raise AssertionError("expected ValueError for bad active_look_id")
+    except ValueError as exc:
+        msg = str(exc).lower()
+        assert "active_look" in msg
+
+
+def test_lock_wardrobe_rejects_bad_condition() -> None:
+    w = create_wardrobe_lock()
+    w["looks"][0]["condition_default"] = "filthy"
+    try:
+        lock_wardrobe(w)
+        raise AssertionError("expected ValueError for bad condition_default")
+    except ValueError as exc:
+        msg = str(exc).lower()
+        assert "condition" in msg
+
+
+def test_lock_wardrobe_rejects_bad_schema_and_looks_type() -> None:
+    w = create_wardrobe_lock()
+    w["schema_version"] = "0.9"
+    try:
+        lock_wardrobe(w)
+        raise AssertionError("expected ValueError for bad schema_version")
+    except ValueError as exc:
+        assert "schema_version" in str(exc).lower()
+
+    w2 = create_wardrobe_lock()
+    w2["looks"] = "not-a-list"  # type: ignore[assignment]
+    try:
+        lock_wardrobe(w2)
+        raise AssertionError("expected ValueError for non-list looks")
+    except ValueError as exc:
+        assert "looks" in str(exc).lower()
+
+
 def test_lock_and_summary_and_inject() -> None:
     w = create_wardrobe_lock(
         label="Hero trench",

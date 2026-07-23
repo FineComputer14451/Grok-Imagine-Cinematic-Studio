@@ -223,7 +223,7 @@ def dna_to_markdown(dna: dict[str, Any], prompts: dict[str, str] | None = None) 
                     "### Wardrobe Inject — Full",
                     f"```\n{inj['full']}\n```",
                 ]
-        except Exception:
+        except (TypeError, ValueError, KeyError, AttributeError):
             lines.append("_Wardrobe inject unavailable_")
     lines += [
         "",
