@@ -182,6 +182,7 @@ class HomeScreen(Screen[None]):
 
     BINDINGS = [
         Binding("r", "refresh", "Refresh"),
+        Binding("s", "quota_sync", "Quota sync"),
         Binding("l", "launcher", "Launcher"),
         Binding("c", "cockpit", "Cockpit"),
         Binding("q", "quit_app", "Quit"),
@@ -203,9 +204,25 @@ class HomeScreen(Screen[None]):
             from cli.dashboard import build_studio_dashboard
 
             snap = build_studio_dashboard()
+            try:
+                from quota_sync import ledger_recon_alignment
+
+                snap["quota_alignment"] = ledger_recon_alignment()
+            except Exception:
+                pass
             body.update(format_home_markdown(snap))
         except Exception as exc:  # noqa: BLE001 — surface any snapshot failure
             body.update(format_error_panel(str(exc)))
+
+    def action_quota_sync(self) -> None:
+        """Run exclusive-cascade recon from home (no Imagine spend)."""
+        start_action_run(
+            self.app,
+            "quota_sync",
+            {},
+            label="Quota sync",
+            dismiss_confirm_form=False,
+        )
 
     def action_launcher(self) -> None:
         self.app.push_screen(LauncherScreen())
@@ -544,6 +561,7 @@ class HelpScreen(ModalScreen[None]):
                         "Studio TUI Help",
                         "",
                         "r  Refresh dashboard",
+                        "s  Quota sync (cascade recon + ledger alignment)",
                         "l  Open launcher",
                         "c  Open cockpit (Bible / DNA / Sequence scaffold / Quota / Health)",
                         "h  Pop to home",
@@ -551,9 +569,10 @@ class HelpScreen(ModalScreen[None]):
                         "?  This help",
                         "q  Quit",
                         "",
-                        "Launcher: read-only status, lists, validate, stack, show DNA/sequence.",
-                        "Cockpit: scaffold writes (init/lock/add-clip/handoff) + estimates.",
-                        "Mutating forms confirm before write. No spend / wizard in TUI.",
+                        "Launcher: status, lists, validate, stack, quota dashboard/sync, DNA/sequence show.",
+                        "Cockpit: scaffold writes (init/lock/add-clip/handoff) + estimates + quota sync.",
+                        "Home shows cascade + ledger alignment (doctor-parity, read-only).",
+                        "Mutating forms confirm before write. No Imagine spend / wizard in TUI.",
                         "y/n on confirm run/cancel.",
                         "CLI runs on a background worker (UI stays responsive).",
                         "After a run, Esc from output returns to Cockpit (no re-confirm).",

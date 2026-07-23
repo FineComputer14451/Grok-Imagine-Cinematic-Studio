@@ -23,6 +23,7 @@ def test_cockpit_order_and_ids() -> None:
         "bible_create",
         "quota_budget",
         "quota_sequence_estimate",
+        "quota_sync",
         "dna_init",
         "dna_lock",
         "dna_handoff",
@@ -39,6 +40,8 @@ def test_cockpit_order_and_ids() -> None:
     assert COCKPIT_WORKFLOWS["validate"].needs_confirm is False
     assert COCKPIT_WORKFLOWS["stack"].needs_confirm is False
     assert COCKPIT_WORKFLOWS["quota_sequence_estimate"].needs_confirm is False
+    assert COCKPIT_WORKFLOWS["quota_sync"].fields == ()
+    assert COCKPIT_WORKFLOWS["quota_sync"].needs_confirm is False
     for wid in (
         "bible_create",
         "dna_init",

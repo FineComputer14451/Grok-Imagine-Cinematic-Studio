@@ -29,12 +29,17 @@ def test_single_registry_covers_both_surfaces() -> None:
     assert "models_verify" in launcher and "models_verify" in cockpit
     # one definition
     assert ACTIONS["models_verify"].surfaces == frozenset({"launcher", "cockpit"})
+    assert "quota_sync" in launcher and "quota_sync" in cockpit
+    assert ACTIONS["quota_sync"].base_argv == ("quota", "sync")
+    assert ACTIONS["quota_sync"].group == "quota"
+    assert not ACTIONS["quota_sync"].fields
 
 
 def test_static_allowlist_is_fieldless_only() -> None:
     allowed = static_allowed_argvs()
     assert ("status",) in allowed
     assert ("models", "verify") in allowed
+    assert ("quota", "sync") in allowed
     # form actions are not static allowlist entries by argv alone
     bible = answers_to_argv(
         "bible_create",

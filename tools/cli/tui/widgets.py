@@ -62,6 +62,25 @@ def format_home_markdown(snapshot: dict[str, Any]) -> str:
             f"act {recon.get('actual_total', 0)} "
             f"({recon.get('entry_count', 0)} entries)"
         )
+    # Read-only ledger alignment (same helper as doctor / quota sync)
+    align_status = None
+    align_hint = ""
+    if isinstance(snapshot.get("quota_alignment"), dict):
+        align_status = snapshot["quota_alignment"].get("status")
+        align_hint = str(snapshot["quota_alignment"].get("hint") or "")
+    else:
+        try:
+            from quota_sync import ledger_recon_alignment
+
+            align = ledger_recon_alignment()
+            align_status = align.get("status")
+            align_hint = str(align.get("hint") or "")
+        except Exception:
+            align_status = None
+    if align_status:
+        lines.append(f"- Ledger alignment: **{align_status}**")
+        if align_status not in ("aligned", "idle") and align_hint:
+            lines.append(f"- _{align_hint}_")
     lines.extend(
         [
             "",
@@ -73,7 +92,7 @@ def format_home_markdown(snapshot: dict[str, Any]) -> str:
             f"- SFW / NSFW batches: {production.get('sfw_batches', 0)} / "
             f"{production.get('nsfw_batches', 0)}",
             "",
-            "_Keys: **r** refresh · **l** launcher · **c** cockpit · **?** help · **q** quit_",
+            "_Keys: **r** refresh · **s** quota sync · **l** launcher · **c** cockpit · **?** help · **q** quit_",
         ]
     )
 
