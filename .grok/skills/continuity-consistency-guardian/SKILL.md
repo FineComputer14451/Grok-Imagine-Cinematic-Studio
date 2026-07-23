@@ -70,10 +70,11 @@ Both paths share the same drift detection, multi-timeline memory, and blocking a
 
 ## Integration Rules
 
-- Works closely with `sequence-director`, `cinematic-sequence-extender`, `nsfw-sequence-extender`, `quality-assurance-guardian`, and `identity-lock-specialist`
+- Works closely with `sequence-director`, `cinematic-sequence-extender`, `nsfw-sequence-extender`, `quality-assurance-guardian`, `identity-lock-specialist`, and `costume-wardrobe-continuity`
 - Can block extension if continuity risk is high
 - Provides continuity reports that feed directly into final QA and Assembly
 - For intimate sequences, coordinates with ErosForge on clothing and emotional residue continuity
+- When present, read last-clip `wardrobe_state` + DNA `wardrobe_lock` and escalate outfit lock/inject issues to `costume-wardrobe-continuity`
 
 ## Grok Build Compatibility
 

@@ -1,6 +1,6 @@
 ---
 name: cinematic-studio-meta-installer
-description: Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 51-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.5 cinematic+Build stack and dual Imagine Video 1.0 + 1.5 Native. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
+description: Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 52-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.5 cinematic+Build stack and dual Imagine Video 1.0 + 1.5 Native. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
 ---
 
 # Cinematic Studio Meta Installer v3.8.6 (Grok 4.5 · Meta Installer)
@@ -39,14 +39,14 @@ Always begin: **"Starting Cinematic Studio Meta Installer v3.8.6…"**
 
 ## Install Methods (choose one)
 
-Both methods can ship the same **51 skills** (plugin suite). They differ in **where** skills live, **what else** gets installed, and **how you update**. As of **v3.8.0+**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
+Both methods can ship the same **52 skills** (plugin suite). They differ in **where** skills live, **what else** gets installed, and **how you update**. As of **v3.8.0+**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
 
 | | **Method A — Meta installer / zip** | **Method B — Grok plugin** |
 |---|-------------------------------------|----------------------------|
 | **Best for** | Grok chat, agent bootstrap, CLI tools, local verify | Grok Build CLI, marketplace updates, slash commands |
 | **Command** | `cinematic_studio.sh install` (curl, local repo, or zip) | `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust` |
 | **Skills path** | `~/.grok/skills/` | Plugin-managed under `~/.grok/installed-plugins/` |
-| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, installer scripts | Full suite: **51 skills + slash commands**; or modular packs (see matrix) |
+| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, installer scripts | Full suite: **52 skills + slash commands**; or modular packs (see matrix) |
 | **Verify** | `bash scripts/cinematic_studio.sh verify` or `verify --all` | `bash scripts/cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
 | **Update** | `bash scripts/cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` |
 
@@ -203,13 +203,13 @@ If network install fails, use the release zip:
 
 `grok-imagine-cinematic-studio`, `ai-video-upscaler`, `cinematic-sequence-extender`, `studio-director`, `quality-assurance-guardian`, `identity-lock-specialist`, `workflow-quota-optimizer`
 
-Full list: `scripts/required_skills.manifest` (51 skills; same set as `.grok-plugin/plugin-index.json`).
+Full list: `scripts/required_skills.manifest` (52 skills; same set as `.grok-plugin/plugin-index.json` after catalog pin).
 
 **Verify tiers:**
 
 - **core** (default) — 7 `# core` skills + `models verify`
-- **all** — all 48 manifest skills in `~/.grok/skills/` (Method A)
-- **plugin** — all 51 skills + slash commands in the Grok plugin checkout (Method B)
+- **all** — all 52 manifest skills in `~/.grok/skills/` (Method A)
+- **plugin** — all 52 skills + slash commands in the Grok plugin checkout (Method B)
 
 ## Handoff After Install
 

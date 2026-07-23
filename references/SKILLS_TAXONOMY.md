@@ -6,13 +6,13 @@ Canonical **install layout** stays flat: `.grok/skills/<name>/SKILL.md` (require
 
 | Surface | Path | What belongs here |
 |---------|------|-------------------|
-| **Plugin (Method B)** | `~/.grok/installed-plugins/grok-imagine-cinematic-studio-*/` | All **51** studio skills + slash commands (full suite) |
+| **Plugin (Method B)** | `~/.grok/installed-plugins/grok-imagine-cinematic-studio-*/` | All **52** studio skills + slash commands (full suite) |
 | **Plugin packs (satellites)** | `~/.grok/installed-plugins/grok-imagine-*-*/` | Filtered pack views of the same skill tree (see Marketplace packs) |
 | **User-global skills** | `~/.grok/skills/` | Non-plugin skills only (`help`, `create-skill`, `docx`, `imagine`, …) |
 | **Repo / workspace** | `<clone>/.grok/skills/` | Authoritative source for development |
 | **Method A projects** | `~/Grok-Cinematic-Projects/` | CLI tools, references, config — **not** a second skill tree when plugin is primary |
 
-**Rule:** If the plugin is installed, do **not** also keep Method A copies of the same 51 skills under `~/.grok/skills/`. That triple-loads skills in Grok Build (workspace + plugin + user).
+**Rule:** If the plugin is installed, do **not** also keep Method A copies of the same 52 skills under `~/.grok/skills/`. That triple-loads skills in Grok Build (workspace + plugin + user).
 
 Declutter:
 
@@ -40,7 +40,7 @@ Pack definitions and declutter policy live in **`config/plugin_packs.yaml`**. Ca
 
 | Pack id | Plugin name | Role |
 |---------|-------------|------|
-| *(full)* | `grok-imagine-cinematic-studio` | Recommended — all 51 skills + commands |
+| *(full)* | `grok-imagine-cinematic-studio` | Recommended — all 52 skills + commands |
 | `core` | `grok-imagine-cinematic-core` | Orchestration, DNA, Imagine runtime, QA, quota, meta |
 | `camera-image` | `grok-imagine-camera-image` | DoP, production design, i2i, key art, i2v (requires `core`) |
 | `sequence-narrative` | `grok-imagine-sequence-narrative` | Sequence, continuity, performance, audio, action/VFX, SFW (requires `core`) |
@@ -53,7 +53,7 @@ cinematic-studio plugin packs
 
 Satellite manifests: `.grok-plugin/packs/<pack_id>/plugin.json`.
 
-## Skill groups (51)
+## Skill groups (52)
 
 Browse with: `cinematic-studio plugin list --grouped`
 
@@ -64,7 +64,7 @@ Browse with: `cinematic-studio plugin list --grouped`
 `director-of-photography` · `director-of-photography-v3-3` *(legacy; prefer primary DoP)* · `imagine-prompt-master` · `i2i-cinematic-refiner` *(SFW)* · `i2i-refiner` *(explicit)* · `ai-image-recreation` · `key-art-poster-designer` · `reference-asset-curator`
 
 ### Identity & Continuity
-`character-dna-extractor` · `identity-lock-specialist` · `multi-character-identity-arbiter` · `continuity-consistency-guardian` · `performance-emotion-director` · `production-designer-set-decorator`
+`character-dna-extractor` · `identity-lock-specialist` · `costume-wardrobe-continuity` · `multi-character-identity-arbiter` · `continuity-consistency-guardian` · `performance-emotion-director` · `production-designer-set-decorator`
 
 ### Sequence & Narrative
 `sequence-director` · `cinematic-sequence-extender` · `extend-frame-to-video` · `narrative-arc-pacing-strategist` · `arc-replan-copilot` · `animatic-director` · `image-to-video-specialist` · `trailer-teaser-director`

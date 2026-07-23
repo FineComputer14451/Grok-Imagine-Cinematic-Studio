@@ -61,6 +61,11 @@ Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for mul
 
 Prefer handoff `drift_evidence` as source of truth; clip `identity_drift` is the raw scorer log.
 
+## Integration (Wardrobe)
+
+- Read last clip `wardrobe_state` + DNA `wardrobe_lock` when present; flag layer/accessory/condition seams before extend.
+- Escalate outfit DNA lock/inject rewrites to Costume & Wardrobe Continuity (`costume-wardrobe-continuity`); do not invent a full re-lock here.
+
 ## Specialized Protocols
 
 - **Memory bank categories:** props, environment, character state, timeline markers, video version, AMV  

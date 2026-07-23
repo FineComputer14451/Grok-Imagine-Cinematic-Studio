@@ -69,6 +69,11 @@ python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py path/to
 
 **Soft gate language:** score ≥ 2.5 → `status=risk` — recommend correction and may refuse creatively; **studio CLI does not hard-block** extend in this protocol. Do not invent scores. Missing evidence → `incomplete` / do not claim Lock-approved for extend.
 
+## Integration (Wardrobe)
+
+- When `wardrobe.status == locked` (or DNA `wardrobe_lock.status`), require wardrobe inject on primary-character generations.
+- Do not treat clothing drift as face-identity drift; escalate outfit issues to Costume & Wardrobe Continuity (`costume-wardrobe-continuity`).
+
 ## Drift Score
 
 ```

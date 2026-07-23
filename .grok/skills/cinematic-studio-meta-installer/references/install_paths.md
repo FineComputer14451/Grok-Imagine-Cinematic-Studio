@@ -17,7 +17,7 @@ Studio release: **v3.8.6** (`VERSION`)
 
 ## Install Methods
 
-Both paths can deliver the same skill suite (`scripts/required_skills.manifest` ≡ `.grok-plugin/plugin-index.json`, **51 skills**). Method B also lists **6 marketplace plugins** (full suite + 5 packs) from `config/plugin_packs.yaml`.
+Both paths can deliver the same skill suite (`scripts/required_skills.manifest` ≡ `.grok-plugin/plugin-index.json`, **52 skills**). Method B also lists **6 marketplace plugins** (full suite + 5 packs) from `config/plugin_packs.yaml`.
 
 ### Method A — Meta installer / release zip
 
@@ -52,7 +52,7 @@ grok plugin install grok-imagine-cinematic-studio@finecomputer14451/grok-imagine
 
 | Plugin | Pack id | Role |
 |--------|---------|------|
-| `grok-imagine-cinematic-studio` | full suite (51) | Recommended |
+| `grok-imagine-cinematic-studio` | full suite (52) | Recommended |
 | `grok-imagine-cinematic-core` | `core` | Orchestration base |
 | `grok-imagine-camera-image` | `camera-image` | Camera / image |
 | `grok-imagine-sequence-narrative` | `sequence-narrative` | Sequence / narrative |

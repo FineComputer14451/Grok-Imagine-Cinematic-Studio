@@ -28,7 +28,7 @@
 
 It combines:
 
-- **51 specialized Grok skills** powering a **23+ agent cinematic department**
+- **52 specialized Grok skills** powering a **23+ agent cinematic department**
 - Professional **Production Bible** workflow (CLI wizard + Streamlit Web UI)
 - **Character DNA extraction + Identity Continuity Protocol** for zero-drift consistency across stills, clips, and long sequences
 - **Imagine Agent Mode Handoff** — validated routing from planning agents into Grok’s native generation surfaces
@@ -100,7 +100,7 @@ flowchart TB
     subgraph Tools["🛠️ Tools, CLI & Interfaces"]
         CLI["cinematic-studio CLI<br/>(models, dna, sequence, quota, nsfw, plugin...)"]
         WEBUI["Streamlit Web UI<br/>Guided Bible • DNA Bank • Cost Estimator"]
-        SKILLS["51 Custom Grok Skills<br/>(.grok/skills/)"]
+        SKILLS["52 Custom Grok Skills<br/>(.grok/skills/)"]
     end
 
     subgraph Execution["🎥 Execution Layer"]
@@ -171,7 +171,7 @@ Grok Imagine Cinematic Studio v3.8.6  (Studio Director + 23+ Agents · Grok 4.5 
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT.md              # Primary activation prompt (v3.8+ compatible)
 ├── scripts/                      # Release helpers & verify shims
-└── .grok/skills/                 # 51 custom Grok skills (runtime engine)
+└── .grok/skills/                 # 52 custom Grok skills (runtime engine)
 ```
 
 **Key v3.8.6 Components**

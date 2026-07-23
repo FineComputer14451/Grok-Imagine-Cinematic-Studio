@@ -59,6 +59,7 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 | Agent | Role Card | Preferred Model | Activation |
 |-------|-----------|-----------------|------------|
 | Continuity Guardian | `Continuity_Consistency_Guardian.md` | multi | `ACTIVATE CONTINUITY_GUARDIAN` |
+| Costume & Wardrobe Continuity | `Costume_Wardrobe_Continuity.md` | chat-expert | `ACTIVATE COSTUME_WARDROBE` · `LOCK WARDROBE` |
 | QA Guardian | `Quality_Assurance_Guardian_v3.5.md` | chat-expert | `ACTIVATE QA_GUARDIAN` · `RUN QA REVIEW` |
 | Imagine Prompt Master | `Imagine_Prompt_Master.md` | chat-expert | `ACTIVATE IMAGINE_PROMPT_MASTER` |
 | Workflow & Quota Optimizer | `Workflow_Quota_Optimizer.md` | multi / auto | `ACTIVATE WORKFLOW_OPTIMIZER` |
@@ -132,6 +133,7 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 | 2 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | 4 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
+| 4b | Wardrobe Lock | `ACTIVATE COSTUME_WARDROBE` + `ACTIVATE IDENTITY_LOCK` |
 | 5 | Native Audio Pass | `ACTIVATE SONIC_ARCHITECT` + `GENERATE_NATIVE_AUDIO_SEQUENCE` |
 | 6 | Marketing Package | `ACTIVATE KEY_ART_DESIGNER` + `ACTIVATE TRAILER_DIRECTOR` |
 | 7 | QA + Delivery | `RUN QA REVIEW` → `ACTIVATE AI_POLISH_DIRECTOR` |

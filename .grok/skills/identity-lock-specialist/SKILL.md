@@ -72,9 +72,10 @@ Both paths share the same DNA Bible, drift scoring, and multi-character rules.
 ## Integration Rules
 
 - Upstream: Character DNA Extractor, Multi-Character Identity Arbiter
-- Peer: Continuity Consistency Guardian, Quality Assurance Guardian
+- Peer: Continuity Consistency Guardian, Quality Assurance Guardian, Costume & Wardrobe Continuity (`costume-wardrobe-continuity`)
 - Downstream: Sequence Director, both Sequence Extenders, Studio Director, Imagine Prompt Master
 - Critical for any long-form or recurring-character production
+- When DNA `wardrobe_lock.status` is `locked`, require wardrobe inject on primary-character gens; route clothing-only drift to `costume-wardrobe-continuity` (not face-identity correction)
 - Existing references retained: `references/drift-detection-protocol.md`, `references/dna-bible-template.md`
 
 ## Grok Build Compatibility

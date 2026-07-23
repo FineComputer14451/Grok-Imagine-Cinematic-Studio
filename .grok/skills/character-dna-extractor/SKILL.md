@@ -82,6 +82,7 @@ Always begin: **"Initiating Character DNA Extraction Protocol v4.5…"**
 
 - Primary downstream consumer: Identity Lock Specialist
 - Also feeds Continuity Consistency Guardian, Multi-Character Identity Arbiter, Sequence Director, and Imagine Prompt Master
+- After clothing-visible extraction, recommend `ACTIVATE COSTUME_WARDROBE` (`costume-wardrobe-continuity`) before Identity Lock for signature outfits
 - Critical first step for any recurring-character production
 
 ## Grok Build Compatibility
