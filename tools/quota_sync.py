@@ -115,6 +115,12 @@ def record_generation_spend(
     recon["entries"] = recon["entries"][-100:]
     recon["estimated_total"] = round(recon["estimated_total"] + entry["estimated_credits"], 2)
     recon["actual_total"] = round(recon["actual_total"] + entry["actual_credits"], 2)
+    # Keep sources honest for dashboard cascade (incremental vs exclusive rebuild)
+    prev = list(recon.get("sources") or [])
+    if not prev:
+        recon["sources"] = ["record_spend"]
+    elif "record_spend" not in prev:
+        recon["sources"] = prev + ["record_spend"]
     _recompute_burn_rate(recon)
     recon["updated_at"] = _now_iso()
     save_project_state(state)
@@ -301,6 +307,29 @@ def billable_ledger_summary() -> dict[str, Any]:
     }
 
 
+def _resolve_sources(recon: dict[str, Any]) -> list[str]:
+    """Prefer explicit recon.sources; else infer ordered unique entry sources."""
+    explicit = [s for s in (recon.get("sources") or []) if s]
+    if explicit:
+        return list(explicit)
+    seen: list[str] = []
+    for e in recon.get("entries") or []:
+        if not isinstance(e, dict):
+            continue
+        s = e.get("source")
+        if s and s not in seen:
+            seen.append(str(s))
+    return seen
+
+
+def _cascade_label(sources: list[str]) -> str:
+    if not sources:
+        return "none"
+    if len(sources) == 1:
+        return sources[0]
+    return "mixed"
+
+
 def recon_snapshot(state: dict[str, Any] | None = None) -> dict[str, Any]:
     """Read-only view of stored reconciliation (does not rebuild or save)."""
     if state is None:
@@ -308,7 +337,7 @@ def recon_snapshot(state: dict[str, Any] | None = None) -> dict[str, Any]:
     recon = state.get("quota", {}).get("reconciliation")
     if not isinstance(recon, dict):
         recon = {}
-    sources = list(recon.get("sources") or [])
+    sources = _resolve_sources(recon)
     entries = recon.get("entries") or []
     if not isinstance(entries, list):
         entries = []
@@ -317,7 +346,7 @@ def recon_snapshot(state: dict[str, Any] | None = None) -> dict[str, Any]:
         "actual_total": round(float(recon.get("actual_total") or 0), 2),
         "entry_count": len(entries),
         "sources": sources,
-        "cascade_source": sources[0] if sources else "none",
+        "cascade_source": _cascade_label(sources),
         "updated_at": recon.get("updated_at"),
     }
 
@@ -395,8 +424,7 @@ def quota_sync_summary(state: dict[str, Any] | None = None) -> dict[str, Any]:
         state = load_project_state()
     recon = ensure_reconciliation(state)
     quota = state.get("quota", {})
-    sources = list(recon.get("sources") or [])
-    cascade = sources[0] if sources else "none"
+    sources = _resolve_sources(recon)
     return {
         "session_spent": quota.get("session_spent", 0),
         "estimated_total": recon.get("estimated_total", 0),
@@ -406,6 +434,6 @@ def quota_sync_summary(state: dict[str, Any] | None = None) -> dict[str, Any]:
         "risk_level": recon.get("risk_level", "low"),
         "entry_count": len(recon.get("entries", [])),
         "sources": sources,
-        "cascade_source": cascade,
+        "cascade_source": _cascade_label(sources),
         "updated_at": recon.get("updated_at"),
     }

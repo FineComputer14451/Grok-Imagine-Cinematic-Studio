@@ -204,6 +204,8 @@ def _quota_table(snapshot: dict[str, Any]) -> Table:
             "generation_ledger": "ledger (primary)",
             "imagine_jobs_actuals": "jobs (fallback)",
             "history_est": "history est:N",
+            "record_spend": "manual record",
+            "mixed": "mixed (run quota sync)",
             "none": "none",
         }
         table.add_row("Cascade", cascade_labels.get(cascade, str(cascade)))

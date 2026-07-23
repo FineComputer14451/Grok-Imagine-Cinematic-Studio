@@ -58,6 +58,10 @@ def test_record_generation_spend_variance() -> None:
     assert recon["burn_rate_multiplier"] == 1.2
     assert recon["risk_level"] == "high"
     assert result["entry"].get("source") == "record_spend"
+    assert recon.get("sources") == ["record_spend"]
+    summary = quota_sync_summary(state)
+    assert summary["cascade_source"] == "record_spend"
+    assert summary["sources"] == ["record_spend"]
 
 
 def test_quota_sync_summary_shape() -> None:
@@ -228,6 +232,51 @@ def test_reconcile_falls_back_to_history_when_no_ledger_or_jobs() -> None:
     assert recon["sources"] == ["history_est"]
     assert recon["estimated_total"] == 10.0
     assert recon["actual_total"] == 11.0
+
+
+def test_cascade_inferred_from_entries_when_sources_missing() -> None:
+    state = _empty_state()
+    recon = state["quota"]["reconciliation"]
+    recon["entries"] = [
+        {
+            "estimated_credits": 1.0,
+            "actual_credits": 1.0,
+            "source": "generation_ledger",
+            "note": "ledger:x",
+        }
+    ]
+    recon["estimated_total"] = 1.0
+    recon["actual_total"] = 1.0
+    # sources intentionally absent — summary must still resolve cascade
+    recon.pop("sources", None)
+    summary = quota_sync_summary(state)
+    assert summary["cascade_source"] == "generation_ledger"
+    assert summary["sources"] == ["generation_ledger"]
+
+
+def test_record_spend_after_cascade_marks_mixed() -> None:
+    state = _empty_state()
+    recon = state["quota"]["reconciliation"]
+    recon["sources"] = ["generation_ledger"]
+    recon["estimated_total"] = 4.0
+    recon["actual_total"] = 4.0
+    recon["entries"] = [
+        {
+            "estimated_credits": 4.0,
+            "actual_credits": 4.0,
+            "source": "generation_ledger",
+            "note": "ledger:solo",
+        }
+    ]
+    with patch("quota_optimizer.save_project_state", lambda *a, **k: None), patch(
+        "project_state.save_project_state", lambda *a, **k: None
+    ):
+        record_generation_spend(1.0, estimated_credits=1.0, note="extra", state=state)
+    assert state["quota"]["reconciliation"]["sources"] == [
+        "generation_ledger",
+        "record_spend",
+    ]
+    assert quota_sync_summary(state)["cascade_source"] == "mixed"
 
 
 def test_load_ledger_is_canonical(tmp_path) -> None:

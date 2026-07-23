@@ -214,6 +214,8 @@ def register(app: typer.Typer) -> None:
             "generation_ledger": "generation_ledger (primary)",
             "imagine_jobs_actuals": "imagine_jobs (fallback)",
             "history_est": "history est:N (fallback)",
+            "record_spend": "record_spend (incremental)",
+            "mixed": "mixed (run quota sync to rebuild)",
             "none": "none (empty)",
         }
         risk = summary.get("risk_level") or "low"
