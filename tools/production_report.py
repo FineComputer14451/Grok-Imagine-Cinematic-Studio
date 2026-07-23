@@ -69,6 +69,9 @@ def build_production_report(state: dict[str, Any] | None = None) -> dict[str, An
             "budget_remaining": dash.get("budget_remaining"),
             "burn_rate_risk": sync.get("risk_level", "low"),
             "variance_pct": sync.get("variance_pct", 0),
+            "cascade_source": sync.get("cascade_source", "none"),
+            "burn_rate_multiplier": sync.get("burn_rate_multiplier", 1.0),
+            "recon_entry_count": sync.get("entry_count", 0),
         },
         "batches": {
             "sfw_total": len(sfw),
@@ -98,7 +101,9 @@ def report_to_markdown(report: dict[str, Any]) -> str:
         "## Quota",
         f"- Session spent: {q['session_spent']} credits",
         f"- Budget remaining: {q.get('budget_remaining', '—')}",
-        f"- Burn-rate risk: {q['burn_rate_risk']} ({q['variance_pct']:+.1f}% variance)",
+        f"- Cascade: {q.get('cascade_source', 'none')}",
+        f"- Burn-rate risk: {q['burn_rate_risk']} "
+        f"({q.get('burn_rate_multiplier', 1.0)}x, {q['variance_pct']:+.1f}% variance)",
         "",
         "## Batches",
         f"- SFW: {b['sfw_total']} batches, {b['sfw_pending_shots']} pending shots",

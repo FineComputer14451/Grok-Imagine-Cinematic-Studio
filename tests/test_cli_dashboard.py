@@ -32,6 +32,40 @@ def test_build_studio_dashboard_shape() -> None:
     assert "sequences" in snap
     assert "characters" in snap
     assert snap["studio"]["core_agents"] >= 23
+    recon = snap["quota"].get("reconciliation") or {}
+    assert "cascade_source" in recon
+    assert "entry_count" in recon
+
+
+def test_quota_table_shows_cascade() -> None:
+    from cli.dashboard import _quota_table
+    from rich.console import Console
+
+    snap = {
+        "quota": {
+            "tier_label": "Test",
+            "session_spent": 1,
+            "session_generations": 1,
+            "risk_level": "low",
+            "burn_rate_risk": "medium",
+            "reconciliation": {
+                "cascade_source": "generation_ledger",
+                "estimated_total": 10.0,
+                "actual_total": 12.0,
+                "variance_pct": 20.0,
+                "entry_count": 2,
+                "burn_rate_multiplier": 1.2,
+                "risk_level": "medium",
+            },
+        }
+    }
+    table = _quota_table(snap)
+    console = Console(record=True, width=80)
+    console.print(table)
+    text = console.export_text()
+    assert "Cascade" in text
+    assert "ledger" in text.lower()
+    assert "Burn Rate" in text
 
 
 def test_dashboard_command_runs() -> None:

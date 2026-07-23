@@ -52,17 +52,30 @@ def format_home_markdown(snapshot: dict[str, Any]) -> str:
         f"- Session spent: {quota.get('session_spent', 0)} credits",
         f"- Budget left: {remaining_s}",
         f"- Risk: **{quota.get('risk_level', 'unknown')}**",
-        "",
-        "## Production",
-        f"- Sequences: {production.get('sequences', 0)}",
-        f"- DNA profiles: {production.get('characters', 0)} "
-        f"(locked: {production.get('identity_locked', 0)})",
-        f"- Imagine jobs: {production.get('imagine_jobs', 0)}",
-        f"- SFW / NSFW batches: {production.get('sfw_batches', 0)} / "
-        f"{production.get('nsfw_batches', 0)}",
-        "",
-        "_Keys: **r** refresh · **l** launcher · **c** cockpit · **?** help · **q** quit_",
     ]
+    recon = quota.get("reconciliation") or {}
+    cascade = recon.get("cascade_source")
+    if cascade and cascade != "none":
+        lines.append(f"- Cascade: `{cascade}` · burn {recon.get('burn_rate_multiplier', 1.0)}x")
+        lines.append(
+            f"- Recon: est {recon.get('estimated_total', 0)} / "
+            f"act {recon.get('actual_total', 0)} "
+            f"({recon.get('entry_count', 0)} entries)"
+        )
+    lines.extend(
+        [
+            "",
+            "## Production",
+            f"- Sequences: {production.get('sequences', 0)}",
+            f"- DNA profiles: {production.get('characters', 0)} "
+            f"(locked: {production.get('identity_locked', 0)})",
+            f"- Imagine jobs: {production.get('imagine_jobs', 0)}",
+            f"- SFW / NSFW batches: {production.get('sfw_batches', 0)} / "
+            f"{production.get('nsfw_batches', 0)}",
+            "",
+            "_Keys: **r** refresh · **l** launcher · **c** cockpit · **?** help · **q** quit_",
+        ]
+    )
 
     # Compact sequence / character lines
     seqs = snapshot.get("sequences") or []
