@@ -616,6 +616,101 @@ def check_github_cli() -> list[CheckResult]:
     return [CheckResult("PASS", "gh auth", who, section)]
 
 
+def check_quota_recon() -> list[CheckResult]:
+    """Read-only: billable generation ledger totals vs stored reconciliation."""
+    section = "13. Quota recon"
+    try:
+        from quota_sync import ledger_recon_alignment
+    except Exception as exc:
+        return [
+            CheckResult(
+                "WARN",
+                "quota recon",
+                f"unable to import alignment helper: {exc}",
+                section,
+            )
+        ]
+
+    try:
+        align = ledger_recon_alignment()
+    except Exception as exc:
+        return [
+            CheckResult(
+                "WARN",
+                "quota recon",
+                f"alignment probe failed: {exc}",
+                section,
+            )
+        ]
+
+    status = align.get("status") or "idle"
+    hint = align.get("hint") or ""
+    ledger = align.get("ledger") or {}
+    snap = align.get("recon") or {}
+
+    if status == "idle":
+        return [
+            CheckResult(
+                "PASS",
+                "quota recon",
+                hint or "no billable ledger / ledger recon",
+                section,
+            )
+        ]
+    if status == "aligned":
+        return [
+            CheckResult(
+                "PASS",
+                "quota recon",
+                hint
+                or (
+                    f"aligned cascade={snap.get('cascade_source')} "
+                    f"n={ledger.get('entry_count')}"
+                ),
+                section,
+            )
+        ]
+    if status == "mismatch":
+        return [
+            CheckResult(
+                "WARN",
+                "quota recon",
+                hint or "ledger totals disagree with stored recon",
+                section,
+            )
+        ]
+    if status == "stale":
+        return [
+            CheckResult(
+                "WARN",
+                "quota recon",
+                hint
+                or (
+                    f"ledger billable n={ledger.get('entry_count')} but cascade="
+                    f"{snap.get('cascade_source')}"
+                ),
+                section,
+            )
+        ]
+    if status == "orphan_recon":
+        return [
+            CheckResult(
+                "WARN",
+                "quota recon",
+                hint or "recon claims generation_ledger but ledger has no billable rows",
+                section,
+            )
+        ]
+    return [
+        CheckResult(
+            "WARN",
+            "quota recon",
+            f"unknown alignment status {status!r}: {hint}",
+            section,
+        )
+    ]
+
+
 def check_pytest(*, repo_root: Path) -> list[CheckResult]:
     section = "12. Quick tests"
     tests = repo_root / "tests"

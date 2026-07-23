@@ -288,6 +288,108 @@ def reconcile_from_jobs(state: dict[str, Any] | None = None) -> dict[str, Any]:
     return recon
 
 
+def billable_ledger_summary() -> dict[str, Any]:
+    """Read-only totals for billable generation-ledger rows (same filter as cascade)."""
+    entries = _entries_from_generation_ledger()
+    est = round(sum(float(e["estimated_credits"]) for e in entries), 2)
+    act = round(sum(float(e["actual_credits"]) for e in entries), 2)
+    return {
+        "entry_count": len(entries),
+        "estimated_total": est,
+        "actual_total": act,
+        "has_billable": bool(entries),
+    }
+
+
+def recon_snapshot(state: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Read-only view of stored reconciliation (does not rebuild or save)."""
+    if state is None:
+        state = load_project_state()
+    recon = state.get("quota", {}).get("reconciliation")
+    if not isinstance(recon, dict):
+        recon = {}
+    sources = list(recon.get("sources") or [])
+    entries = recon.get("entries") or []
+    if not isinstance(entries, list):
+        entries = []
+    return {
+        "estimated_total": round(float(recon.get("estimated_total") or 0), 2),
+        "actual_total": round(float(recon.get("actual_total") or 0), 2),
+        "entry_count": len(entries),
+        "sources": sources,
+        "cascade_source": sources[0] if sources else "none",
+        "updated_at": recon.get("updated_at"),
+    }
+
+
+def ledger_recon_alignment(
+    state: dict[str, Any] | None = None,
+    *,
+    tolerance: float = 0.02,
+) -> dict[str, Any]:
+    """Compare billable ledger totals to stored recon when cascade is ledger-backed.
+
+    Read-only — never calls ``reconcile_from_jobs``. Intended for doctor / CI.
+
+    Status values:
+    - ``idle``: no billable ledger and recon not claiming ledger
+    - ``aligned``: cascade is generation_ledger and totals match within tolerance
+    - ``mismatch``: cascade is generation_ledger but totals diverge
+    - ``stale``: billable ledger exists but recon cascade is not generation_ledger
+    - ``orphan_recon``: recon claims generation_ledger but ledger has no billable rows
+    """
+    ledger = billable_ledger_summary()
+    snap = recon_snapshot(state)
+    cascade = snap["cascade_source"]
+    result: dict[str, Any] = {
+        "status": "idle",
+        "ledger": ledger,
+        "recon": snap,
+        "est_delta": 0.0,
+        "act_delta": 0.0,
+        "tolerance": tolerance,
+        "hint": "",
+    }
+
+    claims_ledger = cascade == "generation_ledger"
+    has_ledger = bool(ledger["has_billable"])
+
+    if not has_ledger and not claims_ledger:
+        result["status"] = "idle"
+        result["hint"] = "no billable ledger rows; recon not ledger-backed"
+        return result
+
+    if not has_ledger and claims_ledger:
+        result["status"] = "orphan_recon"
+        result["hint"] = "run: cinematic-studio quota sync"
+        return result
+
+    if has_ledger and not claims_ledger:
+        result["status"] = "stale"
+        result["hint"] = "ledger has billable rows but cascade is not generation_ledger; run: cinematic-studio quota sync"
+        return result
+
+    # has_ledger and claims_ledger
+    est_delta = round(float(snap["estimated_total"]) - float(ledger["estimated_total"]), 2)
+    act_delta = round(float(snap["actual_total"]) - float(ledger["actual_total"]), 2)
+    result["est_delta"] = est_delta
+    result["act_delta"] = act_delta
+    if abs(est_delta) <= tolerance and abs(act_delta) <= tolerance:
+        result["status"] = "aligned"
+        result["hint"] = (
+            f"ledger ↔ recon aligned (est={ledger['estimated_total']} "
+            f"act={ledger['actual_total']} n={ledger['entry_count']})"
+        )
+    else:
+        result["status"] = "mismatch"
+        result["hint"] = (
+            f"ledger est/act {ledger['estimated_total']}/{ledger['actual_total']} "
+            f"vs recon {snap['estimated_total']}/{snap['actual_total']} "
+            f"(Δ {est_delta}/{act_delta}); run: cinematic-studio quota sync"
+        )
+    return result
+
+
 def quota_sync_summary(state: dict[str, Any] | None = None) -> dict[str, Any]:
     if state is None:
         state = load_project_state()
