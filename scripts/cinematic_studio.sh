@@ -53,7 +53,7 @@ Usage:
                                      Remove Method A skill copies that duplicate the plugin;
                                      prune old ~/.grok/skills-backup-* dirs
   cinematic_studio.sh version          Print installed release version
-  cinematic_studio.sh doctor [opts]    Grok Build + Studio health check (alias: grok-doctor)
+  cinematic_studio.sh doctor [opts]    Grok Doctor via Python registry (alias: grok-doctor)
 
 Examples:
   ./scripts/cinematic_studio.sh install
@@ -122,20 +122,32 @@ cmd_declutter() {
 }
 
 cmd_doctor() {
-    local doctor_sh=""
-    for doctor_sh in \
-        "${CINEMATIC_SCRIPT_DIR}/grok_doctor.sh" \
-        "${CINEMATIC_REPO_ROOT:-}/scripts/grok_doctor.sh" \
-        "${PROJECT_DIR:-}/scripts/grok_doctor.sh"; do
-        if [[ -n "$doctor_sh" && -f "$doctor_sh" ]]; then
-            # Prefer repo root for accurate VERSION / plugin pin checks
-            if [[ -z "${CINEMATIC_REPO_ROOT:-}" && -f "${CINEMATIC_SCRIPT_DIR}/../VERSION" ]]; then
-                export CINEMATIC_REPO_ROOT="$(cd "${CINEMATIC_SCRIPT_DIR}/.." && pwd)"
+    # Meta entrypoint delegates to the Python doctor registry (same as cinematic-studio doctor).
+    local root="${CINEMATIC_REPO_ROOT:-}"
+    local cli=""
+    if [[ -z "$root" && -f "${CINEMATIC_SCRIPT_DIR}/../VERSION" ]]; then
+        root="$(cd "${CINEMATIC_SCRIPT_DIR}/.." && pwd)"
+    fi
+    if [[ -z "$root" && -n "${PROJECT_DIR:-}" && -f "${PROJECT_DIR}/tools/cinematic_studio_cli.py" ]]; then
+        root="$PROJECT_DIR"
+    fi
+    for cli in \
+        "${root:+$root/tools/cinematic_studio_cli.py}" \
+        "${CINEMATIC_SCRIPT_DIR}/../tools/cinematic_studio_cli.py" \
+        "${PROJECT_DIR:-}/tools/cinematic_studio_cli.py"; do
+        if [[ -n "$cli" && -f "$cli" ]]; then
+            export CINEMATIC_REPO_ROOT="${CINEMATIC_REPO_ROOT:-$(cd "$(dirname "$cli")/.." && pwd)}"
+            if [[ -x "$(cd "$(dirname "$cli")/.." && pwd)/.venv/bin/python" ]]; then
+                exec "$(cd "$(dirname "$cli")/.." && pwd)/.venv/bin/python" "$cli" doctor "$@"
             fi
-            exec bash "$doctor_sh" "$@"
+            exec python3 "$cli" doctor "$@"
         fi
     done
-    echo "❌ grok_doctor.sh not found" >&2
+    # PATH shim last (installed grok-doctor → same registry)
+    if [[ -f "${CINEMATIC_SCRIPT_DIR}/grok_doctor.sh" ]]; then
+        exec bash "${CINEMATIC_SCRIPT_DIR}/grok_doctor.sh" "$@"
+    fi
+    echo "❌ cinematic_studio_cli.py not found for doctor" >&2
     exit 1
 }
 

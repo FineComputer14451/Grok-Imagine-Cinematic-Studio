@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-import subprocess
-from pathlib import Path
+import json
 
 import typer
 from rich import box
@@ -100,35 +99,24 @@ def register(app: typer.Typer) -> None:
             f"CLI ≥ {stack.get('grok_build_cli_min_version', '0.2.93')} · July 2026"
         )
 
-    
     @app.command("doctor")
     def doctor(
-        quick: bool = typer.Option(False, "--quick", "-q", help="Skip pytest and full plugin verify"),
+        quick: bool = typer.Option(
+            False, "--quick", "-q", help="Skip pytest and full plugin verify"
+        ),
         json_out: bool = typer.Option(False, "--json", help="Machine-readable JSON summary"),
         strict: bool = typer.Option(False, "--strict", help="Exit 1 on warnings"),
     ):
         """Grok Doctor — health check for Grok Build + Cinematic Studio."""
-        from studio_paths import STUDIO_ROOT
+        from doctor import exit_code, format_human_report, report_to_dict, run_doctor
 
-        doctor = STUDIO_ROOT / "scripts" / "grok_doctor.sh"
-        if not doctor.is_file():
-            # Method A layout
-            alt = Path.home() / "Grok-Cinematic-Projects" / "scripts" / "grok_doctor.sh"
-            doctor = alt if alt.is_file() else doctor
-        if not doctor.is_file():
-            console.print("[red]❌ grok_doctor.sh not found[/red]")
-            raise typer.Exit(1)
-
-        cmd = ["bash", str(doctor)]
-        if quick:
-            cmd.append("--quick")
+        report = run_doctor(quick=quick)
         if json_out:
-            cmd.append("--json")
-        if strict:
-            cmd.append("--strict")
-        env = dict(**__import__("os").environ)
-        env.setdefault("CINEMATIC_REPO_ROOT", str(STUDIO_ROOT))
-        raise SystemExit(subprocess.call(cmd, env=env))
+            # Stable machine contract — plain JSON on stdout (no Rich chrome).
+            print(json.dumps(report_to_dict(report), indent=2))
+        else:
+            console.print(format_human_report(report))
+        raise typer.Exit(exit_code(report, strict=strict))
 
     @app.command(name="stack")
     def stack_cmd(

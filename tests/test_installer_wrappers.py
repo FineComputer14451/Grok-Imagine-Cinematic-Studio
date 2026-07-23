@@ -31,6 +31,9 @@ def _run_bash(script: str, env: dict[str, str], cwd: Path | None = None) -> subp
 def test_wrapper_template_is_static_dispatcher() -> None:
     body = WRAPPER_TEMPLATE.read_text(encoding="utf-8")
     assert "install|update|verify|declutter" in body
+    # Doctor is a Python CLI command (not meta installer)
+    meta_branch = body.split("*)", 1)[0]
+    assert "doctor" not in meta_branch.split("case", 1)[-1]
     assert "cinematic_studio_cli.py" in body
     assert "CINEMATIC_PROJECT_DIR" in body
     # No host-baked absolute project path
@@ -122,13 +125,24 @@ def test_install_wrappers_and_version_pin(tmp_path: Path) -> None:
     assert meta.returncode == 0, meta.stderr
     assert "meta:verify" in meta.stdout
 
-    # Other args route to Python CLI
+    # Other args (including doctor) route to Python CLI
     cli = _run_bash(
         f'"{wrapper}" models verify',
         env,
     )
     assert cli.returncode == 0, cli.stderr
     assert "cli:models verify" in cli.stdout
+
+    doctor = _run_bash(
+        f'"{wrapper}" doctor --quick',
+        env,
+    )
+    assert doctor.returncode == 0, doctor.stderr
+    assert "cli:doctor --quick" in doctor.stdout
+
+    # grok-doctor shim is installed next to the wrapper
+    grok_doctor = home / ".grok" / "bin" / "grok-doctor"
+    assert grok_doctor.is_file()
 
 
 def test_wrapper_soft_backup_on_content_change(tmp_path: Path) -> None:
