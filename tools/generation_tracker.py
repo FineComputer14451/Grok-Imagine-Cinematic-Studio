@@ -42,16 +42,30 @@ def _entry_id() -> str:
     return "gen_" + datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")
 
 
-def _load() -> dict[str, Any]:
-    if not LEDGER_PATH.exists():
+def load_ledger(*, path: Path | None = None) -> dict[str, Any]:
+    """Load generation ledger JSON (canonical path owner for quota + CLI).
+
+    ``path`` overrides ``LEDGER_PATH`` (tests / alternate artifact roots).
+    Missing or unreadable files yield an empty ledger shell.
+    """
+    ledger_path = path if path is not None else LEDGER_PATH
+    if not ledger_path.exists():
         return {"schema_version": SCHEMA_VERSION, "entries": [], "updated_at": _utc_now()}
     try:
-        data = json.loads(LEDGER_PATH.read_text(encoding="utf-8"))
+        data = json.loads(ledger_path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
+        data = {"schema_version": SCHEMA_VERSION, "entries": [], "updated_at": _utc_now()}
+    if not isinstance(data, dict):
         data = {"schema_version": SCHEMA_VERSION, "entries": [], "updated_at": _utc_now()}
     data.setdefault("schema_version", SCHEMA_VERSION)
     data.setdefault("entries", [])
+    if not isinstance(data["entries"], list):
+        data["entries"] = []
     return data
+
+
+def _load() -> dict[str, Any]:
+    return load_ledger()
 
 
 def _save(data: dict[str, Any]) -> None:
