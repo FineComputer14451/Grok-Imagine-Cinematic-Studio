@@ -56,7 +56,7 @@ python tools/cinematic_studio_cli.py quota reconcile
 python tools/cinematic_studio_cli.py dashboard --compact
 ```
 
-`quota sync` runs exclusive cascade (ledger → jobs with actuals → history `est:N`) and prints **cascade source**, burn-rate multiplier, and risk. Use `--entries` for per-row notes; `--json` for machine-readable summary + entries.
+`quota sync` runs exclusive cascade (ledger → jobs with actuals → history `est:N`) and prints **cascade source**, **ledger alignment** (same check as Grok Doctor), burn-rate multiplier, and risk. Use `--entries` for per-row notes; `--json` for summary + `alignment` + entries.
 
 Burn-rate risk (`low` / `medium` / `high` / `critical`) feeds `decide_generation_mode()` in SFW and NSFW orchestrators.
 

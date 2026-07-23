@@ -365,6 +365,7 @@ def ledger_recon_alignment(
     - ``aligned``: cascade is generation_ledger and totals match within tolerance
     - ``mismatch``: cascade is generation_ledger but totals diverge
     - ``stale``: billable ledger exists but recon cascade is not generation_ledger
+    - ``mixed``: billable ledger exists and recon cascade is mixed (incremental overlay)
     - ``orphan_recon``: recon claims generation_ledger but ledger has no billable rows
     """
     ledger = billable_ledger_summary()
@@ -393,9 +394,19 @@ def ledger_recon_alignment(
         result["hint"] = "run: cinematic-studio quota sync"
         return result
 
+    if has_ledger and cascade == "mixed":
+        result["status"] = "mixed"
+        result["hint"] = (
+            "incremental record_spend overlaid cascade; run: cinematic-studio quota sync"
+        )
+        return result
+
     if has_ledger and not claims_ledger:
         result["status"] = "stale"
-        result["hint"] = "ledger has billable rows but cascade is not generation_ledger; run: cinematic-studio quota sync"
+        result["hint"] = (
+            f"ledger has billable rows but cascade is {cascade}; "
+            "run: cinematic-studio quota sync"
+        )
         return result
 
     # has_ledger and claims_ledger

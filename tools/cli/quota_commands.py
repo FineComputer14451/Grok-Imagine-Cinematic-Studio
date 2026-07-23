@@ -9,7 +9,13 @@ from rich.panel import Panel
 from rich.table import Table
 
 from models import DEFAULT_IMAGINE_VIDEO_MODEL
-from quota_sync import get_burn_rate_risk, quota_sync_summary, reconcile_from_jobs, record_generation_spend
+from quota_sync import (
+    get_burn_rate_risk,
+    ledger_recon_alignment,
+    quota_sync_summary,
+    reconcile_from_jobs,
+    record_generation_spend,
+)
 from quota_optimizer import (
     SUBSCRIPTION_TIERS,
     estimate_clip_cost,
@@ -199,11 +205,20 @@ def register(app: typer.Typer) -> None:
         """Reconcile estimated vs actual spend (exclusive cascade: ledger → jobs → history)."""
         recon = reconcile_from_jobs()
         summary = quota_sync_summary()
+        # Read-only alignment vs billable ledger (same helper as Grok Doctor)
+        align = ledger_recon_alignment()
         if json_output:
             import json
 
             payload = {
                 **summary,
+                "alignment": {
+                    "status": align.get("status"),
+                    "hint": align.get("hint"),
+                    "est_delta": align.get("est_delta"),
+                    "act_delta": align.get("act_delta"),
+                    "ledger": align.get("ledger"),
+                },
                 "entries": recon.get("entries") or [],
             }
             console.print(json.dumps(payload, indent=2))
@@ -225,12 +240,27 @@ def register(app: typer.Typer) -> None:
             "high": "red",
             "critical": "bold red",
         }.get(risk, "white")
+        align_status = align.get("status") or "idle"
+        align_style = {
+            "aligned": "green",
+            "idle": "dim",
+            "mismatch": "red",
+            "stale": "yellow",
+            "orphan_recon": "yellow",
+            "mixed": "yellow",
+        }.get(align_status, "white")
+        align_detail = align.get("hint") or align_status
+        if align_status in ("aligned", "idle"):
+            align_cell = f"[{align_style}]{align_status}[/{align_style}]"
+        else:
+            align_cell = f"[{align_style}]{align_status}[/{align_style}] — {align_detail}"
 
         table = Table(title="Quota Reconciliation", box=box.ROUNDED)
         table.add_column("Metric", style="cyan")
         table.add_column("Value")
         table.add_row("Cascade source", cascade_labels.get(cascade, cascade))
         table.add_row("Sources", ", ".join(summary.get("sources") or []) or "—")
+        table.add_row("Ledger alignment", align_cell)
         table.add_row("Estimated total", f"{summary['estimated_total']} credits")
         table.add_row("Actual total", f"{summary['actual_total']} credits")
         table.add_row("Variance", f"{summary['variance_pct']}%")

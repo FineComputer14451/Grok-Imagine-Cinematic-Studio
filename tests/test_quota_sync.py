@@ -255,6 +255,8 @@ def test_cascade_inferred_from_entries_when_sources_missing() -> None:
 
 
 def test_record_spend_after_cascade_marks_mixed() -> None:
+    from quota_sync import ledger_recon_alignment
+
     state = _empty_state()
     recon = state["quota"]["reconciliation"]
     recon["sources"] = ["generation_ledger"]
@@ -277,6 +279,23 @@ def test_record_spend_after_cascade_marks_mixed() -> None:
         "record_spend",
     ]
     assert quota_sync_summary(state)["cascade_source"] == "mixed"
+
+    # Billable ledger present → alignment status is mixed (not silent stale)
+    ledger_entries = {
+        "schema_version": "1.0",
+        "entries": [
+            {
+                "entry_id": "g1",
+                "status": "completed",
+                "credits_estimate": 4.0,
+                "credits_actual": 4.0,
+            }
+        ],
+    }
+    with patch("generation_tracker.load_ledger", return_value=ledger_entries):
+        align = ledger_recon_alignment(state)
+    assert align["status"] == "mixed"
+    assert "quota sync" in align["hint"]
 
 
 def test_load_ledger_is_canonical(tmp_path) -> None:

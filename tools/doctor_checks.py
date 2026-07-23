@@ -701,6 +701,15 @@ def check_quota_recon() -> list[CheckResult]:
                 section,
             )
         ]
+    if status == "mixed":
+        return [
+            CheckResult(
+                "WARN",
+                "quota recon",
+                hint or "mixed cascade (record_spend over ledger); run quota sync",
+                section,
+            )
+        ]
     return [
         CheckResult(
             "WARN",
