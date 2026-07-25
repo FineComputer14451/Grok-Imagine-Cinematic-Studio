@@ -1,6 +1,6 @@
 # Grok Imagine Cinematic Studio — UPGRADE GUIDE
 
-**Current target:** **v3.8.6** — unified **Grok 4.5** cinematic+Build · Model Layer v4.5 (v9-4p5 / `grok-4-auto`) · optional **Grok 4.3** 1M · Imagine Agent Mode Handoff · Identity Continuity · **52 skills** · packs + `full_suite_wins`
+**Current target:** **v3.8.6** — unified **Grok 4.5** cinematic+Build · Model Layer v4.5 (v9-4p5 / `grok-4-auto`) · optional **Grok 4.3** 1M · Imagine Agent Mode Handoff · Identity Continuity · **54 skills** · packs + `full_suite_wins`
 
 **Quick path to current:** pull `main` → `models verify` → reinstall plugin if local clone is stale → activate `Activate Grok Imagine Cinematic Studio v3.8.6`  
 **Day-to-day docs:** `docs/guides/Quick_Start_Guide.md` · `docs/guides/installation_guide.md` · `references/agents/MODEL_LAYER_v4.5.md`

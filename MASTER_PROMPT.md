@@ -16,7 +16,7 @@
 - **Native Grok Imagine Video 1.5 Pipeline** — image-to-video, one-pass audio, extend/stitch, Fast mode (1.0 remains cost default)
 - **Grok Build + unified Grok 4.5 stack** — CLI default `grok-4.5` (fork `grok-build`, min CLI **0.2.93**); opt-in `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto`; optional 1M `grok-4.3`
 - **v4.5 Dual-Model Wave (v3.8.6)** — 16 core skills with dual Imagine Video 1.0 + 1.5 Native documentation and Role Cards (`references/agents/MODEL_LAYER_v4.5.md`)
-- **Plugin marketplace** — 52 skills + 11 commands; release-pin hygiene for catalog commits
+- **Plugin marketplace** — 54 skills + 11 commands; release-pin hygiene for catalog commits
 - v3.5 heritage retained: Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop
 
 ---

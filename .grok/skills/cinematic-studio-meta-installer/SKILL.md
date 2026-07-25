@@ -1,6 +1,6 @@
 ---
 name: cinematic-studio-meta-installer
-description: Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 52-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.5 cinematic+Build stack and dual Imagine Video 1.0 + 1.5 Native. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
+description: Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 54-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.5 cinematic+Build stack and dual Imagine Video 1.0 + 1.5 Native. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
 ---
 
 # Cinematic Studio Meta Installer v3.8.6 (Grok 4.5 · Meta Installer)
@@ -39,14 +39,14 @@ Always begin: **"Starting Cinematic Studio Meta Installer v3.8.6…"**
 
 ## Install Methods (choose one)
 
-Both methods can ship the same **52 skills** (plugin suite). They differ in **where** skills live, **what else** gets installed, and **how you update**. As of **v3.8.0+**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
+Both methods can ship the same **54 skills** (plugin suite). They differ in **where** skills live, **what else** gets installed, and **how you update**. As of **v3.8.0+**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
 
 | | **Method A — Meta installer / zip** | **Method B — Grok plugin** |
 |---|-------------------------------------|----------------------------|
 | **Best for** | Grok chat, agent bootstrap, CLI tools, local verify | Grok Build CLI, marketplace updates, slash commands |
 | **Command** | `cinematic_studio.sh install` (curl, local repo, or zip) | `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust` |
 | **Skills path** | `~/.grok/skills/` | Plugin-managed under `~/.grok/installed-plugins/` |
-| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts; **ensures Grok Build CLI binary** (`grok` ≥ 0.2.93 via `x.ai/cli/install.sh` / `grok update`) + `cinematic-studio` / `grok-doctor` wrappers | Full suite: **52 skills + slash commands**; or modular packs (see matrix) |
+| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts; **ensures Grok Build CLI binary** (`grok` ≥ 0.2.93 via `x.ai/cli/install.sh` / `grok update`) + `cinematic-studio` / `grok-doctor` wrappers | Full suite: **54 skills + slash commands**; or modular packs (see matrix) |
 | **Verify** | `bash scripts/cinematic_studio.sh verify` or `verify --all` | `bash scripts/cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
 | **Update** | `bash scripts/cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` |
 
@@ -58,10 +58,10 @@ Both methods can ship the same **52 skills** (plugin suite). They differ in **wh
 
 | Plugin name | Pack id | Skills | Soft requires | Role |
 |-------------|---------|--------|---------------|------|
-| **`grok-imagine-cinematic-studio`** | *(full suite)* | **52** | — | **Recommended** one-click install |
-| `grok-imagine-cinematic-core` | `core` | **19** | — | Orchestration / DNA / wardrobe / Imagine / QA / quota / meta |
+| **`grok-imagine-cinematic-studio`** | *(full suite)* | **54** | — | **Recommended** one-click install |
+| `grok-imagine-cinematic-core` | `core` | **20** | — | Orchestration / DNA / wardrobe / Imagine / QA / quota / meta |
 | `grok-imagine-camera-image` | `camera-image` | 9 | `core` | DoP, design, i2i, key art, i2v |
-| `grok-imagine-sequence-narrative` | `sequence-narrative` | 15 | `core` | Sequence, continuity, performance, audio, action/VFX, SFW |
+| `grok-imagine-sequence-narrative` | `sequence-narrative` | 16 | `core` | Sequence, continuity, performance, audio, action/VFX, SFW |
 | `grok-imagine-nsfw` | `nsfw` | 4 | `core` | Opt-in NSFW (ErosForge + NSFW QA/quota) |
 | `grok-imagine-delivery-post` | `delivery-post` | 5 | `core` | Assembly, color, polish, upscale, ffmpeg |
 
@@ -134,7 +134,7 @@ Curl equivalents work for every command — replace trailing `install` with `upd
 
 ### Declutter rules (v3.8.0+)
 
-1. **Method A + Method B:** removes Method A copies of the **52** studio skills (plugin keeps them); prunes old `~/.grok/skills-backup-*`. User-global skills (`help`, `create-skill`, …) stay in `~/.grok/skills/`.
+1. **Method A + Method B:** removes Method A copies of the **54** studio skills (plugin keeps them); prunes old `~/.grok/skills-backup-*`. User-global skills (`help`, `create-skill`, …) stay in `~/.grok/skills/`.
 2. **Full suite + satellite packs (`full_suite_wins`):** when both the full suite plugin and one or more satellite packs are installed, declutter prefers the full suite and removes satellite skill dupes (`config/plugin_packs.yaml` → `declutter.policy: full_suite_wins`).
 
 Always dry-run first when the user is unsure: `declutter --dry-run`.
@@ -213,13 +213,13 @@ If network install fails, use the release zip:
 
 `grok-imagine-cinematic-studio`, `ai-video-upscaler`, `cinematic-sequence-extender`, `studio-director`, `quality-assurance-guardian`, `identity-lock-specialist`, `workflow-quota-optimizer`
 
-Full list: `scripts/required_skills.manifest` (52 skills; same set as `.grok-plugin/plugin-index.json` after catalog pin).
+Full list: `scripts/required_skills.manifest` (54 skills; same set as `.grok-plugin/plugin-index.json` after catalog pin).
 
 **Verify tiers:**
 
 - **core** (default) — 7 `# core` skills + `models verify`
-- **all** — all 52 manifest skills in `~/.grok/skills/` (Method A)
-- **plugin** — all 52 skills + slash commands in the Grok plugin checkout (Method B)
+- **all** — all 54 manifest skills in `~/.grok/skills/` (Method A)
+- **plugin** — all 54 skills + slash commands in the Grok plugin checkout (Method B)
 
 ## Handoff After Install
 

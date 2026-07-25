@@ -1,7 +1,7 @@
 # Grok Imagine Cinematic Studio v3.8.6 — Quick Start Guide
 
 **Version:** 3.8.6 | **Last Updated:** July 23, 2026  
-**Suite:** 23 Role-Card core agents · **52 skills** · marketplace full suite + 5 packs
+**Suite:** 23 Role-Card core agents · **54 skills** · marketplace full suite + 5 packs
 
 ---
 
@@ -48,7 +48,7 @@ or
 start cinematic production
 ```
 
-This loads the complete **v3.8.6** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **52-skill** suite.
+This loads the complete **v3.8.6** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **54-skill** suite.
 
 ### Start a New Project
 
@@ -213,7 +213,7 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 | **Identity Continuity**         | `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` | Long-form drift gates            |
 | **Skills taxonomy / packs**     | `references/SKILLS_TAXONOMY.md`       | Groups, packs, declutter rules                    |
 | **Master Prompt**               | `MASTER_PROMPT.md`                    | Complete master prompt for new chats              |
-| **Skill Files**                 | `.grok/skills/`                       | 52-skill suite (agent-only; no README in skill dirs) |
+| **Skill Files**                 | `.grok/skills/`                       | 54-skill suite (agent-only; no README in skill dirs) |
 | **Production Bible Template**   | `docs/templates/Project_Bible_Template.md` | Professional Bible template                  |
 | **Install guide**               | `docs/guides/installation_guide.md`   | Method A / B + packs                              |
 | **CLI Toolkit**                 | `cinematic-studio` / `tools/cinematic_studio_cli.py` | Bible, DNA, sequence, catalog, doctor    |
@@ -227,4 +227,4 @@ Just say **"Activate Grok Imagine Cinematic Studio v3.8.6"** and begin.
 
 ---
 
-*Grok Imagine Cinematic Studio v3.8.6 — Grok 4.5 / Model Layer v4.5 · 52 skills · July 2026*
+*Grok Imagine Cinematic Studio v3.8.6 — Grok 4.5 / Model Layer v4.5 · 54 skills · July 2026*
