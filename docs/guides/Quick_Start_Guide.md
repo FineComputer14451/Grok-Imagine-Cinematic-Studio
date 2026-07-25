@@ -1,6 +1,6 @@
-# Grok Imagine Cinematic Studio v3.8.6 — Quick Start Guide
+# Grok Imagine Cinematic Studio v3.8.7 — Quick Start Guide
 
-**Version:** 3.8.6 | **Last Updated:** July 23, 2026  
+**Version:** 3.8.7 | **Last Updated:** July 23, 2026  
 **Suite:** 25 Role-Card core agents · **54 skills** · marketplace full suite + 5 packs
 
 ---
@@ -39,7 +39,7 @@ Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 ### Activate the Full Studio (Recommended)
 
 ```
-Activate Grok Imagine Cinematic Studio v3.8.6
+Activate Grok Imagine Cinematic Studio v3.8.7
 ```
 
 or
@@ -48,7 +48,7 @@ or
 start cinematic production
 ```
 
-This loads the complete **v3.8.6** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **54-skill** suite.
+This loads the complete **v3.8.7** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **54-skill** suite.
 
 ### Start a New Project
 
@@ -102,11 +102,11 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 
 ---
 
-## 3. Recommended Production Workflow (v3.8.6)
+## 3. Recommended Production Workflow (v3.8.7)
 
 ### Phase 1: Activation & Planning
 1. **Activate the Full Studio**  
-   `Activate Grok Imagine Cinematic Studio v3.8.6`
+   `Activate Grok Imagine Cinematic Studio v3.8.7`
 
 2. **Start a New Project**  
    Provide title, logline, genre, tone, target length, and key characters.
@@ -156,11 +156,11 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 ---
 
 **Pro Tip:** You can combine steps in one message:  
-> `"Activate Grok Imagine Cinematic Studio v3.8.6, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
+> `"Activate Grok Imagine Cinematic Studio v3.8.7, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
 
 ---
 
-## 4. Pro Tips for Best Results (v3.8.6)
+## 4. Pro Tips for Best Results (v3.8.7)
 
 - **Be specific** — Include genre, tone, emotional goals, character details, and references.
 - **Use the Project Bible** — Lock `model_stack` + `VIDEO_PIPELINE_SPEC` (1.0 cost default; 1.5 when audio/physics need it).
@@ -178,7 +178,7 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 
 | Command                                           | Result                                      |
 |---------------------------------------------------|---------------------------------------------|
-| `Activate Grok Imagine Cinematic Studio v3.8.6`   | Load full v3.8.6 studio (Grok 4.5 + 1.0/1.5) |
+| `Activate Grok Imagine Cinematic Studio v3.8.7`   | Load full v3.8.7 studio (Grok 4.5 + 1.0/1.5) |
 | `create-bible --wizard`                           | Guided Production Bible (TTY interactive)   |
 | `Start new project`                               | Begin fresh production                      |
 | `GENERATE DIRECTOR'S CUT`                         | Refined version with notes                  |
@@ -223,8 +223,8 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 
 **You are now ready to create professional cinematic productions with Grok 4.5 orchestration + Imagine Video 1.0/1.5 support.**
 
-Just say **"Activate Grok Imagine Cinematic Studio v3.8.6"** and begin.
+Just say **"Activate Grok Imagine Cinematic Studio v3.8.7"** and begin.
 
 ---
 
-*Grok Imagine Cinematic Studio v3.8.6 — Grok 4.5 / Model Layer v4.5 · 54 skills · July 2026*
+*Grok Imagine Cinematic Studio v3.8.7 — Grok 4.5 / Model Layer v4.5 · 54 skills · July 2026*

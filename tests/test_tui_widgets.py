@@ -38,7 +38,7 @@ def test_format_home_markdown_from_live_snapshot() -> None:
 
 def test_format_home_markdown_shows_alignment() -> None:
     snap = {
-        "studio_version": "3.8.6",
+        "studio_version": "3.8.7",
         "generated_at": "now",
         "project": {"title": "T", "genre": "G", "has_bible": False},
         "studio": {

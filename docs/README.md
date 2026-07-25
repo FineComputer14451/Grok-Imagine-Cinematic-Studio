@@ -1,5 +1,5 @@
 # Documentation
-## Grok Imagine Cinematic Studio v3.8.6
+## Grok Imagine Cinematic Studio v3.8.7
 
 Official documentation index.
 
@@ -46,5 +46,5 @@ Official documentation index.
 
 ---
 
-**Version**: 3.8.6  
+**Version**: 3.8.7  
 **Last updated**: July 2026

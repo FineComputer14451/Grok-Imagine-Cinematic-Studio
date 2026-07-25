@@ -50,8 +50,8 @@ def test_report_to_dict_schema() -> None:
             CheckResult("PASS", "grok binary", "0.2.111", "1. Grok Build CLI"),
             CheckResult("WARN", "working tree", "dirty", "9. Git"),
         ],
-        repo_version="3.8.6",
-        project_version="3.8.6",
+        repo_version="3.8.7",
+        project_version="3.8.7",
         repo_root=str(ROOT),
         project_dir="/tmp/proj",
         quick=True,
@@ -63,7 +63,7 @@ def test_report_to_dict_schema() -> None:
     assert payload["warn"] == 1
     assert payload["healthy"] is True
     assert payload["quick"] is True
-    assert payload["repo_version"] == "3.8.6"
+    assert payload["repo_version"] == "3.8.7"
     assert isinstance(payload["checks"], list)
     assert payload["checks"][0]["status"] == "PASS"
     assert payload["checks"][0]["name"] == "grok binary"
@@ -73,7 +73,7 @@ def test_report_to_dict_schema() -> None:
 def test_format_human_includes_summary() -> None:
     report = DoctorReport(
         checks=[CheckResult("PASS", "auth.json", "present", "2. Auth & config")],
-        repo_version="3.8.6",
+        repo_version="3.8.7",
         started_at="now",
     )
     text = format_human_report(report)
@@ -367,7 +367,7 @@ def test_model_stack_no_free_pass_on_fail(monkeypatch: pytest.MonkeyPatch) -> No
             "issues": ["ROLE_DEFAULTS drifted"],
             "warnings": [],
             "notes": ["unified stack"],
-            "studio_version": "3.8.6",
+            "studio_version": "3.8.7",
             "installed_grok_cli_version": "0.2.111",
             "model_stack": {
                 "xai_chat": "grok-4.5",
