@@ -85,6 +85,10 @@
             "description": "Studio Health Diagnostician for Grok Imagine Cinematic Studio. Audits agent roster, handoff integrity, continuity score…"
           },
           {
+            "name": "parallel-brief-dispatcher",
+            "description": "Parallel Brief dispatcher for Studio Director under MAXIMUM AGENTIC MODE. Templates logs and anti-blocks concurrent spe…"
+          },
+          {
             "name": "director-of-photography",
             "description": "Visual language architect and cinematic lens master. Designs lighting motivation, camera choreography, lens choices, an…"
           },
@@ -119,6 +123,14 @@
           {
             "name": "image-to-video-specialist",
             "description": "Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fideli…"
+          },
+          {
+            "name": "plate-motion-readiness-lead",
+            "description": "Plate and motion readiness gate for Grok Imagine stills before video spend. Owns plate_status motion_vector and strict-…"
+          },
+          {
+            "name": "contact-micro-physics-specialist",
+            "description": "Contact and micro-physics specialist for hands cloth grip weight transfer liquids and object interaction in Grok Imagin…"
           },
           {
             "name": "sequence-director",
@@ -185,6 +197,18 @@
             "description": "SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota a…"
           },
           {
+            "name": "hair-makeup-continuity",
+            "description": "Hair and makeup continuity lock nested on Character DNA for Grok Imagine multi-clip work. Owns hmu_lock sweat smudge we…"
+          },
+          {
+            "name": "dialogue-adr-director",
+            "description": "Dialogue and ADR director for Grok Imagine native-audio and post-sync speech. Owns dialogue blocks VO ADR timing and li…"
+          },
+          {
+            "name": "score-temp-music-supervisor",
+            "description": "Score and temp music supervisor for Grok Imagine sequences and trailers. Owns music cues temp score emotional_tone_audi…"
+          },
+          {
             "name": "erosforge-nsfw-director",
             "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper phy…"
           },
@@ -219,6 +243,14 @@
           {
             "name": "cinematic-ffmpeg",
             "description": "Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Ass…"
+          },
+          {
+            "name": "title-motion-graphics-lead",
+            "description": "Title and motion graphics lead for openers lower-thirds end cards and brand locks in Grok Imagine delivery. Owns title…"
+          },
+          {
+            "name": "distribution-crop-strategist",
+            "description": "Distribution and crop strategist for 16x9 9x16 1x1 safe-action framing before polish and ffmpeg delivery. Owns platform…"
           }
         ],
         "commands": [
@@ -268,7 +300,7 @@
           }
         ]
       },
-      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
+      "sha": "b0b8a7af249fb231b551bb690b99c0a989c09570"
     },
     "grok-imagine-cinematic-core": {
       "components": {
@@ -352,6 +384,10 @@
           {
             "name": "grok-doctor",
             "description": "Studio Health Diagnostician for Grok Imagine Cinematic Studio. Audits agent roster, handoff integrity, continuity score…"
+          },
+          {
+            "name": "parallel-brief-dispatcher",
+            "description": "Parallel Brief dispatcher for Studio Director under MAXIMUM AGENTIC MODE. Templates logs and anti-blocks concurrent spe…"
           }
         ],
         "commands": [
@@ -393,7 +429,7 @@
           }
         ]
       },
-      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
+      "sha": "b0b8a7af249fb231b551bb690b99c0a989c09570"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -433,10 +469,18 @@
           {
             "name": "image-to-video-specialist",
             "description": "Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fideli…"
+          },
+          {
+            "name": "plate-motion-readiness-lead",
+            "description": "Plate and motion readiness gate for Grok Imagine stills before video spend. Owns plate_status motion_vector and strict-…"
+          },
+          {
+            "name": "contact-micro-physics-specialist",
+            "description": "Contact and micro-physics specialist for hands cloth grip weight transfer liquids and object interaction in Grok Imagin…"
           }
         ]
       },
-      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
+      "sha": "b0b8a7af249fb231b551bb690b99c0a989c09570"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -504,10 +548,22 @@
           {
             "name": "sfw-batch-orchestrator",
             "description": "SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota a…"
+          },
+          {
+            "name": "hair-makeup-continuity",
+            "description": "Hair and makeup continuity lock nested on Character DNA for Grok Imagine multi-clip work. Owns hmu_lock sweat smudge we…"
+          },
+          {
+            "name": "dialogue-adr-director",
+            "description": "Dialogue and ADR director for Grok Imagine native-audio and post-sync speech. Owns dialogue blocks VO ADR timing and li…"
+          },
+          {
+            "name": "score-temp-music-supervisor",
+            "description": "Score and temp music supervisor for Grok Imagine sequences and trailers. Owns music cues temp score emotional_tone_audi…"
           }
         ]
       },
-      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
+      "sha": "b0b8a7af249fb231b551bb690b99c0a989c09570"
     },
     "grok-imagine-nsfw": {
       "components": {
@@ -536,7 +592,7 @@
           }
         ]
       },
-      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
+      "sha": "b0b8a7af249fb231b551bb690b99c0a989c09570"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -560,6 +616,14 @@
           {
             "name": "cinematic-ffmpeg",
             "description": "Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Ass…"
+          },
+          {
+            "name": "title-motion-graphics-lead",
+            "description": "Title and motion graphics lead for openers lower-thirds end cards and brand locks in Grok Imagine delivery. Owns title…"
+          },
+          {
+            "name": "distribution-crop-strategist",
+            "description": "Distribution and crop strategist for 16x9 9x16 1x1 safe-action framing before polish and ffmpeg delivery. Owns platform…"
           }
         ],
         "commands": [
@@ -569,7 +633,7 @@
           }
         ]
       },
-      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
+      "sha": "b0b8a7af249fb231b551bb690b99c0a989c09570"
     }
   }
 }

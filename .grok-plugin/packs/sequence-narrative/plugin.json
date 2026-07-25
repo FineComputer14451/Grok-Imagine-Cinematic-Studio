@@ -30,7 +30,10 @@
     ".grok/skills/localization-subtitle-specialist",
     ".grok/skills/stunt-action-choreographer",
     ".grok/skills/vfx-sfx-supervisor",
-    ".grok/skills/sfw-batch-orchestrator"
+    ".grok/skills/sfw-batch-orchestrator",
+    ".grok/skills/hair-makeup-continuity",
+    ".grok/skills/dialogue-adr-director",
+    ".grok/skills/score-temp-music-supervisor"
   ],
   "cinematicStudioRequires": [
     "core"

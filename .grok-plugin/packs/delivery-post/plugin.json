@@ -19,7 +19,9 @@
     ".grok/skills/post-production-color-grading-supervisor",
     ".grok/skills/ai-polish-director",
     ".grok/skills/ai-video-upscaler",
-    ".grok/skills/cinematic-ffmpeg"
+    ".grok/skills/cinematic-ffmpeg",
+    ".grok/skills/title-motion-graphics-lead",
+    ".grok/skills/distribution-crop-strategist"
   ],
   "commands": [
     "commands/delivery.md"

@@ -34,7 +34,8 @@
     ".grok/skills/quality-assurance-guardian",
     ".grok/skills/chain-qa-protocol",
     ".grok/skills/cinematic-skill-creator",
-    ".grok/skills/grok-doctor"
+    ".grok/skills/grok-doctor",
+    ".grok/skills/parallel-brief-dispatcher"
   ],
   "commands": [
     "commands/cinematic.md",
