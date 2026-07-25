@@ -1,6 +1,6 @@
 ---
 name: grok-imagine-cinematic-studio
-description: Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 23-agent core suite plus i2i and NSFW specialists with unified Grok 4.5 cinematic+Build stack optional v9-4p5 multi/chat-expert and 4.3 1M guided Production Bible wizard Imagine Agent Mode Handoff and native Grok Imagine Video 1.0/1.5 dual support with one-pass synchronized audio. Includes Studio Director Mega Production Architect DoP ErosForge Sonic Architect Foley Key Art Trailer Stunt VFX Production Designer Localization AI Polish Director I2I refiners and NSFW orchestrators. Trigger on Activate Grok Imagine Cinematic Studio v3.8.6 enter cinematic studio start cinematic production or any full multi-agent cinematic workflow.
+description: Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 25-agent core suite plus i2i and NSFW specialists with unified Grok 4.5 cinematic+Build stack optional v9-4p5 multi/chat-expert and 4.3 1M guided Production Bible wizard Imagine Agent Mode Handoff and native Grok Imagine Video 1.0/1.5 dual support with one-pass synchronized audio. Includes Studio Director Mega Production Architect DoP ErosForge Sonic Architect Foley Key Art Trailer Stunt VFX Production Designer Localization AI Polish Director Grok Doctor Multi-Clip Continuity I2I refiners and NSFW orchestrators. Trigger on Activate Grok Imagine Cinematic Studio v3.8.6 enter cinematic studio start cinematic production or any full multi-agent cinematic workflow.
 ---
 
 # Grok Imagine Cinematic Studio v3.8.6 "Odyssey Native" (Grok 4.5 · v9-4p5)
@@ -161,7 +161,7 @@ Studio Director **owns** surface selection and must not hand off video without I
 
 ---
 
-This skill gives you access to the complete cinematic production system (Grok 4.5 stack + 1.0/1.5 Imagine + Imagine Agent Mode Handoff). All 23 agents operate from Role Cards in `references/agents/`.
+This skill gives you access to the complete cinematic production system (Grok 4.5 stack + 1.0/1.5 Imagine + Imagine Agent Mode Handoff). All 25 core agents operate from Role Cards in `references/agents/` (including Grok Doctor and Multi-Clip Continuity Orchestrator).
 
 **Ready when you are.** Describe your cinematic vision or say **"Activate Grok Imagine Cinematic Studio v3.8.6"** to begin.
 

@@ -8,8 +8,12 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Parallel Brief Protocol v1.0** (`references/agents/Parallel_Brief_Protocol.md`) — Official multi-agent coordination primitive for concurrent specialist work under MAXIMUM AGENTIC MODE. Includes templates, NSFW Prompt Optimizer + Foley consumption patterns, and convergence rules into `imagine_agent_mode_handoff`. Pointer added to Studio Director Role Card, AGENTS.md, and AGENT_INDEX.md.
 - **Costume & Wardrobe Continuity** agent (`costume-wardrobe-continuity`) — nested `wardrobe_lock` on Character DNA, inject blocks, clip `wardrobe_state`, optional identity handoff `wardrobe` section (`tools/wardrobe_lock.py`)
 - **Grok Doctor** — `scripts/grok_doctor.sh`, `cinematic-studio doctor`, and `grok-doctor` PATH entry for Grok Build + Cinematic Studio health checks (`--quick`, `--json`, `--strict`)
+- **Grok Doctor skill / Role Card** (`grok-doctor`, `references/agents/Grok_Doctor.md`) — multi-agent Studio Health Diagnostician
+- **Multi-Clip Continuity Orchestrator** (`multi-clip-continuity-orchestrator`, `references/agents/Multi_Clip_Continuity_Orchestrator.md`) — cross-agent continuity commander for multi-clip chains
+- **Method A Grok Build CLI ensure** — install path ensures `grok` ≥ **0.2.93** (`CINEMATIC_SKIP_GROK_CLI` / `CINEMATIC_FORCE_GROK_CLI` / `CINEMATIC_MIN_GROK_CLI`)
 
 ### Changed
+- **Suite size** — marketplace suite **52 → 54** skills; Role-Card core marketing **23 → 25** (Grok Doctor + Multi-Clip Continuity Orchestrator); packs core **20**, sequence-narrative **16**
 - **Quota reconcile exclusive cascade** — `reconcile_from_jobs` uses one source only: billable `generation_ledger` rows (via public `generation_tracker.load_ledger`) → else imagine jobs with explicit `actual_credits` → else history `est:N`. Failed/est-only ledger rows no longer dilute burn-rate; recon entries share `_recon_entry` / `_fold_entries`. Ledger path is `studio_paths.ARTIFACTS_DIR / generation_ledger.json`.
 - **`quota sync` CLI** — surfaces **cascade source** / `sources`, risk coloring, optional `--entries` table, and `--json` payload including entries (`quota_sync_summary` exposes `cascade_source` + `sources`).
 - **Grok Doctor `quota recon` check** — read-only `ledger_recon_alignment` compares billable generation-ledger totals to stored reconciliation (aligned / stale / mismatch / orphan); WARN with `quota sync` hint when drift is detected (section **13. Quota recon**).

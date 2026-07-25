@@ -147,7 +147,7 @@ When working with or creating skills:
 
 ## Core Agent Skill Slugs
 
-**23 Role-Card core agents** power the department; **52 skills** power agents + specialists (i2i, batch, chain QA, polish, packs, etc.). Full activation table: `references/agents/AGENT_INDEX.md`.
+**25 Role-Card core agents** power the department; **54 skills** power agents + specialists (i2i, batch, chain QA, polish, packs, etc.). Full activation table: `references/agents/AGENT_INDEX.md`.
 
 | Display name | Skill slug (activate this) |
 |--------------|----------------------------|
@@ -162,8 +162,10 @@ When working with or creating skills:
 | Sequence Director | `sequence-director` |
 | Cinematic Sequence Extender | `cinematic-sequence-extender` |
 | Continuity Guardian | `continuity-consistency-guardian` |
+| Multi-Clip Continuity Orchestrator | `multi-clip-continuity-orchestrator` |
 | Imagine Prompt Master | `imagine-prompt-master` |
 | Quality Assurance Guardian | `quality-assurance-guardian` |
+| Grok Doctor | `grok-doctor` |
 | Workflow Quota Optimizer | `workflow-quota-optimizer` |
 | Sonic Architect | `sonic-architect-native-audio-virtuoso` |
 | Foley Specialist | `foley-sound-design-specialist` |
@@ -175,7 +177,7 @@ When working with or creating skills:
 | AI Polish Director | `ai-polish-director` |
 | ErosForge NSFW Director | `erosforge-nsfw-director` |
 
-**High-traffic specialists (not all are in the “23” core list):** `character-dna-extractor`, `costume-wardrobe-continuity`, `multi-character-identity-arbiter`, `image-to-video-specialist`, `reference-asset-curator`, `animatic-director`, `assembly-editor`, `sfw-batch-orchestrator`, `nsfw-quota-orchestrator`, `nsfw-sequence-extender`, `chain-qa-protocol`, `nsfw-chain-qa-protocol`, `handoff-packet-validator`, `imagine-execution-bridge`, `ai-video-upscaler`, `cinematic-ffmpeg`, `i2i-refiner`, `i2i-cinematic-refiner`, `ai-image-recreation`, `arc-replan-copilot`, `quota-dashboard`, `production-bible-workflow`, `skill-agent-architect`, `cinematic-skill-creator`, `cinematic-studio-meta-installer`, `github-repo-manager`, `extend-frame-to-video`, `grok-imagine-cinematic-studio`.
+**High-traffic specialists (not all are in the “25” core list):** `character-dna-extractor`, `costume-wardrobe-continuity`, `multi-character-identity-arbiter`, `image-to-video-specialist`, `reference-asset-curator`, `animatic-director`, `assembly-editor`, `sfw-batch-orchestrator`, `nsfw-quota-orchestrator`, `nsfw-sequence-extender`, `chain-qa-protocol`, `nsfw-chain-qa-protocol`, `handoff-packet-validator`, `imagine-execution-bridge`, `ai-video-upscaler`, `cinematic-ffmpeg`, `i2i-refiner`, `i2i-cinematic-refiner`, `ai-image-recreation`, `arc-replan-copilot`, `quota-dashboard`, `production-bible-workflow`, `skill-agent-architect`, `cinematic-skill-creator`, `cinematic-studio-meta-installer`, `github-repo-manager`, `extend-frame-to-video`, `grok-imagine-cinematic-studio`.
 
 ## Common Workflows & Commands
 
@@ -198,14 +200,14 @@ When working with or creating skills:
 - **Refine / iterate on previously generated images**: `generated-image-editor` (user-global when present)
 - **Upscale video for final delivery** (720p → 1080p/4K, face restoration): Activate `ai-video-upscaler`
 - Video / audio processing: Activate `cinematic-ffmpeg` or use `ffmpeg` / bash
-- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (23-agent core + specialist suite, **studio v3.8.6**)
+- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (25-agent core + specialist suite, **studio v3.8.6**)
 - **Planning → generation handoff**: Studio Director **Imagine Agent Mode Handoff** (see below)
 
 If native Imagine tools are unavailable, use `imagine-execution-bridge` / CLI (`imagine submit`, `sfw run`, `sequence run`) with a locked `VIDEO_PIPELINE_SPEC`.
 
 ### Document Tasks
 
-Document skills are typically **session / user-global** (not always in the 52-skill project suite). Use when available:
+Document skills are typically **session / user-global** (not always in the 54-skill project suite). Use when available:
 
 - PDF: `pdf` skill
 - Word (.docx): `docx` skill
@@ -231,7 +233,7 @@ Document skills are typically **session / user-global** (not always in the 52-sk
 - Pre-publish plugin gate: `cinematic-studio plugin catalog check --release` or `bash scripts/verify_plugins.sh --release` (passes when pin == HEAD or pin is ancestor with only catalog paths after it)
 - Dev/test deps: `pip install -r requirements-dev.txt` then `pytest`
 - Use `cinematic-studio-meta-installer` skill for full bootstrap/verify in agent sessions
-- The **52 skills + slash commands** (in `commands/`) are the primary way to extend Grok Build with studio capabilities
+- The **54 skills + slash commands** (in `commands/`) are the primary way to extend Grok Build with studio capabilities
 
 ### Memory & Personalization
 
@@ -252,13 +254,13 @@ For any complex visual storytelling, film-style image sequences, video productio
 **Primary activation command:**  
 `Activate Grok Imagine Cinematic Studio v3.8.6` or `Start cinematic production`
 
-This engages the full **23 specialized agents** (Role Cards labeled v3.6.5–v4.5 under studio **v3.8.6**; Studio Director owns **Imagine Agent Mode Handoff**) plus pipeline specialists. **52 skills** implement the department. Core list:
+This engages the full **25 specialized agents** (Role Cards labeled v3.6.5–v4.5 under studio **v3.8.6**; Studio Director owns **Imagine Agent Mode Handoff**) plus pipeline specialists. **54 skills** implement the department. Core list:
 
 - Studio Director (`studio-director`), Mega Production Architect (`mega-production-architect`)
 - Director of Photography, Production Designer, Color Grading Supervisor
 - Performance & Emotion Director, Identity Lock Specialist, Narrative Arc Pacing Strategist
-- Sequence Director, Cinematic Sequence Extender, Continuity Guardian
-- Imagine Prompt Master, Quality Assurance Guardian, Workflow Quota Optimizer
+- Sequence Director, Cinematic Sequence Extender, Continuity Guardian, Multi-Clip Continuity Orchestrator
+- Imagine Prompt Master, Quality Assurance Guardian, **Grok Doctor** (`grok-doctor`), Workflow Quota Optimizer
 - Sonic Architect, Foley Specialist
 - Stunt Action Choreographer, VFX & SFX Supervisor
 - Key Art Designer, Trailer Director, Localization Specialist
@@ -353,7 +355,7 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 | **GitHub Management** | `github-repo-manager` | Git lifecycle, PRs, releases, skill/plugin catalog pin hygiene |
 | **Documents** | `pdf`, `docx`, `pptx`, `xlsx` | Professional docs (session skills when available) |
 | **Memory** | `memory-edit` | Personal facts/preferences worth remembering |
-| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **52-skill** suite (v3.8.6; packs + declutter `full_suite_wins`) |
+| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **54-skill** suite (v3.8.6; packs + declutter `full_suite_wins`) |
 | **Localization** | `localization-subtitle-specialist` | SDH, multi-language, cultural adaptation |
 | **Production Bible** | `production-bible-workflow` | Guided create-bible / DNA / sequence / quota onboarding |
 
@@ -362,10 +364,10 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 - Primary project: **Grok Imagine Cinematic Studio** **v3.8.6** — registry default **`grok-4.5`** + specialist **v9-4p5 / grok-4-auto** Model Layer + dual Imagine Video **1.0 / 1.5** + Imagine Agent Mode Handoff + Identity Continuity + Parallel Brief Protocol + interactive CLI TUI + guided Bible wizard + **plugin modularity packs**.
 - All generated artifacts **must** be saved under `artifacts/` (repo root).
 - Project skills live in `.grok/skills/`; user-global skills in `~/.grok/skills/`.
-- Plugin marketplace lives in `.grok-plugin/` (full suite + 5 packs, 52 skills + commands). Install full suite via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
+- Plugin marketplace lives in `.grok-plugin/` (full suite + 5 packs, 54 skills + commands). Install full suite via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - Workspace supports SFW cinematic work and NSFW/erotic pipelines (**ErosForge only when explicitly activated**).
 - **Model stack:** cinematic + Build/coding registry default **`grok-4.5`**; specialist routing **v9-4p5 / grok-4-auto** when available; optional 1M **`grok-4.3`**; Imagine **1.0** default; `VIDEO_PIPELINE_SPEC` via registry helpers; **1.5** for native-audio / high-physics / intimacy workflows.
-- Full suite: **52/52** skills + Role Cards (includes `ai-image-recreation` for user-upload recreation).
+- Full suite: **54/54** skills + Role Cards (includes `grok-doctor`, `multi-clip-continuity-orchestrator`, `ai-image-recreation`).
 - **Recent history:** **3.8.6** — Full v4.5 dual-model wave, model registry hardening, Generation Tracker CLI, Grok Doctor, Parallel Brief Protocol. **3.8.4** — interactive CLI TUI (`cinematic-studio ui`) + plate/motion spend readiness. **3.8.3** — specialist-order + color→polish. **3.8.1** — Identity Continuity Protocol. **3.8.0** — marketplace multi-plugin packs + declutter `full_suite_wins`. **3.7.1** — Imagine Agent Mode Handoff.
 - Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, `docs/releases/`, `references/MODELS.md`, `references/agents/MODEL_LAYER_v4.5.md`, `docs/guides/Quick_Start_Guide.md`).
 

@@ -1,7 +1,7 @@
 # Grok Imagine Cinematic Studio v3.8.6 — Quick Start Guide
 
 **Version:** 3.8.6 | **Last Updated:** July 23, 2026  
-**Suite:** 23 Role-Card core agents · **54 skills** · marketplace full suite + 5 packs
+**Suite:** 25 Role-Card core agents · **54 skills** · marketplace full suite + 5 packs
 
 ---
 
