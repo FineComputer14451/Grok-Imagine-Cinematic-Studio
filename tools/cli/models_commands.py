@@ -11,10 +11,14 @@ from models import (
     DEFAULT_GROK_BUILD_MODEL,
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
+    DEFAULT_XAI_CHAT_EXPERT_MODEL,
     DEFAULT_XAI_CHAT_MODEL,
+    DEFAULT_XAI_MULTI_MODEL,
+    DEFAULT_XAI_AUTO_MODEL,
     GROK_BUILD_CLI_MODELS,
     GROK_BUILD_FORK_MODEL,
     GROK_BUILD_NSFW_MODELS,
+    GROK_BUILD_V9_MODELS,
     IMAGINE_IMAGE_MODELS,
     IMAGINE_VIDEO_MODELS,
     RECOMMENDED_GROK_BUILD_CLI_VERSION,
@@ -118,6 +122,23 @@ def models_list():
             detail += f"\n[dim]aliases: {aliases}[/dim]"
         table.add_row("Imagine Image", slug + default, detail)
 
+    for slug, info in GROK_BUILD_V9_MODELS.items():
+        base = info.get("base_model", "?")
+        temp = info.get("temperature")
+        temp_s = f" · T={temp}" if temp is not None else ""
+        star = ""
+        if slug == DEFAULT_XAI_CHAT_EXPERT_MODEL:
+            star = " ★ craft"
+        elif slug == DEFAULT_XAI_MULTI_MODEL:
+            star = " ★ multi"
+        elif slug == DEFAULT_XAI_AUTO_MODEL:
+            star = " ★ auto"
+        aliases = ", ".join(info.get("aliases", [])[:3])
+        detail = f"{info['label']} → {base}{temp_s} — {info.get('description', '')}"
+        if aliases:
+            detail += f"\n[dim]aliases: {aliases}[/dim]"
+        table.add_row("Grok Build v9 (specialist)", slug + star, detail)
+
     for slug, info in GROK_BUILD_NSFW_MODELS.items():
         base = info.get("base_model", "?")
         temp = info.get("temperature")
@@ -132,6 +153,7 @@ def models_list():
     console.print(
         f"\n[dim]Docs: {MODELS_DOC} · {MODEL_LAYER_DOC} · "
         f"opt-in 1M: --chat-model grok-4.3 · never treat CLI 0.2.93 as a model slug · "
+        f"v9 specialist pickers: bash scripts/install_v9_grok_models.sh · "
         f"NSFW Build aliases: bash scripts/install_nsfw_grok_models.sh · "
         f"not Imagine generators[/dim]"
     )

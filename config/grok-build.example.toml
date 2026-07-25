@@ -33,6 +33,13 @@ api_backend = "chat_completions"
 # Video: grok-imagine-video (1.0 default) or grok-imagine-video-1.5 (native audio)
 # Legacy coding API: grok-build-0.1 (prefer grok-4.5)
 #
+# v9-4p5 / Auto specialist pickers (Model Layer v4.5):
+#   config/grok-build-v9-models.example.toml
+#   tools/models.py → GROK_BUILD_V9_MODELS
+# Install: bash scripts/install_v9_grok_models.sh [--force]
+# Then: grok models · /model grok-v9-4p5-chat-expert
+# Note: public api.x.ai may not expose native v9 product IDs; pickers wrap grok-4.5.
+#
 # NSFW / ErosForge custom Grok Build picker aliases (opt-in):
 #   config/grok-build-nsfw-models.example.toml
 #   tools/models.py → GROK_BUILD_NSFW_MODELS (listed by models list / verify)

@@ -10,8 +10,12 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from models import (  # noqa: E402
     DEFAULT_GROK_BUILD_MODEL,
+    DEFAULT_XAI_AUTO_MODEL,
     DEFAULT_XAI_BUILD_MODEL,
+    DEFAULT_XAI_CHAT_EXPERT_MODEL,
     DEFAULT_XAI_CHAT_MODEL,
+    DEFAULT_XAI_MULTI_MODEL,
+    GROK_BUILD_V9_MODELS,
     RECOMMENDED_GROK_BUILD_CLI_VERSION,
     REQUIRED_MODEL_ROLES,
     REQUIRED_MODEL_SLUGS,
@@ -21,9 +25,13 @@ from models import (  # noqa: E402
     is_build_default,
     is_cinematic_default,
     known_chat_model,
+    known_v9_build_model,
     model_stack_summary,
     normalize_chat_model,
+    recommended_model_for_role,
     resolve_chat_model,
+    resolve_v9_build_model,
+    v9_build_base_model,
     verify_model_compatibility,
 )
 
@@ -141,6 +149,49 @@ def test_model_compatibility() -> None:
     assert any("unified" in n for n in result["notes"])
 
 
+def test_v9_specialist_aliases_and_constants() -> None:
+    assert DEFAULT_XAI_CHAT_EXPERT_MODEL == "grok-v9-4p5-chat-expert"
+    assert DEFAULT_XAI_MULTI_MODEL == "grok-v9-4p5-multi"
+    assert DEFAULT_XAI_AUTO_MODEL == "grok-4-auto"
+    for slug in (
+        DEFAULT_XAI_CHAT_EXPERT_MODEL,
+        DEFAULT_XAI_MULTI_MODEL,
+        DEFAULT_XAI_AUTO_MODEL,
+    ):
+        assert slug in XAI_CHAT_MODELS
+        assert slug in GROK_BUILD_V9_MODELS
+        assert resolve_chat_model(slug) == slug
+        assert known_chat_model(slug)
+        assert known_v9_build_model(slug)
+        assert resolve_v9_build_model(slug) == slug
+        assert v9_build_base_model(slug) == "grok-4.5"
+    for alias, canonical in (
+        ("chat-expert", "grok-v9-4p5-chat-expert"),
+        ("v9-4p5-chat-expert", "grok-v9-4p5-chat-expert"),
+        ("4p5-expert", "grok-v9-4p5-chat-expert"),
+        # Family short names → chat-expert (not silent grok-4.5 fallback)
+        ("grok-v9", "grok-v9-4p5-chat-expert"),
+        ("grok-v9-4p5", "grok-v9-4p5-chat-expert"),
+        ("v9", "grok-v9-4p5-chat-expert"),
+        ("v9-4p5", "grok-v9-4p5-chat-expert"),
+        ("multi", "grok-v9-4p5-multi"),
+        ("auto", "grok-4-auto"),
+    ):
+        assert resolve_chat_model(alias) == canonical, alias
+        assert known_v9_build_model(alias), alias
+        assert known_chat_model(alias), alias
+
+
+def test_recommended_model_for_role() -> None:
+    assert recommended_model_for_role("Imagine Prompt Master") == "grok-v9-4p5-chat-expert"
+    assert recommended_model_for_role("Team Leader") == "grok-v9-4p5-multi"
+    assert recommended_model_for_role("Animatic Director") == "grok-4-auto"
+    assert recommended_model_for_role(None) == DEFAULT_XAI_CHAT_MODEL
+    assert recommended_model_for_role("") == DEFAULT_XAI_CHAT_MODEL
+    # Unknown craft-style roles default to chat-expert (not stack lock)
+    assert recommended_model_for_role("Custom Specialty Craft") == "grok-v9-4p5-chat-expert"
+
+
 if __name__ == "__main__":
     test_role_defaults_are_single_source()
     test_no_per_model_default_flags()
@@ -152,4 +203,6 @@ if __name__ == "__main__":
     test_required_roles_have_unique_slugs()
     test_model_stack_summary_unified()
     test_model_compatibility()
+    test_v9_specialist_aliases_and_constants()
+    test_recommended_model_for_role()
     print("All chat model tests passed")

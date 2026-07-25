@@ -1,0 +1,232 @@
+# Grok Build v9-4p5 / Auto specialist picker presets — Grok Imagine Cinematic Studio
+#
+# Full picker surface for Model Layer v4.5. Native api.x.ai may not expose
+# grok-v9-4p5-* product IDs; every entry wraps grok-4.5 via cli-chat-proxy
+# (session auth / SuperGrok). Not Imagine generators.
+#
+# Install:
+#   bash scripts/install_v9_grok_models.sh
+#   bash scripts/install_v9_grok_models.sh --force
+# Then:
+#   grok models
+#   /model grok-v9
+#   /model chat-expert
+#   /model multi
+#
+# Registry: tools/models.py → GROK_BUILD_V9_MODELS · XAI_CHAT_MODELS
+# Docs: references/agents/MODEL_LAYER_v4.5.md
+
+# =============================================================================
+# Chat Expert (craft) — DNA, hero prompts, DoP, QA, Identity Lock, Sonic
+# T=0.55 · family shorts + registry aliases all land here
+# =============================================================================
+
+[model.grok-v9-4p5-chat-expert]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Grok v9 4.5 Chat Expert"
+description = "Specialist craft — DNA, hero prompts, DoP, QA (base grok-4.5 · high reasoning)"
+context_window = 500000
+temperature = 0.55
+top_p = 0.90
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.grok-v9]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Grok v9 (Chat Expert)"
+description = "Family short → craft (same as grok-v9-4p5-chat-expert)"
+context_window = 500000
+temperature = 0.55
+top_p = 0.90
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.grok-v9-4p5]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Grok v9 4.5 (Chat Expert)"
+description = "Family short → craft (same as grok-v9-4p5-chat-expert)"
+context_window = 500000
+temperature = 0.55
+top_p = 0.90
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.v9]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "v9 (Chat Expert)"
+description = "Short alias → craft (same as grok-v9-4p5-chat-expert)"
+context_window = 500000
+temperature = 0.55
+top_p = 0.90
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.v9-4p5]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "v9-4p5 (Chat Expert)"
+description = "Short alias → craft (same as grok-v9-4p5-chat-expert)"
+context_window = 500000
+temperature = 0.55
+top_p = 0.90
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.chat-expert]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Chat Expert"
+description = "Alias → craft (same as grok-v9-4p5-chat-expert)"
+context_window = 500000
+temperature = 0.55
+top_p = 0.90
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.v9-4p5-chat-expert]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "v9-4p5 Chat Expert"
+description = "Alias → craft (same as grok-v9-4p5-chat-expert)"
+context_window = 500000
+temperature = 0.55
+top_p = 0.90
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.4p5-expert]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "4p5 Expert"
+description = "Alias → craft (same as grok-v9-4p5-chat-expert)"
+context_window = 500000
+temperature = 0.55
+top_p = 0.90
+max_completion_tokens = 16384
+api_backend = "responses"
+
+# Quoted: bare [model.grok-4.5-expert] nests as model.grok-4.5-expert in TOML
+[model."grok-4.5-expert"]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Grok 4.5 Expert"
+description = "Alias → craft (same as grok-v9-4p5-chat-expert)"
+context_window = 500000
+temperature = 0.55
+top_p = 0.90
+max_completion_tokens = 16384
+api_backend = "responses"
+
+# =============================================================================
+# Multi — handoffs, sequences, Team Leader, Full Studio Mode
+# T=0.65
+# =============================================================================
+
+[model.grok-v9-4p5-multi]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Grok v9 4.5 Multi"
+description = "Multi-agent orchestration — handoffs, sequences, Team Leader (base grok-4.5)"
+context_window = 500000
+temperature = 0.65
+top_p = 0.92
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.multi]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Multi"
+description = "Alias → multi-agent (same as grok-v9-4p5-multi)"
+context_window = 500000
+temperature = 0.65
+top_p = 0.92
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.v9-4p5-multi]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "v9-4p5 Multi"
+description = "Alias → multi-agent (same as grok-v9-4p5-multi)"
+context_window = 500000
+temperature = 0.65
+top_p = 0.92
+max_completion_tokens = 16384
+api_backend = "responses"
+
+[model.4p5-multi]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "4p5 Multi"
+description = "Alias → multi-agent (same as grok-v9-4p5-multi)"
+context_window = 500000
+temperature = 0.65
+top_p = 0.92
+max_completion_tokens = 16384
+api_backend = "responses"
+
+# Quoted: bare [model.grok-4.5-multi] nests incorrectly in TOML
+[model."grok-4.5-multi"]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Grok 4.5 Multi"
+description = "Alias → multi-agent (same as grok-v9-4p5-multi)"
+context_window = 500000
+temperature = 0.65
+top_p = 0.92
+max_completion_tokens = 16384
+api_backend = "responses"
+
+# =============================================================================
+# Auto — draft / quota / routine routing
+# T=0.50
+# =============================================================================
+
+[model.grok-4-auto]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Grok 4 Auto"
+description = "Draft / quota / auto-route (base grok-4.5 · medium reasoning)"
+context_window = 500000
+temperature = 0.50
+top_p = 0.90
+max_completion_tokens = 12288
+api_backend = "responses"
+
+[model.auto]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Auto"
+description = "Alias → draft/quota (same as grok-4-auto)"
+context_window = 500000
+temperature = 0.50
+top_p = 0.90
+max_completion_tokens = 12288
+api_backend = "responses"
+
+[model.4-auto]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "4-auto"
+description = "Alias → draft/quota (same as grok-4-auto)"
+context_window = 500000
+temperature = 0.50
+top_p = 0.90
+max_completion_tokens = 12288
+api_backend = "responses"
+
+[model.grok-auto]
+model = "grok-4.5"
+base_url = "https://cli-chat-proxy.grok.com/v1"
+name = "Grok Auto"
+description = "Alias → draft/quota (same as grok-4-auto)"
+context_window = 500000
+temperature = 0.50
+top_p = 0.90
+max_completion_tokens = 12288
+api_backend = "responses"

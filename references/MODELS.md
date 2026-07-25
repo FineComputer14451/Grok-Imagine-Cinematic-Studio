@@ -17,8 +17,8 @@ python tools/cinematic_studio_cli.py stack
 | Layer | Default slug | Notes |
 |-------|--------------|-------|
 | Orchestration / cinematic chat | `grok-4.5` | Production Bibles, multi-agent |
-| Opt-in multi / expert | `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` | Skill Model Layer routing |
-| Fast routing | `grok-4-auto` | Routine specialist hops |
+| Opt-in multi / expert | `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` | Skill Model Layer routing; Build pickers: `bash scripts/install_v9_grok_models.sh` |
+| Fast routing | `grok-4-auto` | Routine specialist hops (same install script) |
 | Long-context | `grok-4.3` | 1M memory banks only |
 | Grok Build CLI | `grok-4.5` · fork `grok-build` | ≥ 0.2.93 binary |
 | Imagine Video | `grok-imagine-video` (1.0 cost) / `1.5` native audio | Dual path |

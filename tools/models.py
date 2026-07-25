@@ -18,7 +18,7 @@ import shutil
 import subprocess
 from typing import Any
 
-SCHEMA_VERSION = "1.3"
+SCHEMA_VERSION = "1.4"
 
 # ---------------------------------------------------------------------------
 # Dual-stack product pins + full role defaults (literals appear once)
@@ -45,6 +45,7 @@ RECOMMENDED_GROK_BUILD_CLI_VERSION = "0.2.93"
 MIN_GROK_BUILD_CLI_VERSION = RECOMMENDED_GROK_BUILD_CLI_VERSION
 
 DEFAULT_XAI_CHAT_MODEL = ROLE_DEFAULTS["cinematic"]
+DEFAULT_XAI_CHAT_EXPERT_MODEL = "grok-v9-4p5-chat-expert"
 DEFAULT_XAI_MULTI_MODEL = "grok-v9-4p5-multi"
 DEFAULT_XAI_AUTO_MODEL = "grok-4-auto"
 DEFAULT_XAI_BUILD_MODEL = ROLE_DEFAULTS["build"]
@@ -155,21 +156,111 @@ GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
 }
 
 # ---------------------------------------------------------------------------
+# Grok Build v9-4p5 / Auto specialist picker aliases (Model Layer v4.5)
+# Native product IDs are not always on the public xAI API; these wrap grok-4.5
+# with role-tuned sampling via cli-chat-proxy. Install:
+#   bash scripts/install_v9_grok_models.sh
+# ---------------------------------------------------------------------------
+
+GROK_BUILD_V9_MODELS: dict[str, dict[str, Any]] = {
+    "grok-v9-4p5-chat-expert": {
+        "label": "Grok v9 4.5 Chat Expert",
+        "role": "specialist_craft",
+        "base_model": "grok-4.5",
+        "temperature": 0.55,
+        "description": "Specialist craft — DNA, hero prompts, DoP, QA (high reasoning)",
+        "aliases": [
+            "v9-4p5-chat-expert",
+            "chat-expert",
+            "4p5-expert",
+            "grok-4.5-expert",
+            # Family short names → craft default (not multi)
+            "grok-v9",
+            "grok-v9-4p5",
+            "v9",
+            "v9-4p5",
+        ],
+    },
+    "grok-v9-4p5-multi": {
+        "label": "Grok v9 4.5 Multi",
+        "role": "multi_agent",
+        "base_model": "grok-4.5",
+        "temperature": 0.65,
+        "description": "Multi-agent orchestration — handoffs, sequences, Team Leader",
+        "aliases": ["v9-4p5-multi", "4p5-multi", "multi", "grok-4.5-multi"],
+    },
+    "grok-4-auto": {
+        "label": "Grok 4 Auto",
+        "role": "auto_route",
+        "base_model": "grok-4.5",
+        "temperature": 0.50,
+        "description": "Draft / quota / automatic routing (medium reasoning)",
+        "aliases": ["4-auto", "auto", "grok-auto"],
+    },
+}
+
+# Role display name / skill slug → preferred specialist chat model
+# (registry stack default remains grok-4.5; this is Model Layer routing only)
+ROLE_MODEL_PREFERENCES: dict[str, str] = {
+    # Multi-agent / orchestration
+    "team leader": DEFAULT_XAI_MULTI_MODEL,
+    "studio director": DEFAULT_XAI_MULTI_MODEL,
+    "studio director (full studio mode)": DEFAULT_XAI_MULTI_MODEL,
+    "mega production architect": DEFAULT_XAI_MULTI_MODEL,
+    "sequence director": DEFAULT_XAI_MULTI_MODEL,
+    "cinematic sequence extender": DEFAULT_XAI_MULTI_MODEL,
+    "continuity consistency guardian": DEFAULT_XAI_MULTI_MODEL,
+    "continuity & consistency guardian": DEFAULT_XAI_MULTI_MODEL,
+    # Specialist craft
+    "imagine prompt master": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "character dna extractor": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "identity lock specialist": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "quality assurance guardian": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "qa guardian": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "narrative arc": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "narrative arc pacing strategist": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "director of photography": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "sonic architect": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "sonic architect native audio virtuoso": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "erosforge nsfw director": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "costume wardrobe continuity": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    "performance emotion director": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+    # Draft / quota
+    "animatic director": DEFAULT_XAI_AUTO_MODEL,
+    "reference asset curator": DEFAULT_XAI_AUTO_MODEL,
+    "generation tracker": DEFAULT_XAI_AUTO_MODEL,
+    "workflow quota optimizer": DEFAULT_XAI_AUTO_MODEL,
+}
+
+# ---------------------------------------------------------------------------
 # xAI API chat models (https://api.x.ai/v1)
 # Defaults are ROLE_DEFAULTS only — no per-entry default/build_default flags.
 # ---------------------------------------------------------------------------
 
 XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
     # --- v3.8.6 v9-4p5 surface family (opt-in aliases; grok-4.5 remains default) ---
+    # Note: public api.x.ai may not list these product IDs; Grok Build pickers
+    # install via scripts/install_v9_grok_models.sh (base_model grok-4.5).
     "grok-v9-4p5-chat-expert": {
         "label": "Grok v9 4.5 Chat Expert",
         "context_tokens": 1_000_000,
         "input_usd_per_1m": 1.25,
         "output_usd_per_1m": 2.50,
         "use_case": "Highest-quality single-agent chat, deep reasoning, expert cinematic direction",
+        "role": "specialist_craft",
         "strengths": ["reasoning", "prompt_quality", "character_consistency", "long_context"],
         "preferred_for": ["Studio Director", "Imagine Prompt Master", "Narrative Arc", "QA Guardian"],
-        "aliases": ["v9-4p5-chat-expert", "chat-expert", "4p5-expert", "grok-4.5-expert"],
+        "aliases": [
+            "v9-4p5-chat-expert",
+            "chat-expert",
+            "4p5-expert",
+            "grok-4.5-expert",
+            # Family short names → chat-expert (craft default)
+            "grok-v9",
+            "grok-v9-4p5",
+            "v9",
+            "v9-4p5",
+        ],
     },
     "grok-v9-4p5-multi": {
         "label": "Grok v9 4.5 Multi",
@@ -177,6 +268,7 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
         "input_usd_per_1m": 1.25,
         "output_usd_per_1m": 2.50,
         "use_case": "Multi-agent orchestration, Team Leader synthesis, parallel specialist coordination",
+        "role": "multi_agent",
         "strengths": ["multi_agent", "handoff_integrity", "parallel_reasoning", "synthesis"],
         "preferred_for": ["Team Leader", "Studio Director (Full Studio Mode)", "Mega Production Architect", "Sequence Director"],
         "aliases": ["v9-4p5-multi", "4p5-multi", "multi", "grok-4.5-multi"],
@@ -187,6 +279,7 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
         "input_usd_per_1m": 1.00,
         "output_usd_per_1m": 2.00,
         "use_case": "Automatic routing / balanced general-purpose",
+        "role": "auto_route",
         "strengths": ["balanced", "speed", "general"],
         "preferred_for": ["Routine specialist work", "draft passes", "quota-sensitive sessions"],
         "aliases": ["4-auto", "auto", "grok-auto"],
@@ -339,6 +432,7 @@ _CHAT_ALIAS_MAP = _build_alias_map(XAI_CHAT_MODELS)
 _VIDEO_ALIAS_MAP = _build_alias_map(IMAGINE_VIDEO_MODELS)
 _IMAGE_ALIAS_MAP = _build_alias_map(IMAGINE_IMAGE_MODELS)
 _NSFW_BUILD_ALIAS_MAP = _build_alias_map(GROK_BUILD_NSFW_MODELS)
+_V9_BUILD_ALIAS_MAP = _build_alias_map(GROK_BUILD_V9_MODELS)
 
 
 def _resolve_from_alias_map(
@@ -367,6 +461,56 @@ def resolve_image_model(slug: str | None = None) -> str:
 def resolve_chat_model(slug: str | None = None) -> str:
     """Resolve chat model slug; empty/None → cinematic default (grok-4.5)."""
     return _resolve_from_alias_map(slug, _CHAT_ALIAS_MAP, DEFAULT_XAI_CHAT_MODEL)
+
+
+def resolve_v9_build_model(slug: str | None = None) -> str | None:
+    """Resolve Grok Build v9/auto picker alias → canonical custom-model id.
+
+    Returns None when slug is empty. Unknown non-empty slugs return None
+    (no silent fallback — use resolve_chat_model for chat registry).
+    """
+    if not slug or not str(slug).strip():
+        return None
+    normalized = str(slug).strip().lower()
+    return _V9_BUILD_ALIAS_MAP.get(normalized)
+
+
+def known_v9_build_model(slug: str | None) -> bool:
+    """True if slug is a registered v9/auto Build picker id or alias."""
+    if not slug or not str(slug).strip():
+        return False
+    return str(slug).strip().lower() in _V9_BUILD_ALIAS_MAP
+
+
+def v9_build_base_model(slug: str | None) -> str | None:
+    """Return the underlying chat base model for a v9/auto picker alias."""
+    resolved = resolve_v9_build_model(slug)
+    if not resolved:
+        return None
+    return GROK_BUILD_V9_MODELS[resolved].get("base_model")
+
+
+def recommended_model_for_role(role: str | None) -> str:
+    """Return preferred Model Layer chat slug for a Role Card / agent name.
+
+    Falls back to DEFAULT_XAI_CHAT_EXPERT_MODEL for unknown specialist-style
+    names, and DEFAULT_XAI_CHAT_MODEL only when role is empty.
+    """
+    if not role or not str(role).strip():
+        return DEFAULT_XAI_CHAT_MODEL
+    key = str(role).strip().lower()
+    if key in ROLE_MODEL_PREFERENCES:
+        return ROLE_MODEL_PREFERENCES[key]
+    # Fuzzy contains match (e.g. "Imagine Prompt Master v3.5")
+    for pref_key, slug in ROLE_MODEL_PREFERENCES.items():
+        if pref_key in key or key in pref_key:
+            return slug
+    # Explicit multi/expert/auto keywords
+    if any(t in key for t in ("multi", "handoff", "orchestrat", "team leader", "sequence")):
+        return DEFAULT_XAI_MULTI_MODEL
+    if any(t in key for t in ("draft", "animatic", "quota", "auto", "fast")):
+        return DEFAULT_XAI_AUTO_MODEL
+    return DEFAULT_XAI_CHAT_EXPERT_MODEL
 
 
 def resolve_nsfw_build_model(slug: str | None = None) -> str | None:
@@ -575,6 +719,21 @@ def verify_model_compatibility() -> dict[str, Any]:
         issues.append(f"cinematic default {DEFAULT_XAI_CHAT_MODEL!r} missing from XAI_CHAT_MODELS")
     if DEFAULT_XAI_BUILD_MODEL not in XAI_CHAT_MODELS:
         issues.append(f"build default {DEFAULT_XAI_BUILD_MODEL!r} missing from XAI_CHAT_MODELS")
+    if DEFAULT_XAI_CHAT_EXPERT_MODEL not in XAI_CHAT_MODELS:
+        issues.append(
+            f"chat-expert specialist {DEFAULT_XAI_CHAT_EXPERT_MODEL!r} missing from XAI_CHAT_MODELS"
+        )
+    if DEFAULT_XAI_MULTI_MODEL not in XAI_CHAT_MODELS:
+        issues.append(f"multi specialist {DEFAULT_XAI_MULTI_MODEL!r} missing from XAI_CHAT_MODELS")
+    if DEFAULT_XAI_AUTO_MODEL not in XAI_CHAT_MODELS:
+        issues.append(f"auto specialist {DEFAULT_XAI_AUTO_MODEL!r} missing from XAI_CHAT_MODELS")
+    for v9_slug in (
+        DEFAULT_XAI_CHAT_EXPERT_MODEL,
+        DEFAULT_XAI_MULTI_MODEL,
+        DEFAULT_XAI_AUTO_MODEL,
+    ):
+        if v9_slug not in GROK_BUILD_V9_MODELS:
+            issues.append(f"specialist {v9_slug!r} missing from GROK_BUILD_V9_MODELS picker registry")
     if DEFAULT_GROK_BUILD_MODEL not in GROK_BUILD_CLI_MODELS:
         issues.append(f"CLI default {DEFAULT_GROK_BUILD_MODEL!r} missing from GROK_BUILD_CLI_MODELS")
     if GROK_BUILD_FORK_MODEL not in GROK_BUILD_CLI_MODELS:
@@ -613,6 +772,35 @@ def verify_model_compatibility() -> dict[str, Any]:
                 issues.append(
                     f"nsfw_build: {nsfw_id!r} base_model {base!r} not in known catalogs"
                 )
+
+    def _resolve_v9_strict(key: str) -> str:
+        got = resolve_v9_build_model(key)
+        return got if got is not None else ""
+
+    _check_registry_aliases("v9_build", GROK_BUILD_V9_MODELS, _resolve_v9_strict, issues)
+    for v9_id, info in GROK_BUILD_V9_MODELS.items():
+        base = info.get("base_model")
+        if not base:
+            issues.append(f"v9_build: {v9_id!r} missing base_model")
+            continue
+        if base not in GROK_BUILD_CLI_MODELS and base not in XAI_CHAT_MODELS:
+            if base not in ("grok-composer-2.5-fast",):
+                issues.append(
+                    f"v9_build: {v9_id!r} base_model {base!r} not in known catalogs"
+                )
+        # Canonical chat registry must resolve the same slug
+        if resolve_chat_model(v9_id) != v9_id:
+            issues.append(
+                f"v9_build: resolve_chat_model({v9_id!r}) → {resolve_chat_model(v9_id)!r}"
+            )
+
+    # Role routing sanity
+    if recommended_model_for_role("Imagine Prompt Master") != DEFAULT_XAI_CHAT_EXPERT_MODEL:
+        issues.append("recommended_model_for_role(Imagine Prompt Master) must be chat-expert")
+    if recommended_model_for_role("Team Leader") != DEFAULT_XAI_MULTI_MODEL:
+        issues.append("recommended_model_for_role(Team Leader) must be multi")
+    if recommended_model_for_role("Animatic Director") != DEFAULT_XAI_AUTO_MODEL:
+        issues.append("recommended_model_for_role(Animatic Director) must be auto")
 
     # Empty resolve → cinematic / video / image defaults
     if resolve_chat_model(None) != DEFAULT_XAI_CHAT_MODEL:
@@ -691,6 +879,11 @@ def list_nsfw_build_models() -> dict[str, dict[str, Any]]:
     return dict(GROK_BUILD_NSFW_MODELS)
 
 
+def list_v9_build_models() -> dict[str, dict[str, Any]]:
+    """Return Grok Build v9-4p5 / Auto specialist picker registry."""
+    return dict(GROK_BUILD_V9_MODELS)
+
+
 def list_all_models() -> dict[str, Any]:
     """Return full registry for CLI/UI display."""
     return {
@@ -702,6 +895,20 @@ def list_all_models() -> dict[str, Any]:
             "fork_secondary": GROK_BUILD_FORK_MODEL,
             "recommended_version": RECOMMENDED_GROK_BUILD_CLI_VERSION,
             "models": GROK_BUILD_CLI_MODELS,
+        },
+        "grok_build_v9": {
+            "opt_in": True,
+            "install": "bash scripts/install_v9_grok_models.sh",
+            "config_example": "config/grok-build-v9-models.example.toml",
+            "note": (
+                "Picker aliases for Model Layer v4.5 (chat-expert / multi / auto). "
+                "Wrap grok-4.5 when native product IDs are unavailable on the team/API. "
+                "Not Imagine generators. Prefer cli-chat-proxy session auth."
+            ),
+            "chat_expert": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+            "multi": DEFAULT_XAI_MULTI_MODEL,
+            "auto": DEFAULT_XAI_AUTO_MODEL,
+            "models": GROK_BUILD_V9_MODELS,
         },
         "grok_build_nsfw": {
             "opt_in": True,
@@ -716,6 +923,9 @@ def list_all_models() -> dict[str, Any]:
         "xai_chat": {
             "default": DEFAULT_XAI_CHAT_MODEL,
             "build_default": DEFAULT_XAI_BUILD_MODEL,
+            "chat_expert": DEFAULT_XAI_CHAT_EXPERT_MODEL,
+            "multi": DEFAULT_XAI_MULTI_MODEL,
+            "auto": DEFAULT_XAI_AUTO_MODEL,
             "models": XAI_CHAT_MODELS,
         },
         "imagine_video": {

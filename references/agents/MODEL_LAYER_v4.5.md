@@ -35,7 +35,7 @@ And for video generation:
 - **Strengths**: Reasoning depth, prompt quality, long-context fidelity, character consistency, subtle emotional subtext.
 - **Preferred agents**: Imagine Prompt Master, Character DNA Extractor, Identity Lock Specialist, Quality Assurance Guardian, Narrative Arc & Pacing Strategist, Director of Photography, Sonic Architect (complex layers), ErosForge NSFW Director.
 - **Reasoning recommendation**: **high** for Bibles, locks, QA, DNA, hero prompts, and complex creative judgments.
-- **Aliases**: `v9-4p5-chat-expert`, `chat-expert`, `4p5-expert`, `grok-4.5-expert`
+- **Aliases**: `v9-4p5-chat-expert`, `chat-expert`, `4p5-expert`, `grok-4.5-expert`, plus family shorts `grok-v9`, `grok-v9-4p5`, `v9`, `v9-4p5`
 
 ### 2. grok-v9-4p5-multi  (Default for Team Leader / Full Studio Mode)
 
@@ -144,28 +144,45 @@ imagine_video_support:
 from tools.models import (
     resolve_chat_model,
     recommended_model_for_role,
-    DEFAULT_XAI_CHAT_MODEL,      # → grok-v9-4p5-chat-expert
-    DEFAULT_XAI_MULTI_MODEL,     # → grok-v9-4p5-multi
-    DEFAULT_XAI_AUTO_MODEL,      # → grok-4-auto
+    DEFAULT_XAI_CHAT_MODEL,          # → grok-4.5 (registry / Bible / Build stack lock)
+    DEFAULT_XAI_CHAT_EXPERT_MODEL,   # → grok-v9-4p5-chat-expert (specialist craft)
+    DEFAULT_XAI_MULTI_MODEL,         # → grok-v9-4p5-multi
+    DEFAULT_XAI_AUTO_MODEL,          # → grok-4-auto
 )
 ```
 
 - `resolve_chat_model("multi")` → `grok-v9-4p5-multi`
+- `resolve_chat_model("chat-expert")` → `grok-v9-4p5-chat-expert`
+- `resolve_chat_model("grok-v9")` / `"grok-v9-4p5"` / `"v9"` → `grok-v9-4p5-chat-expert`
 - `recommended_model_for_role("Team Leader")` → `grok-v9-4p5-multi`
 - `recommended_model_for_role("Imagine Prompt Master")` → `grok-v9-4p5-chat-expert`
+
+### Grok Build picker install (when native product IDs are unavailable)
+
+Public `api.x.ai` may return **Model not found** for `grok-v9-4p5-*` / `grok-4-auto`. Install session-auth specialist pickers that wrap `grok-4.5` with role-tuned sampling:
+
+```bash
+bash scripts/install_v9_grok_models.sh          # first install / upgrade bare stubs
+bash scripts/install_v9_grok_models.sh --force  # refresh
+grok models
+/model grok-v9-4p5-chat-expert
+```
+
+Config source: `config/grok-build-v9-models.example.toml` · registry: `GROK_BUILD_V9_MODELS`.
 
 ---
 
 ## Migration & Validation Notes
 
 - All Role Cards in `references/agents/` have been enhanced (or are being enhanced) to this standard as of 2026-07-21.
-- Previous hard-coded “Grok 4.5” language should now use the explicit v9-4p5 identifiers.
+- Previous hard-coded “Grok 4.5” language should now use the explicit v9-4p5 identifiers for **specialist routing**; stack lock / Bibles remain **`grok-4.5`**.
 - Team Leader / Full Studio Mode orchestration **defaults to grok-v9-4p5-multi**.
 - Run after changes:
 
 ```bash
 python tools/models.py
 python tools/cinematic_studio_cli.py models verify
+bash scripts/install_v9_grok_models.sh --force
 bash .grok/skills/cinematic-skill-creator/scripts/validate_skill.sh <skill> --v45
 ```
 
