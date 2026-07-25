@@ -228,6 +228,11 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
             "--strict-motion",
             help="Exit 1 if video shot lacks complete motion_vector triple",
         ),
+        strict_wave_a: bool = typer.Option(
+            False,
+            "--strict-wave-a",
+            help="Wave A gate: implies plate+motion strict + optional Wave A field checks",
+        ),
     ):
         """Execute a batch shot via Imagine API (image / i2v / video)."""
         from imagine_client import ImagineAPIError
@@ -238,7 +243,10 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
             console.print(f"[red]Shot not found:[/red] {shot_id}")
             raise typer.Exit(1)
         preflight_spend(
-            shot, strict_plate=strict_plate, strict_motion=strict_motion
+            shot,
+            strict_plate=strict_plate,
+            strict_motion=strict_motion,
+            strict_wave_a=strict_wave_a,
         )
         try:
             result = execute_nsfw_shot(
@@ -280,8 +288,16 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
             "--strict-motion",
             help="Exit 1 if video shot lacks complete motion_vector triple",
         ),
+        strict_wave_a: bool = typer.Option(
+            False,
+            "--strict-wave-a",
+            help="Wave A gate: implies plate+motion strict on each shot",
+        ),
     ):
         """Run automated NSFW session — execute next priority shots."""
+        if strict_wave_a:
+            strict_plate = True
+            strict_motion = True
         summary = run_batch_session(
             batch_name,
             pipeline="nsfw",

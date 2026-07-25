@@ -330,6 +330,14 @@ def register(app: typer.Typer) -> None:
             "--strict-handoff",
             help="Exit 1 if semantic readiness fails (blockers); do not write output",
         ),
+        strict_wave_a: bool = typer.Option(
+            False,
+            "--strict-wave-a",
+            help=(
+                "Wave A still→video gates (plate approved/locked + motion triple); "
+                "implies readiness hard-fail like --strict-handoff for motion"
+            ),
+        ),
         checklist: str = typer.Option(
             None,
             "--checklist",
@@ -342,6 +350,7 @@ def register(app: typer.Typer) -> None:
         """Emit official Imagine Agent Mode Handoff packet (protocol v3.7.1)."""
         from handoff_readiness import evaluate_imagine_handoff_readiness
         from specialist_order import parse_checklist_csv
+        from wave_a_packets import validate_optional_wave_a_fields
 
         try:
             subject, context = resolve_handoff_subject(
@@ -374,9 +383,10 @@ def register(app: typer.Typer) -> None:
             console.print(f"[red]{exc}[/red]")
             raise typer.Exit(1) from exc
 
-        # --strict-handoff also requires complete motion_vector triple (MB-02)
+        # --strict-handoff / --strict-wave-a require complete motion_vector triple (MB-02)
+        hard = strict_handoff or strict_wave_a
         ready = evaluate_imagine_handoff_readiness(
-            packet, strict_motion=strict_handoff
+            packet, strict_motion=hard
         )
         for w in ready.get("warnings") or []:
             console.print(f"[yellow]⚠️  {w}[/yellow]")
@@ -387,8 +397,20 @@ def register(app: typer.Typer) -> None:
                 console.print("[dim]Fixes:[/dim]")
                 for fix in ready["fixes"]:
                     console.print(f"  → {fix}")
-        if strict_handoff and not ready.get("pass"):
-            console.print("[red]Handoff readiness failed (--strict-handoff)[/red]")
+        wa_issues, wa_warnings = validate_optional_wave_a_fields(
+            packet, strict_wave_a=strict_wave_a
+        )
+        for w in wa_warnings:
+            console.print(f"[yellow]⚠️  wave-a: {w}[/yellow]")
+        if wa_issues:
+            for i in wa_issues:
+                console.print(f"[red]wave-a: {i}[/red]")
+            if strict_wave_a:
+                console.print("[red]Wave A handoff gate failed (--strict-wave-a)[/red]")
+                raise typer.Exit(1)
+        if hard and not ready.get("pass"):
+            flag = "--strict-wave-a" if strict_wave_a else "--strict-handoff"
+            console.print(f"[red]Handoff readiness failed ({flag})[/red]")
             raise typer.Exit(1)
 
         if format == "json":

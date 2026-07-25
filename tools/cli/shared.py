@@ -92,11 +92,23 @@ AGENTS = {
     ],
     "Production Pipeline": [
         "Reference & Asset Curator v3.6.5",
+        "Plate & Motion Readiness Lead v4.5",
         "Image-to-Video Specialist v3.6.5",
+        "Contact & Micro-Physics Specialist v4.5",
         "SFW Batch Orchestrator v1.0",
         "Assembly Editor v3.6.5",
         "Multi-Character Identity Arbiter v3.6.5",
         "Costume & Wardrobe Continuity v4.5",
+    ],
+    "Wave A Specialists": [
+        "Parallel Brief Dispatcher v4.5",
+        "Hair & Makeup Continuity v4.5",
+        "Dialogue & ADR Director v4.5",
+        "Score & Temp Music Supervisor v4.5",
+        "Title & Motion Graphics Lead v4.5",
+        "Distribution & Crop Strategist v4.5",
+        "Grok Doctor v4.5",
+        "Multi-Clip Continuity Orchestrator v4.5",
     ],
     "Specialist (Opt-in)": [
         "ErosForge NSFW Director v3.6.5",
@@ -140,6 +152,16 @@ AGENT_ROLE_CARDS: dict[str, str] = {
     "ErosForge NSFW Director v3.6.5": "ErosForge_NSFW_Director.md",
     "NSFW Quota Orchestrator v1.0": "NSFW_Quota_Orchestrator.md",
     "NSFW Sequence Extender v1.0": "NSFW_Sequence_Extender.md",
+    "Plate & Motion Readiness Lead v4.5": "Plate_Motion_Readiness_Lead.md",
+    "Contact & Micro-Physics Specialist v4.5": "Contact_Micro_Physics_Specialist.md",
+    "Hair & Makeup Continuity v4.5": "Hair_Makeup_Continuity.md",
+    "Dialogue & ADR Director v4.5": "Dialogue_ADR_Director.md",
+    "Score & Temp Music Supervisor v4.5": "Score_Temp_Music_Supervisor.md",
+    "Title & Motion Graphics Lead v4.5": "Title_Motion_Graphics_Lead.md",
+    "Distribution & Crop Strategist v4.5": "Distribution_Crop_Strategist.md",
+    "Parallel Brief Dispatcher v4.5": "Parallel_Brief_Dispatcher.md",
+    "Grok Doctor v4.5": "Grok_Doctor.md",
+    "Multi-Clip Continuity Orchestrator v4.5": "Multi_Clip_Continuity_Orchestrator.md",
 }
 
 ROLE_CARD_INDEX_FILE = "AGENT_INDEX.md"
@@ -153,6 +175,7 @@ ROLE_CARD_SHARED_DOCS = frozenset({
     "IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md",
     "IMAGINE_EXECUTION_BRIDGE.md",  # v3.8.6 surface-C bridge protocol
     "IDENTITY_CONTINUITY_PROTOCOL_v3.8.md",
+    "Parallel_Brief_Protocol.md",
 })
 EXPECTED_ROLE_CARD_COUNT = len(AGENT_ROLE_CARDS)
 

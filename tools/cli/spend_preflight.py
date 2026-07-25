@@ -51,8 +51,12 @@ def preflight_spend(
     *,
     strict_plate: bool = False,
     strict_motion: bool = False,
+    strict_wave_a: bool = False,
 ) -> dict[str, Any]:
-    """Evaluate plate+motion; print notes; exit 1 if hard-fail flags trip."""
+    """Evaluate plate+motion (+ Wave A optional fields); exit 1 if hard-fail flags trip."""
+    if strict_wave_a:
+        strict_plate = True
+        strict_motion = True
     report = evaluate_generation_spend_readiness(
         shot, strict_motion=strict_motion
     )
@@ -60,13 +64,28 @@ def preflight_spend(
     motion = report.get("motion") or {}
     print_readiness_child(plate, label="plate")
     print_readiness_child(motion, label="motion")
+
+    from wave_a_packets import validate_optional_wave_a_fields
+
+    wa_issues, wa_warnings = validate_optional_wave_a_fields(
+        shot, strict_wave_a=strict_wave_a
+    )
+    for w in wa_warnings:
+        console.print(f"[yellow]⚠️  wave-a: {w}[/yellow]")
+    if wa_issues:
+        for i in wa_issues:
+            console.print(f"[red]wave-a: {i}[/red]")
+        if strict_wave_a:
+            console.print("[red]Wave A spend gate failed (--strict-wave-a)[/red]")
+            raise typer.Exit(1)
+
     reasons = spend_hard_fail_reasons(
         report, strict_plate=strict_plate, strict_motion=strict_motion
     )
     if reasons:
         labels = {
-            "plate": "Plate lock readiness failed (--strict-plate)",
-            "motion": "Motion brief readiness failed (--strict-motion)",
+            "plate": "Plate lock readiness failed (--strict-plate / --strict-wave-a)",
+            "motion": "Motion brief readiness failed (--strict-motion / --strict-wave-a)",
         }
         for r in reasons:
             console.print(f"[red]{labels.get(r, r)}[/red]")
