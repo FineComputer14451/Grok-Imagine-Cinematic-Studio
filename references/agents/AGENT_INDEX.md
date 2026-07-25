@@ -10,7 +10,8 @@
 Authoritative Role Cards: `references/agents/*.md`  
 Shared model rules: `references/agents/MODEL_LAYER_v4.5.md`  
 Imagine Agent Mode Handoff: `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`  
-Identity Continuity: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`
+Identity Continuity: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`  
+**Parallel Brief Protocol:** `references/agents/Parallel_Brief_Protocol.md` (Studio Director concurrent specialist briefs under MAXIMUM AGENTIC MODE)
 
 ---
 

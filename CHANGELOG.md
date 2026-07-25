@@ -5,15 +5,11 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **Parallel Brief Protocol v1.0** (`references/agents/Parallel_Brief_Protocol.md`) — Official multi-agent coordination primitive for concurrent specialist work under MAXIMUM AGENTIC MODE. Includes templates, NSFW Prompt Optimizer + Foley consumption patterns, and convergence rules into `imagine_agent_mode_handoff`. Pointer added to Studio Director Role Card, AGENTS.md, and AGENT_INDEX.md.
 - **Costume & Wardrobe Continuity** agent (`costume-wardrobe-continuity`) — nested `wardrobe_lock` on Character DNA, inject blocks, clip `wardrobe_state`, optional identity handoff `wardrobe` section (`tools/wardrobe_lock.py`)
 - **Grok Doctor** — `scripts/grok_doctor.sh`, `cinematic-studio doctor`, and `grok-doctor` PATH entry for Grok Build + Cinematic Studio health checks (`--quick`, `--json`, `--strict`)
-- **Grok Doctor skill** (`grok-doctor`) — multi-agent Studio Health Diagnostician Role Card / skill for roster, handoff, continuity, and pipeline readiness reports
-- **Multi-Clip Continuity Orchestrator** (`multi-clip-continuity-orchestrator`) — cross-agent continuity commander for LAST_FRAME_RECAP / momentum / audio chains and Chain QA gates
-- **Method A Grok Build CLI ensure** — install/update path installs or upgrades the `grok` binary (≥ **0.2.93**) via `grok update` / official installer, with `CINEMATIC_SKIP_GROK_CLI` / `CINEMATIC_FORCE_GROK_CLI` / `CINEMATIC_MIN_GROK_CLI` controls
 
 ### Changed
-- **Suite size** — full marketplace suite **52 → 54** skills (packs: core **20**, sequence-narrative **16**); docs/taxonomy/manifest aligned
-
 - **Quota reconcile exclusive cascade** — `reconcile_from_jobs` uses one source only: billable `generation_ledger` rows (via public `generation_tracker.load_ledger`) → else imagine jobs with explicit `actual_credits` → else history `est:N`. Failed/est-only ledger rows no longer dilute burn-rate; recon entries share `_recon_entry` / `_fold_entries`. Ledger path is `studio_paths.ARTIFACTS_DIR / generation_ledger.json`.
 - **`quota sync` CLI** — surfaces **cascade source** / `sources`, risk coloring, optional `--entries` table, and `--json` payload including entries (`quota_sync_summary` exposes `cascade_source` + `sources`).
 - **Grok Doctor `quota recon` check** — read-only `ledger_recon_alignment` compares billable generation-ledger totals to stored reconciliation (aligned / stale / mismatch / orphan); WARN with `quota sync` hint when drift is detected (section **13. Quota recon**).
@@ -25,10 +21,10 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Grok Doctor** is now a **Python check registry** (`tools/doctor.py` + `doctor_checks.py` + `doctor_types.py`) reusing `models.verify_model_compatibility`, `studio_health`, and `plugin_catalog`. Shell entrypoints are thin launchers; `cinematic-studio doctor` routes through the Python CLI (not the meta installer).
 - Doctor uses a **declarative `CheckSpec` registry** (`quick` / `skip_external` filter flags only — no fake PASS rows). Catalog **artifact** errors FAIL; pin-drift WARNs. Model stack summary is embedded in verify detail (no free PASS after FAIL).
 - `models.verify_model_compatibility` splits **`warnings`** (operational) vs **`notes`** (intentional stack info). Public helpers: `version_tuple`, `cli_version_at_least`, `probe_grok_cli`.
-- **Model Layer stack lock** — suite skills include the canonical **Stack default** line (`grok-4.5` cinematic+Build, CLI ≥ 0.2.93 / fork `grok-build`, opt-in 1M `grok-4.3`) above Registry · `models verify` (now **54** skills).
+- **Model Layer stack lock** — all **52** suite skills now include the canonical **Stack default** line (`grok-4.5` cinematic+Build, CLI ≥ 0.2.93 / fork `grok-build`, opt-in 1M `grok-4.3`) above Registry · `models verify`. Closed the gap where 19 skills had the v9-4p5 table + `model_compatibility` but no explicit stack lock; `cinematic-skill-creator` also gained the full `model_compatibility` YAML block.
 - Marketplace catalog re-pinned after skill and script content revisions (install SHA on content commit; pin-only tip expected).
-- **Docs pass** — guides and install matrix aligned to current suite (**54 skills**, core pack **20**, sequence-narrative **16**), Model Layer v4.5, two-step catalog pin + in-repo `verify_plugins`/`release_plugin_catalog`.
-- **Suite count sweep** — current-facing marketing/docs/skills say **54** (includes `grok-doctor` + `multi-clip-continuity-orchestrator`).
+- **Docs pass (v3.8.6)** — `Quick_Start_Guide.md` and `installation_guide.md` aligned to **52 skills**, core pack **19**, Model Layer v4.5, two-step catalog pin + in-repo `verify_plugins`/`release_plugin_catalog`, local plugin reinstall notes; `UPGRADE_GUIDE.md` current target **3.8.6**.
+- **Suite count sweep** — current-facing marketing/docs/skills say **52** (not 51/48): `MASTER_PROMPT`, release notes index + v3.8.6 notes, `OFFICIAL_OVERVIEW`, `ARCHITECTURE`, meta-installer pack matrix, `grok-imagine-cinematic-studio` skill; README Model Layer pointer → `MODEL_LAYER_v4.5.md`.
 
 
 ### Fixed
@@ -72,7 +68,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Skill suite 48 → 51** — add `cinematic-skill-creator`, `extend-frame-to-video`, `quota-dashboard` to full pack union + `required_skills.manifest`
 - Residual Grok 4.3 language removed from the upgraded skill set
 - All upgraded skills now declare preferred model routing and dual Imagine Video support consistently
-- Handoff readiness `PROTOCOL_OK` includes **3.8.5**; role-card shared-doc allowlist updated
+- Handoff readiness `PROTOCOL_OK` includes **3.8.5`; role-card shared-doc allowlist updated
 
 ### Changed (full systematic alignment)
 - **Complete dual-model wave** — all **51** suite skills now include `model_compatibility` + Grok 4.5 / v9-4p5 Model Layer + dual Imagine 1.0/1.5 notes
