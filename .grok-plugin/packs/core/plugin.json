@@ -33,7 +33,8 @@
     ".grok/skills/quota-dashboard",
     ".grok/skills/quality-assurance-guardian",
     ".grok/skills/chain-qa-protocol",
-    ".grok/skills/cinematic-skill-creator"
+    ".grok/skills/cinematic-skill-creator",
+    ".grok/skills/grok-doctor"
   ],
   "commands": [
     "commands/cinematic.md",

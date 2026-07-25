@@ -81,6 +81,10 @@
             "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
           },
           {
+            "name": "grok-doctor",
+            "description": "Studio Health Diagnostician for Grok Imagine Cinematic Studio. Audits agent roster, handoff integrity, continuity score…"
+          },
+          {
             "name": "director-of-photography",
             "description": "Visual language architect and cinematic lens master. Designs lighting motivation, camera choreography, lens choices, an…"
           },
@@ -143,6 +147,10 @@
           {
             "name": "continuity-consistency-guardian",
             "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual, prop, environmental and emotional continuity acros…"
+          },
+          {
+            "name": "multi-clip-continuity-orchestrator",
+            "description": "Multi-agent continuity commander for long-form and multi-clip productions. Manages LAST_FRAME_RECAP + MOMENTUM_VECTOR +…"
           },
           {
             "name": "performance-emotion-director",
@@ -260,7 +268,7 @@
           }
         ]
       },
-      "sha": "0eb3de94f8e541eca7ab8a16396ae5984f4d6ca3"
+      "sha": "c99033383896504c8a208e2bb794ac8d24ce5b2f"
     },
     "grok-imagine-cinematic-core": {
       "components": {
@@ -340,6 +348,10 @@
           {
             "name": "cinematic-skill-creator",
             "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
+          },
+          {
+            "name": "grok-doctor",
+            "description": "Studio Health Diagnostician for Grok Imagine Cinematic Studio. Audits agent roster, handoff integrity, continuity score…"
           }
         ],
         "commands": [
@@ -381,7 +393,7 @@
           }
         ]
       },
-      "sha": "0eb3de94f8e541eca7ab8a16396ae5984f4d6ca3"
+      "sha": "c99033383896504c8a208e2bb794ac8d24ce5b2f"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -424,7 +436,7 @@
           }
         ]
       },
-      "sha": "0eb3de94f8e541eca7ab8a16396ae5984f4d6ca3"
+      "sha": "c99033383896504c8a208e2bb794ac8d24ce5b2f"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -456,6 +468,10 @@
           {
             "name": "continuity-consistency-guardian",
             "description": "Sequence memory keeper and multi-timeline guardian. Monitors visual, prop, environmental and emotional continuity acros…"
+          },
+          {
+            "name": "multi-clip-continuity-orchestrator",
+            "description": "Multi-agent continuity commander for long-form and multi-clip productions. Manages LAST_FRAME_RECAP + MOMENTUM_VECTOR +…"
           },
           {
             "name": "performance-emotion-director",
@@ -491,7 +507,7 @@
           }
         ]
       },
-      "sha": "0eb3de94f8e541eca7ab8a16396ae5984f4d6ca3"
+      "sha": "c99033383896504c8a208e2bb794ac8d24ce5b2f"
     },
     "grok-imagine-nsfw": {
       "components": {
@@ -520,7 +536,7 @@
           }
         ]
       },
-      "sha": "0eb3de94f8e541eca7ab8a16396ae5984f4d6ca3"
+      "sha": "c99033383896504c8a208e2bb794ac8d24ce5b2f"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -553,7 +569,7 @@
           }
         ]
       },
-      "sha": "0eb3de94f8e541eca7ab8a16396ae5984f4d6ca3"
+      "sha": "c99033383896504c8a208e2bb794ac8d24ce5b2f"
     }
   }
 }
