@@ -45,6 +45,29 @@ SKILLS_DIR=~/.grok/skills PROJECT_DIR=~/my-projects bash scripts/cinematic_studi
 | `SKILLS_DIR` | `~/.grok/skills` | Grok skill discovery (Method A) |
 | `PROJECT_DIR` | `~/Grok-Cinematic-Projects` | References, CLI tools, config, installer scripts |
 | `CINEMATIC_RAW_BASE` | GitHub `main` raw | Fallback downloads during install/reconcile |
+| `CINEMATIC_SKIP_GROK_CLI` | unset | Set `1` to skip Grok Build binary ensure during install |
+| `CINEMATIC_FORCE_GROK_CLI` | unset | Set `1` to reinstall/refresh Grok Build even if version OK |
+| `CINEMATIC_MIN_GROK_CLI` | `0.2.93` | Minimum Grok Build CLI binary version (matches `tools/models.py`) |
+
+### Grok Build CLI binary (automatic on Method A)
+
+Method A install also **ensures the Grok Build CLI binary** (`grok`) is on PATH and ≥ **0.2.93**:
+
+1. Detects `~/.grok/bin/grok` / `~/.local/bin/grok` / `grok` on PATH  
+2. If missing or below min → runs `grok update --stable` when possible, else official installer:  
+   `curl -fsSL https://x.ai/cli/install.sh | bash`  
+3. Symlinks `~/.local/bin/grok` → `~/.grok/bin/grok` when needed  
+4. Installs `cinematic-studio` + `grok-doctor` wrappers under `~/.grok/bin/`
+
+Soft-fail: if the network install fails, skill/project install still continues; fix with the manual curl command above, then re-run install.
+
+```bash
+# Skip binary step (wrapper-only / offline / CI unit tests)
+CINEMATIC_SKIP_GROK_CLI=1 bash scripts/cinematic_studio.sh install
+
+# Force refresh Grok Build to latest stable
+CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install
+```
 
 ---
 
@@ -210,6 +233,8 @@ catalog pin, skills layout, git, API key presence, and optional pytest.
 
 | Symptom | Fix |
 |---------|-----|
+| `grok: command not found` after install | Re-run Method A (auto-installs binary) or `curl -fsSL https://x.ai/cli/install.sh \| bash`; ensure `~/.grok/bin` is on PATH |
+| Grok Build CLI too old | `grok update --stable` or `CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install` |
 | Skills missing after Method A | Re-run `install`; reconciles gaps from GitHub `main` |
 | Nested zip from GitHub Releases | Handled automatically — do not manually flatten |
 | `models verify` fails | Ensure `~/Grok-Cinematic-Projects/tools/` exists; re-run Method A |

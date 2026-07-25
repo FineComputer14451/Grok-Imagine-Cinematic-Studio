@@ -79,6 +79,8 @@ def test_install_wrappers_and_version_pin(tmp_path: Path) -> None:
         "HOME": str(home),
         "PROJECT_DIR": str(project),
         "CINEMATIC_PROJECT_DIR": str(project),
+        # Unit tests must not hit the network for Grok Build install
+        "CINEMATIC_SKIP_GROK_CLI": "1",
         "PATH": f"{home / '.grok' / 'bin'}:{home / '.local' / 'bin'}:{os.environ.get('PATH', '')}",
     }
 
@@ -157,6 +159,7 @@ def test_wrapper_soft_backup_on_content_change(tmp_path: Path) -> None:
         **os.environ,
         "HOME": str(home),
         "PROJECT_DIR": str(project),
+        "CINEMATIC_SKIP_GROK_CLI": "1",
         "PATH": f"{home / '.grok' / 'bin'}:{os.environ.get('PATH', '')}",
     }
 
@@ -183,3 +186,63 @@ def test_wrapper_soft_backup_on_content_change(tmp_path: Path) -> None:
     assert len(backups) == 1
     assert "old" in backups[0].read_text(encoding="utf-8")
     assert "install|update|verify|declutter" in dest.read_text(encoding="utf-8")
+
+
+def test_version_ge_and_parse_helpers() -> None:
+    script = textwrap.dedent(
+        f"""\
+        set -euo pipefail
+        source "{WRAPPER_HELPER}"
+        cinematic_studio_version_ge "0.2.112" "0.2.93" || exit 11
+        cinematic_studio_version_ge "0.2.93" "0.2.93" || exit 12
+        cinematic_studio_version_ge "0.2.90" "0.2.93" && exit 13
+        v="$(cinematic_studio_parse_grok_version 'grok 0.2.112 (9bbd) [stable]')"
+        [[ "$v" == "0.2.112" ]] || exit 14
+        """
+    )
+    result = _run_bash(script, {**os.environ})
+    assert result.returncode == 0, result.stderr + result.stdout
+
+
+def test_ensure_grok_cli_ok_when_binary_present(tmp_path: Path) -> None:
+    """Fake grok binary meeting min version → ensure is a no-op (no network)."""
+    home = tmp_path / "home"
+    home.mkdir()
+    bin_dir = home / ".grok" / "bin"
+    bin_dir.mkdir(parents=True)
+    fake = bin_dir / "grok"
+    fake.write_text(
+        textwrap.dedent(
+            """\
+            #!/usr/bin/env bash
+            if [[ "${1:-}" == "--version" ]]; then
+              echo "grok 0.2.112 (deadbeef) [stable]"
+              exit 0
+            fi
+            echo "unexpected: $*" >&2
+            exit 2
+            """
+        ),
+        encoding="utf-8",
+    )
+    fake.chmod(fake.stat().st_mode | stat.S_IXUSR)
+
+    env = {
+        **os.environ,
+        "HOME": str(home),
+        "PATH": f"{bin_dir}:{os.environ.get('PATH', '')}",
+        # Explicitly allow ensure; fake binary prevents network path
+        "CINEMATIC_SKIP_GROK_CLI": "0",
+        "CINEMATIC_MIN_GROK_CLI": "0.2.93",
+    }
+    script = textwrap.dedent(
+        f"""\
+        set -euo pipefail
+        source "{WRAPPER_HELPER}"
+        cinematic_studio_ensure_grok_build_cli
+        """
+    )
+    result = _run_bash(script, env)
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert "Grok Build CLI OK" in result.stdout
+    assert (home / ".local" / "bin" / "grok").is_symlink()

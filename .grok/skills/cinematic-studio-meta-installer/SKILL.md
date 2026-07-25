@@ -46,7 +46,7 @@ Both methods can ship the same **52 skills** (plugin suite). They differ in **wh
 | **Best for** | Grok chat, agent bootstrap, CLI tools, local verify | Grok Build CLI, marketplace updates, slash commands |
 | **Command** | `cinematic_studio.sh install` (curl, local repo, or zip) | `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust` |
 | **Skills path** | `~/.grok/skills/` | Plugin-managed under `~/.grok/installed-plugins/` |
-| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, installer scripts | Full suite: **52 skills + slash commands**; or modular packs (see matrix) |
+| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts; **ensures Grok Build CLI binary** (`grok` ≥ 0.2.93 via `x.ai/cli/install.sh` / `grok update`) + `cinematic-studio` / `grok-doctor` wrappers | Full suite: **52 skills + slash commands**; or modular packs (see matrix) |
 | **Verify** | `bash scripts/cinematic_studio.sh verify` or `verify --all` | `bash scripts/cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
 | **Update** | `bash scripts/cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` |
 
@@ -145,6 +145,8 @@ Always dry-run first when the user is unsure: `declutter --dry-run`.
 |--------|------|----------|
 | Skills | `~/.grok/skills/` | Skills from `scripts/required_skills.manifest` (matches Grok plugin suite) |
 | Project workspace | `~/Grok-Cinematic-Projects/` | `references/`, `tools/`, `config/`, `scripts/`, docs |
+| **Grok Build CLI binary** | `~/.grok/bin/grok` (+ `~/.local/bin/grok`) | Ensured ≥ **0.2.93** (`grok update` or `https://x.ai/cli/install.sh`) |
+| Studio wrappers | `~/.grok/bin/cinematic-studio`, `grok-doctor` | PATH entrypoints for install/verify/doctor |
 | Grok Build config (optional) | `~/.grok/config.toml` | Copy from `config/grok-build.example.toml` — default `grok-4.5` |
 | Plugin (Method B) | `~/.grok/installed-plugins/` | Full suite and/or satellite pack skill trees + `commands/` |
 
@@ -152,6 +154,9 @@ Override paths with environment variables:
 
 ```bash
 SKILLS_DIR=~/.grok/skills PROJECT_DIR=~/my-projects bash scripts/cinematic_studio.sh install
+# Skip / force Grok Build binary ensure:
+CINEMATIC_SKIP_GROK_CLI=1 bash scripts/cinematic_studio.sh install
+CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install
 ```
 
 | Variable | Default | Purpose |
@@ -159,6 +164,9 @@ SKILLS_DIR=~/.grok/skills PROJECT_DIR=~/my-projects bash scripts/cinematic_studi
 | `SKILLS_DIR` | `~/.grok/skills` | Grok skill discovery (Method A) |
 | `PROJECT_DIR` | `~/Grok-Cinematic-Projects` | References, CLI tools, config, installer scripts |
 | `CINEMATIC_RAW_BASE` | GitHub `main` raw | Fallback downloads during install/reconcile |
+| `CINEMATIC_SKIP_GROK_CLI` | unset | `1` = skip Grok Build binary ensure |
+| `CINEMATIC_FORCE_GROK_CLI` | unset | `1` = reinstall/refresh even if version OK |
+| `CINEMATIC_MIN_GROK_CLI` | `0.2.93` | Min Grok Build binary version |
 
 ## Post-Install Checklist
 
@@ -178,6 +186,8 @@ After a successful install, confirm all of the following:
 | Symptom | Fix |
 |---------|-----|
 | Skills missing after install | Re-run Method A `install`; installer reconciles gaps from GitHub main |
+| `grok: command not found` | Method A re-run (auto-installs binary) or `curl -fsSL https://x.ai/cli/install.sh \| bash` |
+| Grok Build CLI too old | `grok update --stable` or `CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install` |
 | Plugin installed but no CLI/references | Run Method A `install` or clone repo to `~/Grok-Cinematic-Projects/` |
 | Unsure which method was used | `ls ~/.grok/skills/grok-imagine-cinematic-studio` → Method A; `grok plugin details grok-imagine-cinematic-studio` → Method B |
 | Nested zip from GitHub Releases | Handled automatically — do not manually flatten |
