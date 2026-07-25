@@ -14,6 +14,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Changed
 - **Suite size** — marketplace suite **52 → 54** skills; Role-Card core marketing **23 → 25** (Grok Doctor + Multi-Clip Continuity Orchestrator); packs core **20**, sequence-narrative **16**
+- **Parallel Brief Protocol wiring** — specialist Role Cards (Sequence, Multi-Clip Continuity, Continuity Guardian, Identity Lock, DNA Extractor, DoP, Prompt Master, ErosForge, Foley, Sonic, QA, Sequence Extender) now carry Parallel Brief consumption/issuance rules; coverage table added to `Parallel_Brief_Protocol.md`
 - **Quota reconcile exclusive cascade** — `reconcile_from_jobs` uses one source only: billable `generation_ledger` rows (via public `generation_tracker.load_ledger`) → else imagine jobs with explicit `actual_credits` → else history `est:N`. Failed/est-only ledger rows no longer dilute burn-rate; recon entries share `_recon_entry` / `_fold_entries`. Ledger path is `studio_paths.ARTIFACTS_DIR / generation_ledger.json`.
 - **`quota sync` CLI** — surfaces **cascade source** / `sources`, risk coloring, optional `--entries` table, and `--json` payload including entries (`quota_sync_summary` exposes `cascade_source` + `sources`).
 - **Grok Doctor `quota recon` check** — read-only `ledger_recon_alignment` compares billable generation-ledger totals to stored reconciliation (aligned / stale / mismatch / orphan); WARN with `quota sync` hint when drift is detected (section **13. Quota recon**).

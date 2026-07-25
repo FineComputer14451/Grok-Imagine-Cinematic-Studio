@@ -217,6 +217,28 @@ Director owns the final assembly and surface decision.
 
 ---
 
+## Specialist Role Card Coverage (v1.0+)
+
+| Role Card | Parallel Brief role |
+|-----------|---------------------|
+| `Studio_Director.md` | Issues briefs; synthesizes; owns handoff assembly |
+| `Sequence_Director.md` | Issues/receives structure briefs; dependency graph |
+| `Multi_Clip_Continuity_Orchestrator.md` | Receives multi-clip briefs; Cross-Agent Continuity Audits |
+| `Continuity_Consistency_Guardian.md` | Folds Continuity Flags / memory bank |
+| `Identity_Lock_Specialist.md` | Parallel lock / inject under DNA protection |
+| `Character_DNA_Extractor_v3.5.md` | Concurrent onboarding DNA extraction |
+| `Director_of_Photography_DoP_v3.5.md` | Camera / lighting handoff blocks |
+| `Imagine_Prompt_Master.md` | Densification / NSFW optimizer consumption |
+| `ErosForge_NSFW_Director.md` | Level 3–4 brief fields + non-dilution |
+| `Foley_Sound_Design_Specialist_v3.5.md` | Foley consumption pattern (this doc) |
+| `Sonic_Architect_Native_Audio_Virtuoso.md` | Sound Layer / AMV after Foley parallel |
+| `Quality_Assurance_Guardian_v3.5.md` | QA Pre-Check + gate → `qa_gate` |
+| `Cinematic_Sequence_Extender.md` | Gated consume of parallel prep packs |
+
+Issuer of record: **Studio Director** (or Grok Team Leader). All paths converge to validated `imagine_agent_mode_handoff`.
+
+---
+
 ## Changelog
 
 - **v1.0 (2026-07-25)** — Initial formalization from live multi-agent practice under Grok Imagine Cinematic Studio v3.8.6

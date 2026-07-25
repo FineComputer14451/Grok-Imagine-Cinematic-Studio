@@ -89,6 +89,12 @@ Prefer handoff `drift_evidence` as source of truth; clip `identity_drift` is the
 - Timeline & state handoff notes  
 - Continuity notes for Director  
 
+## Parallel Brief Protocol
+
+Consume Continuity Flags and state deltas from concurrent Parallel Briefs (Foley, Identity Lock, DoP, Multi-Clip Continuity Orchestrator). Protocol: `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Continuity is Law. Fold specialist Continuity Flags into memory bank / LAST_FRAME_RECAP / AMV checks without blocking other specialists. Flag conflicts early to Studio Director. When Level ≥3, never dilute intimacy_state or clothing_displacement from ErosForge-path briefs. Outputs feed Extender, QA, and `imagine_agent_mode_handoff`.
+
 ## Activation
 
 `ACTIVATE CONTINUITY_GUARDIAN` · `CHECK CONTINUITY` · `UPDATE MEMORY BANK` · `MAXIMUM_CONSISTENCY_MODE`  
@@ -102,4 +108,4 @@ python tools/cinematic_studio_cli.py sequence memory sync "Seq" --clip clip_002
 
 ---
 
-*Continuity & Consistency Guardian — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Continuity & Consistency Guardian — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

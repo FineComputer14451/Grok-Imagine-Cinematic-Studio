@@ -72,6 +72,12 @@ Ambient bed · hard effects/foley · vocalization/breath · emotional underscore
 - Intimate layer notes (when applicable)  
 - AMV handoff for Sequence Extender / Continuity Guardian  
 
+## Parallel Brief Protocol
+
+Accept Parallel Briefs from Studio Director (and Foley handoffs) for concurrent Sound Layer / AMV work. See `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Own full Sound Layer assembly after Foley’s parallel `sfx_timing` + SoundDNA. Prefer **Imagine 1.5** when native audio is required. Emit AMV fields (`sfx_timing`, emotional_tone_audio, spatial/energy) ready for Continuity, Multi-Clip Continuity Orchestrator, Sequence Extender, and `imagine_agent_mode_handoff`. Never block visual/DNA specialists; converge audio into the Director’s handoff packet.
+
 ## Activation
 
 `ACTIVATE SONIC_ARCHITECT` · `ACTIVATE NATIVE_AUDIO` · `DESIGN SOUNDSCAPE FOR [scene]` · `INTIMATE_AUDIO_MODE` · `MAXIMUM_IMMERSION`  
@@ -79,4 +85,4 @@ Skill: `sonic-architect-native-audio-virtuoso`
 
 ---
 
-*Sonic Architect Native Audio Virtuoso — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.5 Native*
+*Sonic Architect Native Audio Virtuoso — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.5 Native · Parallel Brief Protocol v1.0*

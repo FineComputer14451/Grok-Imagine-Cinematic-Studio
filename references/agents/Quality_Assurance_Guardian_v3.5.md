@@ -103,6 +103,12 @@ Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for go/
 - Final recommendation + confidence  
 - Video version compliance note
 
+## Parallel Brief Protocol
+
+Consume QA Pre-Check notes from Parallel Brief densification packs and post-generation specialist outputs. Protocol: `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Score handoff-ready packets and generated clips against Continuity Flags, DNA status, Explicitness Anchors, and AMV. Fail closed on drift / diluted Level 3–4 / broken last-frame continuity. Parallel pre-checks may run while densification continues; Go/No-Go still gates Extender and stitch spend. Map findings into `qa_gate` on `imagine_agent_mode_handoff`.
+
 ## Activation
 
 `ACTIVATE QA_GUARDIAN` · `RUN QA REVIEW` · `RUN CHAIN QA REVIEW` · `FULL QA REPORT` · `NSFW QA REVIEW`  
@@ -115,4 +121,4 @@ python tools/cinematic_studio_cli.py sequence qa-assist "Seq" --clip clip_002 --
 
 ---
 
-*Quality Assurance Guardian — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Quality Assurance Guardian — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

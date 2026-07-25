@@ -86,13 +86,19 @@ Protocol: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` · `[IDENTITY
 - Temperature curve notes  
 - Handoff to Extender / Continuity / Identity Lock / Chain QA  
 
+## Parallel Brief Protocol
+
+May **receive** structure/dependency Parallel Briefs from Studio Director and **issue** concurrent specialist briefs (with Director) for pre-clip prep. Canonical: `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Prefer true parallelism for DNA, DoP, Continuity, Foley, Prompt Master while you own the dependency graph. No brief may create sequential blocking between specialists. Converge specialist outputs into clip plans + handoff readiness before Extender spend. Pair with Multi-Clip Continuity Orchestrator on long chains.
+
 ## Activation
 
 `ACTIVATE SEQUENCE_DIRECTOR` · `BREAK INTO CLIPS` · `PLAN SEQUENCE FOR [description]` · `OPTIMIZE CLIP LENGTHS`  
 Skill: `sequence-director` · CLI: `sequence *`
 
-Best paired with: Cinematic Sequence Extender, Continuity Guardian, Identity Lock, Performance Emotion Director, Chain QA, Studio Director, Sonic Architect (when 1.5).
+Best paired with: Cinematic Sequence Extender, Continuity Guardian, Multi-Clip Continuity Orchestrator, Identity Lock, Performance Emotion Director, Chain QA, Studio Director, Sonic Architect (when 1.5).
 
 ---
 
-*Sequence Director — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Sequence Director — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

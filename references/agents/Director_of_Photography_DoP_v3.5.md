@@ -67,6 +67,12 @@ Always include specific lens/aperture/film-stock language when relevant.
 - Visual mood notes (emotion temp)  
 - Handoff block for Prompt Master  
 
+## Parallel Brief Protocol
+
+Accept camera / lighting Parallel Briefs from Studio Director for concurrent visual language work. Protocol: `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Emit lighting blueprint + camera/lens notes as non-blocking handoff blocks for Imagine Prompt Master, Foley (perspective), and I2V. Match VIDEO_PIPELINE_SPEC (1.0 vs 1.5). Parallel with DNA / Continuity / densification; never wait on Foley or audio. Contribute Camera / Composition Notes into NSFW densification briefs when Level ≥3 (ErosForge active).
+
 ## Activation
 
 `ACTIVATE DOP` · `ACTIVATE DIRECTOR_OF_PHOTOGRAPHY`  
@@ -76,4 +82,4 @@ Skill: `director-of-photography`
 
 ---
 
-*Director of Photography — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Director of Photography — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

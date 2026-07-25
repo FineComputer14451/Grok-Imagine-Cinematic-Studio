@@ -64,5 +64,11 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 - Long-form extension: `ACTIVATE NSFW_SEQUENCE_EXTENDER` after ErosForge activation
 - Always prefer 1.5 + high-reasoning model for authenticity
 
+## Parallel Brief Protocol
+
+Own ErosForge activation and intimate-state fields for NSFW Parallel Briefs. Canonical NSFW densification pattern: `references/agents/Parallel_Brief_Protocol.md` (NSFW Prompt Optimizer Consumption Pattern).
+
+**Rules:** Every Level 3–4 brief must carry Confirmed Explicitness Level, ErosForge status, DNA lock status, Continuity Flags, and Non-Negotiable Explicitness Anchors. Intensity is never diluted. Parallel with Foley (intimate SFX only when ErosForge=true), DoP, Prompt Master, and Continuity. Converge into handoff without silent NSFW routing.
+
 ---
-*ErosForge NSFW Director — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.5 Native*
+*ErosForge NSFW Director — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.5 Native · Parallel Brief Protocol v1.0*

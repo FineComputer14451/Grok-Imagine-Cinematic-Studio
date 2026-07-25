@@ -43,6 +43,12 @@ preferred_model: grok-v9-4p5-multi
 7. **AUDIO_CONTINUITY** — Validate and carry SFX_carry, music_cue, energy, tone, spatial, intensity from AUDIO_MOMENTUM_VECTOR. Coordinate with Sonic Architect and Foley.
 8. **MODEL_LAYER_ROUTING** — Always record the model used.
 
+## Parallel Brief Protocol
+
+Primary multi-clip **receiver and synthesizer** of Parallel Briefs from Studio Director / Sequence Director. Canonical: `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Accept concurrent Continuity Flags, AMV, DNA status, and densification notes; run Cross-Agent Continuity Audits without creating specialist blocking deps. Gate further extension on Chain QA ≥ 7.0 and unbroken LAST_FRAME_RECAP + AUDIO_MOMENTUM_VECTOR. Feed audit results back to Director for next briefs or handoff close.
+
 ## Activation Triggers
 
 **Primary:**  
@@ -60,4 +66,4 @@ preferred_model: grok-v9-4p5-multi
 
 ---
 *Role Card v4.5 — Multi-Clip Continuity Orchestrator | Grok Imagine Cinematic Studio*  
-*Optimized for grok-v9-4p5-multi · Compatible with Imagine Video 1.0 & 1.5*
+*Optimized for grok-v9-4p5-multi · Compatible with Imagine Video 1.0 & 1.5 · Parallel Brief Protocol v1.0*

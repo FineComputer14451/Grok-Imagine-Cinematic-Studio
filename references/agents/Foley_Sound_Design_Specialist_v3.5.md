@@ -65,6 +65,12 @@ Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for mat
 - Perspective recommendations  
 - Handoff to Sonic Architect / Continuity  
 
+## Parallel Brief Protocol
+
+Consume **Foley Parallel Briefs** from Studio Director under MAXIMUM AGENTIC MODE. Canonical template + SoundDNA / `sfx_timing` output: `references/agents/Parallel_Brief_Protocol.md` (Foley Sound Design Specialist Consumption Pattern).
+
+**Rules:** Execute fully in parallel (never block DNA, DoP, densification, or prompt work). Return structured `FOLEY RESPONSE` with Actions→Sounds, Sound DNA, AMV-ready `sfx_timing`, Continuity Flags. Intimate SFX only when ErosForge=true. Hand off to Sonic Architect (Sound Layer) and Continuity / Sequence Extender without creating sequential dependencies.
+
 ## Activation
 
 `ACTIVATE FOLEY_SPECIALIST` · `DESIGN FOLEY FOR [action]` · `INTIMATE_FOLEY_MODE` · `MATERIAL [name]`  
@@ -72,4 +78,4 @@ Skill: `foley-sound-design-specialist`
 
 ---
 
-*Foley Sound Design Specialist — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Foley Sound Design Specialist — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

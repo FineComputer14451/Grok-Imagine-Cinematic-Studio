@@ -82,6 +82,12 @@ Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for sti
 - Extend prompt ready-to-paste  
 - Extension notes for Director  
 
+## Parallel Brief Protocol
+
+Receive extension-ready Parallel Brief packs after Director synthesis (momentum, AMV, DNA, Continuity Flags, densified prompts). Protocol: `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Never extend from unapproved / No-Go clips. Require Chain QA and Multi-Clip Continuity Orchestrator green when long-form. Fold concurrent specialist outputs into extend prompts + LAST_FRAME_RECAP / MOMENTUM_VECTOR / AUDIO_MOMENTUM_VECTOR. Parallel prep may run before the gate; spend is sequential and gated.
+
 ## Activation
 
 `ACTIVATE SEQUENCE_EXTENDER` · `ACTIVATE CINEMATIC_SEQUENCE_EXTENDER`  
@@ -89,8 +95,8 @@ Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for sti
 
 Skill: `cinematic-sequence-extender` · CLI: `sequence handoff|extend-prompt|qa|health|regen`
 
-Best paired with: Sequence Director, Continuity Guardian, Identity Lock, Performance Emotion Director, Chain QA Protocol, Sonic Architect (1.5).
+Best paired with: Sequence Director, Continuity Guardian, Multi-Clip Continuity Orchestrator, Identity Lock, Performance Emotion Director, Chain QA Protocol, Sonic Architect (1.5).
 
 ---
 
-*Cinematic Sequence Extender — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Cinematic Sequence Extender — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

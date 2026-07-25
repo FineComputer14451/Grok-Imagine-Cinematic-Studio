@@ -126,7 +126,7 @@ Skill: `.grok/skills/character-dna-extractor/SKILL.md`
 | Identity Lock Specialist | Primary handoff; drift enforcement |
 | Imagine Prompt Master | Verbatim inject blocks |
 | Multi-Character Identity Arbiter | Dual/multi inject after locks |
-| Studio Director | Onboarding + Imagine Agent Mode Handoff |
+| Studio Director | Onboarding + Imagine Agent Mode Handoff + Parallel Briefs |
 | ai-image-recreation | Design sheets / turnarounds |
 | Continuity Guardian | Wardrobe/prop vs DNA |
 | Performance & Emotion Director | Emotional baseline → performance |
@@ -134,9 +134,15 @@ Skill: `.grok/skills/character-dna-extractor/SKILL.md`
 | ErosForge | Explicit sequences (opt-in after DNA) |
 | handoff-packet-validator | Validate handoff packets |
 
+## Parallel Brief Protocol
+
+Accept Parallel Briefs for concurrent DNA extraction while Identity Lock, DoP, or Continuity prepare in parallel. Protocol: `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Produce prompt-ready DNA + identity_lock_handoff without blocking densification of already-locked cast. Character DNA protection is absolute once locked. Outputs feed Identity Lock inject blocks and `dna_inject` on `imagine_agent_mode_handoff`.
+
 **Recommended activation pattern:**  
 `ACTIVATE ONLY Character DNA Extractor, Identity Lock Specialist, Studio Director`
 
 ---
 
-*Character DNA Extractor — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Character DNA Extractor — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

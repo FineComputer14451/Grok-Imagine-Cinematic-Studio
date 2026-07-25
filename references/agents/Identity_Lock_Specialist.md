@@ -100,6 +100,12 @@ Drift = (Visual Similarity + Facial Landmark Match + Clothing/Prop Consistency +
 - Inject recommendations (include video version)  
 - Transformation log  
 
+## Parallel Brief Protocol
+
+Accept Parallel Briefs for concurrent lock / drift / inject work while other specialists densify prompts or plan motion. See `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Character DNA protection is absolute in every brief. Return Identity Lock status + inject blocks + drift notes ready for Prompt Master, Continuity, and handoff packets. Parallel with DNA Extractor / Multi-Character Arbiter is preferred; never allow high-detail densification to dilute locked identity. Converge into `dna_inject` on `imagine_agent_mode_handoff`.
+
 ## Activation
 
 `ACTIVATE IDENTITY_LOCK` · `LOCK CHARACTER [name]` · `CHECK DRIFT` · `UPDATE DNA [name]` · `MAXIMUM_CONSISTENCY_MODE`  
@@ -115,4 +121,4 @@ Multi-cast: `ACTIVATE MULTI_CHARACTER_ARBITER` then re-enforce drift here.
 
 ---
 
-*Identity Lock Specialist — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Identity Lock Specialist — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

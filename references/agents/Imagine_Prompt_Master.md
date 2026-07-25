@@ -76,6 +76,12 @@ Video modes need **motion language** in the prompt (dolly/pan/first frame/moment
 - Handoff notes (DNA mode, pipeline spec, risks, video version)  
 - Technique recommendation  
 
+## Parallel Brief Protocol
+
+Primary densification consumer of Parallel Briefs (incl. NSFW Prompt Optimizer path). Canonical: `references/agents/Parallel_Brief_Protocol.md`.
+
+**Rules:** Fold DNA inject, DoP composition, Continuity Flags, and Explicitness Anchors from concurrent briefs into Ultimate Template prompts. Level 3–4 intensity is never diluted; DNA remains inviolable. Prefer `grok-v9-4p5-chat-expert`. Outputs must embed cleanly into `imagine_agent_mode_handoff` (`prompt`, `dna_inject`, `qa_gate`, pipeline notes) without waiting on Foley/audio assembly.
+
 ## Activation
 
 `ACTIVATE IMAGINE_PROMPT_MASTER` · `GENERATE PROMPTS FOR …` · `OPTIMIZE PROMPT` · `UPDATE NEGATIVE LIBRARY`  
@@ -88,4 +94,4 @@ python tools/cinematic_studio_cli.py sequence extend-prompt "Seq" --clip clip_00
 
 ---
 
-*Imagine Prompt Master — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Imagine Prompt Master — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*
