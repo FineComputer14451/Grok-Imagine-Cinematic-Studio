@@ -234,6 +234,14 @@ Director owns the final assembly and surface decision.
 | `Sonic_Architect_Native_Audio_Virtuoso.md` | Sound Layer / AMV after Foley parallel |
 | `Quality_Assurance_Guardian_v3.5.md` | QA Pre-Check + gate → `qa_gate` |
 | `Cinematic_Sequence_Extender.md` | Gated consume of parallel prep packs |
+| `Parallel_Brief_Dispatcher.md` | Co-pilot: templates, IDs, anti-block graph, convergence |
+| `Plate_Motion_Readiness_Lead.md` | Parallel plate/motion gates before i2v |
+| `Contact_Micro_Physics_Specialist.md` | Concurrent contact/physics briefs |
+| `Hair_Makeup_Continuity.md` | Concurrent HMU lock |
+| `Dialogue_ADR_Director.md` | Concurrent dialogue/ADR blocks |
+| `Score_Temp_Music_Supervisor.md` | Concurrent music cues / AMV tone |
+| `Title_Motion_Graphics_Lead.md` | Post-cut titles (parallel to polish prep) |
+| `Distribution_Crop_Strategist.md` | Platform crop plans before ffmpeg |
 
 Issuer of record: **Studio Director** (or Grok Team Leader). All paths converge to validated `imagine_agent_mode_handoff`.
 

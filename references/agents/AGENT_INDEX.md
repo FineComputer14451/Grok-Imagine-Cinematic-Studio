@@ -97,12 +97,29 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 | Agent | Role Card | Preferred Model | Activation |
 |-------|-----------|-----------------|------------|
 | Reference & Asset Curator | `Reference_Asset_Curator.md` | auto / chat-expert | `ACTIVATE REFERENCE_CURATOR` |
+| Plate & Motion Readiness Lead | `Plate_Motion_Readiness_Lead.md` | chat-expert | `ACTIVATE PLATE_MOTION_READINESS` · `LOCK PLATES` |
 | Image-to-Video Specialist | `Image_to_Video_Specialist.md` | chat-expert | `ACTIVATE I2V_SPECIALIST` |
+| Contact & Micro-Physics Specialist | `Contact_Micro_Physics_Specialist.md` | chat-expert | `ACTIVATE CONTACT_MICRO_PHYSICS` |
 | SFW Batch Orchestrator | `SFW_Batch_Orchestrator.md` | multi | `ACTIVATE SFW_BATCH_ORCHESTRATOR` |
 | Assembly Editor | `Assembly_Editor.md` | multi | `ACTIVATE ASSEMBLY_EDITOR` |
 | Multi-Character Identity Arbiter | `Multi_Character_Identity_Arbiter.md` | chat-expert | `ACTIVATE MULTI_CHARACTER_ARBITER` |
 
-**Order of operations:** Animatic (optional) → Reference Curator → (i2i if needed) → I2V Specialist → generation/QA → Assembly Editor → color → polish.
+**Order of operations:** Animatic (optional) → Reference Curator → Plate & Motion Readiness → (i2i if needed) → Contact physics (when needed) → I2V Specialist → generation/QA → Assembly Editor → color → polish.
+
+---
+
+## Wave A Specialists (P0 scaffold · v3.8.7+)
+
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| Parallel Brief Dispatcher | `Parallel_Brief_Dispatcher.md` | multi | `ACTIVATE PARALLEL_BRIEF_DISPATCHER` · `DISPATCH PARALLEL BRIEFS` |
+| Hair & Makeup Continuity | `Hair_Makeup_Continuity.md` | chat-expert | `ACTIVATE HAIR_MAKEUP_CONTINUITY` · `LOCK HMU` |
+| Dialogue & ADR Director | `Dialogue_ADR_Director.md` | chat-expert | `ACTIVATE DIALOGUE_ADR` |
+| Score & Temp Music Supervisor | `Score_Temp_Music_Supervisor.md` | chat-expert / auto | `ACTIVATE SCORE_TEMP_MUSIC` |
+| Title & Motion Graphics Lead | `Title_Motion_Graphics_Lead.md` | chat-expert | `ACTIVATE TITLE_MOTION_GRAPHICS` |
+| Distribution & Crop Strategist | `Distribution_Crop_Strategist.md` | auto | `ACTIVATE DISTRIBUTION_CROP` |
+
+Skills are P0 (Role Card + SKILL.md; no dedicated CLI yet). Pack membership: core · camera-image · sequence-narrative · delivery-post.
 
 ---
 
@@ -142,6 +159,8 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 | 7 | QA + Delivery | `RUN QA REVIEW` → `ACTIVATE AI_POLISH_DIRECTOR` |
 | 7b | Studio Health Diagnostic | `ACTIVATE GROK_DOCTOR` · `RUN STUDIO_HEALTH_CHECK` |
 | 7c | Multi-Clip Continuity Audit | `ACTIVATE MULTI_CLIP_CONTINUITY_ORCHESTRATOR` · `RUN CROSS_AGENT_CONTINUITY_AUDIT` |
+| 7d | Plate + Motion Gate | `ACTIVATE PLATE_MOTION_READINESS` → `ACTIVATE I2V_SPECIALIST` |
+| 7e | Parallel Brief Wave | `ACTIVATE PARALLEL_BRIEF_DISPATCHER` + specialist briefs |
 | 8 | Quota Planning | `ACTIVATE WORKFLOW_OPTIMIZER` |
 | 9 | Final Delivery Polish | `RUN FINAL POLISH PASS` |
 | 10 | NSFW Quota Batch | `ACTIVATE EROSFORGE` → `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` |
@@ -180,7 +199,15 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 | `nsfw-chain-qa-protocol` | Pipeline (opt-in) | `RUN NSFW CHAIN QA REVIEW` |
 | `grok-doctor` | Agent / diagnostic | `ACTIVATE GROK_DOCTOR` · `RUN STUDIO_HEALTH_CHECK` |
 | `multi-clip-continuity-orchestrator` | Agent | `ACTIVATE MULTI_CLIP_CONTINUITY_ORCHESTRATOR` |
+| `plate-motion-readiness-lead` | Agent (Wave A) | `ACTIVATE PLATE_MOTION_READINESS` |
+| `contact-micro-physics-specialist` | Agent (Wave A) | `ACTIVATE CONTACT_MICRO_PHYSICS` |
+| `hair-makeup-continuity` | Agent (Wave A) | `ACTIVATE HAIR_MAKEUP_CONTINUITY` |
+| `dialogue-adr-director` | Agent (Wave A) | `ACTIVATE DIALOGUE_ADR` |
+| `score-temp-music-supervisor` | Agent (Wave A) | `ACTIVATE SCORE_TEMP_MUSIC` |
+| `title-motion-graphics-lead` | Agent (Wave A) | `ACTIVATE TITLE_MOTION_GRAPHICS` |
+| `distribution-crop-strategist` | Agent (Wave A) | `ACTIVATE DISTRIBUTION_CROP` |
+| `parallel-brief-dispatcher` | Agent (Wave A) | `ACTIVATE PARALLEL_BRIEF_DISPATCHER` |
 
 ---
 
-*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-07-25 · 54 skills*
+*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-07-25 · 62 skills (Wave A P0)*
