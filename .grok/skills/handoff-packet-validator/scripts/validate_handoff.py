@@ -25,6 +25,10 @@ from handoff_schema import (  # noqa: E402
     imagine_agent_mode_packet_schema,
 )
 from handoff_readiness import evaluate_imagine_handoff_readiness  # noqa: E402
+from wave_a_packets import (  # noqa: E402
+    validate_optional_wave_a_fields,
+    wave_a_packet_schemas,
+)
 
 PACKET_TYPES: dict[str, dict[str, Any]] = {
     "identity_lock_handoff": {
@@ -89,6 +93,9 @@ PACKET_TYPES: dict[str, dict[str, Any]] = {
     # Declarative agent-mode schema from tools/handoff_schema.py
     PACKET_TYPE_IMAGINE_AGENT_MODE: imagine_agent_mode_packet_schema(),
 }
+
+# Wave A P1 specialist packets (tools/wave_a_packets.py)
+PACKET_TYPES.update(wave_a_packet_schemas())
 
 # Identity Continuity Protocol: warn-only when drift_evidence is missing/incomplete
 EXTEND_PACKET_TYPES_WARN_IF_NO_DRIFT = frozenset({
@@ -291,6 +298,7 @@ def validate_packet_with_warnings(
     data: dict[str, Any],
     *,
     strict_handoff: bool = False,
+    strict_wave_a: bool = False,
 ) -> tuple[list[str], list[str]]:
     """Return (hard issues, soft warnings). Hard issues fail validation."""
     issues: list[str] = []
@@ -303,12 +311,22 @@ def validate_packet_with_warnings(
     issues.extend(apply_schema_rules(data, schema))
     drift_issues, warnings = validate_drift_evidence_section(data)
     issues.extend(drift_issues)
+
+    # Wave A optional fields (present → shape checks; --strict-wave-a for i2v gates)
+    wa_issues, wa_warnings = validate_optional_wave_a_fields(
+        data, strict_wave_a=strict_wave_a
+    )
+    issues.extend(wa_issues)
+    warnings.extend(wa_warnings)
+
     # Semantic readiness for agent-mode packets (default soft; --strict-handoff hard-fails)
     if not issues and packet_type == PACKET_TYPE_IMAGINE_AGENT_MODE:
-        ready = evaluate_imagine_handoff_readiness(data)
+        ready = evaluate_imagine_handoff_readiness(
+            data, strict_motion=strict_handoff or strict_wave_a
+        )
         for b in ready.get("blockers") or []:
             msg = f"readiness blocker: {b}"
-            if strict_handoff:
+            if strict_handoff or strict_wave_a:
                 issues.append(msg)
             else:
                 warnings.append(msg)
@@ -321,9 +339,10 @@ def validate_packet(
     data: dict[str, Any],
     *,
     strict_handoff: bool = False,
+    strict_wave_a: bool = False,
 ) -> list[str]:
     issues, _warnings = validate_packet_with_warnings(
-        data, strict_handoff=strict_handoff
+        data, strict_handoff=strict_handoff, strict_wave_a=strict_wave_a
     )
     return issues
 
@@ -341,6 +360,14 @@ def main() -> int:
         help=(
             "Treat imagine_agent_mode_handoff readiness blockers as hard failures "
             "(exit 1); default is warn-only"
+        ),
+    )
+    parser.add_argument(
+        "--strict-wave-a",
+        action="store_true",
+        help=(
+            "Wave A gates: still→video requires plate_status approved|locked and "
+            "complete motion_vector; incomplete Wave A fields hard-fail"
         ),
     )
     args = parser.parse_args()
@@ -361,7 +388,9 @@ def main() -> int:
         return 1
 
     issues, warnings = validate_packet_with_warnings(
-        data, strict_handoff=args.strict_handoff
+        data,
+        strict_handoff=args.strict_handoff,
+        strict_wave_a=args.strict_wave_a,
     )
     for w in warnings:
         print(f"⚠️  {w}")

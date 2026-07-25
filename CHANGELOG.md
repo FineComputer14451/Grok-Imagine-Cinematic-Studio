@@ -6,6 +6,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Added
 - **Wave A agent scaffold (P0)** — eight new specialists with Role Cards + skills (no CLI yet): `plate-motion-readiness-lead`, `contact-micro-physics-specialist`, `hair-makeup-continuity`, `dialogue-adr-director`, `score-temp-music-supervisor`, `title-motion-graphics-lead`, `distribution-crop-strategist`, `parallel-brief-dispatcher` (suite **54 → 62** skills; packs updated)
+- **Wave A packets (P1)** — `tools/wave_a_packets.py` builders + 8 handoff `packet_type`s; optional field checks; `validate_handoff.py --strict-wave-a`; `attach_wave_a_to_imagine()`
 
 ## [3.8.7] - 2026-07-25
 

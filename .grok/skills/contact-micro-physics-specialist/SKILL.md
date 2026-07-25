@@ -81,7 +81,7 @@ Peers / handoff: DoP, I2V Specialist, Stunt Choreographer, Foley, Prompt Master,
 
 ## Status
 
-**P0 scaffold** — Role Card + skill only. No dedicated CLI surface yet; handoff fields are declarative for Director / validator future work.
+**P1 packets** — Role Card + skill + `tools/wave_a_packets.py` builders. Validate with `validate_handoff.py` (`--strict-wave-a` for plate/motion gates). No full CLI surface yet.
 
 ## Grok Build Compatibility
 

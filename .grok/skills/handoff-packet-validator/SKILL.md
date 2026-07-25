@@ -73,6 +73,7 @@ python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py charact
 python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py artifacts/handoffs/clip_001_extend.json
 # Agent-mode readiness blockers as hard failures:
 python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py packet.json --strict-handoff
+python .grok/skills/handoff-packet-validator/scripts/validate_handoff.py packet.json --strict-wave-a
 ```
 
 | Exit | Meaning |

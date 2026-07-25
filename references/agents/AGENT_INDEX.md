@@ -119,7 +119,7 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 | Title & Motion Graphics Lead | `Title_Motion_Graphics_Lead.md` | chat-expert | `ACTIVATE TITLE_MOTION_GRAPHICS` |
 | Distribution & Crop Strategist | `Distribution_Crop_Strategist.md` | auto | `ACTIVATE DISTRIBUTION_CROP` |
 
-Skills are P0 (Role Card + SKILL.md; no dedicated CLI yet). Pack membership: core · camera-image · sequence-narrative · delivery-post.
+Skills are **P1** (Role Card + SKILL.md + packet types in `tools/wave_a_packets.py`; validate via `handoff-packet-validator` / `--strict-wave-a`). Pack membership: core · camera-image · sequence-narrative · delivery-post.
 
 ---
 

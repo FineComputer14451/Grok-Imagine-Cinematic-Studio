@@ -77,6 +77,30 @@ When `generation_strategy` is `extend_from_frame_chain`, also require `last_fram
 
 Doc: `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`
 
+## Wave A specialist packets (P1 · v3.8.7+)
+
+Source: `tools/wave_a_packets.py`. Builders live there; validator registers schemas automatically.
+
+| packet_type | Required (summary) | Producer skill |
+|-------------|-------------------|----------------|
+| `plate_motion_readiness` | `subject_id`, `plate_status` (draft\|approved\|locked), `motion_vector` {action,camera,emotion}, `i2v_motion_block_ready` | `plate-motion-readiness-lead` |
+| `contact_micro_physics_brief` | `subject_id`, `contact_brief`, `micro_physics_notes` (object) | `contact-micro-physics-specialist` |
+| `hmu_lock_handoff` | `character_slug`, `active_look_id`, `hmu_lock` (object) | `hair-makeup-continuity` |
+| `dialogue_adr_block` | `subject_id`, `dialogue_block` (object) | `dialogue-adr-director` |
+| `score_temp_music_block` | `subject_id`, `music_cues` (list) | `score-temp-music-supervisor` |
+| `title_mograph_brief` | `deliverable_id`, `title_cards` (≥1) | `title-motion-graphics-lead` |
+| `distribution_crop_plan` | `subject_id`, `crop_plan` (≥1 rows) | `distribution-crop-strategist` |
+| `parallel_brief_dispatch_log` | `session_id`, `briefs` (≥1 with `brief_id`) | `parallel-brief-dispatcher` |
+
+**Optional fields on any packet** (shape-checked when present):  
+`plate_status`, `motion_vector`, `hmu_lock`, `dialogue_block`, `music_cues`, `crop_plan`.
+
+**CLI flags:**
+- `--strict-handoff` — readiness blockers hard-fail (agent-mode)
+- `--strict-wave-a` — still→video requires approved/locked plate + complete motion triple; incomplete Wave A fields hard-fail
+
+**Attach helper:** `wave_a_packets.attach_wave_a_to_imagine(packet, plate_motion=…, …)` nests under `wave_a` and lifts plate/motion to top-level for readiness evaluators.
+
 ## Exit codes
 
 | Code | Meaning |
