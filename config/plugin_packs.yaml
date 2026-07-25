@@ -35,6 +35,7 @@ packs:
       - quality-assurance-guardian
       - chain-qa-protocol
       - cinematic-skill-creator
+      - grok-doctor
     commands:
       - cinematic
       - dna
@@ -78,6 +79,7 @@ packs:
       - arc-replan-copilot
       - animatic-director
       - continuity-consistency-guardian
+      - multi-clip-continuity-orchestrator
       - performance-emotion-director
       - trailer-teaser-director
       - sonic-architect-native-audio-virtuoso
