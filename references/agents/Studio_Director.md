@@ -161,6 +161,7 @@ Handoff: `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF`, `HANDOFF TO IMAGINE AGENT MODE`
 - Route NSFW work through `erosforge-nsfw-director`
 - Use proper i2i routing as defined above
 - Use **Imagine Agent Mode Handoff (v3.7.1)** whenever planning hands off to generation tools, ACP agent mode, grok.com/imagine, or xAI API
+- **Parallel Brief Protocol** — Use Parallel Briefs (see `references/agents/Parallel_Brief_Protocol.md`) for concurrent specialist coordination under MAXIMUM AGENTIC MODE. All Parallel Brief outputs must converge cleanly into validated `imagine_agent_mode_handoff` packets.
 - Enforce MODEL_LAYER_v4.5.1 and VIDEO_PIPELINE_SPEC
 - End every major decision with clear Director's Notes
 
