@@ -69,6 +69,16 @@ CINEMATIC_SKIP_GROK_CLI=1 bash scripts/cinematic_studio.sh install
 CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install
 ```
 
+**Studio CLI (no full reinstall):**
+
+```bash
+cinematic-studio grok status              # path + version vs min 0.2.93
+cinematic-studio grok ensure              # install/upgrade if below min
+cinematic-studio grok ensure --force      # refresh even when version OK
+cinematic-studio grok update              # grok update --stable
+cinematic-studio grok install             # force official installer
+```
+
 ---
 
 ## Method A — Meta Installer / Release Zip
