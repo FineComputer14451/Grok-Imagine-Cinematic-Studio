@@ -340,7 +340,8 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 | **Character Consistency** | `character-dna-extractor`, `identity-lock-specialist`, `costume-wardrobe-continuity`, `multi-character-identity-arbiter` | DNA extraction, Identity Lock,wardrobe lock, multi-cast arbitration |
 | **Sequence & Story** | `sequence-director`, `cinematic-sequence-extender`, `extend-frame-to-video`, `narrative-arc-pacing-strategist`, `arc-replan-copilot` | Long-form sequencing, extend/stitch, pacing, mid-chain replan |
 | **Camera / Set / Performance** | `director-of-photography` (prefer over legacy `director-of-photography-v3-3`), `production-designer-set-decorator`, `performance-emotion-director` | Lighting, environments, acting beats |
-| **Continuity & QA** | `continuity-consistency-guardian`, `costume-wardrobe-continuity`, `quality-assurance-guardian`, `chain-qa-protocol`, `nsfw-chain-qa-protocol` | Continuity, wardrobe seams, 16-point QA, extend/stitch gates |
+| **Continuity & QA** | `continuity-consistency-guardian`, `multi-clip-continuity-orchestrator`, `costume-wardrobe-continuity`, `quality-assurance-guardian`, `chain-qa-protocol`, `nsfw-chain-qa-protocol` | Continuity, multi-clip audits, wardrobe seams, 16-point QA, extend/stitch gates |
+| **Studio Health** | `grok-doctor` | Multi-agent roster / handoff / continuity / pipeline diagnostics (`ACTIVATE GROK_DOCTOR`) |
 | **Prompts & Assets** | `imagine-prompt-master`, `reference-asset-curator`, `image-to-video-specialist`, `key-art-poster-designer` | Prompt craft, tiers, i2v motion, key art |
 | **Audio** | `sonic-architect-native-audio-virtuoso`, `foley-sound-design-specialist` | Native audio layers, foley |
 | **Action / VFX / Trailer** | `stunt-action-choreographer`, `vfx-sfx-supervisor`, `trailer-teaser-director` | Stunts, VFX, teasers |
@@ -381,7 +382,7 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 
 **Pro tip:** After any skill or plugin change, re-validate with `bash scripts/verify_cinematic_studio.sh` (it runs `models verify` too).
 
-**Health check:** `grok-doctor` or `cinematic-studio doctor` (full) · `grok-doctor --quick` · `bash scripts/grok_doctor.sh`.
+**Health check:** `grok-doctor` or `cinematic-studio doctor` (full) · `grok-doctor --quick` · `bash scripts/grok_doctor.sh`. Skill activation: `ACTIVATE GROK_DOCTOR` / `RUN STUDIO_HEALTH_CHECK` (Role Card: `references/agents/Grok_Doctor.md`).
 
 ---
 

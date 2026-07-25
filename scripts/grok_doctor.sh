@@ -34,6 +34,13 @@ _resolve_cli() {
     printf '%s\n' "${CINEMATIC_REPO_ROOT}/tools/cinematic_studio_cli.py"
     return 0
   fi
+  # Prefer a full product git clone when present (catalog pin + skills layout).
+  # Method A ~/Grok-Cinematic-Projects is often tools-only and not a git checkout.
+  local clone="${CINEMATIC_CLONE_DIR:-$HOME/Grok-Imagine-Cinematic-Studio}"
+  if [[ -f "${clone}/tools/cinematic_studio_cli.py" && -d "${clone}/.git" && -d "${clone}/.grok/skills" ]]; then
+    printf '%s\n' "${clone}/tools/cinematic_studio_cli.py"
+    return 0
+  fi
   local project="${CINEMATIC_PROJECT_DIR:-$HOME/Grok-Cinematic-Projects}"
   if [[ -f "${project}/tools/cinematic_studio_cli.py" ]]; then
     printf '%s\n' "${project}/tools/cinematic_studio_cli.py"

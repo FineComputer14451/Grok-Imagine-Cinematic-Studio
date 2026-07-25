@@ -2,7 +2,7 @@
 
 **Enhanced for:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` + **Imagine Video 1.0 & 1.5 Native**  
 **Version:** 3.8.6 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.8.6 · Full v4.5 dual-model wave  
-**Date:** 2026-07-21  
+**Date:** 2026-07-25  
 **Canonical Model Layer:** `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1)
 
 > All agents below now reference the enhanced Model Layer. Prefer the three explicit v9-4p5 identifiers. Video work must declare `VIDEO_PIPELINE_SPEC` (1.0 default, 1.5 when native audio / physics / intimacy required).
@@ -60,8 +60,10 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 | Agent | Role Card | Preferred Model | Activation |
 |-------|-----------|-----------------|------------|
 | Continuity Guardian | `Continuity_Consistency_Guardian.md` | multi | `ACTIVATE CONTINUITY_GUARDIAN` |
+| Multi-Clip Continuity Orchestrator | `Multi_Clip_Continuity_Orchestrator.md` | multi | `ACTIVATE MULTI_CLIP_CONTINUITY_ORCHESTRATOR` · `RUN MULTI_CLIP_CONTINUITY_AUDIT` |
 | Costume & Wardrobe Continuity | `Costume_Wardrobe_Continuity.md` | chat-expert | `ACTIVATE COSTUME_WARDROBE` · `LOCK WARDROBE` |
 | QA Guardian | `Quality_Assurance_Guardian_v3.5.md` | chat-expert | `ACTIVATE QA_GUARDIAN` · `RUN QA REVIEW` |
+| Grok Doctor | `Grok_Doctor.md` | multi | `ACTIVATE GROK_DOCTOR` · `RUN STUDIO_HEALTH_CHECK` · `DIAGNOSE STUDIO` |
 | Imagine Prompt Master | `Imagine_Prompt_Master.md` | chat-expert | `ACTIVATE IMAGINE_PROMPT_MASTER` |
 | Workflow & Quota Optimizer | `Workflow_Quota_Optimizer.md` | multi / auto | `ACTIVATE WORKFLOW_OPTIMIZER` |
 
@@ -138,6 +140,8 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 | 5 | Native Audio Pass | `ACTIVATE SONIC_ARCHITECT` + `GENERATE_NATIVE_AUDIO_SEQUENCE` |
 | 6 | Marketing Package | `ACTIVATE KEY_ART_DESIGNER` + `ACTIVATE TRAILER_DIRECTOR` |
 | 7 | QA + Delivery | `RUN QA REVIEW` → `ACTIVATE AI_POLISH_DIRECTOR` |
+| 7b | Studio Health Diagnostic | `ACTIVATE GROK_DOCTOR` · `RUN STUDIO_HEALTH_CHECK` |
+| 7c | Multi-Clip Continuity Audit | `ACTIVATE MULTI_CLIP_CONTINUITY_ORCHESTRATOR` · `RUN CROSS_AGENT_CONTINUITY_AUDIT` |
 | 8 | Quota Planning | `ACTIVATE WORKFLOW_OPTIMIZER` |
 | 9 | Final Delivery Polish | `RUN FINAL POLISH PASS` |
 | 10 | NSFW Quota Batch | `ACTIVATE EROSFORGE` → `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` |
@@ -174,7 +178,9 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 | `handoff-packet-validator` | Tool | Before extend / i2v handoffs |
 | `production-bible-workflow` | Pipeline | `START PRODUCTION BIBLE WORKFLOW` |
 | `nsfw-chain-qa-protocol` | Pipeline (opt-in) | `RUN NSFW CHAIN QA REVIEW` |
+| `grok-doctor` | Agent / diagnostic | `ACTIVATE GROK_DOCTOR` · `RUN STUDIO_HEALTH_CHECK` |
+| `multi-clip-continuity-orchestrator` | Agent | `ACTIVATE MULTI_CLIP_CONTINUITY_ORCHESTRATOR` |
 
 ---
 
-*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-07-21*
+*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-07-25 · 54 skills*
