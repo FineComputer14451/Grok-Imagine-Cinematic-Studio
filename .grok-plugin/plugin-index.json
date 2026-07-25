@@ -6,7 +6,7 @@
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 25-agent core suite plus i2i and NSF…"
           },
           {
             "name": "studio-director",
@@ -268,14 +268,14 @@
           }
         ]
       },
-      "sha": "c8a1d400239e9c5d4944c8c94f8f55d0d36077e2"
+      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
     },
     "grok-imagine-cinematic-core": {
       "components": {
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 23-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 25-agent core suite plus i2i and NSF…"
           },
           {
             "name": "studio-director",
@@ -393,7 +393,7 @@
           }
         ]
       },
-      "sha": "c8a1d400239e9c5d4944c8c94f8f55d0d36077e2"
+      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -436,7 +436,7 @@
           }
         ]
       },
-      "sha": "c8a1d400239e9c5d4944c8c94f8f55d0d36077e2"
+      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -507,7 +507,7 @@
           }
         ]
       },
-      "sha": "c8a1d400239e9c5d4944c8c94f8f55d0d36077e2"
+      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
     },
     "grok-imagine-nsfw": {
       "components": {
@@ -536,7 +536,7 @@
           }
         ]
       },
-      "sha": "c8a1d400239e9c5d4944c8c94f8f55d0d36077e2"
+      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -569,7 +569,7 @@
           }
         ]
       },
-      "sha": "c8a1d400239e9c5d4944c8c94f8f55d0d36077e2"
+      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
     }
   }
 }
