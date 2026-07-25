@@ -6,7 +6,7 @@
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 25-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.7 Odyssey Native powered by a 25-agent core suite plus i2i and NSF…"
           },
           {
             "name": "studio-director",
@@ -22,7 +22,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 54-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.7. Installs updates and verifies the full 54-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -268,14 +268,14 @@
           }
         ]
       },
-      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
+      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
     },
     "grok-imagine-cinematic-core": {
       "components": {
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.6 Odyssey Native powered by a 25-agent core suite plus i2i and NSF…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.8.7 Odyssey Native powered by a 25-agent core suite plus i2i and NSF…"
           },
           {
             "name": "studio-director",
@@ -291,7 +291,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.6. Installs updates and verifies the full 54-skill suite plus CLI…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.8.7. Installs updates and verifies the full 54-skill suite plus CLI…"
           },
           {
             "name": "skill-agent-architect",
@@ -393,7 +393,7 @@
           }
         ]
       },
-      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
+      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -436,7 +436,7 @@
           }
         ]
       },
-      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
+      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -507,7 +507,7 @@
           }
         ]
       },
-      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
+      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
     },
     "grok-imagine-nsfw": {
       "components": {
@@ -536,7 +536,7 @@
           }
         ]
       },
-      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
+      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -569,7 +569,7 @@
           }
         ]
       },
-      "sha": "24511c27e43a9162877f48df81b253bbaf01fc05"
+      "sha": "af19dcd8c40ea67d24e8d3e29c81b424e29459ee"
     }
   }
 }
