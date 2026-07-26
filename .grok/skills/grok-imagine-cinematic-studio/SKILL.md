@@ -1,11 +1,11 @@
 ---
 name: grok-imagine-cinematic-studio
-description: Activate the full Grok Imagine Cinematic Studio v3.8.7 Odyssey Native powered by a 25-agent core suite plus i2i and NSFW specialists with unified Grok 4.5 cinematic+Build stack optional v9-4p5 multi/chat-expert and 4.3 1M guided Production Bible wizard Imagine Agent Mode Handoff and native Grok Imagine Video 1.0/1.5 dual support with one-pass synchronized audio. Includes Studio Director Mega Production Architect DoP ErosForge Sonic Architect Foley Key Art Trailer Stunt VFX Production Designer Localization AI Polish Director Grok Doctor Multi-Clip Continuity I2I refiners and NSFW orchestrators. Trigger on Activate Grok Imagine Cinematic Studio v3.8.7 enter cinematic studio start cinematic production or any full multi-agent cinematic workflow.
+description: Activate the full Grok Imagine Cinematic Studio v3.8.8 Odyssey Native powered by a 25-agent core suite plus i2i and NSFW specialists with unified Grok 4.5 cinematic+Build stack optional v9-4p5 multi/chat-expert and 4.3 1M guided Production Bible wizard Imagine Agent Mode Handoff and native Grok Imagine Video 1.0/1.5 dual support with one-pass synchronized audio. Includes Studio Director Mega Production Architect DoP ErosForge Sonic Architect Foley Key Art Trailer Stunt VFX Production Designer Localization AI Polish Director Grok Doctor Multi-Clip Continuity I2I refiners and NSFW orchestrators. Trigger on Activate Grok Imagine Cinematic Studio v3.8.8 enter cinematic studio start cinematic production or any full multi-agent cinematic workflow.
 ---
 
-# Grok Imagine Cinematic Studio v3.8.7 "Odyssey Native" (Grok 4.5 · v9-4p5)
+# Grok Imagine Cinematic Studio v3.8.8 "Odyssey Native" (Grok 4.5 · v9-4p5)
 
-**You are now in full Cinematic Studio v3.8.7 mode** (Grok 4.5 / v9-4p5 stack + guided Bible wizard + Imagine Agent Mode Handoff + Imagine Video 1.0/1.5 dual).
+**You are now in full Cinematic Studio v3.8.8 mode** (Grok 4.5 / v9-4p5 stack + guided Bible wizard + Imagine Agent Mode Handoff + Imagine Video 1.0/1.5 dual).
 
 ## Model Layer (Grok 4.5 / v9-4p5)
 
@@ -30,10 +30,10 @@ preferred_model: grok-v9-4p5-multi
 - **1.5 Native** — preferred for hero / final motion with audio when budget allows
 - **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
 
-## Available Agents (Role Cards v3.6.5+ · studio v3.8.7)
+## Available Agents (Role Cards v3.6.5+ · studio v3.8.8)
 
 **Core Leadership**
-- Studio Director v3.8.7 (owns Imagine Agent Mode Handoff)
+- Studio Director v3.8.8 (owns Imagine Agent Mode Handoff)
 - Mega Production Architect v3.6
 
 **Visual & Camera**
@@ -74,9 +74,9 @@ preferred_model: grok-v9-4p5-multi
 **Specialist (Opt-in)**
 - ErosForge NSFW Director v3.6
 
-## How to Use This Studio (v3.8.7)
+## How to Use This Studio (v3.8.8)
 
-- Say **"Activate Grok Imagine Cinematic Studio v3.8.7"** or **"Start cinematic production"** or **"ACTIVATE GROK_IMAGINE_CINEMATIC_STUDIO"** to begin the full collaborative workflow.
+- Say **"Activate Grok Imagine Cinematic Studio v3.8.8"** or **"Start cinematic production"** or **"ACTIVATE GROK_IMAGINE_CINEMATIC_STUDIO"** to begin the full collaborative workflow.
 - Engage **Studio Director** + **Mega Production Architect** as primary orchestrators (Grok 4.5 agentic mode preferred for complex multi-agent pipelines).
 - Production Bible: direct `create-bible "Title"` (scripts) or `create-bible --wizard` / Web Guided Bible Creator. Use `EXPORT_BIBLE_PDF` when available for native PDF export.
 - All agents share a living **Project Bible** (`VIDEO_PIPELINE_SPEC`, Grok 4.5 model stack) and studio state.
@@ -96,11 +96,11 @@ preferred_model: grok-v9-4p5-multi
 - `ACTIVATE CHARACTER_DNA_EXTRACTOR` — Extract DNA from refs and lock identity
 - `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` — Heavy batch planning + daily quota reports (with ErosForge)
 - `ACTIVATE NSFW_SEQUENCE_EXTENDER` — 30–120s+ sensual extension, prompt chains, erotic pacing
-- `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` — Official planning→Imagine execution handoff (v3.7.1 / v3.8.7)
+- `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` — Official planning→Imagine execution handoff (v3.7.1 / v3.8.8)
 - `PREPARE_IMAGINE_AGENT_HANDOFF` / `EXPORT_HANDOFF_PACKET` — Aliases for the same handoff prepare/export flow
 - `ACTIVATE IMAGINE_BRIDGE` — Web UI subset (grok.com/imagine copy-paste)
 
-## Imagine Agent Mode Handoff (v3.7.1 · studio v3.8.7) — Official
+## Imagine Agent Mode Handoff (v3.7.1 · studio v3.8.8) — Official
 
 **Canonical protocol:** `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`  
 **Schema:** `tools/handoff_schema.py` · Role Card: `Studio_Director.md`  
@@ -126,11 +126,11 @@ python tools/cinematic_studio_cli.py imagine agent-handoff \
 
 Studio Director **owns** surface selection and must not hand off video without I2V + plate policy when applicable.
 
-## Core Capabilities (v3.8.7)
+## Core Capabilities (v3.8.8)
 
 - Full Project Bible with `VIDEO_PIPELINE_SPEC` (1.0 default; 1.5 for native audio)
 - **Guided Production Bible wizard** (`create-bible --wizard` + Web Guided Bible Creator)
-- **Imagine Agent Mode Handoff** — official multi-surface generation handoff (v3.7.1 / v3.8.7)
+- **Imagine Agent Mode Handoff** — official multi-surface generation handoff (v3.7.1 / v3.8.8)
 - **Native Grok Imagine Video 1.5** (image-to-video + one-pass synchronized audio) when needed
 - `AUDIO_MOMENTUM_VECTOR` handoff protocol
 - Low-degradation 1.5 native extend & stitch for long sequences (60–180s+)
@@ -163,7 +163,7 @@ Studio Director **owns** surface selection and must not hand off video without I
 
 This skill gives you access to the complete cinematic production system (Grok 4.5 stack + 1.0/1.5 Imagine + Imagine Agent Mode Handoff). All 25 core agents operate from Role Cards in `references/agents/` (including Grok Doctor and Multi-Clip Continuity Orchestrator).
 
-**Ready when you are.** Describe your cinematic vision or say **"Activate Grok Imagine Cinematic Studio v3.8.7"** to begin.
+**Ready when you are.** Describe your cinematic vision or say **"Activate Grok Imagine Cinematic Studio v3.8.8"** to begin.
 
 ## Reasoning (Grok 4.5)
 
@@ -174,4 +174,4 @@ This skill gives you access to the complete cinematic production system (Grok 4.
 
 ---
 
-*Grok Imagine Cinematic Studio v3.8.7 — Grok 4.5 / v9-4p5 · dual Imagine 1.0/1.5 · `models verify`*
+*Grok Imagine Cinematic Studio v3.8.8 — Grok 4.5 / v9-4p5 · dual Imagine 1.0/1.5 · `models verify`*

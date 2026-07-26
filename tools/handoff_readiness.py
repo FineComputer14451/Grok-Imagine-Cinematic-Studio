@@ -30,14 +30,14 @@ RETURN_CUES = (
     "polish",
 )
 PLACEHOLDER_QUOTA = frozenset({"todo", "tbd", "n/a", "na", "none", "-", "—"})
-PROTOCOL_OK = frozenset({"3.7.1", "3.8.0", "3.8.1", "3.8.2", "3.8.3", "3.8.4", "3.8.5", "3.8.6", "3.8.7"})
+PROTOCOL_OK = frozenset({"3.7.1", "3.8.0", "3.8.1", "3.8.2", "3.8.3", "3.8.4", "3.8.5", "3.8.6", "3.8.7", "3.8.8"})
 
 
 def _studio_version() -> str:
     vf = STUDIO_ROOT / "VERSION"
     if vf.is_file():
-        return vf.read_text(encoding="utf-8").strip() or "3.8.7"
-    return "3.8.7"
+        return vf.read_text(encoding="utf-8").strip() or "3.8.8"
+    return "3.8.8"
 
 
 def _has_cue(text: str, cues: tuple[str, ...]) -> bool:

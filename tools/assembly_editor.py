@@ -15,7 +15,7 @@ from typing import Any
 from studio_paths import ARTIFACTS_DIR, EDL_DIR, SEQUENCES_DIR
 
 SCHEMA_VERSION = "1.0"
-STUDIO_AGENT_VERSION = "v3.8.7"
+STUDIO_AGENT_VERSION = "v3.8.8"
 
 
 def _now_iso() -> str:

@@ -21,7 +21,7 @@ from studio_paths import CHARACTERS_DIR
 from wardrobe_lock import build_wardrobe_handoff_section, build_wardrobe_inject
 
 SCHEMA_VERSION = "1.0"
-STUDIO_AGENT_VERSION = "v3.8.7"
+STUDIO_AGENT_VERSION = "v3.8.8"
 
 PROMPT_MODES = (
     "compact",

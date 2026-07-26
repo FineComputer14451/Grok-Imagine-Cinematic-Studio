@@ -31,7 +31,7 @@ from cli.tui.widgets import (  # noqa: E402
 
 def _sample_snap(**overrides: object) -> dict:
     snap: dict = {
-        "studio_version": "3.8.7",
+        "studio_version": "3.8.8",
         "generated_at": "now",
         "project": {"title": "Demo Film", "genre": "Noir", "has_bible": True},
         "studio": {
@@ -138,7 +138,7 @@ def test_format_status_strip_rollup() -> None:
     assert "risk:low" in text
     assert "DNA 1/3 locked" in text
     assert "QA 4 go · 0 no-go" in text
-    assert "3.8.7" in text
+    assert "3.8.8" in text
     assert "[WARN]" in text or "[OK]" in text or "[CRITICAL]" in text
 
 

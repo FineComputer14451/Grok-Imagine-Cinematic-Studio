@@ -129,8 +129,8 @@ def test_optional_fields_wave_a_owned_only() -> None:
 def test_strict_wave_a_i2v_requires_plate_and_motion() -> None:
     pkt = {
         "packet_type": "imagine_agent_mode_handoff",
-        "protocol_version": "3.8.7",
-        "studio_version": "3.8.7",
+        "protocol_version": "3.8.8",
+        "studio_version": "3.8.8",
         "target_surface": "grok_build_tools",
         "execution_mode": "image_to_video",
         "subject_id": "shot_001",
@@ -153,8 +153,8 @@ def test_strict_wave_a_i2v_requires_plate_and_motion() -> None:
 def test_attach_wave_a_lifts_plate_motion() -> None:
     base = {
         "packet_type": "imagine_agent_mode_handoff",
-        "protocol_version": "3.8.7",
-        "studio_version": "3.8.7",
+        "protocol_version": "3.8.8",
+        "studio_version": "3.8.8",
         "target_surface": "grok_build_tools",
         "execution_mode": "image_to_video",
         "subject_id": "shot_001",

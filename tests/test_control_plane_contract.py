@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT / "web_ui"))
 
 def _snap(**overrides: object) -> dict:
     base: dict = {
-        "studio_version": "3.8.7",
+        "studio_version": "3.8.8",
         "generated_at": "now",
         "project": {"title": "CP", "genre": "Drama", "has_bible": True},
         "studio": {
@@ -132,5 +132,5 @@ def test_live_snapshot_contract() -> None:
     assert dui.severity(snap) == sev
     assert isinstance(collect_home_alerts(snap), list)
     assert isinstance(dui.attention_rows(snap), list)
-    html = dui.status_strip_html(snap, studio_version="3.8.7")
+    html = dui.status_strip_html(snap, studio_version="3.8.8")
     assert f"sev-{sev}" in html

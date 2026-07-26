@@ -2,7 +2,8 @@
 
 | File | Studio version |
 |------|----------------|
-| [RELEASE_NOTES_v3.8.7.md](RELEASE_NOTES_v3.8.7.md) | **Current** (54 skills · 25 core · Parallel Briefs · CLI ensure) |
+| [RELEASE_NOTES_v3.8.8.md](RELEASE_NOTES_v3.8.8.md) | **Current** (Operator UX control plane · Wave A · Parallel Briefs) |
+| [RELEASE_NOTES_v3.8.7.md](RELEASE_NOTES_v3.8.7.md) | Wave A · Doctor · Multi-Clip Continuity · CLI ensure |
 | [RELEASE_NOTES_v3.8.6.md](RELEASE_NOTES_v3.8.6.md) | Dual-model polish pin |
 | [RELEASE_NOTES_v3.8.5.md](RELEASE_NOTES_v3.8.5.md) | Full v4.5 dual-model wave (Grok 4.5 / v9-4p5 · Imagine 1.0 + 1.5) |
 | [RELEASE_NOTES_v3.8.4.md](RELEASE_NOTES_v3.8.4.md) | CLI TUI + plate/motion readiness |

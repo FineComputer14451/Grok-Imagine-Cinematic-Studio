@@ -4,20 +4,26 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.8.8] - 2026-07-26
+
 ### Changed
+- **Studio version** — `VERSION` → **3.8.8**; activation `Activate Grok Imagine Cinematic Studio v3.8.8`
 - **TUI Home density** — `cinematic-studio ui` Home is a multi-panel ops board (status strip, Quota | Studio, Sequences, dedicated Chain QA, Characters, optional Recent Jobs) instead of a single Markdown wall; still driven by `build_studio_dashboard()`
-- **TUI Home attention + severity** — ATTENTION board from snapshot signals; status strip severity CSS (ok/warn/critical); Home keys **d** (Grok Doctor quick) and **v** (validate); Doctor on launcher + cockpit Health
+- **TUI Home attention + severity** — ATTENTION board from snapshot signals; status strip severity CSS (ok/warn/critical); Home keys **d** doctor · **v** validate · **m** models · **k** stack · **s** quota sync
 - **Streamlit Web UI dashboard density** — ops status strip + Attention board (shared TUI alert/severity helpers), dedicated Chain QA table, quota recon/alignment, recent jobs, sidebar ops severity, refresh control
-- **Operator UX Phase 1 (Orient + Health)** — control-plane contract tests; TUI Home **m** models / **k** stack; Streamlit Dashboard health action strip (doctor/validate/quota sync/models); doctor **control plane** check; Quick Start operator loop
+- **Operator UX Phase 1 (Orient + Health)** — control-plane contract tests; Streamlit Dashboard health action strip; doctor **control plane** check; Quick Start operator loop
 - **Operator UX Phase 2 (Produce + Gate)** — `readiness` rollup on studio dashboard (identity/plate-motion/chain QA + next actions); TUI READINESS panel + DNA/sequence next-step coaching; `cinematic-studio handoff validate`; TUI/Web handoff validate entry; Web DNA lock feedback; chain QA no-go next actions
 - **Operator UX Phase 3 (Multi-agent + Deliver)** — Parallel Brief log discovery; convergence checklist for agent-mode handoff; delivery polish/deliver readiness rollup; TUI panels + Cockpit dry-run polish/deliver + wave-a briefs + imagine bridge; Web Dashboard/Tools parity
+- Handoff `PROTOCOL_OK` includes **3.8.8**; `STUDIO_COMPATIBILITY_VERSION` / agent version stamps aligned
 
 ### Added
-- **Wave A agent scaffold (P0)** — eight new specialists with Role Cards + skills (no CLI yet): `plate-motion-readiness-lead`, `contact-micro-physics-specialist`, `hair-makeup-continuity`, `dialogue-adr-director`, `score-temp-music-supervisor`, `title-motion-graphics-lead`, `distribution-crop-strategist`, `parallel-brief-dispatcher` (suite **54 → 62** skills; packs updated)
+- **Operator UX North-Star** — journey-first control plane design (`docs/development/superpowers/specs/2026-07-26-operator-ux-north-star-design.md`)
+- **Wave A agent scaffold (P0)** — eight specialists: `plate-motion-readiness-lead`, `contact-micro-physics-specialist`, `hair-makeup-continuity`, `dialogue-adr-director`, `score-temp-music-supervisor`, `title-motion-graphics-lead`, `distribution-crop-strategist`, `parallel-brief-dispatcher` (suite **62** skills; packs updated)
 - **Wave A packets (P1)** — `tools/wave_a_packets.py` builders + 8 handoff `packet_type`s; optional field checks; `validate_handoff.py --strict-wave-a`; `attach_wave_a_to_imagine()`
 - **Wave A CLI (P2)** — `cinematic-studio wave-a` (plate-motion, contact, hmu, dialogue, score, title, crop, briefs, validate, attach); `--strict-wave-a` on `sfw run` / `nsfw run` / `imagine agent-handoff`
 - **Grok Build CLI management** — `cinematic-studio grok status|ensure|update|install` (Method A already ensured the binary on install; now first-class Python CLI + `tools/grok_build_cli.py`)
 - **Multi-surface install docs** — shell CLI + **grok.com chat** + **grok.com/imagine** bridge + mobile app matrix in meta-installer skill, installation guide, AGENTS, CLI reference
+- **`cinematic-studio handoff validate`** — schema + soft readiness for handoff packets
 
 ### Fixed
 - **Method A `tools_complete`** — require `grok_build_cli.py`, `cli/grok_cli_commands.py`, and `cli/wave_a_commands.py` so stale `~/Grok-Cinematic-Projects` is refreshed and PATH `cinematic-studio grok` works

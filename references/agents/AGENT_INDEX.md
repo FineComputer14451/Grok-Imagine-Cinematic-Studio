@@ -1,7 +1,7 @@
 # Grok Imagine Cinematic Studio — Agent Index
 
 **Enhanced for:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` + **Imagine Video 1.0 & 1.5 Native**  
-**Version:** 3.8.7 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.8.7 · Full v4.5 dual-model wave  
+**Version:** 3.8.8 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.8.8 · Full v4.5 dual-model wave  
 **Date:** 2026-07-25  
 **Canonical Model Layer:** `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1)
 
@@ -108,7 +108,7 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 
 ---
 
-## Wave A Specialists (P0 scaffold · v3.8.7+)
+## Wave A Specialists (P0 scaffold · v3.8.8+)
 
 | Agent | Role Card | Preferred Model | Activation |
 |-------|-----------|-----------------|------------|
