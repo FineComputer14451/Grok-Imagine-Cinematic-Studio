@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.containers import Container, VerticalScroll
+from textual.containers import Container, Horizontal, VerticalScroll
 from textual.screen import ModalScreen, Screen
 from textual.widgets import (
     Button,
@@ -14,7 +14,6 @@ from textual.widgets import (
     Label,
     ListItem,
     ListView,
-    Markdown,
     Static,
 )
 from textual.worker import Worker, WorkerState
@@ -28,7 +27,18 @@ from cli.tui.actions import (
     validate_answers,
 )
 from cli.tui.runner import CommandResult, run_action
-from cli.tui.widgets import format_error_panel, format_form_errors, format_home_markdown
+from cli.tui.widgets import (
+    format_chain_qa_panel,
+    format_characters_panel,
+    format_form_errors,
+    format_home_error,
+    format_home_hints,
+    format_jobs_panel,
+    format_quota_panel,
+    format_sequences_panel,
+    format_status_strip,
+    format_studio_panel,
+)
 
 
 def pop_confirm_form_chain(app: object) -> None:
@@ -178,7 +188,7 @@ class StudioScreen(Screen[None]):
 
 
 class HomeScreen(Screen[None]):
-    """Live dashboard home."""
+    """Live multi-panel ops dashboard home."""
 
     BINDINGS = [
         Binding("r", "refresh", "Refresh"),
@@ -192,14 +202,30 @@ class HomeScreen(Screen[None]):
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
         with VerticalScroll(id="home-scroll"):
-            yield Markdown("", id="home-body")
+            yield Static("", id="home-error", classes="home-error hidden")
+            yield Static("", id="status-strip", classes="home-strip")
+            with Horizontal(id="home-mid", classes="home-mid"):
+                yield Static("", id="panel-quota", classes="home-panel")
+                yield Static("", id="panel-studio", classes="home-panel")
+            yield Static("", id="panel-sequences", classes="home-panel")
+            yield Static("", id="panel-chain-qa", classes="home-panel")
+            yield Static("", id="panel-characters", classes="home-panel")
+            yield Static("", id="panel-jobs", classes="home-panel hidden")
+            yield Static(format_home_hints(), id="home-hints", classes="home-hints")
         yield Footer()
 
     def on_mount(self) -> None:
         self.action_refresh()
 
+    def _set_panel(self, widget_id: str, text: str, *, hide: bool = False) -> None:
+        w = self.query_one(f"#{widget_id}", Static)
+        w.update(text)
+        if hide:
+            w.add_class("hidden")
+        else:
+            w.remove_class("hidden")
+
     def action_refresh(self) -> None:
-        body = self.query_one("#home-body", Markdown)
         try:
             from cli.dashboard import build_studio_dashboard
 
@@ -210,9 +236,32 @@ class HomeScreen(Screen[None]):
                 snap["quota_alignment"] = ledger_recon_alignment()
             except Exception:
                 pass
-            body.update(format_home_markdown(snap))
+
+            self._set_panel("home-error", "", hide=True)
+            self._set_panel("status-strip", format_status_strip(snap))
+            self._set_panel("panel-quota", format_quota_panel(snap))
+            self._set_panel("panel-studio", format_studio_panel(snap))
+            self._set_panel("panel-sequences", format_sequences_panel(snap))
+            self._set_panel("panel-chain-qa", format_chain_qa_panel(snap))
+            self._set_panel("panel-characters", format_characters_panel(snap))
+            jobs = format_jobs_panel(snap)
+            if jobs:
+                self._set_panel("panel-jobs", jobs, hide=False)
+            else:
+                self._set_panel("panel-jobs", "", hide=True)
+            self._set_panel("home-hints", format_home_hints())
         except Exception as exc:  # noqa: BLE001 — surface any snapshot failure
-            body.update(format_error_panel(str(exc)))
+            self._set_panel("home-error", format_home_error(str(exc)), hide=False)
+            for wid in (
+                "status-strip",
+                "panel-quota",
+                "panel-studio",
+                "panel-sequences",
+                "panel-chain-qa",
+                "panel-characters",
+                "panel-jobs",
+            ):
+                self._set_panel(wid, "", hide=True)
 
     def action_quota_sync(self) -> None:
         """Run exclusive-cascade recon from home (no Imagine spend)."""

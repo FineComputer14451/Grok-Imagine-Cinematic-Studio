@@ -13,7 +13,34 @@ class StudioTUI(App[None]):
     TITLE = "Cinematic Studio"
     SUB_TITLE = "Dashboard · Launcher · Cockpit"
     CSS = """
-    #home-scroll { height: 1fr; }
+    #home-scroll { height: 1fr; padding: 0 1 1 1; }
+    .home-strip {
+        padding: 1 1 0 1;
+        text-style: bold;
+        color: $text;
+        border: solid $accent;
+        margin: 0 0 1 0;
+    }
+    .home-mid { height: auto; margin-bottom: 1; }
+    .home-panel {
+        width: 1fr;
+        padding: 0 1 1 1;
+        border: solid $panel;
+        margin: 0 0 1 0;
+        color: $text;
+    }
+    #panel-quota { margin-right: 1; }
+    .home-hints {
+        padding: 0 1 1 1;
+        color: $text-muted;
+    }
+    .home-error {
+        padding: 1;
+        border: heavy $error;
+        color: $error;
+        margin-bottom: 1;
+    }
+    .hidden { display: none; }
     #launcher-hint { padding: 1 2; color: $text-muted; }
     #out-title { padding: 1 2; text-style: bold; }
     #out-body { padding: 0 2 1 2; }
