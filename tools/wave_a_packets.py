@@ -200,7 +200,12 @@ def build_plate_motion_readiness(
     plate_asset_id: str | None = None,
     notes: str = "",
 ) -> dict[str, Any]:
-    status = normalize_plate_status(plate_status) or str(plate_status).strip().lower()
+    status = normalize_plate_status(plate_status)
+    if status is None:
+        raise ValueError(
+            f"plate_status: invalid {plate_status!r} "
+            f"(expected one of {sorted(PLATE_STATUSES)})"
+        )
     pkt: dict[str, Any] = {
         "packet_type": PACKET_PLATE_MOTION,
         "subject_id": subject_id,
@@ -256,6 +261,11 @@ def build_hmu_lock(
     delta: str = "",
 ) -> dict[str, Any]:
     cond = str(condition).strip().lower() or "clean"
+    if cond not in HMU_CONDITION:
+        raise ValueError(
+            f"hmu condition: invalid {condition!r} "
+            f"(expected one of {sorted(HMU_CONDITION)})"
+        )
     return {
         "packet_type": PACKET_HMU,
         "character_slug": character_slug,
@@ -381,41 +391,22 @@ def validate_optional_wave_a_fields(
     strict_wave_a: bool = False,
 ) -> tuple[list[str], list[str]]:
     """
-    Validate optional Wave A fields when present on any packet.
+    Validate optional **Wave A-owned** fields when present on any packet.
 
     Returns (hard_issues, warnings).
-    strict_wave_a: for video still→video modes, require plate_status OK + full
-    motion_vector if either field family is partially present.
+
+    Plate lock + motion triple are **not** validated here — they live in
+    ``plate_readiness`` / ``motion_readiness`` / ``spend_readiness`` /
+    ``handoff_readiness``. Compose with those under ``--strict-wave-a``
+    (see ``evaluate_spend_gates`` and handoff validator).
+
+    ``strict_wave_a`` is accepted for API compatibility; it does not re-check
+    plate/motion. Callers that need still→video hard-fail must set plate+motion
+    strict flags or use ``evaluate_spend_gates(..., strict_wave_a=True)``.
     """
+    del strict_wave_a  # plate/motion owned elsewhere; keep kwarg for call-site compat
     issues: list[str] = []
     warnings: list[str] = []
-
-    # plate_status
-    if "plate_status" in data:
-        st = normalize_plate_status(data.get("plate_status"))
-        if st is None:
-            issues.append(
-                f"plate_status: invalid value {data.get('plate_status')!r} "
-                f"(expected draft|approved|locked)"
-            )
-        elif st not in ("approved", "locked"):
-            warnings.append(
-                f"plate_status={st!r} not approved/locked — still→video may block"
-            )
-
-    # motion_vector
-    if "motion_vector" in data:
-        mv = data.get("motion_vector")
-        if not isinstance(mv, dict):
-            issues.append("motion_vector: must be an object")
-        elif not is_complete_motion_triple(
-            {k: str(mv.get(k) or "") for k in MOTION_TRIPLE_KEYS}
-        ):
-            msg = "motion_vector: incomplete triple (need action, camera, emotion)"
-            if strict_wave_a:
-                issues.append(msg)
-            else:
-                warnings.append(msg)
 
     # hmu_lock nested
     if "hmu_lock" in data:
@@ -478,22 +469,43 @@ def validate_optional_wave_a_fields(
                 if pri is not None and str(pri).lower() not in BRIEF_PRIORITIES:
                     issues.append(f"briefs[{i}].priority: invalid {pri!r}")
 
-    mode = str(data.get("execution_mode") or "")
-    if strict_wave_a and mode in ("image_to_video", "reference_to_video"):
-        st = normalize_plate_status(data.get("plate_status"))
-        if st not in ("approved", "locked"):
-            issues.append(
-                "strict-wave-a: still→video requires plate_status approved|locked"
-            )
-        mv = data.get("motion_vector")
-        if not isinstance(mv, dict) or not is_complete_motion_triple(
-            {k: str(mv.get(k) or "") for k in MOTION_TRIPLE_KEYS}
-        ):
-            issues.append(
-                "strict-wave-a: still→video requires complete motion_vector triple"
-            )
-
     return issues, warnings
+
+
+# attach slot → expected packet_type (reject mis-attached files early)
+_ATTACH_PACKET_TYPES: dict[str, str] = {
+    "plate_motion": PACKET_PLATE_MOTION,
+    "contact": PACKET_CONTACT,
+    "hmu": PACKET_HMU,
+    "dialogue": PACKET_DIALOGUE,
+    "score": PACKET_SCORE,
+    "title": PACKET_TITLE,
+    "crop": PACKET_CROP,
+}
+
+
+def require_attach_packet_type(
+    blob: dict[str, Any],
+    *,
+    field: str,
+    expected: str | None = None,
+) -> dict[str, Any]:
+    """
+    Guard that a Wave A attach payload is a dict with the right packet_type.
+
+    Raises TypeError / ValueError on mismatch so CLI and library callers fail closed.
+    """
+    if field not in _ATTACH_PACKET_TYPES:
+        raise ValueError(f"unknown attach field: {field!r}")
+    want = expected or _ATTACH_PACKET_TYPES[field]
+    if not isinstance(blob, dict):
+        raise TypeError(f"attach {field}: expected JSON object, got {type(blob).__name__}")
+    got = blob.get("packet_type")
+    if got != want:
+        raise ValueError(
+            f"attach {field}: expected packet_type={want!r}, got {got!r}"
+        )
+    return blob
 
 
 def attach_wave_a_to_imagine(
@@ -504,6 +516,7 @@ def attach_wave_a_to_imagine(
     hmu: dict[str, Any] | None = None,
     dialogue: dict[str, Any] | None = None,
     score: dict[str, Any] | None = None,
+    title: dict[str, Any] | None = None,
     crop: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
@@ -511,11 +524,17 @@ def attach_wave_a_to_imagine(
 
     Copies plate_status / motion_vector to top-level for plate/motion readiness
     evaluators; nests department packets under wave_a.
+
+    Each non-None attachment must carry its canonical packet_type
+    (see ``_ATTACH_PACKET_TYPES``); wrong types raise ValueError.
     """
     out = dict(packet)
-    wave: dict[str, Any] = dict(out.get("wave_a") or {}) if isinstance(out.get("wave_a"), dict) else {}
+    wave: dict[str, Any] = (
+        dict(out.get("wave_a") or {}) if isinstance(out.get("wave_a"), dict) else {}
+    )
 
-    if plate_motion:
+    if plate_motion is not None:
+        plate_motion = require_attach_packet_type(plate_motion, field="plate_motion")
         wave["plate_motion"] = plate_motion
         if plate_motion.get("plate_status") is not None:
             out["plate_status"] = plate_motion["plate_status"]
@@ -525,17 +544,21 @@ def attach_wave_a_to_imagine(
             if plate_motion.get(k):
                 out[k] = plate_motion[k]
 
-    if contact:
+    if contact is not None:
+        contact = require_attach_packet_type(contact, field="contact")
         wave["contact"] = contact
-    if hmu:
+    if hmu is not None:
+        hmu = require_attach_packet_type(hmu, field="hmu")
         wave["hmu"] = hmu
         if isinstance(hmu.get("hmu_lock"), dict):
             out["hmu_lock"] = hmu["hmu_lock"]
-    if dialogue:
+    if dialogue is not None:
+        dialogue = require_attach_packet_type(dialogue, field="dialogue")
         wave["dialogue"] = dialogue
         if isinstance(dialogue.get("dialogue_block"), dict):
             out["dialogue_block"] = dialogue["dialogue_block"]
-    if score:
+    if score is not None:
+        score = require_attach_packet_type(score, field="score")
         wave["score"] = score
         if isinstance(score.get("music_cues"), list):
             out["music_cues"] = score["music_cues"]
@@ -543,7 +566,13 @@ def attach_wave_a_to_imagine(
             out.setdefault("sound_layer", "")
             # keep AMV tone discoverable
             out["emotional_tone_audio"] = score["emotional_tone_audio"]
-    if crop:
+    if title is not None:
+        title = require_attach_packet_type(title, field="title")
+        wave["title"] = title
+        if isinstance(title.get("title_cards"), list):
+            out["title_cards"] = title["title_cards"]
+    if crop is not None:
+        crop = require_attach_packet_type(crop, field="crop")
         wave["crop"] = crop
         if isinstance(crop.get("crop_plan"), list):
             out["crop_plan"] = crop["crop_plan"]

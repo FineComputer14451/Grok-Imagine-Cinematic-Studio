@@ -9,10 +9,7 @@ from typing import Any, Literal
 
 from artifact_pipeline import register_artifact_from_result
 from batch_runner import BatchPipeline, execute_shot, nsfw_pipeline, sfw_pipeline
-from spend_readiness import (
-    evaluate_generation_spend_readiness,
-    spend_hard_fail_reasons,
-)
+from spend_readiness import evaluate_spend_gates, format_spend_gate_failure
 
 PipelineName = Literal["sfw", "nsfw"]
 
@@ -37,6 +34,29 @@ def _get_next(name: PipelineName, batch: dict[str, Any], count: int) -> list[dic
     return get_next_shots(batch, count=count)
 
 
+def _spend_snapshot(spend: dict[str, Any]) -> dict[str, Any]:
+    plate = spend.get("plate") or {}
+    motion = spend.get("motion") or {}
+    snap: dict[str, Any] = {
+        "plate": {
+            "pass": plate.get("pass"),
+            "blockers": plate.get("blockers"),
+            "warnings": plate.get("warnings"),
+        },
+        "motion": {
+            "pass": motion.get("pass"),
+            "blockers": motion.get("blockers"),
+            "warnings": motion.get("warnings"),
+        },
+    }
+    if spend.get("wave_a_issues") or spend.get("wave_a_warnings"):
+        snap["wave_a"] = {
+            "issues": spend.get("wave_a_issues") or [],
+            "warnings": spend.get("wave_a_warnings") or [],
+        }
+    return snap
+
+
 def run_batch_session(
     batch_slug: str,
     *,
@@ -47,8 +67,13 @@ def run_batch_session(
     cache_artifacts: bool = True,
     strict_plate: bool = False,
     strict_motion: bool = False,
+    strict_wave_a: bool = False,
 ) -> dict[str, Any]:
-    """Run up to `count` next shots sequentially."""
+    """Run up to `count` next shots sequentially.
+
+    Spend gates use the same ``evaluate_spend_gates`` path as single-shot
+    ``preflight_spend`` (plate + motion + Wave A shapes).
+    """
     batch = _load_batch(pipeline, batch_slug)
     pipe = _pipeline(pipeline)
     queue = _get_next(pipeline, batch, count=count)
@@ -68,42 +93,19 @@ def run_batch_session(
             (s for s in batch.get("shots", []) if s.get("shot_id") == shot_id),
             shot,
         )
-        spend = evaluate_generation_spend_readiness(
-            live, strict_motion=strict_motion
+        spend = evaluate_spend_gates(
+            live,
+            strict_plate=strict_plate,
+            strict_motion=strict_motion,
+            strict_wave_a=strict_wave_a,
         )
-        hard = spend_hard_fail_reasons(
-            spend, strict_plate=strict_plate, strict_motion=strict_motion
-        )
+        hard = spend.get("hard_fail") or []
         if hard:
-            plate = spend.get("plate") or {}
-            motion = spend.get("motion") or {}
-            parts = []
-            if "plate" in hard:
-                parts.append(
-                    "plate lock: "
-                    + "; ".join(plate.get("blockers") or ["not ready"])
-                )
-            if "motion" in hard:
-                parts.append(
-                    "motion brief: "
-                    + "; ".join(motion.get("blockers") or ["not ready"])
-                )
             results.append({
                 "shot_id": shot_id,
                 "status": "failed",
-                "error": "; ".join(parts),
-                "spend_readiness": {
-                    "plate": {
-                        "pass": plate.get("pass"),
-                        "blockers": plate.get("blockers"),
-                        "warnings": plate.get("warnings"),
-                    },
-                    "motion": {
-                        "pass": motion.get("pass"),
-                        "blockers": motion.get("blockers"),
-                        "warnings": motion.get("warnings"),
-                    },
-                },
+                "error": format_spend_gate_failure(spend),
+                "spend_readiness": _spend_snapshot(spend),
             })
             if stop_on_fail:
                 break
@@ -136,6 +138,11 @@ def run_batch_session(
                     "pass": motion.get("pass"),
                     "blockers": motion.get("blockers"),
                     "warnings": motion.get("warnings"),
+                }
+            if spend.get("wave_a_warnings") or spend.get("wave_a_issues"):
+                result["wave_a_readiness"] = {
+                    "issues": spend.get("wave_a_issues") or [],
+                    "warnings": spend.get("wave_a_warnings") or [],
                 }
             results.append(result)
         except Exception as exc:

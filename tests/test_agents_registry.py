@@ -22,11 +22,13 @@ from studio_paths import AGENTS_DIR
 
 
 def test_core_agent_count() -> None:
-    assert core_agent_count() == 23
+    # Core Leadership … Post-Production + Grok Doctor + Multi-Clip Continuity
+    assert core_agent_count() == 25
 
 
 def test_total_roster() -> None:
-    assert total_agent_count() == 34
+    # core 25 + i2i 2 + pipeline 6 + Wave A 8 + NSFW opt-in 3
+    assert total_agent_count() == 44
 
 
 def test_production_pipeline_agents() -> None:
@@ -36,6 +38,22 @@ def test_production_pipeline_agents() -> None:
     assert "Image-to-Video Specialist v3.6.5" in pipeline
     assert "Multi-Character Identity Arbiter v3.6.5" in pipeline
     assert "Costume & Wardrobe Continuity v4.5" in pipeline
+    # Wave A plate/contact must not pollute the production pipeline bucket
+    assert "Plate & Motion Readiness Lead v4.5" not in pipeline
+    assert "Contact & Micro-Physics Specialist v4.5" not in pipeline
+
+
+def test_wave_a_specialists_bucket() -> None:
+    wave = AGENTS.get("Wave A Specialists", [])
+    assert len(wave) == 8
+    assert "Plate & Motion Readiness Lead v4.5" in wave
+    assert "Parallel Brief Dispatcher v4.5" in wave
+    # Non–Wave-A core agents must not live here
+    assert "Grok Doctor v4.5" not in wave
+    assert "Multi-Clip Continuity Orchestrator v4.5" not in wave
+    tech = AGENTS.get("Technical & Continuity", [])
+    assert "Grok Doctor v4.5" in tech
+    assert "Multi-Clip Continuity Orchestrator v4.5" in tech
 
 
 def test_role_cards_on_disk() -> None:

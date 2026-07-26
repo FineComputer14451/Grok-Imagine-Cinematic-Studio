@@ -106,12 +106,24 @@ def test_contact_dialogue_score_hmu_title_crop_brief() -> None:
         assert r.returncode == 0, f"{pkt['packet_type']}: {r.stdout}{r.stderr}"
 
 
-def test_optional_fields_warn_incomplete_motion() -> None:
+def test_optional_fields_wave_a_owned_only() -> None:
+    """Plate/motion are not Wave A-owned — optional validator ignores them."""
     issues, warnings = validate_optional_wave_a_fields(
         {"motion_vector": {"action": "x", "camera": "", "emotion": "y"}}
     )
     assert not issues
-    assert any("incomplete" in w for w in warnings)
+    assert not any("motion" in w for w in warnings)
+
+    issues, warnings = validate_optional_wave_a_fields(
+        {"hmu_lock": {"hair": "", "makeup": "", "condition": "clean"}}
+    )
+    assert not issues
+    assert any("hair and makeup" in w for w in warnings)
+
+    issues, _ = validate_optional_wave_a_fields(
+        {"hmu_lock": {"hair": "wet", "makeup": "smudge", "condition": "not-a-cond"}}
+    )
+    assert any("condition" in i for i in issues)
 
 
 def test_strict_wave_a_i2v_requires_plate_and_motion() -> None:
@@ -169,3 +181,48 @@ def test_attach_wave_a_lifts_plate_motion() -> None:
     assert "wave_a" in out
     r = run_validator(out, "--strict-wave-a")
     assert r.returncode == 0, r.stdout + r.stderr
+
+
+def test_builders_fail_closed_on_enums() -> None:
+    with pytest.raises(ValueError, match="plate_status"):
+        build_plate_motion_readiness(
+            subject_id="s1",
+            plate_status="frozen-maybe",
+            action="a",
+            camera="c",
+            emotion="e",
+        )
+    with pytest.raises(ValueError, match="condition"):
+        build_hmu_lock(
+            character_slug="hero",
+            active_look_id="look_a",
+            hair="wet",
+            makeup="smudge",
+            condition="neon-goo",
+        )
+
+
+def test_attach_rejects_wrong_packet_type() -> None:
+    base = {
+        "packet_type": "imagine_agent_mode_handoff",
+        "subject_id": "shot_001",
+        "execution_mode": "image_to_video",
+    }
+    # Score packet mis-attached as plate_motion
+    score = build_score_block(subject_id="shot_001", music_cues=["strings"])
+    with pytest.raises(ValueError, match="plate_motion"):
+        attach_wave_a_to_imagine(base, plate_motion=score)
+
+    # Contact mis-attached as hmu
+    contact = build_contact_brief(
+        subject_id="s1", contact_brief="hand on rail"
+    )
+    with pytest.raises(ValueError, match="hmu"):
+        attach_wave_a_to_imagine(base, hmu=contact)
+
+    # Missing packet_type
+    with pytest.raises(ValueError, match="packet_type"):
+        attach_wave_a_to_imagine(
+            base,
+            crop={"subject_id": "s1", "crop_plan": [{"aspect": "16:9"}]},
+        )

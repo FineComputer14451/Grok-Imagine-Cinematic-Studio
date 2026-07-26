@@ -66,7 +66,9 @@ AGENTS = {
     ],
     "Technical & Continuity": [
         "Continuity & Consistency Guardian v3.6.5",
+        "Multi-Clip Continuity Orchestrator v4.5",
         "Quality Assurance Guardian v3.6.5",
+        "Grok Doctor v4.5",
         "Imagine Prompt Master v3.6.5",
         "Workflow & Quota Optimizer v3.6.5",
     ],
@@ -92,23 +94,22 @@ AGENTS = {
     ],
     "Production Pipeline": [
         "Reference & Asset Curator v3.6.5",
-        "Plate & Motion Readiness Lead v4.5",
         "Image-to-Video Specialist v3.6.5",
-        "Contact & Micro-Physics Specialist v4.5",
         "SFW Batch Orchestrator v1.0",
         "Assembly Editor v3.6.5",
         "Multi-Character Identity Arbiter v3.6.5",
         "Costume & Wardrobe Continuity v4.5",
     ],
+    # Wave A P0 only (8). Grok Doctor + Multi-Clip Continuity are core Technical.
     "Wave A Specialists": [
-        "Parallel Brief Dispatcher v4.5",
+        "Plate & Motion Readiness Lead v4.5",
+        "Contact & Micro-Physics Specialist v4.5",
         "Hair & Makeup Continuity v4.5",
         "Dialogue & ADR Director v4.5",
         "Score & Temp Music Supervisor v4.5",
         "Title & Motion Graphics Lead v4.5",
         "Distribution & Crop Strategist v4.5",
-        "Grok Doctor v4.5",
-        "Multi-Clip Continuity Orchestrator v4.5",
+        "Parallel Brief Dispatcher v4.5",
     ],
     "Specialist (Opt-in)": [
         "ErosForge NSFW Director v3.6.5",

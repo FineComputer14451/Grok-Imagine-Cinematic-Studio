@@ -85,6 +85,30 @@ def _run_validator(path: Path, *, strict_wave_a: bool = False) -> int:
     return int(proc.returncode)
 
 
+def _build(fn, **kwargs: Any) -> dict[str, Any]:
+    """Run a Wave A builder; map ValueError/TypeError to CLI exit 2."""
+    try:
+        return fn(**kwargs)
+    except (TypeError, ValueError) as exc:
+        console.print(f"[red]Build rejected:[/red] {exc}")
+        raise typer.Exit(2) from exc
+
+
+def _emit_built(
+    pkt: dict[str, Any],
+    *,
+    output: Path | None,
+    default_name: str,
+    validate: bool = True,
+) -> Path:
+    """Write + print + optional validate — shared by all builder commands."""
+    out = _write_json(output, pkt, default_name=default_name)
+    _print_packet(pkt, out)
+    if validate and _run_validator(out) != 0:
+        raise typer.Exit(1)
+    return out
+
+
 def register(app: typer.Typer) -> None:
     wave = typer.Typer(
         help="Wave A specialist packets (plate/motion, HMU, dialogue, score, titles, crops, briefs)"
@@ -105,20 +129,22 @@ def register(app: typer.Typer) -> None:
         validate: bool = typer.Option(True, "--validate/--no-validate"),
     ):
         """Build plate_motion_readiness packet."""
-        pkt = build_plate_motion_readiness(
-            subject_id=subject_id,
-            plate_status=status,
-            action=action,
-            camera=camera,
-            emotion=emotion,
-            i2v_motion_block_ready=ready,
-            plate_path=path,
-            plate_asset_id=asset_id,
+        _emit_built(
+            _build(
+                build_plate_motion_readiness,
+                subject_id=subject_id,
+                plate_status=status,
+                action=action,
+                camera=camera,
+                emotion=emotion,
+                i2v_motion_block_ready=ready,
+                plate_path=path,
+                plate_asset_id=asset_id,
+            ),
+            output=output,
+            default_name=f"plate_motion_{subject_id}.json",
+            validate=validate,
         )
-        out = _write_json(output, pkt, default_name=f"plate_motion_{subject_id}.json")
-        _print_packet(pkt, out)
-        if validate and _run_validator(out) != 0:
-            raise typer.Exit(1)
 
     @wave.command("contact")
     def contact(
@@ -132,18 +158,20 @@ def register(app: typer.Typer) -> None:
         validate: bool = typer.Option(True, "--validate/--no-validate"),
     ):
         """Build contact_micro_physics_brief packet."""
-        pkt = build_contact_brief(
-            subject_id=subject_id,
-            contact_brief=brief,
-            hands=hands,
-            cloth=cloth,
-            weight_transfer=weight,
-            liquids=liquids,
+        _emit_built(
+            _build(
+                build_contact_brief,
+                subject_id=subject_id,
+                contact_brief=brief,
+                hands=hands,
+                cloth=cloth,
+                weight_transfer=weight,
+                liquids=liquids,
+            ),
+            output=output,
+            default_name=f"contact_{subject_id}.json",
+            validate=validate,
         )
-        out = _write_json(output, pkt, default_name=f"contact_{subject_id}.json")
-        _print_packet(pkt, out)
-        if validate and _run_validator(out) != 0:
-            raise typer.Exit(1)
 
     @wave.command("hmu")
     def hmu(
@@ -157,18 +185,20 @@ def register(app: typer.Typer) -> None:
         validate: bool = typer.Option(True, "--validate/--no-validate"),
     ):
         """Build hmu_lock_handoff packet."""
-        pkt = build_hmu_lock(
-            character_slug=character_slug,
-            active_look_id=look_id,
-            hair=hair,
-            makeup=makeup,
-            condition=condition,
-            inject_compact=inject,
+        _emit_built(
+            _build(
+                build_hmu_lock,
+                character_slug=character_slug,
+                active_look_id=look_id,
+                hair=hair,
+                makeup=makeup,
+                condition=condition,
+                inject_compact=inject,
+            ),
+            output=output,
+            default_name=f"hmu_{character_slug}.json",
+            validate=validate,
         )
-        out = _write_json(output, pkt, default_name=f"hmu_{character_slug}.json")
-        _print_packet(pkt, out)
-        if validate and _run_validator(out) != 0:
-            raise typer.Exit(1)
 
     @wave.command("dialogue")
     def dialogue(
@@ -182,18 +212,19 @@ def register(app: typer.Typer) -> None:
         validate: bool = typer.Option(True, "--validate/--no-validate"),
     ):
         """Build dialogue_adr_block packet."""
-        pkt = build_dialogue_block(
-            subject_id=subject_id,
-            lines=list(line or []),
-            vo=vo,
-            adr_notes=adr,
-            lip_sync_cues=lip_sync,
-            native_dialogue_seed=seed,
+        _emit_built(
+            build_dialogue_block(
+                subject_id=subject_id,
+                lines=list(line or []),
+                vo=vo,
+                adr_notes=adr,
+                lip_sync_cues=lip_sync,
+                native_dialogue_seed=seed,
+            ),
+            output=output,
+            default_name=f"dialogue_{subject_id}.json",
+            validate=validate,
         )
-        out = _write_json(output, pkt, default_name=f"dialogue_{subject_id}.json")
-        _print_packet(pkt, out)
-        if validate and _run_validator(out) != 0:
-            raise typer.Exit(1)
 
     @wave.command("score")
     def score(
@@ -205,16 +236,17 @@ def register(app: typer.Typer) -> None:
         validate: bool = typer.Option(True, "--validate/--no-validate"),
     ):
         """Build score_temp_music_block packet."""
-        pkt = build_score_block(
-            subject_id=subject_id,
-            music_cues=list(cue or []),
-            temp_score_notes=temp_notes,
-            emotional_tone_audio=tone,
+        _emit_built(
+            build_score_block(
+                subject_id=subject_id,
+                music_cues=list(cue or []),
+                temp_score_notes=temp_notes,
+                emotional_tone_audio=tone,
+            ),
+            output=output,
+            default_name=f"score_{subject_id}.json",
+            validate=validate,
         )
-        out = _write_json(output, pkt, default_name=f"score_{subject_id}.json")
-        _print_packet(pkt, out)
-        if validate and _run_validator(out) != 0:
-            raise typer.Exit(1)
 
     @wave.command("title")
     def title(
@@ -225,14 +257,15 @@ def register(app: typer.Typer) -> None:
         validate: bool = typer.Option(True, "--validate/--no-validate"),
     ):
         """Build title_mograph_brief packet."""
-        pkt = build_title_brief(
-            deliverable_id=deliverable_id,
-            title_cards=[{"text": text, "placement": placement}],
+        _emit_built(
+            build_title_brief(
+                deliverable_id=deliverable_id,
+                title_cards=[{"text": text, "placement": placement}],
+            ),
+            output=output,
+            default_name=f"title_{deliverable_id}.json",
+            validate=validate,
         )
-        out = _write_json(output, pkt, default_name=f"title_{deliverable_id}.json")
-        _print_packet(pkt, out)
-        if validate and _run_validator(out) != 0:
-            raise typer.Exit(1)
 
     @wave.command("crop")
     def crop(
@@ -244,11 +277,12 @@ def register(app: typer.Typer) -> None:
         validate: bool = typer.Option(True, "--validate/--no-validate"),
     ):
         """Build distribution_crop_plan packet (default 16:9 / 9:16 / 1:1)."""
-        pkt = build_crop_plan(subject_id=subject_id, safe_action=safe_action)
-        out = _write_json(output, pkt, default_name=f"crop_{subject_id}.json")
-        _print_packet(pkt, out)
-        if validate and _run_validator(out) != 0:
-            raise typer.Exit(1)
+        _emit_built(
+            build_crop_plan(subject_id=subject_id, safe_action=safe_action),
+            output=output,
+            default_name=f"crop_{subject_id}.json",
+            validate=validate,
+        )
 
     @wave.command("briefs")
     def briefs(
@@ -264,21 +298,22 @@ def register(app: typer.Typer) -> None:
         validate: bool = typer.Option(True, "--validate/--no-validate"),
     ):
         """Build parallel_brief_dispatch_log packet (starter entry)."""
-        pkt = build_brief_dispatch_log(
-            session_id=session_id,
-            briefs=[
-                {
-                    "brief_id": f"pb-{session_id}-001",
-                    "to": to,
-                    "priority": priority,
-                    "scope": scope,
-                }
-            ],
+        _emit_built(
+            build_brief_dispatch_log(
+                session_id=session_id,
+                briefs=[
+                    {
+                        "brief_id": f"pb-{session_id}-001",
+                        "to": to,
+                        "priority": priority,
+                        "scope": scope,
+                    }
+                ],
+            ),
+            output=output,
+            default_name=f"briefs_{session_id}.json",
+            validate=validate,
         )
-        out = _write_json(output, pkt, default_name=f"briefs_{session_id}.json")
-        _print_packet(pkt, out)
-        if validate and _run_validator(out) != 0:
-            raise typer.Exit(1)
 
     @wave.command("validate")
     def validate_cmd(
@@ -301,6 +336,7 @@ def register(app: typer.Typer) -> None:
         hmu: Path = typer.Option(None, "--hmu"),
         dialogue: Path = typer.Option(None, "--dialogue"),
         score: Path = typer.Option(None, "--score"),
+        title: Path = typer.Option(None, "--title"),
         crop: Path = typer.Option(None, "--crop"),
         output: Path = typer.Option(None, "--output", "-o"),
         strict_wave_a: bool = typer.Option(False, "--strict-wave-a"),
@@ -318,21 +354,25 @@ def register(app: typer.Typer) -> None:
             kwargs["dialogue"] = _load_json(dialogue)
         if score:
             kwargs["score"] = _load_json(score)
+        if title:
+            kwargs["title"] = _load_json(title)
         if crop:
             kwargs["crop"] = _load_json(crop)
         if not kwargs:
             console.print("[red]Provide at least one Wave A packet path to attach[/red]")
             raise typer.Exit(2)
-        merged = attach_wave_a_to_imagine(base, **kwargs)
+        try:
+            merged = attach_wave_a_to_imagine(base, **kwargs)
+        except (TypeError, ValueError) as exc:
+            console.print(f"[red]Attach rejected:[/red] {exc}")
+            raise typer.Exit(2) from exc
         out = _write_json(
             output,
             merged,
             default_name=f"imagine_wave_a_{merged.get('subject_id', 'packet')}.json",
         )
         _print_packet(merged, out)
-        issues, warnings = validate_optional_wave_a_fields(
-            merged, strict_wave_a=strict_wave_a
-        )
+        issues, warnings = validate_optional_wave_a_fields(merged)
         for w in warnings:
             console.print(f"[yellow]⚠️  {w}[/yellow]")
         if issues:

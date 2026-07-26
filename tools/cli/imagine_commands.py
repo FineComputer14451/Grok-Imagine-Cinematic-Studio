@@ -397,17 +397,16 @@ def register(app: typer.Typer) -> None:
                 console.print("[dim]Fixes:[/dim]")
                 for fix in ready["fixes"]:
                     console.print(f"  → {fix}")
-        wa_issues, wa_warnings = validate_optional_wave_a_fields(
-            packet, strict_wave_a=strict_wave_a
-        )
+        # Wave A shape issues always hard-fail (same as handoff-packet-validator).
+        # Plate/motion readiness hard-fail only under --strict-handoff / --strict-wave-a.
+        wa_issues, wa_warnings = validate_optional_wave_a_fields(packet)
         for w in wa_warnings:
             console.print(f"[yellow]⚠️  wave-a: {w}[/yellow]")
         if wa_issues:
             for i in wa_issues:
                 console.print(f"[red]wave-a: {i}[/red]")
-            if strict_wave_a:
-                console.print("[red]Wave A handoff gate failed (--strict-wave-a)[/red]")
-                raise typer.Exit(1)
+            console.print("[red]Wave A field checks failed[/red]")
+            raise typer.Exit(1)
         if hard and not ready.get("pass"):
             flag = "--strict-wave-a" if strict_wave_a else "--strict-handoff"
             console.print(f"[red]Handoff readiness failed ({flag})[/red]")

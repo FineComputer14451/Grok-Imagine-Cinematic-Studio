@@ -22,6 +22,7 @@ from models import (
     _parse_grok_cli_version,
     cli_version_at_least,
     probe_grok_cli,
+    version_tuple,
 )
 
 OFFICIAL_INSTALL_URL = os.environ.get(
@@ -110,6 +111,15 @@ def probe_preferred() -> dict[str, Any]:
     }
 
 
+def _versioned_binary_key(path: Path) -> tuple[int, ...]:
+    """Semver sort key for names like grok-0.2.112 (not lexicographic)."""
+    ver = _parse_grok_cli_version(path.name) or "0.0.0"
+    try:
+        return version_tuple(ver)
+    except ValueError:
+        return (0, 0, 0)
+
+
 def link_grok_binary() -> Path | None:
     """Ensure ~/.local/bin/grok points at ~/.grok/bin/grok when present."""
     home = Path.home()
@@ -120,8 +130,8 @@ def link_grok_binary() -> Path | None:
 
     src = bin_dir / "grok"
     if not src.exists():
-        # versioned binaries grok-0.2.112
-        versions = sorted(bin_dir.glob("grok-[0-9]*"), key=lambda p: p.name)
+        # versioned binaries grok-0.2.112 — sort by semver, not string
+        versions = sorted(bin_dir.glob("grok-[0-9]*"), key=_versioned_binary_key)
         if versions:
             latest = versions[-1]
             src.unlink(missing_ok=True)
@@ -140,7 +150,7 @@ def link_grok_binary() -> Path | None:
 
 
 def run_official_installer(url: str | None = None) -> dict[str, Any]:
-    """curl|bash official installer. Returns {ok, message, detail}."""
+    """curl|bash official installer. Returns {ok, message, detail, meets_min}."""
     install_url = url or OFFICIAL_INSTALL_URL
     if shutil.which("curl"):
         cmd = f'curl -fsSL "{install_url}" | bash'
@@ -151,6 +161,7 @@ def run_official_installer(url: str | None = None) -> dict[str, Any]:
             "ok": False,
             "message": "need curl or wget for official installer",
             "detail": f"Manual: curl -fsSL {install_url} | bash",
+            "meets_min": False,
         }
     try:
         result = subprocess.run(
@@ -161,16 +172,27 @@ def run_official_installer(url: str | None = None) -> dict[str, Any]:
             check=False,
         )
     except (OSError, subprocess.TimeoutExpired) as exc:
-        return {"ok": False, "message": f"installer failed: {exc}", "detail": ""}
+        return {
+            "ok": False,
+            "message": f"installer failed: {exc}",
+            "detail": "",
+            "meets_min": False,
+        }
     detail = ((result.stdout or "") + (result.stderr or "")).strip()
     link_grok_binary()
     probe = probe_preferred()
-    ok = bool(probe.get("path") and probe.get("meets_min"))
+    meets = bool(probe.get("path") and probe.get("meets_min"))
+    # Success requires binary present and ≥ min — not merely installer exit 0
     return {
-        "ok": ok or result.returncode == 0,
-        "message": "official installer finished",
+        "ok": meets,
+        "message": (
+            f"official installer finished: {probe.get('version')} ({probe.get('path')})"
+            if probe.get("path")
+            else "official installer finished but binary still missing"
+        ),
         "detail": detail[-4000:] if detail else "",
         "probe": probe,
+        "meets_min": meets,
         "returncode": result.returncode,
     }
 
@@ -285,20 +307,25 @@ def ensure_grok_build_cli(
     inst = run_official_installer()
     steps.append(inst.get("message") or "install")
     probe = probe_preferred()
-    ok = bool(probe.get("path") and probe.get("version"))
     meets = False
     if probe.get("version"):
         try:
             meets = cli_version_at_least(str(probe["version"]), minimum)
         except ValueError:
             meets = False
+    ok = bool(probe.get("path") and meets)
     return {
         "ok": ok,
         "skipped": False,
         "message": (
             f"Grok Build CLI installed: {probe.get('version')} ({probe.get('path')})"
             if ok
-            else "Grok Build CLI ensure finished but binary still missing"
+            else (
+                f"Grok Build CLI ensure finished but version "
+                f"{probe.get('version') or 'missing'} < {minimum}"
+                if probe.get("path")
+                else "Grok Build CLI ensure finished but binary still missing"
+            )
         ),
         "meets_min": meets,
         "probe": probe,
@@ -311,12 +338,15 @@ def ensure_via_bash_lib(*, force: bool = False) -> dict[str, Any]:
     """
     Prefer the shell implementation (single source with Method A install).
 
-    Falls back to pure-Python ensure_grok_build_cli if the lib is missing.
+    Falls back to pure-Python ``ensure_grok_build_cli`` if the lib is missing
+    or the bash ensure process fails hard (timeout / OSError).
     """
     repo = Path(__file__).resolve().parent.parent
     lib = repo / "scripts" / "lib" / "install_cli_wrappers.sh"
     if not lib.is_file():
-        return ensure_grok_build_cli(force=force)
+        result = ensure_grok_build_cli(force=force)
+        result.setdefault("backend", "python")
+        return result
 
     env = os.environ.copy()
     if force:
@@ -337,20 +367,23 @@ cinematic_studio_ensure_grok_build_cli
             check=False,
         )
     except (OSError, subprocess.TimeoutExpired) as exc:
+        py = ensure_grok_build_cli(force=force)
         return {
-            "ok": False,
-            "message": f"bash ensure failed: {exc}",
-            "probe": probe_preferred(),
+            **py,
+            "bash_error": str(exc),
             "backend": "python-fallback",
-            **ensure_grok_build_cli(force=force),
+            "message": f"bash ensure failed ({exc}); {py.get('message')}",
         }
     detail = ((result.stdout or "") + (result.stderr or "")).strip()
     probe = probe_preferred()
+    meets = bool(probe.get("meets_min"))
+    ok = result.returncode == 0 and bool(probe.get("path")) and meets
     return {
-        "ok": result.returncode == 0 and bool(probe.get("path")),
+        "ok": ok,
         "message": "bash cinematic_studio_ensure_grok_build_cli finished",
         "detail": detail[-4000:] if detail else "",
         "probe": probe,
+        "meets_min": meets,
         "backend": "bash",
         "returncode": result.returncode,
     }

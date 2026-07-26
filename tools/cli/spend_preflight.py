@@ -19,11 +19,6 @@ from plate_readiness import (
     evaluate_plate_lock_readiness,
     normalize_plate_status,
 )
-from spend_readiness import (
-    evaluate_generation_spend_readiness,
-    spend_hard_fail_reasons,
-)
-
 from cli.shared import console
 
 
@@ -53,39 +48,29 @@ def preflight_spend(
     strict_motion: bool = False,
     strict_wave_a: bool = False,
 ) -> dict[str, Any]:
-    """Evaluate plate+motion (+ Wave A optional fields); exit 1 if hard-fail flags trip."""
-    if strict_wave_a:
-        strict_plate = True
-        strict_motion = True
-    report = evaluate_generation_spend_readiness(
-        shot, strict_motion=strict_motion
-    )
-    plate = report.get("plate") or {}
-    motion = report.get("motion") or {}
-    print_readiness_child(plate, label="plate")
-    print_readiness_child(motion, label="motion")
+    """Evaluate spend gates (same as session runner); exit 1 if hard-fail flags trip."""
+    from spend_readiness import evaluate_spend_gates
 
-    from wave_a_packets import validate_optional_wave_a_fields
-
-    wa_issues, wa_warnings = validate_optional_wave_a_fields(
-        shot, strict_wave_a=strict_wave_a
+    report = evaluate_spend_gates(
+        shot,
+        strict_plate=strict_plate,
+        strict_motion=strict_motion,
+        strict_wave_a=strict_wave_a,
     )
-    for w in wa_warnings:
+    print_readiness_child(report.get("plate") or {}, label="plate")
+    print_readiness_child(report.get("motion") or {}, label="motion")
+
+    for w in report.get("wave_a_warnings") or []:
         console.print(f"[yellow]⚠️  wave-a: {w}[/yellow]")
-    if wa_issues:
-        for i in wa_issues:
-            console.print(f"[red]wave-a: {i}[/red]")
-        if strict_wave_a:
-            console.print("[red]Wave A spend gate failed (--strict-wave-a)[/red]")
-            raise typer.Exit(1)
+    for i in report.get("wave_a_issues") or []:
+        console.print(f"[red]wave-a: {i}[/red]")
 
-    reasons = spend_hard_fail_reasons(
-        report, strict_plate=strict_plate, strict_motion=strict_motion
-    )
+    reasons = report.get("hard_fail") or []
     if reasons:
         labels = {
             "plate": "Plate lock readiness failed (--strict-plate / --strict-wave-a)",
             "motion": "Motion brief readiness failed (--strict-motion / --strict-wave-a)",
+            "wave_a": "Wave A field checks failed (--strict-wave-a)",
         }
         for r in reasons:
             console.print(f"[red]{labels.get(r, r)}[/red]")

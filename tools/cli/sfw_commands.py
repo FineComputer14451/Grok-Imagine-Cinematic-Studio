@@ -245,9 +245,6 @@ def register(app: typer.Typer) -> None:
         ),
     ):
         """Run automated session — execute next priority shots in order."""
-        if strict_wave_a:
-            strict_plate = True
-            strict_motion = True
         summary = run_batch_session(
             batch_name,
             pipeline="sfw",
@@ -256,6 +253,7 @@ def register(app: typer.Typer) -> None:
             stop_on_fail=stop_on_fail,
             strict_plate=strict_plate,
             strict_motion=strict_motion,
+            strict_wave_a=strict_wave_a,
         )
         table = Table(title=f"SFW Session — {batch_name}", box=box.SIMPLE)
         table.add_column("Shot", style="cyan")

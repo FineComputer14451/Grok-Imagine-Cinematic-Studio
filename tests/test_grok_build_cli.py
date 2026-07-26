@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from grok_build_cli import (  # noqa: E402
     RECOMMENDED_GROK_BUILD_CLI_VERSION,
+    _versioned_binary_key,
     find_grok_binary,
     probe_preferred,
 )
@@ -37,6 +38,19 @@ def test_probe_preferred_shape() -> None:
 def test_find_grok_binary_type() -> None:
     found = find_grok_binary()
     assert found is None or isinstance(found, Path)
+
+
+def test_versioned_binary_sort_is_semver() -> None:
+    """Lexicographic sort would pick 0.2.9 over 0.2.112 — we must not."""
+    names = [
+        Path("grok-0.2.9"),
+        Path("grok-0.2.112"),
+        Path("grok-0.2.93"),
+        Path("grok-0.2.100"),
+    ]
+    ordered = sorted(names, key=_versioned_binary_key)
+    assert ordered[-1].name == "grok-0.2.112"
+    assert ordered[0].name == "grok-0.2.9"
 
 
 def test_cli_grok_status() -> None:

@@ -312,14 +312,13 @@ def validate_packet_with_warnings(
     drift_issues, warnings = validate_drift_evidence_section(data)
     issues.extend(drift_issues)
 
-    # Wave A optional fields (present → shape checks; --strict-wave-a for i2v gates)
-    wa_issues, wa_warnings = validate_optional_wave_a_fields(
-        data, strict_wave_a=strict_wave_a
-    )
+    # Wave A-owned optional shapes only (plate/motion live in readiness below)
+    wa_issues, wa_warnings = validate_optional_wave_a_fields(data)
     issues.extend(wa_issues)
     warnings.extend(wa_warnings)
 
     # Semantic readiness for agent-mode packets (default soft; --strict-handoff hard-fails)
+    # --strict-wave-a composes the same plate+motion hard path as --strict-handoff motion
     if not issues and packet_type == PACKET_TYPE_IMAGINE_AGENT_MODE:
         ready = evaluate_imagine_handoff_readiness(
             data, strict_motion=strict_handoff or strict_wave_a
@@ -366,8 +365,9 @@ def main() -> int:
         "--strict-wave-a",
         action="store_true",
         help=(
-            "Wave A gates: still→video requires plate_status approved|locked and "
-            "complete motion_vector; incomplete Wave A fields hard-fail"
+            "Compose Wave A spend gates: plate lock + complete motion_vector via "
+            "handoff readiness (same plate/motion stack as --strict-handoff motion); "
+            "Wave A shape issues always hard-fail when present"
         ),
     )
     args = parser.parse_args()
