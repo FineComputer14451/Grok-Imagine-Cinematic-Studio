@@ -1,6 +1,6 @@
 ## 🎬 Grok Imagine Cinematic Studio
 
-> **v3.8.8** — The most advanced multi-agent cinematic production system for Grok 4.5 Build + Grok 4.3 cinematic dual-stack
+> **v3.8.9** — The most advanced multi-agent cinematic production system for Grok 4.5 Build + Grok 4.3 cinematic dual-stack
 
 **Requires Grok Build ≥ 0.2.93** | **Native Imagine Video 1.5 support with synchronized audio**
 
@@ -15,7 +15,7 @@
 
 <p align="center">
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/version-3.8.8-success.svg" alt="v3.8.8">
+  <img src="https://img.shields.io/badge/version-3.8.9-success.svg" alt="v3.8.9">
   <img src="https://img.shields.io/badge/Grok%20Build-%E2%89%A5%200.2.93-orange.svg" alt="Grok Build ≥ 0.2.93">
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/stargazers"><img src="https://img.shields.io/github/stars/FineComputer14451/Grok-Imagine-Cinematic-Studio?style=social" alt="GitHub Stars"></a>
 </p>
@@ -39,32 +39,29 @@ Whether you’re crafting Marvel-style hero reveals, cyberpunk neon sequences, i
 
 ---
 
-## 🚀 What’s New in v3.8.8
+## 🚀 What’s New in v3.8.9
 
-- **Operator UX control plane** — journey-first Orient → Gate → Converge/Deliver across TUI + Streamlit + CLI
-- **Dense TUI Home** — severity strip · Attention · READINESS · Convergence · Parallel Briefs · Delivery · health keys (`d`/`v`/`m`/`k`/`s`)
-- **Streamlit Dashboard parity** — same ops signals + health actions + handoff validate + bridge preview
-- **`handoff validate` CLI** — schema + soft readiness for identity/sequence/agent-mode packets
-- **Wave A + Grok Build CLI** (from Unreleased) — 8 specialists, packets/CLI, `cinematic-studio grok …`
-- Prior: **3.8.7** Doctor · Multi-Clip Continuity · Parallel Brief Protocol · **3.8.4** TUI · **3.8.1** Identity Continuity · **3.7.1** Imagine Agent Mode Handoff
+- **TUI Home view modes** — `1` compact · `2` ops · `3` full · Tab cycle · `p` pause auto-refresh · action list filter
+- **Streamlit Dashboard view modes** — same compact/ops/full density (session radio; TUI 1/2/3 parity)
+- Prior **3.8.8** — Operator UX control plane (readiness · convergence · delivery · handoff validate · Wave A packaging)
 
-See full details in [CHANGELOG.md](CHANGELOG.md) and [docs/releases/RELEASE_NOTES_v3.8.8.md](docs/releases/RELEASE_NOTES_v3.8.8.md).
+See full details in [CHANGELOG.md](CHANGELOG.md) and [docs/releases/RELEASE_NOTES_v3.8.9.md](docs/releases/RELEASE_NOTES_v3.8.9.md).
 
 ---
 
-## 🏗️ System Architecture (v3.8.8)
+## 🏗️ System Architecture (v3.8.9)
 
 **Core Philosophy**: A modular "studio" of specialized agents that collaborate under the **Studio Director**, with strong handoff protocols, identity locking, readiness gates, and production discipline. The system bridges high-level creative direction (Grok chat/Build) with low-level execution (Imagine Image/Video 1.5) while maintaining full traceability and quota awareness.
 
-### Updated Architecture Diagrams (v3.8.8)
+### Updated Architecture Diagrams (v3.8.9)
 
-These **Mermaid diagrams** are the current, live representation of the system. They reflect the plugin pack architecture, Imagine Agent Mode Handoff, Identity Continuity Protocol, color-grade → polish pipeline, and all readiness gates introduced through v3.8.8.
+These **Mermaid diagrams** are the current, live representation of the system. They reflect the plugin pack architecture, Imagine Agent Mode Handoff, Identity Continuity Protocol, color-grade → polish pipeline, and all readiness gates introduced through v3.8.9.
 
 ```mermaid
 flowchart TB
     subgraph UserLayer["👤 User Layer"]
         GrokChat["Grok Chat / Build CLI"]
-        Activate["Activate Studio v3.8.8<br/>or 'start cinematic production'"]
+        Activate["Activate Studio v3.8.9<br/>or 'start cinematic production'"]
     end
 
     subgraph Orchestration["🎬 Orchestration Layer"]
@@ -87,7 +84,7 @@ flowchart TB
         OTHER["Stunt, Performance, Key Art,<br/>Trailer, Production Design..."]
     end
 
-    subgraph Core["⚙️ Core Systems & Protocols (v3.8.8)"]
+    subgraph Core["⚙️ Core Systems & Protocols (v3.8.9)"]
         PB["Production Bible + Guided Wizard<br/>(CLI + Streamlit Web UI)"]
         DNA["Character DNA Pipeline<br/>Extract → Lock → Inject"]
         HANDOFF["Imagine Agent Mode Handoff<br/>+ Packet Validators"]
@@ -133,11 +130,11 @@ flowchart TB
     class HANDOFF,READINESS,PLUGIN accent
 ```
 
-**Orchestration & Production Flow (v3.8.8)**
+**Orchestration & Production Flow (v3.8.9)**
 
 ```mermaid
 flowchart TD
-    Start["Start New Project<br/>(Activate Studio v3.8.8)"] --> Bible["Build & Lock<br/>Production Bible<br/>(VIDEO_PIPELINE_SPEC 1.5)"]
+    Start["Start New Project<br/>(Activate Studio v3.8.9)"] --> Bible["Build & Lock<br/>Production Bible<br/>(VIDEO_PIPELINE_SPEC 1.5)"]
     Bible --> DNA["Character DNA<br/>Extract → Lock → Inject<br/>(Identity Continuity Protocol)"]
     DNA --> PreProd["Pre-Production<br/>Concepts, Mood Boards, DoP Language"]
     PreProd --> Principal["Principal Photography<br/>Sequence Director + Specialists<br/>(Stunts / VFX / Sound / NSFW)"]
@@ -157,10 +154,10 @@ flowchart TD
 > ![System Architecture](assets/system_architecture_v3.3.png)
 > ![Orchestration Flow](assets/orchestration_flow_v3.3.png)
 
-**Updated ASCII Overview (v3.8.8)**
+**Updated ASCII Overview (v3.8.9)**
 
 ``` 
-Grok Imagine Cinematic Studio v3.8.8  (Studio Director + 23+ Agents · Grok 4.5 primary)
+Grok Imagine Cinematic Studio v3.8.9  (Studio Director + 23+ Agents · Grok 4.5 primary)
 ├── .grok-plugin/                 # Marketplace manifests + plugin packs (full suite + 5 satellites)
 ├── references/agents/            # 23+ Role Cards, AGENT_INDEX, MODEL_LAYER, IDENTITY_CONTINUITY_PROTOCOL, IMAGINE_AGENT_MODE_HANDOFF
 ├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, bible_stages, imagine_bridge, handoff_schema, cli/
@@ -173,7 +170,7 @@ Grok Imagine Cinematic Studio v3.8.8  (Studio Director + 23+ Agents · Grok 4.5 
 └── .grok/skills/                 # 52 custom Grok skills (runtime engine)
 ```
 
-**Key v3.8.8 Components**
+**Key v3.8.9 Components**
 - `references/agents/` — Authoritative Role Cards + protocols (Studio Director owns orchestration & handoff decisions)
 - `references/agents/MODEL_LAYER_v4.5.md` + `IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` — Operating rules + drift detection for every skill/agent
 - `MASTER_PROMPT.md` — Activation entrypoint with Grok 4.5 stack + Imagine Agent Mode Handoff
@@ -186,9 +183,9 @@ Grok Imagine Cinematic Studio v3.8.8  (Studio Director + 23+ Agents · Grok 4.5 
 
 ## 🎨 Visual Identity & Branding
 
-**Refreshed Premium Cinematic Banner (v3.8.8)**
+**Refreshed Premium Cinematic Banner (v3.8.9)**
 
-A brand new Hollywood-grade banner has been created specifically for v3.8.8. It features a massive cinematic camera lens with holographic AI elements, gold/teal accents, and premium film production aesthetics. The banner has been updated in `assets/banner.jpg`.
+A brand new Hollywood-grade banner has been created specifically for v3.8.9. It features a massive cinematic camera lens with holographic AI elements, gold/teal accents, and premium film production aesthetics. The banner has been updated in `assets/banner.jpg`.
 
 The included `assets/logo.jpg` and `assets/favicon.jpg` complete the visual identity for Web UI and repository presentation.
 
@@ -217,7 +214,7 @@ Every generation targets:
 In any Grok chat:
 
 ```
-Activate Grok Imagine Cinematic Studio v3.8.8
+Activate Grok Imagine Cinematic Studio v3.8.9
 ```
 
 or the shorter trigger:
@@ -299,7 +296,7 @@ Deployable to Streamlit Community Cloud (see `docs/guides/streamlit_cloud_deploy
 5. **Marketing Assets**: Key Art Designer + Trailer Director for posters, hero reveals, teasers
 
 **Pro Tip**: Combine steps naturally, e.g.:
-> "Activate Grok Imagine Cinematic Studio v3.8.8, start new project called 'VOIDWALKER', generate the full Production Bible with 1.5 video pipeline, lock the lead character DNA, and create the hero reveal key art."
+> "Activate Grok Imagine Cinematic Studio v3.8.9, start new project called 'VOIDWALKER', generate the full Production Bible with 1.5 video pipeline, lock the lead character DNA, and create the hero reveal key art."
 
 ---
 
@@ -380,11 +377,11 @@ This project is licensed under the **MIT License** — see [LICENSE](LICENSE) fo
 
 <p align="center">
   <strong>Built for creators who want cinematic AI that feels directed, not just generated.</strong><br>
-  <em>Grok Imagine Cinematic Studio v3.8.8 — July 2026</em>
+  <em>Grok Imagine Cinematic Studio v3.8.9 — July 2026</em>
 </p>
 
 ---
 
 **Ready to direct your next masterpiece?**
 
-Just say: **"Activate Grok Imagine Cinematic Studio v3.8.8"** and begin.
+Just say: **"Activate Grok Imagine Cinematic Studio v3.8.9"** and begin.

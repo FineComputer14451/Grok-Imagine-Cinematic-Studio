@@ -89,8 +89,8 @@ def test_wave_a_attach(tmp_path: Path) -> None:
         json.dumps(
             {
                 "packet_type": "imagine_agent_mode_handoff",
-                "protocol_version": "3.8.8",
-                "studio_version": "3.8.8",
+                "protocol_version": "3.8.9",
+                "studio_version": "3.8.9",
                 "target_surface": "grok_build_tools",
                 "execution_mode": "image_to_video",
                 "subject_id": "shot_a",

@@ -4,9 +4,13 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.8.9] - 2026-07-26
+
 ### Changed
+- **Studio version** — `VERSION` → **3.8.9**; activation `Activate Grok Imagine Cinematic Studio v3.8.9`
 - **TUI Home view modes** — `1` compact / `2` ops / `3` full / Tab cycle; `p` pause auto-refresh; dual-column readiness|convergence; launcher/cockpit type-to-filter
 - **Streamlit Dashboard view modes** — compact / ops / full density (TUI 1/2/3 parity); session-persisted radio; section visibility matches control-plane Home
+- Handoff `PROTOCOL_OK` includes **3.8.9**; `STUDIO_COMPATIBILITY_VERSION` aligned
 
 ## [3.8.8] - 2026-07-26
 

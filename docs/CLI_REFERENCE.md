@@ -1,5 +1,5 @@
 # CLI Reference
-## cinematic-studio (Grok Imagine Cinematic Studio v3.8.8)
+## cinematic-studio (Grok Imagine Cinematic Studio v3.8.9)
 
 Primary entry points:
 - `cinematic-studio` (installed wrapper)

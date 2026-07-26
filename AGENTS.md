@@ -2,7 +2,7 @@
 
 **This file provides context and instructions for AI coding agents and assistants working in this workspace.**
 
-**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.8.8**, unified **Grok 4.5** registry defaults + **v9-4p5 / grok-4-auto** specialist Model Layer, optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, Identity Continuity Protocol, Parallel Brief Protocol, interactive CLI TUI, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
+**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.8.9**, unified **Grok 4.5** registry defaults + **v9-4p5 / grok-4-auto** specialist Model Layer, optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, Identity Continuity Protocol, Parallel Brief Protocol, interactive CLI TUI, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
 **Canonical Source:** https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/AGENTS.md
 
 Think of this as the single source of truth for how to interact with this Grok/xAI agent environment. Paths below are **repo-relative** unless noted; sandboxes may root at `/home/workdir/` or a local clone (e.g. `~/Grok-Imagine-Cinematic-Studio`).
@@ -11,7 +11,7 @@ Think of this as the single source of truth for how to interact with this Grok/x
 
 | Stamp | Meaning |
 |-------|---------|
-| **Studio v3.8.8** | Current product / packaging version — use this for activation and docs |
+| **Studio v3.8.9** | Current product / packaging version — use this for activation and docs |
 | **Model Layer v4.5** | Canonical chat + Imagine routing (`MODEL_LAYER_v4.5.md`) |
 | **Feature history (3.7.1 / 3.8.x)** | When a capability landed (e.g. Handoff in 3.7.1); not the operating studio pin |
 | **Role Card labels (v3.6.5–v4.5)** | Per-card revision tags; AGENT_INDEX is authoritative |
@@ -202,7 +202,7 @@ When working with or creating skills:
 - **Refine / iterate on previously generated images**: `generated-image-editor` (user-global when present)
 - **Upscale video for final delivery** (720p → 1080p/4K, face restoration): Activate `ai-video-upscaler`
 - Video / audio processing: Activate `cinematic-ffmpeg` or use `ffmpeg` / bash
-- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (25-agent core + specialist suite, **studio v3.8.8**)
+- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (25-agent core + specialist suite, **studio v3.8.9**)
 - **Planning → generation handoff**: Studio Director **Imagine Agent Mode Handoff** (see below)
 
 If native Imagine tools are unavailable, use `imagine-execution-bridge` / CLI (`imagine submit`, `sfw run`, `sequence run`) with a locked `VIDEO_PIPELINE_SPEC`.
@@ -226,7 +226,7 @@ Document skills are typically **session / user-global** (not always in the 54-sk
 - Manage the official Grok Build binary (min **0.2.93**): `cinematic-studio grok status|ensure|update|install`
 - Method A meta installer ensures the binary and ships `tools/grok_build_cli.py` + `cli/grok_cli_commands.py`
 - **Android / Termux / NetHunter / desktop shell:** `export PATH="$HOME/.grok/bin:$HOME/.local/bin:$PATH"`; Method A from a clone
-- **grok.com chat:** no binary — `Activate Grok Imagine Cinematic Studio v3.8.8` or paste `MASTER_PROMPT.md`; Method A skills in `~/.grok/skills/` support chat ecosystems (skip declutter if you need both chat Method A + plugin)
+- **grok.com chat:** no binary — `Activate Grok Imagine Cinematic Studio v3.8.9` or paste `MASTER_PROMPT.md`; Method A skills in `~/.grok/skills/` support chat ecosystems (skip declutter if you need both chat Method A + plugin)
 - **grok.com/imagine:** surface `grok_com_imagine` — `imagine-execution-bridge` / `cinematic-studio imagine bridge` copy-paste packets
 - **Grok mobile chat app:** same as grok.com (Activate / Imagine only); shell for CLI
 - Meta path without wrapper: `bash scripts/cinematic_studio.sh grok ensure`
@@ -264,9 +264,9 @@ Use these in the **final response** (never inside function calls), when the runt
 For any complex visual storytelling, film-style image sequences, video production, or NSFW cinematic work:
 
 **Primary activation command:**  
-`Activate Grok Imagine Cinematic Studio v3.8.8` or `Start cinematic production`
+`Activate Grok Imagine Cinematic Studio v3.8.9` or `Start cinematic production`
 
-This engages the full **25 specialized agents** (Role Cards labeled v3.6.5–v4.5 under studio **v3.8.8**; Studio Director owns **Imagine Agent Mode Handoff**) plus pipeline specialists and **Wave A** scaffolds. **62 skills** implement the department. Core list:
+This engages the full **25 specialized agents** (Role Cards labeled v3.6.5–v4.5 under studio **v3.8.9**; Studio Director owns **Imagine Agent Mode Handoff**) plus pipeline specialists and **Wave A** scaffolds. **62 skills** implement the department. Core list:
 
 - Studio Director (`studio-director`), Mega Production Architect (`mega-production-architect`)
 - Director of Photography, Production Designer, Color Grading Supervisor
@@ -284,7 +284,7 @@ Model Layer for Role Cards: **`references/agents/MODEL_LAYER_v4.5.md`**.
 Identity Continuity: **`references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`**.  
 **Parallel Brief Protocol:** Concurrent multi-agent coordination under MAXIMUM AGENTIC MODE. Canonical: `references/agents/Parallel_Brief_Protocol.md`. Studio Director issues Parallel Briefs; specialist outputs converge into validated `imagine_agent_mode_handoff` packets.
 
-## Imagine Agent Mode Handoff (landed v3.7.1 · current studio v3.8.8)
+## Imagine Agent Mode Handoff (landed v3.7.1 · current studio v3.8.9)
 
 Studio Director routes planning → generation so pipeline context is never dropped.
 
@@ -367,20 +367,20 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 | **GitHub Management** | `github-repo-manager` | Git lifecycle, PRs, releases, skill/plugin catalog pin hygiene |
 | **Documents** | `pdf`, `docx`, `pptx`, `xlsx` | Professional docs (session skills when available) |
 | **Memory** | `memory-edit` | Personal facts/preferences worth remembering |
-| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **54-skill** suite (v3.8.8; packs + declutter `full_suite_wins`) |
+| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **54-skill** suite (v3.8.9; packs + declutter `full_suite_wins`) |
 | **Localization** | `localization-subtitle-specialist` | SDH, multi-language, cultural adaptation |
 | **Production Bible** | `production-bible-workflow` | Guided create-bible / DNA / sequence / quota onboarding |
 
 ## Project-Specific Notes
 
-- Primary project: **Grok Imagine Cinematic Studio** **v3.8.8** — registry default **`grok-4.5`** + specialist **v9-4p5 / grok-4-auto** Model Layer + dual Imagine Video **1.0 / 1.5** + Imagine Agent Mode Handoff + Identity Continuity + Parallel Brief Protocol + interactive CLI TUI + guided Bible wizard + **plugin modularity packs**.
+- Primary project: **Grok Imagine Cinematic Studio** **v3.8.9** — registry default **`grok-4.5`** + specialist **v9-4p5 / grok-4-auto** Model Layer + dual Imagine Video **1.0 / 1.5** + Imagine Agent Mode Handoff + Identity Continuity + Parallel Brief Protocol + interactive CLI TUI + guided Bible wizard + **plugin modularity packs**.
 - All generated artifacts **must** be saved under `artifacts/` (repo root).
 - Project skills live in `.grok/skills/`; user-global skills in `~/.grok/skills/`.
 - Plugin marketplace lives in `.grok-plugin/` (full suite + 5 packs, **62 skills** + commands; Wave A P0 included). Install full suite via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - Workspace supports SFW cinematic work and NSFW/erotic pipelines (**ErosForge only when explicitly activated**).
 - **Model stack:** cinematic + Build/coding registry default **`grok-4.5`**; specialist routing **v9-4p5 / grok-4-auto** when available; optional 1M **`grok-4.3`**; Imagine **1.0** default; `VIDEO_PIPELINE_SPEC` via registry helpers; **1.5** for native-audio / high-physics / intimacy workflows.
 - Full suite: **54/54** skills + Role Cards (includes `grok-doctor`, `multi-clip-continuity-orchestrator`, `ai-image-recreation`).
-- **Recent history:** **3.8.8** — Operator UX control plane (TUI/Web density · readiness · convergence · delivery · handoff validate). **3.8.7** — Wave A · Parallel Brief Protocol · Grok Doctor · Multi-Clip Continuity · Method A CLI ensure. **3.8.6** — dual-model polish pin + Generation Tracker. **3.8.4** — interactive CLI TUI + plate/motion readiness. **3.8.3** — specialist-order + color→polish. **3.8.1** — Identity Continuity Protocol. **3.8.0** — marketplace multi-plugin packs. **3.7.1** — Imagine Agent Mode Handoff.
+- **Recent history:** **3.8.9** — TUI + Streamlit compact/ops/full view modes. **3.8.8** — Operator UX control plane (density · readiness · convergence · delivery · handoff validate). **3.8.7** — Wave A · Parallel Brief Protocol · Grok Doctor · Multi-Clip Continuity. **3.8.6** — dual-model polish pin. **3.8.4** — interactive CLI TUI. **3.8.1** — Identity Continuity. **3.8.0** — plugin packs. **3.7.1** — Imagine Agent Mode Handoff.
 - Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, `docs/releases/`, `references/MODELS.md`, `references/agents/MODEL_LAYER_v4.5.md`, `docs/guides/Quick_Start_Guide.md`).
 
 ## Quick Start for New Tasks
@@ -403,4 +403,4 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 **This AGENTS.md is the canonical reference for all AI agents operating in this environment.**  
 Update it whenever workflows, skills, or best practices evolve (e.g. new skills, plugin changes, model updates, or doc releases).
 
-*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.8.8 · Grok 4.5 / Model Layer v4.5)*
+*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.8.9 · Grok 4.5 / Model Layer v4.5)*

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.8.8 · Grok 4.5 + v9-4p5).
+Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.8.9 · Grok 4.5 + v9-4p5).
 
 Single source of truth for CLI, Web UI, quota optimizer, and documentation.
 
@@ -388,7 +388,7 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
     },
 }
 
-STUDIO_COMPATIBILITY_VERSION = "3.8.8"
+STUDIO_COMPATIBILITY_VERSION = "3.8.9"
 
 # Role → slug (unique by construction; no duplicate bag)
 REQUIRED_MODEL_ROLES: dict[str, str] = {
