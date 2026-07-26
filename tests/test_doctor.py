@@ -135,6 +135,7 @@ def test_registry_has_expected_ids() -> None:
     assert "pytest" in ids
     assert "verify_plugin" in ids
     assert "quota_recon" in ids
+    assert "control_plane" in ids
     # full_only flags present on slow checks
     by_id = {s.id: s for s in REGISTRY}
     assert by_id["pytest"].full_only and by_id["pytest"].external
@@ -142,6 +143,8 @@ def test_registry_has_expected_ids() -> None:
     assert not by_id["model_stack"].external
     assert not by_id["quota_recon"].external
     assert not by_id["quota_recon"].full_only
+    assert not by_id["control_plane"].external
+    assert not by_id["control_plane"].full_only
 
 
 def test_run_doctor_skip_external_omits_without_fake_pass(tmp_path: Path) -> None:
@@ -178,6 +181,16 @@ def test_run_doctor_skip_external_omits_without_fake_pass(tmp_path: Path) -> Non
 def test_quick_skips_full_only_ids() -> None:
     full_only_ids = {s.id for s in REGISTRY if s.full_only}
     assert full_only_ids == {"verify_plugin", "pytest"}
+
+
+def test_check_control_plane_runs() -> None:
+    from doctor_checks import check_control_plane
+
+    results = check_control_plane()
+    assert results
+    assert results[0].name == "control plane"
+    assert results[0].status in {"PASS", "WARN", "FAIL"}
+    assert "severity=" in (results[0].detail or "")
 
 
 def test_check_quota_recon_aligned(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

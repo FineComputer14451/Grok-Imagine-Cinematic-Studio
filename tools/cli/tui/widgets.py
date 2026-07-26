@@ -34,7 +34,7 @@ def format_form_errors(errors: list[str]) -> str:
 def format_home_hints() -> str:
     return (
         "Keys: r refresh · s quota sync · d doctor · v validate · "
-        "l launcher · c cockpit · ? help · q quit"
+        "m models · k stack · l launcher · c cockpit · ? help · q quit"
     )
 
 

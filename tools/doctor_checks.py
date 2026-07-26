@@ -616,6 +616,56 @@ def check_github_cli() -> list[CheckResult]:
     return [CheckResult("PASS", "gh auth", who, section)]
 
 
+def check_control_plane() -> list[CheckResult]:
+    """Echo Operator UX control-plane severity + attention count (J1 Orient)."""
+    section = "12b. Control plane"
+    try:
+        from cli.dashboard import build_studio_dashboard
+        from cli.tui.widgets import collect_home_alerts, strip_severity
+    except Exception as exc:
+        return [
+            CheckResult(
+                "WARN",
+                "control plane",
+                f"unable to import snapshot helpers: {exc}",
+                section,
+            )
+        ]
+
+    try:
+        snap = build_studio_dashboard()
+        try:
+            from quota_sync import ledger_recon_alignment
+
+            snap["quota_alignment"] = ledger_recon_alignment()
+        except Exception:
+            pass
+        sev = strip_severity(snap)
+        alerts = collect_home_alerts(snap)
+    except Exception as exc:
+        return [
+            CheckResult(
+                "WARN",
+                "control plane",
+                f"snapshot failed: {exc}",
+                section,
+            )
+        ]
+
+    n = len(alerts)
+    detail = f"severity={sev} · attention={n}"
+    if alerts:
+        detail += " · " + "; ".join(alerts[:2])
+        if n > 2:
+            detail += f" (+{n - 2} more)"
+
+    if sev == "critical":
+        return [CheckResult("FAIL", "control plane", detail, section)]
+    if sev == "warn":
+        return [CheckResult("WARN", "control plane", detail, section)]
+    return [CheckResult("PASS", "control plane", detail or "severity=ok", section)]
+
+
 def check_quota_recon() -> list[CheckResult]:
     """Read-only: billable generation ledger totals vs stored reconciliation."""
     section = "13. Quota recon"

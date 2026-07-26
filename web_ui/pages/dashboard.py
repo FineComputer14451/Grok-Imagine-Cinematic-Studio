@@ -46,6 +46,61 @@ def render() -> None:
         unsafe_allow_html=True,
     )
 
+    # J1/J6 health action strip (safe CLI only — no spend)
+    st.subheader("🩺 Health actions")
+    st.caption(
+        "Safe read/repair commands · same family as TUI keys **d** / **v** / **s** / **m**"
+    )
+    a1, a2, a3, a4 = st.columns(4)
+    with a1:
+        if st.button("Doctor (quick)", use_container_width=True, key="dash_doctor"):
+            with st.spinner("Running doctor --quick…"):
+                code, out = rt.run_cli(["doctor", "--quick"], timeout=180)
+            st.session_state["_dash_health_out"] = {
+                "title": "doctor --quick",
+                "code": code,
+                "out": out,
+            }
+    with a2:
+        if st.button("Validate", use_container_width=True, key="dash_validate"):
+            with st.spinner("Running validate…"):
+                code, out = rt.run_cli(["validate"], timeout=180)
+            st.session_state["_dash_health_out"] = {
+                "title": "validate",
+                "code": code,
+                "out": out,
+            }
+    with a3:
+        if st.button("Quota sync", use_container_width=True, key="dash_quota_sync"):
+            with st.spinner("Running quota sync…"):
+                code, out = rt.run_cli(["quota", "sync"], timeout=120)
+            st.session_state["_dash_health_out"] = {
+                "title": "quota sync",
+                "code": code,
+                "out": out,
+            }
+    with a4:
+        if st.button("Models verify", use_container_width=True, key="dash_models"):
+            rt.cached_models_verify.clear()
+            with st.spinner("Running models verify…"):
+                code, out = rt.run_cli(["models", "verify"], timeout=60)
+            st.session_state["_dash_health_out"] = {
+                "title": "models verify",
+                "code": code,
+                "out": out,
+            }
+    health = st.session_state.get("_dash_health_out")
+    if health:
+        title = health.get("title", "command")
+        code = int(health.get("code") or 1)
+        out = str(health.get("out") or "(no output)")
+        if code == 0:
+            st.success(f"`{title}` · exit {code}")
+        else:
+            st.warning(f"`{title}` · exit {code}")
+        with st.expander(f"Output: {title}", expanded=True):
+            st.code(out, language="text")
+
     # Attention board
     attention = dui.attention_rows(snap)
     st.subheader("⚡ Attention")

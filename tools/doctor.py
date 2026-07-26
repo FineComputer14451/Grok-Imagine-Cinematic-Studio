@@ -29,6 +29,7 @@ from doctor_checks import (
     check_model_stack,
     check_plugin_installed,
     check_pytest,
+    check_control_plane,
     check_quota_recon,
     check_skills_layout,
     check_verify_plugin,
@@ -170,6 +171,10 @@ def _run_quota_recon(_ctx: DoctorContext) -> list[CheckResult]:
     return check_quota_recon()
 
 
+def _run_control_plane(_ctx: DoctorContext) -> list[CheckResult]:
+    return check_control_plane()
+
+
 # ---------------------------------------------------------------------------
 # Declarative registry — add checks here only.
 # ---------------------------------------------------------------------------
@@ -188,6 +193,7 @@ REGISTRY: tuple[CheckSpec, ...] = (
     CheckSpec("api_keys", _run_api_keys),
     CheckSpec("github_cli", _run_github, external=True),
     CheckSpec("pytest", _run_pytest, external=True, full_only=True),
+    CheckSpec("control_plane", _run_control_plane),
     CheckSpec("quota_recon", _run_quota_recon),
 )
 

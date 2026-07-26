@@ -201,6 +201,8 @@ def test_format_home_hints() -> None:
     assert "launcher" in hints
     assert "doctor" in hints
     assert "validate" in hints
+    assert "models" in hints
+    assert "stack" in hints
 
 
 def test_strip_severity_and_attention() -> None:

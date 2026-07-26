@@ -173,7 +173,23 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 
 ---
 
-## 4. Pro Tips for Best Results (v3.8.7)
+## 4. Operator loop (Orient + Health)
+
+Before long generations, run the **control plane** loop (same signals on TUI Home and Streamlit Dashboard):
+
+1. **Orient** — Open `cinematic-studio ui` or `streamlit run web_ui/app.py` → Dashboard. Read the status strip severity (**OK / WARN / CRITICAL**) and the **Attention** list.
+2. **Act (safe health only)**  
+   - TUI: **d** doctor · **v** validate · **s** quota sync · **m** models · **k** stack  
+   - Web: Dashboard **Health actions** (Doctor / Validate / Quota sync / Models verify)  
+   - CLI: `cinematic-studio doctor --quick` · `validate` · `quota sync` · `models verify`
+3. **Refresh** — TUI auto-refreshes Home; Web use **Refresh snapshot**. Re-check Attention until clear or accepted risk.
+4. **Produce** — Then Bible / DNA / sequences / Imagine (spend stays on CLI or Web Imagine pages, not TUI).
+
+North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-star-design.md` (Phase 1 = this loop).
+
+---
+
+## 5. Pro Tips for Best Results (v3.8.7)
 
 - **Be specific** — Include genre, tone, emotional goals, character details, and references.
 - **Use the Project Bible** — Lock `model_stack` + `VIDEO_PIPELINE_SPEC` (1.0 cost default; 1.5 when audio/physics need it).
@@ -187,7 +203,7 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 
 ---
 
-## 5. Quick Reference Commands
+## 6. Quick Reference Commands
 
 | Command                                           | Result                                      |
 |---------------------------------------------------|---------------------------------------------|
@@ -216,7 +232,7 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 
 ---
 
-## 6. Available Supporting Resources
+## 7. Available Supporting Resources
 
 | Resource                        | Location                              | Purpose                                           |
 |---------------------------------|---------------------------------------|---------------------------------------------------|

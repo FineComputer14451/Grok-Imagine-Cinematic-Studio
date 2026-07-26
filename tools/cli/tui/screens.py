@@ -197,6 +197,8 @@ class HomeScreen(Screen[None]):
         Binding("s", "quota_sync", "Quota sync"),
         Binding("d", "doctor", "Doctor"),
         Binding("v", "validate", "Validate"),
+        Binding("m", "models_verify", "Models"),
+        Binding("k", "stack", "Stack"),
         Binding("l", "launcher", "Launcher"),
         Binding("c", "cockpit", "Cockpit"),
         Binding("q", "quit_app", "Quit"),
@@ -312,6 +314,26 @@ class HomeScreen(Screen[None]):
             "validate",
             {},
             label="Studio validate",
+            dismiss_confirm_form=False,
+        )
+
+    def action_models_verify(self) -> None:
+        """Models verify from home (J1 health shortcut)."""
+        start_action_run(
+            self.app,
+            "models_verify",
+            {},
+            label="Models Verify",
+            dismiss_confirm_form=False,
+        )
+
+    def action_stack(self) -> None:
+        """Model stack summary from home (J1 health shortcut)."""
+        start_action_run(
+            self.app,
+            "stack",
+            {},
+            label="Model stack",
             dismiss_confirm_form=False,
         )
 
@@ -655,6 +677,8 @@ class HelpScreen(ModalScreen[None]):
                         "s  Quota sync (cascade recon + ledger alignment)",
                         "d  Grok Doctor (quick health)",
                         "v  Studio validate",
+                        "m  Models verify",
+                        "k  Model stack",
                         "l  Open launcher",
                         "c  Open cockpit (Bible / DNA / Sequence scaffold / Quota / Health)",
                         "h  Pop to home",
@@ -662,6 +686,7 @@ class HelpScreen(ModalScreen[None]):
                         "?  This help",
                         "q  Quit",
                         "",
+                        "Operator loop (J1/J6): Orient (strip+ATTENTION) → health keys → refresh.",
                         "Home: status strip severity + ATTENTION board + multi panels.",
                         "Launcher: status, doctor, lists, validate, stack, quota, DNA/sequence show.",
                         "Cockpit: scaffold writes + estimates + doctor/health checks.",

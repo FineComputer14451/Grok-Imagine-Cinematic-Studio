@@ -8,6 +8,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **TUI Home density** — `cinematic-studio ui` Home is a multi-panel ops board (status strip, Quota | Studio, Sequences, dedicated Chain QA, Characters, optional Recent Jobs) instead of a single Markdown wall; still driven by `build_studio_dashboard()`
 - **TUI Home attention + severity** — ATTENTION board from snapshot signals; status strip severity CSS (ok/warn/critical); Home keys **d** (Grok Doctor quick) and **v** (validate); Doctor on launcher + cockpit Health
 - **Streamlit Web UI dashboard density** — ops status strip + Attention board (shared TUI alert/severity helpers), dedicated Chain QA table, quota recon/alignment, recent jobs, sidebar ops severity, refresh control
+- **Operator UX Phase 1 (Orient + Health)** — control-plane contract tests; TUI Home **m** models / **k** stack; Streamlit Dashboard health action strip (doctor/validate/quota sync/models); doctor **control plane** check; Quick Start operator loop
 
 ### Added
 - **Wave A agent scaffold (P0)** — eight new specialists with Role Cards + skills (no CLI yet): `plate-motion-readiness-lead`, `contact-micro-physics-specialist`, `hair-makeup-continuity`, `dialogue-adr-director`, `score-temp-music-supervisor`, `title-motion-graphics-lead`, `distribution-crop-strategist`, `parallel-brief-dispatcher` (suite **54 → 62** skills; packs updated)
