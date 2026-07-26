@@ -31,10 +31,13 @@ from cli.tui.widgets import (
     format_attention_panel,
     format_chain_qa_panel,
     format_characters_panel,
+    format_convergence_panel,
+    format_delivery_panel,
     format_form_errors,
     format_home_error,
     format_home_hints,
     format_jobs_panel,
+    format_parallel_briefs_panel,
     format_produce_gate_next_steps,
     format_quota_panel,
     format_readiness_panel,
@@ -216,6 +219,9 @@ class HomeScreen(Screen[None]):
             yield Static("", id="status-strip", classes="home-strip sev-ok")
             yield Static("", id="panel-attention", classes="home-panel home-attention")
             yield Static("", id="panel-readiness", classes="home-panel")
+            yield Static("", id="panel-convergence", classes="home-panel")
+            yield Static("", id="panel-briefs", classes="home-panel")
+            yield Static("", id="panel-delivery", classes="home-panel")
             with Horizontal(id="home-mid", classes="home-mid"):
                 yield Static("", id="panel-quota", classes="home-panel")
                 yield Static("", id="panel-studio", classes="home-panel")
@@ -266,6 +272,9 @@ class HomeScreen(Screen[None]):
             self._set_strip_severity(strip_severity(snap))
             self._set_panel("panel-attention", format_attention_panel(snap))
             self._set_panel("panel-readiness", format_readiness_panel(snap))
+            self._set_panel("panel-convergence", format_convergence_panel(snap))
+            self._set_panel("panel-briefs", format_parallel_briefs_panel(snap))
+            self._set_panel("panel-delivery", format_delivery_panel(snap))
             self._set_panel("panel-quota", format_quota_panel(snap))
             self._set_panel("panel-studio", format_studio_panel(snap))
             self._set_panel("panel-sequences", format_sequences_panel(snap))
@@ -283,6 +292,9 @@ class HomeScreen(Screen[None]):
                 "status-strip",
                 "panel-attention",
                 "panel-readiness",
+                "panel-convergence",
+                "panel-briefs",
+                "panel-delivery",
                 "panel-quota",
                 "panel-studio",
                 "panel-sequences",

@@ -145,6 +145,73 @@ def render() -> None:
     else:
         st.caption("Readiness rollup unavailable — refresh snapshot.")
 
+    # Phase 3 — Convergence (J8) + Parallel Briefs + Delivery (J7)
+    conv = snap.get("convergence") or {}
+    st.subheader("🔀 Convergence → agent-mode handoff (J8)")
+    checklist = conv.get("checklist") or []
+    if checklist:
+        if conv.get("ready"):
+            st.success(f"Convergence **READY** · {conv.get('label', '')}")
+        else:
+            st.warning(f"Convergence **HOLD** · {conv.get('label', '')}")
+        for item in checklist:
+            ok = item.get("ok")
+            mark = "✅" if ok is True else ("❔" if ok is None else "❌")
+            st.markdown(f"{mark} **{item.get('label', item.get('id'))}**")
+            if ok is not True and item.get("hint"):
+                st.caption(item["hint"])
+    else:
+        st.caption("Convergence checklist unavailable.")
+
+    pb = snap.get("parallel_briefs") or {}
+    st.subheader("📋 Parallel Brief logs (J8 · read-only)")
+    st.caption(str(pb.get("label") or "—"))
+    logs = pb.get("logs") or []
+    if logs:
+        st.dataframe(
+            [
+                {
+                    "Session": lg.get("session_id"),
+                    "Briefs": lg.get("brief_count"),
+                    "Specialists": ", ".join(lg.get("specialists") or []),
+                    "Path": lg.get("path"),
+                }
+                for lg in logs
+            ],
+            width="stretch",
+            hide_index=True,
+        )
+    else:
+        st.caption(
+            "No brief logs found · CLI: "
+            "`cinematic-studio wave-a briefs <session> -o artifacts/briefs_<session>.json`"
+        )
+
+    delivery = snap.get("delivery") or {}
+    st.subheader("📦 Delivery readiness (J7)")
+    st.caption(str(delivery.get("label") or "—"))
+    drows = delivery.get("sequences") or []
+    if drows:
+        st.dataframe(
+            [
+                {
+                    "Sequence": r.get("name"),
+                    "Polish": "pass" if r.get("polish_pass") else "hold",
+                    "Deliver": "pass" if r.get("deliver_pass") else "hold",
+                    "Blocker": (r.get("polish_blockers") or r.get("deliver_blockers") or ["—"])[0],
+                }
+                for r in drows
+            ],
+            width="stretch",
+            hide_index=True,
+        )
+        st.caption(
+            "Safe previews: `sequence polish NAME --dry-run` · "
+            "`sequence deliver NAME --dry-run` (TUI Cockpit Delivery group)"
+        )
+    else:
+        st.caption("No sequences for delivery assessment.")
+
     # KPI metrics
     title = project["title"]
     c1, c2, c3, c4, c5, c6 = st.columns(6)

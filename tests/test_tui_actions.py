@@ -119,12 +119,13 @@ def test_v3_static_allowlist_includes_validate_stack() -> None:
 def test_cockpit_menu_rows_include_group_separators() -> None:
     rows = menu_rows("cockpit")
     kinds = [k for k, _ in rows]
-    assert kinds.count("group") >= 4  # Setup, Quota, DNA, Sequence, Health
+    assert kinds.count("group") >= 4  # Setup, Quota, DNA, Sequence, Delivery, Multi-agent, Health
     groups = [p for k, p in rows if k == "group"]
     assert "Setup" in groups
     assert "DNA" in groups
     assert "Sequence" in groups
     assert "Health" in groups
+    assert "Delivery" in groups or "Multi-agent" in groups
     # actions still present after separators
     actions = [p.id for k, p in rows if k == "action"]
     assert "bible_create" in actions

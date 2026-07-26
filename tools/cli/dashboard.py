@@ -115,7 +115,7 @@ def build_studio_dashboard() -> dict[str, Any]:
         }
 
     title = project.get("project_title") or project.get("title") or "Untitled"
-    return {
+    snap: dict[str, Any] = {
         "generated_at": _now_iso(),
         "studio_version": STUDIO_VERSION,
         "project": {
@@ -146,6 +146,27 @@ def build_studio_dashboard() -> dict[str, Any]:
         "production_report": build_production_report(state),
         "artifacts": artifacts_summary(),
     }
+    try:
+        from control_plane_phase3 import build_phase3_snapshot_fields
+
+        snap.update(build_phase3_snapshot_fields(snap))
+    except Exception:
+        snap["parallel_briefs"] = {"logs": [], "count": 0, "label": "unavailable"}
+        snap["convergence"] = {
+            "checklist": [],
+            "ready": False,
+            "ok": 0,
+            "fail": 0,
+            "label": "unavailable",
+        }
+        snap["delivery"] = {
+            "sequences": [],
+            "polish_ready": 0,
+            "deliver_ready": 0,
+            "total": 0,
+            "label": "unavailable",
+        }
+    return snap
 
 
 def _risk_text(level: str) -> Text:

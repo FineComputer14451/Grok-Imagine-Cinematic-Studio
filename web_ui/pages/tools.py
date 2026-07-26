@@ -76,6 +76,60 @@ def render() -> None:
                 st.error("Handoff validation failed")
 
     st.divider()
+    st.subheader("✨ Imagine bridge preview (grok.com)")
+    st.caption("Copy-paste packet · no API spend · paste into grok.com/imagine")
+    b1, b2 = st.columns(2)
+    with b1:
+        bridge_seq = st.text_input("Sequence slug", key="tools_bridge_seq")
+        bridge_clip = st.text_input("Clip id", key="tools_bridge_clip")
+    with b2:
+        bridge_batch = st.text_input("SFW batch slug", key="tools_bridge_batch")
+        bridge_shot = st.text_input("Shot id", key="tools_bridge_shot")
+    if st.button("Preview bridge packet", width="stretch", key="tools_bridge_preview"):
+        args = ["imagine", "bridge", "-f", "markdown"]
+        if (bridge_seq or "").strip():
+            args.extend(["-s", bridge_seq.strip()])
+        if (bridge_clip or "").strip():
+            args.extend(["-c", bridge_clip.strip()])
+        if (bridge_batch or "").strip():
+            args.extend(["-b", bridge_batch.strip()])
+        if (bridge_shot or "").strip():
+            args.extend(["--shot", bridge_shot.strip()])
+        code, output = rt.run_cli(args, timeout=60)
+        st.code(output or "(empty)", language="markdown")
+        if code == 0:
+            st.success("Bridge packet ready to paste")
+        else:
+            st.warning(f"Bridge exit {code} — check sequence/clip/batch ids")
+
+    st.divider()
+    st.subheader("📋 Parallel Brief starter log")
+    st.caption("Wave A · writes `parallel_brief_dispatch_log` JSON")
+    pb_session = st.text_input("Session id", value="ops-session", key="tools_pb_session")
+    pb_out = st.text_input(
+        "Output path",
+        value="artifacts/briefs_ops-session.json",
+        key="tools_pb_out",
+    )
+    if st.button("Build brief log", width="stretch", key="tools_pb_build"):
+        if not (pb_session or "").strip():
+            st.warning("Session id required")
+        else:
+            args = [
+                "wave-a",
+                "briefs",
+                pb_session.strip(),
+                "-o",
+                (pb_out or "artifacts/briefs_session.json").strip(),
+            ]
+            code, output = rt.run_cli(args, timeout=60)
+            st.code(output or "(done)", language="text")
+            if code == 0:
+                st.success("Brief log written — refresh Dashboard to list it")
+            else:
+                st.error(f"exit {code}")
+
+    st.divider()
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Run validate", width="stretch", key="tools_validate"):

@@ -222,8 +222,90 @@ def format_produce_gate_next_steps(action_id: str, *, ok: bool) -> str:
         "sequence_init": "Next: add clips · lock DNA for cast · run chain QA before extend",
         "bible_create": "Next: dna init/lock · sequence init · quota budget · models verify",
         "handoff_validate": "If OK: safe to proceed with extend/agent-handoff under strict flags as needed",
+        "sequence_polish_dry": (
+            "If readiness OK: real polish without --dry-run on CLI after QA Go + color grade"
+        ),
+        "sequence_deliver_dry": (
+            "If polish media ready: sequence deliver without --dry-run · then social crops"
+        ),
+        "imagine_bridge": (
+            "Paste packet into grok.com/imagine · keep VIDEO_PIPELINE_SPEC · no silent NSFW"
+        ),
+        "wave_a_briefs": (
+            "Log briefs under artifacts · converge specialists → handoff validate → agent-handoff"
+        ),
     }
     return tips.get(action_id, "")
+
+
+def format_parallel_briefs_panel(snapshot: dict[str, Any]) -> str:
+    """J8 Parallel Brief log viewer (read-only)."""
+    pb = snapshot.get("parallel_briefs") or {}
+    logs = pb.get("logs") or []
+    lines = ["PARALLEL BRIEFS  (J8 · read-only)"]
+    lines.append(f"  {pb.get('label', '—')}")
+    if not logs:
+        lines.append("  No brief logs on disk yet")
+        lines.append("  Next: wave-a briefs <session> -o artifacts/briefs_<session>.json")
+        return "\n".join(lines)
+    for log in logs[:6]:
+        if not isinstance(log, dict):
+            continue
+        sid = log.get("session_id") or "?"
+        n = log.get("brief_count", 0)
+        specs = ", ".join(log.get("specialists") or []) or "—"
+        lines.append(f"  {sid}  ·  {n} brief(s)  ·  {specs}")
+        lines.append(f"    {log.get('path', '')}")
+    lines.append("  Next: converge → handoff validate → imagine agent-handoff")
+    return "\n".join(lines)
+
+
+def format_convergence_panel(snapshot: dict[str, Any]) -> str:
+    """J8 convergence checklist into imagine_agent_mode_handoff."""
+    conv = snapshot.get("convergence") or {}
+    checklist = conv.get("checklist") or []
+    lines = [f"CONVERGENCE  [{conv.get('label', '—')}]"]
+    if conv.get("ready"):
+        lines.append("  Status: READY to validate agent-mode handoff")
+    elif checklist:
+        lines.append("  Status: HOLD — clear failing gates first")
+    else:
+        lines.append("  Status: unknown")
+    for item in checklist:
+        if not isinstance(item, dict):
+            continue
+        ok = item.get("ok")
+        mark = "✓" if ok is True else ("·" if ok is None else "✗")
+        lines.append(f"  {mark} {item.get('label', item.get('id', '?'))}")
+        if ok is False and item.get("hint"):
+            lines.append(f"      → {item['hint']}")
+        if ok is None and item.get("hint"):
+            lines.append(f"      → {item['hint']}")
+    return "\n".join(lines)
+
+
+def format_delivery_panel(snapshot: dict[str, Any]) -> str:
+    """J7 delivery readiness (polish / deliver soft gates)."""
+    d = snapshot.get("delivery") or {}
+    rows = d.get("sequences") or []
+    lines = [f"DELIVERY  [{d.get('label', '—')}]"]
+    if not rows:
+        lines.append("  No sequences to assess")
+        lines.append("  Next: sequence polish --dry-run · sequence deliver --dry-run")
+        return "\n".join(lines)
+    for r in rows[:6]:
+        if not isinstance(r, dict):
+            continue
+        name = r.get("name") or r.get("slug") or "?"
+        p = "ok" if r.get("polish_pass") else "hold"
+        de = "ok" if r.get("deliver_pass") else "hold"
+        lines.append(f"  {name}  ·  polish {p}  ·  deliver {de}")
+        for b in (r.get("polish_blockers") or [])[:1]:
+            lines.append(f"    ! polish: {b}")
+        for b in (r.get("deliver_blockers") or [])[:1]:
+            lines.append(f"    ! deliver: {b}")
+    lines.append("  Safe TUI: sequence polish/deliver --dry-run only (no silent spend)")
+    return "\n".join(lines)
 
 
 def format_attention_panel(snapshot: dict[str, Any]) -> str:
@@ -431,6 +513,12 @@ def format_home_markdown(snapshot: dict[str, Any]) -> str:
         format_attention_panel(snapshot),
         "",
         format_readiness_panel(snapshot),
+        "",
+        format_convergence_panel(snapshot),
+        "",
+        format_parallel_briefs_panel(snapshot),
+        "",
+        format_delivery_panel(snapshot),
         "",
         format_quota_panel(snapshot),
         "",
