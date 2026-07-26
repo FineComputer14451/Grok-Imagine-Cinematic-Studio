@@ -68,12 +68,18 @@ HOME_MODE_PANELS: dict[str, frozenset[str]] = {
 }
 
 
-def format_home_hints(*, mode: str = "ops", paused: bool = False) -> str:
+def format_home_hints(
+    *,
+    mode: str = "ops",
+    paused: bool = False,
+    refreshed_at: str = "",
+) -> str:
     mode = mode if mode in HOME_VIEW_MODES else "ops"
     pause = "paused" if paused else "live"
+    when = f" · updated {refreshed_at}" if refreshed_at else ""
     return (
-        f"View [{mode}] · refresh {pause} · "
-        "1 compact · 2 ops · 3 full · p pause · "
+        f"View [{mode}] · refresh {pause}{when} · "
+        "1/2/3 views · p pause · / palette · y save brief · "
         "r refresh · s quota · d doctor · v validate · "
         "m models · k stack · l launcher · c cockpit · ? help · q quit"
     )
@@ -86,6 +92,42 @@ def next_home_mode(current: str) -> str:
     except ValueError:
         return "ops"
     return modes[(i + 1) % len(modes)]
+
+
+def format_kpi_bar(snapshot: dict[str, Any]) -> str:
+    """One-line KPI strip always visible under the status strip."""
+    production = snapshot.get("production") or {}
+    quota = snapshot.get("quota") or {}
+    readiness = snapshot.get("readiness") or {}
+    conv = snapshot.get("convergence") or {}
+    delivery = snapshot.get("delivery") or {}
+    go, no_go = _chain_qa_totals(snapshot)
+    risk = _risk_label(str(quota.get("risk_level") or "unknown"))
+    locked = production.get("identity_locked", 0)
+    chars = production.get("characters", 0)
+    overall = str(readiness.get("overall") or "—").upper()
+    conv_lbl = conv.get("label") or "—"
+    del_lbl = delivery.get("label") or "—"
+    return (
+        f"KPI  sequences {production.get('sequences', 0)}  ·  "
+        f"DNA {locked}/{chars}  ·  risk {risk}  ·  "
+        f"QA {go}g/{no_go}n  ·  gate {overall}  ·  "
+        f"converge {conv_lbl}  ·  deliver {del_lbl}"
+    )
+
+
+def format_orient_brief(snapshot: dict[str, Any]) -> str:
+    """Exportable orient summary (status + attention + KPIs + readiness next)."""
+    parts = [
+        format_status_strip(snapshot),
+        "",
+        format_kpi_bar(snapshot),
+        "",
+        format_attention_panel(snapshot),
+        "",
+        format_readiness_panel(snapshot),
+    ]
+    return "\n".join(parts)
 
 
 def _chain_qa_totals(snapshot: dict[str, Any]) -> tuple[int, int]:
@@ -559,6 +601,8 @@ def format_home_markdown(snapshot: dict[str, Any]) -> str:
     """Compat: dense multi-section plain text (also used if a single body is needed)."""
     parts = [
         format_status_strip(snapshot),
+        "",
+        format_kpi_bar(snapshot),
         "",
         format_attention_panel(snapshot),
         "",

@@ -21,6 +21,19 @@ from cli.tui.actions import (  # noqa: E402
 )
 
 
+def test_palette_actions_dedupe_and_filter() -> None:
+    from cli.tui.actions import filter_palette_actions, palette_actions
+
+    all_acts = palette_actions()
+    ids = [a.id for a in all_acts]
+    assert len(ids) == len(set(ids))
+    assert "doctor_quick" in ids
+    assert "sequence_polish_dry" in ids
+    hits = filter_palette_actions("doctor")
+    assert any(a.id == "doctor_quick" for a in hits)
+    assert filter_palette_actions("zzzz-no-match") == []
+
+
 def test_single_registry_covers_both_surfaces() -> None:
     launcher = {s.id for s in actions_for("launcher")}
     cockpit = {s.id for s in actions_for("cockpit")}

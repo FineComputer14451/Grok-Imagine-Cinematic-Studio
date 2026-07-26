@@ -584,6 +584,37 @@ def actions_for(surface: Surface) -> list[ActionSpec]:
     return out
 
 
+def palette_actions() -> list[ActionSpec]:
+    """Deduped launcher+cockpit actions for the command palette (`/`)."""
+    seen: set[str] = set()
+    out: list[ActionSpec] = []
+    for aid in (*LAUNCHER_ORDER, *COCKPIT_ORDER):
+        if aid in seen:
+            continue
+        seen.add(aid)
+        try:
+            out.append(ACTIONS[aid])
+        except KeyError:
+            continue
+    return out
+
+
+def filter_palette_actions(query: str) -> list[ActionSpec]:
+    """Case-insensitive substring filter over label, id, description, argv."""
+    q = (query or "").strip().lower()
+    if not q:
+        return palette_actions()
+    hits: list[ActionSpec] = []
+    for spec in palette_actions():
+        hay = (
+            f"{spec.label} {spec.id} {spec.description} "
+            f"{' '.join(spec.base_argv)} {spec.group}"
+        ).lower()
+        if q in hay:
+            hits.append(spec)
+    return hits
+
+
 def menu_rows(surface: Surface) -> list[tuple[str, str | ActionSpec]]:
     """Build menu rows: ('group', label) separators and ('action', ActionSpec).
 

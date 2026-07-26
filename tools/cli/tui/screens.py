@@ -21,6 +21,7 @@ from textual.worker import Worker, WorkerState
 from cli.tui.actions import (
     ActionSpec,
     default_answers,
+    filter_palette_actions,
     get_action,
     menu_rows,
     summarize_action,
@@ -39,6 +40,8 @@ from cli.tui.widgets import (
     format_home_error,
     format_home_hints,
     format_jobs_panel,
+    format_kpi_bar,
+    format_orient_brief,
     format_parallel_briefs_panel,
     format_produce_gate_next_steps,
     format_quota_panel,
@@ -214,6 +217,9 @@ class HomeScreen(Screen[None]):
         Binding("3", "view_full", "Full"),
         Binding("tab", "view_cycle", "Cycle view"),
         Binding("p", "toggle_pause", "Pause"),
+        Binding("slash", "palette", "Palette"),
+        Binding("ctrl+p", "palette", "Palette", show=False),
+        Binding("y", "save_orient_brief", "Save brief"),
         Binding("q", "quit_app", "Quit"),
         Binding("question_mark", "help", "Help"),
     ]
@@ -241,12 +247,14 @@ class HomeScreen(Screen[None]):
         self._last_snap: dict | None = None
         self._jobs_available: bool = False
         self._briefs_available: bool = False
+        self._refreshed_at: str = ""
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
         with VerticalScroll(id="home-scroll"):
             yield Static("", id="home-error", classes="home-error hidden")
             yield Static("", id="status-strip", classes="home-strip sev-ok")
+            yield Static("", id="kpi-bar", classes="home-kpi")
             yield Static("", id="panel-attention", classes="home-panel home-attention")
             with Horizontal(id="home-row-gate", classes="home-row"):
                 yield Static("", id="panel-readiness", classes="home-panel")
@@ -331,36 +339,106 @@ class HomeScreen(Screen[None]):
 
         self._set_panel(
             "home-hints",
-            format_home_hints(mode=mode, paused=self.auto_refresh_paused),
+            format_home_hints(
+                mode=mode,
+                paused=self.auto_refresh_paused,
+                refreshed_at=self._refreshed_at,
+            ),
         )
         pause = " · paused" if self.auto_refresh_paused else ""
         try:
-            self.app.sub_title = f"Home [{mode}]{pause} · Launcher · Cockpit"
+            self.app.sub_title = f"Home [{mode}]{pause} · / palette · Launcher · Cockpit"
         except Exception:
             pass
 
     def action_view_compact(self) -> None:
         self.view_mode = "compact"
         self._apply_view_mode()
+        self._notify_mode()
 
     def action_view_ops(self) -> None:
         self.view_mode = "ops"
         self._apply_view_mode()
+        self._notify_mode()
 
     def action_view_full(self) -> None:
         self.view_mode = "full"
         self._apply_view_mode()
+        self._notify_mode()
 
     def action_view_cycle(self) -> None:
         self.view_mode = next_home_mode(self.view_mode)
         self._apply_view_mode()
+        self._notify_mode()
 
     def action_toggle_pause(self) -> None:
         self.auto_refresh_paused = not self.auto_refresh_paused
         self._apply_view_mode()
+        try:
+            state = "paused" if self.auto_refresh_paused else "live"
+            self.notify(f"Auto-refresh {state}", severity="information")
+        except Exception:
+            pass
+
+    def _notify_mode(self) -> None:
+        try:
+            self.notify(f"View: {self.view_mode}", severity="information", timeout=1.5)
+        except Exception:
+            pass
+
+    def action_palette(self) -> None:
+        self.app.push_screen(CommandPaletteScreen())
+
+    def action_save_orient_brief(self) -> None:
+        """Write orient brief to artifacts/ for paste into chat / tickets."""
+        snap = self._last_snap
+        if not snap:
+            try:
+                self.notify("Refresh first (r)", severity="warning")
+            except Exception:
+                pass
+            return
+        try:
+            from pathlib import Path
+
+            from studio_paths import ARTIFACTS_DIR
+
+            ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+            path = ARTIFACTS_DIR / "tui_orient_brief.txt"
+            path.write_text(format_orient_brief(snap), encoding="utf-8")
+            try:
+                self.notify(f"Saved {path}", severity="information")
+            except Exception:
+                pass
+            self.app.push_screen(
+                CommandOutputScreen(
+                    result=CommandResult(
+                        argv=["orient-brief"],
+                        returncode=0,
+                        stdout=format_orient_brief(snap),
+                        stderr=f"Wrote {path}",
+                        action_id="orient_brief",
+                    ),
+                    label="Orient brief",
+                    argv=["orient-brief", str(path)],
+                )
+            )
+        except Exception as exc:  # noqa: BLE001
+            try:
+                self.notify(f"Save failed: {exc}", severity="error")
+            except Exception:
+                pass
 
     def action_refresh(self) -> None:
+        scroll_y = 0.0
         try:
+            scroll = self.query_one("#home-scroll", VerticalScroll)
+            scroll_y = float(getattr(scroll, "scroll_y", 0) or 0)
+        except Exception:
+            pass
+        try:
+            from datetime import datetime
+
             from cli.dashboard import build_studio_dashboard
 
             snap = build_studio_dashboard()
@@ -372,6 +450,7 @@ class HomeScreen(Screen[None]):
                 pass
 
             self._last_snap = snap
+            self._refreshed_at = datetime.now().strftime("%H:%M:%S")
             pb = snap.get("parallel_briefs") or {}
             self._briefs_available = int(pb.get("count") or 0) > 0 or bool(pb.get("logs"))
             jobs = format_jobs_panel(snap)
@@ -380,6 +459,7 @@ class HomeScreen(Screen[None]):
             self._set_panel("home-error", "", hide=True)
             self._set_panel("status-strip", format_status_strip(snap))
             self._set_strip_severity(strip_severity(snap))
+            self._set_panel("kpi-bar", format_kpi_bar(snap))
             self._set_panel("panel-attention", format_attention_panel(snap))
             self._set_panel("panel-readiness", format_readiness_panel(snap))
             self._set_panel("panel-convergence", format_convergence_panel(snap))
@@ -395,10 +475,17 @@ class HomeScreen(Screen[None]):
             else:
                 self._set_panel("panel-jobs", "", hide=True)
             self._apply_view_mode()
+            try:
+                scroll = self.query_one("#home-scroll", VerticalScroll)
+                if scroll_y > 0:
+                    scroll.scroll_to(y=scroll_y, animate=False)
+            except Exception:
+                pass
         except Exception as exc:  # noqa: BLE001 — surface any snapshot failure
             self._set_panel("home-error", format_home_error(str(exc)), hide=False)
             for wid in (
                 "status-strip",
+                "kpi-bar",
                 "panel-attention",
                 "panel-readiness",
                 "panel-convergence",
@@ -629,6 +716,89 @@ class CockpitMenuScreen(ActionListScreen):
     hint_text = (
         "Cockpit — filter · scaffold Bible/DNA/Sequence/Quota/Delivery · Enter · Esc · h home"
     )
+
+
+class CommandPaletteScreen(ModalScreen[None]):
+    """Fuzzy command palette across launcher + cockpit actions (`/` on Home)."""
+
+    BINDINGS = [
+        Binding("escape", "close", "Close"),
+        Binding("q", "close", "Close"),
+    ]
+
+    def compose(self) -> ComposeResult:
+        with Container(id="palette-dialog"):
+            yield Label("Command palette — type to filter · Enter to run", id="palette-title")
+            yield Input(placeholder="doctor, handoff, polish, stack…", id="palette-input")
+            yield ListView(*self._items(""), id="palette-list")
+
+    def on_mount(self) -> None:
+        try:
+            self.query_one("#palette-input", Input).focus()
+        except Exception:
+            pass
+
+    def _items(self, query: str) -> list[ListItem]:
+        specs = filter_palette_actions(query)
+        if not specs:
+            return [
+                ListItem(
+                    Label("[dim]No matching actions[/dim]"),
+                    id="pal-empty",
+                    disabled=True,
+                )
+            ]
+        items: list[ListItem] = []
+        for spec in specs:
+            surf = "/".join(sorted(spec.surfaces))
+            items.append(
+                ListItem(
+                    Label(
+                        f"{spec.label}  [dim]{surf} · {' '.join(spec.base_argv)}[/dim]"
+                    ),
+                    id=f"pal-{spec.id}",
+                )
+            )
+        return items
+
+    def on_input_changed(self, event: Input.Changed) -> None:
+        if event.input.id != "palette-input":
+            return
+        try:
+            lv = self.query_one("#palette-list", ListView)
+        except Exception:
+            return
+        lv.clear()
+        for item in self._items(event.value or ""):
+            lv.append(item)
+
+    def on_list_view_selected(self, event: ListView.Selected) -> None:
+        item_id = event.item.id or ""
+        if not item_id.startswith("pal-") or item_id == "pal-empty":
+            return
+        action_id = item_id.removeprefix("pal-")
+        try:
+            spec = get_action(action_id)
+        except KeyError:
+            return
+        # Dismiss palette first, then same flow as menus
+        self.app.pop_screen()
+        if not spec.has_form and not spec.needs_confirm:
+            start_action_run(
+                self.app,
+                action_id,
+                {},
+                label=spec.label,
+                dismiss_confirm_form=False,
+            )
+            return
+        if not spec.has_form and spec.needs_confirm:
+            self.app.push_screen(ConfirmScreen(action_id=action_id, answers={}))
+            return
+        self.app.push_screen(FormScreen(action_id=action_id))
+
+    def action_close(self) -> None:
+        self.app.pop_screen()
 
 
 class FormScreen(StudioScreen):
@@ -882,20 +1052,17 @@ class HelpScreen(ModalScreen[None]):
                         "Studio TUI Help",
                         "",
                         "Home views",
-                        "  1  Compact (strip + attention + readiness)",
-                        "  2  Ops (default — gates + quota + chain QA)",
-                        "  3  Full (all panels)",
-                        "  Tab  Cycle views · p  Pause/resume auto-refresh",
+                        "  1 Compact · 2 Ops · 3 Full · Tab cycle · p pause refresh",
+                        "  / or Ctrl+P  Command palette (all allowlisted actions)",
+                        "  y  Save orient brief → artifacts/tui_orient_brief.txt",
                         "",
                         "Health / nav",
-                        "  r  Refresh · s  Quota sync · d  Doctor · v  Validate",
-                        "  m  Models · k  Stack · l  Launcher · c  Cockpit",
-                        "  h  Home · Esc  Back · ?  Help · q  Quit",
+                        "  r Refresh · s Quota · d Doctor · v Validate · m Models · k Stack",
+                        "  l Launcher · c Cockpit · h Home · Esc Back · ? Help · q Quit",
                         "",
-                        "Launcher / Cockpit: type in filter box to narrow actions.",
-                        "Mutating forms confirm before write. No Imagine spend / wizard.",
-                        "Polish/deliver cockpit entries use --dry-run only.",
-                        "CLI runs on a background worker; Esc from output skips re-confirm.",
+                        "KPI bar under the strip is always on (sequences/DNA/risk/QA/gates).",
+                        "Launcher/Cockpit/Palette: type to filter. No Imagine spend / wizard.",
+                        "Polish/deliver use --dry-run only. Worker runs keep UI responsive.",
                     ]
                 ),
                 id="help-body",

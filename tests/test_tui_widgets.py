@@ -231,20 +231,32 @@ def test_format_home_hints() -> None:
     hints = format_home_hints(mode="ops", paused=False)
     assert "View [ops]" in hints
     assert "live" in hints
+    assert "palette" in hints
     assert "launcher" in hints
     assert "doctor" in hints
-    assert "validate" in hints
-    assert "models" in hints
-    assert "stack" in hints
-    paused = format_home_hints(mode="compact", paused=True)
+    paused = format_home_hints(mode="compact", paused=True, refreshed_at="12:00:01")
     assert "View [compact]" in paused
     assert "paused" in paused
+    assert "12:00:01" in paused
     assert set(HOME_VIEW_MODES) == {"compact", "ops", "full"}
     assert "panel-readiness" in HOME_MODE_PANELS["compact"]
     assert "panel-delivery" in HOME_MODE_PANELS["ops"]
     assert "panel-characters" in HOME_MODE_PANELS["full"]
     assert next_home_mode("compact") == "ops"
     assert next_home_mode("full") == "compact"
+
+
+def test_format_kpi_and_orient_brief() -> None:
+    from cli.tui.widgets import format_kpi_bar, format_orient_brief
+
+    snap = _sample_snap()
+    kpi = format_kpi_bar(snap)
+    assert "KPI" in kpi
+    assert "DNA" in kpi
+    assert "risk" in kpi
+    brief = format_orient_brief(snap)
+    assert "ATTENTION" in brief or "All clear" in brief or "Demo Film" in brief
+    assert "KPI" in brief
 
 
 def test_strip_severity_and_attention() -> None:

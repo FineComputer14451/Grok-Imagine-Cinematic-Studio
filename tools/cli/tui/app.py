@@ -46,6 +46,13 @@ class StudioTUI(App[None]):
         padding: 0 1 1 1;
         color: $text-muted;
     }
+    .home-kpi {
+        padding: 0 1;
+        margin: 0 0 1 0;
+        color: $text-muted;
+        text-style: italic;
+        border-bottom: solid $panel;
+    }
     .home-error {
         padding: 1;
         border: heavy $error;
@@ -53,10 +60,21 @@ class StudioTUI(App[None]):
         margin-bottom: 1;
     }
     .hidden { display: none; }
-    #filter-input {
+    #filter-input, #palette-input {
         margin: 0 2 1 2;
-        dock: top;
     }
+    #palette-dialog {
+        width: 80;
+        max-width: 96%;
+        height: auto;
+        max-height: 80%;
+        border: heavy $accent;
+        background: $surface;
+        padding: 1 1 1 1;
+    }
+    #palette-title { padding: 0 1 1 1; text-style: bold; }
+    #palette-list { height: 18; max-height: 18; }
+    CommandPaletteScreen { align: center middle; }
     #launcher-hint, #cockpit-hint { padding: 0 2 0 2; color: $text-muted; }
     #out-title { padding: 1 2; text-style: bold; }
     #out-body { padding: 0 2 1 2; }
