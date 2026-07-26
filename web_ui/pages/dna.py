@@ -44,8 +44,22 @@ def render() -> None:
                 if col_b.button("🔒 Lock", key=f"lock_{c['slug']}"):
                     path = rt.find_character_dna(c["name"])
                     if path:
-                        rt.lock_to_identity_bank(rt.load_character_dna(path))
+                        dna = rt.load_character_dna(path)
+                        rt.lock_to_identity_bank(dna)
+                        st.success(
+                            f"Locked **{c['name']}** into Identity bank. "
+                            "Next: generate DNA handoff (`dna handoff`) → "
+                            "`handoff validate <path>` → inject / plate lock before i2v."
+                        )
+                        st.session_state["_dna_lock_flash"] = c["name"]
                         st.rerun()
+            flash = st.session_state.pop("_dna_lock_flash", None)
+            if flash:
+                st.info(
+                    f"Produce-gate: **{flash}** locked · "
+                    "validate handoff before multi-clip extend · "
+                    "Dashboard READINESS tracks identity + chain QA."
+                )
         else:
             st.caption("No DNA profiles yet.")
 

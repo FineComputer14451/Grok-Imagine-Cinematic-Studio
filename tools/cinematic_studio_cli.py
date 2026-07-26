@@ -27,6 +27,7 @@ from cli.tui_commands import register as register_tui_commands  # noqa: E402
 from cli.generation_commands import register as register_generation_commands  # noqa: E402
 from cli.wave_a_commands import register as register_wave_a_commands  # noqa: E402
 from cli.grok_cli_commands import register as register_grok_cli_commands  # noqa: E402
+from cli.handoff_commands import register as register_handoff_commands  # noqa: E402
 
 app = typer.Typer(
     name="cinematic-studio",
@@ -46,6 +47,7 @@ nsfw_app = typer.Typer(help="NSFW batch planning, extension, daily reports")
 extend_app = typer.Typer(help="Sensual sequence extension 30–120s+")
 sfw_app = typer.Typer(help="SFW hero-first batches + Reference Curator routing")
 imagine_app = typer.Typer(help="Imagine jobs, bridge, agent-handoff")
+handoff_app = typer.Typer(help="Handoff packet validate (identity / sequence / agent-mode)")
 animatic_app = typer.Typer(help="Animatic pre-vis and hero promotion")
 
 app.add_typer(dna_app, name="dna")
@@ -55,6 +57,7 @@ app.add_typer(models_app, name="models")
 app.add_typer(nsfw_app, name="nsfw")
 app.add_typer(sfw_app, name="sfw")
 app.add_typer(imagine_app, name="imagine")
+app.add_typer(handoff_app, name="handoff")
 app.add_typer(animatic_app, name="animatic")
 nsfw_app.add_typer(extend_app, name="extend")
 
@@ -66,6 +69,7 @@ register_quota_commands(quota_app)
 register_nsfw_commands(nsfw_app, extend_app)
 register_sfw_commands(sfw_app)
 register_imagine_commands(imagine_app)
+register_handoff_commands(handoff_app)
 register_animatic_commands(animatic_app)
 register_report_commands(app)
 register_plugin_commands(app)

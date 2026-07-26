@@ -123,6 +123,7 @@ LAUNCHER_ORDER: tuple[str, ...] = (
     "dna_show",
     "sequence_list",
     "sequence_show",
+    "handoff_validate",
     "imagine_list",
     "plugin_list",
 )
@@ -139,6 +140,7 @@ COCKPIT_ORDER: tuple[str, ...] = (
     "sequence_init",
     "sequence_add_clip",
     "sequence_handoff",
+    "handoff_validate",
     "doctor_quick",
     "models_verify",
     "validate",
@@ -247,6 +249,24 @@ ACTIONS: dict[str, ActionSpec] = {
         description="Installed plugin skills",
         base_argv=("plugin", "list"),
         surfaces=frozenset({"launcher"}),
+    ),
+    "handoff_validate": ActionSpec(
+        id="handoff_validate",
+        label="Validate handoff packet",
+        description="Schema + soft readiness check on a handoff JSON (no spend)",
+        base_argv=("handoff", "validate"),
+        surfaces=frozenset({"launcher", "cockpit"}),
+        needs_confirm=False,
+        group="health",
+        fields=(
+            _f(
+                "path",
+                "Handoff JSON path",
+                required=True,
+                flag=None,
+                help="Path to handoff_*.json",
+            ),
+        ),
     ),
     # --- read-only with form (no confirm) ---
     "dna_show": ActionSpec(

@@ -19,7 +19,9 @@ from cli.tui.widgets import (  # noqa: E402
     format_home_hints,
     format_home_markdown,
     format_jobs_panel,
+    format_produce_gate_next_steps,
     format_quota_panel,
+    format_readiness_panel,
     format_sequences_panel,
     format_status_strip,
     format_studio_panel,
@@ -98,6 +100,21 @@ def _sample_snap(**overrides: object) -> dict:
             }
         ],
         "quota_alignment": {"status": "aligned", "hint": "ok"},
+        "readiness": {
+            "overall": "partial",
+            "identity": {"label": "1/3 locked", "locked": 1, "total": 3, "pending": 2, "ready": False},
+            "chain_qa": {"label": "4 go · 0 no-go", "go": 4, "no_go": 0, "ready": True},
+            "plate_motion": {
+                "available": True,
+                "plate_ok": 1,
+                "plate_pending": 0,
+                "motion_ok": 0,
+                "motion_pending": 0,
+                "video_shots": 0,
+                "scanned_shots": 2,
+            },
+            "next_actions": ["Lock DNA: 2 profile(s) pending → Cockpit DNA lock or Web DNA"],
+        },
     }
     snap.update(overrides)
     return snap
@@ -170,7 +187,20 @@ def test_format_chain_qa_panel_rows() -> None:
     assert "CHAIN QA" in text
     assert "go 4" in text
     assert "no-go 0" in text
-    assert "go" in text
+    assert "Next:" in text or "handoff" in text.lower()
+
+
+def test_format_readiness_panel() -> None:
+    text = format_readiness_panel(_sample_snap())
+    assert "READINESS" in text
+    assert "1/3 locked" in text
+    assert "Next:" in text or "Lock DNA" in text
+
+
+def test_produce_gate_next_steps() -> None:
+    assert "handoff" in format_produce_gate_next_steps("dna_lock", ok=True).lower()
+    assert format_produce_gate_next_steps("dna_lock", ok=False) == ""
+    assert "validate" in format_produce_gate_next_steps("sequence_handoff", ok=True).lower()
 
 
 def test_format_characters_panel_empty() -> None:
@@ -219,6 +249,13 @@ def test_strip_severity_and_attention() -> None:
         {"name": "Ben", "slug": "ben", "status": "locked"},
         {"name": "Cy", "slug": "cy", "status": "locked"},
     ]
+    clear["readiness"] = {
+        "overall": "ready",
+        "identity": {"label": "3/3 locked", "locked": 3, "total": 3, "pending": 0, "ready": True},
+        "chain_qa": {"label": "4 go · 0 no-go", "go": 4, "no_go": 0, "ready": True},
+        "plate_motion": {"available": False, "scanned_shots": 0},
+        "next_actions": [],
+    }
     assert strip_severity(clear) == "ok"
     assert "All clear" in format_attention_panel(clear)
 

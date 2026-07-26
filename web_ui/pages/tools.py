@@ -52,6 +52,30 @@ def render() -> None:
         st.warning("references/agents/ not found")
 
     st.divider()
+    st.subheader("📦 Handoff packet validate")
+    st.caption(
+        "Schema + soft readiness (no Imagine spend) · CLI: `cinematic-studio handoff validate PATH`"
+    )
+    ho_path = st.text_input(
+        "Handoff JSON path",
+        placeholder="sequences/.../handoff_clip.json",
+        key="tools_handoff_path",
+    )
+    if st.button("Validate handoff", width="stretch", key="tools_handoff_validate"):
+        if not (ho_path or "").strip():
+            st.warning("Enter a path to a handoff JSON file")
+        else:
+            code, output = rt.run_cli(
+                ["handoff", "validate", ho_path.strip()],
+                timeout=60,
+            )
+            st.code(output, language="text")
+            if code == 0:
+                st.success("Handoff OK")
+            else:
+                st.error("Handoff validation failed")
+
+    st.divider()
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Run validate", width="stretch", key="tools_validate"):

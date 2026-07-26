@@ -81,6 +81,39 @@ def build_studio_dashboard() -> dict[str, Any]:
         budget_remaining=remaining,
     )
 
+    production = {
+        "sequences": len(sequences),
+        "characters": len(characters),
+        "identity_locked": identity_locked,
+        "nsfw_batches": len(batches),
+        "sfw_batches": len(sfw_batches),
+        "imagine_jobs": imagine_summary["total"],
+        "reference_assets": imagine_summary["reference_assets"],
+    }
+    try:
+        from control_plane_readiness import build_readiness_rollup
+
+        readiness = build_readiness_rollup(
+            characters=characters,
+            chain_qa=chain_qa_summaries,
+            production=production,
+            scan_sfw=True,
+        )
+    except Exception:
+        readiness = {
+            "overall": "unknown",
+            "identity": {
+                "total": len(characters),
+                "locked": identity_locked,
+                "pending": max(0, len(characters) - identity_locked),
+                "ready": identity_locked == len(characters),
+                "label": f"{identity_locked}/{len(characters)} locked",
+            },
+            "plate_motion": {"available": False, "scanned_shots": 0},
+            "chain_qa": {"go": 0, "no_go": 0, "ready": True, "label": "—"},
+            "next_actions": [],
+        }
+
     title = project.get("project_title") or project.get("title") or "Untitled"
     return {
         "generated_at": _now_iso(),
@@ -101,15 +134,8 @@ def build_studio_dashboard() -> dict[str, Any]:
             "model_stack": model_check.get("model_stack", model_stack_summary()),
         },
         "quota": {**dash, "risk_level": risk.get("risk_level", "unknown")},
-        "production": {
-            "sequences": len(sequences),
-            "characters": len(characters),
-            "identity_locked": identity_locked,
-            "nsfw_batches": len(batches),
-            "sfw_batches": len(sfw_batches),
-            "imagine_jobs": imagine_summary["total"],
-            "reference_assets": imagine_summary["reference_assets"],
-        },
+        "production": production,
+        "readiness": readiness,
         "imagine_jobs": imagine_summary,
         "sequences": sequences[:8],
         "characters": characters[:8],

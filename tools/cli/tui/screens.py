@@ -35,7 +35,9 @@ from cli.tui.widgets import (
     format_home_error,
     format_home_hints,
     format_jobs_panel,
+    format_produce_gate_next_steps,
     format_quota_panel,
+    format_readiness_panel,
     format_sequences_panel,
     format_status_strip,
     format_studio_panel,
@@ -213,6 +215,7 @@ class HomeScreen(Screen[None]):
             yield Static("", id="home-error", classes="home-error hidden")
             yield Static("", id="status-strip", classes="home-strip sev-ok")
             yield Static("", id="panel-attention", classes="home-panel home-attention")
+            yield Static("", id="panel-readiness", classes="home-panel")
             with Horizontal(id="home-mid", classes="home-mid"):
                 yield Static("", id="panel-quota", classes="home-panel")
                 yield Static("", id="panel-studio", classes="home-panel")
@@ -262,6 +265,7 @@ class HomeScreen(Screen[None]):
             self._set_panel("status-strip", format_status_strip(snap))
             self._set_strip_severity(strip_severity(snap))
             self._set_panel("panel-attention", format_attention_panel(snap))
+            self._set_panel("panel-readiness", format_readiness_panel(snap))
             self._set_panel("panel-quota", format_quota_panel(snap))
             self._set_panel("panel-studio", format_studio_panel(snap))
             self._set_panel("panel-sequences", format_sequences_panel(snap))
@@ -278,6 +282,7 @@ class HomeScreen(Screen[None]):
             for wid in (
                 "status-strip",
                 "panel-attention",
+                "panel-readiness",
                 "panel-quota",
                 "panel-studio",
                 "panel-sequences",
@@ -645,13 +650,19 @@ class CommandOutputScreen(StudioScreen):
     def compose(self) -> ComposeResult:
         yield Header()
         code = self.result.returncode
-        status = "OK" if code == 0 and not self.result.timed_out else f"FAIL ({code})"
+        ok = code == 0 and not self.result.timed_out
+        status = "OK" if ok else f"FAIL ({code})"
         title = f"{self.label} · {status} · `{' '.join(self.argv)}`"
         body = self.result.stdout
         if self.result.stderr:
             body = (body + "\n\n--- stderr ---\n" + self.result.stderr).strip()
         if not body:
             body = "(no output)"
+        # Phase 2 produce-gate coaching after DNA / sequence / handoff steps
+        action_id = getattr(self.result, "action_id", "") or ""
+        tip = format_produce_gate_next_steps(action_id, ok=ok)
+        if tip:
+            body = f"{body}\n\n── Next ──\n{tip}"
         with VerticalScroll():
             yield Static(title, id="out-title")
             yield Static(body, id="out-body")

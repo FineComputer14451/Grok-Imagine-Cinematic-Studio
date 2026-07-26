@@ -36,6 +36,9 @@ def test_single_registry_covers_both_surfaces() -> None:
     assert "doctor_quick" in launcher and "doctor_quick" in cockpit
     assert ACTIONS["doctor_quick"].base_argv == ("doctor", "--quick")
     assert ACTIONS["doctor_quick"].group == "health"
+    assert "handoff_validate" in launcher and "handoff_validate" in cockpit
+    assert ACTIONS["handoff_validate"].base_argv == ("handoff", "validate")
+    assert ACTIONS["handoff_validate"].has_form
 
 
 def test_static_allowlist_is_fieldless_only() -> None:

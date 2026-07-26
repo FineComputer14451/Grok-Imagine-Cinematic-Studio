@@ -83,12 +83,15 @@ def strip_severity(snapshot: dict[str, Any]) -> str:
     risk = _risk_label(str(quota.get("risk_level") or "unknown"))
     _, no_go = _chain_qa_totals(snapshot)
     align, _ = _alignment_status(snapshot)
+    readiness = snapshot.get("readiness") or {}
 
     if not studio.get("models_compatible") or risk == "critical":
         return "critical"
-    if no_go > 0 or risk == "high":
+    if no_go > 0 or risk == "high" or readiness.get("overall") == "blocked":
         return "critical"
     if risk == "medium" or (align and align not in ("aligned", "idle")):
+        return "warn"
+    if readiness.get("overall") == "partial":
         return "warn"
     production = snapshot.get("production") or {}
     locked = int(production.get("identity_locked") or 0)
@@ -107,6 +110,7 @@ def collect_home_alerts(snapshot: dict[str, Any]) -> list[str]:
     studio = snapshot.get("studio") or {}
     quota = snapshot.get("quota") or {}
     production = snapshot.get("production") or {}
+    readiness = snapshot.get("readiness") or {}
 
     if not project.get("has_bible"):
         alerts.append("Production Bible not started — open Cockpit → Create Bible")
@@ -128,7 +132,10 @@ def collect_home_alerts(snapshot: dict[str, Any]) -> list[str]:
     locked = int(production.get("identity_locked") or 0)
     chars = int(production.get("characters") or 0)
     if chars and locked < chars:
-        alerts.append(f"Identity lock incomplete: {locked}/{chars} locked — Cockpit → DNA lock")
+        alerts.append(
+            f"Identity lock incomplete: {locked}/{chars} locked — "
+            "Cockpit DNA lock, then dna handoff / Web DNA 🔒"
+        )
 
     go, no_go = _chain_qa_totals(snapshot)
     if no_go > 0:
@@ -140,8 +147,12 @@ def collect_home_alerts(snapshot: dict[str, Any]) -> list[str]:
                 continue
             name = r.get("sequence_name") or r.get("slug") or "sequence"
             alerts.append(
-                f"  ↳ {name}: {r.get('no_go_count')} no-go / {r.get('go_count', 0)} go"
+                f"  ↳ {name}: fix clip → re-QA → sequence handoff (do not extend yet)"
             )
+
+    # Phase 2 readiness next_actions (deduped into attention)
+    for action in readiness.get("next_actions") or []:
+        alerts.append(str(action))
 
     # De-dupe while preserving order
     seen: set[str] = set()
@@ -150,7 +161,69 @@ def collect_home_alerts(snapshot: dict[str, Any]) -> list[str]:
         if a not in seen:
             seen.add(a)
             out.append(a)
-    return out[:8]
+    return out[:10]
+
+
+def format_readiness_panel(snapshot: dict[str, Any]) -> str:
+    """Produce/gate readiness (identity · plate/motion · chain QA)."""
+    r = snapshot.get("readiness") or {}
+    if not r:
+        return "READINESS\n  (not available — refresh snapshot)"
+    ident = r.get("identity") or {}
+    pm = r.get("plate_motion") or {}
+    cq = r.get("chain_qa") or {}
+    overall = str(r.get("overall") or "unknown").upper()
+    lines = [
+        f"READINESS  [{overall}]",
+        f"  Identity    {ident.get('label', '—')}",
+        f"  Chain QA    {cq.get('label', '—')}",
+    ]
+    if pm.get("available"):
+        lines.append(
+            f"  Plates      ok {pm.get('plate_ok', 0)} · pending {pm.get('plate_pending', 0)} "
+            f"(scanned {pm.get('scanned_shots', 0)})"
+        )
+        lines.append(
+            f"  Motion      ok {pm.get('motion_ok', 0)} · pending {pm.get('motion_pending', 0)} "
+            f"of {pm.get('video_shots', 0)} video shots"
+        )
+    else:
+        lines.append("  Plates/Motion  (no SFW batch scan)")
+    next_actions = r.get("next_actions") or []
+    if next_actions:
+        lines.append("  Next:")
+        for a in next_actions[:4]:
+            lines.append(f"    → {a}")
+    elif overall == "READY":
+        lines.append("  Next: gate clear for careful video spend")
+    return "\n".join(lines)
+
+
+def format_produce_gate_next_steps(action_id: str, *, ok: bool) -> str:
+    """Post-action coaching after DNA/sequence produce steps (Phase 2)."""
+    if not ok:
+        return ""
+    tips = {
+        "dna_lock": (
+            "Next: dna handoff → validate with `handoff validate <path>` · "
+            "then inject / plate lock before i2v"
+        ),
+        "dna_handoff": (
+            "Next: `handoff validate` the packet · Identity Lock Specialist · "
+            "lock remaining cast if multi-character"
+        ),
+        "dna_init": "Next: complete facial/core fields if empty · dna lock when ready",
+        "sequence_add_clip": (
+            "Next: chain QA on the clip · if Go, sequence handoff · if No-Go, fix then re-QA"
+        ),
+        "sequence_handoff": (
+            "Next: `handoff validate` packet · do not extend while Chain QA shows no-go"
+        ),
+        "sequence_init": "Next: add clips · lock DNA for cast · run chain QA before extend",
+        "bible_create": "Next: dna init/lock · sequence init · quota budget · models verify",
+        "handoff_validate": "If OK: safe to proceed with extend/agent-handoff under strict flags as needed",
+    }
+    return tips.get(action_id, "")
 
 
 def format_attention_panel(snapshot: dict[str, Any]) -> str:
@@ -288,7 +361,9 @@ def format_chain_qa_panel(snapshot: dict[str, Any]) -> str:
     lines = ["CHAIN QA"]
     if not rows:
         lines.append("  No sequence QA data")
+        lines.append("  Next: generate clips → run chain QA before extend")
         return "\n".join(lines)
+    any_no_go = False
     for r in rows[:8]:
         if not isinstance(r, dict):
             continue
@@ -297,9 +372,20 @@ def format_chain_qa_panel(snapshot: dict[str, Any]) -> str:
         no_go = r.get("no_go_count", 0)
         status = r.get("chain_qa_status") or "—"
         clips = r.get("clip_count", "—")
+        flag = " ⚠" if int(no_go or 0) > 0 else ""
+        if int(no_go or 0) > 0:
+            any_no_go = True
         lines.append(
-            f"  {name}  ·  go {go} / no-go {no_go}  ·  {status}  ·  clips {clips}"
+            f"  {name}  ·  go {go} / no-go {no_go}  ·  {status}  ·  clips {clips}{flag}"
         )
+    if any_no_go:
+        lines.append("  Next: fix No-Go clips → re-QA → only then sequence handoff/extend")
+    else:
+        lines.append("  Next: sequence handoff OK when Go · validate packet before stitch")
+    readiness = snapshot.get("readiness") or {}
+    for a in (readiness.get("next_actions") or [])[:2]:
+        if "QA" in a or "no-go" in a.lower() or "No-Go" in a:
+            lines.append(f"  → {a}")
     return "\n".join(lines)
 
 
@@ -343,6 +429,8 @@ def format_home_markdown(snapshot: dict[str, Any]) -> str:
         format_status_strip(snapshot),
         "",
         format_attention_panel(snapshot),
+        "",
+        format_readiness_panel(snapshot),
         "",
         format_quota_panel(snapshot),
         "",

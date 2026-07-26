@@ -116,6 +116,35 @@ def render() -> None:
             for i, line in enumerate(attention, 1):
                 st.markdown(f"{i}. {line}")
 
+    # Phase 2 readiness (J3–J5)
+    readiness = snap.get("readiness") or {}
+    st.subheader("🚦 Produce / gate readiness")
+    if readiness:
+        overall = str(readiness.get("overall") or "unknown").upper()
+        ident = readiness.get("identity") or {}
+        cq = readiness.get("chain_qa") or {}
+        pm = readiness.get("plate_motion") or {}
+        r1, r2, r3, r4 = st.columns(4)
+        r1.metric("Overall", overall)
+        r2.metric("Identity", ident.get("label", "—"))
+        r3.metric("Chain QA", cq.get("label", "—"))
+        if pm.get("available"):
+            r4.metric(
+                "Plate / motion",
+                f"{pm.get('plate_ok', 0)}ok / {pm.get('motion_ok', 0)}mv",
+            )
+        else:
+            r4.metric("Plate / motion", "n/a")
+        next_actions = readiness.get("next_actions") or []
+        if next_actions:
+            st.markdown("**Next actions**")
+            for a in next_actions[:6]:
+                st.markdown(f"- {a}")
+        elif overall == "READY":
+            st.caption("Gate clear for careful video spend (still prefer strict flags on CLI).")
+    else:
+        st.caption("Readiness rollup unavailable — refresh snapshot.")
+
     # KPI metrics
     title = project["title"]
     c1, c2, c3, c4, c5, c6 = st.columns(6)
@@ -204,8 +233,14 @@ def render() -> None:
     st.subheader("🧪 Chain QA")
     if qa_rows:
         st.dataframe(qa_rows, width="stretch", hide_index=True)
+        if any(int(r.get("No-Go") or 0) > 0 for r in qa_rows):
+            st.warning(
+                "No-Go present — fix clips and re-run chain QA before sequence handoff/extend."
+            )
+        else:
+            st.caption("All listed sequences free of no-go · validate handoff packets before stitch.")
     else:
-        st.caption("No sequence QA data yet.")
+        st.caption("No sequence QA data yet · generate clips then run chain QA before extend.")
 
     char_rows = dui.characters_table_rows(snap)
     st.subheader("🧬 Characters")

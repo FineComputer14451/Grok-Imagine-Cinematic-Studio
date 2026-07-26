@@ -30,6 +30,7 @@ def test_cockpit_order_and_ids() -> None:
         "sequence_init",
         "sequence_add_clip",
         "sequence_handoff",
+        "handoff_validate",
         "doctor_quick",
         "models_verify",
         "validate",
