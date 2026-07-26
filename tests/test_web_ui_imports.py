@@ -123,6 +123,23 @@ def test_dashboard_ui_density_helpers() -> None:
     assert dui.severity_label("critical") == "CRITICAL"
 
 
+def test_dashboard_view_modes_tui_parity() -> None:
+    from lib import dashboard_ui as dui
+
+    assert set(dui.DASHBOARD_VIEW_MODES) == {"compact", "ops", "full"}
+    assert dui.normalize_dashboard_mode("OPS") == "ops"
+    assert dui.normalize_dashboard_mode("nope") == "ops"
+    # compact: readiness yes, sequences no
+    assert dui.section_visible("compact", "readiness") is True
+    assert dui.section_visible("compact", "sequences") is False
+    # ops: chain_qa yes, characters no
+    assert dui.section_visible("ops", "chain_qa") is True
+    assert dui.section_visible("ops", "characters") is False
+    # full: everything we care about
+    assert dui.section_visible("full", "characters") is True
+    assert dui.section_visible("full", "json") is True
+
+
 if __name__ == "__main__":
     test_runtime_imports()
     test_session_helpers()

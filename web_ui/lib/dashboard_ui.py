@@ -14,6 +14,55 @@ except ImportError:  # pragma: no cover — fallback if TUI package missing
     collect_home_alerts = None  # type: ignore[assignment]
     strip_severity = None  # type: ignore[assignment]
 
+# TUI-parity density modes (compact / ops / full)
+DASHBOARD_VIEW_MODES: tuple[str, ...] = ("compact", "ops", "full")
+
+# Section keys visible per mode (always: strip, attention, kpis, footer)
+DASHBOARD_MODE_SECTIONS: dict[str, frozenset[str]] = {
+    "compact": frozenset({"health_actions", "readiness"}),
+    "ops": frozenset(
+        {
+            "health_actions",
+            "readiness",
+            "convergence",
+            "delivery",
+            "studio_quota",
+            "stack",
+            "chain_qa",
+        }
+    ),
+    "full": frozenset(
+        {
+            "health_actions",
+            "readiness",
+            "convergence",
+            "briefs",
+            "delivery",
+            "studio_quota",
+            "stack",
+            "sequences",
+            "chain_qa",
+            "characters",
+            "jobs",
+            "batches",
+            "spend",
+            "json",
+        }
+    ),
+}
+
+
+def normalize_dashboard_mode(mode: str | None) -> str:
+    m = (mode or "ops").strip().lower()
+    return m if m in DASHBOARD_VIEW_MODES else "ops"
+
+
+def section_visible(mode: str, section: str) -> bool:
+    """Whether a dashboard section is shown for the active density mode."""
+    m = normalize_dashboard_mode(mode)
+    allowed = DASHBOARD_MODE_SECTIONS.get(m, DASHBOARD_MODE_SECTIONS["ops"])
+    return section in allowed
+
 
 def attach_quota_alignment(snap: dict[str, Any]) -> dict[str, Any]:
     """Attach ledger alignment when available (same as TUI Home refresh)."""

@@ -6,6 +6,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Changed
 - **TUI Home view modes** — `1` compact / `2` ops / `3` full / Tab cycle; `p` pause auto-refresh; dual-column readiness|convergence; launcher/cockpit type-to-filter
+- **Streamlit Dashboard view modes** — compact / ops / full density (TUI 1/2/3 parity); session-persisted radio; section visibility matches control-plane Home
 
 ## [3.8.8] - 2026-07-26
 

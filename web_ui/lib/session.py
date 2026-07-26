@@ -49,6 +49,8 @@ SESSION_DEFAULTS: dict[str, Any] = {
     # Grok 4.5 operating preferences
     "reasoning_level": "high",
     "prompt_cache_key": "",
+    # Dashboard density (TUI Home 1/2/3 parity)
+    "dashboard_view_mode": "ops",
 }
 
 
