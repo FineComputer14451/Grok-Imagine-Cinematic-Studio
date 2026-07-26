@@ -38,7 +38,8 @@ def test_skill_membership_exclusive_and_covers_disk() -> None:
     for pid in PACK_IDS:
         union.extend(cfg["packs"][pid]["skills"])
     assert len(union) == len(set(union))
-    assert len(union) == 52
+    # Full suite skill count (Wave A P0 → 62)
+    assert len(union) == 62
 
 
 def test_commands_domain_mapped() -> None:
@@ -108,4 +109,5 @@ def test_index_per_plugin_not_global() -> None:
         "nsfw-chain-qa-protocol",
     }
     full = index["plugins"][FULL_PLUGIN_NAME]["components"]["skills"]
-    assert len(full) == 52
+    # Full suite skill count (Wave A P0 → 62)
+    assert len(full) == 62
