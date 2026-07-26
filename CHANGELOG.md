@@ -6,6 +6,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Changed
 - **TUI command palette** — `/` or Ctrl+P opens allowlisted action search; KPI bar under status strip; `y` saves orient brief to `artifacts/tui_orient_brief.txt`; scroll preserved on refresh
+- **TUI non-TTY fallback** — `cinematic-studio ui --print` (and bare `ui` without a TTY) prints the orient dashboard instead of hard-failing; optional `artifacts/tui_orient_brief.txt`
 
 ## [3.8.9] - 2026-07-26
 
