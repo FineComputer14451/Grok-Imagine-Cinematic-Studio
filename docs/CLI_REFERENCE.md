@@ -1,9 +1,10 @@
 # CLI Reference
-## cinematic-studio (Grok Imagine Cinematic Studio v3.8.6)
+## cinematic-studio (Grok Imagine Cinematic Studio v3.8.7)
 
 Primary entry points:
 - `cinematic-studio` (installed wrapper)
 - `python tools/cinematic_studio_cli.py`
+- `bash scripts/cinematic_studio.sh` (meta installer: install/update/verify/doctor/**grok**)
 
 ---
 
@@ -13,6 +14,29 @@ Primary entry points:
 cinematic-studio --help
 cinematic-studio <command> --help
 ```
+
+---
+
+## Grok Build CLI binary
+
+Manage the official **Grok Build** binary (min **0.2.93**). Method A install also ensures this automatically.
+
+```bash
+cinematic-studio grok status              # path + version vs min
+cinematic-studio grok ensure              # install/upgrade if below min
+cinematic-studio grok ensure --force      # refresh even when OK
+cinematic-studio grok update              # grok update --stable
+cinematic-studio grok install             # force https://x.ai/cli/install.sh
+
+# Meta installer passthrough (no wrapper required):
+bash scripts/cinematic_studio.sh grok status
+bash scripts/cinematic_studio.sh grok ensure
+```
+
+On **Android shell** (Termux / Kali NetHunter): keep `~/.grok/bin` on `PATH`.  
+**grok.com** and the **Grok mobile app cannot host this binary** — use shell for CLI; on the web use Activate / `MASTER_PROMPT.md` and **grok.com/imagine** bridge packets (`grok_com_imagine`).
+
+Env: `CINEMATIC_SKIP_GROK_CLI`, `CINEMATIC_FORCE_GROK_CLI`, `CINEMATIC_MIN_GROK_CLI`, `CINEMATIC_GROK_INSTALL_URL`.
 
 ---
 

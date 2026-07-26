@@ -76,3 +76,17 @@ def test_cli_grok_help() -> None:
     assert "ensure" in r.stdout
     assert "update" in r.stdout
     assert "install" in r.stdout
+
+
+def test_method_a_required_grok_cli_modules_exist() -> None:
+    """Method A tools_complete must ship these modules (see cinematic_studio_common.sh)."""
+    required = [
+        ROOT / "tools" / "cinematic_studio_cli.py",
+        ROOT / "tools" / "models.py",
+        ROOT / "tools" / "grok_build_cli.py",
+        ROOT / "tools" / "cli" / "models_commands.py",
+        ROOT / "tools" / "cli" / "grok_cli_commands.py",
+        ROOT / "tools" / "cli" / "wave_a_commands.py",
+    ]
+    missing = [str(p.relative_to(ROOT)) for p in required if not p.is_file()]
+    assert not missing, f"Method A required tools missing: {missing}"

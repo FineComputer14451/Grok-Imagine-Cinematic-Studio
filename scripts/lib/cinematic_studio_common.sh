@@ -182,9 +182,14 @@ cinematic_studio_copy_tools_tree() {
 }
 
 cinematic_studio_tools_complete() {
+    # Fail closed if Method A PROJECT_DIR is missing Grok Build CLI management
+    # modules (cinematic-studio grok status|ensure|update|install) or Wave A CLI.
     [[ -f "$PROJECT_DIR/tools/cinematic_studio_cli.py" \
         && -f "$PROJECT_DIR/tools/models.py" \
-        && -f "$PROJECT_DIR/tools/cli/models_commands.py" ]]
+        && -f "$PROJECT_DIR/tools/grok_build_cli.py" \
+        && -f "$PROJECT_DIR/tools/cli/models_commands.py" \
+        && -f "$PROJECT_DIR/tools/cli/grok_cli_commands.py" \
+        && -f "$PROJECT_DIR/tools/cli/wave_a_commands.py" ]]
 }
 
 cinematic_studio_resolve_payload_path() {

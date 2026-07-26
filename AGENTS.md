@@ -221,6 +221,16 @@ Document skills are typically **session / user-global** (not always in the 54-sk
 - All GitHub operations: Activate `github-repo-manager` skill first (or GitHub MCP tools when connected)
 - Discover connected / MCP services as available in the session; use schemas from tool discovery before calling
 
+### Grok Build CLI binary + grok.com surfaces
+
+- Manage the official Grok Build binary (min **0.2.93**): `cinematic-studio grok status|ensure|update|install`
+- Method A meta installer ensures the binary and ships `tools/grok_build_cli.py` + `cli/grok_cli_commands.py`
+- **Android / Termux / NetHunter / desktop shell:** `export PATH="$HOME/.grok/bin:$HOME/.local/bin:$PATH"`; Method A from a clone
+- **grok.com chat:** no binary — `Activate Grok Imagine Cinematic Studio v3.8.7` or paste `MASTER_PROMPT.md`; Method A skills in `~/.grok/skills/` support chat ecosystems (skip declutter if you need both chat Method A + plugin)
+- **grok.com/imagine:** surface `grok_com_imagine` — `imagine-execution-bridge` / `cinematic-studio imagine bridge` copy-paste packets
+- **Grok mobile chat app:** same as grok.com (Activate / Imagine only); shell for CLI
+- Meta path without wrapper: `bash scripts/cinematic_studio.sh grok ensure`
+
 ### Grok Plugins & Marketplace
 
 - Install/update the full Cinematic Studio (recommended): `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`

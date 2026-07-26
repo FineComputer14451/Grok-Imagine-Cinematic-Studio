@@ -77,6 +77,55 @@ cinematic-studio grok ensure              # install/upgrade if below min
 cinematic-studio grok ensure --force      # refresh even when version OK
 cinematic-studio grok update              # grok update --stable
 cinematic-studio grok install             # force official installer
+
+# Meta installer passthrough (curl path / before wrapper exists):
+bash scripts/cinematic_studio.sh grok status
+bash scripts/cinematic_studio.sh grok ensure
+```
+
+Method A `tools_complete` requires `tools/grok_build_cli.py` and `tools/cli/grok_cli_commands.py` so PATH `cinematic-studio grok` works after install/update (re-run Method A if the command is missing on an older PROJECT_DIR).
+
+### Surfaces: grok.com · mobile · Android/desktop shell
+
+**No binary CLI** inside the browser or Grok mobile APK. Use the shell for `grok` / `cinematic-studio`; use **activation + Imagine Bridge** on the web.
+
+| Want | **grok.com chat** | **grok.com/imagine** | Grok mobile | Android/desktop shell |
+|------|-------------------|----------------------|-------------|------------------------|
+| Multi-agent studio | ✅ Activate / MASTER_PROMPT / Method A skills | — | ✅ Activate | ✅ skills + Build TUI |
+| `cinematic-studio` / `grok` binary | ❌ | ❌ | ❌ | ✅ Method A + ensure |
+| Imagine stills/video | Plan → handoff | ✅ paste bridge packet | In-app Imagine | tools / API / bridge |
+| Meta installer | Method A installs skills chat ecosystems use | — | — | ✅ |
+
+#### grok.com setup
+
+1. **Method A on a shell** (this device or any Linux/Android shell):
+   ```bash
+   bash scripts/cinematic_studio.sh install   # skills → ~/.grok/skills + tools
+   ```
+   If you rely on **grok.com chat**, prefer **not** running `declutter --apply` (that removes Method A studio skills for plugin-only layouts).
+
+2. **New chat on [grok.com](https://grok.com):**
+   ```
+   Activate Grok Imagine Cinematic Studio v3.8.7
+   ```
+   For a full lock-in, paste `MASTER_PROMPT.md` first (repo or GitHub raw), then Activate.
+
+3. **Generate on [grok.com/imagine](https://grok.com/imagine):**
+   ```bash
+   # From shell — classic web bridge (surface: grok_com_imagine)
+   cinematic-studio imagine bridge --help
+   # or activate skill: imagine-execution-bridge / ACTIVATE IMAGINE_BRIDGE
+   ```
+   Paste the emitted prompt + `VIDEO_PIPELINE_SPEC` (+ audio block if 1.5) into Imagine.  
+   Docs: `references/agents/IMAGINE_EXECUTION_BRIDGE.md`, handoff surface `grok_com_imagine`.
+
+#### Android shell PATH
+
+```bash
+export PATH="$HOME/.grok/bin:$HOME/.local/bin:$PATH"
+bash scripts/cinematic_studio.sh install
+cinematic-studio grok ensure
+grok --version    # expect ≥ 0.2.93
 ```
 
 ---
@@ -243,8 +292,11 @@ catalog pin, skills layout, git, API key presence, and optional pytest.
 
 | Symptom | Fix |
 |---------|-----|
-| `grok: command not found` after install | Re-run Method A (auto-installs binary) or `curl -fsSL https://x.ai/cli/install.sh \| bash`; ensure `~/.grok/bin` is on PATH |
-| Grok Build CLI too old | `grok update --stable` or `CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install` |
+| `grok: command not found` after install | Re-run Method A or `cinematic-studio grok ensure` or `curl -fsSL https://x.ai/cli/install.sh \| bash`; ensure `~/.grok/bin` is on PATH |
+| Grok Build CLI too old | `cinematic-studio grok update` / `ensure --force` or `CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install` |
+| `cinematic-studio grok` unknown command | PROJECT_DIR tools incomplete — `bash scripts/cinematic_studio.sh update` from a full git clone |
+| Want CLI inside Grok mobile app or grok.com | Not supported — shell for binary; grok.com → Activate + MASTER_PROMPT + Imagine Bridge |
+| Weak results on grok.com/imagine | Build bridge packet (`imagine bridge` / Execution Bridge); include VIDEO_PIPELINE_SPEC |
 | Skills missing after Method A | Re-run `install`; reconciles gaps from GitHub `main` |
 | Nested zip from GitHub Releases | Handled automatically — do not manually flatten |
 | `models verify` fails | Ensure `~/Grok-Cinematic-Projects/tools/` exists; re-run Method A |

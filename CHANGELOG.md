@@ -9,6 +9,11 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Wave A packets (P1)** — `tools/wave_a_packets.py` builders + 8 handoff `packet_type`s; optional field checks; `validate_handoff.py --strict-wave-a`; `attach_wave_a_to_imagine()`
 - **Wave A CLI (P2)** — `cinematic-studio wave-a` (plate-motion, contact, hmu, dialogue, score, title, crop, briefs, validate, attach); `--strict-wave-a` on `sfw run` / `nsfw run` / `imagine agent-handoff`
 - **Grok Build CLI management** — `cinematic-studio grok status|ensure|update|install` (Method A already ensured the binary on install; now first-class Python CLI + `tools/grok_build_cli.py`)
+- **Multi-surface install docs** — shell CLI + **grok.com chat** + **grok.com/imagine** bridge + mobile app matrix in meta-installer skill, installation guide, AGENTS, CLI reference
+
+### Fixed
+- **Method A `tools_complete`** — require `grok_build_cli.py`, `cli/grok_cli_commands.py`, and `cli/wave_a_commands.py` so stale `~/Grok-Cinematic-Projects` is refreshed and PATH `cinematic-studio grok` works
+- **Meta installer passthrough** — `bash scripts/cinematic_studio.sh grok …` forwards to the Python CLI
 
 ## [3.8.7] - 2026-07-25
 

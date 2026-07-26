@@ -36,7 +36,18 @@ Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 
 ## 1. Getting Started
 
+### Where you run (surfaces)
+
+| Surface | What works |
+|---------|------------|
+| **[grok.com](https://grok.com) chat** | Activate phrase / paste `MASTER_PROMPT.md` — no `grok` binary |
+| **[grok.com/imagine](https://grok.com/imagine)** | Paste Execution Bridge packets (`cinematic-studio imagine bridge` from shell) |
+| **Grok mobile app** | Same as chat + in-app Imagine |
+| **Desktop / Android shell** | Full Method A + `cinematic-studio grok` + Grok Build CLI |
+
 ### Activate the Full Studio (Recommended)
+
+**On grok.com or mobile chat** — new conversation:
 
 ```
 Activate Grok Imagine Cinematic Studio v3.8.7
@@ -47,6 +58,8 @@ or
 ```
 start cinematic production
 ```
+
+For a full lock-in on the web, paste `MASTER_PROMPT.md` first, then Activate.
 
 This loads the complete **v3.8.7** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **54-skill** suite.
 

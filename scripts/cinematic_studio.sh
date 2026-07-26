@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Grok Imagine Cinematic Studio v3.8.6 — meta installer entry point
+# Grok Imagine Cinematic Studio v3.8.7 — meta installer entry point
 # https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio
 #
 # Usage:
@@ -9,6 +9,8 @@
 #   ./scripts/cinematic_studio.sh verify [--all|--plugin]
 #   ./scripts/cinematic_studio.sh declutter [--dry-run|--apply]
 #   ./scripts/cinematic_studio.sh version
+#   ./scripts/cinematic_studio.sh doctor [opts]
+#   ./scripts/cinematic_studio.sh grok status|ensure|update|install
 #
 # One-liner (curl):
 #   bash <(curl -sL https://raw.githubusercontent.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/main/scripts/cinematic_studio.sh) install
@@ -54,6 +56,7 @@ Usage:
                                      prune old ~/.grok/skills-backup-* dirs
   cinematic_studio.sh version          Print installed release version
   cinematic_studio.sh doctor [opts]    Grok Doctor via Python registry (alias: grok-doctor)
+  cinematic_studio.sh grok <cmd>       Grok Build CLI binary (status|ensure|update|install)
 
 Examples:
   ./scripts/cinematic_studio.sh install
@@ -63,6 +66,8 @@ Examples:
   ./scripts/cinematic_studio.sh declutter --apply --keep-backups 1
   ./scripts/cinematic_studio.sh doctor
   ./scripts/cinematic_studio.sh doctor --quick
+  ./scripts/cinematic_studio.sh grok status
+  ./scripts/cinematic_studio.sh grok ensure
   bash <(curl -sL $CINEMATIC_RAW_BASE/scripts/cinematic_studio.sh) install
 EOF
 }
@@ -137,6 +142,41 @@ cmd_doctor() {
     exit 1
 }
 
+cmd_grok() {
+    # Forward to Python CLI: cinematic-studio grok status|ensure|update|install
+    local cli_py=""
+    local repo_root=""
+    local py=""
+
+    if [[ -z "${CINEMATIC_REPO_ROOT:-}" && -f "${CINEMATIC_SCRIPT_DIR}/../VERSION" ]]; then
+        export CINEMATIC_REPO_ROOT="$(cd "${CINEMATIC_SCRIPT_DIR}/.." && pwd)"
+    fi
+    repo_root="${CINEMATIC_REPO_ROOT:-}"
+
+    if [[ -n "$repo_root" && -f "$repo_root/tools/cinematic_studio_cli.py" ]]; then
+        cli_py="$repo_root/tools/cinematic_studio_cli.py"
+    elif [[ -n "${PROJECT_DIR:-}" && -f "${PROJECT_DIR}/tools/cinematic_studio_cli.py" ]]; then
+        cli_py="${PROJECT_DIR}/tools/cinematic_studio_cli.py"
+    fi
+
+    if [[ -z "$cli_py" ]]; then
+        echo "❌ cinematic_studio_cli.py not found (set CINEMATIC_REPO_ROOT or run install)" >&2
+        exit 1
+    fi
+
+    if [[ -n "$repo_root" && -x "$repo_root/.venv/bin/python" ]]; then
+        py="$repo_root/.venv/bin/python"
+    elif [[ -n "${PROJECT_DIR:-}" && -x "${PROJECT_DIR}/.venv/bin/python" ]]; then
+        py="${PROJECT_DIR}/.venv/bin/python"
+    elif command -v python3 >/dev/null 2>&1; then
+        py="python3"
+    else
+        py="python"
+    fi
+
+    exec "$py" "$cli_py" grok "$@"
+}
+
 
 main() {
     local cmd="${1:-}"
@@ -149,6 +189,7 @@ main() {
         declutter) cmd_declutter "$@" ;;
         version) cmd_version "$@" ;;
         doctor|grok-doctor|grok_doctor) cmd_doctor "$@" ;;
+        grok) cmd_grok "$@" ;;
         -h|--help|help|"") usage ;;
         *)
             echo "❌ Unknown command: $cmd"
