@@ -32,13 +32,14 @@ def format_form_errors(errors: list[str]) -> str:
 
 
 def format_home_hints() -> str:
-    return "Keys: r refresh · s quota sync · l launcher · c cockpit · ? help · q quit"
+    return (
+        "Keys: r refresh · s quota sync · d doctor · v validate · "
+        "l launcher · c cockpit · ? help · q quit"
+    )
 
 
-def _chain_qa_rollup(snapshot: dict[str, Any]) -> str:
+def _chain_qa_totals(snapshot: dict[str, Any]) -> tuple[int, int]:
     rows = snapshot.get("chain_qa") or []
-    if not rows:
-        return "QA —"
     go = 0
     no_go = 0
     for r in rows:
@@ -46,11 +47,122 @@ def _chain_qa_rollup(snapshot: dict[str, Any]) -> str:
             continue
         go += int(r.get("go_count") or 0)
         no_go += int(r.get("no_go_count") or 0)
+    return go, no_go
+
+
+def _chain_qa_rollup(snapshot: dict[str, Any]) -> str:
+    rows = snapshot.get("chain_qa") or []
+    if not rows:
+        return "QA —"
+    go, no_go = _chain_qa_totals(snapshot)
     return f"QA {go} go · {no_go} no-go"
 
 
 def _risk_label(level: str) -> str:
     return (level or "unknown").strip().lower() or "unknown"
+
+
+def _alignment_status(snapshot: dict[str, Any]) -> tuple[str | None, str]:
+    if isinstance(snapshot.get("quota_alignment"), dict):
+        status = snapshot["quota_alignment"].get("status")
+        hint = str(snapshot["quota_alignment"].get("hint") or "")
+        return (str(status) if status is not None else None, hint)
+    try:
+        from quota_sync import ledger_recon_alignment
+
+        align = ledger_recon_alignment()
+        return (str(align.get("status") or "") or None, str(align.get("hint") or ""))
+    except Exception:
+        return (None, "")
+
+
+def strip_severity(snapshot: dict[str, Any]) -> str:
+    """CSS severity for status strip: ok | warn | critical."""
+    studio = snapshot.get("studio") or {}
+    quota = snapshot.get("quota") or {}
+    risk = _risk_label(str(quota.get("risk_level") or "unknown"))
+    _, no_go = _chain_qa_totals(snapshot)
+    align, _ = _alignment_status(snapshot)
+
+    if not studio.get("models_compatible") or risk == "critical":
+        return "critical"
+    if no_go > 0 or risk == "high":
+        return "critical"
+    if risk == "medium" or (align and align not in ("aligned", "idle")):
+        return "warn"
+    production = snapshot.get("production") or {}
+    locked = int(production.get("identity_locked") or 0)
+    chars = int(production.get("characters") or 0)
+    if chars and locked < chars:
+        return "warn"
+    if not (snapshot.get("project") or {}).get("has_bible"):
+        return "warn"
+    return "ok"
+
+
+def collect_home_alerts(snapshot: dict[str, Any]) -> list[str]:
+    """Actionable attention items derived only from the dashboard snapshot."""
+    alerts: list[str] = []
+    project = snapshot.get("project") or {}
+    studio = snapshot.get("studio") or {}
+    quota = snapshot.get("quota") or {}
+    production = snapshot.get("production") or {}
+
+    if not project.get("has_bible"):
+        alerts.append("Production Bible not started — open Cockpit → Create Bible")
+    if not studio.get("models_compatible"):
+        issues = studio.get("model_issues") or []
+        detail = f": {issues[0]}" if issues else ""
+        alerts.append(f"Model stack ISSUES{detail} — run Models Verify (launcher)")
+    risk = _risk_label(str(quota.get("risk_level") or "unknown"))
+    if risk in ("high", "critical"):
+        alerts.append(f"Quota risk is {risk} — review spend or raise budget")
+    elif risk == "medium":
+        alerts.append("Quota risk is medium — watch session burn")
+
+    align, align_hint = _alignment_status(snapshot)
+    if align and align not in ("aligned", "idle"):
+        hint = f" ({align_hint})" if align_hint else ""
+        alerts.append(f"Ledger alignment: {align}{hint} — press s for quota sync")
+
+    locked = int(production.get("identity_locked") or 0)
+    chars = int(production.get("characters") or 0)
+    if chars and locked < chars:
+        alerts.append(f"Identity lock incomplete: {locked}/{chars} locked — Cockpit → DNA lock")
+
+    go, no_go = _chain_qa_totals(snapshot)
+    if no_go > 0:
+        alerts.append(f"Chain QA no-go: {no_go} clip(s) across sequences (go {go})")
+        for r in (snapshot.get("chain_qa") or [])[:4]:
+            if not isinstance(r, dict):
+                continue
+            if int(r.get("no_go_count") or 0) <= 0:
+                continue
+            name = r.get("sequence_name") or r.get("slug") or "sequence"
+            alerts.append(
+                f"  ↳ {name}: {r.get('no_go_count')} no-go / {r.get('go_count', 0)} go"
+            )
+
+    # De-dupe while preserving order
+    seen: set[str] = set()
+    out: list[str] = []
+    for a in alerts:
+        if a not in seen:
+            seen.add(a)
+            out.append(a)
+    return out[:8]
+
+
+def format_attention_panel(snapshot: dict[str, Any]) -> str:
+    """Always-visible attention board (all-clear when nothing is wrong)."""
+    alerts = collect_home_alerts(snapshot)
+    lines = ["ATTENTION"]
+    if not alerts:
+        lines.append("  All clear — no blocking ops signals")
+        return "\n".join(lines)
+    for i, a in enumerate(alerts, 1):
+        lines.append(f"  {i}. {a}")
+    return "\n".join(lines)
 
 
 def format_status_strip(snapshot: dict[str, Any]) -> str:
@@ -68,10 +180,11 @@ def format_status_strip(snapshot: dict[str, Any]) -> str:
     locked = production.get("identity_locked", 0)
     chars = production.get("characters", 0)
     dna = f"DNA {locked}/{chars} locked"
+    sev = strip_severity(snapshot).upper()
 
     version = snapshot.get("studio_version", "?")
     when = snapshot.get("generated_at") or ""
-    header = f"Cinematic Studio v{version}"
+    header = f"Cinematic Studio v{version}  [{sev}]"
     if when:
         header = f"{header}  ·  {when}"
 
@@ -114,20 +227,7 @@ def format_quota_panel(snapshot: dict[str, Any]) -> str:
             f"({recon.get('entry_count', 0)} entries)"
         )
 
-    align_status = None
-    align_hint = ""
-    if isinstance(snapshot.get("quota_alignment"), dict):
-        align_status = snapshot["quota_alignment"].get("status")
-        align_hint = str(snapshot["quota_alignment"].get("hint") or "")
-    else:
-        try:
-            from quota_sync import ledger_recon_alignment
-
-            align = ledger_recon_alignment()
-            align_status = align.get("status")
-            align_hint = str(align.get("hint") or "")
-        except Exception:
-            align_status = None
+    align_status, align_hint = _alignment_status(snapshot)
     if align_status:
         lines.append(f"  Alignment   {align_status}")
         if align_status not in ("aligned", "idle") and align_hint:
@@ -241,6 +341,8 @@ def format_home_markdown(snapshot: dict[str, Any]) -> str:
     """Compat: dense multi-section plain text (also used if a single body is needed)."""
     parts = [
         format_status_strip(snapshot),
+        "",
+        format_attention_panel(snapshot),
         "",
         format_quota_panel(snapshot),
         "",

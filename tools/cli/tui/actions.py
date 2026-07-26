@@ -112,6 +112,7 @@ VALID_ASPECTS: frozenset[str] = frozenset({"16:9", "9:16", "1:1"})
 LAUNCHER_ORDER: tuple[str, ...] = (
     "status",
     "dashboard_compact",
+    "doctor_quick",
     "models_list",
     "models_verify",
     "validate",
@@ -138,6 +139,7 @@ COCKPIT_ORDER: tuple[str, ...] = (
     "sequence_init",
     "sequence_add_clip",
     "sequence_handoff",
+    "doctor_quick",
     "models_verify",
     "validate",
     "stack",
@@ -158,6 +160,15 @@ ACTIONS: dict[str, ActionSpec] = {
         description="Summary panels only",
         base_argv=("dashboard", "--compact"),
         surfaces=frozenset({"launcher"}),
+    ),
+    "doctor_quick": ActionSpec(
+        id="doctor_quick",
+        label="Grok Doctor (quick)",
+        description="Studio health check (skip long pytest/plugin verify)",
+        base_argv=("doctor", "--quick"),
+        surfaces=frozenset({"launcher", "cockpit"}),
+        needs_confirm=False,
+        group="health",
     ),
     "models_list": ActionSpec(
         id="models_list",

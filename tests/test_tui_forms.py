@@ -30,6 +30,7 @@ def test_cockpit_order_and_ids() -> None:
         "sequence_init",
         "sequence_add_clip",
         "sequence_handoff",
+        "doctor_quick",
         "models_verify",
         "validate",
         "stack",
@@ -38,6 +39,8 @@ def test_cockpit_order_and_ids() -> None:
     assert COCKPIT_WORKFLOWS["models_verify"].fields == ()
     assert COCKPIT_WORKFLOWS["models_verify"].needs_confirm is False
     assert COCKPIT_WORKFLOWS["validate"].needs_confirm is False
+    assert COCKPIT_WORKFLOWS["doctor_quick"].needs_confirm is False
+    assert COCKPIT_WORKFLOWS["doctor_quick"].fields == ()
     assert COCKPIT_WORKFLOWS["stack"].needs_confirm is False
     assert COCKPIT_WORKFLOWS["quota_sequence_estimate"].needs_confirm is False
     assert COCKPIT_WORKFLOWS["quota_sync"].fields == ()

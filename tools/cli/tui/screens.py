@@ -28,6 +28,7 @@ from cli.tui.actions import (
 )
 from cli.tui.runner import CommandResult, run_action
 from cli.tui.widgets import (
+    format_attention_panel,
     format_chain_qa_panel,
     format_characters_panel,
     format_form_errors,
@@ -38,6 +39,7 @@ from cli.tui.widgets import (
     format_sequences_panel,
     format_status_strip,
     format_studio_panel,
+    strip_severity,
 )
 
 
@@ -193,17 +195,22 @@ class HomeScreen(Screen[None]):
     BINDINGS = [
         Binding("r", "refresh", "Refresh"),
         Binding("s", "quota_sync", "Quota sync"),
+        Binding("d", "doctor", "Doctor"),
+        Binding("v", "validate", "Validate"),
         Binding("l", "launcher", "Launcher"),
         Binding("c", "cockpit", "Cockpit"),
         Binding("q", "quit_app", "Quit"),
         Binding("question_mark", "help", "Help"),
     ]
 
+    _STRIP_SEV_CLASSES = ("sev-ok", "sev-warn", "sev-critical")
+
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
         with VerticalScroll(id="home-scroll"):
             yield Static("", id="home-error", classes="home-error hidden")
-            yield Static("", id="status-strip", classes="home-strip")
+            yield Static("", id="status-strip", classes="home-strip sev-ok")
+            yield Static("", id="panel-attention", classes="home-panel home-attention")
             with Horizontal(id="home-mid", classes="home-mid"):
                 yield Static("", id="panel-quota", classes="home-panel")
                 yield Static("", id="panel-studio", classes="home-panel")
@@ -225,6 +232,18 @@ class HomeScreen(Screen[None]):
         else:
             w.remove_class("hidden")
 
+    def _set_strip_severity(self, severity: str) -> None:
+        strip = self.query_one("#status-strip", Static)
+        for cls in self._STRIP_SEV_CLASSES:
+            strip.remove_class(cls)
+        strip.add_class(f"sev-{severity}" if severity in ("ok", "warn", "critical") else "sev-ok")
+        attention = self.query_one("#panel-attention", Static)
+        for cls in self._STRIP_SEV_CLASSES:
+            attention.remove_class(cls)
+        attention.add_class(
+            f"sev-{severity}" if severity in ("ok", "warn", "critical") else "sev-ok"
+        )
+
     def action_refresh(self) -> None:
         try:
             from cli.dashboard import build_studio_dashboard
@@ -239,6 +258,8 @@ class HomeScreen(Screen[None]):
 
             self._set_panel("home-error", "", hide=True)
             self._set_panel("status-strip", format_status_strip(snap))
+            self._set_strip_severity(strip_severity(snap))
+            self._set_panel("panel-attention", format_attention_panel(snap))
             self._set_panel("panel-quota", format_quota_panel(snap))
             self._set_panel("panel-studio", format_studio_panel(snap))
             self._set_panel("panel-sequences", format_sequences_panel(snap))
@@ -254,6 +275,7 @@ class HomeScreen(Screen[None]):
             self._set_panel("home-error", format_home_error(str(exc)), hide=False)
             for wid in (
                 "status-strip",
+                "panel-attention",
                 "panel-quota",
                 "panel-studio",
                 "panel-sequences",
@@ -270,6 +292,26 @@ class HomeScreen(Screen[None]):
             "quota_sync",
             {},
             label="Quota sync",
+            dismiss_confirm_form=False,
+        )
+
+    def action_doctor(self) -> None:
+        """Quick Grok Doctor health check from home."""
+        start_action_run(
+            self.app,
+            "doctor_quick",
+            {},
+            label="Grok Doctor (quick)",
+            dismiss_confirm_form=False,
+        )
+
+    def action_validate(self) -> None:
+        """Studio validate from home."""
+        start_action_run(
+            self.app,
+            "validate",
+            {},
+            label="Studio validate",
             dismiss_confirm_form=False,
         )
 
@@ -611,6 +653,8 @@ class HelpScreen(ModalScreen[None]):
                         "",
                         "r  Refresh dashboard",
                         "s  Quota sync (cascade recon + ledger alignment)",
+                        "d  Grok Doctor (quick health)",
+                        "v  Studio validate",
                         "l  Open launcher",
                         "c  Open cockpit (Bible / DNA / Sequence scaffold / Quota / Health)",
                         "h  Pop to home",
@@ -618,9 +662,9 @@ class HelpScreen(ModalScreen[None]):
                         "?  This help",
                         "q  Quit",
                         "",
-                        "Launcher: status, lists, validate, stack, quota dashboard/sync, DNA/sequence show.",
-                        "Cockpit: scaffold writes (init/lock/add-clip/handoff) + estimates + quota sync.",
-                        "Home shows cascade + ledger alignment (doctor-parity, read-only).",
+                        "Home: status strip severity + ATTENTION board + multi panels.",
+                        "Launcher: status, doctor, lists, validate, stack, quota, DNA/sequence show.",
+                        "Cockpit: scaffold writes + estimates + doctor/health checks.",
                         "Mutating forms confirm before write. No Imagine spend / wizard in TUI.",
                         "y/n on confirm run/cancel.",
                         "CLI runs on a background worker (UI stays responsive).",

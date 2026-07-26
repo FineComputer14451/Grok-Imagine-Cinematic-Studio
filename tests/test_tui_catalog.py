@@ -35,6 +35,7 @@ def test_catalog_includes_required_commands() -> None:
     for required in (
         "status",
         "dashboard --compact",
+        "doctor --quick",
         "models list",
         "models verify",
         "quota dashboard",

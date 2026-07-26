@@ -33,6 +33,9 @@ def test_single_registry_covers_both_surfaces() -> None:
     assert ACTIONS["quota_sync"].base_argv == ("quota", "sync")
     assert ACTIONS["quota_sync"].group == "quota"
     assert not ACTIONS["quota_sync"].fields
+    assert "doctor_quick" in launcher and "doctor_quick" in cockpit
+    assert ACTIONS["doctor_quick"].base_argv == ("doctor", "--quick")
+    assert ACTIONS["doctor_quick"].group == "health"
 
 
 def test_static_allowlist_is_fieldless_only() -> None:
@@ -40,6 +43,7 @@ def test_static_allowlist_is_fieldless_only() -> None:
     assert ("status",) in allowed
     assert ("models", "verify") in allowed
     assert ("quota", "sync") in allowed
+    assert ("doctor", "--quick") in allowed
     # form actions are not static allowlist entries by argv alone
     bible = answers_to_argv(
         "bible_create",
@@ -104,6 +108,7 @@ def test_v3_static_allowlist_includes_validate_stack() -> None:
     allowed = static_allowed_argvs()
     assert ("validate",) in allowed
     assert ("stack",) in allowed
+    assert ("doctor", "--quick") in allowed
     # form-based estimate is not field-less static
     assert ("quota", "sequence") not in allowed
 

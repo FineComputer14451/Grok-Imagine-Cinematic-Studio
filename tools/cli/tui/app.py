@@ -21,6 +21,12 @@ class StudioTUI(App[None]):
         border: solid $accent;
         margin: 0 0 1 0;
     }
+    .home-strip.sev-ok { border: solid $success; color: $text; }
+    .home-strip.sev-warn { border: solid $warning; color: $warning; }
+    .home-strip.sev-critical { border: heavy $error; color: $error; text-style: bold; }
+    .home-attention.sev-ok { border: solid $success; }
+    .home-attention.sev-warn { border: solid $warning; }
+    .home-attention.sev-critical { border: heavy $error; }
     .home-mid { height: auto; margin-bottom: 1; }
     .home-panel {
         width: 1fr;
