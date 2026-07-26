@@ -101,6 +101,28 @@ def test_dashboard_uses_shared_builder() -> None:
     assert "production" in snap
 
 
+def test_dashboard_ui_density_helpers() -> None:
+    from lib import dashboard_ui as dui
+    from lib import runtime as rt
+
+    snap = dui.attach_quota_alignment(rt.build_studio_dashboard())
+    sev = dui.severity(snap)
+    assert sev in {"ok", "warn", "critical"}
+    html = dui.status_strip_html(snap, studio_version=rt.STUDIO_VERSION)
+    assert "ops-strip" in html
+    assert f"sev-{sev}" in html
+    assert "Cinematic Studio" in html
+    # Pure helpers always return lists
+    assert isinstance(dui.attention_rows(snap), list)
+    assert isinstance(dui.chain_qa_table_rows(snap), list)
+    assert isinstance(dui.sequences_table_rows(snap), list)
+    assert isinstance(dui.characters_table_rows(snap), list)
+    assert isinstance(dui.jobs_table_rows(snap), list)
+    # Sample severity labels
+    assert dui.severity_label("ok") == "OK"
+    assert dui.severity_label("critical") == "CRITICAL"
+
+
 if __name__ == "__main__":
     test_runtime_imports()
     test_session_helpers()
@@ -109,4 +131,5 @@ if __name__ == "__main__":
     test_nsfw_runtime_imports()
     test_imagine_runtime_imports()
     test_dashboard_uses_shared_builder()
+    test_dashboard_ui_density_helpers()
     print("All smoke tests passed")

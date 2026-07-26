@@ -20,7 +20,7 @@ AGENTS_DIR = ROOT / "references" / "agents"
 ROLE_CARD_PREVIEW_CHARS = 4000
 MIN_GROK_BUILD_CLI = "0.2.93"
 DOCS_MODELS = "references/MODELS.md"
-DOCS_MODEL_LAYER = "references/agents/MODEL_LAYER_v3.7.1.md"
+DOCS_MODEL_LAYER = "references/agents/MODEL_LAYER_v4.5.md"
 
 try:
     from cli.production import build_activation_prompt, build_production_bible, production_context

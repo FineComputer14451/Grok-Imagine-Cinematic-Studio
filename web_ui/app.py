@@ -29,6 +29,22 @@ with st.sidebar:
         f"{rt.core_agent_count()}-agent production · DNA · Sequences · Quota · Grok **4.5**"
     )
     rt.render_sidebar_stack()
+    # Compact ops severity (same signals as Dashboard / TUI Home)
+    if rt.DASHBOARD_AVAILABLE:
+        try:
+            from lib import dashboard_ui as dui
+
+            _snap = dui.attach_quota_alignment(rt.build_studio_dashboard())
+            _sev = dui.severity(_snap)
+            _n = len(dui.attention_rows(_snap))
+            if _sev == "ok":
+                st.caption(f"Ops: **OK** · no attention items")
+            elif _sev == "warn":
+                st.warning(f"Ops **WARN** · {_n} attention item(s)", icon="⚠️")
+            else:
+                st.error(f"Ops **CRITICAL** · {_n} attention item(s)", icon="🚨")
+        except Exception:
+            pass
 
 pages = [
     st.Page(dashboard.render, title="Dashboard", icon="📊", url_path="dashboard", default=True),

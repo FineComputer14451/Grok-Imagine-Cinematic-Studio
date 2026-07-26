@@ -1,9 +1,10 @@
-"""Project dashboard — shared snapshot from CLI dashboard builder (Grok 4.5)."""
+"""Project dashboard — dense ops board shared with CLI TUI signals (Grok 4.5)."""
 
 from __future__ import annotations
 
 import streamlit as st
 
+from lib import dashboard_ui as dui
 from lib import runtime as rt
 
 
@@ -26,21 +27,49 @@ def render() -> None:
         st.error("Dashboard module unavailable in this environment.")
         return
 
-    snap = rt.build_studio_dashboard()
+    top_l, top_r = st.columns([3, 1])
+    with top_r:
+        if st.button("↻ Refresh snapshot", use_container_width=True):
+            st.cache_data.clear()
+            st.rerun()
+
+    snap = dui.attach_quota_alignment(rt.build_studio_dashboard())
     project = snap["project"]
     studio = snap["studio"]
     quota = snap["quota"]
     prod = snap["production"]
+    sev = dui.severity(snap)
 
+    # Status strip (TUI-parity)
+    st.markdown(
+        dui.status_strip_html(snap, studio_version=rt.STUDIO_VERSION),
+        unsafe_allow_html=True,
+    )
+
+    # Attention board
+    attention = dui.attention_rows(snap)
+    st.subheader("⚡ Attention")
+    if not attention:
+        st.success("All clear — no blocking ops signals.")
+    else:
+        box = st.container(border=True)
+        with box:
+            if sev == "critical":
+                st.error(f"**{len(attention)}** item(s) need attention")
+            elif sev == "warn":
+                st.warning(f"**{len(attention)}** item(s) to review")
+            for i, line in enumerate(attention, 1):
+                st.markdown(f"{i}. {line}")
+
+    # KPI metrics
     title = project["title"]
-    st.caption(f"Updated {snap['generated_at']}")
-
-    c1, c2, c3, c4, c5 = st.columns(5)
-    c1.metric("Project", title[:24] + ("…" if len(title) > 24 else ""))
+    c1, c2, c3, c4, c5, c6 = st.columns(6)
+    c1.metric("Project", title[:20] + ("…" if len(title) > 20 else ""))
     c2.metric("Sequences", prod["sequences"])
-    c3.metric("DNA Profiles", prod["characters"])
-    c4.metric("Identity Locked", prod["identity_locked"])
-    c5.metric("NSFW Batches", prod["nsfw_batches"])
+    c3.metric("DNA", prod["characters"])
+    c4.metric("Locked", prod["identity_locked"])
+    c5.metric("Risk", str(quota.get("risk_level", "—")).title())
+    c6.metric("Severity", dui.severity_label(sev))
 
     col_l, col_r = st.columns(2)
     with col_l:
@@ -49,30 +78,49 @@ def render() -> None:
             f"- **Agents:** {studio['core_agents']} core · {studio['total_agents']} total\n"
             f"- **Role Cards:** {studio['role_cards']}/{studio['role_cards_expected']}\n"
             f"- **Skills:** {studio['skills']}\n"
-            f"- **Models:** {'✅ compatible' if studio['models_compatible'] else '❌ issues'}"
+            f"- **Models:** {'✅ compatible' if studio['models_compatible'] else '❌ issues'}\n"
+            f"- **Bible:** {'loaded' if project.get('has_bible') else 'not started'}\n"
+            f"- **SFW / NSFW batches:** {prod.get('sfw_batches', 0)} / {prod.get('nsfw_batches', 0)}\n"
+            f"- **Imagine jobs:** {prod.get('imagine_jobs', 0)}"
         )
         if not studio["models_compatible"]:
             for issue in studio.get("model_issues", []):
-                st.markdown(f"- {issue}")
+                st.markdown(f"- ⚠️ {issue}")
         if rt.MODELS_AVAILABLE:
             vr = rt.cached_models_verify()
-            if vr.get("ok"):
+            if vr.get("ok") or vr.get("compatible"):
                 st.caption("Live `models verify`: OK (Grok 4.5 stack)")
             else:
                 for issue in vr.get("issues") or []:
                     st.caption(f"verify: {issue}")
     with col_r:
         st.subheader("💰 Quota")
+        remaining = quota.get("budget_remaining")
+        remaining_s = f"{remaining} credits" if remaining is not None else "—"
         st.markdown(
             f"- **Tier:** {quota.get('tier_label', quota.get('tier', '—'))}\n"
             f"- **Session Spent:** {quota.get('session_spent', 0)} credits\n"
             f"- **Generations:** {quota.get('session_generations', 0)}\n"
-            f"- **Risk:** {quota.get('risk_level', 'unknown').title()}"
+            f"- **Budget Left:** {remaining_s}\n"
+            f"- **Risk:** {str(quota.get('risk_level', 'unknown')).title()}"
         )
-        if quota.get("budget_remaining") is not None:
-            st.markdown(f"- **Budget Left:** {quota['budget_remaining']} credits")
         if quota.get("daily_soft_cap"):
             st.markdown(f"- **Daily Soft Cap:** {quota['daily_soft_cap']} credits")
+        recon = quota.get("reconciliation") or {}
+        cascade = recon.get("cascade_source")
+        if cascade and cascade != "none":
+            st.markdown(
+                f"- **Cascade:** `{cascade}` · burn {recon.get('burn_rate_multiplier', 1.0)}x\n"
+                f"- **Recon:** est {recon.get('estimated_total', 0)} / "
+                f"act {recon.get('actual_total', 0)} "
+                f"({recon.get('entry_count', 0)} entries)"
+            )
+        align = snap.get("quota_alignment") or {}
+        if align.get("status"):
+            st.markdown(f"- **Ledger alignment:** **{align['status']}**")
+            if align.get("hint") and align["status"] not in ("aligned", "idle"):
+                st.caption(align["hint"])
+        st.caption("CLI: `cinematic-studio quota sync` · TUI Home: **s**")
 
     st.subheader("🤖 Session Model Stack (Grok 4.5)")
     stack = rt.session_model_stack()
@@ -89,35 +137,34 @@ def render() -> None:
                 language=None,
             )
 
-    if snap["sequences"]:
-        st.subheader("🎞 Sequences")
-        st.dataframe(
-            [
-                {
-                    "Name": s["name"],
-                    "Clips": s["clips"],
-                    "Target": f"{s['target_duration']}s",
-                    "Health": str(s.get("health") or "—"),
-                    "Chain QA": s.get("chain_qa_status", "pending"),
-                }
-                for s in snap["sequences"]
-            ],
-            width="stretch",
-            hide_index=True,
-        )
+    # Sequences (structure) + Chain QA (dedicated) — TUI-parity split
+    seq_rows = dui.sequences_table_rows(snap)
+    st.subheader("🎞 Sequences")
+    if seq_rows:
+        st.dataframe(seq_rows, width="stretch", hide_index=True)
+    else:
+        st.caption("No sequences yet — create one under Sequences or CLI cockpit.")
 
-    if snap["characters"]:
-        st.subheader("🧬 Characters")
-        st.dataframe(
-            [
-                {"Name": c["name"], "Slug": c["slug"], "Lock": c.get("status", "pending")}
-                for c in snap["characters"]
-            ],
-            width="stretch",
-            hide_index=True,
-        )
+    qa_rows = dui.chain_qa_table_rows(snap)
+    st.subheader("🧪 Chain QA")
+    if qa_rows:
+        st.dataframe(qa_rows, width="stretch", hide_index=True)
+    else:
+        st.caption("No sequence QA data yet.")
 
-    if snap["nsfw_batches"]:
+    char_rows = dui.characters_table_rows(snap)
+    st.subheader("🧬 Characters")
+    if char_rows:
+        st.dataframe(char_rows, width="stretch", hide_index=True)
+    else:
+        st.caption("No DNA profiles yet.")
+
+    job_rows = dui.jobs_table_rows(snap)
+    if job_rows:
+        st.subheader("✨ Recent Imagine jobs")
+        st.dataframe(job_rows, width="stretch", hide_index=True)
+
+    if snap.get("nsfw_batches"):
         st.subheader("🔞 NSFW Batches")
         st.dataframe(
             [
@@ -132,6 +179,21 @@ def render() -> None:
             hide_index=True,
         )
 
+    if snap.get("sfw_batches"):
+        with st.expander("SFW batches", expanded=False):
+            st.dataframe(
+                [
+                    {
+                        "ID": b.get("batch_id") or b.get("slug") or "?",
+                        "Title": b.get("title", ""),
+                        "Status": b.get("status", "—"),
+                    }
+                    for b in snap["sfw_batches"]
+                ],
+                width="stretch",
+                hide_index=True,
+            )
+
     if quota.get("recent_history"):
         with st.expander("Recent spend", expanded=False):
             st.dataframe(quota["recent_history"], width="stretch", hide_index=True)
@@ -141,5 +203,6 @@ def render() -> None:
 
     st.info(
         f"Activate in Grok: `{rt.ACTIVATION_PHRASE}` · "
-        "Prefer still → i2v on locked plates · video **1.0** cost default unless native audio needs **1.5**."
+        "Prefer still → i2v on locked plates · video **1.0** cost default unless native audio needs **1.5**. · "
+        "Terminal twin: `cinematic-studio ui`"
     )
