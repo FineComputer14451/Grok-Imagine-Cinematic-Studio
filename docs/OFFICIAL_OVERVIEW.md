@@ -3,6 +3,9 @@
 
 **The most advanced multi-agent cinematic production system for Grok 4.5 + Grok Imagine Video 1.5 Native**
 
+> [!NOTE]
+> **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. “Official Overview” here means the project’s own product overview — not an xAI-published document. Full notice: [DISCLAIMER.md](../DISCLAIMER.md).
+
 ---
 
 ## What It Is
@@ -87,4 +90,4 @@ start cinematic production
 
 **Built for creators who want cinematic AI that feels directed, not just generated.**
 
-*Grok Imagine Cinematic Studio v3.8.6 — July 2026*
+*Grok Imagine Cinematic Studio v3.8.6 — July 2026 · Independent community project · Not affiliated with xAI · [DISCLAIMER.md](../DISCLAIMER.md)*

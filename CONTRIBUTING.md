@@ -3,6 +3,9 @@
 Thank you for your interest in contributing to **Grok Imagine Cinematic Studio**!  
 We’re building the most advanced multi-agent cinematic production system for **Grok Build 0.2.93+**, **Grok 4.5** (cinematic + coding default), optional **Grok 4.3** (1M), and **Grok Imagine Video 1.0/1.5** — every contribution helps push the boundaries of AI-generated cinema.
 
+> [!NOTE]
+> This is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Contributions, issues, and docs must not claim official xAI partnership. See [DISCLAIMER.md](DISCLAIMER.md).
+
 ## 🌟 Ways to Contribute
 
 ### 1. Suggest New Specialist Agents

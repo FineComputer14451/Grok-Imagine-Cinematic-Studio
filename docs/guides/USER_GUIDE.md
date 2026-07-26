@@ -3,6 +3,9 @@
 
 Complete end-to-end guide for creators.
 
+> [!NOTE]
+> **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
+
 ---
 
 ## 1. Activation

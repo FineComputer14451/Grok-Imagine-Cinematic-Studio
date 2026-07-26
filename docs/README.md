@@ -1,7 +1,10 @@
 # Documentation
 ## Grok Imagine Cinematic Studio v3.8.7
 
-Official documentation index.
+Project documentation index (community-maintained).
+
+> [!NOTE]
+> **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Full notice: [DISCLAIMER.md](../DISCLAIMER.md).
 
 ---
 
@@ -10,6 +13,7 @@ Official documentation index.
 | Document | Description |
 |----------|-------------|
 | **[Official Overview](OFFICIAL_OVERVIEW.md)** | High-level introduction and capabilities |
+| **[Disclaimer](../DISCLAIMER.md)** | Independence notice — not affiliated with xAI |
 | **[User Guide](guides/USER_GUIDE.md)** | Complete end-to-end production workflow |
 | **[Architecture](ARCHITECTURE.md)** | System design, layers, protocols |
 | **[CLI Reference](CLI_REFERENCE.md)** | Full command reference |

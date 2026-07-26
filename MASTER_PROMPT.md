@@ -6,6 +6,9 @@
 **Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
 **Key Improvements:** Unified Grok 4.5 cinematic+Build default (optional Grok 4.3 1M), Grok Build ≥ 0.2.93, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
 
+> [!NOTE]
+> **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Grok, Grok Build, Grok Imagine, and related marks are trademarks of their respective owners. Full notice: `DISCLAIMER.md` in the project repository.
+
 ---
 
 ## ✨ Current State (July 2026 — v3.8.9)

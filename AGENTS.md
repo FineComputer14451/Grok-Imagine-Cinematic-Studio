@@ -5,6 +5,9 @@
 **Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.8.9**, unified **Grok 4.5** registry defaults + **v9-4p5 / grok-4-auto** specialist Model Layer, optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, Identity Continuity Protocol, Parallel Brief Protocol, interactive CLI TUI, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
 **Canonical Source:** https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/AGENTS.md
 
+> [!NOTE]
+> **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Agents must not claim official xAI partnership. Full notice: `DISCLAIMER.md`.
+
 Think of this as the single source of truth for how to interact with this Grok/xAI agent environment. Paths below are **repo-relative** unless noted; sandboxes may root at `/home/workdir/` or a local clone (e.g. `~/Grok-Imagine-Cinematic-Studio`).
 
 **Version legend (read once):**

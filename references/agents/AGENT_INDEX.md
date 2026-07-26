@@ -1,5 +1,8 @@
 # Grok Imagine Cinematic Studio — Agent Index
 
+> [!NOTE]
+> Independent community project — **not affiliated with or endorsed by xAI**. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
+
 **Enhanced for:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` + **Imagine Video 1.0 & 1.5 Native**  
 **Version:** 3.8.9 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.8.9 · Full v4.5 dual-model wave  
 **Date:** 2026-07-25  

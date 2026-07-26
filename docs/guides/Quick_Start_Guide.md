@@ -3,6 +3,9 @@
 **Version:** 3.8.9 | **Last Updated:** July 23, 2026  
 **Suite:** 25 Role-Card core agents · **54 skills** · marketplace full suite + 5 packs
 
+> [!NOTE]
+> **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Grok / Imagine access, quotas, and billing remain solely with your xAI (or host) account. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
+
 ---
 
 ## 0. Model Stack (Unified Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine)

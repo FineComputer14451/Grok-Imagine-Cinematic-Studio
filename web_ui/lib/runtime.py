@@ -390,3 +390,7 @@ def render_footer() -> None:
         f"`{DOCS_MODEL_LAYER}` · `{DOCS_MODELS}` · "
         f"Install: `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`"
     )
+    st.caption(
+        "Independent community project — **not affiliated with or endorsed by xAI**. "
+        "See repository `DISCLAIMER.md`."
+    )

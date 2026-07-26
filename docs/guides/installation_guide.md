@@ -2,6 +2,9 @@
 
 Two supported install paths. Both can ship the same **54 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
 
+> [!NOTE]
+> **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Installing this suite installs community skills and tooling only — it does not provision xAI models or API access. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
+
 ## Choose Your Install Method
 
 | | **Method A — Meta installer / zip** | **Method B — Grok plugin** |

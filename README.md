@@ -20,6 +20,9 @@
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/stargazers"><img src="https://img.shields.io/github/stars/FineComputer14451/Grok-Imagine-Cinematic-Studio?style=social" alt="GitHub Stars"></a>
 </p>
 
+> [!NOTE]
+> **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to [xAI](https://x.ai)**. Grok, Grok Build, Grok Imagine, and related marks are trademarks of their respective owners. Full notice: **[DISCLAIMER.md](DISCLAIMER.md)**.
+
 ---
 
 ## ✨ What is Grok Imagine Cinematic Studio?
@@ -369,7 +372,26 @@ For major architectural changes, open an issue first to discuss alignment with t
 
 ---
 
-## ⚖️ License
+## ⚖️ Disclaimer & independence
+
+> [!NOTE]
+> **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**.
+
+**Summary (expanded):**
+
+| Topic | What it means |
+|-------|----------------|
+| **Independence** | Community-maintained orchestration suite (skills, agents, CLI, Web UI). Not an official xAI product. |
+| **Trademarks** | “Grok,” “Grok Build,” “Grok Imagine,” “xAI,” and related names are used only to describe interoperability with third-party platforms. |
+| **APIs & billing** | Keys, quotas, pricing, and access terms are solely between you and xAI (or your host platform). This project does not sell or guarantee API access. |
+| **No warranty** | MIT **as is** — see [LICENSE](LICENSE). Outputs need your own QA before delivery. |
+| **Your responsibility** | Laws, platform policies, copyright of references, age restrictions, and optional NSFW workflows. |
+
+Canonical full text: **[DISCLAIMER.md](DISCLAIMER.md)**.
+
+---
+
+## 📜 License
 
 This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
 
@@ -377,7 +399,7 @@ This project is licensed under the **MIT License** — see [LICENSE](LICENSE) fo
 
 <p align="center">
   <strong>Built for creators who want cinematic AI that feels directed, not just generated.</strong><br>
-  <em>Grok Imagine Cinematic Studio v3.8.9 — July 2026</em>
+  <em>Grok Imagine Cinematic Studio v3.8.9 — July 2026 · Independent community project · Not affiliated with xAI</em>
 </p>
 
 ---

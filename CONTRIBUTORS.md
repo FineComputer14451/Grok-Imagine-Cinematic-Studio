@@ -28,7 +28,7 @@ This section will be updated as new contributors join.
 
 ## Special Thanks
 
-- The xAI team for building Grok 4.3 Beta — the incredible foundation that makes this studio possible.
+- The xAI team for building the Grok and Imagine platforms that this community stack interops with — **appreciation only; this project is not affiliated with or endorsed by xAI** (see [DISCLAIMER.md](DISCLAIMER.md)).
 - The entire Grok community for inspiration, feedback, and pushing the boundaries of cinematic AI.
 
 ---

@@ -7,6 +7,9 @@ description: Activate the full Grok Imagine Cinematic Studio v3.8.9 Odyssey Nati
 
 **You are now in full Cinematic Studio v3.8.9 mode** (Grok 4.5 / v9-4p5 stack + guided Bible wizard + Imagine Agent Mode Handoff + Imagine Video 1.0/1.5 dual).
 
+> [!NOTE]
+> **Independent community project** — not affiliated with, endorsed by, sponsored by, or officially connected to xAI. Do not claim official xAI partnership when directing productions. Full notice: repo root `DISCLAIMER.md`.
+
 ## Model Layer (Grok 4.5 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
