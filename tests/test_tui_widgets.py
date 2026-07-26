@@ -226,13 +226,25 @@ def test_format_jobs_panel_rows() -> None:
 
 
 def test_format_home_hints() -> None:
-    hints = format_home_hints()
-    assert "quota sync" in hints
+    from cli.tui.widgets import HOME_MODE_PANELS, HOME_VIEW_MODES, next_home_mode
+
+    hints = format_home_hints(mode="ops", paused=False)
+    assert "View [ops]" in hints
+    assert "live" in hints
     assert "launcher" in hints
     assert "doctor" in hints
     assert "validate" in hints
     assert "models" in hints
     assert "stack" in hints
+    paused = format_home_hints(mode="compact", paused=True)
+    assert "View [compact]" in paused
+    assert "paused" in paused
+    assert set(HOME_VIEW_MODES) == {"compact", "ops", "full"}
+    assert "panel-readiness" in HOME_MODE_PANELS["compact"]
+    assert "panel-delivery" in HOME_MODE_PANELS["ops"]
+    assert "panel-characters" in HOME_MODE_PANELS["full"]
+    assert next_home_mode("compact") == "ops"
+    assert next_home_mode("full") == "compact"
 
 
 def test_strip_severity_and_attention() -> None:
@@ -282,7 +294,7 @@ def test_format_home_markdown_from_live_snapshot() -> None:
     assert "Studio" in text or snap["studio_version"] in text
     assert snap["project"]["title"] in text or "Untitled" in text or "Project" in text
     assert "QUOTA" in text or "Quota" in text
-    assert "quota sync" in text.lower() or "Keys:" in text
+    assert "s quota" in text.lower() or "quota sync" in text.lower() or "View [" in text
     assert "CHAIN QA" in text
 
 
@@ -290,7 +302,7 @@ def test_format_home_markdown_shows_alignment() -> None:
     text = format_home_markdown(_sample_snap())
     assert "generation_ledger" in text
     assert "aligned" in text
-    assert "quota sync" in text
+    assert "s quota" in text or "quota sync" in text
 
 
 def test_format_error_panel() -> None:

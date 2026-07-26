@@ -31,11 +31,61 @@ def format_form_errors(errors: list[str]) -> str:
     return "\n".join(lines)
 
 
-def format_home_hints() -> str:
+# Home density modes (v3.8.8+ UX polish)
+HOME_VIEW_MODES: tuple[str, ...] = ("compact", "ops", "full")
+
+# Panels visible per mode (ids without #). strip/attention/hints always on.
+HOME_MODE_PANELS: dict[str, frozenset[str]] = {
+    "compact": frozenset(
+        {
+            "panel-readiness",
+        }
+    ),
+    "ops": frozenset(
+        {
+            "panel-readiness",
+            "panel-convergence",
+            "panel-delivery",
+            "panel-quota",
+            "panel-studio",
+            "panel-chain-qa",
+        }
+    ),
+    "full": frozenset(
+        {
+            "panel-readiness",
+            "panel-convergence",
+            "panel-briefs",
+            "panel-delivery",
+            "panel-quota",
+            "panel-studio",
+            "panel-sequences",
+            "panel-chain-qa",
+            "panel-characters",
+            "panel-jobs",
+        }
+    ),
+}
+
+
+def format_home_hints(*, mode: str = "ops", paused: bool = False) -> str:
+    mode = mode if mode in HOME_VIEW_MODES else "ops"
+    pause = "paused" if paused else "live"
     return (
-        "Keys: r refresh · s quota sync · d doctor · v validate · "
+        f"View [{mode}] · refresh {pause} · "
+        "1 compact · 2 ops · 3 full · p pause · "
+        "r refresh · s quota · d doctor · v validate · "
         "m models · k stack · l launcher · c cockpit · ? help · q quit"
     )
+
+
+def next_home_mode(current: str) -> str:
+    modes = HOME_VIEW_MODES
+    try:
+        i = modes.index(current)
+    except ValueError:
+        return "ops"
+    return modes[(i + 1) % len(modes)]
 
 
 def _chain_qa_totals(snapshot: dict[str, Any]) -> tuple[int, int]:

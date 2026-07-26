@@ -28,6 +28,8 @@ from cli.tui.actions import (
 )
 from cli.tui.runner import CommandResult, run_action
 from cli.tui.widgets import (
+    HOME_MODE_PANELS,
+    HOME_VIEW_MODES,
     format_attention_panel,
     format_chain_qa_panel,
     format_characters_panel,
@@ -44,6 +46,7 @@ from cli.tui.widgets import (
     format_sequences_panel,
     format_status_strip,
     format_studio_panel,
+    next_home_mode,
     strip_severity,
 )
 
@@ -206,11 +209,38 @@ class HomeScreen(Screen[None]):
         Binding("k", "stack", "Stack"),
         Binding("l", "launcher", "Launcher"),
         Binding("c", "cockpit", "Cockpit"),
+        Binding("1", "view_compact", "Compact"),
+        Binding("2", "view_ops", "Ops"),
+        Binding("3", "view_full", "Full"),
+        Binding("tab", "view_cycle", "Cycle view"),
+        Binding("p", "toggle_pause", "Pause"),
         Binding("q", "quit_app", "Quit"),
         Binding("question_mark", "help", "Help"),
     ]
 
     _STRIP_SEV_CLASSES = ("sev-ok", "sev-warn", "sev-critical")
+    _ALL_PANELS = (
+        "panel-readiness",
+        "panel-convergence",
+        "panel-briefs",
+        "panel-delivery",
+        "panel-quota",
+        "panel-studio",
+        "panel-sequences",
+        "panel-chain-qa",
+        "panel-characters",
+        "panel-jobs",
+        "home-mid",
+        "home-row-gate",
+    )
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.view_mode: str = "ops"
+        self.auto_refresh_paused: bool = False
+        self._last_snap: dict | None = None
+        self._jobs_available: bool = False
+        self._briefs_available: bool = False
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -218,8 +248,9 @@ class HomeScreen(Screen[None]):
             yield Static("", id="home-error", classes="home-error hidden")
             yield Static("", id="status-strip", classes="home-strip sev-ok")
             yield Static("", id="panel-attention", classes="home-panel home-attention")
-            yield Static("", id="panel-readiness", classes="home-panel")
-            yield Static("", id="panel-convergence", classes="home-panel")
+            with Horizontal(id="home-row-gate", classes="home-row"):
+                yield Static("", id="panel-readiness", classes="home-panel")
+                yield Static("", id="panel-convergence", classes="home-panel")
             yield Static("", id="panel-briefs", classes="home-panel")
             yield Static("", id="panel-delivery", classes="home-panel")
             with Horizontal(id="home-mid", classes="home-mid"):
@@ -229,7 +260,11 @@ class HomeScreen(Screen[None]):
             yield Static("", id="panel-chain-qa", classes="home-panel")
             yield Static("", id="panel-characters", classes="home-panel")
             yield Static("", id="panel-jobs", classes="home-panel hidden")
-            yield Static(format_home_hints(), id="home-hints", classes="home-hints")
+            yield Static(
+                format_home_hints(mode="ops", paused=False),
+                id="home-hints",
+                classes="home-hints",
+            )
         yield Footer()
 
     def on_mount(self) -> None:
@@ -255,6 +290,75 @@ class HomeScreen(Screen[None]):
             f"sev-{severity}" if severity in ("ok", "warn", "critical") else "sev-ok"
         )
 
+    def _apply_view_mode(self) -> None:
+        """Show/hide panels based on view_mode + empty content flags."""
+        mode = self.view_mode if self.view_mode in HOME_VIEW_MODES else "ops"
+        allowed = set(HOME_MODE_PANELS.get(mode, HOME_MODE_PANELS["ops"]))
+        # Row containers: show if either child is allowed
+        if "panel-quota" in allowed or "panel-studio" in allowed:
+            allowed.add("home-mid")
+        if "panel-readiness" in allowed or "panel-convergence" in allowed:
+            allowed.add("home-row-gate")
+        # Collapse empty optional panels even in full mode
+        if not self._jobs_available:
+            allowed.discard("panel-jobs")
+        if not self._briefs_available and mode != "full":
+            allowed.discard("panel-briefs")
+        if mode == "full" and not self._briefs_available:
+            # keep briefs visible with empty state in full mode
+            allowed.add("panel-briefs")
+
+        for wid in self._ALL_PANELS:
+            try:
+                w = self.query_one(f"#{wid}")
+            except Exception:
+                continue
+            if wid in allowed:
+                w.remove_class("hidden")
+            else:
+                w.add_class("hidden")
+
+        # Individual children of mid/gate still need hide if not allowed
+        for child in ("panel-quota", "panel-studio", "panel-readiness", "panel-convergence"):
+            try:
+                w = self.query_one(f"#{child}")
+            except Exception:
+                continue
+            if child in allowed:
+                w.remove_class("hidden")
+            else:
+                w.add_class("hidden")
+
+        self._set_panel(
+            "home-hints",
+            format_home_hints(mode=mode, paused=self.auto_refresh_paused),
+        )
+        pause = " · paused" if self.auto_refresh_paused else ""
+        try:
+            self.app.sub_title = f"Home [{mode}]{pause} · Launcher · Cockpit"
+        except Exception:
+            pass
+
+    def action_view_compact(self) -> None:
+        self.view_mode = "compact"
+        self._apply_view_mode()
+
+    def action_view_ops(self) -> None:
+        self.view_mode = "ops"
+        self._apply_view_mode()
+
+    def action_view_full(self) -> None:
+        self.view_mode = "full"
+        self._apply_view_mode()
+
+    def action_view_cycle(self) -> None:
+        self.view_mode = next_home_mode(self.view_mode)
+        self._apply_view_mode()
+
+    def action_toggle_pause(self) -> None:
+        self.auto_refresh_paused = not self.auto_refresh_paused
+        self._apply_view_mode()
+
     def action_refresh(self) -> None:
         try:
             from cli.dashboard import build_studio_dashboard
@@ -266,6 +370,12 @@ class HomeScreen(Screen[None]):
                 snap["quota_alignment"] = ledger_recon_alignment()
             except Exception:
                 pass
+
+            self._last_snap = snap
+            pb = snap.get("parallel_briefs") or {}
+            self._briefs_available = int(pb.get("count") or 0) > 0 or bool(pb.get("logs"))
+            jobs = format_jobs_panel(snap)
+            self._jobs_available = jobs is not None
 
             self._set_panel("home-error", "", hide=True)
             self._set_panel("status-strip", format_status_strip(snap))
@@ -280,12 +390,11 @@ class HomeScreen(Screen[None]):
             self._set_panel("panel-sequences", format_sequences_panel(snap))
             self._set_panel("panel-chain-qa", format_chain_qa_panel(snap))
             self._set_panel("panel-characters", format_characters_panel(snap))
-            jobs = format_jobs_panel(snap)
             if jobs:
                 self._set_panel("panel-jobs", jobs, hide=False)
             else:
                 self._set_panel("panel-jobs", "", hide=True)
-            self._set_panel("home-hints", format_home_hints())
+            self._apply_view_mode()
         except Exception as exc:  # noqa: BLE001 — surface any snapshot failure
             self._set_panel("home-error", format_home_error(str(exc)), hide=False)
             for wid in (
@@ -368,20 +477,50 @@ class HomeScreen(Screen[None]):
 
 
 class ActionListScreen(StudioScreen):
-    """Pick an action from a surface (launcher or cockpit)."""
+    """Pick an action from a surface (launcher or cockpit), with type-to-filter."""
 
     surface: str = "launcher"
     list_id: str = "action-list"
     hint_id: str = "list-hint"
     hint_text: str = ""
 
+    def __init__(self) -> None:
+        super().__init__()
+        self._filter: str = ""
+
     def compose(self) -> ComposeResult:
         yield Header()
         yield Label(self.hint_text, id=self.hint_id)
+        yield Input(
+            placeholder="Filter actions… (type to narrow list)",
+            id="filter-input",
+        )
+        yield ListView(*self._build_items(""), id=self.list_id)
+        yield Footer()
+
+    def on_mount(self) -> None:
+        try:
+            self.query_one("#filter-input", Input).focus()
+        except Exception:
+            pass
+
+    def _subtitle(self, spec: ActionSpec) -> str:
+        if spec.has_form:
+            return spec.description
+        return " ".join(spec.base_argv)
+
+    def _build_items(self, query: str) -> list[ListItem]:
+        q = (query or "").strip().lower()
         items: list[ListItem] = []
         for kind, payload in menu_rows(self.surface):
             if kind == "group":
                 assert isinstance(payload, str)
+                # Always show group headers when any following actions match;
+                # if filtering, only show groups that have at least one match later.
+                if q:
+                    # defer group until we know a match exists — include always for simplicity
+                    # when any action under this group matches
+                    continue
                 items.append(
                     ListItem(
                         Label(f"[bold]── {payload} ──[/bold]"),
@@ -392,19 +531,65 @@ class ActionListScreen(StudioScreen):
                 continue
             assert isinstance(payload, ActionSpec)
             spec = payload
+            hay = f"{spec.label} {spec.description} {spec.id} {' '.join(spec.base_argv)}".lower()
+            if q and q not in hay:
+                continue
             items.append(
                 ListItem(
                     Label(f"{spec.label}  [dim]{self._subtitle(spec)}[/dim]"),
                     id=f"act-{spec.id}",
                 )
             )
-        yield ListView(*items, id=self.list_id)
-        yield Footer()
+        # When filtering: re-add group headers for matching actions only
+        if q:
+            filtered: list[ListItem] = []
+            last_group = ""
+            for kind, payload in menu_rows(self.surface):
+                if kind == "group":
+                    assert isinstance(payload, str)
+                    last_group = payload
+                    continue
+                assert isinstance(payload, ActionSpec)
+                spec = payload
+                hay = f"{spec.label} {spec.description} {spec.id} {' '.join(spec.base_argv)}".lower()
+                if q not in hay:
+                    continue
+                if last_group:
+                    gid = f"grp-{last_group.lower().replace(' ', '-')}-f"
+                    if not any(i.id == gid for i in filtered):
+                        filtered.append(
+                            ListItem(
+                                Label(f"[bold]── {last_group} ──[/bold]"),
+                                id=gid,
+                                disabled=True,
+                            )
+                        )
+                filtered.append(
+                    ListItem(
+                        Label(f"{spec.label}  [dim]{self._subtitle(spec)}[/dim]"),
+                        id=f"act-{spec.id}",
+                    )
+                )
+            return filtered or [
+                ListItem(Label("[dim]No matching actions[/dim]"), id="grp-empty", disabled=True)
+            ]
+        if not items:
+            items.append(
+                ListItem(Label("[dim]No actions[/dim]"), id="grp-empty", disabled=True)
+            )
+        return items
 
-    def _subtitle(self, spec: ActionSpec) -> str:
-        if spec.has_form:
-            return spec.description
-        return " ".join(spec.base_argv)
+    def on_input_changed(self, event: Input.Changed) -> None:
+        if event.input.id != "filter-input":
+            return
+        self._filter = event.value or ""
+        try:
+            lv = self.query_one(f"#{self.list_id}", ListView)
+        except Exception:
+            return
+        lv.clear()
+        for item in self._build_items(self._filter):
+            lv.append(item)
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         item_id = event.item.id or ""
@@ -432,7 +617,7 @@ class LauncherScreen(ActionListScreen):
     surface = "launcher"
     list_id = "launcher-list"
     hint_id = "launcher-hint"
-    hint_text = "Launcher — Enter to run · Esc back · h home"
+    hint_text = "Launcher — filter · Enter run · Esc back · h home"
 
 
 class CockpitMenuScreen(ActionListScreen):
@@ -442,7 +627,7 @@ class CockpitMenuScreen(ActionListScreen):
     list_id = "cockpit-list"
     hint_id = "cockpit-hint"
     hint_text = (
-        "Cockpit — scaffold (Bible/DNA/Sequence/Quota) · Enter · Esc back · h home"
+        "Cockpit — filter · scaffold Bible/DNA/Sequence/Quota/Delivery · Enter · Esc · h home"
     )
 
 
@@ -696,29 +881,21 @@ class HelpScreen(ModalScreen[None]):
                     [
                         "Studio TUI Help",
                         "",
-                        "r  Refresh dashboard",
-                        "s  Quota sync (cascade recon + ledger alignment)",
-                        "d  Grok Doctor (quick health)",
-                        "v  Studio validate",
-                        "m  Models verify",
-                        "k  Model stack",
-                        "l  Open launcher",
-                        "c  Open cockpit (Bible / DNA / Sequence scaffold / Quota / Health)",
-                        "h  Pop to home",
-                        "Esc  Back",
-                        "?  This help",
-                        "q  Quit",
+                        "Home views",
+                        "  1  Compact (strip + attention + readiness)",
+                        "  2  Ops (default — gates + quota + chain QA)",
+                        "  3  Full (all panels)",
+                        "  Tab  Cycle views · p  Pause/resume auto-refresh",
                         "",
-                        "Operator loop (J1/J6): Orient (strip+ATTENTION) → health keys → refresh.",
-                        "Home: status strip severity + ATTENTION board + multi panels.",
-                        "Launcher: status, doctor, lists, validate, stack, quota, DNA/sequence show.",
-                        "Cockpit: scaffold writes + estimates + doctor/health checks.",
-                        "Mutating forms confirm before write. No Imagine spend / wizard in TUI.",
-                        "y/n on confirm run/cancel.",
-                        "CLI runs on a background worker (UI stays responsive).",
-                        "After a run, Esc from output returns to Cockpit (no re-confirm).",
-                        "All runs go through the action allowlist (no free-form argv).",
-                        "Wizards and spend flows stay on the classic CLI.",
+                        "Health / nav",
+                        "  r  Refresh · s  Quota sync · d  Doctor · v  Validate",
+                        "  m  Models · k  Stack · l  Launcher · c  Cockpit",
+                        "  h  Home · Esc  Back · ?  Help · q  Quit",
+                        "",
+                        "Launcher / Cockpit: type in filter box to narrow actions.",
+                        "Mutating forms confirm before write. No Imagine spend / wizard.",
+                        "Polish/deliver cockpit entries use --dry-run only.",
+                        "CLI runs on a background worker; Esc from output skips re-confirm.",
                     ]
                 ),
                 id="help-body",

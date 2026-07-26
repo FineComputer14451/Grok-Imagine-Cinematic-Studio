@@ -11,7 +11,7 @@ class StudioTUI(App[None]):
     """Grok Imagine Cinematic Studio terminal UI."""
 
     TITLE = "Cinematic Studio"
-    SUB_TITLE = "Dashboard · Launcher · Cockpit"
+    SUB_TITLE = "Home · Launcher · Cockpit"
     CSS = """
     #home-scroll { height: 1fr; padding: 0 1 1 1; }
     .home-strip {
@@ -35,7 +35,13 @@ class StudioTUI(App[None]):
         margin: 0 0 1 0;
         color: $text;
     }
+    .home-panel-title {
+        text-style: bold;
+        color: $accent;
+    }
     #panel-quota { margin-right: 1; }
+    #panel-readiness { margin-right: 1; }
+    .home-row { height: auto; margin-bottom: 1; }
     .home-hints {
         padding: 0 1 1 1;
         color: $text-muted;
@@ -47,7 +53,11 @@ class StudioTUI(App[None]):
         margin-bottom: 1;
     }
     .hidden { display: none; }
-    #launcher-hint { padding: 1 2; color: $text-muted; }
+    #filter-input {
+        margin: 0 2 1 2;
+        dock: top;
+    }
+    #launcher-hint, #cockpit-hint { padding: 0 2 0 2; color: $text-muted; }
     #out-title { padding: 1 2; text-style: bold; }
     #out-body { padding: 0 2 1 2; }
     #cockpit-hint, #launcher-hint, #form-title, #form-desc, #form-errors,
@@ -57,8 +67,9 @@ class StudioTUI(App[None]):
     #running-title { text-style: bold; padding-top: 1; }
     #form-fields { height: 1fr; padding: 0 2; }
     #help-dialog {
-        width: 60;
+        width: 72;
         height: auto;
+        max-height: 90%;
         border: heavy $accent;
         background: $surface;
         padding: 1 2;
@@ -77,7 +88,7 @@ class StudioTUI(App[None]):
 
     def _auto_refresh(self) -> None:
         screen = self.screen
-        if isinstance(screen, HomeScreen):
+        if isinstance(screen, HomeScreen) and not getattr(screen, "auto_refresh_paused", False):
             screen.action_refresh()
 
 
