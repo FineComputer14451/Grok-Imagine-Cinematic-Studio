@@ -95,7 +95,12 @@ def resolve_execution_mode(
     *,
     execution_mode: str | None = None,
 ) -> str:
-    """Resolve execution mode from explicit override or subject fields (batch/shot)."""
+    """Resolve execution mode from explicit override or subject fields (batch/shot).
+
+    Applies ``EXECUTION_MODE_ALIASES`` (e.g. ``i2v`` → ``image_to_video``) so
+    plate/motion spend gates fire for shorthand batch modes. Empty stays empty
+    — do not invent a default (unlike ``normalize_execution_mode`` for builders).
+    """
     subj = subject if isinstance(subject, dict) else {}
     mode = (
         execution_mode
@@ -104,7 +109,18 @@ def resolve_execution_mode(
         or (subj.get("decision") or {}).get("mode")
         or ""
     )
-    return str(mode).strip()
+    raw = str(mode).strip()
+    if not raw:
+        return ""
+    # Prefer exact alias, then lowercased alias (batch UIs often use "I2V").
+    mapped = EXECUTION_MODE_ALIASES.get(raw, EXECUTION_MODE_ALIASES.get(raw.lower(), raw))
+    if mapped in EXECUTION_MODES:
+        return mapped
+    low = raw.lower()
+    for official in EXECUTION_MODES:
+        if official.lower() == low:
+            return official
+    return raw
 
 
 def normalize_execution_mode(

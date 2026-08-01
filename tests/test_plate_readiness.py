@@ -92,3 +92,14 @@ def test_mode_from_subject_recommended_mode() -> None:
     )
     assert r["pass"] is True
     assert "locked" in PLATE_OK
+
+
+def test_mode_alias_i2v_from_recommended_mode_blocks_draft() -> None:
+    """Shorthand recommended_mode=i2v must not skip still→video plate gates."""
+    r = evaluate_plate_lock_readiness(
+        {"recommended_mode": "i2v", "plate_status": "draft"},
+        execution_mode=None,
+    )
+    assert r["pass"] is False
+    assert r.get("execution_mode") == "image_to_video"
+    assert any("PL-02" in b for b in r["blockers"])

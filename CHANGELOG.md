@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Fixed
+- **Spend-gate mode aliases** — `resolve_execution_mode` maps batch shorthand (`i2v`, `still`, `video`, …) to official modes so plate/motion readiness no longer silently skips when shots only set `recommended_mode: "i2v"`
+
 ### Changed
 - **TUI command palette** — `/` or Ctrl+P opens allowlisted action search; KPI bar under status strip; `y` saves orient brief to `artifacts/tui_orient_brief.txt`; scroll preserved on refresh
 - **TUI non-TTY fallback** — `cinematic-studio ui --print` (and bare `ui` without a TTY) prints the orient dashboard instead of hard-failing; optional `artifacts/tui_orient_brief.txt`
