@@ -55,7 +55,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Changed
 - **Studio version** — `VERSION` → **3.8.7**; activation `Activate Grok Imagine Cinematic Studio v3.8.7`
-- **Suite size** — **54 skills** · **25** Role-Card core agents; packs core **20**, sequence-narrative **16**
+- **Suite size** — **62 skills** · **25** Role-Card core agents; packs core **21**, camera-image **11**, sequence-narrative **19**, nsfw **4**, delivery-post **7**
 - Handoff `PROTOCOL_OK` includes **3.8.7**; `STUDIO_COMPATIBILITY_VERSION` / agent version stamps aligned
 - Grok Doctor prefers full git clone when present; quota recon + catalog pin checks hardened
 - Quota cascade / dashboard / TUI alignment improvements (ledger-backed recon)

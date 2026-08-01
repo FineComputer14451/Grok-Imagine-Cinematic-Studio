@@ -3,7 +3,7 @@
 **The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (cinematic + coding default) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
 **Version:** 3.8.9 "Odyssey Native" (July 2026) — Full v4.5 Dual-Model Wave  
-**Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
+**Agents:** 25 Role-Card core agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
 **Key Improvements:** Unified Grok 4.5 cinematic+Build default (optional Grok 4.3 1M), Grok Build ≥ 0.2.93, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
 
 > [!NOTE]
@@ -13,13 +13,13 @@
 
 ## ✨ Current State (July 2026 — v3.8.9)
 
-- **23 Specialized Agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.8.9**)
+- **25 Role-Card core agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.8.9**)
 - **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & unified Grok 4.5 stack), Decision Frameworks, Activation Triggers, Integration Notes
 - **Mature CLI + Web UI** — model pickers, native audio toggle, 720p/duration, live cost estimation, **Guided Production Bible wizard** (`create-bible --wizard` / Web Guided Bible Creator)
 - **Native Grok Imagine Video 1.5 Pipeline** — image-to-video, one-pass audio, extend/stitch, Fast mode (1.0 remains cost default)
 - **Grok Build + unified Grok 4.5 stack** — CLI default `grok-4.5` (fork `grok-build`, min CLI **0.2.93**); opt-in `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto`; optional 1M `grok-4.3`
 - **v4.5 Dual-Model Wave (v3.8.9)** — 16 core skills with dual Imagine Video 1.0 + 1.5 Native documentation and Role Cards (`references/agents/MODEL_LAYER_v4.5.md`)
-- **Plugin marketplace** — 54 skills + 11 commands; release-pin hygiene for catalog commits
+- **Plugin marketplace** — 62 skills + 11 commands; release-pin hygiene for catalog commits
 - v3.5 heritage retained: Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop
 
 ---

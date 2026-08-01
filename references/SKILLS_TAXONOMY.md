@@ -2,6 +2,21 @@
 
 Canonical **install layout** stays flat: `.grok/skills/<name>/SKILL.md` (required by Grok plugin format). This file is the **mental model** for browsing, declutter, and docs — not a second on-disk hierarchy.
 
+## Canonical suite headcounts (v3.8.9)
+
+Single source of truth for marketing and verify gates:
+
+| Metric | Count | Source |
+|--------|------:|--------|
+| **Skills (full suite)** | **62** | `.grok/skills/*/SKILL.md` ≡ `scripts/required_skills.manifest` ≡ `.grok-plugin/plugin.json` |
+| **Slash commands** | **11** | `commands/` ≡ `plugin.json` `commands` |
+| **Role-Card core agents** | **25** | `AGENTS.md` core table · `tools/cli/shared.py` `core_agent_count()` |
+| **Role cards (mapped)** | **44** | `AGENT_ROLE_CARDS` (core + pipeline + Wave A + i2i + NSFW) |
+| **Marketplace plugins** | **6** | full suite + 5 packs (`config/plugin_packs.yaml`) |
+| **Pack sizes** | 21 · 11 · 19 · 4 · 7 | core · camera-image · sequence-narrative · nsfw · delivery-post (exclusive; union = 62) |
+
+Do **not** invent skill counts in docs. After adding/removing a skill: update the manifest, regenerate the plugin catalog, and re-check this table.
+
 ## Install surfaces (do not dual-load studio skills)
 
 | Surface | Path | What belongs here |

@@ -1,6 +1,6 @@
-# Grok Imagine Cinematic Studio v3.8.7 — Installation Guide
+# Grok Imagine Cinematic Studio v3.8.9 — Installation Guide
 
-Two supported install paths. Both can ship the same **54 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
+Two supported install paths. Both can ship the same **62 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
 
 > [!NOTE]
 > **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Installing this suite installs community skills and tooling only — it does not provision xAI models or API access. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
@@ -11,11 +11,11 @@ Two supported install paths. Both can ship the same **54 skills**; choose based 
 |---|-------------------------------------|----------------------------|
 | **Best for** | Grok chat, agent sessions, CLI tools, scripted verify | Grok Build CLI, marketplace updates, slash commands |
 | **Skills location** | `~/.grok/skills/` | `~/.grok/installed-plugins/` (plugin-managed) |
-| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts | Full suite: **54 skills** + 11 slash commands; or modular packs (see matrix) |
+| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts | Full suite: **62 skills** + 11 slash commands; or modular packs (see matrix) |
 | **Verify** | `cinematic_studio.sh verify` / `verify --all` | `cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
 | **Update** | `cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` (or reinstall from a local clone — see below) |
 
-You can use **both**, but **do not dual-load the 54 studio skills**:
+You can use **both**, but **do not dual-load the 62 studio skills**:
 
 | Goal | Use |
 |------|-----|
@@ -30,11 +30,11 @@ bash scripts/cinematic_studio.sh declutter --dry-run
 bash scripts/cinematic_studio.sh declutter --apply --keep-backups 1
 ```
 
-That removes Method A copies of the 54 studio skills (plugin keeps them) and prunes old `~/.grok/skills-backup-*` folders. User-global skills (`help`, `create-skill`, `docx`, …) stay in `~/.grok/skills/`.
+That removes Method A copies of the 62 studio skills (plugin keeps them) and prunes old `~/.grok/skills-backup-*` folders. User-global skills (`help`, `create-skill`, `docx`, …) stay in `~/.grok/skills/`.
 
 **Pack overlap (`full_suite_wins`):** if both the **full suite** plugin and one or more **satellite packs** are installed, declutter prefers the full suite and removes satellite skill duplicates (`config/plugin_packs.yaml` → `declutter.policy: full_suite_wins`).
 
-**Skill parity:** `scripts/required_skills.manifest` lists the same **54** skills as `.grok-plugin/plugin.json` / catalog generation.  
+**Skill parity:** `scripts/required_skills.manifest` lists the same **62** skills as `.grok-plugin/plugin.json` / catalog generation.  
 **Taxonomy (browse groups):** `references/SKILLS_TAXONOMY.md` · `cinematic-studio plugin list --grouped` · `cinematic-studio plugin packs`
 
 ### Path overrides (Method A)
@@ -172,7 +172,7 @@ Creates a timestamped backup at `~/.grok/skills-backup-*` before replacing skill
 
 ```bash
 ./scripts/cinematic_studio.sh verify          # core skills (7) + model registry
-./scripts/cinematic_studio.sh verify --all    # full manifest (54 skills)
+./scripts/cinematic_studio.sh verify --all    # full manifest (62 skills)
 ```
 
 Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
@@ -193,12 +193,12 @@ Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
 
 | Plugin name | Pack id | Skills | Soft requires | Role |
 |-------------|---------|--------|---------------|------|
-| **`grok-imagine-cinematic-studio`** | *(full suite)* | **54** | — | **Recommended** one-click install |
-| `grok-imagine-cinematic-core` | `core` | **20** | — | Orchestration / DNA / wardrobe / Imagine / QA / quota / meta |
-| `grok-imagine-camera-image` | `camera-image` | 9 | `core` | DoP, design, i2i, key art, i2v |
-| `grok-imagine-sequence-narrative` | `sequence-narrative` | 16 | `core` | Sequence, continuity, performance, audio, action/VFX, SFW |
-| `grok-imagine-nsfw` | `nsfw` | 4 | `core` | Opt-in NSFW (ErosForge + NSFW QA/quota) |
-| `grok-imagine-delivery-post` | `delivery-post` | 5 | `core` | Assembly, color, polish, upscale, ffmpeg |
+| **`grok-imagine-cinematic-studio`** | *(full suite)* | **62** | — | **Recommended** one-click install |
+| `grok-imagine-cinematic-core` | `core` | **21** | — | Orchestration / DNA / wardrobe / Imagine / QA / quota / meta |
+| `grok-imagine-camera-image` | `camera-image` | **11** | `core` | DoP, design, i2i, key art, i2v, plate/contact |
+| `grok-imagine-sequence-narrative` | `sequence-narrative` | **19** | `core` | Sequence, continuity, performance, audio, action/VFX, SFW |
+| `grok-imagine-nsfw` | `nsfw` | **4** | `core` | Opt-in NSFW (ErosForge + NSFW QA/quota) |
+| `grok-imagine-delivery-post` | `delivery-post` | **7** | `core` | Assembly, color, polish, upscale, ffmpeg, title/crop |
 
 Source of truth: `config/plugin_packs.yaml`. List from a checkout: `cinematic-studio plugin packs`.
 
@@ -241,7 +241,7 @@ Avoid dual installs of the same plugin name; uninstall until `grok plugin list` 
 bash scripts/cinematic_studio.sh verify --plugin
 ```
 
-Checks all **54** plugin skills, 11 slash commands (`/cinematic`, `/dna`, etc.), and model registry when CLI tools are present in the plugin checkout.
+Checks all **62** plugin skills, 11 slash commands (`/cinematic`, `/dna`, etc.), and model registry when CLI tools are present in the plugin checkout.
 
 Registry cross-check (optional):
 
@@ -315,8 +315,8 @@ catalog pin, skills layout, git, API key presence, and optional pytest.
 ## Verify tiers
 
 - **core** (default) — 7 manifest skills marked `# core` in `required_skills.manifest`, plus `models verify`
-- **all** — all **54** manifest skills in `~/.grok/skills/` (Method A)
-- **plugin** — all **54** skills + 11 commands in the Grok plugin checkout (Method B; `verify --plugin`)
+- **all** — all **62** manifest skills in `~/.grok/skills/` (Method A)
+- **plugin** — all **62** skills + 11 commands in the Grok plugin checkout (Method B; `verify --plugin`)
 
 Core skills: `grok-imagine-cinematic-studio`, `ai-video-upscaler`, `cinematic-sequence-extender`, `studio-director`, `quality-assurance-guardian`, `identity-lock-specialist`, `workflow-quota-optimizer`
 

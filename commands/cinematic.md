@@ -1,5 +1,5 @@
 ---
-description: Activate Grok Imagine Cinematic Studio v3.8.6 with the full 23-agent production suite, Grok 4.5 model stack, Imagine Agent Mode Handoff, and native Imagine Video 1.0/1.5 pipeline.
+description: Activate Grok Imagine Cinematic Studio v3.8.9 with the full 25-agent core production suite, Grok 4.5 model stack, Imagine Agent Mode Handoff, and native Imagine Video 1.0/1.5 pipeline.
 ---
 
 # Activate Cinematic Studio

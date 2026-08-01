@@ -23,7 +23,7 @@ def _snap(**overrides: object) -> dict:
             "total_agents": 34,
             "role_cards": 34,
             "role_cards_expected": 34,
-            "skills": 54,
+            "skills": 62,
             "models_compatible": True,
             "model_issues": [],
             "model_stack": {"xai_chat": "grok-4.5", "imagine_video": "grok-imagine-video"},

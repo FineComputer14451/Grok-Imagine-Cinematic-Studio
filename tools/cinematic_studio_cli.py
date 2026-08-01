@@ -33,7 +33,7 @@ app = typer.Typer(
     name="cinematic-studio",
     help=(
         f"🎥 Grok Imagine Cinematic Studio v{STUDIO_VERSION} — "
-        "Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5 · 23-agent CLI"
+        "Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5 · 25-agent core CLI"
     ),
     add_completion=False,
     rich_markup_mode="rich",

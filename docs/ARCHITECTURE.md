@@ -62,7 +62,7 @@ Post-Production & Delivery (Color → Polish → Assets)
 
 ### 4. Runtime & Tools
 
-- **52 Skills** under `.grok/skills/`
+- **62 Skills** under `.grok/skills/`
 - **Unified CLI** (`cinematic-studio` / `tools/cinematic_studio_cli.py`)
 - **Streamlit Web UI** for guided Bible, DNA bank, quota, sequences
 - **Plugin Marketplace** (`.grok-plugin/`) with full suite + satellite packs

@@ -26,7 +26,7 @@ It is not a simple prompt wrapper. It is a full **virtual film studio** with spe
 | Capability | Description |
 |------------|-------------|
 | **23+ Specialist Agents** | Studio Director, DoP, Sequence Director, Identity Lock, ErosForge, AI Polish, Sonic Architect, and more |
-| **52 Custom Grok Skills** | Full runtime engine under `.grok/skills/` |
+| **62 Custom Grok Skills** | Full runtime engine under `.grok/skills/` |
 | **Production Bible** | Guided wizard (CLI + Streamlit) with `VIDEO_PIPELINE_SPEC` |
 | **Character DNA + Identity Continuity** | Forensic extraction, lock, inject, and drift detection across stills and long sequences |
 | **Imagine Agent Mode Handoff** | Validated routing from planning agents into Grok’s native generation surfaces (Build tools / ACP / web / API) |
