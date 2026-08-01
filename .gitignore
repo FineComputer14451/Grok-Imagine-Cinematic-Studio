@@ -19,6 +19,7 @@ eggs/
 lib/
 !scripts/lib/
 !web_ui/lib/
+!web_dashboard/src/lib/
 lib64/
 parts/
 sdist/
