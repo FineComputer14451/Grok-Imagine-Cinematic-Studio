@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Changed
+- **Operator UX guide** — `docs/guides/Operator_UX_Control_Plane.md` documents the shared studio snapshot, TUI/Web density, spend gates, handoffs, and multi-surface operator loop (linked from CLI Reference, Quick Start, docs index)
 - **CLI reference expansion** — `docs/CLI_REFERENCE.md` matches the live Typer tree (sequence nested tools, sfw/nsfw plate·motion, wave-a, handoff validate, TUI `--print`, meta installer); corrects `validate --strict-handoff` (strict flags live on `handoff validate` / `imagine agent-handoff`)
 - **25-agent core wording** — retire stale “23-agent” strings in CLI help, activation prompt, PDF report, and `/cinematic` slash command (align with `list-agents` core count)
 - **TUI command palette** — `/` or Ctrl+P opens allowlisted action search; KPI bar under status strip; `y` saves orient brief to `artifacts/tui_orient_brief.txt`; scroll preserved on refresh

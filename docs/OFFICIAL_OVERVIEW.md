@@ -66,6 +66,7 @@ It is not a simple prompt wrapper. It is a full **virtual film studio** with spe
 | [User Guide](guides/USER_GUIDE.md) | Complete end-to-end workflow |
 | [Architecture](ARCHITECTURE.md) | System design, agents, protocols |
 | [CLI Reference](CLI_REFERENCE.md) | Full command reference |
+| [Operator UX Control Plane](guides/Operator_UX_Control_Plane.md) | Shared snapshot · TUI/Web · gates · handoffs |
 | [Quick Start](guides/Quick_Start_Guide.md) | Fast onboarding |
 | [Agent Index](../references/agents/AGENT_INDEX.md) | All Role Cards |
 | [Release Notes](releases/) | Version history |

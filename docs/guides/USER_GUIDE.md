@@ -112,7 +112,8 @@ cinematic-studio ui                    # Interactive TUI
 cinematic-studio validate
 ```
 
-See [CLI Reference](../CLI_REFERENCE.md) for the full command set.
+See [CLI Reference](../CLI_REFERENCE.md) for the full command set.  
+Control plane (snapshot · TUI/Web · gates): [Operator UX](Operator_UX_Control_Plane.md).
 
 ---
 
@@ -132,6 +133,7 @@ See [CLI Reference](../CLI_REFERENCE.md) for the full command set.
 
 - Role Cards: `references/agents/`
 - Quick Start: `docs/guides/Quick_Start_Guide.md`
+- Operator UX: `docs/guides/Operator_UX_Control_Plane.md`
 - Architecture: `docs/ARCHITECTURE.md`
 - Issues / Discussions: GitHub repository
 

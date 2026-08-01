@@ -1,5 +1,5 @@
 # Documentation
-## Grok Imagine Cinematic Studio v3.8.7
+## Grok Imagine Cinematic Studio v3.8.9
 
 Project documentation index (community-maintained).
 
@@ -17,6 +17,7 @@ Project documentation index (community-maintained).
 | **[User Guide](guides/USER_GUIDE.md)** | Complete end-to-end production workflow |
 | **[Architecture](ARCHITECTURE.md)** | System design, layers, protocols |
 | **[CLI Reference](CLI_REFERENCE.md)** | Full command reference |
+| **[Operator UX — Control Plane](guides/Operator_UX_Control_Plane.md)** | Snapshot, TUI/Web density, spend gates, handoffs |
 | **[Quick Start Guide](guides/Quick_Start_Guide.md)** | Fast onboarding |
 
 ---
@@ -26,6 +27,7 @@ Project documentation index (community-maintained).
 - [Upgrade Guide](guides/UPGRADE_GUIDE.md)
 - [Installation Guide](guides/installation_guide.md)
 - [Streamlit Cloud Deploy](guides/streamlit_cloud_deploy.md)
+- [Operator UX Control Plane](guides/Operator_UX_Control_Plane.md)
 
 ## Templates
 

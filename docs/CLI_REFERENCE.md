@@ -436,4 +436,11 @@ tools/studio_paths.py             # Canonical paths
 
 ---
 
+## See also
+
+- **[Operator UX — Studio Control Plane](guides/Operator_UX_Control_Plane.md)** — shared snapshot, TUI/Web density, spend gates, handoff journeys
+- [Quick Start](guides/Quick_Start_Guide.md) · [User Guide](guides/USER_GUIDE.md)
+
+---
+
 *Run any command with `--help` for full options. The CLI is the automation backbone of the Studio.*
