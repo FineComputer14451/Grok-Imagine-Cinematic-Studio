@@ -52,7 +52,7 @@ def register(app: typer.Typer) -> None:
         pdf.cell(
             0,
             8,
-            f"Status: Production in progress — studio v{STUDIO_VERSION} · Grok 4.5 · 23-agent core",
+            f"Status: Production in progress — studio v{STUDIO_VERSION} · Grok 4.5 · 25-agent core",
             ln=True,
         )
 

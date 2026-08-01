@@ -31,7 +31,7 @@
 
 It combines:
 
-- **62 specialized Grok skills** powering a **25+ agent cinematic department**
+- **62 specialized Grok skills** powering a **25-agent core** cinematic department
 - Professional **Production Bible** workflow (CLI wizard + Streamlit Web UI)
 - **Character DNA extraction + Identity Continuity Protocol** for zero-drift consistency across stills, clips, and long sequences
 - **Imagine Agent Mode Handoff** — validated routing from planning agents into Grok’s native generation surfaces
@@ -239,7 +239,7 @@ or the shorter trigger:
 start cinematic production
 ```
 
-This loads the full **25+ agent department** with Production Bible support, Imagine Agent Mode Handoff, identity locking, and all specialists.
+This loads the full **25-agent core** department with Production Bible support, Imagine Agent Mode Handoff, identity locking, and all specialists.
 
 ### 3. CLI Power Tools (Automation & Scripting)
 

@@ -14,7 +14,7 @@ from models import (
     resolve_video_model,
 )
 
-from cli.shared import AGENTS_DIR, DIRECTOR_SIGNATURES, STUDIO_VERSION
+from cli.shared import AGENTS_DIR, DIRECTOR_SIGNATURES, STUDIO_VERSION, core_agent_count
 
 
 def production_context(
@@ -79,7 +79,7 @@ def build_activation_prompt(
 
 {chr(10).join(meta_lines)}
 
-You are now running the full **23-agent** Grok Imagine Cinematic Studio **v{STUDIO_VERSION}** with complete Role Cards from `references/agents/`.
+You are now running the full **25-agent core** Grok Imagine Cinematic Studio **v{STUDIO_VERSION}** with complete Role Cards from `references/agents/`.
 
 **Model Layer (Grok 4.5):** orchestration + Build default **`grok-4.5`**; optional **`grok-4.3`** only for 1M-context Bibles/memory banks. Imagine video **1.0** cost default; **1.5** when native audio is required. Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Bibles, QA, Identity Lock, and Sequence Director.
 
@@ -121,7 +121,7 @@ def build_production_bible(
         "director_signature": director,
         "target_duration_seconds": target_duration_seconds,
         "complexity": complexity,
-        "total_agents": 23,
+        "total_agents": core_agent_count(),
         "version": STUDIO_VERSION,
         "role_cards_source": str(cards_dir) if cards_dir.exists() else "references/agents/",
         "model_stack": ctx["stack"],
