@@ -1,5 +1,6 @@
 import { Toaster } from "sonner";
 import { useStudioStore } from "@/lib/studio-store";
+import { ApiBootstrap } from "./api-bootstrap";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { OverviewView } from "./overview";
@@ -18,6 +19,7 @@ export function AppShell() {
 
   return (
     <div className="flex min-h-dvh bg-bg text-fg">
+      <ApiBootstrap />
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar />

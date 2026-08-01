@@ -1,4 +1,4 @@
-import { Copy, ExternalLink } from "lucide-react";
+import { Copy, ExternalLink, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import {
   Card,
@@ -20,9 +20,42 @@ import { useStudioStore } from "@/lib/studio-store";
 export function ToolsView() {
   const runHealthAction = useStudioStore((s) => s.runHealthAction);
   const healthLog = useStudioStore((s) => s.healthLog);
+  const refreshFromApi = useStudioStore((s) => s.refreshFromApi);
+  const apiSource = useStudioStore((s) => s.apiSource);
+  const apiVersion = useStudioStore((s) => s.apiVersion);
+  const apiLoading = useStudioStore((s) => s.apiLoading);
 
   return (
     <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Snapshot API</CardTitle>
+          <CardDescription>
+            React → Vite proxy → FastAPI · source{" "}
+            <strong className="text-fg">{apiSource}</strong>
+            {apiVersion ? ` · v${apiVersion}` : ""}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-wrap gap-2">
+          <Button
+            size="sm"
+            variant="secondary"
+            disabled={apiLoading}
+            onClick={() => {
+              void refreshFromApi().then(() =>
+                toast.success("Snapshot refreshed"),
+              );
+            }}
+          >
+            <RefreshCw className="size-3.5" />
+            Refresh snapshot
+          </Button>
+          <code className="rounded-md border border-border bg-bg-subtle px-2 py-1.5 text-xs text-fg-muted">
+            GET /api/v1/dashboard/snapshot
+          </code>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle>Activation</CardTitle>
@@ -110,7 +143,7 @@ export function ToolsView() {
         <CardHeader>
           <CardTitle className="text-base">CLI health</CardTitle>
           <CardDescription>
-            Simulated safe commands · full CLI in the Python repo
+            Proxied to POST /api/v1/cli/{"{action}"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -120,7 +153,7 @@ export function ToolsView() {
                 key={a}
                 size="sm"
                 variant="secondary"
-                onClick={() => runHealthAction(a)}
+                onClick={() => void runHealthAction(a)}
               >
                 {a}
               </Button>
@@ -137,7 +170,7 @@ export function ToolsView() {
             </Button>
           </div>
           {healthLog && (
-            <pre className="overflow-x-auto rounded-lg border border-border bg-bg-subtle p-3 font-mono text-xs text-fg-muted whitespace-pre-wrap">
+            <pre className="overflow-x-auto whitespace-pre-wrap rounded-lg border border-border bg-bg-subtle p-3 font-mono text-xs text-fg-muted">
               {healthLog.out}
             </pre>
           )}

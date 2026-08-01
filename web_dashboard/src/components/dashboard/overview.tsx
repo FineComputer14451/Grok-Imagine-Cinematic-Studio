@@ -14,6 +14,7 @@ import {
   Clock3,
   Gauge,
   Layers,
+  RefreshCw,
   Stethoscope,
 } from "lucide-react";
 import {
@@ -26,10 +27,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  ATTENTION,
   MODEL_STACK,
   PROJECTS,
-  READINESS,
   SPECIALISTS,
   STATS,
   USAGE,
@@ -49,21 +48,77 @@ export function OverviewView() {
   const setSelectedShotId = useStudioStore((s) => s.setSelectedShotId);
   const healthLog = useStudioStore((s) => s.healthLog);
   const runHealthAction = useStudioStore((s) => s.runHealthAction);
+  const severity = useStudioStore((s) => s.severity);
+  const attention = useStudioStore((s) => s.attention);
+  const readiness = useStudioStore((s) => s.readiness);
+  const apiSource = useStudioStore((s) => s.apiSource);
+  const apiVersion = useStudioStore((s) => s.apiVersion);
+  const apiLoading = useStudioStore((s) => s.apiLoading);
+  const apiError = useStudioStore((s) => s.apiError);
+  const lastSyncedAt = useStudioStore((s) => s.lastSyncedAt);
+  const refreshFromApi = useStudioStore((s) => s.refreshFromApi);
   const recent = shots.slice(0, 4);
   const locked = characters.filter((c) => c.locked).length;
   const show = (section: string) => sectionVisible(density, section);
 
+  const projectTitle =
+    ((useStudioStore.getState().snapshot?.project as { title?: string })
+      ?.title as string) || "Neon Harbor";
+
   return (
     <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
+          <Badge
+            variant={
+              apiSource === "live"
+                ? "ready"
+                : apiSource === "mock"
+                  ? "queued"
+                  : "draft"
+            }
+          >
+            API {apiSource}
+          </Badge>
+          {apiVersion && <span>v{apiVersion}</span>}
+          {lastSyncedAt && (
+            <span>Synced {formatRelative(new Date(lastSyncedAt))}</span>
+          )}
+          {apiError && <span className="text-warning">{apiError}</span>}
+        </div>
+        <Button
+          size="sm"
+          variant="secondary"
+          disabled={apiLoading}
+          onClick={() => void refreshFromApi()}
+        >
+          <RefreshCw
+            className={cn("size-3.5", apiLoading && "animate-spin")}
+          />
+          Refresh snapshot
+        </Button>
+      </div>
+
       {show("status") && (
         <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-bg-elevated px-3 py-2.5 text-xs">
-          <Badge variant="queued">Ops WARN</Badge>
+          <Badge
+            variant={
+              severity === "ok"
+                ? "ready"
+                : severity === "critical"
+                  ? "failed"
+                  : "queued"
+            }
+          >
+            Ops {severity.toUpperCase()}
+          </Badge>
           <span className="text-fg-muted">
-            Project <strong className="text-fg">Neon Harbor</strong>
+            Project <strong className="text-fg">{projectTitle}</strong>
           </span>
           <span className="text-fg-subtle">·</span>
           <span className="text-fg-muted">
-            {sequences.length} sequences · {characters.length} DNA · {locked} locked
+            {sequences.length} sequences · {characters.length} DNA · {locked}{" "}
+            locked
           </span>
           <span className="text-fg-subtle">·</span>
           <span className="text-fg-muted">
@@ -77,7 +132,7 @@ export function OverviewView() {
       )}
 
       {show("kpis") && (
-        <div className="grid gap-3 grid-cols-2 xl:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 xl:grid-cols-6">
           {[
             { label: "Sequences", value: sequences.length, icon: Layers },
             { label: "DNA profiles", value: characters.length, icon: Activity },
@@ -90,7 +145,7 @@ export function OverviewView() {
             },
             {
               label: "Severity",
-              value: "WARN",
+              value: severity.toUpperCase(),
               icon: AlertTriangle,
             },
           ].map((m) => {
@@ -123,33 +178,23 @@ export function OverviewView() {
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Attention</CardTitle>
             <CardDescription>
-              Ops signals shared with Streamlit / TUI Home
+              From snapshot API · Streamlit / TUI Home parity
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            {ATTENTION.map((a, i) => (
-              <div
-                key={a.id}
-                className="flex gap-3 rounded-lg border border-border bg-bg-subtle/40 px-3 py-2.5"
-              >
-                <span className="tabular text-xs text-fg-subtle">{i + 1}.</span>
-                <div className="min-w-0 flex-1">
-                  <Badge
-                    variant={
-                      a.severity === "critical"
-                        ? "failed"
-                        : a.severity === "warn"
-                          ? "queued"
-                          : "default"
-                    }
-                    className="mb-1"
-                  >
-                    {a.severity}
-                  </Badge>
-                  <p className="text-sm text-fg">{a.message}</p>
+            {attention.length === 0 ? (
+              <p className="text-sm text-success">All clear — no blocking signals.</p>
+            ) : (
+              attention.map((msg, i) => (
+                <div
+                  key={`${i}-${msg.slice(0, 24)}`}
+                  className="flex gap-3 rounded-lg border border-border bg-bg-subtle/40 px-3 py-2.5"
+                >
+                  <span className="tabular text-xs text-fg-subtle">{i + 1}.</span>
+                  <p className="text-sm text-fg">{msg}</p>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </CardContent>
         </Card>
       )}
@@ -159,7 +204,7 @@ export function OverviewView() {
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Health actions</CardTitle>
             <CardDescription>
-              Safe read/repair · TUI family d / v / s / m
+              POST /api/v1/cli/* · TUI family d / v / s / m
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -176,7 +221,7 @@ export function OverviewView() {
                     key={a.id}
                     variant="secondary"
                     className="justify-start"
-                    onClick={() => runHealthAction(a.id)}
+                    onClick={() => void runHealthAction(a.id)}
                   >
                     <Icon className="size-3.5" />
                     {a.label}
@@ -215,7 +260,7 @@ export function OverviewView() {
           </CardHeader>
           <CardContent>
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-              {READINESS.map((g) => (
+              {readiness.map((g) => (
                 <div
                   key={g.id}
                   className="rounded-lg border border-border bg-bg-subtle/40 px-3 py-2.5"
@@ -241,25 +286,32 @@ export function OverviewView() {
             <CardDescription>J8 checklist before Imagine spend</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            {[
-              { ok: true, label: "Production Bible present", hint: null },
-              { ok: true, label: "Identity Continuity Protocol", hint: null },
-              {
-                ok: false,
-                label: "Chain QA clear",
-                hint: "Fix Alley confrontation no-go",
-              },
-              {
-                ok: false,
-                label: "Handoff packet validated",
-                hint: "Re-run after QA pass",
-              },
-              { ok: true, label: "Quota within soft cap", hint: null },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="flex items-start gap-2 text-sm"
-              >
+            {(
+              (
+                useStudioStore.getState().snapshot?.convergence as {
+                  checklist?: {
+                    ok?: boolean | null;
+                    label?: string;
+                    hint?: string;
+                  }[];
+                }
+              )?.checklist ?? [
+                { ok: true, label: "Production Bible present" },
+                { ok: true, label: "Identity Continuity Protocol" },
+                {
+                  ok: false,
+                  label: "Chain QA clear",
+                  hint: "Fix Alley confrontation no-go",
+                },
+                {
+                  ok: false,
+                  label: "Handoff packet validated",
+                  hint: "Re-run after QA pass",
+                },
+                { ok: true, label: "Quota within soft cap" },
+              ]
+            ).map((item) => (
+              <div key={item.label} className="flex items-start gap-2 text-sm">
                 <span
                   className={cn(
                     "mt-0.5 size-4 shrink-0 rounded-full border text-center text-[10px] leading-4",
@@ -346,11 +398,6 @@ export function OverviewView() {
                 Risk:{" "}
                 <strong className="capitalize text-fg">{STATS.riskLevel}</strong>
               </p>
-              <p>
-                Cascade:{" "}
-                <strong className="text-fg">{STATS.cascade}</strong> · burn{" "}
-                {STATS.burnMultiplier}x
-              </p>
               <Button
                 size="sm"
                 variant="outline"
@@ -367,11 +414,9 @@ export function OverviewView() {
       {show("sequences") && density !== "compact" && (
         <div className="grid gap-4 lg:grid-cols-5">
           <Card className="lg:col-span-3">
-            <CardHeader className="flex-row items-center justify-between space-y-0">
-              <div>
-                <CardTitle className="text-base">Usage this week</CardTitle>
-                <CardDescription>Images & video credit burn</CardDescription>
-              </div>
+            <CardHeader>
+              <CardTitle className="text-base">Usage this week</CardTitle>
+              <CardDescription>Images & video credit burn</CardDescription>
             </CardHeader>
             <CardContent className="h-56 pt-0">
               <ResponsiveContainer width="100%" height="100%">
@@ -418,14 +463,6 @@ export function OverviewView() {
                     strokeWidth={1.5}
                     name="Images"
                   />
-                  <Area
-                    type="monotone"
-                    dataKey="videos"
-                    stroke="#71717a"
-                    fill="transparent"
-                    strokeWidth={1.5}
-                    name="Videos"
-                  />
                 </AreaChart>
               </ResponsiveContainer>
             </CardContent>
@@ -434,7 +471,7 @@ export function OverviewView() {
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="text-base">Sequences</CardTitle>
-              <CardDescription>Chain QA + delivery</CardDescription>
+              <CardDescription>From API when available</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
               {sequences.map((seq) => (

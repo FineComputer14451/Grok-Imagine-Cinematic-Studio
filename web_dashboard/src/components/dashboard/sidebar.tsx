@@ -38,10 +38,23 @@ export function Sidebar() {
   const sidebarOpen = useStudioStore((s) => s.sidebarOpen);
   const setSidebarOpen = useStudioStore((s) => s.setSidebarOpen);
   const queueLen = useStudioStore((s) => s.queue.length);
+  const severity = useStudioStore((s) => s.severity);
+  const attention = useStudioStore((s) => s.attention);
+  const apiSource = useStudioStore((s) => s.apiSource);
+  const apiVersion = useStudioStore((s) => s.apiVersion);
 
   const creditPct = Math.round(
     (STATS.creditsRemaining / STATS.creditsTotal) * 100,
   );
+
+  const sevLabel =
+    severity === "ok" ? "OK" : severity === "critical" ? "CRITICAL" : "WARN";
+  const sevClass =
+    severity === "ok"
+      ? "text-success"
+      : severity === "critical"
+        ? "text-danger"
+        : "text-warning";
 
   const nav = (
     <>
@@ -54,7 +67,7 @@ export function Sidebar() {
             Imagine Studio
           </div>
           <div className="truncate text-xs text-fg-subtle">
-            Cinematic · v{STUDIO_VERSION}
+            Cinematic · v{apiVersion ?? STUDIO_VERSION}
           </div>
         </div>
       </div>
@@ -64,8 +77,12 @@ export function Sidebar() {
           <Gauge className="size-3" />
           Ops severity
         </div>
-        <p className="mt-0.5 text-xs font-medium text-warning">
-          WARN · 3 attention items
+        <p className={cn("mt-0.5 text-xs font-medium", sevClass)}>
+          {sevLabel} · {attention.length} attention item
+          {attention.length === 1 ? "" : "s"}
+        </p>
+        <p className="mt-0.5 text-[10px] uppercase tracking-wide text-fg-subtle">
+          API · {apiSource}
         </p>
       </div>
 

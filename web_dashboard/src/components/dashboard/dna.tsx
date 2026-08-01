@@ -17,6 +17,7 @@ export function DnaView() {
   const characters = useStudioStore((s) => s.characters);
   const lockCharacter = useStudioStore((s) => s.lockCharacter);
   const search = useStudioStore((s) => s.search);
+  const apiSource = useStudioStore((s) => s.apiSource);
 
   const filtered = characters.filter((c) => {
     const q = search.trim().toLowerCase();
@@ -30,6 +31,10 @@ export function DnaView() {
 
   return (
     <div className="space-y-4">
+      <p className="text-xs text-fg-muted">
+        DNA source: <strong className="text-fg">{apiSource}</strong> · lock
+        calls <code className="text-fg-subtle">POST /api/v1/dna/lock</code>
+      </p>
       <div className="grid gap-3 sm:grid-cols-3">
         <Card>
           <CardContent className="p-4">
@@ -98,8 +103,9 @@ export function DnaView() {
                     <Button
                       size="sm"
                       onClick={() => {
-                        lockCharacter(c.id);
-                        toast.success(`${c.name} identity locked`);
+                        void lockCharacter(c.id).then(() =>
+                          toast.success(`${c.name} identity locked`),
+                        );
                       }}
                     >
                       <Lock className="size-3.5" />
