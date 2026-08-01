@@ -1,0 +1,149 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-bg: #09090b;
+  --color-bg-elevated: #111114;
+  --color-bg-subtle: #18181c;
+  --color-bg-hover: #1f1f24;
+  --color-fg: #f4f4f5;
+  --color-fg-muted: #a1a1aa;
+  --color-fg-subtle: #71717a;
+  --color-border: #27272a;
+  --color-border-strong: #3f3f46;
+  --color-accent: #d4d4d8;
+  --color-accent-fg: #09090b;
+  --color-primary: #e4e4e7;
+  --color-primary-fg: #09090b;
+  --color-ring: #a1a1aa;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+  --color-info: #7dd3fc;
+  --color-card: #111114;
+  --color-card-fg: #f4f4f5;
+  --color-muted: #18181c;
+  --color-muted-fg: #a1a1aa;
+  --color-popover: #111114;
+  --color-popover-fg: #f4f4f5;
+  --color-secondary: #1f1f24;
+  --color-secondary-fg: #f4f4f5;
+  --color-input: #27272a;
+
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 28%, transparent);
+    color: var(--color-fg);
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .film-grain {
+    position: relative;
+  }
+
+  .film-grain::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  .shot-a {
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 40%, #3a3a42 0%, transparent 55%),
+      radial-gradient(ellipse 50% 70% at 75% 60%, #1e2430 0%, transparent 50%),
+      linear-gradient(165deg, #0c0c10 0%, #151820 45%, #0a0a0c 100%);
+  }
+
+  .shot-b {
+    background:
+      radial-gradient(ellipse 70% 50% at 60% 35%, #2a2830 0%, transparent 55%),
+      radial-gradient(circle at 20% 80%, #1a2228 0%, transparent 45%),
+      linear-gradient(145deg, #0b0b0e 0%, #12151a 50%, #0a0a0c 100%);
+  }
+
+  .shot-c {
+    background:
+      radial-gradient(ellipse 90% 40% at 50% 20%, #2e3238 0%, transparent 50%),
+      radial-gradient(ellipse 40% 60% at 80% 70%, #1c1e24 0%, transparent 50%),
+      linear-gradient(180deg, #0a0a0d 0%, #14161c 60%, #09090b 100%);
+  }
+
+  .shot-d {
+    background:
+      radial-gradient(ellipse 55% 55% at 40% 50%, #343840 0%, transparent 60%),
+      linear-gradient(120deg, #0d0d10 0%, #171a20 40%, #0b0c0e 100%);
+  }
+
+  .shot-e {
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 40%, #252830 0%, transparent 55%),
+      radial-gradient(ellipse 40% 40% at 25% 70%, #1a1c22 0%, transparent 50%),
+      linear-gradient(200deg, #0a0a0c 0%, #12141a 55%, #09090b 100%);
+  }
+
+  .shot-f {
+    background:
+      radial-gradient(circle at 50% 45%, #2c3038 0%, transparent 45%),
+      linear-gradient(160deg, #0c0c0f 0%, #161820 50%, #0a0a0c 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
