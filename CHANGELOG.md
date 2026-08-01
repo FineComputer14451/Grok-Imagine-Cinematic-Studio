@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Fixed
+- **Spend-gate mode aliases** — `resolve_execution_mode` maps batch shorthand (`i2v`, `still`, `video`, …) to official modes so plate/motion readiness no longer silently skips when shots only set `recommended_mode: "i2v"`
+
 ## [3.9.0] - 2026-08-02
 
 ### Added

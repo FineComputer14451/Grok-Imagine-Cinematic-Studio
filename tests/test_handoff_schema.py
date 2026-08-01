@@ -19,6 +19,7 @@ from handoff_schema import (  # noqa: E402
     is_video_execution_mode,
     normalize_execution_mode,
     normalize_target_surface,
+    resolve_execution_mode,
 )
 from imagine_bridge import (  # noqa: E402
     EXECUTION_MODES as BRIDGE_MODES,
@@ -48,6 +49,20 @@ def test_normalize_execution_mode_aliases() -> None:
     assert normalize_execution_mode("still") == "image_prompt"
     assert normalize_execution_mode("video") == "video_prompt"
     assert normalize_execution_mode(None) == "video_prompt"
+
+
+def test_resolve_execution_mode_aliases_for_spend_gates() -> None:
+    """Batch shorthand must map so plate/motion gates do not silently skip."""
+    assert resolve_execution_mode({"recommended_mode": "i2v"}) == "image_to_video"
+    assert resolve_execution_mode({"recommended_mode": "I2V"}) == "image_to_video"
+    assert resolve_execution_mode({"decision": {"mode": "still"}}) == "image_prompt"
+    assert resolve_execution_mode({"execution_mode": "video"}) == "video_prompt"
+    assert resolve_execution_mode({}, execution_mode="image") == "image_prompt"
+    # Empty must not invent video_prompt (would false-trigger motion gates).
+    assert resolve_execution_mode({}) == ""
+    assert resolve_execution_mode({"recommended_mode": ""}) == ""
+    # Unknown kept as-is (soft).
+    assert resolve_execution_mode({"recommended_mode": "not-a-mode"}) == "not-a-mode"
 
 
 def test_normalize_execution_mode_strict() -> None:

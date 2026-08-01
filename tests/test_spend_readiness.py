@@ -29,6 +29,18 @@ def test_i2v_missing_plate_and_motion_fails_children() -> None:
     assert "motion" in spend_hard_fail_reasons(r, strict_plate=False, strict_motion=True)
 
 
+def test_alias_i2v_strict_spend_gates_hard_fail() -> None:
+    """recommended_mode=i2v must hard-fail under --strict-plate/--strict-motion."""
+    gates = evaluate_spend_gates(
+        {"recommended_mode": "i2v", "prompt": "static person"},
+        strict_plate=True,
+        strict_motion=True,
+    )
+    assert gates["plate"].get("execution_mode") == "image_to_video"
+    assert "plate" in gates["hard_fail"]
+    assert "motion" in gates["hard_fail"]
+
+
 def test_ready_shot_passes() -> None:
     r = evaluate_generation_spend_readiness(
         {
