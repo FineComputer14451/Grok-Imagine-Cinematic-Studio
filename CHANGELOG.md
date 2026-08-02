@@ -10,6 +10,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Dual-run guide** — [`docs/guides/WEB_SHELLS.md`](docs/guides/WEB_SHELLS.md)
 - **Streamlit ↔ studio_core** — dashboard + Tools ActionSpec actions via `execute_registered`
 - **FastAPI control plane** — `cinematic-studio api` (`studio_api/`, optional `requirements-api.txt`)
+- **Surface polish** — README/CI for `studio_api`; API `GET /` + CORS; `scripts/smoke_studio_surfaces.py`
 
 ### Changed
 - **TUI command palette** — `/` or Ctrl+P opens allowlisted action search; KPI bar under status strip; `y` saves orient brief to `artifacts/tui_orient_brief.txt`; scroll preserved on refresh
