@@ -8,17 +8,16 @@ from pathlib import Path
 
 import typer
 
-_TOOLS_DIR = Path(__file__).resolve().parent
-_REPO_ROOT = _TOOLS_DIR.parent
-# Domain tools package root
-sys.path.insert(0, str(_TOOLS_DIR))
-# studio_core (UI-agnostic services) lives at repo root
-if str(_REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(_REPO_ROOT))
+_TOOLS = Path(__file__).resolve().parent
+sys.path.insert(0, str(_TOOLS))
+sys.path.insert(0, str(_TOOLS.parent))
 
 from cli.animatic_commands import register as register_animatic_commands  # noqa: E402
 from cli.bible_commands import register as register_bible_commands  # noqa: E402
 from cli.dna_commands import register as register_dna_commands  # noqa: E402
+from cli.generation_commands import register as register_generation_commands  # noqa: E402
+from cli.grok_cli_commands import register as register_grok_cli_commands  # noqa: E402
+from cli.handoff_commands import register as register_handoff_commands  # noqa: E402
 from cli.imagine_commands import register as register_imagine_commands  # noqa: E402
 from cli.models_commands import models_app  # noqa: E402
 from cli.nsfw_commands import register as register_nsfw_commands  # noqa: E402
@@ -30,10 +29,8 @@ from cli.sfw_commands import register as register_sfw_commands  # noqa: E402
 from cli.shared import STUDIO_VERSION  # noqa: E402
 from cli.studio_commands import register as register_studio_commands  # noqa: E402
 from cli.tui_commands import register as register_tui_commands  # noqa: E402
-from cli.generation_commands import register as register_generation_commands  # noqa: E402
 from cli.wave_a_commands import register as register_wave_a_commands  # noqa: E402
-from cli.grok_cli_commands import register as register_grok_cli_commands  # noqa: E402
-from cli.handoff_commands import register as register_handoff_commands  # noqa: E402
+from cli.web_commands import register as register_web_commands  # noqa: E402
 
 app = typer.Typer(
     name="cinematic-studio",
@@ -80,6 +77,7 @@ register_animatic_commands(animatic_app)
 register_report_commands(app)
 register_plugin_commands(app)
 register_tui_commands(app)
+register_web_commands(app)
 register_generation_commands(app)
 register_wave_a_commands(app)
 register_grok_cli_commands(app)
