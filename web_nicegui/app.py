@@ -35,6 +35,8 @@ def create_app() -> Any:
     from web_nicegui.lib.layout import page_shell
     from web_nicegui.pages.dashboard import build_dashboard_page
     from web_nicegui.pages.dna import build_dna_page
+    from web_nicegui.pages.imagine import build_imagine_page
+    from web_nicegui.pages.production import build_production_page
     from web_nicegui.pages.quota import build_quota_page
     from web_nicegui.pages.sequences import build_sequences_page
 
@@ -50,6 +52,12 @@ def create_app() -> Any:
                 set_mode=lambda m: app_state.__setitem__("mode", m),
             )
 
+    @ui.page("/production")
+    def production_page() -> None:
+        page_shell(ui, active="/production")
+        with ui.column().classes("w-full max-w-6xl mx-auto q-pa-md"):
+            build_production_page(ui)
+
     @ui.page("/dna")
     def dna_page() -> None:
         page_shell(ui, active="/dna")
@@ -61,6 +69,12 @@ def create_app() -> Any:
         page_shell(ui, active="/sequences")
         with ui.column().classes("w-full max-w-6xl mx-auto q-pa-md"):
             build_sequences_page(ui)
+
+    @ui.page("/imagine")
+    def imagine_page() -> None:
+        page_shell(ui, active="/imagine")
+        with ui.column().classes("w-full max-w-6xl mx-auto q-pa-md"):
+            build_imagine_page(ui)
 
     @ui.page("/quota")
     def quota_page() -> None:
