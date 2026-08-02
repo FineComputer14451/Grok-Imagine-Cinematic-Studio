@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT))
 
 from cli.tui.runner import (  # noqa: E402
     cli_script_path,
@@ -36,7 +37,7 @@ def test_run_cli_command_timeout_sets_flag() -> None:
     import subprocess as sp
 
     with patch(
-        "cli.tui.runner.subprocess.run",
+        "studio_core.services.execute.subprocess.run",
         side_effect=sp.TimeoutExpired(cmd=["x"], timeout=0.01),
     ):
         result = run_cli_command(["status"], timeout=0.01)
