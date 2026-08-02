@@ -14,6 +14,7 @@ import os
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
+from threading import Lock
 from concurrent.futures import TimeoutError as FuturesTimeout
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -159,6 +160,7 @@ def _subprocess_run(
 
 
 _CLI_APP: Any = None
+_INPROCESS_LOCK = Lock()
 
 
 def _load_cli_app() -> Any:
@@ -195,19 +197,21 @@ def _invoke_typer(argv: list[str], *, cwd: Path) -> tuple[int, str, str]:
     app = _load_cli_app()
     runner = CliRunner()
     # Click 8+: stderr captured separately when mix_stderr not used
-    prev = os.getcwd()
-    try:
-        os.chdir(str(cwd))
-        result = runner.invoke(app, argv, catch_exceptions=True)
-    finally:
-        os.chdir(prev)
+    # Serialize: CliRunner/chdir are not concurrent-safe (NiceGUI multi-click).
+    with _INPROCESS_LOCK:
+        prev = os.getcwd()
+        try:
+            os.chdir(str(cwd))
+            result = runner.invoke(app, argv, catch_exceptions=True)
+        finally:
+            os.chdir(prev)
 
-    code = int(result.exit_code if result.exit_code is not None else 1)
-    out = result.stdout or ""
-    err = getattr(result, "stderr", None) or ""
-    if result.exception is not None and not err:
-        err = f"{type(result.exception).__name__}: {result.exception}"
-    return code, out, err
+        code = int(result.exit_code if result.exit_code is not None else 1)
+        out = result.stdout or ""
+        err = getattr(result, "stderr", None) or ""
+        if result.exception is not None and not err:
+            err = f"{type(result.exception).__name__}: {result.exception}"
+        return code, out, err
 
 
 def _inprocess_run(

@@ -32,30 +32,41 @@ def _require_nicegui() -> Any:
 def create_app() -> Any:
     """Register pages on the NiceGUI ``ui`` module; return ui."""
     ui = _require_nicegui()
+    from web_nicegui.lib.layout import page_shell
     from web_nicegui.pages.dashboard import build_dashboard_page
+    from web_nicegui.pages.dna import build_dna_page
+    from web_nicegui.pages.quota import build_quota_page
+    from web_nicegui.pages.sequences import build_sequences_page
 
-    # Simple session mode storage on the ui module (per-process default).
     app_state: dict[str, str] = {"mode": "ops"}
 
     @ui.page("/")
     def index_page() -> None:
-        ui.colors(primary="#7c3aed", secondary="#22d3ee", accent="#f59e0b")
-        with ui.header().classes("items-center justify-between bg-primary"):
-            ui.label("Grok Imagine Cinematic Studio").classes("text-h6")
-            with ui.row().classes("items-center gap-3"):
-                ui.link("Dashboard", "/").classes("text-white")
-                ui.label("PR4 · read-only").classes("text-caption text-white")
+        page_shell(ui, active="/")
         with ui.column().classes("w-full max-w-6xl mx-auto q-pa-md"):
             build_dashboard_page(
                 ui,
                 get_mode=lambda: app_state.get("mode", "ops"),
                 set_mode=lambda m: app_state.__setitem__("mode", m),
             )
-        with ui.footer().classes("bg-grey-2"):
-            ui.label(
-                "Independent community project — not affiliated with xAI. "
-                "Core: studio_core.services.dashboard · CLI: cinematic-studio"
-            ).classes("text-caption text-grey-8 q-pa-sm")
+
+    @ui.page("/dna")
+    def dna_page() -> None:
+        page_shell(ui, active="/dna")
+        with ui.column().classes("w-full max-w-6xl mx-auto q-pa-md"):
+            build_dna_page(ui)
+
+    @ui.page("/sequences")
+    def sequences_page() -> None:
+        page_shell(ui, active="/sequences")
+        with ui.column().classes("w-full max-w-6xl mx-auto q-pa-md"):
+            build_sequences_page(ui)
+
+    @ui.page("/quota")
+    def quota_page() -> None:
+        page_shell(ui, active="/quota")
+        with ui.column().classes("w-full max-w-6xl mx-auto q-pa-md"):
+            build_quota_page(ui)
 
     return ui
 
@@ -76,7 +87,7 @@ def run_web(
         reload=reload,
         show=show,
         title=title,
-            )
+    )
 
 
 if __name__ == "__main__":
