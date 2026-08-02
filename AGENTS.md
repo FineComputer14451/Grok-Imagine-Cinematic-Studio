@@ -2,7 +2,7 @@
 
 **This file provides context and instructions for AI coding agents and assistants working in this workspace.**
 
-**Version:** July 2026 (Updated for Grok Imagine Cinematic Studio **v3.9.0**, unified **Grok 4.5** registry defaults + **v9-4p5 / grok-4-auto** specialist Model Layer, optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, Identity Continuity Protocol, Parallel Brief Protocol, interactive CLI TUI, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
+**Version:** August 2026 (Updated for Grok Imagine Cinematic Studio **v3.9.0**, multi-surface control plane **`studio_core` + TUI / Streamlit / NiceGUI / FastAPI**, unified **Grok 4.5** registry defaults + **v9-4p5 / grok-4-auto** specialist Model Layer, optional **Grok 4.3** 1M, Imagine Agent Mode Handoff, Identity Continuity Protocol, Parallel Brief Protocol, interactive CLI TUI, guided Production Bible wizard, Grok Build ≥ **0.2.93**, **plugin marketplace multi-plugin packs**, AI Polish Director)  
 **Canonical Source:** https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/AGENTS.md
 
 > [!NOTE]
@@ -48,7 +48,10 @@ This workspace is designed for advanced **Grok 4.5** agent workflows, with heavy
 ├── .grok-plugin/                # Marketplace multi-plugin (full suite + 5 packs), plugin.json, plugin-index.json, packs/
 ├── artifacts/                   # Generated outputs (gitignored contents; keep .gitkeep)
 ├── scripts/                     # Install/verify/update helpers + thin shims
-├── web_ui/                      # Streamlit dashboard (model pickers, quota sim, DNA/sequence tools)
+├── studio_core/                 # UI-agnostic services (dashboard · ActionSpec · execute_action)
+├── web_ui/                      # Streamlit dashboard (Bible wizard, DNA, quota, Tools)
+├── web_nicegui/                 # NiceGUI shell (cinematic-studio web)
+├── studio_api/                  # FastAPI control plane (cinematic-studio api)
 ├── tools/                       # CLI + model registry (models.py is canonical stack)
 ├── references/                  # MODELS.md · MODELS_v3.6.md · agents/ Role Cards
 ├── docs/                        # Human docs: guides/, templates/, releases/, archive/
@@ -61,10 +64,42 @@ This workspace is designed for advanced **Grok 4.5** agent workflows, with heavy
 └── (other: config/, examples/, tests/, assets/)
 ```
 
-Full map: `docs/REPOSITORY_LAYOUT.md`.
+Full map: `docs/REPOSITORY_LAYOUT.md`. Dual-run web shells: `docs/guides/WEB_SHELLS.md`.
 
 User-global skills (all projects): `~/.grok/skills/`.  
 User config: `~/.grok/config.toml`.
+
+## Multi-Surface Control Plane (v3.9.0)
+
+All operator surfaces share **`studio_core`** so dashboard snapshots, ActionSpec allowlists, and `execute_action` stay consistent. Prefer extending `studio_core.services` over duplicating logic in a single UI.
+
+| Surface | Path / entry | When to use |
+|---------|--------------|-------------|
+| **Shared core** | `studio_core/services/` — `dashboard.py`, `actions.py`, `execute.py` | Any control-plane feature (new ActionSpec, dashboard fields, execute modes) |
+| **CLI** | `cinematic-studio` / `python tools/cinematic_studio_cli.py` | Scripts, CI, agents, headless production (Bible, DNA, sequence, handoff, doctor) |
+| **TUI** | `cinematic-studio ui` (Textual; optional `ui --print` non-TTY) | SSH / no-browser; live dashboard + launcher/cockpit; `execute` via **subprocess** |
+| **Streamlit** | `streamlit run web_ui/app.py` (`requirements.txt`) | Guided Bible wizard, DNA bank forms, Community Cloud, live Imagine batch when `XAI_API_KEY` is set |
+| **NiceGUI** | `cinematic-studio web --port 8088` (`requirements-nicegui.txt`) | Browser cockpit parity with ActionSpec forms; low-latency **in-process** execute |
+| **FastAPI** | `cinematic-studio api --port 8090` (`requirements-api.txt`) | Automation / custom UIs; OpenAPI at `/docs`; dashboard + ActionSpec over HTTP |
+
+**Rules for agents:**
+
+1. Do **not** invent parallel dashboard/action registries per surface — wire through `studio_core`.
+2. TUI and NiceGUI both enforce the ActionSpec allowlist + forbidden argv tokens; keep that invariant.
+3. Surfaces are complementary: Streamlit + NiceGUI may run together on different ports; neither replaces the CLI.
+4. Smoke without long-running servers: `python scripts/smoke_studio_surfaces.py`.
+5. Full dual-run matrix and NiceGUI routes: `docs/guides/WEB_SHELLS.md`.
+
+```bash
+# Orient (TUI)
+cinematic-studio ui
+cinematic-studio ui --print          # non-TTY fallback
+
+# Browser shells
+streamlit run web_ui/app.py
+pip install -r requirements-nicegui.txt && cinematic-studio web --host 127.0.0.1 --port 8088
+pip install -r requirements-api.txt     && cinematic-studio api --host 127.0.0.1 --port 8090
+```
 
 ## Grok 4.5 Model Layer (Required Knowledge)
 
@@ -376,15 +411,16 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 
 ## Project-Specific Notes
 
-- Primary project: **Grok Imagine Cinematic Studio** **v3.9.0** — registry default **`grok-4.5`** + specialist **v9-4p5 / grok-4-auto** Model Layer + dual Imagine Video **1.0 / 1.5** + Imagine Agent Mode Handoff + Identity Continuity + Parallel Brief Protocol + interactive CLI TUI + guided Bible wizard + **plugin modularity packs**.
+- Primary project: **Grok Imagine Cinematic Studio** **v3.9.0** — registry default **`grok-4.5`** + specialist **v9-4p5 / grok-4-auto** Model Layer + dual Imagine Video **1.0 / 1.5** + Imagine Agent Mode Handoff + Identity Continuity + Parallel Brief Protocol + multi-surface control plane (`studio_core` · TUI · Streamlit · NiceGUI · FastAPI) + guided Bible wizard + **plugin modularity packs**.
 - All generated artifacts **must** be saved under `artifacts/` (repo root).
 - Project skills live in `.grok/skills/`; user-global skills in `~/.grok/skills/`.
 - Plugin marketplace lives in `.grok-plugin/` (full suite + 5 packs, **62 skills** + commands; Wave A P0 included). Install full suite via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
 - Workspace supports SFW cinematic work and NSFW/erotic pipelines (**ErosForge only when explicitly activated**).
 - **Model stack:** cinematic + Build/coding registry default **`grok-4.5`**; specialist routing **v9-4p5 / grok-4-auto** when available; optional 1M **`grok-4.3`**; Imagine **1.0** default; `VIDEO_PIPELINE_SPEC` via registry helpers; **1.5** for native-audio / high-physics / intimacy workflows.
+- **Control plane:** shared `studio_core` powers `cinematic-studio ui` · `streamlit run web_ui/app.py` · `cinematic-studio web` · `cinematic-studio api` — see Multi-Surface section above and `docs/guides/WEB_SHELLS.md`.
 - Full suite: **62/62** skills + Role Cards (includes `grok-doctor`, `multi-clip-continuity-orchestrator`, `ai-image-recreation`).
-- **Recent history:** **3.9.0** — multi-surface control plane (studio_core · NiceGUI · FastAPI). **3.8.9** — TUI + Streamlit compact/ops/full view modes. **3.8.8** — Operator UX control plane (density · readiness · convergence · delivery · handoff validate). **3.8.7** — Wave A · Parallel Brief Protocol · Grok Doctor · Multi-Clip Continuity. **3.8.6** — dual-model polish pin. **3.8.4** — interactive CLI TUI. **3.8.1** — Identity Continuity. **3.8.0** — plugin packs. **3.7.1** — Imagine Agent Mode Handoff.
-- Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, `docs/releases/`, `references/MODELS.md`, `references/agents/MODEL_LAYER_v4.5.md`, `docs/guides/Quick_Start_Guide.md`).
+- **Recent history:** **3.9.0** — multi-surface control plane (`studio_core` · NiceGUI · FastAPI + Streamlit wiring). **3.8.9** — TUI + Streamlit compact/ops/full view modes. **3.8.8** — Operator UX control plane (density · readiness · convergence · delivery · handoff validate). **3.8.7** — Wave A · Parallel Brief Protocol · Grok Doctor · Multi-Clip Continuity. **3.8.6** — dual-model polish pin. **3.8.4** — interactive CLI TUI. **3.8.1** — Identity Continuity. **3.8.0** — plugin packs. **3.7.1** — Imagine Agent Mode Handoff.
+- Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, `docs/releases/`, `docs/guides/WEB_SHELLS.md`, `references/MODELS.md`, `references/agents/MODEL_LAYER_v4.5.md`, `docs/guides/Quick_Start_Guide.md`).
 
 ## Quick Start for New Tasks
 
@@ -392,7 +428,7 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 2. Confirm model stack: registry default **`grok-4.5`**; specialist v9-4p5 / `grok-4-auto` when available; only use **`grok-4.3`** when 1M context is required.
 3. Check if an existing skill covers it (`ls .grok/skills/` or `ls ~/.grok/skills/`, skill-slug table above, or `references/agents/AGENT_INDEX.md`). For plugin users: `.grok-plugin/plugin-index.json` or `grok plugin details grok-imagine-cinematic-studio`.
 4. If no skill exists and the task is repeatable/specialized → create one with `create-skill` / `cinematic-skill-creator` (or extend via cinematic-studio-meta-installer).
-5. Execute with the correct tools / skill activation. Prefer native Grok plugin commands (`grok plugin ...`) and studio CLI (`cinematic-studio` / `python tools/cinematic_studio_cli.py ...`).
+5. Execute with the correct tools / skill activation. Prefer native Grok plugin commands (`grok plugin ...`) and studio CLI (`cinematic-studio` / `python tools/cinematic_studio_cli.py ...`). Operator UX changes go through **`studio_core`**, then surface UIs (TUI / Streamlit / NiceGUI / FastAPI) — not one-off forks.
 6. For generation: prefer in-session Imagine tools; otherwise handoff packet (Agent Mode Handoff / Execution Bridge) or API CLI. Enforce plate/motion readiness before video spend.
 7. Save all outputs to `artifacts/`.
 8. In the **final response**, use appropriate render components (when available) and provide clear, actionable output.
@@ -406,4 +442,4 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 **This AGENTS.md is the canonical reference for all AI agents operating in this environment.**  
 Update it whenever workflows, skills, or best practices evolve (e.g. new skills, plugin changes, model updates, or doc releases).
 
-*Maintained for SuperGrokPro cinematic & development workflows — July 2026 (v3.9.0 · Grok 4.5 / Model Layer v4.5)*
+*Maintained for SuperGrokPro cinematic & development workflows — August 2026 (v3.9.0 · multi-surface control plane · Grok 4.5 / Model Layer v4.5)*
