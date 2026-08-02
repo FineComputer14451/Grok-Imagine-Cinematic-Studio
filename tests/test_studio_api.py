@@ -1,0 +1,144 @@
+"""PR9: FastAPI control plane over studio_core."""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT))
+
+
+def test_create_app_and_health() -> None:
+    try:
+        import fastapi  # noqa: F401
+    except ImportError:
+        return
+    from fastapi.testclient import TestClient
+    from studio_api.app import create_app
+
+    client = TestClient(create_app())
+    r = client.get("/health")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["ok"] is True
+    assert body["actions"] >= 10
+    assert body["studio_version"]
+
+
+def test_dashboard_endpoint() -> None:
+    try:
+        import fastapi  # noqa: F401
+    except ImportError:
+        return
+    from fastapi.testclient import TestClient
+    from studio_api.app import create_app
+
+    client = TestClient(create_app())
+    r = client.get("/v1/dashboard")
+    assert r.status_code == 200
+    snap = r.json()
+    for key in ("project", "studio", "quota", "production", "studio_version"):
+        assert key in snap
+
+
+def test_list_and_get_actions() -> None:
+    try:
+        import fastapi  # noqa: F401
+    except ImportError:
+        return
+    from fastapi.testclient import TestClient
+    from studio_api.app import create_app
+
+    client = TestClient(create_app())
+    r = client.get("/v1/actions")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["count"] == len(data["actions"])
+    ids = {a["id"] for a in data["actions"]}
+    assert "status" in ids
+    assert "dna_list" in ids
+
+    detail = client.get("/v1/actions/status")
+    assert detail.status_code == 200
+    assert detail.json()["base_argv"] == ["status"]
+
+    missing = client.get("/v1/actions/nope_not_real")
+    assert missing.status_code == 404
+
+
+def test_execute_status() -> None:
+    try:
+        import fastapi  # noqa: F401
+    except ImportError:
+        return
+    from fastapi.testclient import TestClient
+    from studio_api.app import create_app
+
+    client = TestClient(create_app())
+    r = client.post("/v1/actions/status/execute", json={"answers": {}, "mode": "inprocess"})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["ok"] is True
+    assert body["returncode"] == 0
+    assert body["argv"] == ["status"]
+    assert body["stdout"] or body["output"]
+
+
+def test_execute_validation_failure() -> None:
+    try:
+        import fastapi  # noqa: F401
+    except ImportError:
+        return
+    from fastapi.testclient import TestClient
+    from studio_api.app import create_app
+
+    client = TestClient(create_app())
+    r = client.post(
+        "/v1/actions/bible_create/execute",
+        json={"answers": {"title": ""}, "mode": "inprocess"},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body["ok"] is False
+    assert body["errors"] or body["returncode"] != 0
+
+
+def test_api_cli_help() -> None:
+    import subprocess
+
+    cli = ROOT / "tools" / "cinematic_studio_cli.py"
+    result = subprocess.run(
+        [sys.executable, str(cli), "api", "--help"],
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+    )
+    assert result.returncode == 0
+    assert "FastAPI" in result.stdout or "control plane" in result.stdout.lower() or "api" in result.stdout.lower()
+
+
+def test_main_help_lists_api() -> None:
+    import subprocess
+
+    cli = ROOT / "tools" / "cinematic_studio_cli.py"
+    result = subprocess.run(
+        [sys.executable, str(cli), "--help"],
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+    )
+    assert result.returncode == 0
+    assert "api" in result.stdout
+
+
+if __name__ == "__main__":
+    test_create_app_and_health()
+    test_dashboard_endpoint()
+    test_list_and_get_actions()
+    test_execute_status()
+    test_execute_validation_failure()
+    test_api_cli_help()
+    test_main_help_lists_api()
+    print("studio_api tests passed")

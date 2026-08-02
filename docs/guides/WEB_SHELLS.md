@@ -57,3 +57,13 @@ NiceGUI routes:
 ## Migration notes (PR1–PR6)
 
 See `docs/PR1_STUDIO_CORE_DASHBOARD.md` … `docs/PR6_NICEGUI_PRODUCTION_IMAGINE.md` for the extract-and-shim history. Existing `cli.tui.actions` / `cli.tui.runner` imports remain stable.
+
+## HTTP control plane (optional)
+
+```bash
+pip install -r requirements-api.txt
+cinematic-studio api --port 8090
+```
+
+OpenAPI docs at `/docs`. See `docs/PR9_STUDIO_API.md`.
+
