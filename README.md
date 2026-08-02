@@ -46,9 +46,11 @@ Whether you’re crafting Marvel-style hero reveals, cyberpunk neon sequences, i
 
 - **TUI Home view modes** — `1` compact · `2` ops · `3` full · Tab cycle · `p` pause auto-refresh · action list filter
 - **Streamlit Dashboard view modes** — same compact/ops/full density (session radio; TUI 1/2/3 parity)
+- **Shared `studio_core` services** — UI-agnostic dashboard snapshot, ActionSpec registry, and `execute_action` (in-process / subprocess)
+- **NiceGUI web shell** — `cinematic-studio web` (Dashboard · Production · DNA · Sequences · Imagine · Quota); dual-run with Streamlit
 - Prior **3.8.8** — Operator UX control plane (readiness · convergence · delivery · handoff validate · Wave A packaging)
 
-See full details in [CHANGELOG.md](CHANGELOG.md) and [docs/releases/RELEASE_NOTES_v3.8.9.md](docs/releases/RELEASE_NOTES_v3.8.9.md).
+See full details in [CHANGELOG.md](CHANGELOG.md) and [docs/releases/RELEASE_NOTES_v3.8.9.md](docs/releases/RELEASE_NOTES_v3.8.9.md). Dual-run web guide: [docs/guides/WEB_SHELLS.md](docs/guides/WEB_SHELLS.md).
 
 ---
 
@@ -98,7 +100,9 @@ flowchart TB
 
     subgraph Tools["🛠️ Tools, CLI & Interfaces"]
         CLI["cinematic-studio CLI<br/>(models, dna, sequence, quota, nsfw, plugin...)"]
+        CORE["studio_core services<br/>dashboard · ActionSpec · execute"]
         WEBUI["Streamlit Web UI<br/>Guided Bible • DNA Bank • Cost Estimator"]
+        NICE["NiceGUI shell (optional)<br/>cinematic-studio web"]
         SKILLS["62 Custom Grok Skills<br/>(.grok/skills/)"]
     end
 
@@ -117,6 +121,9 @@ flowchart TB
     SD <--> MPA
     MPA --> PB --> DNA
     DNA --> HANDOFF
+    CLI --> CORE
+    CORE --> WEBUI
+    CORE --> NICE
     HANDOFF --> READINESS
     READINESS --> IMAGINE
     IMAGINE --> QA2 --> COLOR2 --> POLISH2 --> DELIVER
@@ -166,7 +173,9 @@ Grok Imagine Cinematic Studio v3.8.9  (Studio Director + 25+ Agents · Grok 4.5 
 ├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, bible_stages, imagine_bridge, handoff_schema, cli/
 ├── tools/cinematic_studio_cli.py   # Unified CLI (create-bible --wizard, dna, sequence, quota, nsfw, imagine, plugin, validate...)
 ├── references/MODELS_v3.6.md   # Dual-stack registry (grok-4.5 cinematic default)
+├── studio_core/                  # UI-agnostic services (dashboard, ActionSpec, execute_action)
 ├── web_ui/app.py                 # Streamlit: Guided Bible, DNA bank, sequence dashboard, live cost estimation
+├── web_nicegui/                  # Optional NiceGUI shell (cinematic-studio web)
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT.md              # Primary activation prompt (v3.8+ compatible)
 ├── scripts/                      # Release helpers & verify shims
@@ -257,6 +266,9 @@ cinematic-studio plugin packs
 
 # Interactive terminal UI (dashboard + launcher + cockpit)
 cinematic-studio ui
+
+# Optional NiceGUI web shell (requires requirements-nicegui.txt)
+cinematic-studio web --port 8088
 # Cockpit (press c): Bible, DNA init/lock/handoff, Sequence init/add-clip/handoff,
 #   quota budget + sequence estimate, models verify / validate / stack
 # Launcher (press l): status, lists, validate, stack, show DNA/sequence
@@ -265,20 +277,34 @@ cinematic-studio ui
 
 See full command reference in the [Quick Start Guide](docs/guides/Quick_Start_Guide.md) and run `cinematic-studio --help`.
 
-### 4. Web UI (Recommended for Guided Work)
+### 4. Web UI (dual-run: Streamlit + NiceGUI)
+
+**Streamlit** (default · Community Cloud · full guided Bible wizard):
 
 ```bash
 streamlit run web_ui/app.py
 ```
 
-Beautiful dashboard featuring:
 - Multi-step Guided Bible Creator
 - Character DNA Bank & injection blocks
-- Live quota/cost estimator
-- Sequence health dashboard
-- Model pickers (grok-4.5 / 1.5 video)
+- Live quota/cost estimator + live xAI batch execute (when `XAI_API_KEY` is set)
+- Sequence health dashboard · model pickers (grok-4.5 / 1.5 video)
 
-Deployable to Streamlit Community Cloud (see `docs/guides/streamlit_cloud_deploy.md`). For a lightweight in-terminal live dashboard + safe command launcher (no browser), use `cinematic-studio ui` instead.
+Deployable to Streamlit Community Cloud (see [`docs/guides/streamlit_cloud_deploy.md`](docs/guides/streamlit_cloud_deploy.md)).
+
+**NiceGUI** (optional · same ActionSpec safety as the TUI):
+
+```bash
+pip install -r requirements-nicegui.txt
+cinematic-studio web --port 8088
+# → http://127.0.0.1:8088/
+# Routes: / · /production · /dna · /sequences · /imagine · /quota
+```
+
+Both shells share `studio_core.services` (dashboard snapshot, ActionSpec argv building, `execute_action`). Run either or both — they do not conflict. Details: [`docs/guides/WEB_SHELLS.md`](docs/guides/WEB_SHELLS.md).
+
+For a lightweight in-terminal live dashboard + safe command launcher (no browser), use `cinematic-studio ui`.
+
 ### 5. Full Documentation
 
 - **[Official Documentation](docs/OFFICIAL_DOCUMENTATION.md)** — Canonical product manual (install, workflow, agents, CLI, packs, ops)

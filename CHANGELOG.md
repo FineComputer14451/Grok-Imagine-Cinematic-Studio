@@ -4,9 +4,15 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Added
+- **`studio_core` service layer** — `build_studio_dashboard`, ActionSpec registry, `execute_action` (in-process + subprocess) shared by TUI / Streamlit / NiceGUI
+- **NiceGUI web shell** — `cinematic-studio web` routes: Dashboard, Production, DNA, Sequences, Imagine, Quota (`web_nicegui/`, optional `requirements-nicegui.txt`)
+- **Dual-run guide** — [`docs/guides/WEB_SHELLS.md`](docs/guides/WEB_SHELLS.md)
+
 ### Changed
 - **TUI command palette** — `/` or Ctrl+P opens allowlisted action search; KPI bar under status strip; `y` saves orient brief to `artifacts/tui_orient_brief.txt`; scroll preserved on refresh
 - **TUI non-TTY fallback** — `cinematic-studio ui --print` (and bare `ui` without a TTY) prints the orient dashboard instead of hard-failing; optional `artifacts/tui_orient_brief.txt`
+- **TUI runner** — delegates to `studio_core.services.execute` (`mode=subprocess`); `cli.tui.actions` re-exports core ActionSpec catalog
 
 ## [3.8.9] - 2026-07-26
 
