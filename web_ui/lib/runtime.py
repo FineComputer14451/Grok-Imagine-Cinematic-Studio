@@ -13,6 +13,9 @@ from openai import OpenAI
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
+# studio_core (UI-agnostic services) lives at repo root
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 STUDIO_VERSION = "3.7.1"
 ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
@@ -95,7 +98,10 @@ try:
         quota_dashboard,
         set_budget,
     )
-    from cli.dashboard import build_studio_dashboard
+    try:
+        from studio_core.services.dashboard import build_studio_dashboard
+    except ImportError:  # pragma: no cover — shim path
+        from cli.dashboard import build_studio_dashboard
     from imagine_jobs import job_summary, list_jobs
     from imagine_regions import IMAGINE_REGIONS, get_active_region, set_imagine_region
     from models import (
@@ -343,6 +349,65 @@ def run_cli(args: list[str], timeout: int = 120) -> tuple[int, str]:
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=ROOT)
     output = (result.stdout or "") + (result.stderr or "")
     return result.returncode, output.strip()
+
+
+def execute_registered(
+    action_id: str,
+    answers: dict[str, str] | None = None,
+    *,
+    timeout: float = 90.0,
+    mode: str = "inprocess",
+) -> dict[str, Any]:
+    """Run a registered ActionSpec via studio_core (Streamlit-safe dict result).
+
+    Falls back to bare error dict if studio_core is unavailable.
+    """
+    try:
+        from studio_core.services.execute import execute_action
+    except ImportError:
+        return {
+            "ok": False,
+            "returncode": 2,
+            "stdout": "",
+            "stderr": "studio_core.services.execute unavailable",
+            "argv": [],
+            "action_id": action_id,
+            "errors": ["studio_core unavailable"],
+            "mode": mode,
+        }
+    result = execute_action(
+        action_id,
+        answers or {},
+        mode=mode,  # type: ignore[arg-type]
+        timeout=timeout,
+        cwd=ROOT,
+    )
+    return {
+        "ok": bool(result.ok),
+        "returncode": int(result.returncode),
+        "stdout": result.stdout or "",
+        "stderr": result.stderr or "",
+        "argv": list(result.argv),
+        "action_id": result.action_id or action_id,
+        "errors": list(result.errors or []),
+        "timed_out": bool(result.timed_out),
+        "mode": result.mode,
+        "output": result.output,
+    }
+
+
+def run_cli_or_action(
+    action_id: str,
+    answers: dict[str, str] | None = None,
+    *,
+    timeout: float = 90.0,
+) -> tuple[int, str]:
+    """Prefer ActionSpec execute; return (code, combined output) like :func:`run_cli`."""
+    result = execute_registered(action_id, answers, timeout=timeout, mode="inprocess")
+    out = (result.get("output") or "").strip()
+    if not out:
+        out = ((result.get("stdout") or "") + (result.get("stderr") or "")).strip()
+    return int(result.get("returncode", 1)), out
 
 
 @st.cache_data(ttl=300, show_spinner=False)
