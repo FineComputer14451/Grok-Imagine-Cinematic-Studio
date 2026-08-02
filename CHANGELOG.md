@@ -4,6 +4,8 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.9.0] - 2026-08-02
+
 ### Added
 - **`studio_core` service layer** — `build_studio_dashboard`, ActionSpec registry, `execute_action` (in-process + subprocess) shared by TUI / Streamlit / NiceGUI
 - **NiceGUI web shell** — `cinematic-studio web` routes: Dashboard, Production, DNA, Sequences, Imagine, Quota (`web_nicegui/`, optional `requirements-nicegui.txt`)
@@ -17,13 +19,13 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **TUI non-TTY fallback** — `cinematic-studio ui --print` (and bare `ui` without a TTY) prints the orient dashboard instead of hard-failing; optional `artifacts/tui_orient_brief.txt`
 - **TUI runner** — delegates to `studio_core.services.execute` (`mode=subprocess`); `cli.tui.actions` re-exports core ActionSpec catalog
 
-## [3.8.9] - 2026-07-26
+## [3.9.0] - 2026-07-26
 
 ### Changed
-- **Studio version** — `VERSION` → **3.8.9**; activation `Activate Grok Imagine Cinematic Studio v3.8.9`
+- **Studio version** — `VERSION` → **3.9.0**; activation `Activate Grok Imagine Cinematic Studio v3.9.0`
 - **TUI Home view modes** — `1` compact / `2` ops / `3` full / Tab cycle; `p` pause auto-refresh; dual-column readiness|convergence; launcher/cockpit type-to-filter
 - **Streamlit Dashboard view modes** — compact / ops / full density (TUI 1/2/3 parity); session-persisted radio; section visibility matches control-plane Home
-- Handoff `PROTOCOL_OK` includes **3.8.9**; `STUDIO_COMPATIBILITY_VERSION` aligned
+- Handoff `PROTOCOL_OK` includes **3.9.0**; `STUDIO_COMPATIBILITY_VERSION` aligned
 
 ## [3.8.8] - 2026-07-26
 

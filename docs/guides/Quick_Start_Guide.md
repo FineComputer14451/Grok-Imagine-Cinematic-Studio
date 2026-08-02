@@ -1,6 +1,6 @@
-# Grok Imagine Cinematic Studio v3.8.9 — Quick Start Guide
+# Grok Imagine Cinematic Studio v3.9.0 — Quick Start Guide
 
-**Version:** 3.8.9 | **Last Updated:** August 1, 2026  
+**Version:** 3.9.0 | **Last Updated:** August 1, 2026  
 **Suite:** 25+ Role-Card core agents · **62 skills** · marketplace full suite + 5 packs
 
 > [!NOTE]
@@ -56,7 +56,7 @@ Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 **On grok.com or mobile chat** — new conversation:
 
 ```
-Activate Grok Imagine Cinematic Studio v3.8.9
+Activate Grok Imagine Cinematic Studio v3.9.0
 ```
 
 or
@@ -67,7 +67,7 @@ start cinematic production
 
 For a full lock-in on the web, paste `MASTER_PROMPT.md` first, then Activate.
 
-This loads the complete **v3.8.9** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **62-skill** suite.
+This loads the complete **v3.9.0** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **62-skill** suite.
 
 ### Start a New Project
 
@@ -121,11 +121,11 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 
 ---
 
-## 3. Recommended Production Workflow (v3.8.9)
+## 3. Recommended Production Workflow (v3.9.0)
 
 ### Phase 1: Activation & Planning
 1. **Activate the Full Studio**  
-   `Activate Grok Imagine Cinematic Studio v3.8.9`
+   `Activate Grok Imagine Cinematic Studio v3.9.0`
 
 2. **Start a New Project**  
    Provide title, logline, genre, tone, target length, and key characters.
@@ -175,7 +175,7 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 ---
 
 **Pro Tip:** You can combine steps in one message:  
-> `"Activate Grok Imagine Cinematic Studio v3.8.9, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
+> `"Activate Grok Imagine Cinematic Studio v3.9.0, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
 
 ---
 
@@ -198,7 +198,7 @@ North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-sta
 
 ---
 
-## 5. Pro Tips for Best Results (v3.8.9)
+## 5. Pro Tips for Best Results (v3.9.0)
 
 - **Be specific** — Include genre, tone, emotional goals, character details, and references.
 - **Use the Project Bible** — Lock `model_stack` + `VIDEO_PIPELINE_SPEC` (1.0 cost default; 1.5 when audio/physics need it).
@@ -216,7 +216,7 @@ North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-sta
 
 | Command                                           | Result                                      |
 |---------------------------------------------------|---------------------------------------------|
-| `Activate Grok Imagine Cinematic Studio v3.8.9`   | Load full v3.8.9 studio (Grok 4.5 + 1.0/1.5) |
+| `Activate Grok Imagine Cinematic Studio v3.9.0`   | Load full v3.9.0 studio (Grok 4.5 + 1.0/1.5) |
 | `create-bible --wizard`                           | Guided Production Bible (TTY interactive)   |
 | `Start new project`                               | Begin fresh production                      |
 | `GENERATE DIRECTOR'S CUT`                         | Refined version with notes                  |
@@ -261,8 +261,8 @@ North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-sta
 
 **You are now ready to create professional cinematic productions with Grok 4.5 orchestration + Imagine Video 1.0/1.5 support.**
 
-Just say **"Activate Grok Imagine Cinematic Studio v3.8.9"** and begin.
+Just say **"Activate Grok Imagine Cinematic Studio v3.9.0"** and begin.
 
 ---
 
-*Grok Imagine Cinematic Studio v3.8.9 — Grok 4.5 / Model Layer v4.5 · 62 skills · August 2026*
+*Grok Imagine Cinematic Studio v3.9.0 — Grok 4.5 / Model Layer v4.5 · 62 skills · August 2026*

@@ -97,7 +97,7 @@ def studio_version(snap: dict[str, Any] | None = None) -> str:
 
         vf = STUDIO_ROOT / "VERSION"
         if vf.is_file():
-            return vf.read_text(encoding="utf-8").strip() or "3.8.9"
+            return vf.read_text(encoding="utf-8").strip() or "3.9.0"
     except Exception:
         pass
-    return "3.8.9"
+    return "3.9.0"

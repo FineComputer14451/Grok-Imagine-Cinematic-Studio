@@ -1,5 +1,5 @@
 # CLI Reference
-## cinematic-studio (Grok Imagine Cinematic Studio v3.8.9)
+## cinematic-studio (Grok Imagine Cinematic Studio v3.9.0)
 
 Primary entry points:
 
@@ -121,7 +121,7 @@ python tools/cinematic_studio_cli.py ui --interval 5
 
 Live studio dashboard + safe launcher + production cockpit. **No Imagine spend** from Launcher/Cockpit.
 
-#### TUI keys (v3.8.9)
+#### TUI keys (v3.9.0)
 
 | Key | Action |
 |-----|--------|
@@ -150,7 +150,7 @@ Operator loop: [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.
 | `y` | Save orient brief → `artifacts/tui_orient_brief.txt` |
 | `ui --print` | Non-TTY / CI: print orient dashboard instead of hard-fail |
 
-These ship with the next version bump; do not treat as part of 3.8.9 until `VERSION` advances.
+These ship with the next version bump; do not treat as part of 3.9.0 until `VERSION` advances.
 
 ### NSFW (requires prior ErosForge activation in chat)
 
@@ -253,4 +253,4 @@ cinematic-studio ui
 
 *Run any command with `--help` for full options. The CLI is the automation backbone of the Studio.*
 
-*Grok Imagine Cinematic Studio v3.8.9 — CLI Reference · Independent community project · Not affiliated with xAI*
+*Grok Imagine Cinematic Studio v3.9.0 — CLI Reference · Independent community project · Not affiliated with xAI*

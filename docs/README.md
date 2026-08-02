@@ -1,5 +1,5 @@
 # Documentation
-## Grok Imagine Cinematic Studio v3.8.9
+## Grok Imagine Cinematic Studio v3.9.0
 
 Project documentation index (community-maintained).
 
@@ -16,7 +16,7 @@ Project documentation index (community-maintained).
 | **[Official Overview](OFFICIAL_OVERVIEW.md)** | Short product introduction and capabilities |
 | **[Disclaimer](../DISCLAIMER.md)** | Independence notice — not affiliated with xAI |
 | **[Quick Start Guide](guides/Quick_Start_Guide.md)** | Fast onboarding + operator loop |
-| **[User Guide](guides/USER_GUIDE.md)** | End-to-end production workflow (v3.8.9) |
+| **[User Guide](guides/USER_GUIDE.md)** | End-to-end production workflow (v3.9.0) |
 | **[Operator Control Plane](guides/OPERATOR_CONTROL_PLANE.md)** | Orient → Health → Produce → Gate → Deliver |
 | **[Architecture](ARCHITECTURE.md)** | System design, layers, protocols |
 | **[CLI Reference](CLI_REFERENCE.md)** | Full command reference + TUI keys |
@@ -40,7 +40,7 @@ Project documentation index (community-maintained).
 
 ## Releases
 
-- [Release Notes index](releases/) — current: **[v3.8.9](releases/RELEASE_NOTES_v3.8.9.md)**
+- [Release Notes index](releases/) — current: **[v3.9.0](releases/RELEASE_NOTES_v3.9.0.md)**
 - Root [CHANGELOG.md](../CHANGELOG.md)
 
 ## Agent & Protocol Sources of Truth
@@ -73,6 +73,6 @@ Production Bible and genre examples live under [`examples/`](../examples/) (incl
 
 ---
 
-**Version**: 3.8.9  
+**Version**: 3.9.0  
 **Last updated**: August 2026  
 **Requires**: Grok Build ≥ 0.2.93 · Python 3.12+ (CLI / Web UI)

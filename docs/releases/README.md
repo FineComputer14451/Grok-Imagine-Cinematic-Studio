@@ -2,7 +2,7 @@
 
 | File | Studio version |
 |------|----------------|
-| [RELEASE_NOTES_v3.8.9.md](RELEASE_NOTES_v3.8.9.md) | **Current** (TUI + Streamlit view modes) |
+| [RELEASE_NOTES_v3.9.0.md](RELEASE_NOTES_v3.9.0.md) | **Current** (TUI + Streamlit view modes) |
 | [RELEASE_NOTES_v3.8.8.md](RELEASE_NOTES_v3.8.8.md) | Operator UX control plane · Wave A packaging |
 | [RELEASE_NOTES_v3.8.7.md](RELEASE_NOTES_v3.8.7.md) | Wave A · Doctor · Multi-Clip Continuity · CLI ensure |
 | [RELEASE_NOTES_v3.8.6.md](RELEASE_NOTES_v3.8.6.md) | Dual-model polish pin |
