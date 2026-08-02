@@ -27,7 +27,7 @@ python tools/cinematic_studio_cli.py sequence edl "Act 1"
 python tools/cinematic_studio_cli.py sequence edl "Act 1" --output artifacts/edl/custom.json
 ```
 
-## AI Polish (v3.8.6 · Grok 4.5 / v9-4p5)
+## AI Polish (v3.9.0 · Grok 4.5 / v9-4p5)
 
 Skill: `ai-polish-director` · Role Card: `references/agents/AI_Polish_Director.md` · Presets: `.grok/skills/ai-polish-director/references/polish_presets.md`
 
