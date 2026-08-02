@@ -1,6 +1,6 @@
 # Moved → MASTER_PROMPT.md
 
-The canonical Grok 4.5 / studio **v3.7.1** activation prompt is:
+The canonical Grok 4.5 / studio **v3.8.9** activation prompt is:
 
 **[MASTER_PROMPT.md](MASTER_PROMPT.md)**
 
