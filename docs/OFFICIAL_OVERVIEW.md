@@ -1,7 +1,7 @@
 # Grok Imagine Cinematic Studio
 ## Official Overview — v3.8.9
 
-**The most advanced multi-agent cinematic production system for Grok 4.5 Build + Grok 4.3 dual-stack · Imagine Video 1.0 / 1.5 Native**
+**Production-grade multi-agent cinematic production for Grok 4.5 Build + Grok 4.3 dual-stack · Imagine Video 1.0 / 1.5 Native**
 
 > [!NOTE]
 > **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. “Official Overview” means the project’s own product overview — not an xAI-published document. Full notice: [DISCLAIMER.md](../DISCLAIMER.md).
@@ -25,8 +25,8 @@ It is not a simple prompt wrapper. It is a full **virtual film studio** with spe
 
 | Capability | Description |
 |------------|-------------|
-| **23+ Specialist Agents** | Studio Director, DoP, Sequence Director, Identity Lock, ErosForge, AI Polish, Sonic Architect, Wave A specialists, and more |
-| **50+ Custom Grok Skills** | Full runtime engine under `.grok/skills/` (full suite + modular packs) |
+| **25+ Specialist Agents** | Studio Director, DoP, Sequence Director, Identity Lock, ErosForge, AI Polish, Sonic Architect, Wave A specialists, and more |
+| **~62 Custom Grok Skills** | Full runtime engine under `.grok/skills/` (full suite + modular packs) |
 | **Production Bible** | Guided wizard (CLI TTY + Streamlit) with `model_stack` + `VIDEO_PIPELINE_SPEC` |
 | **Character DNA + Identity Continuity** | Forensic extraction, lock, inject, wardrobe lock, multi-character arbitration, and drift detection |
 | **Imagine Agent Mode Handoff** | Validated routing from planning agents into Grok’s native generation surfaces |
@@ -34,6 +34,7 @@ It is not a simple prompt wrapper. It is a full **virtual film studio** with spe
 | **Long-form Sequencing** | Native extend/stitch with memory bank, momentum vectors, Chain QA, arc replan, re-gen loop |
 | **Operator Control Plane** | Readiness · convergence · delivery · handoff validate · Wave A packaging (v3.8.8+) |
 | **TUI + Streamlit Density** | Compact / ops / full view modes (v3.8.9) on `cinematic-studio ui` and Dashboard |
+| **Wave A Multi-Agent** | Plate/motion, micro-physics, HMU, ADR, score, titles, crops, parallel briefs |
 | **NSFW / R-rated Pipeline** | Explicit opt-in ErosForge + NSFW Sequence Extender + dedicated quota orchestration |
 | **Post-Production** | Color grade handoff → AI Polish Director (upscale + face restoration) → Delivery |
 | **Quota Intelligence** | Cost estimation, Fast mode optimization, spend preflight, SuperGrok Heavy awareness |
@@ -119,4 +120,4 @@ Details: [RELEASE_NOTES_v3.8.9.md](releases/RELEASE_NOTES_v3.8.9.md) · [CHANGEL
 
 **Built for creators who want cinematic AI that feels directed, not just generated.**
 
-*Grok Imagine Cinematic Studio v3.8.9 — July 2026 · Independent community project · Not affiliated with xAI · [DISCLAIMER.md](../DISCLAIMER.md)*
+*Grok Imagine Cinematic Studio v3.8.9 — Independent community project · Not affiliated with xAI · [DISCLAIMER.md](../DISCLAIMER.md)*

@@ -12,7 +12,7 @@ Project documentation index (community-maintained).
 
 | Document | Description |
 |----------|-------------|
-| **[Official Documentation](OFFICIAL_DOCUMENTATION.md)** | Canonical product manual — overview, install, workflow, agents, CLI, packs, ops |
+| **[Official Documentation](OFFICIAL_DOCUMENTATION.md)** | Canonical product manual — overview, install, workflow, agents, CLI, packs, Wave A, ops |
 | **[Official Overview](OFFICIAL_OVERVIEW.md)** | Short product introduction and capabilities |
 | **[Disclaimer](../DISCLAIMER.md)** | Independence notice — not affiliated with xAI |
 | **[Quick Start Guide](guides/Quick_Start_Guide.md)** | Fast onboarding + operator loop |
@@ -50,6 +50,7 @@ Project documentation index (community-maintained).
 | Model Layer | [`references/agents/MODEL_LAYER_v4.5.md`](../references/agents/MODEL_LAYER_v4.5.md) |
 | Imagine Agent Mode Handoff | [`references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`](../references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md) |
 | Identity Continuity Protocol | [`references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`](../references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md) |
+| Parallel Brief Protocol | [`references/agents/Parallel_Brief_Protocol.md`](../references/agents/Parallel_Brief_Protocol.md) |
 | Skills taxonomy / packs | [`references/SKILLS_TAXONOMY.md`](../references/SKILLS_TAXONOMY.md) |
 | Models registry | [`references/MODELS_v3.6.md`](../references/MODELS_v3.6.md) |
 | Skills runtime | [`.grok/skills/`](../.grok/skills/) |
