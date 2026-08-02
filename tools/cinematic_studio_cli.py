@@ -8,7 +8,13 @@ from pathlib import Path
 
 import typer
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+_TOOLS_DIR = Path(__file__).resolve().parent
+_REPO_ROOT = _TOOLS_DIR.parent
+# Domain tools package root
+sys.path.insert(0, str(_TOOLS_DIR))
+# studio_core (UI-agnostic services) lives at repo root
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 from cli.animatic_commands import register as register_animatic_commands  # noqa: E402
 from cli.bible_commands import register as register_bible_commands  # noqa: E402
