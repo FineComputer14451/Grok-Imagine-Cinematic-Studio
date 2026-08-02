@@ -1,0 +1,53 @@
+// Markdownlint-cli2 config for Grok Imagine Cinematic Studio.
+// Soft hygiene: CI runs lint with continue-on-error. Style rules that flood
+// annotations on Role Cards, skill refs, prompt dumps, and example Bibles
+// are disabled. Structural issues (broken refs, empty links) stay on.
+{
+  "config": {
+    "default": true,
+    // Heading increment jumps in skill/agent docs
+    "MD001": false,
+    // Trailing spaces in tables / templates
+    "MD009": false,
+    // Double blanks in Role Cards / release notes
+    "MD012": false,
+    // Long prompt lines, tables, URLs, DNA blocks
+    "MD013": false,
+    // Dense Role Cards without blank lines around headings
+    "MD022": false,
+    // Repeated section titles across agent docs
+    "MD024": false,
+    // Fenced blocks without surrounding blanks
+    "MD031": false,
+    // Compact cheat sheets and lists
+    "MD032": false,
+    // GitHub callouts / details / badges
+    "MD033": false,
+    // Emphasis used as pseudo-headings
+    "MD036": false,
+    // Spaces inside emphasis in MASTER_PROMPT-style copy
+    "MD037": false,
+    // Unlabeled fences (prompt dumps, inject blocks)
+    "MD040": false,
+    // Stubs / partials without leading H1
+    "MD041": false,
+    // Missing final newline in examples
+    "MD047": false,
+    // Example tables with uneven columns
+    "MD056": false,
+    // Tables without surrounding blanks in dense cards
+    "MD058": false,
+    // Restarted / continued ordered lists in long docs
+    "MD029": false,
+    // Bare URLs in AGENTS/README canonical links
+    "MD034": false,
+    // Multiple H1s in long official docs
+    "MD025": false
+  },
+  "ignores": [
+    "node_modules/**",
+    ".venv/**",
+    "artifacts/**",
+    "**/__pycache__/**"
+  ]
+}

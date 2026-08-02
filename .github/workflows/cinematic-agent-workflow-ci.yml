@@ -17,6 +17,7 @@ on:
       - 'tests/**'
       - 'requirements*.txt'
       - '.github/workflows/**'
+      - '.markdownlint-cli2.jsonc'
   pull_request:
     branches: [ main ]
     paths:
@@ -32,6 +33,7 @@ on:
       - 'scripts/**'
       - 'tests/**'
       - 'requirements*.txt'
+      - '.markdownlint-cli2.jsonc'
   workflow_dispatch:
     inputs:
       validation_mode:
@@ -54,18 +56,19 @@ jobs:
       directories_ok: ${{ steps.check_dirs.outputs.directories_ok }}
     steps:
       # Full history so plugin release-pin (parent of pin-only tip) is resolvable.
-      - uses: actions/checkout@v4
+      # checkout@v5+ / setup-python@v6+ run on Node 24 (avoids Node 20 deprecation).
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Lint Markdown
-        uses: DavidAnson/markdownlint-cli2-action@v19
+        uses: DavidAnson/markdownlint-cli2-action@v20
         continue-on-error: true
         with:
           globs: '**/*.md'
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: 'pip'
