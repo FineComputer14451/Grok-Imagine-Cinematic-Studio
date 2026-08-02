@@ -9,6 +9,8 @@ on:
       - '.grok-plugin/**'
       - 'references/**'
       - 'web_ui/**'
+      - 'web_nicegui/**'
+      - 'studio_core/**'
       - 'tools/**'
       - 'scripts/**'
       - 'tests/**'
@@ -22,6 +24,8 @@ on:
       - '.grok-plugin/**'
       - 'references/**'
       - 'web_ui/**'
+      - 'web_nicegui/**'
+      - 'studio_core/**'
       - 'tools/**'
       - 'scripts/**'
       - 'tests/**'
@@ -180,7 +184,7 @@ jobs:
         if: steps.check_dirs.outputs.directories_ok == 'true' || env.VALIDATION_MODE != 'standard'
         run: |
           echo "🐍 Checking Python files..."
-          python -m py_compile tools/cinematic_studio_cli.py web_ui/app.py 2>/dev/null || echo "⚠️  Python check completed with warnings"
+          python -m py_compile tools/cinematic_studio_cli.py web_ui/app.py studio_core/services/dashboard.py studio_core/services/actions.py studio_core/services/execute.py web_nicegui/app.py 2>/dev/null || echo "⚠️  Python check completed with warnings"
 
           for f in MASTER_PROMPT_v3.6.md tools/cinematic_studio_cli.py web_ui/app.py; do
             if [ -f "$f" ]; then
@@ -192,17 +196,31 @@ jobs:
           done
 
       - name: Plugin catalog check
-        run: python -m tools.cinematic_studio_cli plugin catalog check || python -c '
-import json, sys
-sys.path.insert(0, ".")
-from tools.plugin_catalog import check_plugin_artifacts
-marketplace = json.loads(open(".grok-plugin/marketplace.json").read())
-errors = check_plugin_artifacts(marketplace, require_release_pin=False)
-if errors:
-    for e in errors: print("ERROR:", e, file=sys.stderr)
-    sys.exit(1)
-print("marketplace.json, plugin.json, and plugin-index.json are up to date")
-'
+        run: |
+          set +e
+          python tools/cinematic_studio_cli.py plugin catalog check
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            exit 0
+          fi
+          PYTHONPATH=tools python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          from plugin_catalog import check_plugin_artifacts
+
+          marketplace = json.loads(
+              Path(".grok-plugin/marketplace.json").read_text(encoding="utf-8")
+          )
+          errors = check_plugin_artifacts(marketplace, require_release_pin=False)
+          if errors:
+              for e in errors:
+                  print("ERROR:", e, file=sys.stderr)
+              sys.exit(1)
+          print("marketplace.json, plugin.json, and plugin-index.json are up to date")
+          PY
 
       - name: Run tests
         if: steps.check_dirs.outputs.directories_ok == 'true' || env.VALIDATION_MODE != 'standard'

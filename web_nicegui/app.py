@@ -41,7 +41,7 @@ def create_app() -> Any:
     def index_page() -> None:
         ui.colors(primary="#7c3aed", secondary="#22d3ee", accent="#f59e0b")
         with ui.header().classes("items-center justify-between bg-primary"):
-            ui.label("🎥 Grok Imagine Cinematic Studio").classes("text-h6")
+            ui.label("Grok Imagine Cinematic Studio").classes("text-h6")
             with ui.row().classes("items-center gap-3"):
                 ui.link("Dashboard", "/").classes("text-white")
                 ui.label("PR4 · read-only").classes("text-caption text-white")
@@ -76,8 +76,7 @@ def run_web(
         reload=reload,
         show=show,
         title=title,
-        favicon="🎥",
-    )
+            )
 
 
 if __name__ == "__main__":
