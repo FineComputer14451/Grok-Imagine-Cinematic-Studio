@@ -1,0 +1,4 @@
+# Optional NiceGUI web shell (PR4+)
+# Streamlit remains the default web UI via requirements.txt / Community Cloud.
+-r requirements.txt
+nicegui>=2.0.0
