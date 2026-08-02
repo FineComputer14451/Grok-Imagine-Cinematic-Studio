@@ -38,7 +38,7 @@ def register(app: typer.Typer) -> None:
             help="Open a browser tab on start",
         ),
     ) -> None:
-        """Launch the NiceGUI web shell (PR4: read-only dashboard).
+        """Launch the NiceGUI web shell (PR5: dashboard + DNA + sequences + quota).
 
         Requires: pip install -r requirements-nicegui.txt
 
@@ -72,7 +72,7 @@ def register(app: typer.Typer) -> None:
 
         console.print(
             f"[cyan]NiceGUI dashboard[/cyan] → http://{host}:{port}/\n"
-            "[dim]Read-only snapshot · modes compact/ops/full · "
+            "[dim]Dashboard + DNA/Sequences/Quota via execute_action · modes compact/ops/full · "
             "core: studio_core.services.dashboard[/dim]"
         )
         run_web(host=host, port=port, reload=reload, show=open_browser)
