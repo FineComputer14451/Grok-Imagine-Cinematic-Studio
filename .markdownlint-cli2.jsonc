@@ -42,7 +42,9 @@
     // Bare URLs in AGENTS/README canonical links
     "MD034": false,
     // Multiple H1s in long official docs
-    "MD025": false
+    "MD025": false,
+    // Table pipe alignment (markdownlint ≥0.41 / action v24)
+    "MD060": false
   },
   "ignores": [
     "node_modules/**",
