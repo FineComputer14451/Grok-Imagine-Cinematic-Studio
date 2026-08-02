@@ -47,6 +47,9 @@ Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 | **[grok.com/imagine](https://grok.com/imagine)** | Paste Execution Bridge packets (`cinematic-studio imagine bridge` from shell) |
 | **Grok mobile app** | Same as chat + in-app Imagine |
 | **Desktop / Android shell** | Full Method A + `cinematic-studio grok` + Grok Build CLI |
+| **Streamlit Web UI** | `streamlit run web_ui/app.py` — guided Bible, DNA bank, live batch (see [WEB_SHELLS.md](WEB_SHELLS.md)) |
+| **NiceGUI Web shell** | `cinematic-studio web` — ActionSpec pages on `studio_core` (optional) |
+| **Textual TUI** | `cinematic-studio ui` — terminal dashboard + launcher + cockpit |
 
 ### Activate the Full Studio (Recommended)
 
