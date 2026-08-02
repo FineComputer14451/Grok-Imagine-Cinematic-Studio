@@ -30,6 +30,8 @@ from lib.runtime import (
     render_footer,
     render_sidebar_stack,
     run_cli,
+    execute_registered,
+    run_cli_or_action,
     session_model_stack,
     stack_banner_markdown,
 )
@@ -80,6 +82,8 @@ __all__ = [
     "render_footer",
     "render_sidebar_stack",
     "run_cli",
+    "execute_registered",
+    "run_cli_or_action",
     "select_index",
     "session_model_stack",
     "session_quota_snapshot",

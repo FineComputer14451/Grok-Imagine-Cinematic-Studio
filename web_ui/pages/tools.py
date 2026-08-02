@@ -34,6 +34,38 @@ def render() -> None:
             st.caption("Click to verify registry + CLI pin.")
 
     st.divider()
+    st.subheader("⚡ Safe ActionSpec actions")
+    st.caption(
+        "Runs via `studio_core.services.execute` (same catalog as TUI / NiceGUI). "
+        "No free-form argv."
+    )
+    a1, a2, a3, a4 = st.columns(4)
+    with a1:
+        if st.button("Status", width="stretch", key="tools_core_status"):
+            st.session_state["_tools_core_out"] = rt.execute_registered("status")
+    with a2:
+        if st.button("Validate", width="stretch", key="tools_core_validate"):
+            st.session_state["_tools_core_out"] = rt.execute_registered("validate")
+    with a3:
+        if st.button("Stack", width="stretch", key="tools_core_stack"):
+            st.session_state["_tools_core_out"] = rt.execute_registered("stack")
+    with a4:
+        if st.button("Doctor quick", width="stretch", key="tools_core_doctor"):
+            st.session_state["_tools_core_out"] = rt.execute_registered("doctor_quick")
+    core_out = st.session_state.get("_tools_core_out")
+    if core_out:
+        if core_out.get("ok"):
+            st.success(
+                f"OK · `{' '.join(core_out.get('argv') or [])}` · mode={core_out.get('mode')}"
+            )
+        else:
+            st.error(
+                f"Failed · exit {core_out.get('returncode')} · "
+                f"`{' '.join(core_out.get('argv') or [])}`"
+            )
+        st.code(core_out.get("output") or core_out.get("stderr") or "(no output)", language="text")
+
+    st.divider()
     st.subheader("🔌 Plugin")
     if st.button("Refresh plugin details", key="tools_plugin_refresh"):
         rt.cached_plugin_details.clear()
@@ -65,8 +97,9 @@ def render() -> None:
         if not (ho_path or "").strip():
             st.warning("Enter a path to a handoff JSON file")
         else:
-            code, output = rt.run_cli(
-                ["handoff", "validate", ho_path.strip()],
+            code, output = rt.run_cli_or_action(
+                "handoff_validate",
+                {"path": ho_path.strip()},
                 timeout=60,
             )
             st.code(output, language="text")
@@ -86,16 +119,14 @@ def render() -> None:
         bridge_batch = st.text_input("SFW batch slug", key="tools_bridge_batch")
         bridge_shot = st.text_input("Shot id", key="tools_bridge_shot")
     if st.button("Preview bridge packet", width="stretch", key="tools_bridge_preview"):
-        args = ["imagine", "bridge", "-f", "markdown"]
-        if (bridge_seq or "").strip():
-            args.extend(["-s", bridge_seq.strip()])
-        if (bridge_clip or "").strip():
-            args.extend(["-c", bridge_clip.strip()])
-        if (bridge_batch or "").strip():
-            args.extend(["-b", bridge_batch.strip()])
-        if (bridge_shot or "").strip():
-            args.extend(["--shot", bridge_shot.strip()])
-        code, output = rt.run_cli(args, timeout=60)
+        answers = {
+            "sequence": (bridge_seq or "").strip(),
+            "clip": (bridge_clip or "").strip(),
+            "batch": (bridge_batch or "").strip(),
+            "shot": (bridge_shot or "").strip(),
+            "format": "markdown",
+        }
+        code, output = rt.run_cli_or_action("imagine_bridge", answers, timeout=60)
         st.code(output or "(empty)", language="markdown")
         if code == 0:
             st.success("Bridge packet ready to paste")
