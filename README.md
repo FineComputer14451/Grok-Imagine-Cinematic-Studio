@@ -281,6 +281,9 @@ Beautiful dashboard featuring:
 Deployable to Streamlit Community Cloud (see `docs/guides/streamlit_cloud_deploy.md`). For a lightweight in-terminal live dashboard + safe command launcher (no browser), use `cinematic-studio ui` instead.
 ### 5. Full Documentation
 
+- **[Official Documentation](docs/OFFICIAL_DOCUMENTATION.md)** — Canonical product manual (install, workflow, agents, CLI, packs, ops)
+- **[Official Overview](docs/OFFICIAL_OVERVIEW.md)** — Short product introduction
+- **[Docs Index](docs/README.md)** — Full documentation map
 - **[Quick Start Guide](docs/guides/Quick_Start_Guide.md)** — Detailed activation, workflow phases, specialist table, pro tips
 - **[UPGRADE_GUIDE.md](UPGRADE_GUIDE.md)** — Migration steps between versions
 - **[CHANGELOG.md](CHANGELOG.md)** — Complete release history (highly recommended reading)
@@ -345,6 +348,8 @@ All commands support `--help` and rich output. Many also have direct Python entr
 
 | Resource                              | Path                                              | Purpose                                      |
 |---------------------------------------|---------------------------------------------------|----------------------------------------------|
+| Official Documentation                | `docs/OFFICIAL_DOCUMENTATION.md`                  | Canonical product manual                     |
+| Official Overview                     | `docs/OFFICIAL_OVERVIEW.md`                       | Short product introduction                   |
 | Quick Start Guide                     | `docs/guides/Quick_Start_Guide.md`                | Complete onboarding + workflow + tips        |
 | UPGRADE_GUIDE                         | `UPGRADE_GUIDE.md`                                | Version migration notes                      |
 | CHANGELOG                             | `CHANGELOG.md`                                    | Detailed release notes (start here)          |
