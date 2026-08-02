@@ -1,8 +1,14 @@
-"""Studio dashboard data aggregation and Rich rendering."""
+"""Studio dashboard: Rich rendering + re-export of UI-agnostic snapshot builder.
+
+Snapshot aggregation lives in ``studio_core.services.dashboard`` so Web/TUI/API
+shells can share one contract without importing Rich. This module keeps CLI
+presentation (panels, tables) and re-exports ``build_studio_dashboard`` for
+backward compatibility.
+"""
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 from rich import box
@@ -12,29 +18,24 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from character_dna import list_characters
-from models import model_stack_summary, verify_model_compatibility
-from chain_qa_assist import summarize_sequence_qa
-from imagine_jobs import job_summary, list_jobs
-from sequence_chain import find_sequence, load_sequence
-from nsfw_orchestrator import list_batches
-from project_state import load_project_state
-from sfw_orchestrator import list_batches as list_sfw_batches
-from artifact_pipeline import artifacts_summary
-from production_report import build_production_report
-from quota_optimizer import assess_budget_risk, quota_dashboard
-from sequence_chain import list_sequences
-from studio_health import count_skills
-
 from cli.quota_display import RISK_COLORS
-from cli.shared import (
-    EXPECTED_ROLE_CARD_COUNT,
-    STUDIO_VERSION,
-    console,
-    core_agent_count,
-    list_role_card_files,
-    total_agent_count,
-)
+from cli.shared import console
+
+# Repo root on path so studio_core imports work when only tools/ was inserted.
+_ROOT = Path(__file__).resolve().parents[2]
+import sys
+
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+from studio_core.services.dashboard import build_studio_dashboard  # noqa: E402
+
+__all__ = [
+    "build_studio_dashboard",
+    "dashboard_renderables",
+    "render_dashboard_json",
+    "render_studio_dashboard",
+]
 
 CHAIN_QA_COLORS = {
     "go": "green",
@@ -44,129 +45,6 @@ CHAIN_QA_COLORS = {
     "pending": "dim",
 }
 LOCK_COLORS = {"locked": "green", "pending": "yellow"}
-
-
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
-
-
-def build_studio_dashboard() -> dict[str, Any]:
-    """Aggregate studio snapshot for CLI dashboard or JSON export."""
-    state = load_project_state()
-    project = state.get("project") or {}
-    dash = quota_dashboard(state)
-    model_check = verify_model_compatibility()
-    sequences = list_sequences()
-    characters = list_characters()
-    batches = list_batches()
-    sfw_batches = list_sfw_batches()
-    imagine_summary = job_summary()
-    recent_jobs = list_jobs(limit=8)
-    chain_qa_summaries: list[dict[str, Any]] = []
-    for s in sequences[:6]:
-        seq_path = find_sequence(s["slug"])
-        if seq_path:
-            try:
-                chain_qa_summaries.append(summarize_sequence_qa(load_sequence(seq_path)))
-            except (ValueError, OSError):
-                pass
-    role_cards = list_role_card_files()
-    identity_locked = sum(1 for c in characters if c.get("status") == "locked")
-
-    remaining = dash.get("budget_remaining")
-    spent = dash.get("session_spent", 0)
-    risk = assess_budget_risk(
-        {"credits_low": spent, "credits_high": spent},
-        tier=dash.get("tier", "supergrok_pro"),
-        budget_remaining=remaining,
-    )
-
-    production = {
-        "sequences": len(sequences),
-        "characters": len(characters),
-        "identity_locked": identity_locked,
-        "nsfw_batches": len(batches),
-        "sfw_batches": len(sfw_batches),
-        "imagine_jobs": imagine_summary["total"],
-        "reference_assets": imagine_summary["reference_assets"],
-    }
-    try:
-        from control_plane_readiness import build_readiness_rollup
-
-        readiness = build_readiness_rollup(
-            characters=characters,
-            chain_qa=chain_qa_summaries,
-            production=production,
-            scan_sfw=True,
-        )
-    except Exception:
-        readiness = {
-            "overall": "unknown",
-            "identity": {
-                "total": len(characters),
-                "locked": identity_locked,
-                "pending": max(0, len(characters) - identity_locked),
-                "ready": identity_locked == len(characters),
-                "label": f"{identity_locked}/{len(characters)} locked",
-            },
-            "plate_motion": {"available": False, "scanned_shots": 0},
-            "chain_qa": {"go": 0, "no_go": 0, "ready": True, "label": "—"},
-            "next_actions": [],
-        }
-
-    title = project.get("project_title") or project.get("title") or "Untitled"
-    snap: dict[str, Any] = {
-        "generated_at": _now_iso(),
-        "studio_version": STUDIO_VERSION,
-        "project": {
-            "title": title,
-            "genre": project.get("genre"),
-            "has_bible": bool(project),
-        },
-        "studio": {
-            "core_agents": core_agent_count(),
-            "total_agents": total_agent_count(),
-            "role_cards": len(role_cards),
-            "role_cards_expected": EXPECTED_ROLE_CARD_COUNT,
-            "skills": count_skills(),
-            "models_compatible": model_check["compatible"],
-            "model_issues": model_check.get("issues", []),
-            "model_stack": model_check.get("model_stack", model_stack_summary()),
-        },
-        "quota": {**dash, "risk_level": risk.get("risk_level", "unknown")},
-        "production": production,
-        "readiness": readiness,
-        "imagine_jobs": imagine_summary,
-        "sequences": sequences[:8],
-        "characters": characters[:8],
-        "nsfw_batches": batches[:5],
-        "sfw_batches": sfw_batches[:5],
-        "recent_jobs": recent_jobs,
-        "chain_qa": chain_qa_summaries,
-        "production_report": build_production_report(state),
-        "artifacts": artifacts_summary(),
-    }
-    try:
-        from control_plane_phase3 import build_phase3_snapshot_fields
-
-        snap.update(build_phase3_snapshot_fields(snap))
-    except Exception:
-        snap["parallel_briefs"] = {"logs": [], "count": 0, "label": "unavailable"}
-        snap["convergence"] = {
-            "checklist": [],
-            "ready": False,
-            "ok": 0,
-            "fail": 0,
-            "label": "unavailable",
-        }
-        snap["delivery"] = {
-            "sequences": [],
-            "polish_ready": 0,
-            "deliver_ready": 0,
-            "total": 0,
-            "label": "unavailable",
-        }
-    return snap
 
 
 def _risk_text(level: str) -> Text:
