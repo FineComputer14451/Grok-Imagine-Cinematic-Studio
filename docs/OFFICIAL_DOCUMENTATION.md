@@ -241,7 +241,7 @@ cinematic-studio sequence deliver
 14. Key Art Designer + Trailer Director for posters, hero reveals, teasers.
 15. Optional Localization Specialist.
 
-**Expanded walkthrough:** [guides/Quick_Start_Guide.md](guides/Quick_Start_Guide.md) · [guides/USER_GUIDE.md](guides/USER_GUIDE.md).
+**Expanded walkthrough:** [guides/Quick_Start_Guide.md](guides/Quick_Start_Guide.md) · [guides/USER_GUIDE.md](guides/USER_GUIDE.md) · [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.md).
 
 ---
 
@@ -269,6 +269,7 @@ Before long generations, run the shared **Orient → Health → Produce → Gate
 | `c` | Cockpit (scaffold; dry-run polish/deliver) |
 | `l` | Launcher |
 
+Operator guide: [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.md).  
 North-star design: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-star-design.md`.
 
 ---
@@ -626,7 +627,8 @@ Software and documentation are provided **as is**, without warranty. Generated m
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System architecture |
 | [CLI_REFERENCE.md](CLI_REFERENCE.md) | CLI command reference |
 | [guides/Quick_Start_Guide.md](guides/Quick_Start_Guide.md) | Onboarding + operator loop |
-| [guides/USER_GUIDE.md](guides/USER_GUIDE.md) | Creator end-to-end guide |
+| [guides/USER_GUIDE.md](guides/USER_GUIDE.md) | Creator end-to-end guide (v3.8.9) |
+| [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.md) | Orient → Health → Produce → Gate → Deliver |
 | [guides/installation_guide.md](guides/installation_guide.md) | Install Method A / B |
 | [guides/UPGRADE_GUIDE.md](guides/UPGRADE_GUIDE.md) | Version migration |
 | [releases/](releases/) | Per-version release notes |

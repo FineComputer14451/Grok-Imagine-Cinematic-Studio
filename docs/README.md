@@ -16,9 +16,10 @@ Project documentation index (community-maintained).
 | **[Official Overview](OFFICIAL_OVERVIEW.md)** | Short product introduction and capabilities |
 | **[Disclaimer](../DISCLAIMER.md)** | Independence notice — not affiliated with xAI |
 | **[Quick Start Guide](guides/Quick_Start_Guide.md)** | Fast onboarding + operator loop |
-| **[User Guide](guides/USER_GUIDE.md)** | End-to-end production workflow |
+| **[User Guide](guides/USER_GUIDE.md)** | End-to-end production workflow (v3.8.9) |
+| **[Operator Control Plane](guides/OPERATOR_CONTROL_PLANE.md)** | Orient → Health → Produce → Gate → Deliver |
 | **[Architecture](ARCHITECTURE.md)** | System design, layers, protocols |
-| **[CLI Reference](CLI_REFERENCE.md)** | Full command reference |
+| **[CLI Reference](CLI_REFERENCE.md)** | Full command reference + TUI keys |
 
 ---
 

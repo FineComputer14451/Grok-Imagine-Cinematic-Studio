@@ -190,6 +190,7 @@ Before long generations, run the **control plane** loop (same signals on TUI Hom
 5. **Gate (Phase 2)** — Check Dashboard **READINESS** (identity · chain QA · plate/motion). On No-Go: fix → re-QA before extend. After DNA lock / sequence handoff: `cinematic-studio handoff validate <path>` (TUI Launcher/Cockpit or Web Tools).
 6. **Converge & deliver (Phase 3)** — Dashboard **Convergence** checklist before agent-mode handoff; **Parallel Brief** logs (`wave-a briefs`); **Delivery** polish/deliver readiness; preview bridge via `imagine bridge` or Web Tools (paste to grok.com/imagine). TUI Cockpit: polish/deliver **--dry-run** only.
 
+Full guide: [OPERATOR_CONTROL_PLANE.md](OPERATOR_CONTROL_PLANE.md).  
 North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-star-design.md` (Phases 1–3).
 
 ---

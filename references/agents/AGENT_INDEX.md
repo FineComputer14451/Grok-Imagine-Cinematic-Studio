@@ -5,7 +5,7 @@
 
 **Enhanced for:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` + **Imagine Video 1.0 & 1.5 Native**  
 **Version:** 3.8.9 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.8.9 · Full v4.5 dual-model wave  
-**Date:** 2026-07-25  
+**Date:** 2026-08-01  
 **Canonical Model Layer:** `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1)
 
 > All agents below now reference the enhanced Model Layer. Prefer the three explicit v9-4p5 identifiers. Video work must declare `VIDEO_PIPELINE_SPEC` (1.0 default, 1.5 when native audio / physics / intimacy required).
@@ -111,7 +111,7 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 
 ---
 
-## Wave A Specialists (P0 scaffold · v3.8.9+)
+## Wave A Specialists (P0 scaffold · v3.8.8+)
 
 | Agent | Role Card | Preferred Model | Activation |
 |-------|-----------|-----------------|------------|
@@ -152,7 +152,7 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 
 | # | Preset | Command |
 |---|--------|---------|
-| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.8` |
+| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.8.9` |
 | 2 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | 4 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
@@ -213,4 +213,4 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 
 ---
 
-*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-07-25 · 62 skills (Wave A P0)*
+*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-08-01 · 62 skills (Wave A P0)*
