@@ -6,18 +6,20 @@ from typing import Any
 
 NAV = (
     ("/", "Dashboard"),
+    ("/production", "Production"),
     ("/dna", "DNA"),
     ("/sequences", "Sequences"),
+    ("/imagine", "Imagine"),
     ("/quota", "Quota"),
 )
 
 
-def page_shell(ui: Any, *, active: str, badge: str = "PR5") -> None:
+def page_shell(ui: Any, *, active: str, badge: str = "PR6") -> None:
     """Apply colors, header nav, and footer once per page."""
     ui.colors(primary="#7c3aed", secondary="#22d3ee", accent="#f59e0b")
     with ui.header().classes("items-center justify-between bg-primary"):
         ui.label("Grok Imagine Cinematic Studio").classes("text-h6 text-white")
-        with ui.row().classes("items-center gap-3"):
+        with ui.row().classes("items-center gap-2 flex-wrap"):
             for path, label in NAV:
                 cls = "text-white text-weight-bold" if path == active else "text-white"
                 ui.link(label, path).classes(cls)
