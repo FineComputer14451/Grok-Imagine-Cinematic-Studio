@@ -11,6 +11,7 @@ on:
       - 'web_ui/**'
       - 'web_nicegui/**'
       - 'studio_core/**'
+      - 'studio_api/**'
       - 'tools/**'
       - 'scripts/**'
       - 'tests/**'
@@ -26,6 +27,7 @@ on:
       - 'web_ui/**'
       - 'web_nicegui/**'
       - 'studio_core/**'
+      - 'studio_api/**'
       - 'tools/**'
       - 'scripts/**'
       - 'tests/**'
@@ -189,7 +191,7 @@ jobs:
         if: steps.check_dirs.outputs.directories_ok == 'true' || env.VALIDATION_MODE != 'standard'
         run: |
           echo "🐍 Checking Python files..."
-          python -m py_compile tools/cinematic_studio_cli.py web_ui/app.py studio_core/services/dashboard.py studio_core/services/actions.py studio_core/services/execute.py web_nicegui/app.py 2>/dev/null || echo "⚠️  Python check completed with warnings"
+          python -m py_compile tools/cinematic_studio_cli.py web_ui/app.py studio_core/services/dashboard.py studio_core/services/actions.py studio_core/services/execute.py web_nicegui/app.py studio_api/app.py 2>/dev/null || echo "⚠️  Python check completed with warnings"
 
           for f in MASTER_PROMPT_v3.6.md tools/cinematic_studio_cli.py web_ui/app.py; do
             if [ -f "$f" ]; then

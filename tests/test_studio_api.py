@@ -10,7 +10,24 @@ sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT))
 
 
+def test_root_index() -> None:
+    try:
+        import fastapi  # noqa: F401
+    except ImportError:
+        return
+    from fastapi.testclient import TestClient
+    from studio_api.app import create_app
+
+    client = TestClient(create_app())
+    r = client.get("/")
+    assert r.status_code == 200
+    body = r.json()
+    assert body.get("docs") == "/docs"
+    assert body.get("health") == "/health"
+
+
 def test_create_app_and_health() -> None:
+
     try:
         import fastapi  # noqa: F401
     except ImportError:

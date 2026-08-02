@@ -48,6 +48,7 @@ Whether you’re crafting Marvel-style hero reveals, cyberpunk neon sequences, i
 - **Streamlit Dashboard view modes** — same compact/ops/full density (session radio; TUI 1/2/3 parity)
 - **Shared `studio_core` services** — UI-agnostic dashboard snapshot, ActionSpec registry, and `execute_action` (in-process / subprocess)
 - **NiceGUI web shell** — `cinematic-studio web` (Dashboard · Production · DNA · Sequences · Imagine · Quota); dual-run with Streamlit
+- **FastAPI control plane** — `cinematic-studio api` (`/v1/dashboard`, ActionSpec execute)
 - Prior **3.8.8** — Operator UX control plane (readiness · convergence · delivery · handoff validate · Wave A packaging)
 
 See full details in [CHANGELOG.md](CHANGELOG.md) and [docs/releases/RELEASE_NOTES_v3.8.9.md](docs/releases/RELEASE_NOTES_v3.8.9.md). Dual-run web guide: [docs/guides/WEB_SHELLS.md](docs/guides/WEB_SHELLS.md).
@@ -103,6 +104,7 @@ flowchart TB
         CORE["studio_core services<br/>dashboard · ActionSpec · execute"]
         WEBUI["Streamlit Web UI<br/>Guided Bible • DNA Bank • Cost Estimator"]
         NICE["NiceGUI shell (optional)<br/>cinematic-studio web"]
+        API["FastAPI control plane<br/>cinematic-studio api"]
         SKILLS["62 Custom Grok Skills<br/>(.grok/skills/)"]
     end
 
@@ -124,6 +126,7 @@ flowchart TB
     CLI --> CORE
     CORE --> WEBUI
     CORE --> NICE
+    CORE --> API
     HANDOFF --> READINESS
     READINESS --> IMAGINE
     IMAGINE --> QA2 --> COLOR2 --> POLISH2 --> DELIVER
@@ -176,6 +179,7 @@ Grok Imagine Cinematic Studio v3.8.9  (Studio Director + 25+ Agents · Grok 4.5 
 ├── studio_core/                  # UI-agnostic services (dashboard, ActionSpec, execute_action)
 ├── web_ui/app.py                 # Streamlit: Guided Bible, DNA bank, sequence dashboard, live cost estimation
 ├── web_nicegui/                  # Optional NiceGUI shell (cinematic-studio web)
+├── studio_api/                   # Optional FastAPI control plane (cinematic-studio api)
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT.md              # Primary activation prompt (v3.8+ compatible)
 ├── scripts/                      # Release helpers & verify shims
@@ -304,6 +308,17 @@ cinematic-studio web --port 8088
 Both shells share `studio_core.services` (dashboard snapshot, ActionSpec argv building, `execute_action`). Run either or both — they do not conflict. Details: [`docs/guides/WEB_SHELLS.md`](docs/guides/WEB_SHELLS.md).
 
 For a lightweight in-terminal live dashboard + safe command launcher (no browser), use `cinematic-studio ui`.
+
+**HTTP API** (optional automation / custom UIs):
+
+```bash
+pip install -r requirements-api.txt
+cinematic-studio api --port 8090
+# OpenAPI UI → http://127.0.0.1:8090/docs
+# GET /v1/dashboard · GET /v1/actions · POST /v1/actions/{id}/execute
+```
+
+Same ActionSpec safety model as the TUI (no free-form argv). See [`docs/PR9_STUDIO_API.md`](docs/PR9_STUDIO_API.md).
 
 ### 5. Full Documentation
 

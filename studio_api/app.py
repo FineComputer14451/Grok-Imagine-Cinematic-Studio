@@ -40,6 +40,7 @@ def create_app() -> Any:
     """Build FastAPI app (lazy import so core install need not include FastAPI)."""
     try:
         from fastapi import Body, FastAPI, HTTPException
+        from fastapi.middleware.cors import CORSMiddleware
     except ImportError as exc:  # pragma: no cover
         raise SystemExit(
             "FastAPI is required for the API control plane.\n"
@@ -62,6 +63,24 @@ def create_app() -> Any:
         ),
         version=_studio_version(),
     )
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    @app.get("/", include_in_schema=False)
+    def root() -> dict[str, str]:
+        return {
+            "service": "grok-imagine-cinematic-studio-api",
+            "docs": "/docs",
+            "health": "/health",
+            "dashboard": "/v1/dashboard",
+            "actions": "/v1/actions",
+        }
 
     @app.get("/health")
     def health() -> dict[str, Any]:
