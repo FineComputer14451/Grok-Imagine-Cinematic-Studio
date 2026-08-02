@@ -9,7 +9,7 @@ They are complementary, not mutually exclusive.
 | Start | `streamlit run web_ui/app.py` | `cinematic-studio web --port 8088` |
 | Best for | Guided Bible wizard, DNA bank forms, live xAI batch execute, Community Cloud | Fast ActionSpec forms, same safety model as Textual TUI, light shell |
 | Cloud | [Streamlit Community Cloud](streamlit_cloud_deploy.md) | Self-host / local (FastAPI under NiceGUI) |
-| Core API | `studio_core.services.dashboard` (+ legacy `lib.runtime`) | `studio_core.services.{dashboard,actions,execute}` |
+| Core API | `studio_core` via `lib.runtime` (`build_studio_dashboard`, `execute_registered`) | `studio_core.services.{dashboard,actions,execute}` |
 
 ## Shared core
 
