@@ -68,3 +68,15 @@ if __name__ == "__main__":
     test_create_app_registers_routes()
     test_dna_init_validation_failure()
     print("PR5 page tests passed")
+
+
+def test_run_registered_swallows_execute_errors() -> None:
+    """Exception handler must not pass invalid ActionResult kwargs."""
+    from unittest.mock import patch
+
+    with patch("web_nicegui.lib.actions_ui.execute_action", side_effect=RuntimeError("boom")):
+        result = run_registered("dna_list")
+    assert result.ok is False
+    assert result.returncode == 1
+    assert "boom" in result.stderr
+    assert result.action_id == "dna_list"

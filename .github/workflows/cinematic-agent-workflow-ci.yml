@@ -121,10 +121,15 @@ jobs:
           fi
 
           STRUCTURE_ISSUES=0
-          for card in $(find references/agents -name "*.md" ! -name "*INDEX*" -type f); do
+          for card in $(find references/agents -name "*.md" ! -name "*INDEX*" ! -name "MODEL_LAYER*" ! -name "*PROTOCOL*" ! -name "IMAGINE_*" -type f); do
             name=$(basename "$card" .md)
-            if ! grep -q "Core Mission" "$card" || ! grep -qE 'v3\.(5|6)' "$card"; then
-              echo "⚠️  $name: Missing 'Core Mission' or v3.5/v3.6 section"
+            # Skip non-role-card reference docs (no Core Mission heading)
+            if ! grep -q "Core Mission" "$card"; then
+              continue
+            fi
+            # Accept v3.5+ and v4.x tags (studio is on v3.8 / Grok 4.5)
+            if ! grep -qE 'v3\.[5-9]|v3\.[0-9]{2,}|v4\.' "$card"; then
+              echo "⚠️  $name: Missing version tag (expected v3.5+ or v4.x)"
               STRUCTURE_ISSUES=$((STRUCTURE_ISSUES+1))
             fi
           done

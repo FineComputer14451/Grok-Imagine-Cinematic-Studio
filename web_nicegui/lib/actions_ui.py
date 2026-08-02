@@ -15,12 +15,25 @@ def run_registered(
     timeout: float = 90.0,
 ) -> ActionResult:
     """Execute a registered action in-process (web default)."""
-    return execute_action(
-        action_id,
-        answers or {},
-        mode="inprocess",
-        timeout=timeout,
-    )
+    try:
+        return execute_action(
+            action_id,
+            answers or {},
+            mode="inprocess",
+            timeout=timeout,
+        )
+    except Exception as exc:  # noqa: BLE001 — never crash the web shell
+        return ActionResult(
+            ok=False,
+            argv=[],
+            returncode=1,
+            stdout="",
+            stderr=f"{type(exc).__name__}: {exc}",
+            errors=[str(exc)],
+            timed_out=False,
+            action_id=action_id,
+            mode="inprocess",
+        )
 
 
 def _set_md(el: Any, value: str) -> None:
@@ -79,11 +92,17 @@ def build_action_form(
                         num_val = float(default)
                     except ValueError:
                         num_val = None
-                fields[field.key] = ui.number(
-                    label=field.label,
-                    value=num_val,
-                    format="%.0f" if field.coerce == "int" else None,
-                ).classes("w-full")
+                if field.coerce == "int":
+                    fields[field.key] = ui.number(
+                        label=field.label,
+                        value=num_val,
+                        format="%.0f",
+                    ).classes("w-full")
+                else:
+                    fields[field.key] = ui.number(
+                        label=field.label,
+                        value=num_val,
+                    ).classes("w-full")
             elif field.key in {"prompt", "core", "facial", "recap", "dialogue"}:
                 fields[field.key] = (
                     ui.textarea(label=field.label, value=default)
