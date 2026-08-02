@@ -113,14 +113,49 @@ cinematic-studio ui
 cinematic-studio nsfw ...
 ```
 
-### Generation Tracking
+### Handoff validation
 ```bash
-cinematic-studio generation log|list|summary|report|update
+cinematic-studio handoff validate <path-to-packet.json|markdown>
+cinematic-studio handoff validate <path> --strict-handoff
+cinematic-studio handoff validate <path> --strict-wave-a
+```
+
+### Wave A multi-agent packets (v3.8.8+)
+Eight specialist packet builders for plate/motion, micro-physics, hair/makeup, dialogue/ADR, score/temp music, titles, distribution crops, and parallel briefs.
+
+```bash
+cinematic-studio wave-a --help
+cinematic-studio wave-a plate-motion ...
+cinematic-studio wave-a contact ...
+cinematic-studio wave-a hmu ...
+cinematic-studio wave-a dialogue ...
+cinematic-studio wave-a score ...
+cinematic-studio wave-a title ...
+cinematic-studio wave-a crop ...
+cinematic-studio wave-a briefs
+cinematic-studio wave-a validate
+cinematic-studio wave-a attach   # attach Wave A packets to Imagine handoff
+```
+
+Use `--strict-wave-a` on `sfw run`, `nsfw run`, and `imagine agent-handoff` when Wave A completeness is required.
+
+### Generation ledger
+Local Imagine spend / job tracking:
+
+```bash
+cinematic-studio generation log
+cinematic-studio generation list
+cinematic-studio generation summary
+cinematic-studio generation report
+cinematic-studio generation update
+cinematic-studio generation import-jobs
 ```
 
 ### Doctor / Health
 ```bash
-cinematic-studio doctor          # or grok-doctor
+cinematic-studio doctor              # full health registry
+cinematic-studio doctor --quick      # fast preflight
+# alias: grok-doctor
 ```
 
 ---
@@ -132,6 +167,8 @@ cinematic-studio doctor          # or grok-doctor
 | `--strict-handoff` | Enforce full packet + specialist checklist |
 | `--strict-plate` | Require plate lock |
 | `--strict-motion` | Require motion vector / I2V readiness |
+| `--strict-identity` | Hard-fail identity gate on extend path |
+| `--strict-wave-a` | Enforce Wave A packet completeness |
 | `--format json\|markdown` | Output format for handoffs |
 | `--surface <name>` | Target execution surface |
 

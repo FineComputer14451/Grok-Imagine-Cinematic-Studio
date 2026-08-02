@@ -1,7 +1,7 @@
 # Grok Imagine Cinematic Studio v3.8.9 — Quick Start Guide
 
-**Version:** 3.8.9 | **Last Updated:** July 23, 2026  
-**Suite:** 25 Role-Card core agents · **54 skills** · marketplace full suite + 5 packs
+**Version:** 3.8.9 | **Last Updated:** August 1, 2026  
+**Suite:** 25+ Role-Card core agents · **62 skills** · marketplace full suite + 5 packs
 
 > [!NOTE]
 > **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Grok / Imagine access, quotas, and billing remain solely with your xAI (or host) account. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
@@ -64,7 +64,7 @@ start cinematic production
 
 For a full lock-in on the web, paste `MASTER_PROMPT.md` first, then Activate.
 
-This loads the complete **v3.8.9** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **54-skill** suite.
+This loads the complete **v3.8.9** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **62-skill** suite.
 
 ### Start a New Project
 
@@ -247,7 +247,7 @@ North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-sta
 | **Identity Continuity**         | `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` | Long-form drift gates            |
 | **Skills taxonomy / packs**     | `references/SKILLS_TAXONOMY.md`       | Groups, packs, declutter rules                    |
 | **Master Prompt**               | `MASTER_PROMPT.md`                    | Complete master prompt for new chats              |
-| **Skill Files**                 | `.grok/skills/`                       | 54-skill suite (agent-only; no README in skill dirs) |
+| **Skill Files**                 | `.grok/skills/`                       | 62-skill suite (agent-only; no README in skill dirs) |
 | **Production Bible Template**   | `docs/templates/Project_Bible_Template.md` | Professional Bible template                  |
 | **Install guide**               | `docs/guides/installation_guide.md`   | Method A / B + packs                              |
 | **CLI Toolkit**                 | `cinematic-studio` / `tools/cinematic_studio_cli.py` | Bible, DNA, sequence, catalog, doctor    |
@@ -261,4 +261,4 @@ Just say **"Activate Grok Imagine Cinematic Studio v3.8.9"** and begin.
 
 ---
 
-*Grok Imagine Cinematic Studio v3.8.9 — Grok 4.5 / Model Layer v4.5 · 54 skills · July 2026*
+*Grok Imagine Cinematic Studio v3.8.9 — Grok 4.5 / Model Layer v4.5 · 62 skills · August 2026*

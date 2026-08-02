@@ -31,7 +31,7 @@
 
 It combines:
 
-- **52 specialized Grok skills** powering a **23+ agent cinematic department**
+- **62 specialized Grok skills** powering a **25+ agent cinematic department**
 - Professional **Production Bible** workflow (CLI wizard + Streamlit Web UI)
 - **Character DNA extraction + Identity Continuity Protocol** for zero-drift consistency across stills, clips, and long sequences
 - **Imagine Agent Mode Handoff** — validated routing from planning agents into Grok’s native generation surfaces
@@ -72,7 +72,7 @@ flowchart TB
         MPA["Mega Production Architect<br/>Production Bible + Execution Roadmap"]
     end
 
-    subgraph Specialists["🧠 23+ Specialist Agents & Role Cards"]
+    subgraph Specialists["🧠 25+ Specialist Agents & Role Cards"]
         direction TB
         IL["Identity Lock Specialist<br/>+ Continuity Protocol v1.0"]
         SEQ["Sequence Director + Extender<br/>Long-form 1.5 chaining"]
@@ -99,7 +99,7 @@ flowchart TB
     subgraph Tools["🛠️ Tools, CLI & Interfaces"]
         CLI["cinematic-studio CLI<br/>(models, dna, sequence, quota, nsfw, plugin...)"]
         WEBUI["Streamlit Web UI<br/>Guided Bible • DNA Bank • Cost Estimator"]
-        SKILLS["52 Custom Grok Skills<br/>(.grok/skills/)"]
+        SKILLS["62 Custom Grok Skills<br/>(.grok/skills/)"]
     end
 
     subgraph Execution["🎥 Execution Layer"]
@@ -160,9 +160,9 @@ flowchart TD
 **Updated ASCII Overview (v3.8.9)**
 
 ``` 
-Grok Imagine Cinematic Studio v3.8.9  (Studio Director + 23+ Agents · Grok 4.5 primary)
+Grok Imagine Cinematic Studio v3.8.9  (Studio Director + 25+ Agents · Grok 4.5 primary)
 ├── .grok-plugin/                 # Marketplace manifests + plugin packs (full suite + 5 satellites)
-├── references/agents/            # 23+ Role Cards, AGENT_INDEX, MODEL_LAYER, IDENTITY_CONTINUITY_PROTOCOL, IMAGINE_AGENT_MODE_HANDOFF
+├── references/agents/            # 25+ Role Cards, AGENT_INDEX, MODEL_LAYER, IDENTITY_CONTINUITY_PROTOCOL, IMAGINE_AGENT_MODE_HANDOFF
 ├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, bible_stages, imagine_bridge, handoff_schema, cli/
 ├── tools/cinematic_studio_cli.py   # Unified CLI (create-bible --wizard, dna, sequence, quota, nsfw, imagine, plugin, validate...)
 ├── references/MODELS_v3.6.md   # Dual-stack registry (grok-4.5 cinematic default)
@@ -170,7 +170,7 @@ Grok Imagine Cinematic Studio v3.8.9  (Studio Director + 23+ Agents · Grok 4.5 
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT.md              # Primary activation prompt (v3.8+ compatible)
 ├── scripts/                      # Release helpers & verify shims
-└── .grok/skills/                 # 52 custom Grok skills (runtime engine)
+└── .grok/skills/                 # 62 custom Grok skills (runtime engine)
 ```
 
 **Key v3.8.9 Components**
@@ -226,7 +226,7 @@ or the shorter trigger:
 start cinematic production
 ```
 
-This loads the full **23+ agent department** with Production Bible support, Imagine Agent Mode Handoff, identity locking, and all specialists.
+This loads the full **25+ agent department** with Production Bible support, Imagine Agent Mode Handoff, identity locking, and all specialists.
 
 ### 3. CLI Power Tools (Automation & Scripting)
 
