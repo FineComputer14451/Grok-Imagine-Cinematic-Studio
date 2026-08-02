@@ -3,28 +3,17 @@
 from __future__ import annotations
 
 import json
-import subprocess
 import sys
 from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parent.parent
-CLI = ROOT / "tools" / "cinematic_studio_cli.py"
+from cli_helpers import CLI, ROOT, run_cli
+
 sys.path.insert(0, str(ROOT / "tools"))
 
 from cli.bible_wizard_cli import run_bible_wizard  # noqa: E402
 from test_production_bible import REQUIRED_BIBLE_KEYS  # noqa: E402
-
-
-def run_cli(*args: str, stdin: str | None = None) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [sys.executable, str(CLI), *args],
-        capture_output=True,
-        text=True,
-        cwd=ROOT,
-        input=stdin,
-    )
 
 
 def test_create_bible_help_lists_wizard() -> None:

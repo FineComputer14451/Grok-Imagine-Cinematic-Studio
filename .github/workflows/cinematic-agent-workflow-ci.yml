@@ -53,7 +53,10 @@ jobs:
     outputs:
       directories_ok: ${{ steps.check_dirs.outputs.directories_ok }}
     steps:
+      # Full history so plugin release-pin (parent of pin-only tip) is resolvable.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Lint Markdown
         uses: DavidAnson/markdownlint-cli2-action@v19
@@ -231,6 +234,12 @@ jobs:
 
       - name: Run tests
         if: steps.check_dirs.outputs.directories_ok == 'true' || env.VALIDATION_MODE != 'standard'
+        env:
+          # Plain CLI help for option-string assertions (Rich may still paint SGR).
+          NO_COLOR: "1"
+          FORCE_COLOR: "0"
+          TERM: dumb
+          COLUMNS: "120"
         run: pytest -q
 
       # ============================================================

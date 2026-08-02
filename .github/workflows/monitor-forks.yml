@@ -23,11 +23,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Fetching forks for ${{ github.repository }}..."
-          
-          # Get all forks, sorted by most recently updated
-          gh api "repos/${{ github.repository }}/forks?sort=updated&per_page=100" \
+
+          # /forks does not accept sort=updated (HTTP 400). Stream pages, then
+          # sort client-side by updated_at descending.
+          gh api "repos/${{ github.repository }}/forks?per_page=100" \
             --paginate \
-            --jq '[.[] | {full_name, html_url, created_at, updated_at, stargazers_count, forks_count, open_issues_count, owner: .owner.login}]' \
+            --jq '.[] | {full_name, html_url, created_at, updated_at, stargazers_count, forks_count, open_issues_count, owner: .owner.login}' \
+            | jq -s 'sort_by(.updated_at) | reverse' \
             > current_forks.json
 
           FORK_COUNT=$(jq 'length' current_forks.json)

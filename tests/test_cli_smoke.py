@@ -2,21 +2,9 @@
 
 from __future__ import annotations
 
-import subprocess
-import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-CLI = ROOT / "tools" / "cinematic_studio_cli.py"
-
-
-def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [sys.executable, str(CLI), *args],
-        capture_output=True,
-        text=True,
-        cwd=ROOT,
-    )
+from cli_helpers import CLI, ROOT, run_cli
 
 
 def test_main_help() -> None:

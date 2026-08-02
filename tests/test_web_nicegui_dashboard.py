@@ -49,30 +49,18 @@ def test_load_snapshot_shape() -> None:
 
 
 def test_web_command_help() -> None:
-    import subprocess
+    from cli_helpers import run_cli
 
-    cli = ROOT / "tools" / "cinematic_studio_cli.py"
-    result = subprocess.run(
-        [sys.executable, str(cli), "web", "--help"],
-        capture_output=True,
-        text=True,
-        cwd=ROOT,
-    )
+    result = run_cli("web", "--help")
     assert result.returncode == 0, result.stderr
     assert "NiceGUI" in result.stdout or "nicegui" in result.stdout.lower() or "web" in result.stdout.lower()
     assert "--port" in result.stdout
 
 
 def test_main_help_lists_web() -> None:
-    import subprocess
+    from cli_helpers import run_cli
 
-    cli = ROOT / "tools" / "cinematic_studio_cli.py"
-    result = subprocess.run(
-        [sys.executable, str(cli), "--help"],
-        capture_output=True,
-        text=True,
-        cwd=ROOT,
-    )
+    result = run_cli("--help")
     assert result.returncode == 0
     assert "web" in result.stdout
 
