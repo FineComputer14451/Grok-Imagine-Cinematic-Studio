@@ -1,12 +1,12 @@
 # Operator Control Plane
-## Grok Imagine Cinematic Studio v3.8.9
+## Grok Imagine Cinematic Studio v3.9.0
 
 How to run the studio like an ops board: **Orient → Health → Produce → Gate → Converge & Deliver**.
 
 > [!NOTE]
 > Independent community project — **not affiliated with or endorsed by xAI**. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
 
-**Version:** 3.8.9 · **Introduced:** v3.8.8 (Phases 1–3) · **Density UX:** v3.8.9  
+**Version:** 3.9.0 · **Introduced:** v3.8.8 (Phases 1–3) · **Density UX:** v3.9.0  
 **North-star design:** `docs/development/superpowers/specs/2026-07-26-operator-ux-north-star-design.md`
 
 ---
@@ -43,7 +43,7 @@ Open the live dashboard and **read severity before you create**.
 
 Also check the **Attention** list (shared helpers on TUI + Streamlit).
 
-**TUI Home (v3.8.9 density)**
+**TUI Home (v3.9.0 density)**
 
 | Key | Action |
 |-----|--------|
@@ -174,4 +174,4 @@ When these ship in a version bump, activation phrase and `VERSION` will move tog
 
 ---
 
-*Grok Imagine Cinematic Studio v3.8.9 — Operator Control Plane · Independent community project · Not affiliated with xAI*
+*Grok Imagine Cinematic Studio v3.9.0 — Operator Control Plane · Independent community project · Not affiliated with xAI*

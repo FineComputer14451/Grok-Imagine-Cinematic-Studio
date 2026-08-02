@@ -8,7 +8,7 @@ from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL
 from quota_optimizer import SUBSCRIPTION_TIERS
 
 SCHEMA_VERSION = "1.0"
-STUDIO_AGENT_VERSION = "v3.8.9"
+STUDIO_AGENT_VERSION = "v3.9.0"
 
 SHOT_TIERS: dict[str, dict[str, Any]] = {
     "hero": {

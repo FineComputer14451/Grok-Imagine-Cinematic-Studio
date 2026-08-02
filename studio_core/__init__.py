@@ -9,4 +9,4 @@ from __future__ import annotations
 __all__ = ["__version__"]
 
 # Keep in sync with repo VERSION when packaging; runtime prefers VERSION file.
-__version__ = "3.8.9"
+__version__ = "3.9.0"

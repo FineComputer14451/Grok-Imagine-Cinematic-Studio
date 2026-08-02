@@ -1,7 +1,7 @@
 # Grok Imagine Cinematic Studio
 # Official Documentation
 
-**Version:** 3.8.9  
+**Version:** 3.9.0  
 **Status:** Canonical product manual (draft refresh — August 2026)  
 **Repository:** [FineComputer14451/Grok-Imagine-Cinematic-Studio](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
 
@@ -147,7 +147,7 @@ pip install -r requirements-streamlit.txt
 ### Primary (any Grok chat)
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.8.9
+Activate Grok Imagine Cinematic Studio v3.9.0
 ```
 
 or
@@ -167,7 +167,7 @@ Start new project
 or combine steps:
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.8.9, start new project called 'VOIDWALKER',
+Activate Grok Imagine Cinematic Studio v3.9.0, start new project called 'VOIDWALKER',
 generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5,
 lock the lead character DNA, and create the hero reveal key art.
 ```
@@ -184,7 +184,7 @@ Exit cinematic studio
 
 ### Phase 1 — Activation & Planning
 
-1. Activate the studio (v3.8.9).
+1. Activate the studio (v3.9.0).
 2. Start a new project (title, logline, genre, tone, length, cast).
 3. **Build & lock the Production Bible** with:
    - `model_stack`
@@ -257,7 +257,7 @@ Before long generations, run the shared **Orient → Health → Produce → Gate
 | **Gate** | Identity · chain QA · plate/motion · `handoff validate` |
 | **Converge & deliver** | Convergence checklist · Wave A parallel briefs · polish/deliver readiness · Imagine bridge preview |
 
-### TUI Home (v3.8.9)
+### TUI Home (v3.9.0)
 
 | Key | Action |
 |-----|--------|
@@ -276,7 +276,7 @@ North-star design: `docs/development/superpowers/specs/2026-07-26-operator-ux-no
 
 ## 8. Agents & Skills
 
-### Scale (v3.8.9)
+### Scale (v3.9.0)
 
 | Metric | Count |
 |--------|-------|
@@ -306,7 +306,7 @@ North-star design: `docs/development/superpowers/specs/2026-07-26-operator-ux-no
 
 | Preset | Command |
 |--------|---------|
-| Full Studio | `Activate Grok Imagine Cinematic Studio v3.8.9` |
+| Full Studio | `Activate Grok Imagine Cinematic Studio v3.9.0` |
 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
@@ -418,7 +418,7 @@ cinematic-studio ui
 # optional: python tools/cinematic_studio_cli.py ui --interval 5
 ```
 
-Live studio dashboard, safe command launcher (no Imagine spend), production cockpit (Bible/DNA/sequence scaffold, validate, stack, dry-run polish/deliver). **v3.8.9:** density modes + list filter + pause refresh.
+Live studio dashboard, safe command launcher (no Imagine spend), production cockpit (Bible/DNA/sequence scaffold, validate, stack, dry-run polish/deliver). **v3.9.0:** density modes + list filter + pause refresh.
 
 ---
 
@@ -504,7 +504,7 @@ cinematic-studio models stack
 | Spend preflight | advisory | spend-readiness tools |
 | Delivery polish readiness | advisory | delivery-readiness tools |
 
-Handoff `protocol_version` accepts **3.7.1–3.8.9**.
+Handoff `protocol_version` accepts **3.7.1–3.9.0**.
 
 ---
 
@@ -538,7 +538,7 @@ Packets live in `tools/wave_a_packets.py`. Design notes: Parallel Brief Protocol
 ## 16. Repository Map
 
 ```text
-Grok Imagine Cinematic Studio v3.8.9
+Grok Imagine Cinematic Studio v3.9.0
 ├── .grok-plugin/              # Marketplace manifests + packs
 ├── .grok/skills/              # Skill runtime (~62 SKILL.md trees)
 ├── references/agents/         # Role Cards, AGENT_INDEX, protocols, MODEL_LAYER
@@ -553,7 +553,7 @@ Grok Imagine Cinematic Studio v3.8.9
 ├── scripts/                   # Install, verify, release, wrappers
 ├── tests/                     # Pytest suite
 ├── MASTER_PROMPT.md           # Canonical chat activation prompt
-├── VERSION                    # 3.8.9
+├── VERSION                    # 3.9.0
 └── README.md                  # Public front door
 ```
 
@@ -586,14 +586,14 @@ cinematic-studio doctor --quick
 Activation after upgrade:
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.8.9
+Activate Grok Imagine Cinematic Studio v3.9.0
 ```
 
 **Migration notes:** [guides/UPGRADE_GUIDE.md](guides/UPGRADE_GUIDE.md)  
-**Release notes:** [releases/RELEASE_NOTES_v3.8.9.md](releases/RELEASE_NOTES_v3.8.9.md)  
+**Release notes:** [releases/RELEASE_NOTES_v3.9.0.md](releases/RELEASE_NOTES_v3.9.0.md)  
 **Changelog:** [CHANGELOG.md](../CHANGELOG.md)
 
-### v3.8.9 highlight
+### v3.9.0 highlight
 
 TUI + Streamlit **view density modes** (compact / ops / full) on top of the v3.8.8 operator control plane and Wave A multi-agent scaffold.
 
@@ -627,7 +627,7 @@ Software and documentation are provided **as is**, without warranty. Generated m
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System architecture |
 | [CLI_REFERENCE.md](CLI_REFERENCE.md) | CLI command reference |
 | [guides/Quick_Start_Guide.md](guides/Quick_Start_Guide.md) | Onboarding + operator loop |
-| [guides/USER_GUIDE.md](guides/USER_GUIDE.md) | Creator end-to-end guide (v3.8.9) |
+| [guides/USER_GUIDE.md](guides/USER_GUIDE.md) | Creator end-to-end guide (v3.9.0) |
 | [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.md) | Orient → Health → Produce → Gate → Deliver |
 | [guides/installation_guide.md](guides/installation_guide.md) | Install Method A / B |
 | [guides/UPGRADE_GUIDE.md](guides/UPGRADE_GUIDE.md) | Version migration |
@@ -642,9 +642,9 @@ Software and documentation are provided **as is**, without warranty. Generated m
 **Ready to direct your next production?**
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.8.9
+Activate Grok Imagine Cinematic Studio v3.9.0
 ```
 
 ---
 
-*Grok Imagine Cinematic Studio v3.8.9 — Official Documentation · Independent community project · Not affiliated with xAI · MIT License*
+*Grok Imagine Cinematic Studio v3.9.0 — Official Documentation · Independent community project · Not affiliated with xAI · MIT License*

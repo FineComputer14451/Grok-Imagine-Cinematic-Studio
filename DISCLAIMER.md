@@ -66,4 +66,4 @@ Use this block in docs, READMEs, or activation surfaces when a full page is too 
 
 ---
 
-*Last updated: July 2026 · Studio v3.8.9*
+*Last updated: July 2026 · Studio v3.9.0*
