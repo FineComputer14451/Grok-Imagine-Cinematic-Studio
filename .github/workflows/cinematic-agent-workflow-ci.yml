@@ -62,7 +62,7 @@ jobs:
           fetch-depth: 0
 
       - name: Lint Markdown
-        uses: DavidAnson/markdownlint-cli2-action@v20
+        uses: DavidAnson/markdownlint-cli2-action@v24
         continue-on-error: true
         with:
           globs: '**/*.md'
