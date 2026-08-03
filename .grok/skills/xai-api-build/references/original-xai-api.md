@@ -144,5 +144,5 @@ degrades or breaks every other use of their key. Be careful with usage:
 - **Cache or persist results** (see the `neon` skill) instead of regenerating
   the same content per visitor or per render.
 - **Gate expensive flows** — media generation in particular — behind sign-in
-  (`authMiddleware`, see the **`auth` skill`) when the app design allows it.
+  (`authMiddleware`, see the **`auth` skill**) when the app design allows it.
 - Don't add retry storms: on an API error, surface it; retry at most once.
