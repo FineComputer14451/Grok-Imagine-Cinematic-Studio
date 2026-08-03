@@ -1,4 +1,4 @@
-# Grok Imagine Cinematic Studio v3.9.0 — skill manifest (62 skills; matches .grok/skills + plugin.json)
+# Grok Imagine Cinematic Studio v3.9.0 — skill manifest (64 skills; matches .grok/skills + plugin.json)
 # One skill per line. Append " # core" for skills required by verify.
 
 grok-imagine-cinematic-studio # core
@@ -33,16 +33,13 @@ i2i-cinematic-refiner
 i2i-refiner
 image-to-video-specialist
 imagine-execution-bridge
+grok-imagine-image-tools
+xai-grok-skill
 imagine-prompt-master
 key-art-poster-designer
 localization-subtitle-specialist
 mega-production-architect
 multi-character-identity-arbiter
-multi-clip-continuity-orchestrator
-narrative-arc-pacing-strategist
-nsfw-chain-qa-protocol
-nsfw-quota-orchestrator
-nsfw-sequence-extender
 performance-emotion-director
 post-production-color-grading-supervisor
 production-bible-workflow
@@ -63,3 +60,8 @@ score-temp-music-supervisor
 title-motion-graphics-lead
 distribution-crop-strategist
 parallel-brief-dispatcher
+narrative-arc-pacing-strategist
+multi-clip-continuity-orchestrator
+nsfw-quota-orchestrator
+nsfw-sequence-extender
+nsfw-chain-qa-protocol
