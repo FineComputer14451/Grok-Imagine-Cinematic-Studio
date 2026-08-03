@@ -42,8 +42,6 @@
     ".grok/skills/cinematic-skill-creator",
     ".grok/skills/grok-doctor",
     ".grok/skills/parallel-brief-dispatcher",
-    ".grok/skills/imagine-build",
-    ".grok/skills/xai-api-build",
     ".grok/skills/director-of-photography",
     ".grok/skills/director-of-photography-v3-3",
     ".grok/skills/production-designer-set-decorator",
