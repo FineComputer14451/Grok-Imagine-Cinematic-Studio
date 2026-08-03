@@ -1,5 +1,5 @@
 # CLI Reference
-## cinematic-studio (Grok Imagine Cinematic Studio v3.9.0)
+## cinematic-studio (Grok Imagine Cinematic Studio v3.9.1)
 
 Primary entry points:
 
@@ -121,7 +121,7 @@ python tools/cinematic_studio_cli.py ui --interval 5
 
 Live studio dashboard + safe launcher + production cockpit. **No Imagine spend** from Launcher/Cockpit.
 
-#### TUI keys (v3.9.0)
+#### TUI keys
 
 | Key | Action |
 |-----|--------|
@@ -141,16 +141,33 @@ Live studio dashboard + safe launcher + production cockpit. **No Imagine spend**
 
 Operator loop: [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.md).
 
-#### Unreleased (next) — see CHANGELOG `[Unreleased]`
-
-| Feature | Notes |
-|---------|--------|
 | `/` or `Ctrl+P` | Command palette (allowlisted action search) |
 | KPI bar | Under status strip |
 | `y` | Save orient brief → `artifacts/tui_orient_brief.txt` |
 | `ui --print` | Non-TTY / CI: print orient dashboard instead of hard-fail |
 
-These ship with the next version bump; do not treat as part of 3.9.0 until `VERSION` advances.
+### Browser shells & API
+
+```bash
+# Streamlit
+streamlit run web_ui/app.py
+
+# NiceGUI ActionSpec cockpit
+pip install -r requirements-nicegui.txt
+cinematic-studio web --host 127.0.0.1 --port 8088
+
+# FastAPI control plane
+pip install -r requirements-api.txt
+cinematic-studio api --host 127.0.0.1 --port 8090
+# OpenAPI → http://127.0.0.1:8090/docs
+
+# React / TanStack SPA (v3.9.1 · needs API + Node 20+)
+cinematic-studio web-react                 # dev :5173, proxies /v1 → :8090
+cinematic-studio web-react --preview       # production build serve
+cinematic-studio web-react --install       # force npm install
+```
+
+Multi-shell matrix: [guides/WEB_SHELLS.md](guides/WEB_SHELLS.md) · React README: `web_react/README.md`.
 
 ### NSFW (requires prior ErosForge activation in chat)
 
@@ -253,4 +270,4 @@ cinematic-studio ui
 
 *Run any command with `--help` for full options. The CLI is the automation backbone of the Studio.*
 
-*Grok Imagine Cinematic Studio v3.9.0 — CLI Reference · Independent community project · Not affiliated with xAI*
+*Grok Imagine Cinematic Studio v3.9.1 — CLI Reference · Independent community project · Not affiliated with xAI*

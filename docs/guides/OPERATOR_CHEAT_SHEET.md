@@ -1,11 +1,11 @@
-# Operator Cheat Sheet — Grok Imagine Cinematic Studio v3.9.0
+# Operator Cheat Sheet — Grok Imagine Cinematic Studio v3.9.1
 
 **One-pager for activation, agents, skills, packs, and CLI.**  
 Community project — not affiliated with xAI. Canonical detail: `AGENTS.md` · `references/agents/AGENT_INDEX.md` · `references/SKILLS_TAXONOMY.md`.
 
 | Stamp | Value |
 |-------|--------|
-| Studio | **v3.9.0** |
+| Studio | **v3.9.1** |
 | Skills | **62** |
 | Role-Card core agents | **25** |
 | Wave A (P0) | **8** specialists |
@@ -18,7 +18,7 @@ Community project — not affiliated with xAI. Canonical detail: `AGENTS.md` · 
 ## 60-second activate
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.9.0
+Activate Grok Imagine Cinematic Studio v3.9.1
 ```
 
 | Surface | How |
@@ -30,6 +30,7 @@ Activate Grok Imagine Cinematic Studio v3.9.0
 | Streamlit | `streamlit run web_ui/app.py` |
 | NiceGUI | `cinematic-studio web --port 8088` |
 | FastAPI | `cinematic-studio api --port 8090` |
+| React SPA | `cinematic-studio web-react` (needs API on `:8090`) |
 
 **Rule:** activate by **skill slug** (kebab-case), not display title.
 
@@ -59,7 +60,7 @@ Every Production Bible locks `model_stack` + `VIDEO_PIPELINE_SPEC`.
 
 | Command | Purpose |
 |---------|---------|
-| `/cinematic` | Full studio activate v3.9.0 |
+| `/cinematic` | Full studio activate v3.9.1 |
 | `/dna` | Character DNA extract / lock / inject |
 | `/imagine` | Preflight → plan → generate → QA / bridge |
 | `/dashboard` | Health, quota, sequences, DNA |
@@ -220,7 +221,7 @@ Activate studio
 
 | Intent | Phrase |
 |--------|--------|
-| Full studio | `Activate Grok Imagine Cinematic Studio v3.9.0` |
+| Full studio | `Activate Grok Imagine Cinematic Studio v3.9.1` |
 | 1.5 native | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | Long-form | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | Character onboard | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
@@ -287,5 +288,5 @@ grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
 
 ---
 
-*Operator cheat sheet · studio **v3.9.0** · 25 core · Wave A 8 · **62 skills** · multi-surface control plane*  
+*Operator cheat sheet · studio **v3.9.1** · 25 core · Wave A 8 · **62 skills** · multi-surface (TUI · Streamlit · NiceGUI · React · API)*  
 *Regenerate after roster/pack changes: update from AGENT_INDEX + plugin_packs.yaml + required_skills.manifest.*
