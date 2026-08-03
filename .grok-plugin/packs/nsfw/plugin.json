@@ -1,6 +1,6 @@
 {
   "name": "grok-imagine-nsfw",
-  "version": "3.9.0",
+  "version": "3.9.1",
   "description": "Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.",
   "author": {
     "name": "FineComputer14451",
