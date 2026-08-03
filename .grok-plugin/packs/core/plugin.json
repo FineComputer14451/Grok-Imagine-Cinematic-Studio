@@ -28,6 +28,8 @@
     ".grok/skills/costume-wardrobe-continuity",
     ".grok/skills/imagine-prompt-master",
     ".grok/skills/imagine-execution-bridge",
+    ".grok/skills/grok-imagine-image-tools",
+    ".grok/skills/xai-grok-skill",
     ".grok/skills/handoff-packet-validator",
     ".grok/skills/workflow-quota-optimizer",
     ".grok/skills/quota-dashboard",
