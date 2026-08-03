@@ -47,11 +47,12 @@ Whether you’re crafting Marvel-style hero reveals, cyberpunk neon sequences, i
 - **TUI Home view modes** — `1` compact · `2` ops · `3` full · Tab cycle · `p` pause auto-refresh · action list filter
 - **Streamlit Dashboard view modes** — same compact/ops/full density (session radio; TUI 1/2/3 parity)
 - **Shared `studio_core` services** — UI-agnostic dashboard snapshot, ActionSpec registry, and `execute_action` (in-process / subprocess)
-- **NiceGUI web shell** — `cinematic-studio web` (Dashboard · Production · DNA · Sequences · Imagine · Quota); dual-run with Streamlit
+- **NiceGUI web shell** — `cinematic-studio web` (Dashboard · Production · DNA · Sequences · Imagine · Quota)
+- **React / TanStack cockpit (v3.9.1)** — `cinematic-studio web-react` on FastAPI (guided Bible · Tools · Settings · ActionSpec SPA)
 - **FastAPI control plane** — `cinematic-studio api` (`/v1/dashboard`, ActionSpec execute)
 - Prior **3.8.8** — Operator UX control plane (readiness · convergence · delivery · handoff validate · Wave A packaging)
 
-See full details in [CHANGELOG.md](CHANGELOG.md) and [docs/releases/RELEASE_NOTES_v3.9.0.md](docs/releases/RELEASE_NOTES_v3.9.0.md). Dual-run web guide: [docs/guides/WEB_SHELLS.md](docs/guides/WEB_SHELLS.md).
+See full details in [CHANGELOG.md](CHANGELOG.md) and [docs/releases/RELEASE_NOTES_v3.9.1.md](docs/releases/RELEASE_NOTES_v3.9.1.md). Multi-shell web guide: [docs/guides/WEB_SHELLS.md](docs/guides/WEB_SHELLS.md).
 
 ---
 
@@ -177,8 +178,9 @@ Grok Imagine Cinematic Studio v3.9.0  (Studio Director + 25+ Agents · Grok 4.5 
 ├── tools/cinematic_studio_cli.py   # Unified CLI (create-bible --wizard, dna, sequence, quota, nsfw, imagine, plugin, validate...)
 ├── references/MODELS_v3.6.md   # Dual-stack registry (grok-4.5 cinematic default)
 ├── studio_core/                  # UI-agnostic services (dashboard, ActionSpec, execute_action)
-├── web_ui/app.py                 # Streamlit: Guided Bible, DNA bank, sequence dashboard, live cost estimation
+├── web_ui/app.py                 # Streamlit: DNA bank, live batch, NSFW, Community Cloud
 ├── web_nicegui/                  # Optional NiceGUI shell (cinematic-studio web)
+├── web_react/                    # Optional React/TanStack SPA (cinematic-studio web-react)
 ├── studio_api/                   # Optional FastAPI control plane (cinematic-studio api)
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT.md              # Primary activation prompt (v3.8+ compatible)
@@ -281,41 +283,46 @@ cinematic-studio web --port 8088
 
 See full command reference in the [Quick Start Guide](docs/guides/Quick_Start_Guide.md) and run `cinematic-studio --help`.
 
-### 4. Web UI (dual-run: Streamlit + NiceGUI)
+### 4. Web UI (multi-run: Streamlit + NiceGUI + React)
 
-**Streamlit** (default · Community Cloud · full guided Bible wizard):
+All browser shells share `studio_core` (dashboard snapshot, ActionSpec, `execute_action`). Run any combination on different ports. Guide: [`docs/guides/WEB_SHELLS.md`](docs/guides/WEB_SHELLS.md).
+
+**Streamlit** (default · Community Cloud · live batch):
 
 ```bash
 streamlit run web_ui/app.py
 ```
 
-- Multi-step Guided Bible Creator
-- Character DNA Bank & injection blocks
-- Live quota/cost estimator + live xAI batch execute (when `XAI_API_KEY` is set)
-- Sequence health dashboard · model pickers (grok-4.5 / 1.5 video)
+- Character DNA Bank · live quota · live xAI batch (when `XAI_API_KEY` is set)
+- Full NSFW planners · PDF report download · Community Cloud deploy
 
-Deployable to Streamlit Community Cloud (see [`docs/guides/streamlit_cloud_deploy.md`](docs/guides/streamlit_cloud_deploy.md)).
-
-**NiceGUI** (optional · same ActionSpec safety as the TUI):
+**NiceGUI** (optional · ActionSpec cockpit):
 
 ```bash
 pip install -r requirements-nicegui.txt
 cinematic-studio web --port 8088
-# → http://127.0.0.1:8088/
-# Routes: / · /production · /dna · /sequences · /imagine · /quota
+# → http://127.0.0.1:8088/  ·  / production · dna · sequences · imagine · quota
 ```
 
-Both shells share `studio_core.services` (dashboard snapshot, ActionSpec argv building, `execute_action`). Run either or both — they do not conflict. Details: [`docs/guides/WEB_SHELLS.md`](docs/guides/WEB_SHELLS.md).
+**React / TanStack** (optional · SPA on FastAPI · v3.9.1):
+
+```bash
+pip install -r requirements-api.txt
+cinematic-studio api --port 8090          # Terminal A
+cinematic-studio web-react                # Terminal B → http://127.0.0.1:5173
+# Pages: Dashboard · Production · DNA · Sequences · Imagine · Quota · Bible · Tools · Settings · NSFW
+```
 
 For a lightweight in-terminal live dashboard + safe command launcher (no browser), use `cinematic-studio ui`.
 
-**HTTP API** (optional automation / custom UIs):
+**HTTP API** (automation / React / custom UIs):
 
 ```bash
 pip install -r requirements-api.txt
 cinematic-studio api --port 8090
-# OpenAPI UI → http://127.0.0.1:8090/docs
+# OpenAPI → http://127.0.0.1:8090/docs
 # GET /v1/dashboard · GET /v1/actions · POST /v1/actions/{id}/execute
+# GET /v1/meta/* · GET/POST /v1/bible/*
 ```
 
 Same ActionSpec safety model as the TUI (no free-form argv). See [`docs/PR9_STUDIO_API.md`](docs/PR9_STUDIO_API.md).
