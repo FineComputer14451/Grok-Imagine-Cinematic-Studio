@@ -244,7 +244,7 @@ When working with or creating skills:
 - **Refine / iterate on previously generated images**: `generated-image-editor` (user-global when present)
 - **Upscale video for final delivery** (720p → 1080p/4K, face restoration): Activate `ai-video-upscaler`
 - Video / audio processing: Activate `cinematic-ffmpeg` or use `ffmpeg` / bash
-- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (25-agent core + specialist suite, **studio v3.9.0**)
+- **Full cinematic production**: Activate `grok-imagine-cinematic-studio` (25-agent core + specialist suite, **studio v3.9.1**)
 - **Planning → generation handoff**: Studio Director **Imagine Agent Mode Handoff** (see below)
 
 If native Imagine tools are unavailable, use `imagine-execution-bridge` / CLI (`imagine submit`, `sfw run`, `sequence run`) with a locked `VIDEO_PIPELINE_SPEC`.
@@ -268,7 +268,7 @@ Document skills are typically **session / user-global** (not always in the 62-sk
 - Manage the official Grok Build binary (min **0.2.93**): `cinematic-studio grok status|ensure|update|install`
 - Method A meta installer ensures the binary and ships `tools/grok_build_cli.py` + `cli/grok_cli_commands.py`
 - **Android / Termux / NetHunter / desktop shell:** `export PATH="$HOME/.grok/bin:$HOME/.local/bin:$PATH"`; Method A from a clone
-- **grok.com chat:** no binary — `Activate Grok Imagine Cinematic Studio v3.9.0` or paste `MASTER_PROMPT.md`; Method A skills in `~/.grok/skills/` support chat ecosystems (skip declutter if you need both chat Method A + plugin)
+- **grok.com chat:** no binary — `Activate Grok Imagine Cinematic Studio v3.9.1` or paste `MASTER_PROMPT.md`; Method A skills in `~/.grok/skills/` support chat ecosystems (skip declutter if you need both chat Method A + plugin)
 - **grok.com/imagine:** surface `grok_com_imagine` — `imagine-execution-bridge` / `cinematic-studio imagine bridge` copy-paste packets
 - **Grok mobile chat app:** same as grok.com (Activate / Imagine only); shell for CLI
 - Meta path without wrapper: `bash scripts/cinematic_studio.sh grok ensure`
@@ -306,9 +306,9 @@ Use these in the **final response** (never inside function calls), when the runt
 For any complex visual storytelling, film-style image sequences, video production, or NSFW cinematic work:
 
 **Primary activation command:**  
-`Activate Grok Imagine Cinematic Studio v3.9.0` or `Start cinematic production`
+`Activate Grok Imagine Cinematic Studio v3.9.1` or `Start cinematic production`
 
-This engages the full **25 specialized agents** (Role Cards labeled v3.6.5–v4.5 under studio **v3.9.0**; Studio Director owns **Imagine Agent Mode Handoff**) plus pipeline specialists and **Wave A** scaffolds. **62 skills** implement the department. Core list:
+This engages the full **25 specialized agents** (Role Cards labeled v3.6.5–v4.5 under studio **v3.9.1**; Studio Director owns **Imagine Agent Mode Handoff**) plus pipeline specialists and **Wave A** scaffolds. **62 skills** implement the department. Core list:
 
 - Studio Director (`studio-director`), Mega Production Architect (`mega-production-architect`)
 - Director of Photography, Production Designer, Color Grading Supervisor
@@ -326,7 +326,7 @@ Model Layer for Role Cards: **`references/agents/MODEL_LAYER_v4.5.md`**.
 Identity Continuity: **`references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`**.  
 **Parallel Brief Protocol:** Concurrent multi-agent coordination under MAXIMUM AGENTIC MODE. Canonical: `references/agents/Parallel_Brief_Protocol.md`. Studio Director issues Parallel Briefs; specialist outputs converge into validated `imagine_agent_mode_handoff` packets.
 
-## Imagine Agent Mode Handoff (landed v3.7.1 · current studio v3.9.0)
+## Imagine Agent Mode Handoff (landed v3.7.1 · current studio v3.9.1)
 
 Studio Director routes planning → generation so pipeline context is never dropped.
 
@@ -409,7 +409,7 @@ Entry points by task (not exhaustive). Prefer slugs; full map = `AGENT_INDEX.md`
 | **GitHub Management** | `github-repo-manager` | Git lifecycle, PRs, releases, skill/plugin catalog pin hygiene |
 | **Documents** | `pdf`, `docx`, `pptx`, `xlsx` | Professional docs (session skills when available) |
 | **Memory** | `memory-edit` | Personal facts/preferences worth remembering |
-| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **62-skill** suite (v3.9.0; packs + declutter `full_suite_wins`) |
+| **Grok Plugin & Meta** | `cinematic-studio-meta-installer` | Bootstrap/install/update the full **62-skill** suite (v3.9.1; packs + declutter `full_suite_wins`) |
 | **Localization** | `localization-subtitle-specialist` | SDH, multi-language, cultural adaptation |
 | **Production Bible** | `production-bible-workflow` | Guided create-bible / DNA / sequence / quota onboarding |
 
