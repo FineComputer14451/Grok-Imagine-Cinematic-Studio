@@ -89,6 +89,14 @@
             "description": "Parallel Brief dispatcher for Studio Director under MAXIMUM AGENTIC MODE. Templates logs and anti-blocks concurrent spe…"
           },
           {
+            "name": "imagine-build",
+            "description": "Wrapper for correct use of image_gen and image_edit tools inside Grok Build. Enforce code-first for exact text or data,…"
+          },
+          {
+            "name": "xai-api-build",
+            "description": "Wrapper for using the real xAI API inside Grok Build apps. Enforce server-only access via process.env.XAI_API_KEY, pref…"
+          },
+          {
             "name": "director-of-photography",
             "description": "Visual language architect and cinematic lens master. Designs lighting motivation, camera choreography, lens choices, an…"
           },
@@ -300,7 +308,7 @@
           }
         ]
       },
-      "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+      "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
     },
     "grok-imagine-cinematic-core": {
       "components": {
@@ -388,6 +396,14 @@
           {
             "name": "parallel-brief-dispatcher",
             "description": "Parallel Brief dispatcher for Studio Director under MAXIMUM AGENTIC MODE. Templates logs and anti-blocks concurrent spe…"
+          },
+          {
+            "name": "imagine-build",
+            "description": "Wrapper for correct use of image_gen and image_edit tools inside Grok Build. Enforce code-first for exact text or data,…"
+          },
+          {
+            "name": "xai-api-build",
+            "description": "Wrapper for using the real xAI API inside Grok Build apps. Enforce server-only access via process.env.XAI_API_KEY, pref…"
           }
         ],
         "commands": [
@@ -429,7 +445,7 @@
           }
         ]
       },
-      "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+      "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -480,7 +496,7 @@
           }
         ]
       },
-      "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+      "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -563,7 +579,7 @@
           }
         ]
       },
-      "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+      "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
     },
     "grok-imagine-nsfw": {
       "components": {
@@ -592,7 +608,7 @@
           }
         ]
       },
-      "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+      "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -633,7 +649,7 @@
           }
         ]
       },
-      "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+      "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
     }
   }
 }

@@ -8,13 +8,13 @@
   "plugins": [
     {
       "name": "grok-imagine-cinematic-studio",
-      "description": "Full cinematic suite v3.9.0 — 25 Role-Card core agents, 62 skills, slash commands (catalog pin SHA matches tree after pin). Wave A P0 specialists included. Recommended one-click install.",
+      "description": "Full cinematic suite v3.9.0 — 25 Role-Card core agents, 64 skills, slash commands (catalog pin SHA matches tree after pin). Wave A P0 specialists included. Recommended one-click install.",
       "category": "creative",
       "version": "3.9.0",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+        "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -25,13 +25,13 @@
     },
     {
       "name": "grok-imagine-cinematic-core",
-      "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.",
+      "description": "Orchestration, DNA, Imagine runtime, QA, quota, Build wrappers, and meta tools.",
       "category": "creative",
       "version": "3.9.0",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+        "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -49,7 +49,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+        "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -69,7 +69,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+        "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -89,7 +89,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+        "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -109,7 +109,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "2246965cf6b42b36dbd9b2bf98690d83bf484483"
+        "sha": "ccd6c5f8957f99811b812e97e6ae1e45bacc1ef8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [

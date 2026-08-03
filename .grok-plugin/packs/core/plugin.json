@@ -1,7 +1,7 @@
 {
   "name": "grok-imagine-cinematic-core",
   "version": "3.9.0",
-  "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.",
+  "description": "Orchestration, DNA, Imagine runtime, QA, quota, Build wrappers, and meta tools.",
   "author": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -35,7 +35,9 @@
     ".grok/skills/chain-qa-protocol",
     ".grok/skills/cinematic-skill-creator",
     ".grok/skills/grok-doctor",
-    ".grok/skills/parallel-brief-dispatcher"
+    ".grok/skills/parallel-brief-dispatcher",
+    ".grok/skills/imagine-build",
+    ".grok/skills/xai-api-build"
   ],
   "commands": [
     "commands/cinematic.md",
