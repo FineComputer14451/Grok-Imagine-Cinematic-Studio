@@ -1,5 +1,7 @@
 # Handoff Packet Types — Field Cheat Sheet (v3.7.1 + Extend-Priority)
 
+**Official protocol (full narrative):** `references/HANDOFF_PACKET_PROTOCOLS.md`
+
 Source of implementation: `scripts/validate_handoff.py` + `tools/handoff_schema.py` (Imagine Agent Mode).  
 **July 2026:** `imagine_agent_mode_handoff` now defaults to Extend-from-Frame priority for multi-clip work.
 
