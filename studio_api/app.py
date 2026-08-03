@@ -80,15 +80,126 @@ def create_app() -> Any:
             "health": "/health",
             "dashboard": "/v1/dashboard",
             "actions": "/v1/actions",
+            "meta_agents": "/v1/meta/agents",
+            "meta_role_cards": "/v1/meta/role-cards",
+            "meta_env": "/v1/meta/env",
+            "meta_options": "/v1/meta/production-options",
+            "bible_stages": "/v1/bible/stages",
+            "bible_guided": "/v1/bible/guided",
         }
 
     @app.get("/health")
     def health() -> dict[str, Any]:
+        from studio_api.meta import env_status
+
+        env = env_status()
         return {
             "ok": True,
             "studio_version": _studio_version(),
             "actions": len(ACTIONS),
+            "xai_api_key_set": env["xai_api_key_set"],
         }
+
+    # --- Phase 2 meta (Settings / Tools; read-only) ---
+
+    @app.get("/v1/meta/env")
+    def meta_env() -> dict[str, Any]:
+        from studio_api.meta import env_status
+
+        return env_status()
+
+    @app.get("/v1/meta/production-options")
+    def meta_production_options() -> dict[str, Any]:
+        from studio_api.meta import production_options
+
+        return production_options()
+
+    @app.get("/v1/meta/agents")
+    def meta_agents() -> dict[str, Any]:
+        try:
+            from studio_api.meta import agents_roster
+
+            return agents_roster()
+        except Exception as exc:  # noqa: BLE001
+            raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    @app.get("/v1/meta/role-cards")
+    def meta_role_cards() -> dict[str, Any]:
+        try:
+            from studio_api.meta import list_role_cards
+
+            return list_role_cards()
+        except Exception as exc:  # noqa: BLE001
+            raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    @app.get("/v1/meta/role-cards/{stem}")
+    def meta_role_card_detail(stem: str) -> dict[str, Any]:
+        from studio_api.meta import role_card_preview
+
+        try:
+            return role_card_preview(stem)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        except FileNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=f"Unknown role card: {stem}") from exc
+        except Exception as exc:  # noqa: BLE001
+            raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    # --- Guided Bible (Streamlit wizard parity; never --wizard) ---
+
+    @app.get("/v1/bible/stages")
+    def bible_stages() -> dict[str, Any]:
+        try:
+            from studio_api.bible import stages_payload
+
+            return stages_payload()
+        except Exception as exc:  # noqa: BLE001
+            raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    @app.post("/v1/bible/validate")
+    def bible_validate(
+        payload: dict[str, Any] = Body(default_factory=dict),  # type: ignore[assignment]
+    ) -> dict[str, Any]:
+        from studio_api.bible import validate_stage
+
+        stage_id = str((payload or {}).get("stage_id") or "")
+        answers = (payload or {}).get("answers") or {}
+        if not stage_id:
+            raise HTTPException(status_code=422, detail="stage_id required")
+        if not isinstance(answers, dict):
+            raise HTTPException(status_code=422, detail="answers must be an object")
+        try:
+            return validate_stage(stage_id, answers)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @app.post("/v1/bible/guided")
+    def bible_guided(
+        payload: dict[str, Any] = Body(default_factory=dict),  # type: ignore[assignment]
+    ) -> dict[str, Any]:
+        """Generate Production Bible from multi-step wizard answers.
+
+        Body: ``{ answers, write?: bool, output?: str }``.
+        Uses ``cli.bible_stages`` + ``build_production_bible`` — never ``--wizard``.
+        """
+        from studio_api.bible import generate_bible
+
+        body = payload or {}
+        answers = body.get("answers") or {}
+        if not isinstance(answers, dict):
+            raise HTTPException(status_code=422, detail="answers must be an object")
+        write = bool(body.get("write", False))
+        output = str(body.get("output") or "production_bible.json")
+        try:
+            result = generate_bible(answers, write=write, output=output)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        except Exception as exc:  # noqa: BLE001
+            raise HTTPException(status_code=500, detail=str(exc)) from exc
+        if not result.get("ok"):
+            # 422 so clients can show field errors without treating as crash
+            raise HTTPException(status_code=422, detail=result)
+        return result
 
     @app.get("/v1/dashboard")
     def dashboard() -> dict[str, Any]:

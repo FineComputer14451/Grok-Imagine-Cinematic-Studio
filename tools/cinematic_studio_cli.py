@@ -31,6 +31,7 @@ from cli.studio_commands import register as register_studio_commands  # noqa: E4
 from cli.tui_commands import register as register_tui_commands  # noqa: E402
 from cli.wave_a_commands import register as register_wave_a_commands  # noqa: E402
 from cli.web_commands import register as register_web_commands  # noqa: E402
+from cli.web_react_commands import register as register_web_react_commands  # noqa: E402
 from cli.api_commands import register as register_api_commands  # noqa: E402
 
 app = typer.Typer(
@@ -79,6 +80,7 @@ register_report_commands(app)
 register_plugin_commands(app)
 register_tui_commands(app)
 register_web_commands(app)
+register_web_react_commands(app)
 register_api_commands(app)
 register_generation_commands(app)
 register_wave_a_commands(app)

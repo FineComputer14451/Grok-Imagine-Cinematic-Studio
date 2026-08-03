@@ -67,3 +67,34 @@ cinematic-studio api --port 8090
 
 OpenAPI docs at `/docs`. See `docs/PR9_STUDIO_API.md`.
 
+## React / TanStack cockpit (optional · Streamlit page parity)
+
+Experimental SPA under `web_react/` on FastAPI (`studio_api` → `studio_core`).
+
+**Pages:** Dashboard · Production · DNA · Sequences · Imagine · Quota · **Bible** (guided) · **Tools** · **Settings** · **NSFW** (opt-in).  
+**Still Streamlit-primary:** live xAI batch execute, PDF report download, full NSFW plan/execute.
+
+```bash
+# Terminal A
+pip install -r requirements-api.txt
+cinematic-studio api --host 127.0.0.1 --port 8090
+
+# Terminal B
+cinematic-studio web-react
+# → http://127.0.0.1:5173  (Vite proxies /v1 and /health → :8090)
+
+# Or manual: cd web_react && npm install && npm run dev
+# Preview build: cinematic-studio web-react --preview --port 4173
+```
+
+```bash
+# Smoke (no Chromium — recommended)
+cd web_react && npm run test:smoke
+
+# Optional Playwright UI routes (needs free RAM + chromium)
+cd web_react && npx playwright install chromium && CI=1 npm run test:e2e
+# or: bash scripts/smoke_web_react_e2e.sh
+```
+
+Details: `web_react/README.md`.
+

@@ -20,6 +20,7 @@ lib/
 !scripts/lib/
 !web_ui/lib/
 !web_nicegui/lib/
+!web_react/src/lib/
 lib64/
 parts/
 sdist/
@@ -197,6 +198,17 @@ artifacts/animatics/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# React / Vite cockpit (web_react)
+web_react/node_modules/
+web_react/dist/
+web_react/.env
+web_react/.env.local
+web_react/*.local
+web_react/playwright-report/
+web_react/test-results/
+web_react/blob-report/
+web_react/playwright/.cache/
 # Superpowers brainstorm session artifacts (local only)
 .superpowers/
 
