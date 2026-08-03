@@ -258,7 +258,12 @@ def dna_to_markdown(dna: dict[str, Any], prompts: dict[str, str] | None = None) 
         f"```\n{prompts['video_1.5']}\n```",
     ]
     if dna.get("nsfw_notes"):
-        lines += ["", "## NSFW Consistency Notes", dna["nsfw_notes"]]
+        notes = dna["nsfw_notes"]
+        if isinstance(notes, (dict, list)):
+            notes = json.dumps(notes, indent=2, ensure_ascii=False)
+        else:
+            notes = str(notes)
+        lines += ["", "## NSFW Consistency Notes", notes]
     return "\n".join(lines)
 
 

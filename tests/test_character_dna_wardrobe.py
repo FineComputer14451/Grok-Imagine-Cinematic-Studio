@@ -102,3 +102,25 @@ def test_markdown_includes_wardrobe_section_when_present() -> None:
     md = dna_to_markdown(dna)
     assert "Wardrobe Lock" in md
     assert "locked" in md.lower()
+
+
+def test_markdown_serializes_structured_nsfw_notes() -> None:
+    dna = create_dna_scaffold("Mara", core_identity="pi", facial_dna="scar")
+    dna["nsfw_notes"] = {
+        "mode": "r_rated_intimate_opt_in",
+        "forbidden_always": ["minors"],
+    }
+    md = dna_to_markdown(dna)
+    assert "## NSFW Consistency Notes" in md
+    assert "r_rated_intimate_opt_in" in md
+    assert "minors" in md
+    # join-safe: structured notes must not be raw dict repr only
+    assert '"mode"' in md
+
+
+def test_markdown_keeps_string_nsfw_notes() -> None:
+    dna = create_dna_scaffold("Mara", core_identity="pi", facial_dna="scar")
+    dna["nsfw_notes"] = "clinical note only"
+    md = dna_to_markdown(dna)
+    assert "## NSFW Consistency Notes" in md
+    assert "clinical note only" in md
