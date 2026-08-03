@@ -7,6 +7,19 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Fixed
 - **Spend-gate mode aliases** — `resolve_execution_mode` maps batch shorthand (`i2v`, `still`, `video`, …) to official modes so plate/motion readiness no longer silently skips when shots only set `recommended_mode: "i2v"`
 
+## [3.9.1] - 2026-08-03
+
+### Added
+- **React / TanStack cockpit** (`web_react/`) — Streamlit page-parity SPA on FastAPI: Dashboard, Production, DNA, Sequences, Imagine, Quota, Guided Bible, Tools, Settings, NSFW (opt-in)
+- **`cinematic-studio web-react`** — Vite dev/preview launcher (Node 20+); proxies `/v1` + `/health` to `studio_api`
+- **API meta + guided Bible** — `GET /v1/meta/*` (env, options, agents, role cards); `GET/POST /v1/bible/stages|validate|guided` (never `--wizard`)
+- **Bible → DNA/sequence handoff** — session seeds ActionSpec forms after guided generate
+- **Smoke** — `web_react` unit tests, `npm run test:smoke` (HTTP), optional Playwright e2e
+
+### Changed
+- **Studio version** — `VERSION` → **3.9.1**; `STUDIO_COMPATIBILITY_VERSION` / `PROTOCOL_OK` include **3.9.1**
+- **WEB_SHELLS** — multi-shell matrix documents Streamlit · NiceGUI · React · API
+
 ## [3.9.0] - 2026-08-02
 
 ### Added

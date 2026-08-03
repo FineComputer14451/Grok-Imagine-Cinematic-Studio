@@ -1,6 +1,6 @@
 {
   "name": "grok-imagine-cinematic-studio",
-  "version": "3.9.0",
+  "version": "3.9.1",
   "description": "Independent community cinematic production suite v3.9.0 — 25 Role-Card core agents, 62 skills, multi-surface control plane (CLI/TUI/Streamlit/NiceGUI/FastAPI). Grok Imagine Video 1.0/1.5, unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), Imagine Agent Mode Handoff, Character DNA, sequence extension, quota orchestration, Wave A specialists, and delivery polish. Full v4.5 Dual-Model Wave. Not affiliated with or endorsed by xAI.",
   "author": {
     "name": "FineComputer14451",
