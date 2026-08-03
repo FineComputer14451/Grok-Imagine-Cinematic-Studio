@@ -56,8 +56,8 @@ Canonical schema: `tools/handoff_schema.py` → `imagine_agent_mode_packet_schem
 - `extend_protocol` (required for video extend) — `"LAST_FRAME + MOTION_VECTOR"` or `"LAST_FRAME + MOTION_VECTOR + AUDIO_CUE"`
 - `last_frame_recap`, `momentum_vector` (required on extend)
 - `audio_momentum_vector` (required on 1.5 / native-audio chains)
-- `quota_optimization` (strongly recommended) — prefer_extend_over_new_clip, estimated_savings_pct, max_new_independent_clips, buffer_remaining_pct
-- `chain_control` (recommended) — source_clip_id, max_extensions, dependency_graph, require_chain_qa_before_extend, min_chain_qa_score
+- `quota_optimization` (strongly recommended)
+- `chain_control` (recommended)
 
 **Enums:**
 
@@ -77,29 +77,31 @@ When `generation_strategy` is `extend_from_frame_chain`, also require `last_fram
 
 Doc: `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`
 
-## Wave A specialist packets (P1 · v3.8.7+)
+## Surface bridge validation (Imagine Agent Mode)
 
-Source: `tools/wave_a_packets.py`. Builders live there; validator registers schemas automatically.
+For `packet_type: imagine_agent_mode_handoff`, the field `target_surface` is required and must be one of:
 
-| packet_type | Required (summary) | Producer skill |
-|-------------|-------------------|----------------|
-| `plate_motion_readiness` | `subject_id`, `plate_status` (draft\|approved\|locked), `motion_vector` {action,camera,emotion}, `i2v_motion_block_ready` | `plate-motion-readiness-lead` |
-| `contact_micro_physics_brief` | `subject_id`, `contact_brief`, `micro_physics_notes` (object) | `contact-micro-physics-specialist` |
-| `hmu_lock_handoff` | `character_slug`, `active_look_id`, `hmu_lock` (object) | `hair-makeup-continuity` |
-| `dialogue_adr_block` | `subject_id`, `dialogue_block` (object) | `dialogue-adr-director` |
-| `score_temp_music_block` | `subject_id`, `music_cues` (list) | `score-temp-music-supervisor` |
-| `title_mograph_brief` | `deliverable_id`, `title_cards` (≥1) | `title-motion-graphics-lead` |
-| `distribution_crop_plan` | `subject_id`, `crop_plan` (≥1 rows) | `distribution-crop-strategist` |
-| `parallel_brief_dispatch_log` | `session_id`, `briefs` (≥1 with `brief_id`) | `parallel-brief-dispatcher` |
+`grok_build_tools` | `grok_agent_acp` | `grok_com_imagine` | `xai_api`
 
-**Optional fields on any packet** (shape-checked when present):  
-`plate_status`, `motion_vector`, `hmu_lock`, `dialogue_block`, `music_cues`, `crop_plan`.
+| target_surface | Required skill / guidance | Bridge note |
+|----------------|---------------------------|-------------|
+| `grok_build_tools` | `grok-imagine-image-tools` | `GROK_IMAGINE_IMAGE_TOOLS_BRIDGE.md` |
+| `grok_agent_acp` | Inherits A (or D) | See handoff protocol Surface B clarification |
+| `grok_com_imagine` | Paste-friendly packet rules | `GROK_COM_IMAGINE_BRIDGE.md` |
+| `xai_api` | `xai-grok-skill` | `XAI_API_SURFACE_BRIDGE.md` |
 
-**CLI flags:**
-- `--strict-handoff` — readiness blockers hard-fail (agent-mode)
-- `--strict-wave-a` — still→video requires approved/locked plate + complete motion triple; incomplete Wave A fields hard-fail
+**Standalone checker:**
 
-**Attach helper:** `wave_a_packets.attach_wave_a_to_imagine(packet, plate_motion=…, …)` nests under `wave_a` and lifts plate/motion to top-level for readiness evaluators.
+```bash
+python .grok/skills/handoff-packet-validator/scripts/validate_surface.py path/to/packet.json
+python .grok/skills/handoff-packet-validator/scripts/validate_surface.py path/to/packet.json --strict
+```
+
+Acknowledgement options (any one is enough for a soft pass):
+- `bridge_ack: true` or `surface_validated: true` on the packet
+- Mention of the required skill or bridge filename in `quota_note`, `notes`, `handoff_steps`, or `return_path`
+
+Index: `grok-imagine-cinematic-studio/references/SURFACE_BRIDGES_INDEX.md`
 
 ## Exit codes
 
