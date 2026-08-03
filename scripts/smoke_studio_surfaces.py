@@ -70,6 +70,21 @@ def main() -> int:
         errors.append(f"nicegui: {exp}")
         print("FAIL web_nicegui", exp)
 
+    react_pkg = ROOT / "web_react" / "package.json"
+    if react_pkg.is_file():
+        try:
+            import json
+
+            pkg = json.loads(react_pkg.read_text(encoding="utf-8"))
+            scripts = pkg.get("scripts") or {}
+            assert "dev" in scripts and "build" in scripts
+            print("OK  web_react package.json", pkg.get("version", "?"))
+        except Exception as exp:  # noqa: BLE001
+            errors.append(f"web_react: {exp}")
+            print("FAIL web_react", exp)
+    else:
+        print("SKIP web_react (package.json missing)")
+
     if errors:
         print("SMOKE FAILED:", "; ".join(errors))
         return 1

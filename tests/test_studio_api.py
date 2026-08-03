@@ -60,6 +60,99 @@ def test_dashboard_endpoint() -> None:
         assert key in snap
 
 
+def test_bible_guided_endpoints() -> None:
+    try:
+        import fastapi  # noqa: F401
+    except ImportError:
+        return
+    from fastapi.testclient import TestClient
+    from studio_api.app import create_app
+
+    client = TestClient(create_app())
+    stages = client.get("/v1/bible/stages")
+    assert stages.status_code == 200
+    body = stages.json()
+    assert body["count"] >= 4
+    ids = [s["id"] for s in body["stages"]]
+    assert "story" in ids and "review" in ids
+
+    bad = client.post(
+        "/v1/bible/validate",
+        json={"stage_id": "story", "answers": {}},
+    )
+    assert bad.status_code == 200
+    assert bad.json()["ok"] is False
+
+    ok_val = client.post(
+        "/v1/bible/validate",
+        json={"stage_id": "story", "answers": {"title": "E2E Rain Code"}},
+    )
+    assert ok_val.status_code == 200
+    assert ok_val.json()["ok"] is True
+
+    gen = client.post(
+        "/v1/bible/guided",
+        json={
+            "answers": {
+                "title": "E2E Rain Code",
+                "genre": "Sci-Fi",
+                "target_duration_seconds": 90,
+                "complexity": "Medium",
+                "chat_model": "grok-4.5",
+                "video_model": "grok-imagine-video",
+                "logline": "Neon rain and a rogue AI.",
+            },
+            "write": False,
+        },
+    )
+    assert gen.status_code == 200, gen.text
+    out = gen.json()
+    assert out["ok"] is True
+    assert out["bible"]["project_title"] == "E2E Rain Code"
+    assert out["summary"]
+
+
+def test_meta_phase2_endpoints() -> None:
+    try:
+        import fastapi  # noqa: F401
+    except ImportError:
+        return
+    from fastapi.testclient import TestClient
+    from studio_api.app import create_app
+
+    client = TestClient(create_app())
+    health = client.get("/health")
+    assert health.status_code == 200
+    assert "xai_api_key_set" in health.json()
+
+    env = client.get("/v1/meta/env")
+    assert env.status_code == 200
+    assert "xai_api_key_set" in env.json()
+
+    opts = client.get("/v1/meta/production-options")
+    assert opts.status_code == 200
+    body = opts.json()
+    assert "genres" in body and "defaults" in body
+
+    agents = client.get("/v1/meta/agents")
+    assert agents.status_code == 200
+    ar = agents.json()
+    assert ar["core_count"] >= 1
+    assert ar["groups"]
+
+    cards = client.get("/v1/meta/role-cards")
+    assert cards.status_code == 200
+    cr = cards.json()
+    assert cr["count"] >= 1
+    stem = cr["role_cards"][0]["stem"]
+    one = client.get(f"/v1/meta/role-cards/{stem}")
+    assert one.status_code == 200
+    assert one.json().get("content")
+
+    bad = client.get("/v1/meta/role-cards/../etc/passwd")
+    assert bad.status_code in {400, 404, 422}
+
+
 def test_list_and_get_actions() -> None:
     try:
         import fastapi  # noqa: F401
