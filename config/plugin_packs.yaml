@@ -4,14 +4,14 @@ full_plugin:
   recommended: true
   display_name: Grok Imagine Cinematic Studio (Full Suite)
   description: >-
-    Full cinematic suite v3.9.0 — 25 Role-Card core agents, 62 skills, slash commands
+    Full cinematic suite v3.9.0 — 25 Role-Card core agents, 64 skills, slash commands
     (catalog pin SHA matches tree after pin). Wave A P0 specialists included.
     Recommended one-click install.
 packs:
   core:
     name: grok-imagine-cinematic-core
     display_name: Cinematic Studio Core
-    description: Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.
+    description: Orchestration, DNA, Imagine runtime, QA, quota, Build wrappers, and meta tools.
     requires: []
     skills:
     - grok-imagine-cinematic-studio
@@ -35,6 +35,8 @@ packs:
     - cinematic-skill-creator
     - grok-doctor
     - parallel-brief-dispatcher
+    - imagine-build
+    - xai-api-build
     commands:
     - cinematic
     - dna
