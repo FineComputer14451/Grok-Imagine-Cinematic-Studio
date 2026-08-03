@@ -4,7 +4,7 @@ full_plugin:
   recommended: true
   display_name: Grok Imagine Cinematic Studio (Full Suite)
   description: >-
-    Full cinematic suite v3.9.0 — 25 Role-Card core agents, 62 skills, slash commands
+    Full cinematic suite v3.9.1 — 25 Role-Card core agents, 62 skills, slash commands
     (catalog pin SHA matches tree after pin). Wave A P0 specialists included.
     Recommended one-click install.
 packs:

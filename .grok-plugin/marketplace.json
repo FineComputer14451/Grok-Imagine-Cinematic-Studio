@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "grok-imagine-cinematic-studio",
-      "description": "Full cinematic suite v3.9.0 — 25 Role-Card core agents, 62 skills, slash commands (catalog pin SHA matches tree after pin). Wave A P0 specialists included. Recommended one-click install.",
+      "description": "Full cinematic suite v3.9.1 — 25 Role-Card core agents, 62 skills, slash commands (catalog pin SHA matches tree after pin). Wave A P0 specialists included. Recommended one-click install.",
       "category": "creative",
       "version": "3.9.1",
       "source": {
