@@ -217,6 +217,18 @@ Auth: export `XAI_API_KEY` or first-run login. TUI/headless: **`grok-build-runne
 
 Always dry-run first when the user is unsure: `declutter --dry-run`.
 
+### Platform Build skills (not in the 62-skill suite)
+
+Grok Build platform skills such as **`imagine`** (`image_gen` / `image_edit` tool use) and **`xai-api`** (server-side `XAI_API_KEY` / runtime Imagine API) are **not** Cinematic Studio skills. Do **not** vendor them under `.grok/skills/` or the plugin pack union.
+
+| Need | Use |
+|------|-----|
+| Build-time stills/edits while coding | Platform skill **`imagine`** (user-global / session) |
+| App server calls to chat / Imagine / voice | Platform skill **`xai-api`** + `process.env.XAI_API_KEY` |
+| Cinematic prompts, DNA, handoff, bridge | Studio skills (`imagine-prompt-master`, `imagine-execution-bridge`, …) |
+
+Studio Role Card protocols (Ultimate Template, DNA inject, delivery ffmpeg) **override** generic Build still-prompt defaults when production is active.
+
 ## What Gets Installed
 
 | Target | Path | Contents |
