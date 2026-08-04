@@ -1,9 +1,10 @@
-"""Read-only NiceGUI dashboard — TUI/Streamlit snapshot parity (PR4)."""
+"""Read-only NiceGUI dashboard — KPI tiles (P2) + TUI snapshot parity."""
 
 from __future__ import annotations
 
 from typing import Any, Callable
 
+from web_nicegui.lib.kpi import extract_kpi_tiles
 from web_nicegui.lib.snapshot import (
     load_snapshot,
     normalize_dashboard_mode,
@@ -54,7 +55,18 @@ def _formatters():
 
 
 def _sev_color(sev: str) -> str:
-    return {"ok": "positive", "warn": "warning", "critical": "negative"}.get(sev, "primary")
+    return {"ok": "positive", "warn": "warning", "critical": "negative", "info": "info"}.get(
+        (sev or "ok").lower(), "primary"
+    )
+
+
+def _sev_border(sev: str) -> str:
+    return {
+        "ok": "border-positive",
+        "warn": "border-warning",
+        "critical": "border-negative",
+        "info": "border-info",
+    }.get((sev or "ok").lower(), "border-grey-7")
 
 
 def _set_text(el: Any, value: str) -> None:
@@ -78,27 +90,51 @@ def _set_text(el: Any, value: str) -> None:
         el.text = value
 
 
-def build_dashboard_page(ui: Any, *, get_mode: Callable[[], str], set_mode: Callable[[str], None]) -> None:
-    """Compose the dashboard into the current NiceGUI page context."""
+def build_dashboard_page(
+    ui: Any, *, get_mode: Callable[[], str], set_mode: Callable[[str], None]
+) -> None:
+    """Compose the dashboard: KPI tile row + detail panels."""
     fmt = _formatters()
     state: dict[str, Any] = {"snap": None, "error": None, "ready": False}
 
-    with ui.row().classes("w-full items-center justify-between q-mb-md"):
-        with ui.column():
-            title_label = ui.label("Cinematic Studio Dashboard").classes("text-h5 text-weight-bold")
+    with ui.row().classes("w-full items-center justify-between q-mb-md flex-wrap gap-2"):
+        with ui.column().classes("gap-0"):
+            title_label = ui.label("Cinematic Studio Dashboard").classes(
+                "text-h5 text-weight-bold"
+            )
             caption = ui.label("").classes("text-caption text-grey-7")
         with ui.row().classes("items-center gap-2"):
             mode_toggle = ui.toggle(
                 {"compact": "Compact", "ops": "Ops", "full": "Full"},
                 value=normalize_dashboard_mode(get_mode()),
             ).props("no-caps dense")
-            refresh_btn = ui.button("Refresh", icon="refresh").props("outline dense")
+            refresh_btn = ui.button("Refresh", icon="refresh").props("outline dense no-caps")
+
+    # —— P2: live KPI tiles (4 cards) ——
+    kpi_row = ui.row().classes("w-full q-mb-md gap-3 flex-wrap")
+    kpi_refs: list[dict[str, Any]] = []
+    with kpi_row:
+        for _ in range(4):
+            with ui.card().classes(
+                "col-grow q-pa-md"
+            ).style("min-width:10.5rem; flex:1 1 10.5rem; max-width:100%") as card:
+                label_el = ui.label("—").classes(
+                    "text-caption text-uppercase text-grey-6"
+                ).style("letter-spacing:0.06em; font-size:0.7rem")
+                value_el = ui.label("—").classes("text-h5 text-weight-bold q-mt-xs")
+                hint_el = ui.label("").classes("text-caption text-grey-7 q-mt-xs")
+                kpi_refs.append(
+                    {"card": card, "label": label_el, "value": value_el, "hint": hint_el}
+                )
 
     with ui.card().classes("w-full q-mb-sm"):
+        with ui.row().classes("w-full items-center justify-between"):
+            ui.label("Status").classes("text-subtitle2 text-weight-medium")
+            sev_badge = ui.badge("—").props("outline")
         status_pre = ui.markdown("")
-        sev_badge = ui.badge("").props("outline")
 
     with ui.card().classes("w-full q-mb-sm"):
+        ui.label("KPIs / Orient (detail)").classes("text-subtitle2 text-weight-medium")
         kpi_pre = ui.markdown("")
 
     with ui.card().classes("w-full q-mb-sm"):
@@ -116,12 +152,32 @@ def build_dashboard_page(ui: Any, *, get_mode: Callable[[], str], set_mode: Call
         with panels_col:
             with ui.card().classes("w-full"):
                 ui.label(title).classes("text-subtitle2 text-weight-medium")
-                # Prefer plain markdown fenced block for preformatted panel text
                 ui.markdown(f"```\n{body}\n```")
+
+    def _paint_kpi(snap: dict[str, Any]) -> None:
+        tiles = extract_kpi_tiles(snap)
+        for i, ref in enumerate(kpi_refs):
+            if i >= len(tiles):
+                _set_text(ref["label"], "")
+                _set_text(ref["value"], "—")
+                _set_text(ref["hint"], "")
+                continue
+            t = tiles[i]
+            _set_text(ref["label"], t["label"])
+            _set_text(ref["value"], t["value"])
+            _set_text(ref["hint"], t["hint"])
+            # Left border via Quasar color class on value
+            color = _sev_color(t["sev"])
+            try:
+                ref["value"].classes(replace=f"text-h5 text-weight-bold q-mt-xs text-{color}")
+            except Exception:
+                pass
 
     def refresh() -> None:
         try:
-            mode = normalize_dashboard_mode(getattr(mode_toggle, "value", None) or get_mode())
+            mode = normalize_dashboard_mode(
+                getattr(mode_toggle, "value", None) or get_mode()
+            )
             set_mode(mode)
             try:
                 snap = load_snapshot()
@@ -131,10 +187,16 @@ def build_dashboard_page(ui: Any, *, get_mode: Callable[[], str], set_mode: Call
                 state["snap"] = None
                 state["error"] = str(exc)
                 _set_text(status_pre, f"**Error loading snapshot:** `{exc}`")
-                sev_badge.set_text("ERROR") if hasattr(sev_badge, "set_text") else setattr(sev_badge, "text", "ERROR")
+                if hasattr(sev_badge, "set_text"):
+                    sev_badge.set_text("ERROR")
+                else:
+                    sev_badge.text = "ERROR"
                 sev_badge.props("color=negative")
                 _set_text(kpi_pre, "")
                 _set_text(attention_pre, "")
+                for ref in kpi_refs:
+                    _set_text(ref["value"], "—")
+                    _set_text(ref["hint"], "snapshot error")
                 _clear_panels()
                 return
 
@@ -142,18 +204,21 @@ def build_dashboard_page(ui: Any, *, get_mode: Callable[[], str], set_mode: Call
             assert snap is not None
             ver = studio_version(snap)
             sev = severity(snap)
-            title_label.set_text(f"Cinematic Studio v{ver}") if hasattr(title_label, "set_text") else setattr(
-                title_label, "text", f"Cinematic Studio v{ver}"
+            if hasattr(title_label, "set_text"):
+                title_label.set_text(f"Cinematic Studio v{ver}")
+            else:
+                title_label.text = f"Cinematic Studio v{ver}"
+            cap = (
+                f"View {mode} · Grok 4.5 · KPI tiles + detail panels · "
+                "TUI twin: cinematic-studio ui"
             )
-            caption.set_text(
-                f"View {mode} · Grok 4.5 · read-only NiceGUI shell · "
-                "TUI twin: cinematic-studio ui · Streamlit: web_ui/"
-            ) if hasattr(caption, "set_text") else setattr(
-                caption,
-                "text",
-                f"View {mode} · Grok 4.5 · read-only NiceGUI shell · "
-                "TUI twin: cinematic-studio ui · Streamlit: web_ui/",
-            )
+            if hasattr(caption, "set_text"):
+                caption.set_text(cap)
+            else:
+                caption.text = cap
+
+            _paint_kpi(snap)
+
             _set_text(status_pre, f"```\n{fmt['status'](snap)}\n```")
             badge_text = severity_label(sev)
             if hasattr(sev_badge, "set_text"):
@@ -198,14 +263,18 @@ def build_dashboard_page(ui: Any, *, get_mode: Callable[[], str], set_mode: Call
 
                 with panels_col:
                     with ui.card().classes("w-full"):
-                        ui.label("Snapshot JSON").classes("text-subtitle2 text-weight-medium")
-                        ui.code(json.dumps(snap, indent=2, default=str)[:12000]).classes("w-full")
+                        ui.label("Snapshot JSON").classes(
+                            "text-subtitle2 text-weight-medium"
+                        )
+                        ui.code(
+                            json.dumps(snap, indent=2, default=str)[:12000]
+                        ).classes("w-full")
             state["ready"] = True
-        except Exception as exc:  # noqa: BLE001 — keep UI alive on refresh errors
+        except Exception as exc:  # noqa: BLE001
             _set_text(status_pre, f"**Refresh failed:** `{exc}`")
 
     mode_toggle.on_value_change(lambda _e: refresh())
     refresh_btn.on_click(lambda: refresh())
-    # Defer first paint slightly so the client socket is ready
     ui.timer(0.05, refresh, once=True)
-    ui.timer(8.0, refresh)
+    # On-demand friendly interval (was 8s); still auto-refreshes ops view
+    ui.timer(15.0, refresh)
