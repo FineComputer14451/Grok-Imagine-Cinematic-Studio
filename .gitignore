@@ -21,6 +21,7 @@ lib/
 !web_ui/lib/
 !web_nicegui/lib/
 !web_react/src/lib/
+!web_academy/src/lib/
 lib64/
 parts/
 sdist/
