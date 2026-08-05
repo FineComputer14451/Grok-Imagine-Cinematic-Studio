@@ -2,7 +2,7 @@
 
 Interactive educational companion for **Grok Imagine Cinematic Studio**.
 
-Learn cinematography craft, studio agents, DNA/plates, editing, sound, packs, and delivery — with progress tracking and a graduate certificate path.
+Learn cinematography craft, studio agents, DNA/plates, editing, sound, packs, delivery, and the opt-in **ErosForge** NSFW pack module — with progress tracking and a graduate certificate path.
 
 ## Stack
 
@@ -44,6 +44,7 @@ npm run typecheck
 | `/lenses` · `/movement` · `/color` · `/lighting` · `/composition` · `/aspect` | Cinematography track |
 | `/editing` · `/sound` | Post craft |
 | `/agents` · `/pack` · `/workflows` · `/pipeline` | Studio systems |
+| `/erosforge` | **ErosForge** opt-in NSFW pack module (v3.9.2) |
 | `/quiz` · `/graduate` · `/recap` | Assessment + certificate |
 
 ## Notes
@@ -54,4 +55,4 @@ npm run typecheck
 
 ---
 
-**Version**: 1.0.0 · Studio monorepo companion · August 2026
+**Version**: 3.9.2 · ErosForge module · Studio monorepo companion · August 2026

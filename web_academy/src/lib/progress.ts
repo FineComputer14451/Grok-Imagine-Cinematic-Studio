@@ -11,6 +11,9 @@ type ProgressState = {
   graduatedAt: string | null;
   /** Delivery checklist item ids that are checked off */
   deliveryChecked: string[];
+  /** ErosForge module lesson ids completed */
+  erosforgeLessons: string[];
+  erosforgeQuizBest: number;
   completeTier: (id: number) => void;
   completeAgent: (id: string) => void;
   recordQuiz: (score: number) => void;
@@ -21,6 +24,8 @@ type ProgressState = {
   toggleDelivery: (id: string) => void;
   setDeliverySection: (ids: string[], checked: boolean) => void;
   clearDelivery: () => void;
+  completeErosforgeLesson: (id: string) => void;
+  recordErosforgeQuiz: (score: number) => void;
   reset: () => void;
 };
 
@@ -35,6 +40,8 @@ export const useProgress = create<ProgressState>()(
       graduateName: "",
       graduatedAt: null,
       deliveryChecked: [],
+      erosforgeLessons: [],
+      erosforgeQuizBest: 0,
       completeTier: (id) =>
         set((s) => ({
           completedTiers: s.completedTiers.includes(id)
@@ -82,6 +89,16 @@ export const useProgress = create<ProgressState>()(
           };
         }),
       clearDelivery: () => set({ deliveryChecked: [] }),
+      completeErosforgeLesson: (id) =>
+        set((s) => ({
+          erosforgeLessons: s.erosforgeLessons.includes(id)
+            ? s.erosforgeLessons
+            : [...s.erosforgeLessons, id],
+        })),
+      recordErosforgeQuiz: (score) =>
+        set((s) => ({
+          erosforgeQuizBest: Math.max(s.erosforgeQuizBest, score),
+        })),
       reset: () =>
         set({
           completedTiers: [],
@@ -92,6 +109,8 @@ export const useProgress = create<ProgressState>()(
           graduateName: "",
           graduatedAt: null,
           deliveryChecked: [],
+          erosforgeLessons: [],
+          erosforgeQuizBest: 0,
         }),
     }),
     { name: "studio-academy-progress" },
