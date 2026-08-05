@@ -182,12 +182,13 @@ Grok Imagine Cinematic Studio v3.9.1  (Studio Director + 25+ Agents · Grok 4.5 
 ├── web_nicegui/                  # Optional NiceGUI shell (cinematic-studio web)
 ├── web_react/                    # Optional React/TanStack SPA (cinematic-studio web-react)
 ├── web_academy/                  # Studio Academy — interactive learning companion
+├── web_marketplace/              # Plugin Marketplace SPA (packs · skills · graph · live GitHub sync)
 ├── docs/academy/                 # Academy checklist + FAQ
 ├── studio_api/                   # Optional FastAPI control plane (cinematic-studio api)
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT.md              # Primary activation prompt (v3.8+ compatible)
 ├── scripts/                      # Release helpers & verify shims
-└── .grok/skills/                 # 62 custom Grok skills (runtime engine)
+└── .grok/skills/                 # 64 custom Grok skills (runtime engine)
 ```
 
 **Key v3.9.1 Components**
@@ -285,7 +286,7 @@ cinematic-studio web --port 8088
 
 See full command reference in the [Quick Start Guide](docs/guides/Quick_Start_Guide.md) and run `cinematic-studio --help`.
 
-### 4. Web UI (multi-run: Streamlit + NiceGUI + React + Academy)
+### 4. Web UI (multi-run: Streamlit + NiceGUI + React + Academy + Marketplace)
 
 All browser shells share `studio_core` (dashboard snapshot, ActionSpec, `execute_action`). Run any combination on different ports. Guide: [`docs/guides/WEB_SHELLS.md`](docs/guides/WEB_SHELLS.md).
 
@@ -338,6 +339,17 @@ cd web_academy
 npm install
 npm run dev
 # → http://127.0.0.1:8080 — tiers, craft modules, quiz, graduate path
+```
+
+**Plugin Marketplace** (optional · browse packs / skills · local demo installs):
+
+```bash
+cd web_marketplace
+npm install
+npm run dev
+# → http://127.0.0.1:8080 — Full suite + modular packs · skill browser · dependency graph
+# Real CLI: grok plugin update grok-imagine-cinematic-studio
+# Catalog syncs from .grok-plugin/marketplace.json on GitHub main
 ```
 
 Companion docs: [`docs/academy/`](docs/academy/).

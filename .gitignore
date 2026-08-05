@@ -22,6 +22,7 @@ lib/
 !web_nicegui/lib/
 !web_react/src/lib/
 !web_academy/src/lib/
+!web_marketplace/src/lib/
 lib64/
 parts/
 sdist/
@@ -210,6 +211,17 @@ web_react/playwright-report/
 web_react/test-results/
 web_react/blob-report/
 web_react/playwright/.cache/
+
+# Plugin Marketplace SPA (web_marketplace)
+web_marketplace/node_modules/
+web_marketplace/dist/
+web_marketplace/.vercel/
+web_marketplace/.env
+web_marketplace/.env.local
+web_marketplace/*.local
+web_marketplace/screenshots/
+web_marketplace/attachments/
+
 # Superpowers brainstorm session artifacts (local only)
 .superpowers/
 
