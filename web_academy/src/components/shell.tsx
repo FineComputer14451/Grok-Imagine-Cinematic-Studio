@@ -16,6 +16,7 @@ import {
   DollarSign,
   Film,
   Fingerprint,
+  Flame,
   FlaskConical,
   Frame,
   GitBranch,
@@ -46,6 +47,7 @@ const NAV = [
   { to: "/search", label: "Search", icon: Search },
   { to: "/learn", label: "Learn", icon: BookOpen },
   { to: "/craft", label: "Craft", icon: Wand2 },
+  { to: "/erosforge", label: "ErosForge", icon: Flame },
   { to: "/pack", label: "Pack", icon: Package },
   { to: "/extend", label: "Extend", icon: Link2 },
   { to: "/delivery", label: "Delivery", icon: ClipboardCheck },
@@ -82,7 +84,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="min-h-dvh bg-bg text-fg">
+    <div className="min-h-dvh overflow-x-hidden bg-bg text-fg">
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-10"
@@ -109,6 +111,18 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </Link>
 
           <div className="flex items-center gap-1">
+            <Link
+              to="/erosforge"
+              className={cn(
+                "hidden sm:inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm",
+                pathname === "/erosforge"
+                  ? "bg-elevated text-fg"
+                  : "text-muted hover:bg-elevated/60 hover:text-fg",
+              )}
+            >
+              <Flame className="h-3.5 w-3.5 text-amber" />
+              ErosForge
+            </Link>
             <Link
               to="/search"
               className={cn(
@@ -161,13 +175,13 @@ export function Shell({ children }: { children: React.ReactNode }) {
         )}
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+      <main className="mx-auto max-w-6xl min-w-0 px-4 py-8 sm:px-6 sm:py-10">
         {children}
       </main>
 
       <footer className="border-t border-border/80 py-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 text-sm text-subtle sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>Studio Academy — educational companion for Cinematic Studio v3.9.1</p>
+          <p>Studio Academy v3.9.2 — educational companion for Cinematic Studio v3.9.1 · ErosForge module</p>
           <p className="font-mono text-xs">Independent of xAI · MIT-style learning tool</p>
         </div>
       </footer>
