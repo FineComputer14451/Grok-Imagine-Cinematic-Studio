@@ -1,12 +1,6 @@
 {
   "name": "finecomputer14451-cinematic-studio",
-  "description": "Grok Imagine Cinematic Studio v3.9.1 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post). 64 skills · 11 commands · 25 agents.",
-  "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
-  "install_command": "grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust",
-  "update_command": "grok plugin update grok-imagine-cinematic-studio",
-  "skill_count": 64,
-  "command_count": 11,
-  "agent_count": 25,
+  "description": "Grok Imagine Cinematic Studio v3.9.1 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post).",
   "owner": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -14,35 +8,30 @@
   "plugins": [
     {
       "name": "grok-imagine-cinematic-studio",
-      "description": "Full cinematic suite v3.9.1 — 25 Role-Card core agents, 64 skills, 11 slash commands. Wave A P0 specialists included. Recommended one-click install.",
+      "description": "Full cinematic suite v3.9.1 — 25 Role-Card core agents, 64 skills, slash commands (catalog pin SHA matches tree after pin). Wave A P0 specialists included. Recommended one-click install.",
       "category": "creative",
       "version": "3.9.1",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "6e0448e12058cac4451dae1316a907f41fe6eae6"
+        "sha": "2d01d550c47b46fc2af89b3e382222b4353e22d8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
         "grok-imagine-cinematic-studio",
         "cinematic studio"
       ],
-      "recommended": true,
-      "skill_count": 64,
-      "command_count": 11,
-      "agent_count": 25,
-      "update_command": "grok plugin update grok-imagine-cinematic-studio",
-      "install_command": "grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust"
+      "recommended": true
     },
     {
       "name": "grok-imagine-cinematic-core",
-      "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools (23 skills, 9 commands).",
+      "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.",
       "category": "creative",
       "version": "3.9.1",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "6e0448e12058cac4451dae1316a907f41fe6eae6"
+        "sha": "2d01d550c47b46fc2af89b3e382222b4353e22d8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -50,21 +39,17 @@
         "cinematic studio"
       ],
       "pack_id": "core",
-      "requires": [],
-      "skill_count": 23,
-      "command_count": 9,
-      "update_command": "grok plugin update grok-imagine-cinematic-core",
-      "install_command": "grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust"
+      "requires": []
     },
     {
       "name": "grok-imagine-camera-image",
-      "description": "DoP, production design, i2i, key art, reference curator, and i2v specialist (11 skills).",
+      "description": "DoP, production design, i2i, key art, reference curator, and i2v specialist.",
       "category": "creative",
       "version": "3.9.1",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "6e0448e12058cac4451dae1316a907f41fe6eae6"
+        "sha": "2d01d550c47b46fc2af89b3e382222b4353e22d8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -74,21 +59,17 @@
       "pack_id": "camera-image",
       "requires": [
         "core"
-      ],
-      "skill_count": 11,
-      "command_count": 0,
-      "update_command": "grok plugin update grok-imagine-camera-image",
-      "install_command": "grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust"
+      ]
     },
     {
       "name": "grok-imagine-sequence-narrative",
-      "description": "Long-form sequence, continuity, performance, audio, action/VFX, and SFW batches (19 skills).",
+      "description": "Long-form sequence, continuity, performance, audio, action/VFX, and SFW batches.",
       "category": "creative",
       "version": "3.9.1",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "6e0448e12058cac4451dae1316a907f41fe6eae6"
+        "sha": "2d01d550c47b46fc2af89b3e382222b4353e22d8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -98,21 +79,17 @@
       "pack_id": "sequence-narrative",
       "requires": [
         "core"
-      ],
-      "skill_count": 19,
-      "command_count": 0,
-      "update_command": "grok plugin update grok-imagine-sequence-narrative",
-      "install_command": "grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust"
+      ]
     },
     {
       "name": "grok-imagine-nsfw",
-      "description": "Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent (4 skills).",
+      "description": "Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.",
       "category": "creative",
       "version": "3.9.1",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "6e0448e12058cac4451dae1316a907f41fe6eae6"
+        "sha": "2d01d550c47b46fc2af89b3e382222b4353e22d8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -122,21 +99,17 @@
       "pack_id": "nsfw",
       "requires": [
         "core"
-      ],
-      "skill_count": 4,
-      "command_count": 1,
-      "update_command": "grok plugin update grok-imagine-nsfw",
-      "install_command": "grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust"
+      ]
     },
     {
       "name": "grok-imagine-delivery-post",
-      "description": "Assembly EDL, color grade, AI polish, upscale, and cinematic ffmpeg delivery (7 skills).",
+      "description": "Assembly EDL, color grade, AI polish, upscale, and cinematic ffmpeg delivery.",
       "category": "creative",
       "version": "3.9.1",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "6e0448e12058cac4451dae1316a907f41fe6eae6"
+        "sha": "2d01d550c47b46fc2af89b3e382222b4353e22d8"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -146,11 +119,7 @@
       "pack_id": "delivery-post",
       "requires": [
         "core"
-      ],
-      "skill_count": 7,
-      "command_count": 1,
-      "update_command": "grok plugin update grok-imagine-delivery-post",
-      "install_command": "grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust"
+      ]
     }
   ]
 }
