@@ -1,1 +1,125 @@
-{"name": "finecomputer14451-cinematic-studio", "description": "Grok Imagine Cinematic Studio v3.9.1 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post).", "owner": {"name": "FineComputer14451", "url": "https://github.com/FineComputer14451"}, "plugins": [{"name": "grok-imagine-cinematic-studio", "description": "Full cinematic suite v3.9.1 — 25 Role-Card core agents, 64 skills, slash commands (catalog + packs)", "category": "creative", "version": "3.9.1", "source": {"source": "url", "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git", "sha": "f3cbf068efa2616379f6536872a79c19fa1835bf"}, "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio", "keywords": ["grok-imagine-cinematic-studio", "cinematic studio"], "recommended": true}, {"name": "grok-imagine-cinematic-core", "description": "Core orchestration, Studio Director, meta-installer, skill-agent architect, GitHub repo manager", "category": "creative", "version": "3.9.1", "source": {"source": "url", "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git", "sha": "f3cbf068efa2616379f6536872a79c19fa1835bf"}, "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio", "keywords": ["grok-imagine-cinematic-studio", "cinematic studio"], "pack_id": "core", "requires": []}, {"name": "grok-imagine-camera-image", "description": "Director of Photography, Imagine Prompt Master, i2i refiners, key-art, reference curator", "category": "creative", "version": "3.9.1", "source": {"source": "url", "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git", "sha": "f3cbf068efa2616379f6536872a79c19fa1835bf"}, "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio", "keywords": ["grok-imagine-cinematic-studio", "cinematic studio"], "pack_id": "camera-image", "requires": ["grok-imagine-cinematic-core"]}, {"name": "grok-imagine-sequence-narrative", "description": "Sequence Director, cinematic sequence extender, narrative arc, animatic, trailer teaser", "category": "creative", "version": "3.9.1", "source": {"source": "url", "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git", "sha": "f3cbf068efa2616379f6536872a79c19fa1835bf"}, "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio", "keywords": ["grok-imagine-cinematic-studio", "cinematic studio"], "pack_id": "sequence-narrative", "requires": ["grok-imagine-cinematic-core"]}, {"name": "grok-imagine-nsfw", "description": "ErosForge NSFW Director, NSFW sequence extender, NSFW chain QA (explicit activation required)", "category": "creative", "version": "3.9.1", "source": {"source": "url", "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git", "sha": "f3cbf068efa2616379f6536872a79c19fa1835bf"}, "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio", "keywords": ["grok-imagine-cinematic-studio", "cinematic studio"], "pack_id": "nsfw", "requires": ["grok-imagine-cinematic-core"]}, {"name": "grok-imagine-delivery-post", "description": "QA Guardian, assembly editor, color grade, AI polish director, video upscaler, cinematic ffmpeg", "category": "creative", "version": "3.9.1", "source": {"source": "url", "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git", "sha": "f3cbf068efa2616379f6536872a79c19fa1835bf"}, "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio", "keywords": ["grok-imagine-cinematic-studio", "cinematic studio"], "pack_id": "delivery-post", "requires": ["grok-imagine-cinematic-core"]}]}
+{
+  "name": "finecomputer14451-cinematic-studio",
+  "description": "Grok Imagine Cinematic Studio v3.9.1 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post).",
+  "owner": {
+    "name": "FineComputer14451",
+    "url": "https://github.com/FineComputer14451"
+  },
+  "plugins": [
+    {
+      "name": "grok-imagine-cinematic-studio",
+      "description": "Full cinematic suite v3.9.1 — 25 Role-Card core agents, 64 skills, slash commands (catalog pin SHA matches tree after pin). Wave A P0 specialists included. Recommended one-click install.",
+      "category": "creative",
+      "version": "3.9.1",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
+        "sha": "8459c91784ce708ed3fecb55983e1af67a6d12d5"
+      },
+      "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+      "keywords": [
+        "grok-imagine-cinematic-studio",
+        "cinematic studio"
+      ],
+      "recommended": true
+    },
+    {
+      "name": "grok-imagine-cinematic-core",
+      "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.",
+      "category": "creative",
+      "version": "3.9.1",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
+        "sha": "8459c91784ce708ed3fecb55983e1af67a6d12d5"
+      },
+      "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+      "keywords": [
+        "grok-imagine-cinematic-studio",
+        "cinematic studio"
+      ],
+      "pack_id": "core",
+      "requires": []
+    },
+    {
+      "name": "grok-imagine-camera-image",
+      "description": "DoP, production design, i2i, key art, reference curator, and i2v specialist.",
+      "category": "creative",
+      "version": "3.9.1",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
+        "sha": "8459c91784ce708ed3fecb55983e1af67a6d12d5"
+      },
+      "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+      "keywords": [
+        "grok-imagine-cinematic-studio",
+        "cinematic studio"
+      ],
+      "pack_id": "camera-image",
+      "requires": [
+        "core"
+      ]
+    },
+    {
+      "name": "grok-imagine-sequence-narrative",
+      "description": "Long-form sequence, continuity, performance, audio, action/VFX, and SFW batches.",
+      "category": "creative",
+      "version": "3.9.1",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
+        "sha": "8459c91784ce708ed3fecb55983e1af67a6d12d5"
+      },
+      "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+      "keywords": [
+        "grok-imagine-cinematic-studio",
+        "cinematic studio"
+      ],
+      "pack_id": "sequence-narrative",
+      "requires": [
+        "core"
+      ]
+    },
+    {
+      "name": "grok-imagine-nsfw",
+      "description": "Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.",
+      "category": "creative",
+      "version": "3.9.1",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
+        "sha": "8459c91784ce708ed3fecb55983e1af67a6d12d5"
+      },
+      "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+      "keywords": [
+        "grok-imagine-cinematic-studio",
+        "cinematic studio"
+      ],
+      "pack_id": "nsfw",
+      "requires": [
+        "core"
+      ]
+    },
+    {
+      "name": "grok-imagine-delivery-post",
+      "description": "Assembly EDL, color grade, AI polish, upscale, and cinematic ffmpeg delivery.",
+      "category": "creative",
+      "version": "3.9.1",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
+        "sha": "8459c91784ce708ed3fecb55983e1af67a6d12d5"
+      },
+      "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+      "keywords": [
+        "grok-imagine-cinematic-studio",
+        "cinematic studio"
+      ],
+      "pack_id": "delivery-post",
+      "requires": [
+        "core"
+      ]
+    }
+  ]
+}
