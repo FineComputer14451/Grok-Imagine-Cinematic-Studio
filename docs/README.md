@@ -33,6 +33,19 @@ Project documentation index (community-maintained).
 | [ComfyUI + Grok Build](guides/install_comfyui_grok_build.md) | Optional local diffusion setup |
 | [Lustify + Grok Build](guides/install_lustify_grok_build.md) | Optional local SDXL checkpoint setup |
 
+## Studio Academy
+
+Interactive learning app + ship checklist for cinematography track beginners:
+
+| Resource | Location |
+|----------|----------|
+| **Interactive app** | [`web_academy/`](../web_academy/) |
+| Academy docs index | [`docs/academy/`](academy/) |
+| Delivery checklist | [`docs/academy/DELIVERY_CHECKLIST.md`](academy/DELIVERY_CHECKLIST.md) |
+| FAQ | [`docs/academy/FAQ.md`](academy/FAQ.md) |
+
+---
+
 ## Templates
 
 - [Production Bible Template](templates/Project_Bible_Template.md)

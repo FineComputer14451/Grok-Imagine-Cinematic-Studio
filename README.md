@@ -181,6 +181,8 @@ Grok Imagine Cinematic Studio v3.9.1  (Studio Director + 25+ Agents · Grok 4.5 
 ├── web_ui/app.py                 # Streamlit: DNA bank, live batch, NSFW, Community Cloud
 ├── web_nicegui/                  # Optional NiceGUI shell (cinematic-studio web)
 ├── web_react/                    # Optional React/TanStack SPA (cinematic-studio web-react)
+├── web_academy/                  # Studio Academy — interactive learning companion
+├── docs/academy/                 # Academy checklist + FAQ
 ├── studio_api/                   # Optional FastAPI control plane (cinematic-studio api)
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT.md              # Primary activation prompt (v3.8+ compatible)
@@ -283,7 +285,7 @@ cinematic-studio web --port 8088
 
 See full command reference in the [Quick Start Guide](docs/guides/Quick_Start_Guide.md) and run `cinematic-studio --help`.
 
-### 4. Web UI (multi-run: Streamlit + NiceGUI + React)
+### 4. Web UI (multi-run: Streamlit + NiceGUI + React + Academy)
 
 All browser shells share `studio_core` (dashboard snapshot, ActionSpec, `execute_action`). Run any combination on different ports. Guide: [`docs/guides/WEB_SHELLS.md`](docs/guides/WEB_SHELLS.md).
 
@@ -326,6 +328,19 @@ cinematic-studio api --port 8090
 ```
 
 Same ActionSpec safety model as the TUI (no free-form argv). See [`docs/PR9_STUDIO_API.md`](docs/PR9_STUDIO_API.md).
+
+
+
+#### Studio Academy (interactive education)
+
+```bash
+cd web_academy
+npm install
+npm run dev
+# → http://127.0.0.1:8080 — tiers, craft modules, quiz, graduate path
+```
+
+Companion docs: [`docs/academy/`](docs/academy/).
 
 ### 5. Full Documentation
 

@@ -24,6 +24,9 @@ commands/              # Slash commands for Grok Build plugin
 tools/                 # CLI + libraries (models.py is stack registry)
 tools/cli/             # Click command modules
 web_ui/                # Streamlit dashboard
+web_react/             # React / TanStack cockpit SPA
+web_nicegui/           # NiceGUI dashboard
+web_academy/           # Studio Academy (interactive education)
 scripts/               # install / verify / catalog pin shims
 tests/                 # pytest
 config/                # grok-build.example.toml
@@ -51,6 +54,7 @@ Do **not** move these without updating `tools/studio_paths.py`:
 docs/
 ├── README.md
 ├── REPOSITORY_LAYOUT.md
+├── academy/          # Studio Academy docs (checklist, FAQ)
 ├── guides/           # Quick Start, Upgrade, Installation
 ├── templates/        # Bible, kink library
 ├── releases/         # RELEASE_NOTES_v3.7.1.md
