@@ -1,6 +1,7 @@
 # Studio Academy — Delivery Checklist
 
 **Final ship gate** for Grok Imagine Cinematic Studio productions.  
+Interactive version: Studio Academy **`/delivery`** (checkboxes + copy report).  
 Run before stitch, client handoff, or “done.”
 
 Version: Academy educational companion · stills-first · SFW path  

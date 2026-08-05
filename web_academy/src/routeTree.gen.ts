@@ -19,6 +19,7 @@ import { Route as ColorRouteImport } from './routes/color'
 import { Route as CompositionRouteImport } from './routes/composition'
 import { Route as ConsistencyRouteImport } from './routes/consistency'
 import { Route as CraftRouteImport } from './routes/craft'
+import { Route as DeliveryRouteImport } from './routes/delivery'
 import { Route as DnaRouteImport } from './routes/dna'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as DopRouteImport } from './routes/dop'
@@ -89,6 +90,11 @@ const ConsistencyRoute = ConsistencyRouteImport.update({
 const CraftRoute = CraftRouteImport.update({
   id: '/craft',
   path: '/craft',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeliveryRoute = DeliveryRouteImport.update({
+  id: '/delivery',
+  path: '/delivery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DnaRoute = DnaRouteImport.update({
@@ -208,6 +214,7 @@ export interface FileRoutesByFullPath {
   '/composition': typeof CompositionRoute
   '/consistency': typeof ConsistencyRoute
   '/craft': typeof CraftRoute
+  '/delivery': typeof DeliveryRoute
   '/dna': typeof DnaRoute
   '/docs': typeof DocsRoute
   '/dop': typeof DopRoute
@@ -241,6 +248,7 @@ export interface FileRoutesByTo {
   '/composition': typeof CompositionRoute
   '/consistency': typeof ConsistencyRoute
   '/craft': typeof CraftRoute
+  '/delivery': typeof DeliveryRoute
   '/dna': typeof DnaRoute
   '/docs': typeof DocsRoute
   '/dop': typeof DopRoute
@@ -275,6 +283,7 @@ export interface FileRoutesById {
   '/composition': typeof CompositionRoute
   '/consistency': typeof ConsistencyRoute
   '/craft': typeof CraftRoute
+  '/delivery': typeof DeliveryRoute
   '/dna': typeof DnaRoute
   '/docs': typeof DocsRoute
   '/dop': typeof DopRoute
@@ -310,6 +319,7 @@ export interface FileRouteTypes {
     | '/composition'
     | '/consistency'
     | '/craft'
+    | '/delivery'
     | '/dna'
     | '/docs'
     | '/dop'
@@ -343,6 +353,7 @@ export interface FileRouteTypes {
     | '/composition'
     | '/consistency'
     | '/craft'
+    | '/delivery'
     | '/dna'
     | '/docs'
     | '/dop'
@@ -376,6 +387,7 @@ export interface FileRouteTypes {
     | '/composition'
     | '/consistency'
     | '/craft'
+    | '/delivery'
     | '/dna'
     | '/docs'
     | '/dop'
@@ -410,6 +422,7 @@ export interface RootRouteChildren {
   CompositionRoute: typeof CompositionRoute
   ConsistencyRoute: typeof ConsistencyRoute
   CraftRoute: typeof CraftRoute
+  DeliveryRoute: typeof DeliveryRoute
   DnaRoute: typeof DnaRoute
   DocsRoute: typeof DocsRoute
   DopRoute: typeof DopRoute
@@ -503,6 +516,13 @@ declare module '@tanstack/react-router' {
       path: '/craft'
       fullPath: '/craft'
       preLoaderRoute: typeof CraftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/delivery': {
+      id: '/delivery'
+      path: '/delivery'
+      fullPath: '/delivery'
+      preLoaderRoute: typeof DeliveryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dna': {
@@ -666,6 +686,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompositionRoute: CompositionRoute,
   ConsistencyRoute: ConsistencyRoute,
   CraftRoute: CraftRoute,
+  DeliveryRoute: DeliveryRoute,
   DnaRoute: DnaRoute,
   DocsRoute: DocsRoute,
   DopRoute: DopRoute,

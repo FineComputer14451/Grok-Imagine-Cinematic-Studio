@@ -49,6 +49,22 @@ export const SEARCH_INDEX: SearchHit[] = [
     tags: ["pack", "export", "bundle"],
   },
   {
+    id: "delivery",
+    title: "Delivery checklist",
+    blurb: "Final ship gate before stitch or handoff",
+    href: "/delivery",
+    group: "Production",
+    tags: [
+      "delivery",
+      "checklist",
+      "ship",
+      "handoff",
+      "qa",
+      "preflight",
+      "export",
+    ],
+  },
+  {
     id: "graduate",
     title: "Graduate certificate",
     blurb: "Claim completion after tiers, quiz, and cards",

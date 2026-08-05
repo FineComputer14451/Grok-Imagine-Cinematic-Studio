@@ -18,3 +18,9 @@ cd web_academy && npm install && npm run dev
 Curriculum modules: tiers, agents, DNA, lenses, movement, color, lighting, composition, aspect, editing, sound, packs, workflows, quiz, graduate certificate.
 
 Stills-first · independent learning tools · not official xAI credentials.
+
+
+## Interactive app
+
+The live Studio Academy companion includes an interactive **Delivery checklist** at `/delivery` (checkboxes, progress, director one-liner, full report copy). It mirrors [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md).
+

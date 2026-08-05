@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   CircleHelp,
   Clapperboard,
+  ClipboardCheck,
   Code2,
   Cpu,
   DollarSign,
@@ -47,6 +48,7 @@ import { CUT_TYPES } from "@/data/editing";
 import { QUIZ_QUESTIONS } from "@/data/quiz";
 import { SOUND_LAYERS } from "@/data/sound";
 import { AGENTS, STATS, TIERS } from "@/data/studio";
+import { DELIVERY_ALL_IDS } from "@/data/delivery";
 import { useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
@@ -59,6 +61,7 @@ function HomePage() {
   const quizBestScore = useProgress((s) => s.quizBestScore);
   const masteredCards = useProgress((s) => s.masteredCards);
   const graduatedAt = useProgress((s) => s.graduatedAt);
+  const deliveryChecked = useProgress((s) => s.deliveryChecked);
   const progress = Math.round((completedTiers.length / TIERS.length) * 100);
 
   return (
@@ -93,6 +96,16 @@ function HomePage() {
             >
               Craft hub
             </Link>
+            <Link
+              to="/delivery"
+              className={cn(
+                "inline-flex h-12 items-center justify-center gap-2 rounded-lg px-6 text-base font-medium",
+                "border border-border bg-elevated text-fg transition-all hover:border-border-strong active:scale-[0.98]",
+              )}
+            >
+              Delivery
+              <ClipboardCheck className="h-4 w-4" />
+            </Link>
           </div>
         </div>
 
@@ -111,6 +124,9 @@ function HomePage() {
                 <> · cards {masteredCards.length}/{AGENTS.length}</>
               )}
               {graduatedAt && <> · graduated</>}
+              {deliveryChecked.length > 0 && (
+                <> · delivery {deliveryChecked.length}/{DELIVERY_ALL_IDS.length}</>
+              )}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -212,6 +228,12 @@ function HomePage() {
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
+          {
+            to: "/delivery" as const,
+            icon: ClipboardCheck,
+            title: "Delivery checklist",
+            body: "Ship gate: pre-flight through export. Copy report.",
+          },
           {
             to: "/graduate" as const,
             icon: Award,

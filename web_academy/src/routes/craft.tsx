@@ -124,6 +124,7 @@ const TOOLS = [
   { to: "/lab" as const, label: "Prompt lab", why: "Assemble packets" },
   { to: "/shots" as const, label: "Shot list", why: "Order the stills" },
   { to: "/pack" as const, label: "Project pack", why: "Export the charter" },
+  { to: "/delivery" as const, label: "Delivery checklist", why: "Ship gate" },
   { to: "/dna" as const, label: "Character DNA", why: "Lock the face" },
   { to: "/editing" as const, label: "Editing", why: "Cut the teaser" },
 ] as const;
@@ -152,7 +153,7 @@ function CraftPage() {
               </p>
               <p className="mt-1 text-sm text-muted">
                 Walk 01→08, copy the master cheat, open DoP, Prompt lab — edit +
-                sound only after plates exist.
+                sound only after plates exist. Run delivery checklist before ship.
               </p>
             </div>
           </div>
@@ -195,7 +196,7 @@ function CraftPage() {
         <CardHeader>
           <CardTitle className="text-base">Packet → teaser → sound</CardTitle>
           <CardDescription>
-            Generate with 01–06 · cut with 07 · score with 08
+            Generate with 01–06 · cut with 07 · score with 08 · ship with delivery
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -208,6 +209,7 @@ function CraftPage() {
               ["Movement", "Static → one video move", "/movement"],
               ["Editing", "Order · duration · stitch", "/editing"],
               ["Sound", "Bed · hits · brief", "/sound"],
+              ["Delivery", "Ship gate checklist", "/delivery"],
             ].map(([label, detail, href], i) => (
               <li key={label}>
                 <Link
