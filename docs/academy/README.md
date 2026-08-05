@@ -7,7 +7,6 @@ Educational companion materials for **Grok Imagine Cinematic Studio**.
 | [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md) | Final ship gate before stitch / client handoff |
 | [FAQ.md](./FAQ.md) | Beginner blockers: DNA, plates, extends, quota, activation |
 | [EXTEND_CHAIN.md](./EXTEND_CHAIN.md) | Multi-clip Extend-from-Frame playbook |
-| [EROSFORGE_PATH.md](./EROSFORGE_PATH.md) | Opt-in R-artistic / intimacy path (adults only) |
 
 ## Interactive app
 
@@ -21,8 +20,9 @@ Curriculum modules: tiers, agents, DNA, lenses, movement, color, lighting, compo
 
 Stills-first · independent learning tools · not official xAI credentials.
 
-## Live modules
 
-- **Delivery checklist** at `/delivery`
-- **Extend Lab** at `/extend`
-- **Intimacy / ErosForge path** at `/intimacy` (opt-in · adults only · R-artistic)
+## Interactive app
+
+The live Studio Academy companion includes an interactive **Delivery checklist** at `/delivery` (checkboxes, progress, director one-liner, full report copy). It mirrors [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md).
+
+The live app includes **Extend Lab** at `/extend` (chain planner, plate gates, copyable packets).
