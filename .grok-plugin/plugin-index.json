@@ -1,1 +1,16 @@
-PLACEHOLDER_WILL_FIX
+{
+  "version": 1,
+  "plugins": {
+    "grok-imagine-cinematic-studio": {
+      "components": {
+        "skills": [
+          {
+            "name": "grok-imagine-cinematic-studio",
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.9.0 Odyssey Native powered by a 25-agent core suite plus i2i and NSF…"
+          }
+        ]
+      },
+      "sha": "58230cd17738e9db367341ff9ff0b3e7387bd5d8"
+    }
+  }
+}
