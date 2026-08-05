@@ -24,6 +24,7 @@ import {
   GitMerge,
   Layers,
   Lightbulb,
+  Link2,
   ListVideo,
   Move,
   Package,
@@ -95,6 +96,16 @@ function HomePage() {
               )}
             >
               Craft hub
+            </Link>
+            <Link
+              to="/extend"
+              className={cn(
+                "inline-flex h-12 items-center justify-center gap-2 rounded-lg px-6 text-base font-medium",
+                "border border-border bg-elevated text-fg transition-all hover:border-border-strong active:scale-[0.98]",
+              )}
+            >
+              Extend Lab
+              <Link2 className="h-4 w-4" />
             </Link>
             <Link
               to="/delivery"
@@ -228,6 +239,12 @@ function HomePage() {
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
+          {
+            to: "/extend" as const,
+            icon: Link2,
+            title: "Extend Lab",
+            body: "Multi-clip chains, plate gates, copy packet.",
+          },
           {
             to: "/delivery" as const,
             icon: ClipboardCheck,

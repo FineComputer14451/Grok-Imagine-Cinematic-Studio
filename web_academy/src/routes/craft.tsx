@@ -113,6 +113,10 @@ TEASER
 Wide → MS → CU → button · hard cuts · QA before stitch
 Sound: picture first · one hero event · trait-based music brief · silent OK early
 
+EXTEND
+Plate lock → one move/clip → recap motion_out → chain QA → stitch
+Stills montage valid early · short chains first
+
 NEON DEFAULT
 2.39 · 35/50 · teal/amber · slow push · 24s hybrid · rain + pulse + button sub
 
@@ -123,6 +127,7 @@ const TOOLS = [
   { to: "/dop" as const, label: "DoP visual card", why: "Freeze the look" },
   { to: "/lab" as const, label: "Prompt lab", why: "Assemble packets" },
   { to: "/shots" as const, label: "Shot list", why: "Order the stills" },
+  { to: "/extend" as const, label: "Extend Lab", why: "Plan clip chains" },
   { to: "/pack" as const, label: "Project pack", why: "Export the charter" },
   { to: "/delivery" as const, label: "Delivery checklist", why: "Ship gate" },
   { to: "/dna" as const, label: "Character DNA", why: "Lock the face" },
@@ -153,7 +158,8 @@ function CraftPage() {
               </p>
               <p className="mt-1 text-sm text-muted">
                 Walk 01→08, copy the master cheat, open DoP, Prompt lab — edit +
-                sound only after plates exist. Run delivery checklist before ship.
+                sound only after plates exist. Plan extends, then delivery before
+                ship.
               </p>
             </div>
           </div>
@@ -196,7 +202,8 @@ function CraftPage() {
         <CardHeader>
           <CardTitle className="text-base">Packet → teaser → sound</CardTitle>
           <CardDescription>
-            Generate with 01–06 · cut with 07 · score with 08 · ship with delivery
+            Generate with 01–06 · cut with 07 · score with 08 · extend · ship with
+            delivery
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -209,6 +216,7 @@ function CraftPage() {
               ["Movement", "Static → one video move", "/movement"],
               ["Editing", "Order · duration · stitch", "/editing"],
               ["Sound", "Bed · hits · brief", "/sound"],
+              ["Extend", "Clip chain plan", "/extend"],
               ["Delivery", "Ship gate checklist", "/delivery"],
             ].map(([label, detail, href], i) => (
               <li key={label}>
@@ -257,7 +265,7 @@ function CraftPage() {
           <div className="flex items-start justify-between gap-2">
             <div>
               <CardTitle className="text-base">Master cheat sheet</CardTitle>
-              <CardDescription>Craft 01–08 condensed</CardDescription>
+              <CardDescription>Craft 01–08 + extend condensed</CardDescription>
             </div>
             <CopyButton text={MASTER} label="Copy all" />
           </div>

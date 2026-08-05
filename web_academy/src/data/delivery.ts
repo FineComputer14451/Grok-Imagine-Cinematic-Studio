@@ -91,6 +91,11 @@ export const DELIVERY_SECTIONS: DeliverySection[] = [
     blurb: "Stop on identity No-Go. Chain QA before stitch.",
     items: [
       {
+        id: "extend-plan",
+        label: "Extend chain planned (clips · motion handoffs · durations)",
+        href: "/extend",
+      },
+      {
         id: "recap",
         label: "LAST_FRAME_RECAP + motion_out written before any extend",
         href: "/recap",

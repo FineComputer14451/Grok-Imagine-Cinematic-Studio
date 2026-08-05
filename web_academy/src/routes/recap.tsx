@@ -246,7 +246,11 @@ function RecapPage() {
             LAST_FRAME_RECAP
           </Link>{" "}
           so extend chains know pose, light, props, and emotion — then copy a
-          continuity packet and extend activation.
+          continuity packet and extend activation. Plan the full chain in{" "}
+          <Link to="/extend" className="text-teal hover:underline">
+            Extend Lab
+          </Link>
+          .
         </p>
       </div>
 

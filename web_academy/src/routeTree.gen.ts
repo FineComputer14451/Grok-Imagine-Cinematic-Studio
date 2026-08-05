@@ -24,6 +24,7 @@ import { Route as DnaRouteImport } from './routes/dna'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as DopRouteImport } from './routes/dop'
 import { Route as EditingRouteImport } from './routes/editing'
+import { Route as ExtendRouteImport } from './routes/extend'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as GraduateRouteImport } from './routes/graduate'
 import { Route as LabRouteImport } from './routes/lab'
@@ -115,6 +116,11 @@ const DopRoute = DopRouteImport.update({
 const EditingRoute = EditingRouteImport.update({
   id: '/editing',
   path: '/editing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExtendRoute = ExtendRouteImport.update({
+  id: '/extend',
+  path: '/extend',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GlossaryRoute = GlossaryRouteImport.update({
@@ -219,6 +225,7 @@ export interface FileRoutesByFullPath {
   '/docs': typeof DocsRoute
   '/dop': typeof DopRoute
   '/editing': typeof EditingRoute
+  '/extend': typeof ExtendRoute
   '/glossary': typeof GlossaryRoute
   '/graduate': typeof GraduateRoute
   '/lab': typeof LabRoute
@@ -253,6 +260,7 @@ export interface FileRoutesByTo {
   '/docs': typeof DocsRoute
   '/dop': typeof DopRoute
   '/editing': typeof EditingRoute
+  '/extend': typeof ExtendRoute
   '/glossary': typeof GlossaryRoute
   '/graduate': typeof GraduateRoute
   '/lab': typeof LabRoute
@@ -288,6 +296,7 @@ export interface FileRoutesById {
   '/docs': typeof DocsRoute
   '/dop': typeof DopRoute
   '/editing': typeof EditingRoute
+  '/extend': typeof ExtendRoute
   '/glossary': typeof GlossaryRoute
   '/graduate': typeof GraduateRoute
   '/lab': typeof LabRoute
@@ -324,6 +333,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/dop'
     | '/editing'
+    | '/extend'
     | '/glossary'
     | '/graduate'
     | '/lab'
@@ -358,6 +368,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/dop'
     | '/editing'
+    | '/extend'
     | '/glossary'
     | '/graduate'
     | '/lab'
@@ -392,6 +403,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/dop'
     | '/editing'
+    | '/extend'
     | '/glossary'
     | '/graduate'
     | '/lab'
@@ -427,6 +439,7 @@ export interface RootRouteChildren {
   DocsRoute: typeof DocsRoute
   DopRoute: typeof DopRoute
   EditingRoute: typeof EditingRoute
+  ExtendRoute: typeof ExtendRoute
   GlossaryRoute: typeof GlossaryRoute
   GraduateRoute: typeof GraduateRoute
   LabRoute: typeof LabRoute
@@ -551,6 +564,13 @@ declare module '@tanstack/react-router' {
       path: '/editing'
       fullPath: '/editing'
       preLoaderRoute: typeof EditingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/extend': {
+      id: '/extend'
+      path: '/extend'
+      fullPath: '/extend'
+      preLoaderRoute: typeof ExtendRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/glossary': {
@@ -691,6 +711,7 @@ const rootRouteChildren: RootRouteChildren = {
   DocsRoute: DocsRoute,
   DopRoute: DopRoute,
   EditingRoute: EditingRoute,
+  ExtendRoute: ExtendRoute,
   GlossaryRoute: GlossaryRoute,
   GraduateRoute: GraduateRoute,
   LabRoute: LabRoute,

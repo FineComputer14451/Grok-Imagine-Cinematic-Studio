@@ -49,6 +49,23 @@ export const SEARCH_INDEX: SearchHit[] = [
     tags: ["pack", "export", "bundle"],
   },
   {
+    id: "extend",
+    title: "Extend Lab",
+    blurb: "Multi-clip Extend-from-Frame chains and packets",
+    href: "/extend",
+    group: "Production",
+    tags: [
+      "extend",
+      "chain",
+      "clip",
+      "sequence",
+      "i2v",
+      "plate",
+      "motion",
+      "stitch",
+    ],
+  },
+  {
     id: "delivery",
     title: "Delivery checklist",
     blurb: "Final ship gate before stitch or handoff",
@@ -267,10 +284,10 @@ export const SEARCH_INDEX: SearchHit[] = [
   {
     id: "cards",
     title: "Flashcards",
-    blurb: "Drill activation commands",
+    blurb: "Agent activation drills",
     href: "/cards",
     group: "Practice",
-    tags: ["cards", "flashcards", "activation"],
+    tags: ["cards", "flashcards", "activation", "drill"],
   },
 ];
 
