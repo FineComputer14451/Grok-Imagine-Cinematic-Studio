@@ -41,6 +41,27 @@ export const SEARCH_INDEX: SearchHit[] = [
     tags: ["craft", "cinematography", "cheat"],
   },
   {
+    id: "erosforge",
+    title: "ErosForge module",
+    blurb:
+      "Opt-in NSFW pack: protocols, state builder, Chain QA, activation lab",
+    href: "/erosforge",
+    group: "Packs",
+    tags: [
+      "erosforge",
+      "nsfw",
+      "opt-in",
+      "intimacy",
+      "r-rated",
+      "consent",
+      "chain qa",
+      "quota",
+      "extend",
+      "artistic",
+      "pack",
+    ],
+  },
+  {
     id: "pack",
     title: "Project pack",
     blurb: "Export Bible + DNA + DoP + shots together",
@@ -294,6 +315,7 @@ export const SEARCH_INDEX: SearchHit[] = [
 export const SEARCH_GROUPS = [
   "Core",
   "Craft",
+  "Packs",
   "Production",
   "Reference",
   "Practice",
