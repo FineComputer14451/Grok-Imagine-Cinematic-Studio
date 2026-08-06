@@ -33,6 +33,7 @@ import {
   RectangleHorizontal,
   Scissors,
   Search,
+  ShieldCheck,
   Sparkles,
   Users,
   Wand2,
@@ -47,6 +48,7 @@ const NAV = [
   { to: "/search", label: "Search", icon: Search },
   { to: "/learn", label: "Learn", icon: BookOpen },
   { to: "/craft", label: "Craft", icon: Wand2 },
+  { to: "/continuity", label: "Continuity", icon: ShieldCheck },
   { to: "/erosforge", label: "ErosForge", icon: Flame },
   { to: "/delivery-pack", label: "Delivery pack", icon: ClipboardCheck },
   { to: "/pack", label: "Pack", icon: Package },
@@ -113,9 +115,21 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-1">
             <Link
-              to="/delivery-pack"
+              to="/continuity"
               className={cn(
                 "hidden md:inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm",
+                pathname === "/continuity"
+                  ? "bg-elevated text-fg"
+                  : "text-muted hover:bg-elevated/60 hover:text-fg",
+              )}
+            >
+              <ShieldCheck className="h-3.5 w-3.5 text-teal" />
+              Continuity
+            </Link>
+            <Link
+              to="/delivery-pack"
+              className={cn(
+                "hidden lg:inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm",
                 pathname === "/delivery-pack"
                   ? "bg-elevated text-fg"
                   : "text-muted hover:bg-elevated/60 hover:text-fg",
@@ -176,12 +190,20 @@ export function Shell({ children }: { children: React.ReactNode }) {
                       active
                         ? "bg-elevated text-fg"
                         : "text-muted hover:bg-elevated/60",
-                      (to === "/erosforge" || to === "/delivery-pack") &&
+                      to === "/erosforge" && !active && "text-amber",
+                      (to === "/continuity" || to === "/delivery-pack") &&
                         !active &&
-                        (to === "/erosforge" ? "text-amber" : "text-teal"),
+                        "text-teal",
                     )}
                   >
-                    <Icon className="h-4 w-4 shrink-0" />
+                    <Icon
+                      className={cn(
+                        "h-4 w-4 shrink-0",
+                        to === "/erosforge" && "text-amber",
+                        (to === "/continuity" || to === "/delivery-pack") &&
+                          "text-teal",
+                      )}
+                    />
                     {label}
                   </Link>
                 );
@@ -197,8 +219,13 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
       <footer className="border-t border-border/80 py-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 text-sm text-subtle sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>Studio Academy v3.9.3 — ErosForge · Delivery pack · Cinematic Studio v3.9.1</p>
-          <p className="font-mono text-xs">Independent of xAI · MIT-style learning tool</p>
+          <p>
+            Studio Academy v4.0.0 — Continuity · Delivery pack · ErosForge ·
+            Cinematic Studio v3.9.1
+          </p>
+          <p className="font-mono text-xs">
+            Independent of xAI · MIT-style learning tool
+          </p>
         </div>
       </footer>
     </div>
