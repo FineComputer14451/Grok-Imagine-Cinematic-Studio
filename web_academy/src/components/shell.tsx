@@ -48,6 +48,7 @@ const NAV = [
   { to: "/learn", label: "Learn", icon: BookOpen },
   { to: "/craft", label: "Craft", icon: Wand2 },
   { to: "/erosforge", label: "ErosForge", icon: Flame },
+  { to: "/delivery-pack", label: "Delivery pack", icon: ClipboardCheck },
   { to: "/pack", label: "Pack", icon: Package },
   { to: "/extend", label: "Extend", icon: Link2 },
   { to: "/delivery", label: "Delivery", icon: ClipboardCheck },
@@ -112,6 +113,18 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-1">
             <Link
+              to="/delivery-pack"
+              className={cn(
+                "hidden md:inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm",
+                pathname === "/delivery-pack"
+                  ? "bg-elevated text-fg"
+                  : "text-muted hover:bg-elevated/60 hover:text-fg",
+              )}
+            >
+              <ClipboardCheck className="h-3.5 w-3.5 text-teal" />
+              Delivery pack
+            </Link>
+            <Link
               to="/erosforge"
               className={cn(
                 "hidden sm:inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm",
@@ -163,6 +176,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
                       active
                         ? "bg-elevated text-fg"
                         : "text-muted hover:bg-elevated/60",
+                      (to === "/erosforge" || to === "/delivery-pack") &&
+                        !active &&
+                        (to === "/erosforge" ? "text-amber" : "text-teal"),
                     )}
                   >
                     <Icon className="h-4 w-4 shrink-0" />
@@ -181,7 +197,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
       <footer className="border-t border-border/80 py-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 text-sm text-subtle sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>Studio Academy v3.9.2 — educational companion for Cinematic Studio v3.9.1 · ErosForge module</p>
+          <p>Studio Academy v3.9.3 — ErosForge · Delivery pack · Cinematic Studio v3.9.1</p>
           <p className="font-mono text-xs">Independent of xAI · MIT-style learning tool</p>
         </div>
       </footer>
