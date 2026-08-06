@@ -41,6 +41,28 @@ export const SEARCH_INDEX: SearchHit[] = [
     tags: ["craft", "cinematography", "cheat"],
   },
   {
+    id: "continuity",
+    title: "Continuity module",
+    blurb:
+      "Multi-clip memory: LAST_FRAME_RECAP, continuity_state, drift gates, handoff builder",
+    href: "/continuity",
+    group: "Packs",
+    tags: [
+      "continuity",
+      "recap",
+      "last frame",
+      "drift",
+      "state packet",
+      "props",
+      "wardrobe",
+      "emotion",
+      "momentum",
+      "extend",
+      "chain",
+      "pack",
+    ],
+  },
+  {
     id: "erosforge",
     title: "ErosForge module",
     blurb:
