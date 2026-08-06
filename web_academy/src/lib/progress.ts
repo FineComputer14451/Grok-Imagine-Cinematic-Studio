@@ -14,6 +14,8 @@ type ProgressState = {
   erosforgeQuizBest: number;
   deliveryPackLessons: string[];
   deliveryPackQuizBest: number;
+  continuityLessons: string[];
+  continuityQuizBest: number;
   completeTier: (id: number) => void;
   completeAgent: (id: string) => void;
   recordQuiz: (score: number) => void;
@@ -28,6 +30,8 @@ type ProgressState = {
   recordErosforgeQuiz: (score: number) => void;
   completeDeliveryPackLesson: (id: string) => void;
   recordDeliveryPackQuiz: (score: number) => void;
+  completeContinuityLesson: (id: string) => void;
+  recordContinuityQuiz: (score: number) => void;
   reset: () => void;
 };
 
@@ -46,6 +50,8 @@ export const useProgress = create<ProgressState>()(
       erosforgeQuizBest: 0,
       deliveryPackLessons: [],
       deliveryPackQuizBest: 0,
+      continuityLessons: [],
+      continuityQuizBest: 0,
       completeTier: (id) =>
         set((s) => ({
           completedTiers: s.completedTiers.includes(id)
@@ -113,6 +119,16 @@ export const useProgress = create<ProgressState>()(
         set((s) => ({
           deliveryPackQuizBest: Math.max(s.deliveryPackQuizBest, score),
         })),
+      completeContinuityLesson: (id) =>
+        set((s) => ({
+          continuityLessons: s.continuityLessons.includes(id)
+            ? s.continuityLessons
+            : [...s.continuityLessons, id],
+        })),
+      recordContinuityQuiz: (score) =>
+        set((s) => ({
+          continuityQuizBest: Math.max(s.continuityQuizBest, score),
+        })),
       reset: () =>
         set({
           completedTiers: [],
@@ -127,6 +143,8 @@ export const useProgress = create<ProgressState>()(
           erosforgeQuizBest: 0,
           deliveryPackLessons: [],
           deliveryPackQuizBest: 0,
+          continuityLessons: [],
+          continuityQuizBest: 0,
         }),
     }),
     { name: "studio-academy-progress" },
