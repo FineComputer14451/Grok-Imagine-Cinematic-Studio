@@ -9,11 +9,11 @@ type ProgressState = {
   masteredCards: string[];
   graduateName: string;
   graduatedAt: string | null;
-  /** Delivery checklist item ids that are checked off */
   deliveryChecked: string[];
-  /** ErosForge module lesson ids completed */
   erosforgeLessons: string[];
   erosforgeQuizBest: number;
+  deliveryPackLessons: string[];
+  deliveryPackQuizBest: number;
   completeTier: (id: number) => void;
   completeAgent: (id: string) => void;
   recordQuiz: (score: number) => void;
@@ -26,6 +26,8 @@ type ProgressState = {
   clearDelivery: () => void;
   completeErosforgeLesson: (id: string) => void;
   recordErosforgeQuiz: (score: number) => void;
+  completeDeliveryPackLesson: (id: string) => void;
+  recordDeliveryPackQuiz: (score: number) => void;
   reset: () => void;
 };
 
@@ -42,6 +44,8 @@ export const useProgress = create<ProgressState>()(
       deliveryChecked: [],
       erosforgeLessons: [],
       erosforgeQuizBest: 0,
+      deliveryPackLessons: [],
+      deliveryPackQuizBest: 0,
       completeTier: (id) =>
         set((s) => ({
           completedTiers: s.completedTiers.includes(id)
@@ -99,6 +103,16 @@ export const useProgress = create<ProgressState>()(
         set((s) => ({
           erosforgeQuizBest: Math.max(s.erosforgeQuizBest, score),
         })),
+      completeDeliveryPackLesson: (id) =>
+        set((s) => ({
+          deliveryPackLessons: s.deliveryPackLessons.includes(id)
+            ? s.deliveryPackLessons
+            : [...s.deliveryPackLessons, id],
+        })),
+      recordDeliveryPackQuiz: (score) =>
+        set((s) => ({
+          deliveryPackQuizBest: Math.max(s.deliveryPackQuizBest, score),
+        })),
       reset: () =>
         set({
           completedTiers: [],
@@ -111,6 +125,8 @@ export const useProgress = create<ProgressState>()(
           deliveryChecked: [],
           erosforgeLessons: [],
           erosforgeQuizBest: 0,
+          deliveryPackLessons: [],
+          deliveryPackQuizBest: 0,
         }),
     }),
     { name: "studio-academy-progress" },
