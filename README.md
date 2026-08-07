@@ -164,19 +164,35 @@ flowchart TD
     class Start,Bible,DNA,PreProd,Principal,Handoff,Generate,Gates,Review,Color,Polish,Deliver step
 ```
 
-**Current visual diagrams (v3.9.1 brand refresh)**
+**Current visual diagrams (v3.9.1)**
+
+Vector (SVG) and raster (PNG) exports of the same live architecture — dual-stack orchestration, Imagine Agent Mode Handoff, Identity Continuity Protocol, readiness gates, and multi-shell `studio_core`.
+
+| Format | System architecture | Orchestration / production flow |
+|--------|---------------------|----------------------------------|
+| SVG | [`system_architecture_v3.9.1.svg`](assets/system_architecture_v3.9.1.svg) | [`orchestration_flow_v3.9.1.svg`](assets/orchestration_flow_v3.9.1.svg) |
+| PNG | [`system_architecture_v3.9.1.png`](assets/system_architecture_v3.9.1.png) | [`orchestration_flow_v3.9.1.png`](assets/orchestration_flow_v3.9.1.png) |
 
 <p align="center">
-  <img src="assets/system_architecture_v3.9.1.svg" alt="System Architecture v3.9.1" width="100%" style="max-width: 960px; border-radius: 12px;">
+  <img src="assets/system_architecture_v3.9.1.png" alt="System Architecture v3.9.1" width="100%" style="max-width: 960px; border-radius: 12px;">
 </p>
 
 <p align="center">
-  <img src="assets/orchestration_flow_v3.9.1.svg" alt="Orchestration Flow v3.9.1" width="100%" style="max-width: 1100px; border-radius: 12px;">
+  <img src="assets/orchestration_flow_v3.9.1.png" alt="Orchestration Flow v3.9.1" width="100%" style="max-width: 1100px; border-radius: 12px;">
 </p>
 
-> **Legacy Visual References** (v3.3 concept diagrams kept for historical modular spirit):
-> ![System Architecture v3.3](assets/system_architecture_v3.3.png)
-> ![Orchestration Flow v3.3](assets/orchestration_flow_v3.3.png)
+<details>
+<summary><strong>Visual references (expanded)</strong> — same diagrams, SVG sources for docs/print</summary>
+
+<p align="center">
+  <img src="assets/system_architecture_v3.9.1.svg" alt="System Architecture v3.9.1 SVG" width="100%" style="max-width: 960px; border-radius: 12px;">
+</p>
+
+<p align="center">
+  <img src="assets/orchestration_flow_v3.9.1.svg" alt="Orchestration Flow v3.9.1 SVG" width="100%" style="max-width: 1100px; border-radius: 12px;">
+</p>
+
+</details>
 
 **Updated ASCII Overview (v3.9.1)**
 
@@ -220,9 +236,11 @@ A brand new Hollywood-grade banner has been created specifically for v3.9.1. It 
 
 The included `assets/logo.jpg`, `assets/logo-mark.png`, and `assets/favicon.jpg` complete the visual identity for Web UI, GitHub presentation, and favicon usage.
 
-Current architecture / pipeline diagrams (SVG):
-- `assets/system_architecture_v3.9.1.svg`
-- `assets/orchestration_flow_v3.9.1.svg`
+Current architecture / pipeline diagrams (v3.9.1):
+- `assets/system_architecture_v3.9.1.png` + `.svg`
+- `assets/orchestration_flow_v3.9.1.png` + `.svg`
+
+Older v3.3 concept PNGs were retired in favor of these current exports.
 
 ### Cinematic Output Philosophy
 
