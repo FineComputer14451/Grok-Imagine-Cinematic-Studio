@@ -164,9 +164,19 @@ flowchart TD
     class Start,Bible,DNA,PreProd,Principal,Handoff,Generate,Gates,Review,Color,Polish,Deliver step
 ```
 
-> **Legacy Visual References** (v3.3 concept diagrams still illustrate the overall modular spirit):
-> ![System Architecture](assets/system_architecture_v3.3.png)
-> ![Orchestration Flow](assets/orchestration_flow_v3.3.png)
+**Current visual diagrams (v3.9.1 brand refresh)**
+
+<p align="center">
+  <img src="assets/system_architecture_v3.9.1.svg" alt="System Architecture v3.9.1" width="100%" style="max-width: 960px; border-radius: 12px;">
+</p>
+
+<p align="center">
+  <img src="assets/orchestration_flow_v3.9.1.svg" alt="Orchestration Flow v3.9.1" width="100%" style="max-width: 1100px; border-radius: 12px;">
+</p>
+
+> **Legacy Visual References** (v3.3 concept diagrams kept for historical modular spirit):
+> ![System Architecture v3.3](assets/system_architecture_v3.3.png)
+> ![Orchestration Flow v3.3](assets/orchestration_flow_v3.3.png)
 
 **Updated ASCII Overview (v3.9.1)**
 
@@ -206,9 +216,13 @@ Grok Imagine Cinematic Studio v3.9.1  (Studio Director + 25+ Agents · Grok 4.5 
 
 **Refreshed Premium Cinematic Banner (v3.9.1)**
 
-A brand new Hollywood-grade banner has been created specifically for v3.9.1. It features a massive cinematic camera lens with holographic AI elements, gold/teal accents, and premium film production aesthetics. The banner has been updated in `assets/banner.jpg`.
+A brand new Hollywood-grade banner has been created specifically for v3.9.1. It features a massive cinematic camera lens with holographic AI elements, teal/steel accents, and premium film production aesthetics. The banner is in `assets/banner.jpg`.
 
-The included `assets/logo.jpg` and `assets/favicon.jpg` complete the visual identity for Web UI and repository presentation.
+The included `assets/logo.jpg`, `assets/logo-mark.png`, and `assets/favicon.jpg` complete the visual identity for Web UI, GitHub presentation, and favicon usage.
+
+Current architecture / pipeline diagrams (SVG):
+- `assets/system_architecture_v3.9.1.svg`
+- `assets/orchestration_flow_v3.9.1.svg`
 
 ### Cinematic Output Philosophy
 

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1180" role="img" aria-label="Grok Imagine Cinematic Studio v3.9.1 system architecture">
+  <defs>
+    <style>
+      .bg { fill: #08090b; }
+      .panel { fill: #111318; stroke: #23272f; stroke-width: 1.5; }
+      .panel-primary { fill: #151b24; stroke: #323843; }
+      .panel-accent { fill: #101816; stroke: #3d5c58; }
+      .panel-exec { fill: #0c1210; stroke: #5a8a82; }
+      .title { fill: #eceef2; font: 600 22px 'Segoe UI', system-ui, sans-serif; }
+      .subtitle { fill: #8eb4ae; font: 500 12px 'Segoe UI', system-ui, sans-serif; letter-spacing: 0.12em; }
+      .layer { fill: #8b919c; font: 600 11px 'Segoe UI', system-ui, sans-serif; letter-spacing: 0.12em; }
+      .node { fill: #08090b; stroke: #23272f; stroke-width: 1; }
+      .node-text { fill: #eceef2; font: 500 12px 'Segoe UI', system-ui, sans-serif; }
+      .badge { fill: #181b21; stroke: #23272f; }
+      .badge-text { fill: #8b919c; font: 500 11px ui-monospace, Menlo, monospace; }
+      .connector { stroke: #323843; stroke-width: 1.5; }
+    </style>
+  </defs>
+  <rect class="bg" width="960" height="1180" rx="24"/>
+  <text class="subtitle" x="40" y="42">SYSTEM ARCHITECTURE</text>
+  <text class="title" x="40" y="72">Studio stack · v3.9.1</text>
+  <rect class="badge" x="720" y="38" width="200" height="28" rx="14"/>
+  <text class="badge-text" x="740" y="56">dual-stack · Imagine 1.5</text>
+
+  <!-- User -->
+  <rect class="panel" x="40" y="100" width="880" height="100" rx="16"/>
+  <text class="layer" x="60" y="126">USER LAYER</text>
+  <rect class="node" x="60" y="142" width="220" height="34" rx="8"/>
+  <text class="node-text" x="74" y="163">Grok Chat / Build CLI</text>
+  <rect class="node" x="296" y="142" width="220" height="34" rx="8"/>
+  <text class="node-text" x="310" y="163">Activate Studio v3.9.1</text>
+  <line class="connector" x1="480" y1="200" x2="480" y2="220"/>
+
+  <!-- Orchestration -->
+  <rect class="panel-primary" x="40" y="220" width="880" height="100" rx="16"/>
+  <text class="layer" x="60" y="246">ORCHESTRATION</text>
+  <rect class="node" x="60" y="262" width="180" height="34" rx="8"/>
+  <text class="node-text" x="74" y="283">Studio Director</text>
+  <rect class="node" x="256" y="262" width="240" height="34" rx="8"/>
+  <text class="node-text" x="270" y="283">Mega Production Architect</text>
+  <line class="connector" x1="480" y1="320" x2="480" y2="340"/>
+
+  <!-- Specialists -->
+  <rect class="panel" x="40" y="340" width="880" height="140" rx="16"/>
+  <text class="layer" x="60" y="366">25+ SPECIALISTS</text>
+  <rect class="node" x="60" y="382" width="140" height="30" rx="8"/><text class="node-text" x="74" y="401">Identity Lock</text>
+  <rect class="node" x="214" y="382" width="160" height="30" rx="8"/><text class="node-text" x="228" y="401">Sequence Director</text>
+  <rect class="node" x="388" y="382" width="140" height="30" rx="8"/><text class="node-text" x="402" y="401">Prompt Master</text>
+  <rect class="node" x="542" y="382" width="80" height="30" rx="8"/><text class="node-text" x="564" y="401">DoP</text>
+  <rect class="node" x="636" y="382" width="130" height="30" rx="8"/><text class="node-text" x="650" y="401">QA Guardian</text>
+  <rect class="node" x="60" y="424" width="150" height="30" rx="8"/><text class="node-text" x="74" y="443">Quota Optimizer</text>
+  <rect class="node" x="224" y="424" width="110" height="30" rx="8"/><text class="node-text" x="238" y="443">AI Polish</text>
+  <rect class="node" x="348" y="424" width="130" height="30" rx="8"/><text class="node-text" x="362" y="443">VFX / Sound</text>
+  <line class="connector" x1="480" y1="480" x2="480" y2="500"/>
+
+  <!-- Core -->
+  <rect class="panel-accent" x="40" y="500" width="880" height="140" rx="16"/>
+  <text class="layer" x="60" y="526">CORE SYSTEMS · V3.9.1</text>
+  <rect class="node" x="60" y="542" width="150" height="30" rx="8"/><text class="node-text" x="74" y="561">Production Bible</text>
+  <rect class="node" x="224" y="542" width="140" height="30" rx="8"/><text class="node-text" x="238" y="561">Character DNA</text>
+  <rect class="node" x="378" y="542" width="150" height="30" rx="8"/><text class="node-text" x="392" y="561">Imagine Handoff</text>
+  <rect class="node" x="542" y="542" width="130" height="30" rx="8"/><text class="node-text" x="556" y="561">Plugin Packs</text>
+  <rect class="node" x="60" y="584" width="150" height="30" rx="8"/><text class="node-text" x="74" y="603">Readiness Gates</text>
+  <rect class="node" x="224" y="584" width="120" height="30" rx="8"/><text class="node-text" x="238" y="603">Color Grade</text>
+  <line class="connector" x1="480" y1="640" x2="480" y2="660"/>
+
+  <!-- Tools -->
+  <rect class="panel" x="40" y="660" width="880" height="140" rx="16"/>
+  <text class="layer" x="60" y="686">TOOLS & INTERFACES</text>
+  <rect class="node" x="60" y="702" width="100" height="30" rx="8"/><text class="node-text" x="74" y="721">CLI / TUI</text>
+  <rect class="node" x="174" y="702" width="120" height="30" rx="8"/><text class="node-text" x="188" y="721">studio_core</text>
+  <rect class="node" x="308" y="702" width="100" height="30" rx="8"/><text class="node-text" x="322" y="721">Streamlit</text>
+  <rect class="node" x="422" y="702" width="100" height="30" rx="8"/><text class="node-text" x="436" y="721">NiceGUI</text>
+  <rect class="node" x="536" y="702" width="110" height="30" rx="8"/><text class="node-text" x="550" y="721">React SPA</text>
+  <rect class="node" x="660" y="702" width="100" height="30" rx="8"/><text class="node-text" x="680" y="721">FastAPI</text>
+  <rect class="node" x="60" y="744" width="140" height="30" rx="8"/><text class="node-text" x="74" y="763">62 Grok Skills</text>
+  <line class="connector" x1="480" y1="800" x2="480" y2="820"/>
+
+  <!-- Execution -->
+  <rect class="panel-exec" x="40" y="820" width="880" height="100" rx="16"/>
+  <text class="layer" x="60" y="846">EXECUTION</text>
+  <rect class="node" x="60" y="862" width="180" height="34" rx="8"/><text class="node-text" x="74" y="883">xAI Imagine Image</text>
+  <rect class="node" x="256" y="862" width="280" height="34" rx="8"/><text class="node-text" x="270" y="883">Video 1.5 · Native Audio + Physics</text>
+  <line class="connector" x1="480" y1="920" x2="480" y2="940"/>
+
+  <!-- Post -->
+  <rect class="panel-primary" x="40" y="940" width="880" height="100" rx="16"/>
+  <text class="layer" x="60" y="966">POST & DELIVERY</text>
+  <rect class="node" x="60" y="982" width="110" height="34" rx="8"/><text class="node-text" x="74" y="1003">QA Review</text>
+  <rect class="node" x="184" y="982" width="120" height="34" rx="8"/><text class="node-text" x="198" y="1003">Color Grade</text>
+  <rect class="node" x="318" y="982" width="110" height="34" rx="8"/><text class="node-text" x="332" y="1003">AI Polish</text>
+  <rect class="node" x="442" y="982" width="160" height="34" rx="8"/><text class="node-text" x="456" y="1003">Key Art / Trailers</text>
+
+  <text class="badge-text" x="40" y="1080">Grok Imagine Cinematic Studio v3.9.1 · Independent community project</text>
+  <text class="badge-text" x="40" y="1104">Replaces legacy v3.3 concept diagram for current dual-stack + handoff architecture</text>
+</svg>
