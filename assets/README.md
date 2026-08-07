@@ -8,14 +8,13 @@
 | `logo.jpg` | Square product logo |
 | `logo-mark.png` | Aperture mark for headers / favicons |
 | `favicon.jpg` | Browser / Web UI favicon |
-| `system_architecture_v3.9.1.svg` | Live system architecture diagram |
-| `orchestration_flow_v3.9.1.svg` | 10-stage production pipeline diagram |
+| `system_architecture_v3.9.1.png` | System architecture diagram (raster, README default) |
+| `system_architecture_v3.9.1.svg` | System architecture diagram (vector source) |
+| `orchestration_flow_v3.9.1.png` | Production pipeline diagram (raster, README default) |
+| `orchestration_flow_v3.9.1.svg` | Production pipeline diagram (vector source) |
 
-## Legacy (v3.3)
+## Retired
 
-| File | Purpose |
-|------|---------|
-| `system_architecture_v3.3.png` | Historical modular concept diagram |
-| `orchestration_flow_v3.3.png` | Historical orchestration concept diagram |
+v3.3 concept diagrams (`system_architecture_v3.3.png`, `orchestration_flow_v3.3.png`) were replaced by the v3.9.1 exports above.
 
 Independent community project — not affiliated with xAI.
