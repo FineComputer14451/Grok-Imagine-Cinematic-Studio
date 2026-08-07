@@ -240,6 +240,16 @@ North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-sta
 
 **Why the scripts?** PATH `cinematic-studio` often points at `~/Grok-Cinematic-Projects` (install tree, not always a git repo). Repo scripts prefer the in-repo CLI so pin/check resolve **this** checkout’s `HEAD`.
 
+### Automated re-pin on `main`
+
+After content merges to `main`, GitHub Actions workflow **Auto re-pin plugin catalog** (`.github/workflows/auto-repin-plugin-catalog.yml`) runs `plugin catalog check --release`. If the pin is stale it:
+
+1. Runs `plugin catalog pin` against that clone’s `HEAD`
+2. Commits **only** `.grok-plugin/**` with message `chore(plugins): re-pin catalog to HEAD [auto-pin]`
+3. Dispatches the main CI workflow on the new tip (token pushes do not auto-retrigger Actions)
+
+You can also run it manually: **Actions → Auto re-pin plugin catalog → Run workflow**. Local contributors should still pin before release tags; the bot is a safety net so docs/asset commits do not leave `main` red.
+
 ---
 
 ## 7. Available Supporting Resources

@@ -111,6 +111,7 @@ The plugin index and marketplace catalog system has been modernized for better m
 - `scripts/generate_plugin_index.py` is now a **thin pure-generation wrapper** only (no more `--sync-sha` / `--check` flags)
 - `scripts/release_plugin_catalog.sh` and `verify_plugins.sh` prefer the **in-repo** CLI (`python3 -m tools.cinematic_studio_cli`) so pin/check use this clone’s git `HEAD` (PATH `cinematic-studio` often points at `~/Grok-Cinematic-Projects`, which may not be a git repo)
 - **Two-step commits (not one atomic blob):** content commit first → `plugin catalog pin` → commit **only** `.grok-plugin/` (pin-only tip is expected; install SHA = content revision)
+- **Main safety net:** `.github/workflows/auto-repin-plugin-catalog.yml` auto pin-only commits on `main` when release pin is stale (message includes `[auto-pin]`)
 - Old direct script + flag workflows are deprecated in favor of the integrated `cinematic-studio` commands
 
 This makes plugin maintenance consistent with the rest of the CLI surface.
