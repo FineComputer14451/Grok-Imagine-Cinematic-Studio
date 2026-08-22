@@ -1,5 +1,5 @@
 ---
-description: Activate Grok Imagine Cinematic Studio v3.9.0 with the full 25-agent core production suite (62 skills), Grok 4.5 model stack, Imagine Agent Mode Handoff, multi-surface control plane, and native Imagine Video 1.0/1.5 pipeline.
+description: Activate Grok Imagine Cinematic Studio v3.10.0 with the full 25-agent core production suite (64 skills), Grok 4.5 model stack, Imagine Agent Mode Handoff, multi-surface control plane, and native Imagine Video 1.0/1.5 pipeline.
 ---
 
 # Activate Cinematic Studio
@@ -27,7 +27,7 @@ Start a full multi-agent cinematic production session with unified Grok 4.5 cine
 
 State the activation phrase explicitly:
 
-> **Activate Grok Imagine Cinematic Studio v3.9.0**
+> **Activate Grok Imagine Cinematic Studio v3.10.0**
 
 ## Commands
 
@@ -55,7 +55,7 @@ python tools/cinematic_studio_cli.py generate-prompt "$ARGUMENTS" \
 ### Specialist activations (use as needed)
 
 - `ACTIVATE IMAGINE_VIDEO_1.5_FULL` — full native 1.5 video + audio mode
-- `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` — official planning→Imagine execution handoff (v3.9.0)
+- `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` — official planning→Imagine execution handoff (v3.7.1 / v3.10.0)
 - `ACTIVATE CHARACTER_DNA_EXTRACTOR` — DNA extraction and Identity Lock
 - `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` — Heavy batch planning (explicit opt-in only)
 - `ACTIVATE AI_POLISH_DIRECTOR` — final delivery upscale pass
@@ -73,14 +73,14 @@ Confirm the session is in studio mode:
 
 ```
 ## Result
-- **Action**: Cinematic Studio v3.9.0 activated
+- **Action**: Cinematic Studio v3.10.0 activated
 - **Status**: success
 - **Project**: <title or brief from $ARGUMENTS>
 - **Pipeline**: Imagine Video 1.0 default / 1.5 when native audio
 - **Handoff**: Imagine Agent Mode Handoff ready (Studio Director owns surface routing)
 - **Stack**: grok-4.5 cinematic+Build (opt-in grok-4.3 for 1M)
 - **Agents**: 25 Role-Card core (+ Wave A / specialists; ErosForge opt-in)
-- **Skills**: 62-skill suite
+- **Skills**: 64-skill suite
 ```
 
 ## Next Steps

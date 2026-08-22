@@ -1,4 +1,4 @@
-# Grok Imagine Cinematic Studio v3.9.1 — Installation Guide
+# Grok Imagine Cinematic Studio v3.10.0 — Installation Guide
 
 Two supported install paths. Both can ship the same **64 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
 
@@ -109,7 +109,7 @@ Method A `tools_complete` requires `tools/grok_build_cli.py` and `tools/cli/grok
 
 2. **New chat on [grok.com](https://grok.com):**
    ```
-   Activate Grok Imagine Cinematic Studio v3.8.7
+   Activate Grok Imagine Cinematic Studio v3.10.0
    ```
    For a full lock-in, paste `MASTER_PROMPT.md` first (repo or GitHub raw), then Activate.
 
@@ -172,14 +172,14 @@ Creates a timestamped backup at `~/.grok/skills-backup-*` before replacing skill
 
 ```bash
 ./scripts/cinematic_studio.sh verify          # core skills (7) + model registry
-./scripts/cinematic_studio.sh verify --all    # full manifest (62 skills)
+./scripts/cinematic_studio.sh verify --all    # full manifest (64 skills)
 ```
 
 Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
 
 ### Manual zip (Method A)
 
-1. Download the latest `.zip` from GitHub Releases (`grok-imagine-cinematic-studio-skills-install-v3.8.7.zip` or current release)
+1. Download the latest `.zip` from GitHub Releases (`grok-imagine-cinematic-studio-skills-install-v3.10.0.zip` or current release)
 2. Extract it (release zips may use a nested root folder — the meta installer handles this automatically)
 3. Copy `.grok/skills/*` → `~/.grok/skills/`
 4. Copy `references/`, `tools/`, `config/`, and prompt files to `~/Grok-Cinematic-Projects/` (or your `PROJECT_DIR`)
@@ -193,8 +193,8 @@ Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
 
 | Plugin name | Pack id | Skills | Soft requires | Role |
 |-------------|---------|--------|---------------|------|
-| **`grok-imagine-cinematic-studio`** | *(full suite)* | **62** | — | **Recommended** one-click install |
-| `grok-imagine-cinematic-core` | `core` | **21** | — | Orchestration / DNA / wardrobe / Imagine / QA / quota / meta |
+| **`grok-imagine-cinematic-studio`** | *(full suite)* | **64** | — | **Recommended** one-click install |
+| `grok-imagine-cinematic-core` | `core` | **23** | — | Orchestration / DNA / wardrobe / Imagine / QA / quota / meta |
 | `grok-imagine-camera-image` | `camera-image` | **11** | `core` | DoP, design, i2i, key art, i2v, plate/contact |
 | `grok-imagine-sequence-narrative` | `sequence-narrative` | **19** | `core` | Sequence, continuity, performance, audio, action/VFX, SFW |
 | `grok-imagine-nsfw` | `nsfw` | **4** | `core` | Opt-in NSFW (ErosForge + NSFW QA/quota) |
@@ -241,7 +241,7 @@ Avoid dual installs of the same plugin name; uninstall until `grok plugin list` 
 bash scripts/cinematic_studio.sh verify --plugin
 ```
 
-Checks all **62** plugin skills, 11 slash commands (`/cinematic`, `/dna`, etc.), and model registry when CLI tools are present in the plugin checkout.
+Checks all **64** plugin skills, 11 slash commands (`/cinematic`, `/dna`, etc.), and model registry when CLI tools are present in the plugin checkout.
 
 Registry cross-check (optional):
 
@@ -269,7 +269,7 @@ Refresh the Skills page in Grok and confirm slash commands are available.
 
 1. Refresh the Skills page in Grok
 2. Start a new chat
-3. Type: `Activate Grok Imagine Cinematic Studio v3.8.7` (or use `/cinematic` with Method B)
+3. Type: `Activate Grok Imagine Cinematic Studio v3.10.0` (or use `/cinematic` with Method B)
 
 Optional Grok Build config:
 
@@ -315,8 +315,8 @@ catalog pin, skills layout, git, API key presence, and optional pytest.
 ## Verify tiers
 
 - **core** (default) — 7 manifest skills marked `# core` in `required_skills.manifest`, plus `models verify`
-- **all** — all **62** manifest skills in `~/.grok/skills/` (Method A)
-- **plugin** — all **62** skills + 11 commands in the Grok plugin checkout (Method B; `verify --plugin`)
+- **all** — all **64** manifest skills in `~/.grok/skills/` (Method A)
+- **plugin** — all **64** skills + 11 commands in the Grok plugin checkout (Method B; `verify --plugin`)
 
 Core skills: `grok-imagine-cinematic-studio`, `ai-video-upscaler`, `cinematic-sequence-extender`, `studio-director`, `quality-assurance-guardian`, `identity-lock-specialist`, `workflow-quota-optimizer`
 

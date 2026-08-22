@@ -1,7 +1,7 @@
 # Grok Imagine Cinematic Studio
 # Official Documentation
 
-**Version:** 3.9.0  
+**Version:** 3.10.0  
 **Status:** Canonical product manual (draft refresh — August 2026)  
 **Repository:** [FineComputer14451/Grok-Imagine-Cinematic-Studio](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
 
@@ -41,7 +41,7 @@
 **Grok Imagine Cinematic Studio** is a production-grade multi-agent framework that turns creative ideas into locked, emotionally resonant cinematic sequences using:
 
 - **Grok 4.5** (primary cinematic + Build) with optional **Grok 4.3** (1M context)
-- **xAI Imagine** Image + dual Video **1.0 / 1.5 Native** (synchronized audio on 1.5)
+- **xAI Imagine** Image **1.0 / 2.0** + Video **1.0 / 1.5 Native** (synchronized audio on 1.5; **no Video 2.0**)
 - A **virtual film department**: Studio Director, 25+ specialists, readiness gates, and delivery polish
 
 ### Core Promise
@@ -61,7 +61,7 @@ Emotionally powerful, identity-locked, production-ready content — directed, no
 | **`cinematic-studio` CLI** | Bible, DNA, sequence, quota, handoff, plugins, Wave A, doctor, validate |
 | **Interactive TUI** | Live dashboard + safe launcher + production cockpit (density modes) |
 | **Streamlit Web UI** | Guided Bible, DNA bank, sequences, Imagine, cost estimation, dashboard |
-| **Plugin marketplace** | Full suite (~62 skills) + 5 modular satellite packs |
+| **Plugin marketplace** | Full suite (64 skills) + 5 modular satellite packs |
 
 **Short pitch:** [OFFICIAL_OVERVIEW.md](OFFICIAL_OVERVIEW.md)  
 **System design:** [ARCHITECTURE.md](ARCHITECTURE.md)
@@ -147,7 +147,7 @@ pip install -r requirements-streamlit.txt
 ### Primary (any Grok chat)
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.9.0
+Activate Grok Imagine Cinematic Studio v3.10.0
 ```
 
 or
@@ -167,7 +167,7 @@ Start new project
 or combine steps:
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.9.0, start new project called 'VOIDWALKER',
+Activate Grok Imagine Cinematic Studio v3.10.0, start new project called 'VOIDWALKER',
 generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5,
 lock the lead character DNA, and create the hero reveal key art.
 ```
@@ -184,7 +184,7 @@ Exit cinematic studio
 
 ### Phase 1 — Activation & Planning
 
-1. Activate the studio (v3.9.0).
+1. Activate the studio (v3.10.0).
 2. Start a new project (title, logline, genre, tone, length, cast).
 3. **Build & lock the Production Bible** with:
    - `model_stack`
@@ -306,7 +306,7 @@ North-star design: `docs/development/superpowers/specs/2026-07-26-operator-ux-no
 
 | Preset | Command |
 |--------|---------|
-| Full Studio | `Activate Grok Imagine Cinematic Studio v3.9.0` |
+| Full Studio | `Activate Grok Imagine Cinematic Studio v3.10.0` |
 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
@@ -455,13 +455,16 @@ Contributor pin order:
 | Multi-agent / leader | `grok-v9-4p5-multi` | Studio Director full mode, synthesis |
 | Specialist craft | `grok-v9-4p5-chat-expert` | DNA, prompts, QA, DoP, Sonic, ErosForge |
 | Draft / routine | `grok-4-auto` | Fast iteration, animatic, standard tier |
-| Video default | Imagine **1.0** | Most sequences (cost default) |
-| Video critical | Imagine **1.5 Native** | Native audio, physics, intimacy |
+| Video default | Imagine **1.0** | Most sequences (cost default); edit/extend |
+| Video critical | Imagine **1.5 Native** | Native audio, physics, intimacy, r2v, 1080p |
+| Image default | `grok-imagine-image` | Draft / volume stills |
+| Image hero | **`grok-imagine-image-2.0`** | Quality Mode, Identity plates, Agent image tool |
 
-Every Production Bible must lock **`model_stack` + `VIDEO_PIPELINE_SPEC`**.
+Every Production Bible must lock **`model_stack` + `VIDEO_PIPELINE_SPEC`**. There is **no** `grok-imagine-video-2.0`.
 
 Sources of truth:
 
+- [`references/agents/IMAGINE_SURFACES.md`](../references/agents/IMAGINE_SURFACES.md)
 - [`references/agents/MODEL_LAYER_v4.5.md`](../references/agents/MODEL_LAYER_v4.5.md)
 - [`references/MODELS_v3.6.md`](../references/MODELS_v3.6.md)
 
@@ -478,6 +481,7 @@ cinematic-studio models stack
 
 | Protocol | Document |
 |----------|----------|
+| Imagine surfaces (1.0 / 1.5 / 2.0) | [`IMAGINE_SURFACES.md`](../references/agents/IMAGINE_SURFACES.md) |
 | Imagine Agent Mode Handoff | [`IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`](../references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md) |
 | Identity Continuity | [`IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`](../references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md) |
 | Parallel Brief Protocol | [`Parallel_Brief_Protocol.md`](../references/agents/Parallel_Brief_Protocol.md) |
@@ -489,8 +493,9 @@ cinematic-studio models stack
 |------|---------|
 | `grok_build_tools` | In-session tools (preferred) |
 | `grok_agent_acp` | ACP / agent sessions |
-| `grok_com_imagine` | Web UI paste (Classic Bridge) |
+| `grok_com_imagine` | Web UI paste (Classic Bridge); Quality Mode = Image 2.0 |
 | `xai_api` | Live API jobs |
+| `xai_responses_tool` | Responses API `image_generation` (Image 2.0 stills) |
 
 ### Readiness gates (CLI)
 
@@ -504,7 +509,7 @@ cinematic-studio models stack
 | Spend preflight | advisory | spend-readiness tools |
 | Delivery polish readiness | advisory | delivery-readiness tools |
 
-Handoff `protocol_version` accepts **3.7.1–3.9.0**.
+Handoff `protocol_version` accepts **3.7.1–3.10.0**.
 
 ---
 
@@ -538,9 +543,9 @@ Packets live in `tools/wave_a_packets.py`. Design notes: Parallel Brief Protocol
 ## 16. Repository Map
 
 ```text
-Grok Imagine Cinematic Studio v3.9.0
+Grok Imagine Cinematic Studio v3.10.0
 ├── .grok-plugin/              # Marketplace manifests + packs
-├── .grok/skills/              # Skill runtime (~62 SKILL.md trees)
+├── .grok/skills/              # Skill runtime (64 SKILL.md trees)
 ├── references/agents/         # Role Cards, AGENT_INDEX, protocols, MODEL_LAYER
 ├── tools/                     # DNA, sequence, quota, imagine_bridge, doctor, CLI
 │   ├── cinematic_studio_cli.py
@@ -553,7 +558,7 @@ Grok Imagine Cinematic Studio v3.9.0
 ├── scripts/                   # Install, verify, release, wrappers
 ├── tests/                     # Pytest suite
 ├── MASTER_PROMPT.md           # Canonical chat activation prompt
-├── VERSION                    # 3.9.0
+├── VERSION                    # 3.10.0
 └── README.md                  # Public front door
 ```
 
@@ -586,12 +591,16 @@ cinematic-studio doctor --quick
 Activation after upgrade:
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.9.0
+Activate Grok Imagine Cinematic Studio v3.10.0
 ```
 
 **Migration notes:** [guides/UPGRADE_GUIDE.md](guides/UPGRADE_GUIDE.md)  
-**Release notes:** [releases/RELEASE_NOTES_v3.9.0.md](releases/RELEASE_NOTES_v3.9.0.md)  
+**Release notes:** [releases/RELEASE_NOTES_v3.10.0.md](releases/RELEASE_NOTES_v3.10.0.md)  
 **Changelog:** [CHANGELOG.md](../CHANGELOG.md)
+
+### v3.10.0 highlight
+
+Official Imagine **Image 2.0** + Video **1.0 / 1.5** surface map (there is **no Video 2.0**). Hero stills / Quality Mode route to `grok-imagine-image-2.0`. Agent Mode surface **E** is `xai_responses_tool`. REST `imagine submit` covers `video_edit` / `video_extend` / `reference_to_video`. Canonical: [../references/agents/IMAGINE_SURFACES.md](../references/agents/IMAGINE_SURFACES.md).
 
 ### v3.9.0 highlight
 
@@ -627,7 +636,7 @@ Software and documentation are provided **as is**, without warranty. Generated m
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System architecture |
 | [CLI_REFERENCE.md](CLI_REFERENCE.md) | CLI command reference |
 | [guides/Quick_Start_Guide.md](guides/Quick_Start_Guide.md) | Onboarding + operator loop |
-| [guides/USER_GUIDE.md](guides/USER_GUIDE.md) | Creator end-to-end guide (v3.9.0) |
+| [guides/USER_GUIDE.md](guides/USER_GUIDE.md) | Creator end-to-end guide (v3.10.0) |
 | [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.md) | Orient → Health → Produce → Gate → Deliver |
 | [guides/installation_guide.md](guides/installation_guide.md) | Install Method A / B |
 | [guides/UPGRADE_GUIDE.md](guides/UPGRADE_GUIDE.md) | Version migration |
@@ -642,9 +651,9 @@ Software and documentation are provided **as is**, without warranty. Generated m
 **Ready to direct your next production?**
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.9.0
+Activate Grok Imagine Cinematic Studio v3.10.0
 ```
 
 ---
 
-*Grok Imagine Cinematic Studio v3.9.0 — Official Documentation · Independent community project · Not affiliated with xAI · MIT License*
+*Grok Imagine Cinematic Studio v3.10.0 — Official Documentation · Independent community project · Not affiliated with xAI · MIT License*

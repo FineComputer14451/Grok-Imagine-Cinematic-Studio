@@ -109,6 +109,7 @@ def submit_imagine_via_cli(
     *,
     model: str | None = None,
     image_url: str | None = None,
+    video_url: str | None = None,
     duration: int = 10,
     sequence: str | None = None,
     clip: str | None = None,
@@ -119,8 +120,11 @@ def submit_imagine_via_cli(
     args = ["imagine", "submit", job_type, "--prompt", prompt]
     if model:
         args.extend(["--model", model])
-    if image_url:
-        args.extend(["--image-url", image_url])
+    media = image_url or video_url
+    if job_type in ("video_edit", "video_extend") and media:
+        args.extend(["--video-url", media])
+    elif media:
+        args.extend(["--image-url", media])
     if duration != 10:
         args.extend(["--duration", str(duration)])
     if sequence:

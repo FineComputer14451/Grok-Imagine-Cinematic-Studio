@@ -8,12 +8,12 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL
+from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL, HERO_IMAGINE_IMAGE_MODEL
 
 PASS_1_VIDEO_MODEL = "grok-imagine-video"
 PASS_2_VIDEO_MODEL = DEFAULT_IMAGINE_VIDEO_MODEL
 PASS_1_IMAGE_MODEL = DEFAULT_IMAGINE_IMAGE_MODEL
-PASS_2_IMAGE_MODEL = "grok-imagine-image-quality"
+PASS_2_IMAGE_MODEL = HERO_IMAGINE_IMAGE_MODEL
 
 QUALITY_PASS_STATUSES = ("pass_1_complete", "quality_pass_pending", "quality_pass_complete")
 

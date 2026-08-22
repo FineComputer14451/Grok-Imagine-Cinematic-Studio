@@ -1,7 +1,7 @@
-# Grok Imagine Cinematic Studio v3.9.1 — Quick Start Guide
+# Grok Imagine Cinematic Studio v3.10.0 — Quick Start Guide
 
-**Version:** 3.9.1 | **Last Updated:** August 3, 2026  
-**Suite:** 25+ Role-Card core agents · **62 skills** · marketplace full suite + 5 packs
+**Version:** 3.10.0 | **Last Updated:** August 22, 2026  
+**Suite:** 25+ Role-Card core agents · **64 skills** · marketplace full suite + 5 packs
 
 > [!NOTE]
 > **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Grok / Imagine access, quotas, and billing remain solely with your xAI (or host) account. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
@@ -57,7 +57,7 @@ Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 **On grok.com or mobile chat** — new conversation:
 
 ```
-Activate Grok Imagine Cinematic Studio v3.9.1
+Activate Grok Imagine Cinematic Studio v3.10.0
 ```
 
 or
@@ -68,7 +68,7 @@ start cinematic production
 
 For a full lock-in on the web, paste `MASTER_PROMPT.md` first, then Activate.
 
-This loads the complete **v3.9.1** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **62-skill** suite.
+This loads the complete **v3.10.0** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **64-skill** suite.
 
 ### Start a New Project
 
@@ -122,11 +122,11 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 
 ---
 
-## 3. Recommended Production Workflow (v3.9.1)
+## 3. Recommended Production Workflow (v3.10.0)
 
 ### Phase 1: Activation & Planning
 1. **Activate the Full Studio**  
-   `Activate Grok Imagine Cinematic Studio v3.9.1`
+   `Activate Grok Imagine Cinematic Studio v3.10.0`
 
 2. **Start a New Project**  
    Provide title, logline, genre, tone, target length, and key characters.
@@ -176,7 +176,7 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 ---
 
 **Pro Tip:** You can combine steps in one message:  
-> `"Activate Grok Imagine Cinematic Studio v3.9.1, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
+> `"Activate Grok Imagine Cinematic Studio v3.10.0, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
 
 ---
 
@@ -199,7 +199,7 @@ North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-sta
 
 ---
 
-## 5. Pro Tips for Best Results (v3.9.1)
+## 5. Pro Tips for Best Results (v3.10.0)
 
 - **Be specific** — Include genre, tone, emotional goals, character details, and references.
 - **Use the Project Bible** — Lock `model_stack` + `VIDEO_PIPELINE_SPEC` (1.0 cost default; 1.5 when audio/physics need it).
@@ -217,7 +217,7 @@ North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-sta
 
 | Command                                           | Result                                      |
 |---------------------------------------------------|---------------------------------------------|
-| `Activate Grok Imagine Cinematic Studio v3.9.1`   | Load full v3.9.1 studio (Grok 4.5 + 1.0/1.5) |
+| `Activate Grok Imagine Cinematic Studio v3.10.0`   | Load full v3.10.0 studio (Grok 4.5 + 1.0/1.5) |
 | `create-bible --wizard`                           | Guided Production Bible (TTY interactive)   |
 | `Start new project`                               | Begin fresh production                      |
 | `GENERATE DIRECTOR'S CUT`                         | Refined version with notes                  |
@@ -262,7 +262,7 @@ You can also run it manually: **Actions → Auto re-pin plugin catalog → Run w
 | **Identity Continuity**         | `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` | Long-form drift gates            |
 | **Skills taxonomy / packs**     | `references/SKILLS_TAXONOMY.md`       | Groups, packs, declutter rules                    |
 | **Master Prompt**               | `MASTER_PROMPT.md`                    | Complete master prompt for new chats              |
-| **Skill Files**                 | `.grok/skills/`                       | 62-skill suite (agent-only; no README in skill dirs) |
+| **Skill Files**                 | `.grok/skills/`                       | 64-skill suite (agent-only; no README in skill dirs) |
 | **Production Bible Template**   | `docs/templates/Project_Bible_Template.md` | Professional Bible template                  |
 | **Install guide**               | `docs/guides/installation_guide.md`   | Method A / B + packs                              |
 | **CLI Toolkit**                 | `cinematic-studio` / `tools/cinematic_studio_cli.py` | Bible, DNA, sequence, catalog, doctor    |
@@ -272,8 +272,8 @@ You can also run it manually: **Actions → Auto re-pin plugin catalog → Run w
 
 **You are now ready to create professional cinematic productions with Grok 4.5 orchestration + Imagine Video 1.0/1.5 support.**
 
-Just say **"Activate Grok Imagine Cinematic Studio v3.9.1"** and begin.
+Just say **"Activate Grok Imagine Cinematic Studio v3.10.0"** and begin.
 
 ---
 
-*Grok Imagine Cinematic Studio v3.9.1 — Grok 4.5 / Model Layer v4.5 · 62 skills · August 2026*
+*Grok Imagine Cinematic Studio v3.10.0 — Grok 4.5 / Model Layer v4.5 · 64 skills · August 2026*

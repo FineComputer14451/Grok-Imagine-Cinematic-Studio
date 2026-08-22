@@ -16,7 +16,8 @@ def build_imagine_page(ui: Any) -> None:
     ui.label("Imagine").classes("text-h5 text-weight-bold")
     ui.label(
         "Job queue + agent-handoff bridge via execute_action. "
-        "SFW batch execute / live xAI generation stay on Streamlit when an API key is set."
+        "Image 2.0 is hero/Quality Mode; Video 1.0 cost default / 1.5 native audio "
+        "(there is no Video 2.0). Live xAI generation stays on Streamlit or `imagine submit`."
     ).classes("text-caption text-grey-7 q-mb-md")
 
     with ui.card().classes("w-full q-mb-md"):

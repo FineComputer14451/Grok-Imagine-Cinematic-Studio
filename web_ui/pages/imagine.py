@@ -12,8 +12,9 @@ def render() -> None:
     st.header("Imagine Production")
     st.caption(
         f"Video: `{st.session_state.get('video_model', rt.DEFAULT_IMAGINE_VIDEO_MODEL)}` · "
+        f"Image: `{st.session_state.get('image_model', rt.DEFAULT_IMAGINE_IMAGE_MODEL)}` · "
         f"Chat: `{st.session_state.get('chat_model', rt.DEFAULT_XAI_CHAT_MODEL)}` · "
-        "Prefer still → i2v · 1.0 cost default · 1.5 when native audio required"
+        "Hero stills: Image 2.0 Quality Mode · Video 1.0 cost default · 1.5 native audio · no Video 2.0"
     )
     if not rt.SEQ_AVAILABLE:
         st.error("Studio tools unavailable in this environment.")
@@ -62,9 +63,12 @@ def render() -> None:
 
         with st.form("imagine_submit"):
             st.markdown("**Quick submit** (via CLI subprocess)")
-            job_type = st.selectbox("Job type", ["image", "image_edit", "video"])
+            job_type = st.selectbox(
+                "Job type",
+                ["image", "image_edit", "video", "reference_to_video", "video_edit", "video_extend"],
+            )
             prompt = st.text_area("Prompt", placeholder="Cinematic wide shot, golden hour...")
-            image_url = st.text_input("Image URL (edit / i2v)", value="")
+            image_url = st.text_input("Image or video URL (edit / i2v / extend)", value="")
             duration = st.slider("Video duration (s)", 4, 15, 10)
             force_dry = st.checkbox("Force dry-run", value=dry)
             if st.form_submit_button("Submit job", width="stretch"):
@@ -72,6 +76,9 @@ def render() -> None:
                     code, out = ir.submit_imagine_via_cli(
                         job_type,
                         prompt.strip(),
+                        model=st.session_state.get(
+                            "image_model" if job_type in ("image", "image_edit") else "video_model"
+                        ),
                         image_url=image_url or None,
                         duration=duration,
                         dry_run=force_dry,

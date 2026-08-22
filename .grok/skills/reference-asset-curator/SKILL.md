@@ -1,6 +1,6 @@
 ---
 name: reference-asset-curator
-description: Reference and asset curator for Grok Imagine productions. Assigns hero, standard or draft tiers, routes grok-imagine-image vs image-quality and video 1.5 vs 1.0 per shot, maintains ASSET_MANIFEST and approved plate sets. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate with ACTIVATE REFERENCE_CURATOR before batch or i2v spend.
+description: Reference and asset curator for Grok Imagine productions. Assigns hero, standard or draft tiers, routes grok-imagine-image vs Image 2.0 hero plates and video 1.5 vs 1.0 per shot, maintains ASSET_MANIFEST and approved plate sets. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate with ACTIVATE REFERENCE_CURATOR before batch or i2v spend.
 ---
 
 # Reference & Asset Curator v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
@@ -64,7 +64,7 @@ Both paths share the same tier system and ASSET_MANIFEST rules.
 | **MODEL_STACK_ROUTING**        | Explicitly route image model and video path (1.5 vs 1.0) per shot |
 | **REFERENCE_WEIGHTS**          | Assign clear reference weights so Identity Lock and Multi-Character Arbiter can act |
 | **ASSET_MANIFEST**             | Publish or update ASSET_MANIFEST for every significant plate |
-| **NO_SKIP_ON_HERO**            | Never allow hero shots to run on draft models “to save credits” |
+| **NO_SKIP_ON_HERO**            | Never allow hero shots to run on draft models “to save credits” — hero stills use Image 2.0 |
 | **EROSFORGE_AWARENESS**        | When intimate content is involved, coordinate tier and model choices with ErosForge and NSFW Quota Orchestrator |
 | **MODEL_LAYER_ROUTING**        | Explicit model selection recorded in every ASSET_MANIFEST entry |
 | **1.0_1.5_DUAL_SUPPORT**       | Explicitly declare 1.5 vs 1.0 target on every entry |

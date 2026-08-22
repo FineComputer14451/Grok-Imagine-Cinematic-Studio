@@ -70,6 +70,7 @@ export function SettingsView() {
   const reasoning = opts?.reasoning_levels ?? ['low', 'medium', 'high']
   const chatModels = opts?.chat_models ?? [prefs.chat_model]
   const videoModels = opts?.video_models ?? [prefs.video_model]
+  const imageModels = opts?.image_models ?? [prefs.image_model || 'grok-imagine-image']
   const regions = opts?.imagine_regions ?? [prefs.imagine_region]
 
   useEffect(() => {
@@ -96,6 +97,7 @@ export function SettingsView() {
       genre: String(next.genre ?? FALLBACK_DEFAULTS.genre),
       director: String(next.director ?? FALLBACK_DEFAULTS.director),
       video_model: String(next.video_model ?? FALLBACK_DEFAULTS.video_model),
+      image_model: String(next.image_model ?? FALLBACK_DEFAULTS.image_model),
       chat_model: String(next.chat_model ?? FALLBACK_DEFAULTS.chat_model),
       duration: Number(next.duration ?? FALLBACK_DEFAULTS.duration),
       complexity: String(next.complexity ?? FALLBACK_DEFAULTS.complexity),
@@ -134,6 +136,12 @@ export function SettingsView() {
             value={prefs.chat_model}
             options={chatModels}
             onChange={(v) => update('chat_model', v)}
+          />
+          <FieldSelect
+            label="Imagine Image model"
+            value={prefs.image_model}
+            options={imageModels}
+            onChange={(v) => update('image_model', v)}
           />
           <FieldSelect
             label="Imagine Video model"

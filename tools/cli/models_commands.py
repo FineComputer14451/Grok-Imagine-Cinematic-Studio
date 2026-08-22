@@ -11,6 +11,7 @@ from models import (
     DEFAULT_GROK_BUILD_MODEL,
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
+    HERO_IMAGINE_IMAGE_MODEL,
     DEFAULT_XAI_CHAT_EXPERT_MODEL,
     DEFAULT_XAI_CHAT_MODEL,
     DEFAULT_XAI_MULTI_MODEL,
@@ -24,6 +25,7 @@ from models import (
     RECOMMENDED_GROK_BUILD_CLI_VERSION,
     XAI_CHAT_MODELS,
     build_video_pipeline_spec,
+    ordered_image_model_slugs,
     is_build_default,
     is_cinematic_default,
     model_stack_summary,
@@ -112,8 +114,11 @@ def models_list():
         if aliases:
             detail += f"\n[dim]aliases: {aliases}[/dim]"
         table.add_row("Imagine Video", slug + default, detail)
-    for slug, info in IMAGINE_IMAGE_MODELS.items():
+    for slug in ordered_image_model_slugs():
+        info = IMAGINE_IMAGE_MODELS[slug]
         default = " (default)" if slug == DEFAULT_IMAGINE_IMAGE_MODEL else ""
+        if slug == HERO_IMAGINE_IMAGE_MODEL:
+            default = " (★ hero / Quality Mode)"
         aliases = ", ".join(info.get("aliases", [])[:3])
         if len(info.get("aliases", [])) > 3:
             aliases += ", …"

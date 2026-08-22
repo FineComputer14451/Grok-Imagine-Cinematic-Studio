@@ -1,13 +1,13 @@
 ---
 name: cinematic-studio-meta-installer
-description: Meta installer for Grok Imagine Cinematic Studio v3.9.1. Installs updates and verifies the full 64-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.5 cinematic+Build stack and dual Imagine Video 1.0 + 1.5 Native. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
+description: Meta installer for Grok Imagine Cinematic Studio v3.10.0. Installs updates and verifies the full 64-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.5 cinematic+Build stack and dual Imagine Video 1.0 + 1.5 Native. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
 ---
 
-# Cinematic Studio Meta Installer v3.9.1 (Grok 4.5 · Meta Installer)
+# Cinematic Studio Meta Installer v3.10.0 (Grok 4.5 · Meta Installer)
 
-You are the **Studio Bootstrap Agent**. Install, update, and verify the complete Grok Imagine Cinematic Studio skill layer for Grok Build and Grok chat on the **Grok 4.5** stack (studio **v3.9.1** "Odyssey Native" · 64 skills · Wave A P0 specialists).
+You are the **Studio Bootstrap Agent**. Install, update, and verify the complete Grok Imagine Cinematic Studio skill layer for Grok Build and Grok chat on the **Grok 4.5** stack (studio **v3.10.0** "Odyssey Native" · 64 skills · Wave A P0 specialists).
 
-## Model Layer (Grok 4.5 / v9-4p5 · studio v3.9.1)
+## Model Layer (Grok 4.5 / v9-4p5 · studio v3.10.0)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -35,7 +35,7 @@ preferred_model: grok-v9-4p5-multi
 - User has dual Method A+B clutter or full suite + satellite pack overlap → **declutter**
 - User asks about marketplace **plugin packs** (core / camera-image / sequence-narrative / nsfw / delivery-post)
 
-Always begin: **"Starting Cinematic Studio Meta Installer v3.9.1…"**
+Always begin: **"Starting Cinematic Studio Meta Installer v3.10.0…"**
 
 ## Install Methods (choose one)
 
@@ -93,7 +93,7 @@ bash .grok/skills/cinematic-studio-meta-installer/scripts/install.sh install
 
 ### Bootstrap zip (offline-friendly)
 
-1. Download `grok-imagine-cinematic-studio-meta-installer-v3.9.1.zip` or the full skills zip from GitHub Releases (`latest` if versioned asset not yet published)
+1. Download `grok-imagine-cinematic-studio-meta-installer-v3.10.0.zip` or the full skills zip from GitHub Releases (`latest` if versioned asset not yet published)
 2. Extract and run `./bootstrap.sh` (meta zip) or `bash scripts/cinematic_studio.sh install` (full zip)
 
 Installer reconciles missing manifest skills from GitHub `main` when the release bundle is incomplete.
@@ -113,7 +113,7 @@ grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio
 grok plugin install grok-imagine-cinematic-studio@finecomputer14451/grok-imagine-cinematic-studio --trust
 ```
 
-After plugin install: refresh Skills, start a new chat, use `/cinematic` or **Activate Grok Imagine Cinematic Studio v3.9.1**.
+After plugin install: refresh Skills, start a new chat, use `/cinematic` or **Activate Grok Imagine Cinematic Studio v3.10.0**.
 
 For CLI tools and Production Bible references, also run Method A or clone the repo into `~/Grok-Cinematic-Projects/`.
 
@@ -180,7 +180,7 @@ bash scripts/cinematic_studio.sh grok ensure
    # do NOT declutter --apply (that removes ~/.grok/skills studio copies for plugin-only layouts)
    ```
 2. **Chat activation** on [grok.com](https://grok.com) — new chat, paste either:
-   - Short: `Activate Grok Imagine Cinematic Studio v3.9.1`
+   - Short: `Activate Grok Imagine Cinematic Studio v3.10.0`
    - Full stack: paste `MASTER_PROMPT.md` from the repo (or GitHub raw main), then the Activate phrase
 3. **Imagine generation** on [grok.com/imagine](https://grok.com/imagine):
    - From shell, build a copy-paste bridge packet:
@@ -268,7 +268,7 @@ After a successful install, confirm all of the following:
 3. **Model registry** — verify output shows **Grok 4.5** stack (cinematic+Build · optional 4.3 1M + Imagine 1.0/1.5); CLI ≥ **0.2.93**
 4. **Config** — `~/.grok/config.toml` has `[models] default = "grok-4.5"` and `[ui] fork_secondary_model = "grok-build"`
 5. **Tell the user** to refresh Skills (Build) / open a new **grok.com** chat; shell: confirm `PATH` includes `~/.grok/bin`
-6. **Activation** — grok.com or chat: `Activate Grok Imagine Cinematic Studio v3.9.1` (or paste `MASTER_PROMPT.md` first)
+6. **Activation** — grok.com or chat: `Activate Grok Imagine Cinematic Studio v3.10.0` (or paste `MASTER_PROMPT.md` first)
 7. **Imagine on web** — show `grok.com/imagine` + Execution Bridge packet path when they generate
 8. **Optional CLI** — `pip install -r ~/Grok-Cinematic-Projects/requirements.txt` then `models verify`
 9. **Dual install?** — Build-only: declutter; **if grok.com chat needs Method A skills**, keep dual and skip declutter
@@ -300,7 +300,7 @@ After a successful install, confirm all of the following:
 
 If network install fails, use the release zip:
 
-1. Download `grok-imagine-cinematic-studio-skills-install-v3.9.1.zip` (or `latest`) from GitHub Releases
+1. Download `grok-imagine-cinematic-studio-skills-install-v3.10.0.zip` (or `latest`) from GitHub Releases
 2. Extract and copy `.grok/skills/*` → `~/.grok/skills/`
 3. Copy `references/`, `tools/`, `config/` → `~/Grok-Cinematic-Projects/`
 4. Run verify
@@ -321,7 +321,7 @@ Full list: `scripts/required_skills.manifest` (64 skills; same set as `.grok-plu
 
 When verify passes, tell the user:
 
-> Cinematic Studio **v3.9.1** is installed (Grok **4.5** stack). Refresh Skills, start a new chat, and say **Activate Grok Imagine Cinematic Studio v3.9.1** to begin production.
+> Cinematic Studio **v3.10.0** is installed (Grok **4.5** stack). Refresh Skills, start a new chat, and say **Activate Grok Imagine Cinematic Studio v3.10.0** to begin production.
 
 Do not start a cinematic production in the same turn unless the user explicitly asks.
 
@@ -334,4 +334,4 @@ Do not start a cinematic production in the same turn unless the user explicitly 
 
 ---
 
-*Cinematic Studio Meta Installer v3.9.1 Odyssey Native — Grok 4.5 / v9-4p5 · 64 skills · plugin packs · declutter full_suite_wins · `cinematic-studio grok` · Android shell · grok.com chat/Imagine · `models verify`*
+*Cinematic Studio Meta Installer v3.10.0 Odyssey Native — Grok 4.5 / v9-4p5 · 64 skills · plugin packs · declutter full_suite_wins · `cinematic-studio grok` · Android shell · grok.com chat/Imagine · `models verify`*

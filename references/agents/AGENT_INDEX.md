@@ -213,4 +213,4 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 
 ---
 
-*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-08-01 · 62 skills (Wave A P0)*
+*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-08-01 · 64 skills (Wave A P0)*

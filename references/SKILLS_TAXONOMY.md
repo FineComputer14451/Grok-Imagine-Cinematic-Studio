@@ -1,19 +1,19 @@
-# Skills & Plugin Taxonomy — v3.9.0
+# Skills & Plugin Taxonomy — v3.10.0
 
 Canonical **install layout** stays flat: `.grok/skills/<name>/SKILL.md` (required by Grok plugin format). This file is the **mental model** for browsing, declutter, and docs — not a second on-disk hierarchy.
 
-## Canonical suite headcounts (v3.8.9)
+## Canonical suite headcounts (v3.10.0)
 
 Single source of truth for marketing and verify gates:
 
 | Metric | Count | Source |
 |--------|------:|--------|
-| **Skills (full suite)** | **62** | `.grok/skills/*/SKILL.md` ≡ `scripts/required_skills.manifest` ≡ `.grok-plugin/plugin.json` |
+| **Skills (full suite)** | **64** | `.grok/skills/*/SKILL.md` ≡ `scripts/required_skills.manifest` ≡ `.grok-plugin/plugin.json` |
 | **Slash commands** | **11** | `commands/` ≡ `plugin.json` `commands` |
 | **Role-Card core agents** | **25** | `AGENTS.md` core table · `tools/cli/shared.py` `core_agent_count()` |
 | **Role cards (mapped)** | **44** | `AGENT_ROLE_CARDS` (core + pipeline + Wave A + i2i + NSFW) |
 | **Marketplace plugins** | **6** | full suite + 5 packs (`config/plugin_packs.yaml`) |
-| **Pack sizes** | 21 · 11 · 19 · 4 · 7 | core · camera-image · sequence-narrative · nsfw · delivery-post (exclusive; union = 62) |
+| **Pack sizes** | 23 · 11 · 19 · 4 · 7 | core · camera-image · sequence-narrative · nsfw · delivery-post (exclusive; union = 64) |
 
 Do **not** invent skill counts in docs. After adding/removing a skill: update the manifest, regenerate the plugin catalog, and re-check this table.
 
@@ -21,13 +21,13 @@ Do **not** invent skill counts in docs. After adding/removing a skill: update th
 
 | Surface | Path | What belongs here |
 |---------|------|-------------------|
-| **Plugin (Method B)** | `~/.grok/installed-plugins/grok-imagine-cinematic-studio-*/` | All **62** studio skills + slash commands (full suite; Wave A P0) |
+| **Plugin (Method B)** | `~/.grok/installed-plugins/grok-imagine-cinematic-studio-*/` | All **64** studio skills + slash commands (full suite; Wave A P0) |
 | **Plugin packs (satellites)** | `~/.grok/installed-plugins/grok-imagine-*-*/` | Filtered pack views of the same skill tree (see Marketplace packs) |
 | **User-global skills** | `~/.grok/skills/` | Non-plugin skills only (`help`, `create-skill`, `docx`, `imagine`, …) |
 | **Repo / workspace** | `<clone>/.grok/skills/` | Authoritative source for development |
 | **Method A projects** | `~/Grok-Cinematic-Projects/` | CLI tools, references, config — **not** a second skill tree when plugin is primary |
 
-**Rule:** If the plugin is installed, do **not** also keep Method A copies of the same 62 skills under `~/.grok/skills/`. That triple-loads skills in Grok Build (workspace + plugin + user).
+**Rule:** If the plugin is installed, do **not** also keep Method A copies of the same 64 skills under `~/.grok/skills/`. That triple-loads skills in Grok Build (workspace + plugin + user).
 
 Declutter:
 
@@ -55,7 +55,7 @@ Pack definitions and declutter policy live in **`config/plugin_packs.yaml`**. Ca
 
 | Pack id | Plugin name | Role |
 |---------|-------------|------|
-| *(full)* | `grok-imagine-cinematic-studio` | Recommended — all 62 skills + commands |
+| *(full)* | `grok-imagine-cinematic-studio` | Recommended — all 64 skills + commands |
 | `core` | `grok-imagine-cinematic-core` | Orchestration, DNA, Imagine runtime, QA, quota, meta |
 | `camera-image` | `grok-imagine-camera-image` | DoP, production design, i2i, key art, i2v (requires `core`) |
 | `sequence-narrative` | `grok-imagine-sequence-narrative` | Sequence, continuity, performance, audio, action/VFX, SFW (requires `core`) |
@@ -68,7 +68,7 @@ cinematic-studio plugin packs
 
 Satellite manifests: `.grok-plugin/packs/<pack_id>/plugin.json`.
 
-## Skill groups (62)
+## Skill groups (64)
 
 Browse with: `cinematic-studio plugin list --grouped`
 
@@ -97,7 +97,7 @@ Browse with: `cinematic-studio plugin list --grouped`
 `erosforge-nsfw-director` · `nsfw-sequence-extender` · `nsfw-chain-qa-protocol`
 
 ### QA, Handoff & Delivery
-`quality-assurance-guardian` · `chain-qa-protocol` · `handoff-packet-validator` · `imagine-execution-bridge` · `assembly-editor` · `post-production-color-grading-supervisor` · `ai-polish-director` · `ai-video-upscaler` · `cinematic-ffmpeg` · `title-motion-graphics-lead` · `distribution-crop-strategist`
+`quality-assurance-guardian` · `chain-qa-protocol` · `handoff-packet-validator` · `imagine-execution-bridge` · `grok-imagine-image-tools` · `xai-grok-skill` · `assembly-editor` · `post-production-color-grading-supervisor` · `ai-polish-director` · `ai-video-upscaler` · `cinematic-ffmpeg` · `title-motion-graphics-lead` · `distribution-crop-strategist`
 
 ## Slash commands (11)
 

@@ -1,5 +1,5 @@
 # CLI Reference
-## cinematic-studio (Grok Imagine Cinematic Studio v3.9.1)
+## cinematic-studio (Grok Imagine Cinematic Studio v3.10.0)
 
 Primary entry points:
 
@@ -161,7 +161,7 @@ pip install -r requirements-api.txt
 cinematic-studio api --host 127.0.0.1 --port 8090
 # OpenAPI → http://127.0.0.1:8090/docs
 
-# React / TanStack SPA (v3.9.1 · needs API + Node 20+)
+# React / TanStack SPA (v3.10.0 · needs API + Node 20+)
 cinematic-studio web-react                 # dev :5173, proxies /v1 → :8090
 cinematic-studio web-react --preview       # production build serve
 cinematic-studio web-react --install       # force npm install
@@ -270,4 +270,4 @@ cinematic-studio ui
 
 *Run any command with `--help` for full options. The CLI is the automation backbone of the Studio.*
 
-*Grok Imagine Cinematic Studio v3.9.1 — CLI Reference · Independent community project · Not affiliated with xAI*
+*Grok Imagine Cinematic Studio v3.10.0 — CLI Reference · Independent community project · Not affiliated with xAI*

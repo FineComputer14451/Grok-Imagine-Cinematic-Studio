@@ -18,8 +18,9 @@ Define a single, authoritative handoff from **Cinematic Studio planning** (Produ
 |---------|---------------------|----------------|
 | **A. Grok Build tools** | `image_gen` / `image_edit` / `image_to_video` / `reference_to_video` in TUI or agent session | Preferred when tools are available |
 | **B. Grok agent mode (ACP)** | `grok agent stdio` / IDE ACP — same skills + shell + tools | Full studio skills load; use this packet for gen steps |
-| **C. grok.com/imagine** | Manual paste in web UI | Use classic Execution Bridge packet (subset of this protocol) |
+| **C. grok.com/imagine** | Manual paste in web UI (Quality Mode = Image 2.0). Alias `grok_mobile_imagine` | Use classic Execution Bridge packet (subset of this protocol) |
 | **D. xAI Imagine API** | `imagine submit` / `sfw run` / `sequence run` with `XAI_API_KEY` | Prefer live jobs; packet still logs intent + QA |
+| **E. Responses `image_generation` tool** | Server-side tool (Image 2.0). `target_surface: xai_responses_tool` | Stills only — hand off video to A or D |
 
 This protocol does **not** install the studio into the web Imagine UI. It standardizes the **handoff contract** between planning agents and execution.
 
@@ -108,8 +109,8 @@ Aliases (existing skills remain valid):
 | `packet_type` | yes | Always `imagine_agent_mode_handoff` |
 | `protocol_version` | yes | `3.7.1` (or `4.5` after full migration) |
 | `studio_version` | yes | Current studio release (e.g. `3.8.3` / `4.5`) |
-| `target_surface` | yes | `grok_build_tools` \| `grok_agent_acp` \| `grok_com_imagine` \| `xai_api` |
-| `execution_mode` | yes | `image_prompt` \| `image_edit` \| `image_to_video` \| `video_prompt` \| `reference_to_video` |
+| `target_surface` | yes | `grok_build_tools` \| `grok_agent_acp` \| `grok_com_imagine` \| `xai_api` \| `xai_responses_tool` |
+| `execution_mode` | yes | `image_prompt` \| `image_edit` \| `image_to_video` \| `video_prompt` \| `reference_to_video` \| `video_edit` \| `video_extend` |
 | `subject_id` | yes | shot_id / clip_id / asset id |
 | `video_pipeline_spec` | yes* | Full `VIDEO_PIPELINE_SPEC` string (*required for any video mode) |
 | `prompt` | yes | Ultimate-template body from Imagine Prompt Master |

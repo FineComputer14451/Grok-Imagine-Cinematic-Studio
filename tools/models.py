@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.9.0 · Grok 4.5 + v9-4p5).
+Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.10.0 · Grok 4.5 + v9-4p5).
 
 Single source of truth for CLI, Web UI, quota optimizer, and documentation.
+Imagine family: Image 1.0 / Quality / 2.0 + Video 1.0 / 1.5 (there is no video 2.0).
 
 Unified chat stack (v3.6.7+):
   - Cinematic orchestration (Production Bibles, multi-agent): grok-4.5
@@ -18,7 +19,7 @@ import shutil
 import subprocess
 from typing import Any
 
-SCHEMA_VERSION = "1.4"
+SCHEMA_VERSION = "1.5"
 
 # ---------------------------------------------------------------------------
 # Dual-stack product pins + full role defaults (literals appear once)
@@ -53,6 +54,10 @@ DEFAULT_GROK_BUILD_MODEL = ROLE_DEFAULTS["cli"]
 GROK_BUILD_FORK_MODEL = ROLE_DEFAULTS["cli_fork"]
 DEFAULT_IMAGINE_VIDEO_MODEL = ROLE_DEFAULTS["imagine_video"]
 DEFAULT_IMAGINE_IMAGE_MODEL = ROLE_DEFAULTS["imagine_image"]
+HERO_IMAGINE_IMAGE_MODEL = "grok-imagine-image-2.0"
+LEGACY_QUALITY_IMAGE_MODEL = "grok-imagine-image-quality"
+NATIVE_AUDIO_VIDEO_MODEL = "grok-imagine-video-1.5"
+EDIT_EXTEND_VIDEO_MODEL = "grok-imagine-video"
 
 # ---------------------------------------------------------------------------
 # Grok Build CLI picker (local agent environment — `grok models`)
@@ -332,9 +337,17 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
 IMAGINE_VIDEO_MODELS: dict[str, dict[str, Any]] = {
     "grok-imagine-video-1.5": {
         "label": "Imagine Video 1.5",
+        "version": "1.5",
         "usd_per_second": 0.080,
+        "usd_per_second_by_resolution": {"480p": 0.080, "720p": 0.140, "1080p": 0.250},
         "native_audio": True,
-        "modalities": "image → video",
+        "modalities": "text, image, audio → video",
+        "max_resolution": "1080p",
+        "max_duration_s": 15,
+        "modes": ("t2v", "i2v", "r2v"),
+        "r2v_max_resolution": "720p",
+        "max_reference_images": 7,
+        "max_reference_voices": 3,
         "version_date": "2026-05-30",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
         "aliases": [
@@ -349,9 +362,15 @@ IMAGINE_VIDEO_MODELS: dict[str, dict[str, Any]] = {
     },
     "grok-imagine-video": {
         "label": "Imagine Video 1.0",
+        "version": "1.0",
         "usd_per_second": 0.050,
+        "usd_per_second_by_resolution": {"480p": 0.050, "720p": 0.070},
         "native_audio": False,
         "modalities": "text, image, video → video",
+        "max_resolution": "720p",
+        "max_duration_s": 15,
+        "modes": ("t2v", "i2v", "edit", "extend"),
+        "version_date": "2026-02-02",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
         "aliases": ["imagine-video", "video-1.0", "1.0"],
     },
@@ -360,20 +379,35 @@ IMAGINE_VIDEO_MODELS: dict[str, dict[str, Any]] = {
 IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
     "grok-imagine-image": {
         "label": "Imagine Image",
+        "version": "1.0",
         "usd_per_image": 0.02,
+        "usd_by_resolution_quality": {
+            "1k": {"low": 0.02, "medium": 0.02},
+            "2k": {"low": 0.02, "medium": 0.02},
+        },
+        "quality_param": False,
         "modalities": "text, image → image",
+        "max_edit_refs": 3,
         "version_date": "2026-03-02",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
         "aliases": [
             "grok-imagine-image-2026-03-02",
             "imagine-image",
             "image",
+            "image-1.0",
         ],
     },
     "grok-imagine-image-quality": {
         "label": "Imagine Image Quality",
+        "version": "quality",
         "usd_per_image": 0.05,
+        "usd_by_resolution_quality": {
+            "1k": {"low": 0.05, "medium": 0.05},
+            "2k": {"low": 0.05, "medium": 0.05},
+        },
+        "quality_param": False,
         "modalities": "text, image → image",
+        "max_edit_refs": 3,
         "version_date": "2026-04-03",
         "regions": ["us-east-1", "eu-west-1", "us-west-2"],
         "aliases": [
@@ -386,9 +420,80 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
             "pro",
         ],
     },
+    "grok-imagine-image-2.0": {
+        "label": "Imagine Image 2.0",
+        "version": "2.0",
+        "usd_per_image": 0.04,
+        "usd_by_resolution_quality": {
+            "1k": {"low": 0.04, "medium": 0.05},
+            "2k": {"low": 0.06, "medium": 0.07},
+        },
+        "quality_param": True,
+        "quality_values": ("low", "medium"),
+        "default_quality": "medium",
+        "modalities": "text, image → image",
+        "max_edit_refs": 3,
+        "hero": True,
+        "version_date": "2026-08-07",
+        "regions": ["us-east-1", "us-west-2"],
+        "aliases": [
+            "image-2.0",
+            "2.0",
+            "imagine-image-2.0",
+            "grok-imagine-image-2",
+            "image-2",
+        ],
+    },
 }
 
-STUDIO_COMPATIBILITY_VERSION = "3.9.1"
+# Official Agent Mode / operator surfaces (packet enum lives in handoff_schema.py).
+IMAGINE_AGENT_SURFACES: tuple[dict[str, Any], ...] = (
+    {
+        "id": "grok_build_tools",
+        "letter": "A",
+        "label": "Grok Build session tools",
+        "tools": ("image_gen", "image_edit", "image_to_video", "reference_to_video"),
+    },
+    {
+        "id": "grok_agent_acp",
+        "letter": "B",
+        "label": "Grok agent ACP",
+        "tools": ("image_gen", "image_edit", "image_to_video", "reference_to_video", "cli"),
+    },
+    {
+        "id": "grok_com_imagine",
+        "letter": "C",
+        "label": "grok.com/imagine (+ mobile)",
+        "tools": ("manual_paste",),
+        "aliases": ("grok_mobile_imagine",),
+    },
+    {
+        "id": "xai_api",
+        "letter": "D",
+        "label": "xAI Imagine REST API",
+        "tools": ("images/generations", "images/edits", "videos/generations", "videos/edits", "videos/extensions"),
+    },
+    {
+        "id": "xai_responses_tool",
+        "letter": "E",
+        "label": "Responses API image_generation tool",
+        "tools": ("image_generation",),
+        "aliases": ("responses", "image_generation_tool"),
+        "imagine_image": "grok-imagine-image-2.0",
+    },
+)
+
+IMAGINE_REST_ENDPOINTS: tuple[dict[str, str], ...] = (
+    {"mode": "image_prompt", "method": "POST", "path": "/v1/images/generations"},
+    {"mode": "image_edit", "method": "POST", "path": "/v1/images/edits"},
+    {"mode": "video_prompt", "method": "POST", "path": "/v1/videos/generations"},
+    {"mode": "image_to_video", "method": "POST", "path": "/v1/videos/generations"},
+    {"mode": "reference_to_video", "method": "POST", "path": "/v1/videos/generations"},
+    {"mode": "video_edit", "method": "POST", "path": "/v1/videos/edits"},
+    {"mode": "video_extend", "method": "POST", "path": "/v1/videos/extensions"},
+)
+
+STUDIO_COMPATIBILITY_VERSION = "3.10.0"
 
 # Role → slug (unique by construction; no duplicate bag)
 REQUIRED_MODEL_ROLES: dict[str, str] = {
@@ -565,26 +670,93 @@ def usd_to_credits(usd: float) -> float:
     return round(usd / USD_PER_CREDIT, 2)
 
 
-def video_usd_per_second(model: str | None = None) -> float:
+def _normalize_video_resolution(resolution: str | None) -> str | None:
+    if not resolution or not str(resolution).strip():
+        return None
+    key = str(resolution).strip().lower()
+    if key in ("480", "480p", "sd"):
+        return "480p"
+    if key in ("720", "720p", "hd"):
+        return "720p"
+    if key in ("1080", "1080p", "fhd", "fullhd"):
+        return "1080p"
+    return key
+
+
+def _normalize_image_resolution(resolution: str | None) -> str:
+    if not resolution or not str(resolution).strip():
+        return "1k"
+    key = str(resolution).strip().lower()
+    if key in ("1k", "1", "1024"):
+        return "1k"
+    if key in ("2k", "2", "2048"):
+        return "2k"
+    return key
+
+
+def video_usd_per_second(model: str | None = None, *, resolution: str | None = None) -> float:
     slug = resolve_video_model(model)
-    return IMAGINE_VIDEO_MODELS[slug]["usd_per_second"]
+    info = IMAGINE_VIDEO_MODELS[slug]
+    res = _normalize_video_resolution(resolution)
+    if res:
+        by_res = info.get("usd_per_second_by_resolution") or {}
+        if res in by_res:
+            return float(by_res[res])
+    return float(info["usd_per_second"])
 
 
-def image_usd_per_image(model: str | None = None) -> float:
+def image_usd_per_image(
+    model: str | None = None,
+    *,
+    resolution: str | None = None,
+    quality: str | None = None,
+) -> float:
     slug = resolve_image_model(model)
-    return IMAGINE_IMAGE_MODELS[slug]["usd_per_image"]
+    info = IMAGINE_IMAGE_MODELS[slug]
+    table = info.get("usd_by_resolution_quality") or {}
+    if resolution is None and quality is None:
+        return float(info["usd_per_image"])
+    res = _normalize_image_resolution(resolution)
+    q = (quality or info.get("default_quality") or "medium").strip().lower()
+    if res in table and q in (table.get(res) or {}):
+        return float(table[res][q])
+    return float(info["usd_per_image"])
 
 
-def build_video_pipeline_spec(model: str | None = None) -> str:
+def video_supports_mode(model: str | None, mode: str) -> bool:
+    slug = resolve_video_model(model)
+    return mode in set(IMAGINE_VIDEO_MODELS[slug].get("modes") or ())
+
+
+def recommended_video_model_for_mode(mode: str) -> str:
+    """Pick 1.0 vs 1.5 from official capability split (edit/extend → 1.0, r2v → 1.5)."""
+    key = (mode or "").strip().lower()
+    if key in ("edit", "video_edit", "extend", "video_extend"):
+        return EDIT_EXTEND_VIDEO_MODEL
+    if key in ("r2v", "reference_to_video"):
+        return NATIVE_AUDIO_VIDEO_MODEL
+    return DEFAULT_IMAGINE_VIDEO_MODEL
+
+
+def build_video_pipeline_spec(model: str | None = None, *, resolution: str = "720p") -> str:
     """Return locked VIDEO_PIPELINE_SPEC string for Production Bibles and prompts."""
     slug = resolve_video_model(model)
-    native = IMAGINE_VIDEO_MODELS[slug].get("native_audio", False)
+    info = IMAGINE_VIDEO_MODELS[slug]
+    native = bool(info.get("native_audio", False))
     native_str = "true" if native else "false"
+    version = str(info.get("version") or "")
+    res = _normalize_video_resolution(resolution) or "720p"
+    extend = (
+        "LAST_FRAME + MOTION_VECTOR + AUDIO_CUE"
+        if native
+        else "LAST_FRAME + MOTION_VECTOR"
+    )
+    audio_momentum = "true" if native else "false"
     return (
-        f'[VIDEO_PIPELINE_SPEC: model="{slug}", resolution="720p", '
+        f'[VIDEO_PIPELINE_SPEC: model="{slug}", version="{version}", resolution="{res}", '
         f'clip_length="8-12s preferred", native_audio={native_str}, '
         f"reference_image_fidelity=high, "
-        f'extend_protocol="LAST_FRAME + MOTION_VECTOR + AUDIO_CUE", stitch_priority=high]'
+        f'extend_protocol="{extend}", stitch_priority=high, audio_momentum={audio_momentum}]'
     )
 
 
@@ -742,6 +914,21 @@ def verify_model_compatibility() -> dict[str, Any]:
         issues.append(f"video default {DEFAULT_IMAGINE_VIDEO_MODEL!r} missing from IMAGINE_VIDEO_MODELS")
     if DEFAULT_IMAGINE_IMAGE_MODEL not in IMAGINE_IMAGE_MODELS:
         issues.append(f"image default {DEFAULT_IMAGINE_IMAGE_MODEL!r} missing from IMAGINE_IMAGE_MODELS")
+    if HERO_IMAGINE_IMAGE_MODEL not in IMAGINE_IMAGE_MODELS:
+        issues.append(f"hero image {HERO_IMAGINE_IMAGE_MODEL!r} missing from IMAGINE_IMAGE_MODELS")
+    if LEGACY_QUALITY_IMAGE_MODEL not in IMAGINE_IMAGE_MODELS:
+        issues.append(f"legacy quality image {LEGACY_QUALITY_IMAGE_MODEL!r} missing from IMAGINE_IMAGE_MODELS")
+    if resolve_image_model("2.0") != HERO_IMAGINE_IMAGE_MODEL:
+        issues.append('resolve_image_model("2.0") must map to grok-imagine-image-2.0')
+    if "2.0" in {a.lower() for info in IMAGINE_VIDEO_MODELS.values() for a in info.get("aliases", [])}:
+        issues.append("video registry must not claim alias 2.0 (Image 2.0 only)")
+    if resolve_video_model("2.0") != DEFAULT_IMAGINE_VIDEO_MODEL:
+        issues.append('unknown video slug "2.0" must fall back to video default, not a 2.0 product')
+    surface_ids = [s["id"] for s in IMAGINE_AGENT_SURFACES]
+    if len(surface_ids) != len(set(surface_ids)):
+        issues.append("IMAGINE_AGENT_SURFACES ids must be unique")
+    if "xai_responses_tool" not in surface_ids:
+        issues.append("IMAGINE_AGENT_SURFACES must include xai_responses_tool")
 
     # Native-audio only required when 1.5 is the default
     if DEFAULT_IMAGINE_VIDEO_MODEL == "grok-imagine-video-1.5":
@@ -848,12 +1035,16 @@ def verify_model_compatibility() -> dict[str, Any]:
     }
 
 
-def imagine_video_pricing_table() -> dict[str, dict[str, float]]:
+def imagine_video_pricing_table() -> dict[str, dict[str, Any]]:
     """USD/sec rates keyed by canonical video slug (for quota optimizer sync)."""
-    return {
-        slug: {"usd_per_second": info["usd_per_second"]}
-        for slug, info in IMAGINE_VIDEO_MODELS.items()
-    }
+    table: dict[str, dict[str, Any]] = {}
+    for slug, info in IMAGINE_VIDEO_MODELS.items():
+        row: dict[str, Any] = {"usd_per_second": info["usd_per_second"]}
+        by_res = info.get("usd_per_second_by_resolution")
+        if by_res:
+            row["usd_per_second_by_resolution"] = dict(by_res)
+        table[slug] = row
+    return table
 
 
 def list_video_model_aliases() -> dict[str, list[str]]:
@@ -861,11 +1052,84 @@ def list_video_model_aliases() -> dict[str, list[str]]:
     return {slug: list(info.get("aliases", [])) for slug, info in IMAGINE_VIDEO_MODELS.items()}
 
 
-def imagine_image_pricing_table() -> dict[str, dict[str, float]]:
+def imagine_image_pricing_table() -> dict[str, dict[str, Any]]:
     """USD/image rates keyed by canonical image slug (for quota optimizer sync)."""
+    table: dict[str, dict[str, Any]] = {}
+    for slug, info in IMAGINE_IMAGE_MODELS.items():
+        row: dict[str, Any] = {"usd_per_image": info["usd_per_image"]}
+        by_rq = info.get("usd_by_resolution_quality")
+        if by_rq:
+            row["usd_by_resolution_quality"] = {
+                res: dict(qs) for res, qs in by_rq.items()
+            }
+        table[slug] = row
+    return table
+
+
+def ordered_video_model_slugs() -> list[str]:
+    keys = list(IMAGINE_VIDEO_MODELS.keys())
+    if DEFAULT_IMAGINE_VIDEO_MODEL in keys:
+        return [DEFAULT_IMAGINE_VIDEO_MODEL] + [k for k in keys if k != DEFAULT_IMAGINE_VIDEO_MODEL]
+    return keys
+
+
+def ordered_image_model_slugs() -> list[str]:
+    """Draft 1.0 first, then 2.0 hero, then remaining quality/legacy slugs."""
+    keys = list(IMAGINE_IMAGE_MODELS.keys())
+    preferred = [
+        slug
+        for slug in (
+            DEFAULT_IMAGINE_IMAGE_MODEL,
+            HERO_IMAGINE_IMAGE_MODEL,
+            LEGACY_QUALITY_IMAGE_MODEL,
+        )
+        if slug in keys
+    ]
+    return preferred + [k for k in keys if k not in preferred]
+
+
+def imagine_surface_catalog() -> dict[str, Any]:
+    """Models × REST endpoints × Agent Mode surfaces for CLI / meta / doctor."""
     return {
-        slug: {"usd_per_image": info["usd_per_image"]}
-        for slug, info in IMAGINE_IMAGE_MODELS.items()
+        "schema_version": SCHEMA_VERSION,
+        "studio_version": STUDIO_COMPATIBILITY_VERSION,
+        "note": "There is no grok-imagine-video-2.0; 2.0 is Imagine Image only.",
+        "routing": {
+            "image_default": DEFAULT_IMAGINE_IMAGE_MODEL,
+            "image_hero": HERO_IMAGINE_IMAGE_MODEL,
+            "image_legacy_quality": LEGACY_QUALITY_IMAGE_MODEL,
+            "video_default": DEFAULT_IMAGINE_VIDEO_MODEL,
+            "video_native_audio": NATIVE_AUDIO_VIDEO_MODEL,
+            "video_edit_extend": EDIT_EXTEND_VIDEO_MODEL,
+        },
+        "images": [
+            {
+                "slug": slug,
+                "label": info.get("label"),
+                "version": info.get("version"),
+                "usd_per_image": info.get("usd_per_image"),
+                "hero": bool(info.get("hero")),
+                "quality_param": bool(info.get("quality_param")),
+                "aliases": list(info.get("aliases") or []),
+            }
+            for slug, info in IMAGINE_IMAGE_MODELS.items()
+        ],
+        "videos": [
+            {
+                "slug": slug,
+                "label": info.get("label"),
+                "version": info.get("version"),
+                "usd_per_second": info.get("usd_per_second"),
+                "usd_per_second_by_resolution": dict(info.get("usd_per_second_by_resolution") or {}),
+                "native_audio": bool(info.get("native_audio")),
+                "modes": list(info.get("modes") or []),
+                "max_resolution": info.get("max_resolution"),
+                "aliases": list(info.get("aliases") or []),
+            }
+            for slug, info in IMAGINE_VIDEO_MODELS.items()
+        ],
+        "rest_endpoints": [dict(row) for row in IMAGINE_REST_ENDPOINTS],
+        "agent_mode_surfaces": [dict(row) for row in IMAGINE_AGENT_SURFACES],
     }
 
 
@@ -930,12 +1194,17 @@ def list_all_models() -> dict[str, Any]:
         },
         "imagine_video": {
             "default": DEFAULT_IMAGINE_VIDEO_MODEL,
+            "native_audio": NATIVE_AUDIO_VIDEO_MODEL,
+            "edit_extend": EDIT_EXTEND_VIDEO_MODEL,
             "models": IMAGINE_VIDEO_MODELS,
         },
         "imagine_image": {
             "default": DEFAULT_IMAGINE_IMAGE_MODEL,
+            "hero": HERO_IMAGINE_IMAGE_MODEL,
+            "legacy_quality": LEGACY_QUALITY_IMAGE_MODEL,
             "models": IMAGINE_IMAGE_MODELS,
         },
+        "imagine_surfaces": imagine_surface_catalog(),
         "studio_compatibility_version": STUDIO_COMPATIBILITY_VERSION,
         "model_stack": model_stack_summary(),
         "video_pipeline_spec": build_video_pipeline_spec(),

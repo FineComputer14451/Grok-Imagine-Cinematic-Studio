@@ -26,8 +26,11 @@ from imagine_regions import (
 from models import (
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
+    EDIT_EXTEND_VIDEO_MODEL,
+    NATIVE_AUDIO_VIDEO_MODEL,
     resolve_image_model,
     resolve_video_model,
+    video_supports_mode,
 )
 from project_state import load_project_state
 
@@ -134,16 +137,37 @@ def _use_dry_run(dry_run: bool | None) -> bool:
     return is_dry_run() if dry_run is None else dry_run
 
 
+def _media_object(*, url: str | None = None, file_id: str | None = None) -> dict[str, Any]:
+    url_s = (url or "").strip() or None
+    fid = (file_id or "").strip() or None
+    if url_s and fid:
+        raise ImagineAPIError("Provide either url or file_id, not both")
+    if fid:
+        return {"file_id": fid}
+    if url_s:
+        return {"url": url_s}
+    raise ImagineAPIError("url or file_id required")
+
+
 def generate_image(
     prompt: str,
     *,
     model: str | None = None,
     n: int = 1,
     aspect_ratio: str | None = None,
+    resolution: str | None = None,
+    quality: str | None = None,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Generate image(s) from a text prompt."""
     slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
+    payload: dict[str, Any] = {"model": slug, "prompt": prompt, "n": n}
+    if aspect_ratio:
+        payload["aspect_ratio"] = aspect_ratio
+    if resolution:
+        payload["resolution"] = resolution
+    if quality:
+        payload["quality"] = quality
     if _use_dry_run(dry_run):
         images = [
             {
@@ -152,11 +176,8 @@ def generate_image(
             }
             for _ in range(max(1, n))
         ]
-        return {"dry_run": True, "model": slug, "data": images}
+        return {"dry_run": True, "model": slug, "mode": "image_prompt", "payload": payload, "data": images}
 
-    payload: dict[str, Any] = {"model": slug, "prompt": prompt, "n": n}
-    if aspect_ratio:
-        payload["aspect_ratio"] = aspect_ratio
     result = _request("POST", "/images/generations", payload=payload)
     result["model"] = slug
     return result
@@ -165,24 +186,33 @@ def generate_image(
 def edit_image(
     prompt: str,
     *,
-    image_url: str,
+    image_url: str | None = None,
+    image_file_id: str | None = None,
+    extra_image_urls: list[str] | None = None,
     model: str | None = None,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
-    """Edit a source image with a natural-language prompt."""
+    """Edit a source image with a natural-language prompt (up to 3 refs)."""
     slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
+    extras = [u for u in (extra_image_urls or []) if u]
+    if len(extras) > 2:
+        raise ImagineAPIError("Image edit accepts at most 3 reference images (1 primary + 2 extra)")
+    payload: dict[str, Any] = {
+        "model": slug,
+        "prompt": prompt,
+        "image": _media_object(url=image_url, file_id=image_file_id),
+    }
+    if extras:
+        payload["extra_images"] = [{"url": u} for u in extras]
     if _use_dry_run(dry_run):
         return {
             "dry_run": True,
             "model": slug,
+            "mode": "image_edit",
+            "payload": payload,
             "data": [{"url": f"https://dry-run.x.ai/edits/{_mock_request_id('edit')}.png"}],
         }
 
-    payload = {
-        "model": slug,
-        "prompt": prompt,
-        "image": {"url": image_url, "type": "image_url"},
-    }
     result = _request("POST", "/images/edits", payload=payload)
     result["model"] = slug
     return result
@@ -194,69 +224,142 @@ def submit_video_generation(
     model: str | None = None,
     duration: int = 10,
     image_url: str | None = None,
+    image_file_id: str | None = None,
+    reference_image_urls: list[str] | None = None,
+    reference_audios: list[str] | None = None,
     aspect_ratio: str | None = None,
+    resolution: str | None = None,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
-    """Start async text-to-video or image-to-video generation."""
-    slug = resolve_video_model(model or DEFAULT_IMAGINE_VIDEO_MODEL)
-    if _use_dry_run(dry_run):
-        rid = _mock_request_id("vid")
-        return {
-            "dry_run": True,
-            "request_id": rid,
-            "model": slug,
-            "status": "done",
-            "video": {"url": f"https://dry-run.x.ai/videos/{rid}.mp4"},
-        }
+    """Start async text-to-video, image-to-video, or reference-to-video."""
+    refs = [u for u in (reference_image_urls or []) if u]
+    voices = [v for v in (reference_audios or []) if v]
+    has_image = bool((image_url or "").strip() or (image_file_id or "").strip())
+    if has_image and (refs or voices):
+        raise ImagineAPIError(
+            "image and reference_images/reference_audios cannot be combined (400 from Imagine API)"
+        )
+
+    mode = "video_prompt"
+    slug_hint = model
+    if refs or voices:
+        mode = "reference_to_video"
+        slug_hint = model or NATIVE_AUDIO_VIDEO_MODEL
+    elif has_image:
+        mode = "image_to_video"
+        slug_hint = model or DEFAULT_IMAGINE_VIDEO_MODEL
+    slug = resolve_video_model(slug_hint or DEFAULT_IMAGINE_VIDEO_MODEL)
+    if mode == "reference_to_video" and not video_supports_mode(slug, "r2v"):
+        slug = resolve_video_model(NATIVE_AUDIO_VIDEO_MODEL)
 
     payload: dict[str, Any] = {
         "model": slug,
         "prompt": prompt,
         "duration": duration,
     }
-    if image_url:
-        payload["image"] = {"url": image_url}
+    if has_image:
+        payload["image"] = _media_object(url=image_url, file_id=image_file_id)
+    if refs:
+        payload["reference_images"] = [{"url": u} for u in refs]
+    if voices:
+        payload["reference_audios"] = [{"voice_id": v} for v in voices]
     if aspect_ratio:
         payload["aspect_ratio"] = aspect_ratio
+    if resolution:
+        payload["resolution"] = resolution
+
+    if _use_dry_run(dry_run):
+        rid = _mock_request_id("vid")
+        return {
+            "dry_run": True,
+            "request_id": rid,
+            "model": slug,
+            "mode": mode,
+            "status": "done",
+            "payload": payload,
+            "video": {"url": f"https://dry-run.x.ai/videos/{rid}.mp4"},
+        }
+
     result = _request("POST", "/videos/generations", payload=payload)
     result["model"] = slug
+    result["mode"] = mode
+    return result
+
+
+def submit_video_edit(
+    prompt: str,
+    *,
+    video_url: str | None = None,
+    video_file_id: str | None = None,
+    model: str | None = None,
+    dry_run: bool | None = None,
+) -> dict[str, Any]:
+    """Edit an existing clip (Video 1.0 only — 1.5 returns failed_precondition)."""
+    slug = resolve_video_model(model or EDIT_EXTEND_VIDEO_MODEL)
+    if not video_supports_mode(slug, "edit"):
+        slug = resolve_video_model(EDIT_EXTEND_VIDEO_MODEL)
+    payload = {
+        "model": slug,
+        "prompt": prompt,
+        "video": _media_object(url=video_url, file_id=video_file_id),
+    }
+    if _use_dry_run(dry_run):
+        rid = _mock_request_id("edt")
+        return {
+            "dry_run": True,
+            "request_id": rid,
+            "model": slug,
+            "mode": "video_edit",
+            "status": "done",
+            "payload": payload,
+            "video": {"url": f"https://dry-run.x.ai/videos/{rid}_edit.mp4"},
+        }
+    result = _request("POST", "/videos/edits", payload=payload)
+    result["model"] = slug
+    result["mode"] = "video_edit"
     return result
 
 
 def submit_video_extension(
     prompt: str,
     *,
-    video_url: str,
+    video_url: str | None = None,
+    video_file_id: str | None = None,
     model: str | None = None,
     duration: int = 10,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
-    """Start async video extension from an existing clip."""
-    slug = resolve_video_model(model or "grok-imagine-video")
+    """Start async video extension from an existing clip (Video 1.0)."""
+    slug = resolve_video_model(model or EDIT_EXTEND_VIDEO_MODEL)
+    if not video_supports_mode(slug, "extend"):
+        slug = resolve_video_model(EDIT_EXTEND_VIDEO_MODEL)
+    payload = {
+        "model": slug,
+        "prompt": prompt,
+        "duration": duration,
+        "video": _media_object(url=video_url, file_id=video_file_id),
+    }
     if _use_dry_run(dry_run):
         rid = _mock_request_id("ext")
         return {
             "dry_run": True,
             "request_id": rid,
             "model": slug,
+            "mode": "video_extend",
             "status": "done",
+            "payload": payload,
             "video": {"url": f"https://dry-run.x.ai/videos/{rid}_extended.mp4"},
         }
 
-    payload = {
-        "model": slug,
-        "prompt": prompt,
-        "duration": duration,
-        "video": {"url": video_url},
-    }
     result = _request("POST", "/videos/extensions", payload=payload)
     result["model"] = slug
+    result["mode"] = "video_extend"
     return result
 
 
 def get_video_job(request_id: str) -> dict[str, Any]:
     """Poll video job status by request ID."""
-    if request_id.startswith("dry_") or request_id.startswith("vid_") or request_id.startswith("ext_"):
+    if request_id.startswith(("dry_", "vid_", "ext_", "edt_")):
         return {
             "dry_run": True,
             "request_id": request_id,
@@ -273,7 +376,7 @@ def poll_video_job(
     timeout: float = DEFAULT_POLL_TIMEOUT,
 ) -> dict[str, Any]:
     """Poll until video job reaches a terminal state."""
-    if is_dry_run() or request_id.startswith(("dry_", "vid_", "ext_")):
+    if is_dry_run() or request_id.startswith(("dry_", "vid_", "ext_", "edt_")):
         return get_video_job(request_id)
 
     deadline = time.monotonic() + timeout

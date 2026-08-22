@@ -36,7 +36,7 @@ Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for her
 
 | Tier | Image | Video (default) | When |
 |------|-------|-----------------|------|
-| Hero | `grok-imagine-image-quality` | `grok-imagine-video` (+1.5 if audio) | Keyframes, covers, identity anchors |
+| Hero | `grok-imagine-image-2.0` | `grok-imagine-video` (+1.5 if audio) | Keyframes, covers, identity anchors |
 | Standard | `grok-imagine-image` | `grok-imagine-video` (+1.5 if audio) | Most production stills + final video |
 | Draft | `grok-imagine-image` | `grok-imagine-video` | Motion tests, layout, animatic |
 

@@ -52,7 +52,7 @@ Catalog source of truth for skill lists / pins remains the monorepo:
 - [`.grok-plugin/plugin.json`](../.grok-plugin/plugin.json)
 - [`config/plugin_packs.yaml`](../config/plugin_packs.yaml)
 
-Bundled fallback: [`src/data/catalog.json`](./src/data/catalog.json) (v3.9.1 · 64 skills).
+Bundled fallback: [`src/data/catalog.json`](./src/data/catalog.json) (v3.10.0 · 64 skills).
 
 ## Deploy notes
 

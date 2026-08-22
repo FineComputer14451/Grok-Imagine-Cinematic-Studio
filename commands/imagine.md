@@ -6,6 +6,15 @@ description: Imagine production slash command — preflight verify, plan-generat
 
 Full Imagine runtime for Grok Imagine Cinematic Studio — closes the planner-to-generation gap with API jobs, batch execution, sequence runs, and chat bridge handoffs.
 
+**Surfaces:** Image 1.0 / **Image 2.0** / Video 1.0 / Video 1.5 (there is no Video 2.0). Map: `references/agents/IMAGINE_SURFACES.md`.
+
+```bash
+python tools/cinematic_studio_cli.py imagine submit image --prompt "..." --model grok-imagine-image-2.0 --resolution 2k --quality medium
+python tools/cinematic_studio_cli.py imagine submit video_extend --prompt "..." --video-url https://...
+python tools/cinematic_studio_cli.py imagine submit reference_to_video --prompt "..." --reference-image-url https://... --voice-id eve
+python tools/cinematic_studio_cli.py imagine agent-handoff --batch my-batch --shot shot_001 --surface xai_responses_tool
+```
+
 ## Preflight
 
 1. **CLI available?**

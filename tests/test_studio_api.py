@@ -133,6 +133,9 @@ def test_meta_phase2_endpoints() -> None:
     assert opts.status_code == 200
     body = opts.json()
     assert "genres" in body and "defaults" in body
+    assert "grok-imagine-image-2.0" in body.get("image_models", [])
+    assert "xai_responses_tool" in body.get("imagine_surfaces", [])
+    assert "video_extend" in body.get("imagine_execution_modes", [])
 
     agents = client.get("/v1/meta/agents")
     assert agents.status_code == 200

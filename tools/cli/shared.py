@@ -174,6 +174,7 @@ ROLE_CARD_SHARED_DOCS = frozenset({
     "MODEL_LAYER_v3.7.1.md",
     "MODEL_LAYER_v4.5.md",  # v3.8.6 v9-4p5 dual-model layer
     "IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md",
+    "IMAGINE_SURFACES.md",  # v3.10.0 official Imagine 1.0/1.5/2.0 + Agent Mode map
     "IMAGINE_EXECUTION_BRIDGE.md",  # v3.8.6 surface-C bridge protocol
     "IDENTITY_CONTINUITY_PROTOCOL_v3.8.md",
     "Parallel_Brief_Protocol.md",

@@ -52,6 +52,7 @@ def test_apply_quality_pass_promotion() -> None:
     apply_quality_pass_promotion(shot)
     assert shot["pass_number"] == 2
     assert shot["video_model"] == DEFAULT_IMAGINE_VIDEO_MODEL
+    assert shot["image_model"] == "grok-imagine-image-2.0"
     assert shot["fast_mode"] is False
 
 

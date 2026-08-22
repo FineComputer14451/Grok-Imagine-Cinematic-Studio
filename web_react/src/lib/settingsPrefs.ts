@@ -7,6 +7,7 @@ export interface SettingsPrefs {
   genre: string
   director: string
   video_model: string
+  image_model: string
   chat_model: string
   duration: number
   complexity: string
@@ -25,6 +26,7 @@ export const FALLBACK_DEFAULTS: SettingsPrefs = {
   genre: 'Sci-Fi',
   director: 'Denis Villeneuve',
   video_model: 'grok-imagine-video',
+  image_model: 'grok-imagine-image',
   chat_model: 'grok-4.5',
   duration: 60,
   complexity: 'Medium',

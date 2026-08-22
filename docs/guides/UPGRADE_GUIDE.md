@@ -1,11 +1,23 @@
 # Grok Imagine Cinematic Studio — UPGRADE GUIDE
 
-**Current target:** **v3.8.9** — unified **Grok 4.5** cinematic+Build · Model Layer v4.5 (v9-4p5 / `grok-4-auto`) · optional **Grok 4.3** 1M · Imagine Agent Mode Handoff · Identity Continuity · **62 skills** · packs + `full_suite_wins`
+**Current target:** **v3.10.0** — unified **Grok 4.5** cinematic+Build · Model Layer v4.5 (v9-4p5 / `grok-4-auto`) · optional **Grok 4.3** 1M · Imagine Agent Mode Handoff · Identity Continuity · **64 skills** · packs + `full_suite_wins`
 
-**Quick path to current:** pull `main` → `models verify` → reinstall plugin if local clone is stale → activate `Activate Grok Imagine Cinematic Studio v3.8.9`  
+**Quick path to current:** pull `main` → `models verify` → reinstall plugin if local clone is stale → activate `Activate Grok Imagine Cinematic Studio v3.10.0`  
 **Day-to-day docs:** `docs/guides/Quick_Start_Guide.md` · `docs/guides/installation_guide.md` · `references/agents/MODEL_LAYER_v4.5.md`
 
-**Date:** July 23, 2026 (header); sections below retain historical upgrade notes from earlier 3.7.x waves.
+**Date:** August 22, 2026 (header); sections below retain historical upgrade notes from earlier 3.7.x / 3.8.x / 3.9.x waves.
+
+---
+
+## Upgrade to v3.10.0 (from 3.9.x)
+
+1. Pull / reinstall: `git pull` or `bash scripts/cinematic_studio.sh update` / reinstall Method B from clone if `plugin update` no-ops on local installs
+2. Confirm `VERSION` is **3.10.0** and `python tools/cinematic_studio_cli.py models verify` shows Grok **4.5** cinematic+Build
+3. Hero stills / Quality Mode / Identity plates route to **Image 2.0** (`grok-imagine-image-2.0`). There is **no Video 2.0**.
+4. Activation: `Activate Grok Imagine Cinematic Studio v3.10.0`
+5. Surfaces: `references/agents/IMAGINE_SURFACES.md` (Agent Mode A–E, including `xai_responses_tool`)
+6. REST: `cinematic-studio imagine submit` now covers `video_edit` / `video_extend` / `reference_to_video` plus `--resolution` `--quality` `--file-id` `--voice-id`
+7. Contributors: content commit → `bash scripts/release_plugin_catalog.sh` → commit only `.grok-plugin/` → `bash scripts/verify_plugins.sh --release`
 
 ---
 
@@ -14,7 +26,7 @@
 1. Pull / reinstall: `git pull` or `bash scripts/cinematic_studio.sh update` / reinstall Method B from clone if `plugin update` no-ops on local installs  
 2. Confirm `VERSION` is **3.8.7** and `python tools/cinematic_studio_cli.py models verify` shows Grok **4.5** cinematic+Build  
 3. Set `~/.grok/config.toml`: `[models] default = "grok-4.5"` · `[ui] fork_secondary_model = "grok-build"`  
-4. Activation: `Activate Grok Imagine Cinematic Studio v3.8.9`  
+4. Activation: `Activate Grok Imagine Cinematic Studio v3.10.0`  
 5. Model Layer: `references/agents/MODEL_LAYER_v4.5.md` (not the archived `MODEL_LAYER_v3.7.1.md`)  
 6. Contributors: content commit → `bash scripts/release_plugin_catalog.sh` → commit only `.grok-plugin/` → `bash scripts/verify_plugins.sh --release`
 
@@ -25,7 +37,7 @@
 1. Pull / reinstall the repo or run `bash scripts/cinematic_studio.sh update` / `grok plugin update grok-imagine-cinematic-studio`
 2. Confirm models verify shows Grok **4.5** cinematic+Build
 3. Set `~/.grok/config.toml` defaults: `[models] default = "grok-4.5"` · `[ui] fork_secondary_model = "grok-build"`
-4. Activation phrase: `Activate Grok Imagine Cinematic Studio v3.8.9` (current) — historical 3.7.1 phrase is obsolete
+4. Activation phrase: `Activate Grok Imagine Cinematic Studio v3.10.0` (current) — historical 3.7.1 phrase is obsolete
 5. Prefer `references/agents/MODEL_LAYER_v4.5.md` and `IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md` (handoff feature still current under studio 3.8.7)
 6. Re-pin plugin catalog after skill edits: `bash scripts/release_plugin_catalog.sh`
 
@@ -138,7 +150,7 @@ python tools/cinematic_studio_cli.py models verify
 ### Step 2: Activate the New Studio
 In a new **Grok 4.5** chat (default) or **Grok 4.3** for very long Bibles, paste `MASTER_PROMPT.md` and type:
 ```
-Activate Grok Imagine Cinematic Studio v3.8.9
+Activate Grok Imagine Cinematic Studio v3.10.0
 ```
 
 Or use the powerful new mode:
@@ -193,7 +205,7 @@ Free-text logline/characters/world/tech notes roll into `notes`. Stages live in 
 
 ## Recommended New Workflow (v3.7.1)
 
-1. **Primary Activation** — `Activate Grok Imagine Cinematic Studio v3.8.9` or `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
+1. **Primary Activation** — `Activate Grok Imagine Cinematic Studio v3.10.0` or `ACTIVATE IMAGINE_VIDEO_1.5_FULL`
 2. **Production Bible** — `create-bible "Title"` (scripts) or `create-bible --wizard` (guided TTY) / Web Guided Bible Creator
 3. **Use VIDEO_PIPELINE_SPEC** — 1.0 cost default; 1.5 when native audio is required
 4. **Activate Sonic Architect early** when native audio is important

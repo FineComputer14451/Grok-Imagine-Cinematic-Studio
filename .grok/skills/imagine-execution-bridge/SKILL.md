@@ -30,9 +30,12 @@ model_compatibility:
 preferred_model: grok-v9-4p5-chat-expert
 ```
 
-### Imagine Video dual-path (when this skill touches video)
-- **1.5 Native** — preferred for hero / final motion with audio when budget allows
-- **1.0** — cost default / draft / pre-viz; label outputs so downstream agents do not assume 1.5 capabilities
+### Imagine dual-path (when this skill touches generation)
+- **Image 2.0** — grok.com/imagine Quality Mode, hero plates, Responses `image_generation` tool
+- **Image 1.0** — draft / volume stills
+- **Video 1.5 Native** — hero / final motion with audio when budget allows
+- **Video 1.0** — cost default / draft / pre-viz / **edit + extend** (there is no Video 2.0)
+See `references/agents/IMAGINE_SURFACES.md`.
 
 ## When to Activate
 

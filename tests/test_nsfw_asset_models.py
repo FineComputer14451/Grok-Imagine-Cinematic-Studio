@@ -25,7 +25,7 @@ from nsfw_orchestrator import (  # noqa: E402
 def test_hero_tier_routes_image_quality() -> None:
     shot = apply_reference_curator_models({"tier": "hero", "description": "Cover"})
     assert shot["asset_tier"] == "hero"
-    assert shot["image_model"] == "grok-imagine-image-quality"
+    assert shot["image_model"] == "grok-imagine-image-2.0"
     assert shot["video_model"] == "grok-imagine-video"
     assert shot["image_quality"] is True
 
@@ -53,7 +53,7 @@ def test_parse_inline_shot_three_part() -> None:
 
 def test_create_shot_includes_models() -> None:
     shot = create_shot("Anchor close-up", tier="consistency_anchor")
-    assert shot["image_model"] == "grok-imagine-image-quality"
+    assert shot["image_model"] == "grok-imagine-image-2.0"
     assert shot["asset_tier"] == "hero"
 
 
@@ -101,7 +101,7 @@ def test_decide_budget_override() -> None:
 
 def test_enrich_shot_for_batch_single_routing_pass() -> None:
     shot = enrich_shot_for_batch({"tier": "hero", "description": "Cover"})
-    assert shot["image_model"] == "grok-imagine-image-quality"
+    assert shot["image_model"] == "grok-imagine-image-2.0"
     assert shot["recommended_mode"]
     assert shot["estimated_credits"]
 
@@ -113,7 +113,7 @@ def test_plan_batch_applies_routing() -> None:
         budget_credits=5000,
     )
     scheduled = {s["tier"]: s for s in batch["shots"] if s["status"] == "scheduled"}
-    assert scheduled["hero"]["image_model"] == "grok-imagine-image-quality"
+    assert scheduled["hero"]["image_model"] == "grok-imagine-image-2.0"
     assert scheduled["filler"]["video_model"] == "grok-imagine-video"
 
 

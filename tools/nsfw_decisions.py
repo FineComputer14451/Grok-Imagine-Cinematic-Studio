@@ -10,6 +10,7 @@ ModeRule = tuple[Callable[[dict[str, Any], str], bool], str, str, float]
 from models import (
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
+    HERO_IMAGINE_IMAGE_MODEL,
     usd_to_credits,
 )
 from quota_optimizer import estimate_clip_cost, load_pricing_config
@@ -38,8 +39,8 @@ def estimate_shot_cost(
         img_rates = p.get("imagine_image", {})
         usd = img_rates.get(img_slug, {}).get("usd_per_image", 0.02)
         if shot.get("image_quality"):
-            q_slug = "grok-imagine-image-quality"
-            usd = img_rates.get(q_slug, {}).get("usd_per_image", 0.05)
+            q_slug = HERO_IMAGINE_IMAGE_MODEL
+            usd = img_rates.get(q_slug, {}).get("usd_per_image", 0.04)
         credits = usd_to_credits(usd)
         return {"mode": mode, "credits": credits, "usd": round(usd, 2)}
 

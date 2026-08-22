@@ -4,7 +4,29 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.10.0] - 2026-08-22
+
+### Added
+- **Imagine Image 2.0** — `grok-imagine-image-2.0` in the registry (hero stills / Quality Mode / Responses `image_generation` tool). Aliases: `2.0`, `image-2.0`
+- **Official surface catalog** — `imagine_surface_catalog()` maps Image 1.0 / Quality / 2.0 + Video 1.0 / 1.5 to REST endpoints and Agent Mode surfaces A–E. Canonical doc: `references/agents/IMAGINE_SURFACES.md`
+- **REST coverage** — `imagine submit` now supports `video_edit`, `video_extend`, `reference_to_video` plus `--resolution`, `--quality`, `--file-id`, `--reference-image-url`, `--voice-id`
+- **Agent Mode surface E** — `xai_responses_tool` (aliases `responses`, `image_generation_tool`); mobile alias `grok_mobile_imagine` → `grok_com_imagine`
+- **Execution modes** — `video_edit` and `video_extend` (Video 1.0 only)
+- Control plane — API `production-options` exposes `image_models`, `imagine_surfaces`, `imagine_execution_modes`; Streamlit/React image pickers; dashboard `imagine` routing snapshot
+
+### Changed
+- Hero / pass-2 / Quality Mode stills route to **Image 2.0** (legacy `grok-imagine-image-quality` remains registered)
+- Video 1.5 quota uses resolution rates (720p **$0.14/s**, 1080p **$0.25/s**); `VIDEO_PIPELINE_SPEC` emits `version` + resolution
+- Studio version — `VERSION` → **3.10.0**; `STUDIO_COMPATIBILITY_VERSION` / `PROTOCOL_OK` include **3.10.0**; activation `Activate Grok Imagine Cinematic Studio v3.10.0`
+- There is **no** `grok-imagine-video-2.0` — 2.0 is Image only
+
 ### Fixed
+- **Method A CLI payload** — install/update copies `studio_core/` and the full `tools/` tree (including `cli/tui/`) so `cinematic-studio` can import after a Method A install
+- **Release zip builder** — `build_release_bundle.sh` ships the same complete payload (was a shallow `*.py` glob)
+- **Verify Python** — `models verify` uses the wrapper venv interpreter (`PROJECT_DIR/.venv`) instead of system `python3`
+- **Doctor Method A** — missing Grok plugin is PASS when core Method A skills are present; high `~/.grok/skills` count is not a declutter warning
+- **Curl install fallback** — if the GitHub release zip 404s, acquire the GitHub `main` archive (do not require a local clone)
+- **Install next-steps** — do not `cp` over an existing `~/.grok/config.toml`; Kali recipe prefers `uv venv`
 - **Spend-gate mode aliases** — `resolve_execution_mode` maps batch shorthand (`i2v`, `still`, `video`, …) to official modes so plate/motion readiness no longer silently skips when shots only set `recommended_mode: "i2v"`
 
 ## [3.9.1] - 2026-08-03

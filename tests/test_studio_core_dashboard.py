@@ -21,6 +21,7 @@ REQUIRED_TOP_KEYS = {
     "quota",
     "production",
     "readiness",
+    "imagine",
     "imagine_jobs",
     "sequences",
     "characters",
@@ -39,6 +40,8 @@ def test_core_build_studio_dashboard_shape() -> None:
     assert not missing, f"missing keys: {missing}"
     assert snap["studio_version"]
     assert snap["studio"]["core_agents"] >= 23
+    assert snap["imagine"]["image_hero"] == "grok-imagine-image-2.0"
+    assert "xai_responses_tool" in snap["imagine"]["surfaces"]
     recon = snap["quota"].get("reconciliation") or {}
     assert "cascade_source" in recon
     assert "entry_count" in recon

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL
+from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL, HERO_IMAGINE_IMAGE_MODEL
 from quota_optimizer import SUBSCRIPTION_TIERS
 
 SCHEMA_VERSION = "1.0"
@@ -113,7 +113,7 @@ QUALITY_THRESHOLD_HERO = 8.0
 HEAVY_DAILY_SOFT_CAP = SUBSCRIPTION_TIERS["supergrok_heavy"]["daily_soft_cap"]
 RETRY_RESERVE_PCT = 0.15
 
-DEFAULT_IMAGE_QUALITY_MODEL = "grok-imagine-image-quality"
+DEFAULT_IMAGE_QUALITY_MODEL = HERO_IMAGINE_IMAGE_MODEL
 DEFAULT_VIDEO_DRAFT_MODEL = "grok-imagine-video"
 
 NSFW_ASSET_MODEL_MAP: dict[str, dict[str, Any]] = {

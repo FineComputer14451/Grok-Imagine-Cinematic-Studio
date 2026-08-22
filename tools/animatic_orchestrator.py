@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL
+from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL, HERO_IMAGINE_IMAGE_MODEL
 from project_state import load_project_state, save_project_state
 from models import usd_to_credits
 from quota_optimizer import estimate_clip_cost
@@ -26,7 +26,7 @@ STUDIO_AGENT_VERSION = "v3.9.0"
 TIER_MODELS: dict[str, dict[str, str]] = {
     "draft": {"image": DEFAULT_IMAGINE_IMAGE_MODEL, "video": "grok-imagine-video"},
     "standard": {"image": DEFAULT_IMAGINE_IMAGE_MODEL, "video": "grok-imagine-video"},
-    "hero": {"image": "grok-imagine-image-quality", "video": DEFAULT_IMAGINE_VIDEO_MODEL},
+    "hero": {"image": HERO_IMAGINE_IMAGE_MODEL, "video": DEFAULT_IMAGINE_VIDEO_MODEL},
 }
 
 PROMOTION_PATH = ("draft", "standard", "hero")

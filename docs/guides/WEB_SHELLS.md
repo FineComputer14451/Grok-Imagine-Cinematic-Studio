@@ -107,4 +107,5 @@ Details: `web_react/README.md`.
 ## Migration notes
 
 - PR1–PR11: `studio_core` extract, NiceGUI, Streamlit wiring, FastAPI, polish (`docs/PR*.md`).
+- **v3.10.0:** Imagine Image 2.0 + Video 1.0/1.5 surface catalog on API `production-options` and Imagine pickers.
 - **v3.9.1:** React SPA + meta/bible HTTP endpoints (PR #21).

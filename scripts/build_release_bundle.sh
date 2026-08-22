@@ -25,7 +25,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-mkdir -p "$STAGING/.grok/skills" "$STAGING/references" "$STAGING/tools/cli" \
+mkdir -p "$STAGING/.grok/skills" "$STAGING/references" \
     "$STAGING/config" "$STAGING/scripts/lib" "$STAGING/scripts/wrappers"
 
 cinematic_studio_read_manifest "$SCRIPT_DIR/required_skills.manifest" "all" skills
@@ -43,15 +43,11 @@ if [[ -d "$REPO_ROOT/references" ]]; then
     cp -r "$REPO_ROOT/references/"* "$STAGING/references/"
 fi
 
-for pyfile in "$REPO_ROOT/tools"/*.py; do
-    [[ -f "$pyfile" ]] || continue
-    cp "$pyfile" "$STAGING/tools/"
-done
-
-for pyfile in "$REPO_ROOT/tools/cli"/*.py; do
-    [[ -f "$pyfile" ]] || continue
-    cp "$pyfile" "$STAGING/tools/cli/"
-done
+# Full tools/ tree (cli/tui package) + studio_core — same payload Method A install requires.
+cinematic_studio_copy_package_tree "$REPO_ROOT/tools" "$STAGING/tools"
+if [[ -d "$REPO_ROOT/studio_core" ]]; then
+    cinematic_studio_copy_package_tree "$REPO_ROOT/studio_core" "$STAGING/studio_core"
+fi
 
 if [[ -d "$REPO_ROOT/config" ]]; then
     cp -r "$REPO_ROOT/config/"* "$STAGING/config/"
@@ -77,6 +73,15 @@ for doc in AGENTS.md MASTER_PROMPT.md VERSION; do
         cp "$REPO_ROOT/$doc" "$STAGING/"
     fi
 done
+
+if [[ ! -f "$STAGING/tools/cli/tui/__init__.py" ]]; then
+    echo "❌ Bundle missing tools/cli/tui (incomplete tools tree)"
+    exit 1
+fi
+if [[ ! -f "$STAGING/studio_core/services/dashboard.py" ]]; then
+    echo "❌ Bundle missing studio_core/services/dashboard.py"
+    exit 1
+fi
 
 rm -f "$OUTPUT"
 (

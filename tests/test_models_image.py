@@ -10,8 +10,13 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from models import (  # noqa: E402
     DEFAULT_IMAGINE_IMAGE_MODEL,
+    HERO_IMAGINE_IMAGE_MODEL,
     IMAGINE_IMAGE_MODELS,
+    LEGACY_QUALITY_IMAGE_MODEL,
+    image_usd_per_image,
     imagine_image_pricing_table,
+    imagine_surface_catalog,
+    ordered_image_model_slugs,
     resolve_image_model,
     verify_model_compatibility,
 )
@@ -29,6 +34,29 @@ def test_xai_api_aliases_resolve() -> None:
     assert resolve_image_model("grok-imagine-image-quality-20260403") == "grok-imagine-image-quality"
     assert resolve_image_model("pro") == "grok-imagine-image-quality"
     assert resolve_image_model("quality") == "grok-imagine-image-quality"
+    assert resolve_image_model("2.0") == "grok-imagine-image-2.0"
+    assert resolve_image_model("image-2.0") == HERO_IMAGINE_IMAGE_MODEL
+    assert resolve_image_model("imagine-image-2.0") == HERO_IMAGINE_IMAGE_MODEL
+
+
+def test_hero_image_is_2_0() -> None:
+    assert HERO_IMAGINE_IMAGE_MODEL == "grok-imagine-image-2.0"
+    assert HERO_IMAGINE_IMAGE_MODEL in IMAGINE_IMAGE_MODELS
+    assert LEGACY_QUALITY_IMAGE_MODEL in IMAGINE_IMAGE_MODELS
+    assert IMAGINE_IMAGE_MODELS[HERO_IMAGINE_IMAGE_MODEL].get("quality_param") is True
+    slugs = ordered_image_model_slugs()
+    assert slugs[0] == DEFAULT_IMAGINE_IMAGE_MODEL
+    assert HERO_IMAGINE_IMAGE_MODEL in slugs
+
+
+def test_image_2_0_pricing_tiers() -> None:
+    assert image_usd_per_image("grok-imagine-image-2.0") == 0.04
+    assert image_usd_per_image("2.0", resolution="1k", quality="low") == 0.04
+    assert image_usd_per_image("2.0", resolution="2k", quality="low") == 0.06
+    catalog = imagine_surface_catalog()
+    assert catalog["routing"]["image_hero"] == HERO_IMAGINE_IMAGE_MODEL
+    assert any(s["id"] == "xai_responses_tool" for s in catalog["agent_mode_surfaces"])
+    assert "no grok-imagine-video-2.0" in catalog["note"]
 
 
 def test_pricing_table_matches_registry() -> None:

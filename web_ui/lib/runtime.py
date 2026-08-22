@@ -109,6 +109,8 @@ try:
         DEFAULT_IMAGINE_VIDEO_MODEL,
         DEFAULT_XAI_BUILD_MODEL,
         DEFAULT_XAI_CHAT_MODEL,
+        HERO_IMAGINE_IMAGE_MODEL,
+        IMAGINE_IMAGE_MODELS,
         IMAGINE_VIDEO_MODELS,
         MIN_GROK_BUILD_CLI_VERSION,
         ROLE_DEFAULTS,
@@ -116,6 +118,8 @@ try:
         XAI_CHAT_MODELS,
         build_video_pipeline_spec,
         model_stack_summary,
+        ordered_image_model_slugs as _ordered_image_model_slugs,
+        ordered_video_model_slugs as _ordered_video_model_slugs,
         verify_model_compatibility,
     )
 
@@ -140,6 +144,8 @@ except ImportError:
     IMAGINE_REGIONS = {}
     DEFAULT_IMAGINE_VIDEO_MODEL = "grok-imagine-video"
     DEFAULT_IMAGINE_IMAGE_MODEL = "grok-imagine-image"
+    HERO_IMAGINE_IMAGE_MODEL = "grok-imagine-image-2.0"
+    IMAGINE_IMAGE_MODELS = {}
     DEFAULT_XAI_CHAT_MODEL = "grok-4.5"
     DEFAULT_XAI_BUILD_MODEL = "grok-4.5"
     IMAGINE_VIDEO_MODELS = {}
@@ -191,6 +197,11 @@ def ordered_chat_model_slugs() -> list[str]:
 
 def ordered_video_model_slugs() -> list[str]:
     """Prefer cost-default 1.0 (`grok-imagine-video`) before 1.5 native audio."""
+    if MODELS_AVAILABLE:
+        try:
+            return _ordered_video_model_slugs()
+        except NameError:
+            pass
     if not IMAGINE_VIDEO_MODELS:
         return [DEFAULT_IMAGINE_VIDEO_MODEL]
     keys = list(IMAGINE_VIDEO_MODELS.keys())
@@ -198,6 +209,20 @@ def ordered_video_model_slugs() -> list[str]:
     if preferred in keys:
         return [preferred] + [k for k in keys if k != preferred]
     return keys
+
+
+def ordered_image_model_slugs() -> list[str]:
+    """Draft 1.0 first, then Image 2.0 hero, then legacy quality."""
+    if MODELS_AVAILABLE:
+        try:
+            return _ordered_image_model_slugs()
+        except NameError:
+            pass
+    if not IMAGINE_IMAGE_MODELS:
+        return [DEFAULT_IMAGINE_IMAGE_MODEL, HERO_IMAGINE_IMAGE_MODEL]
+    keys = list(IMAGINE_IMAGE_MODELS.keys())
+    preferred = [DEFAULT_IMAGINE_IMAGE_MODEL, HERO_IMAGINE_IMAGE_MODEL]
+    return [k for k in preferred if k in keys] + [k for k in keys if k not in preferred]
 
 
 def format_chat_model_label(slug: str) -> str:
@@ -213,6 +238,20 @@ def format_chat_model_label(slug: str) -> str:
     ctx = meta.get("context_tokens")
     ctx_s = f" · {ctx // 1000}k ctx" if isinstance(ctx, int) else ""
     return f"{label}{badge}{ctx_s}" + (f" — {use}" if use else "")
+
+
+def format_image_model_label(slug: str) -> str:
+    meta = IMAGINE_IMAGE_MODELS.get(slug, {})
+    label = meta.get("label", slug)
+    price = meta.get("usd_per_image")
+    bits = [label]
+    if slug == HERO_IMAGINE_IMAGE_MODEL or meta.get("hero"):
+        bits.append("hero / Quality Mode")
+    elif slug == DEFAULT_IMAGINE_IMAGE_MODEL:
+        bits.append("draft default")
+    if price is not None:
+        bits.append(f"${price}/img")
+    return " · ".join(bits)
 
 
 def format_video_model_label(slug: str) -> str:

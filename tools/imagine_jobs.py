@@ -28,7 +28,7 @@ JOB_STATUSES = (
     "cancelled",
 )
 
-JOB_TYPES = ("image", "image_edit", "video", "video_extend")
+JOB_TYPES = ("image", "image_edit", "video", "video_extend", "video_edit", "reference_to_video")
 
 
 def _now_iso() -> str:

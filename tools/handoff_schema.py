@@ -30,8 +30,17 @@ TARGET_SURFACES: frozenset[str] = frozenset(
         "grok_agent_acp",
         "grok_com_imagine",
         "xai_api",
+        "xai_responses_tool",
     }
 )
+
+SURFACE_ALIASES: dict[str, str] = {
+    "grok_mobile_imagine": "grok_com_imagine",
+    "mobile": "grok_com_imagine",
+    "responses": "xai_responses_tool",
+    "image_generation_tool": "xai_responses_tool",
+    "responses_api": "xai_responses_tool",
+}
 
 EXECUTION_MODES: frozenset[str] = frozenset(
     {
@@ -40,6 +49,8 @@ EXECUTION_MODES: frozenset[str] = frozenset(
         "image_to_video",
         "video_prompt",
         "reference_to_video",
+        "video_edit",
+        "video_extend",
     }
 )
 
@@ -48,6 +59,8 @@ VIDEO_EXECUTION_MODES: frozenset[str] = frozenset(
         "image_to_video",
         "video_prompt",
         "reference_to_video",
+        "video_edit",
+        "video_extend",
     }
 )
 
@@ -58,6 +71,10 @@ EXECUTION_MODE_ALIASES: dict[str, str] = {
     "i2v": "image_to_video",
     "video": "video_prompt",
     "t2v": "video_prompt",
+    "r2v": "reference_to_video",
+    "edit": "video_edit",
+    "v2v": "video_edit",
+    "extend": "video_extend",
 }
 
 # Fields always required on imagine_agent_mode_handoff packets
@@ -153,12 +170,14 @@ def normalize_execution_mode(
 def normalize_target_surface(surface: str) -> str:
     """Return surface if valid; raise ValueError otherwise."""
     cleaned = surface.strip()
-    if cleaned not in TARGET_SURFACES:
+    mapped = SURFACE_ALIASES.get(cleaned, SURFACE_ALIASES.get(cleaned.lower(), cleaned))
+    if mapped not in TARGET_SURFACES:
         raise ValueError(
             f"invalid target_surface: {surface!r}; "
-            f"expected one of {sorted(TARGET_SURFACES)}"
+            f"expected one of {sorted(TARGET_SURFACES)} "
+            f"(aliases: {sorted(SURFACE_ALIASES)})"
         )
-    return cleaned
+    return mapped
 
 
 def imagine_agent_mode_packet_schema() -> dict[str, Any]:

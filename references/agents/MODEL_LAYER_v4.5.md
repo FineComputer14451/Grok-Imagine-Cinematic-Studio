@@ -18,12 +18,17 @@ It provides first-class support for:
 | `grok-v9-4p5-multi`           | Multi          | Multi-agent orchestration, synthesis & handoffs   |
 | `grok-4-auto`                 | Auto           | Balanced / automatic routing / draft / quota      |
 
-And for video generation:
+And for Imagine generation (see `IMAGINE_SURFACES.md`):
 
 | Version                  | When to Prefer                                      | Key Capabilities                          |
 |--------------------------|-----------------------------------------------------|-------------------------------------------|
-| **Imagine Video 1.0**    | Default / cost-efficient / most sequences           | Strong motion vectors, reliable extends   |
-| **Imagine Video 1.5**    | Native audio required, physics fidelity, intimacy   | Native synchronized audio, better physics, micro-expressions, longer coherent motion |
+| **Imagine Image 1.0**    | Draft / volume stills                               | $0.02 / image                             |
+| **Imagine Image 2.0**    | Hero plates, Quality Mode, Agent `image_generation` | Instruction-following, first-class edit, 1K/2K `quality` param |
+| **Imagine Image Quality**| Legacy hero stills                                  | $0.05 / image (prefer 2.0 for new work)   |
+| **Imagine Video 1.0**    | Default / cost-efficient / **edit + extend**        | t2v / i2v / v2v; 480p/720p                |
+| **Imagine Video 1.5**    | Native audio, physics, intimacy, r2v, 1080p         | Native audio, refs + preset voices; **not** edit/extend |
+
+There is **no** Imagine Video 2.0. `2.0` aliases resolve to Image 2.0 only.
 
 ---
 

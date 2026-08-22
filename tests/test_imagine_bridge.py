@@ -188,6 +188,24 @@ def test_unified_renderers_share_clipboard() -> None:
     assert agent_mode_handoff_to_markdown(packet) == md
 
 
+def test_agent_mode_image_defaults_to_image_2_0() -> None:
+    packet = build_agent_mode_handoff(
+        {"shot_id": "s_still", "description": "Hero key art", "recommended_mode": "still"},
+        target_surface="xai_responses_tool",
+    )
+    assert packet["execution_mode"] == "image_prompt"
+    assert packet["image_model"] == "grok-imagine-image-2.0"
+    assert packet["model_stack"]["imagine_image"] == "grok-imagine-image-2.0"
+    assert packet["target_surface"] == "xai_responses_tool"
+    assert any("image_generation" in s for s in packet["handoff_steps"])
+
+
+def test_agent_mode_web_steps_name_image_2_0() -> None:
+    steps = handoff_steps("grok_com_imagine", "image_prompt")
+    blob = " ".join(steps)
+    assert "2.0" in blob or "Quality Mode" in blob
+
+
 if __name__ == "__main__":
     test_build_sound_layer()
     test_reference_hints_locked()

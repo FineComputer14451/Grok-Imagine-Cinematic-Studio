@@ -69,6 +69,9 @@ export interface ProductionOptions {
   reasoning_levels: string[]
   chat_models: string[]
   video_models: string[]
+  image_models?: string[]
+  imagine_surfaces?: string[]
+  imagine_execution_modes?: string[]
   imagine_regions: string[]
   defaults: Record<string, string | number | boolean>
 }

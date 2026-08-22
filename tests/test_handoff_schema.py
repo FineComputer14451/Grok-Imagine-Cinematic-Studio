@@ -31,9 +31,12 @@ from models import STUDIO_COMPATIBILITY_VERSION  # noqa: E402
 
 
 def test_surfaces_and_modes_nonempty() -> None:
-    assert len(TARGET_SURFACES) == 4
+    assert len(TARGET_SURFACES) == 5
     assert "grok_build_tools" in TARGET_SURFACES
-    assert len(EXECUTION_MODES) >= 5
+    assert "xai_responses_tool" in TARGET_SURFACES
+    assert len(EXECUTION_MODES) >= 7
+    assert "video_edit" in EXECUTION_MODES
+    assert "video_extend" in EXECUTION_MODES
     assert VIDEO_EXECUTION_MODES <= EXECUTION_MODES
 
 
@@ -79,6 +82,8 @@ def test_normalize_execution_mode_soft_fallback() -> None:
 
 def test_normalize_target_surface() -> None:
     assert normalize_target_surface("xai_api") == "xai_api"
+    assert normalize_target_surface("grok_mobile_imagine") == "grok_com_imagine"
+    assert normalize_target_surface("responses") == "xai_responses_tool"
     try:
         normalize_target_surface("nope")
         raise AssertionError("expected ValueError")
@@ -112,7 +117,7 @@ def test_protocol_version_tracks_studio() -> None:
 
 def test_handoff_steps_for_all_surfaces() -> None:
     for surface in sorted(TARGET_SURFACES):
-        for mode in ("image_prompt", "image_to_video", "video_prompt"):
+        for mode in ("image_prompt", "image_to_video", "video_prompt", "video_edit", "video_extend"):
             steps = handoff_steps(surface, mode)
             assert isinstance(steps, list) and len(steps) >= 3
             assert all(isinstance(s, str) and s.strip() for s in steps)

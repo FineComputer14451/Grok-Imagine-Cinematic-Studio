@@ -15,6 +15,7 @@ const prefs: SettingsPrefs = {
   genre: 'Cyberpunk',
   director: 'Denis Villeneuve',
   video_model: 'grok-imagine-video-1.5',
+  image_model: 'grok-imagine-image-2.0',
   chat_model: 'grok-4.5',
   duration: 90,
   complexity: 'High',

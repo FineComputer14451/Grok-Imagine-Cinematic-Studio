@@ -1,12 +1,12 @@
-# Operator Cheat Sheet — Grok Imagine Cinematic Studio v3.9.1
+# Operator Cheat Sheet — Grok Imagine Cinematic Studio v3.10.0
 
 **One-pager for activation, agents, skills, packs, and CLI.**  
 Community project — not affiliated with xAI. Canonical detail: `AGENTS.md` · `references/agents/AGENT_INDEX.md` · `references/SKILLS_TAXONOMY.md`.
 
 | Stamp | Value |
 |-------|--------|
-| Studio | **v3.9.1** |
-| Skills | **62** |
+| Studio | **v3.10.0** |
+| Skills | **64** |
 | Role-Card core agents | **25** |
 | Wave A (P0) | **8** specialists |
 | Marketplace | Full suite + 5 packs |
@@ -18,7 +18,7 @@ Community project — not affiliated with xAI. Canonical detail: `AGENTS.md` · 
 ## 60-second activate
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.9.1
+Activate Grok Imagine Cinematic Studio v3.10.0
 ```
 
 | Surface | How |
@@ -60,7 +60,7 @@ Every Production Bible locks `model_stack` + `VIDEO_PIPELINE_SPEC`.
 
 | Command | Purpose |
 |---------|---------|
-| `/cinematic` | Full studio activate v3.9.1 |
+| `/cinematic` | Full studio activate v3.10.0 |
 | `/dna` | Character DNA extract / lock / inject |
 | `/imagine` | Preflight → plan → generate → QA / bridge |
 | `/dashboard` | Health, quota, sequences, DNA |
@@ -160,13 +160,13 @@ Role Cards: `references/agents/`. Index: `references/agents/AGENT_INDEX.md`.
 
 ---
 
-## All 62 skills by marketplace pack
+## All 64 skills by marketplace pack
 
 Union of packs = full suite. Prefer **full suite** install.
 
-### `core` (21) — `grok-imagine-cinematic-core`
+### `core` (23) — `grok-imagine-cinematic-core`
 
-`grok-imagine-cinematic-studio` · `studio-director` · `mega-production-architect` · `production-bible-workflow` · `cinematic-studio-meta-installer` · `skill-agent-architect` · `github-repo-manager` · `character-dna-extractor` · `identity-lock-specialist` · `multi-character-identity-arbiter` · `costume-wardrobe-continuity` · `imagine-prompt-master` · `imagine-execution-bridge` · `handoff-packet-validator` · `workflow-quota-optimizer` · `quota-dashboard` · `quality-assurance-guardian` · `chain-qa-protocol` · `cinematic-skill-creator` · `grok-doctor` · `parallel-brief-dispatcher`
+`grok-imagine-cinematic-studio` · `studio-director` · `mega-production-architect` · `production-bible-workflow` · `cinematic-studio-meta-installer` · `skill-agent-architect` · `github-repo-manager` · `character-dna-extractor` · `identity-lock-specialist` · `multi-character-identity-arbiter` · `costume-wardrobe-continuity` · `imagine-prompt-master` · `imagine-execution-bridge` · `grok-imagine-image-tools` · `xai-grok-skill` · `handoff-packet-validator` · `workflow-quota-optimizer` · `quota-dashboard` · `quality-assurance-guardian` · `chain-qa-protocol` · `cinematic-skill-creator` · `grok-doctor` · `parallel-brief-dispatcher`
 
 Commands: `cinematic` · `dna` · `imagine` · `dashboard` · `validate` · `quota` · `intelligence` · `automation` · `sfw`
 
@@ -190,7 +190,7 @@ Command: `delivery`
 
 ```bash
 python tools/cinematic_studio_cli.py plugin packs
-# 21 + 11 + 19 + 4 + 7 = 62
+# 23 + 11 + 19 + 4 + 7 = 64
 ```
 
 ---
@@ -221,7 +221,7 @@ Activate studio
 
 | Intent | Phrase |
 |--------|--------|
-| Full studio | `Activate Grok Imagine Cinematic Studio v3.9.1` |
+| Full studio | `Activate Grok Imagine Cinematic Studio v3.10.0` |
 | 1.5 native | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | Long-form | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | Character onboard | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
@@ -288,5 +288,5 @@ grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
 
 ---
 
-*Operator cheat sheet · studio **v3.9.1** · 25 core · Wave A 8 · **62 skills** · multi-surface (TUI · Streamlit · NiceGUI · React · API)*  
+*Operator cheat sheet · studio **v3.10.0** · 25 core · Wave A 8 · **64 skills** · multi-surface (TUI · Streamlit · NiceGUI · React · API)*  
 *Regenerate after roster/pack changes: update from AGENT_INDEX + plugin_packs.yaml + required_skills.manifest.*

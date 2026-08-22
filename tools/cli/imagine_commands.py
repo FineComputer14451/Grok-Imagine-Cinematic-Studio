@@ -18,6 +18,8 @@ from imagine_client import (
     generate_image,
     is_dry_run,
     poll_video_job,
+    submit_video_edit,
+    submit_video_extension,
     submit_video_generation,
 )
 from imagine_jobs import cancel_job, create_job, get_job, job_summary, list_jobs, transition_job
@@ -31,7 +33,14 @@ from imagine_bridge import (
 )
 from production_report import build_production_report, report_to_markdown
 from imagine_regions import IMAGINE_REGIONS, get_active_region, get_failover_chain, set_imagine_region
-from models import DEFAULT_IMAGINE_IMAGE_MODEL, DEFAULT_IMAGINE_VIDEO_MODEL, verify_model_compatibility
+from models import (
+    DEFAULT_IMAGINE_IMAGE_MODEL,
+    DEFAULT_IMAGINE_VIDEO_MODEL,
+    EDIT_EXTEND_VIDEO_MODEL,
+    HERO_IMAGINE_IMAGE_MODEL,
+    imagine_surface_catalog,
+    verify_model_compatibility,
+)
 from sequence_chain import get_clip, load_sequence, find_sequence
 from sfw_orchestrator import get_next_shots, load_batch as load_sfw_batch
 
@@ -71,22 +80,48 @@ def resolve_handoff_subject(
 def register(app: typer.Typer) -> None:
     @app.command("submit")
     def imagine_submit(
-        job_type: str = typer.Argument(..., help="image | image_edit | video"),
+        job_type: str = typer.Argument(
+            ...,
+            help="image | image_edit | video | video_edit | video_extend | reference_to_video",
+        ),
         prompt: str = typer.Option(..., "--prompt", "-p"),
         model: str = typer.Option(None, "--model", "-m"),
         image_url: str = typer.Option(None, "--image-url", help="Source image for edit or i2v"),
+        video_url: str = typer.Option(None, "--video-url", help="Source video for edit or extend"),
+        file_id: str = typer.Option(None, "--file-id", help="Files API file_id for image or video input"),
+        reference_image_url: list[str] = typer.Option(
+            None,
+            "--reference-image-url",
+            help="Repeatable reference image URL for r2v (Video 1.5)",
+        ),
+        voice_id: list[str] = typer.Option(
+            None,
+            "--voice-id",
+            help="Repeatable preset voice_id for r2v (Video 1.5)",
+        ),
         duration: int = typer.Option(10, "--duration", "-d", help="Video duration seconds"),
+        resolution: str = typer.Option(None, "--resolution", help="1k|2k for images; 480p|720p|1080p for video"),
+        quality: str = typer.Option(None, "--quality", help="Image 2.0 quality: low | medium"),
+        aspect_ratio: str = typer.Option(None, "--aspect-ratio", help="e.g. 16:9"),
         sequence: str = typer.Option(None, "--sequence", help="Link to sequence slug"),
         clip: str = typer.Option(None, "--clip", help="Link to clip ID"),
         dry_run: bool = typer.Option(False, "--dry-run", help="Force mock response"),
     ):
         """Submit an Imagine generation job and track it in the job queue."""
-        if job_type not in ("image", "image_edit", "video"):
-            console.print("[red]job_type must be: image, image_edit, or video[/red]")
+        allowed = ("image", "image_edit", "video", "video_edit", "video_extend", "reference_to_video")
+        if job_type not in allowed:
+            console.print(f"[red]job_type must be one of: {', '.join(allowed)}[/red]")
             raise typer.Exit(1)
 
-        img_model = model or DEFAULT_IMAGINE_IMAGE_MODEL
+        refs = list(reference_image_url or [])
+        voices = list(voice_id or [])
+        if job_type == "image_edit":
+            img_model = model or HERO_IMAGINE_IMAGE_MODEL
+        else:
+            img_model = model or DEFAULT_IMAGINE_IMAGE_MODEL
         vid_model = model or DEFAULT_IMAGINE_VIDEO_MODEL
+        if job_type in ("video_edit", "video_extend"):
+            vid_model = model or EDIT_EXTEND_VIDEO_MODEL
         slug = img_model if job_type in ("image", "image_edit") else vid_model
 
         job = create_job(
@@ -100,23 +135,79 @@ def register(app: typer.Typer) -> None:
 
         try:
             force_dry = dry_run or is_dry_run()
+            request_id = None
             if job_type == "image":
-                resp = generate_image(prompt, model=img_model, dry_run=force_dry)
+                resp = generate_image(
+                    prompt,
+                    model=img_model,
+                    aspect_ratio=aspect_ratio,
+                    resolution=resolution,
+                    quality=quality,
+                    dry_run=force_dry,
+                )
                 url = extract_image_url(resp)
                 transition_job(job["job_id"], "approved", result_url=url)
             elif job_type == "image_edit":
-                if not image_url:
-                    console.print("[red]--image-url required for image_edit[/red]")
+                if not image_url and not file_id:
+                    console.print("[red]--image-url or --file-id required for image_edit[/red]")
                     raise typer.Exit(1)
-                resp = edit_image(prompt, image_url=image_url, model=img_model, dry_run=force_dry)
+                resp = edit_image(
+                    prompt,
+                    image_url=image_url,
+                    image_file_id=file_id,
+                    extra_image_urls=refs,
+                    model=img_model,
+                    dry_run=force_dry,
+                )
                 url = extract_image_url(resp)
                 transition_job(job["job_id"], "approved", result_url=url)
+            elif job_type == "video_edit":
+                if not video_url and not file_id:
+                    console.print("[red]--video-url or --file-id required for video_edit[/red]")
+                    raise typer.Exit(1)
+                resp = submit_video_edit(
+                    prompt,
+                    video_url=video_url,
+                    video_file_id=file_id,
+                    model=vid_model,
+                    dry_run=force_dry,
+                )
+                request_id = resp.get("request_id")
+                url = extract_video_url(resp)
+                if resp.get("status") != "done" and not force_dry:
+                    result = poll_video_job(request_id)
+                    url = extract_video_url(result)
+                transition_job(job["job_id"], "qa_pending", request_id=request_id, result_url=url)
+            elif job_type == "video_extend":
+                if not video_url and not file_id:
+                    console.print("[red]--video-url or --file-id required for video_extend[/red]")
+                    raise typer.Exit(1)
+                resp = submit_video_extension(
+                    prompt,
+                    video_url=video_url,
+                    video_file_id=file_id,
+                    model=vid_model,
+                    duration=duration,
+                    dry_run=force_dry,
+                )
+                request_id = resp.get("request_id")
+                url = extract_video_url(resp)
+                if resp.get("status") != "done" and not force_dry:
+                    result = poll_video_job(request_id)
+                    url = extract_video_url(result)
+                transition_job(job["job_id"], "qa_pending", request_id=request_id, result_url=url)
             else:
+                # video (t2v/i2v) or reference_to_video
                 resp = submit_video_generation(
                     prompt,
                     model=vid_model,
                     duration=duration,
                     image_url=image_url,
+                    image_file_id=file_id if job_type != "reference_to_video" else None,
+                    reference_image_urls=refs,
+                    reference_audios=voices,
+                    aspect_ratio=aspect_ratio,
+                    resolution=resolution,
                     dry_run=force_dry,
                 )
                 request_id = resp.get("request_id")
@@ -134,6 +225,7 @@ def register(app: typer.Typer) -> None:
                 f"Job: {job['job_id']}\n"
                 f"Type: {job_type}\n"
                 f"Mode: {mode}\n"
+                f"Model: {slug}\n"
                 f"Status: {updated.get('status')}\n"
                 f"URL: {updated.get('result_url', '—')}",
                 title="Imagine Job Submitted",
@@ -252,13 +344,22 @@ def register(app: typer.Typer) -> None:
         stack = check.get("model_stack", {})
         table.add_row("Video model", stack.get("imagine_video", "—"))
         table.add_row("Image model", stack.get("imagine_image", "—"))
+        table.add_row("Hero stills", HERO_IMAGINE_IMAGE_MODEL)
         console.print(table)
+        catalog = imagine_surface_catalog()
+        surf = Table(title="Agent Mode surfaces", box=box.SIMPLE)
+        surf.add_column("ID", style="cyan")
+        surf.add_column("Surface")
+        for row in catalog.get("agent_mode_surfaces", []):
+            surf.add_row(row.get("id", ""), f"{row.get('letter', '')}. {row.get('label', '')}")
+        console.print(surf)
         if not check["compatible"]:
             for issue in check.get("issues", []):
                 console.print(f"  [red]•[/red] {issue}")
             raise typer.Exit(1)
         if dry:
             console.print("[dim]Set XAI_API_KEY for live generation.[/dim]")
+        console.print("[dim]No grok-imagine-video-2.0 — 2.0 is Imagine Image only.[/dim]")
 
 
     def _write_handoff_output(
@@ -320,7 +421,7 @@ def register(app: typer.Typer) -> None:
         surface: str = typer.Option(
             "grok_build_tools",
             "--surface",
-            help="grok_build_tools | grok_agent_acp | grok_com_imagine | xai_api",
+            help="grok_build_tools | grok_agent_acp | grok_com_imagine | xai_api | xai_responses_tool",
         ),
         format: str = typer.Option("markdown", "--format", "-f", help="markdown | json | clipboard"),
         mode: str = typer.Option(None, "--mode", help="Override execution_mode"),

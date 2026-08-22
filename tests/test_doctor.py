@@ -449,7 +449,7 @@ def test_plugin_absent_method_a_is_pass(
     )
     grok.chmod(grok.stat().st_mode | stat.S_IXUSR)
     monkeypatch.setenv("PATH", f"{fake_bin}{os.pathsep}{os.environ.get('PATH', '')}")
-    results = check_plugin_installed(expected_version="3.9.1", home=home)
+    results = check_plugin_installed(expected_version=(ROOT / "VERSION").read_text(encoding="utf-8").strip(), home=home)
     assert results[0].status == "PASS"
     assert "Method A" in results[0].detail
 
@@ -468,7 +468,7 @@ def test_plugin_absent_without_method_a_is_fail(
     )
     grok.chmod(grok.stat().st_mode | stat.S_IXUSR)
     monkeypatch.setenv("PATH", f"{fake_bin}{os.pathsep}{os.environ.get('PATH', '')}")
-    results = check_plugin_installed(expected_version="3.9.1", home=home)
+    results = check_plugin_installed(expected_version=(ROOT / "VERSION").read_text(encoding="utf-8").strip(), home=home)
     assert results[0].status == "FAIL"
     assert "plugin install" in results[0].detail
 

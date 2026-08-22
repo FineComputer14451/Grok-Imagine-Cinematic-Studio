@@ -19,6 +19,7 @@ def render() -> None:
 
     if rt.MODELS_AVAILABLE:
         video_models = rt.ordered_video_model_slugs()
+        image_models = rt.ordered_image_model_slugs()
         chat_models = rt.ordered_chat_model_slugs()
         st.session_state.chat_model = st.selectbox(
             "xAI Chat / orchestration model",
@@ -27,12 +28,19 @@ def render() -> None:
             format_func=rt.format_chat_model_label,
             help="Default: grok-4.5 (cinematic + Build). Use grok-4.3 only for 1M-context Bibles.",
         )
+        st.session_state.image_model = st.selectbox(
+            "Imagine Image model",
+            image_models,
+            index=sess.select_index(image_models, st.session_state.get("image_model", rt.DEFAULT_IMAGINE_IMAGE_MODEL)),
+            format_func=rt.format_image_model_label,
+            help="Draft default is Image 1.0. Hero plates and Quality Mode use Image 2.0. There is no Video 2.0.",
+        )
         st.session_state.video_model = st.selectbox(
             "Imagine Video model",
             video_models,
             index=sess.select_index(video_models, st.session_state.video_model),
             format_func=rt.format_video_model_label,
-            help="Cost default is 1.0 (grok-imagine-video). Use 1.5 when native audio is required.",
+            help="Cost default is 1.0 (grok-imagine-video). Use 1.5 when native audio is required. Edit/extend is 1.0 only.",
         )
         st.session_state.reasoning_level = st.select_slider(
             "Preferred reasoning (Grok 4.5)",

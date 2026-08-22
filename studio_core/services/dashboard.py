@@ -17,7 +17,7 @@ from artifact_pipeline import artifacts_summary  # noqa: E402
 from character_dna import list_characters  # noqa: E402
 from chain_qa_assist import summarize_sequence_qa  # noqa: E402
 from imagine_jobs import job_summary, list_jobs  # noqa: E402
-from models import model_stack_summary, verify_model_compatibility  # noqa: E402
+from models import imagine_surface_catalog, model_stack_summary, verify_model_compatibility  # noqa: E402
 from nsfw_orchestrator import list_batches  # noqa: E402
 from production_report import build_production_report  # noqa: E402
 from project_state import load_project_state  # noqa: E402
@@ -112,6 +112,7 @@ def build_studio_dashboard() -> dict[str, Any]:
         }
 
     title = project.get("project_title") or project.get("title") or "Untitled"
+    imagine_catalog = imagine_surface_catalog()
     snap: dict[str, Any] = {
         "generated_at": _now_iso(),
         "studio_version": STUDIO_VERSION,
@@ -129,6 +130,10 @@ def build_studio_dashboard() -> dict[str, Any]:
             "models_compatible": model_check["compatible"],
             "model_issues": model_check.get("issues", []),
             "model_stack": model_check.get("model_stack", model_stack_summary()),
+        },
+        "imagine": {
+            **imagine_catalog["routing"],
+            "surfaces": [s["id"] for s in imagine_catalog["agent_mode_surfaces"]],
         },
         "quota": {**dash, "risk_level": risk.get("risk_level", "unknown")},
         "production": production,

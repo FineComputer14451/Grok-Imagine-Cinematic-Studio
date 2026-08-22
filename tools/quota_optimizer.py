@@ -101,12 +101,17 @@ def ensure_quota_state(state: dict[str, Any]) -> dict[str, Any]:
     return state["quota"]
 
 
-def _video_rate_usd(p: dict[str, Any], video_model: str) -> float:
+def _video_rate_usd(
+    p: dict[str, Any], video_model: str, *, resolution: str | None = None
+) -> float:
     slug = resolve_video_model(video_model)
     rates = p.get("imagine_video", DEFAULT_PRICING["imagine_video"])
     if slug in rates:
-        return rates[slug]["usd_per_second"]
-    return video_usd_per_second(slug)
+        by_res = rates[slug].get("usd_per_second_by_resolution") or {}
+        if resolution and resolution in by_res:
+            return float(by_res[resolution])
+        return float(rates[slug]["usd_per_second"])
+    return video_usd_per_second(slug, resolution=resolution)
 
 
 def _image_rate_usd(p: dict[str, Any], image_model: str) -> float:
@@ -131,7 +136,7 @@ def estimate_clip_cost(
     """Estimate cost for a single Imagine video clip (xAI per-second pricing)."""
     p = pricing or load_pricing_config()
     slug = resolve_video_model(video_model or p.get("default_video_model"))
-    usd_per_sec = _video_rate_usd(p, slug)
+    usd_per_sec = _video_rate_usd(p, slug, resolution=resolution)
     base_usd = usd_per_sec * duration_seconds
 
     if fast_mode:

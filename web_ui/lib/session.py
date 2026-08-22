@@ -38,6 +38,7 @@ SESSION_DEFAULTS: dict[str, Any] = {
     "genre": PRODUCTION_OPTIONS["genres"][0],
     "director": PRODUCTION_OPTIONS["directors"][0],
     "video_model": rt.DEFAULT_IMAGINE_VIDEO_MODEL,
+    "image_model": rt.DEFAULT_IMAGINE_IMAGE_MODEL,
     "chat_model": rt.DEFAULT_XAI_CHAT_MODEL,
     "duration": 60,
     "complexity": "Medium",
@@ -73,6 +74,10 @@ def init_session_defaults() -> None:
         video = st.session_state.get("video_model")
         if video not in rt.IMAGINE_VIDEO_MODELS:
             st.session_state.video_model = rt.DEFAULT_IMAGINE_VIDEO_MODEL
+    if rt.MODELS_AVAILABLE and rt.IMAGINE_IMAGE_MODELS:
+        image = st.session_state.get("image_model")
+        if image not in rt.IMAGINE_IMAGE_MODELS:
+            st.session_state.image_model = rt.DEFAULT_IMAGINE_IMAGE_MODEL
     # Streamlit Community Cloud secrets → env for imagine_client / CLI subprocesses
     rt.sync_xai_api_key_to_environ()
 

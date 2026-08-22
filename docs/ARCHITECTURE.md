@@ -1,5 +1,5 @@
 # Architecture
-## Grok Imagine Cinematic Studio v3.9.0
+## Grok Imagine Cinematic Studio v3.10.0
 
 > [!NOTE]
 > Independent community project — **not affiliated with or endorsed by xAI**. Full notice: [DISCLAIMER.md](../DISCLAIMER.md).
@@ -130,7 +130,7 @@ Orient → Health (doctor / validate / quota sync / models)
       → Converge & Deliver (polish / deliver readiness · Wave A briefs)
 ```
 
-**v3.9.0 density:** TUI and Streamlit expose compact / ops / full view modes so operators can scale detail without changing workflow.
+**v3.10.0 density:** TUI and Streamlit expose compact / ops / full view modes so operators can scale detail without changing workflow.
 
 ---
 

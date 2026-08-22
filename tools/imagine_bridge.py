@@ -16,6 +16,7 @@ from models import (
     DEFAULT_IMAGINE_VIDEO_MODEL,
     DEFAULT_XAI_BUILD_MODEL,
     DEFAULT_XAI_CHAT_MODEL,
+    HERO_IMAGINE_IMAGE_MODEL,
     STUDIO_COMPATIBILITY_VERSION,
     build_video_pipeline_spec,
 )
@@ -65,23 +66,29 @@ GROK_IMAGINE_URL = "https://grok.com/imagine"
 _MODE_BUCKET_IMAGE = "image"
 _MODE_BUCKET_I2V = "i2v"
 _MODE_BUCKET_VIDEO = "video"
+_MODE_BUCKET_V2V = "v2v"
 
 # Web / classic grok.com paste steps (mode bucket → steps)
 _WEB_STEPS: dict[str, list[str]] = {
     _MODE_BUCKET_IMAGE: [
-        "1. Paste prompt + VIDEO_PIPELINE_SPEC into grok.com/imagine (Image)",
-        "2. Attach reference plate if listed",
+        "1. Paste prompt into grok.com/imagine Image — Quality Mode (Imagine Image 2.0)",
+        "2. Attach reference plate if listed (up to 3 refs on edit)",
         "3. On QA ≥7, lock plate and run i2v pass",
     ],
     _MODE_BUCKET_I2V: [
-        "1. Attach locked reference plate first",
-        "2. Paste i2v prompt with MOTION_VECTOR block",
-        "3. Enable native audio — verify Sound Layer sync",
+        "1. Attach locked reference plate first (Image 2.0 hero plate preferred)",
+        "2. Paste i2v prompt with MOTION_VECTOR block — Video 1.0 default, 1.5 if native audio",
+        "3. Enable native audio on 1.5 — verify Sound Layer sync",
     ],
     _MODE_BUCKET_VIDEO: [
-        "1. Paste full video prompt with Sound Layer",
-        "2. Set duration 8–12s, native audio on",
+        "1. Paste full video prompt with Sound Layer (1.5) or silent 1.0 cost path",
+        "2. Set duration 8–12s; 1080p only on Video 1.5 t2v/i2v",
         "3. Record result via: sfw record or sequence run",
+    ],
+    _MODE_BUCKET_V2V: [
+        "1. Use xAI API / CLI for video edit or extend (Video 1.0) — grok.com/imagine is paste-only",
+        "2. Prefer: cinematic-studio imagine submit video_edit|video_extend --video-url …",
+        "3. Record result via sfw record / sequence handoff JSON + QA",
     ],
 }
 
@@ -105,11 +112,17 @@ _BUILD_STEPS: dict[str, list[str]] = {
         "3. Save artifact; do not claim success without tool result",
         "4. return_path: QA Guardian + Director's Notes",
     ],
+    _MODE_BUCKET_V2V: [
+        "1. Video edit/extend is xAI REST Video 1.0 — session image_to_video cannot restyle a clip",
+        "2. Run: cinematic-studio imagine submit video_edit|video_extend --video-url … --dry-run if no key",
+        "3. Do not send grok-imagine-video-1.5 for edit/extend (failed_precondition)",
+        "4. return_path: chain QA + Continuity Guardian before another extend",
+    ],
 }
 
 _XAI_API_STEPS = [
     "1. Run: python tools/cinematic_studio_cli.py imagine verify",
-    "2. Submit via sfw run / sequence run / imagine submit with packet prompt + models",
+    "2. Submit via imagine submit (image|image_edit|video|video_edit|video_extend|reference_to_video)",
     "3. Attach job_id to directors_notes_log; reconcile quota",
     "4. return_path: record QA score and artifact path",
 ]
@@ -121,10 +134,38 @@ _ACP_STEPS = [
     "4. return_path: QA Guardian + Project Bible update",
 ]
 
+_RESPONSES_STEPS: dict[str, list[str]] = {
+    _MODE_BUCKET_IMAGE: [
+        "1. Enable Responses API tool image_generation (action=generate or edit) — uses Imagine Image 2.0",
+        "2. Keep packet prompt; model picks aspect unless you specify it in the request text",
+        "3. Write response.image_outputs (or image_generation_call.result) under artifacts/",
+        "4. return_path: sfw record + plate lock before any video spend",
+    ],
+    _MODE_BUCKET_I2V: [
+        "1. image_generation tool is stills-only — generate/lock the Image 2.0 plate first",
+        "2. Hand off i2v to grok_build_tools (image_to_video) or xai_api imagine submit video",
+        "3. Do not claim video from the Responses image_generation tool",
+        "4. return_path: sequence run / sfw record + chain QA if extend",
+    ],
+    _MODE_BUCKET_VIDEO: [
+        "1. Responses image_generation cannot emit video — retarget xai_api or grok_build_tools",
+        "2. Keep this packet as the still/prompt source; submit video via Imagine REST",
+        "3. Save artifacts/; do not claim success without a video URL",
+        "4. return_path: QA Guardian + Director's Notes",
+    ],
+    _MODE_BUCKET_V2V: [
+        "1. Video edit/extend is REST Video 1.0 only — use xai_api, not image_generation",
+        "2. cinematic-studio imagine submit video_edit|video_extend --video-url …",
+        "3. Save artifacts/ and attach job_id",
+        "4. return_path: chain QA before another extend",
+    ],
+}
+
 _RETURN_PATHS: dict[str, str] = {
     "clip": "sequence run / chain QA + Continuity Guardian update",
     "xai_api": "sfw record <batch> <shot> --score … --credits …",
     "grok_com_imagine": "Download result → sfw record or sequence handoff JSON + QA",
+    "xai_responses_tool": "Decode image_generation_call → artifacts/ + sfw record",
     "default": "artifacts/ path + Director's Notes + QA Guardian",
 }
 
@@ -134,6 +175,8 @@ def _mode_bucket(execution_mode: str) -> str:
         return _MODE_BUCKET_IMAGE
     if execution_mode in ("image_to_video", "reference_to_video"):
         return _MODE_BUCKET_I2V
+    if execution_mode in ("video_edit", "video_extend"):
+        return _MODE_BUCKET_V2V
     return _MODE_BUCKET_VIDEO
 
 
@@ -141,13 +184,18 @@ def handoff_steps(surface: str, execution_mode: str) -> list[str]:
     """Ordered steps for a surface × mode pair."""
     bucket = _mode_bucket(execution_mode)
     if surface == "grok_com_imagine":
-        return list(_WEB_STEPS[bucket])
+        return list(_WEB_STEPS.get(bucket, _WEB_STEPS[_MODE_BUCKET_VIDEO]))
     if surface == "xai_api":
         return list(_XAI_API_STEPS)
     if surface == "grok_agent_acp":
         return list(_ACP_STEPS)
+    if surface == "xai_responses_tool":
+        return list(_RESPONSES_STEPS.get(bucket, _RESPONSES_STEPS[_MODE_BUCKET_IMAGE]))
     # grok_build_tools (default)
-    return list(_BUILD_STEPS[bucket])
+    steps = _BUILD_STEPS.get(bucket)
+    if steps:
+        return list(steps)
+    return list(_BUILD_STEPS[_MODE_BUCKET_VIDEO])
 
 
 def default_return_path(surface: str, context: str) -> str:
@@ -233,6 +281,7 @@ def _core_content(
         or subject.get("video_model")
         or DEFAULT_IMAGINE_VIDEO_MODEL
     )
+    img_explicit = bool(subject.get("image_model"))
     img_model = subject.get("image_model") or DEFAULT_IMAGINE_IMAGE_MODEL
     description = prompt or subject.get("prompt") or subject.get("description", "")
     core: dict[str, Any] = {
@@ -240,6 +289,7 @@ def _core_content(
         "subject_id": subject.get("shot_id") or subject.get("clip_id") or "item",
         "video_model": vid_model,
         "image_model": img_model,
+        "image_model_explicit": img_explicit,
         "aspect_ratio": subject.get("aspect_ratio", "16:9"),
         "video_pipeline_spec": build_video_pipeline_spec(vid_model),
         "prompt": description.strip(),
@@ -321,6 +371,10 @@ def build_handoff(
     mode = normalize_execution_mode(raw_mode, strict=True)
     is_video = is_video_execution_mode(mode)
 
+    image_slug = core["image_model"]
+    if not core.get("image_model_explicit") and mode in ("image_prompt", "image_edit"):
+        image_slug = HERO_IMAGINE_IMAGE_MODEL
+
     packet: dict[str, Any] = {
         "packet_type": PACKET_TYPE_IMAGINE_AGENT_MODE,
         "protocol_version": PROTOCOL_VERSION,
@@ -330,7 +384,7 @@ def build_handoff(
         "context": core["context"],
         "subject_id": core["subject_id"],
         "video_model": core["video_model"],
-        "image_model": core["image_model"],
+        "image_model": image_slug,
         "aspect_ratio": core.get("aspect_ratio", "16:9"),
         "video_pipeline_spec": core["video_pipeline_spec"] if is_video else "",
         "prompt": core["prompt"],
@@ -339,7 +393,7 @@ def build_handoff(
         "model_stack": {
             "chat": DEFAULT_XAI_CHAT_MODEL,
             "build": DEFAULT_XAI_BUILD_MODEL,
-            "imagine_image": core.get("image_model") or DEFAULT_IMAGINE_IMAGE_MODEL,
+            "imagine_image": image_slug,
             "imagine_video": core.get("video_model") or DEFAULT_IMAGINE_VIDEO_MODEL,
         },
         "quota_note": quota_note,

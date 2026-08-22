@@ -81,6 +81,7 @@ def test_shared_agent_docs_excluded_from_role_cards() -> None:
     for required_shared in (
         "MODEL_LAYER_v3.7.1.md",
         "IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md",
+        "IMAGINE_SURFACES.md",
     ):
         assert required_shared in ROLE_CARD_SHARED_DOCS
         assert (AGENTS_DIR / required_shared).is_file()

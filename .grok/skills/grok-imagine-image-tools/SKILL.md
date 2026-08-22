@@ -7,10 +7,12 @@ metadata:
 
 # Grok Imagine Image Tools
 
-Guidance for the two image tool calls in Grok Build:
+Guidance for the two image tool calls in Grok Build (these hit **Imagine Image 2.0** on current Grok surfaces; REST default for volume stills remains `grok-imagine-image`):
 
 - `image_gen` - generate a **new** image from a text prompt.
 - `image_edit` - modify an **existing** image using a text prompt and source image.
+
+Hero plates and Quality Mode should lock `grok-imagine-image-2.0`. There is no Video 2.0. Full map: `references/agents/IMAGINE_SURFACES.md`.
 
 Apply this whenever you're considering or about to call either tool.
 

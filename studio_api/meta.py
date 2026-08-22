@@ -93,6 +93,50 @@ def role_card_preview(stem: str) -> dict[str, Any]:
 
 def production_options() -> dict[str, Any]:
     """Static option lists mirroring Streamlit session PRODUCTION_OPTIONS."""
+    try:
+        from models import (
+            DEFAULT_IMAGINE_IMAGE_MODEL,
+            DEFAULT_IMAGINE_VIDEO_MODEL,
+            HERO_IMAGINE_IMAGE_MODEL,
+            ordered_image_model_slugs,
+            ordered_video_model_slugs,
+        )
+        from handoff_schema import EXECUTION_MODES, TARGET_SURFACES
+
+        video_models = ordered_video_model_slugs()
+        image_models = ordered_image_model_slugs()
+        surfaces = sorted(TARGET_SURFACES)
+        exec_modes = sorted(EXECUTION_MODES)
+        video_default = DEFAULT_IMAGINE_VIDEO_MODEL
+        image_default = DEFAULT_IMAGINE_IMAGE_MODEL
+        image_hero = HERO_IMAGINE_IMAGE_MODEL
+    except ImportError:
+        video_models = ["grok-imagine-video", "grok-imagine-video-1.5"]
+        image_models = [
+            "grok-imagine-image",
+            "grok-imagine-image-2.0",
+            "grok-imagine-image-quality",
+        ]
+        surfaces = [
+            "grok_build_tools",
+            "grok_agent_acp",
+            "grok_com_imagine",
+            "xai_api",
+            "xai_responses_tool",
+        ]
+        exec_modes = [
+            "image_prompt",
+            "image_edit",
+            "image_to_video",
+            "video_prompt",
+            "reference_to_video",
+            "video_edit",
+            "video_extend",
+        ]
+        video_default = "grok-imagine-video"
+        image_default = "grok-imagine-image"
+        image_hero = "grok-imagine-image-2.0"
+
     return {
         "genres": [
             "Sci-Fi",
@@ -118,12 +162,17 @@ def production_options() -> dict[str, Any]:
         "tiers": ["supergrok_pro", "supergrok_heavy", "custom"],
         "reasoning_levels": ["low", "medium", "high"],
         "chat_models": ["grok-4.5", "grok-4.3", "grok-v9-4p5-multi", "grok-v9-4p5-chat-expert", "grok-4-auto"],
-        "video_models": ["grok-imagine-video", "grok-imagine-video-1.5"],
+        "video_models": video_models,
+        "image_models": image_models,
+        "imagine_surfaces": surfaces,
+        "imagine_execution_modes": exec_modes,
         "imagine_regions": ["us-east-1", "eu-west-1", "ap-southeast-1"],
         "defaults": {
             "genre": "Sci-Fi",
             "director": "Denis Villeneuve",
-            "video_model": "grok-imagine-video",
+            "video_model": video_default,
+            "image_model": image_default,
+            "image_hero_model": image_hero,
             "chat_model": "grok-4.5",
             "duration": 60,
             "complexity": "Medium",

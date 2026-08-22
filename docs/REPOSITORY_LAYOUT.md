@@ -1,4 +1,4 @@
-# Repository Layout — v3.8.9 · Grok 4.5
+# Repository Layout — v3.10.0 · Grok 4.5
 
 Canonical map of the Grok Imagine Cinematic Studio monorepo. Runtime paths used by the CLI are fixed in `tools/studio_paths.py`.
 
@@ -18,7 +18,7 @@ Canonical map of the Grok Imagine Cinematic Studio monorepo. Runtime paths used 
 ## First-class packages
 
 ```
-.grok/skills/          # 62 studio skills (agent-only SKILL.md)
+.grok/skills/          # 64 studio skills (agent-only SKILL.md)
 .grok-plugin/          # marketplace.json, plugin.json, plugin-index.json
 commands/              # Slash commands for Grok Build plugin
 tools/                 # CLI + libraries (models.py is stack registry)
