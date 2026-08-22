@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import os
+import stat
 import sys
 from pathlib import Path
 
@@ -24,7 +26,14 @@ from doctor import (  # noqa: E402
     report_to_dict,
     run_doctor,
 )
-from doctor_checks import check_catalog_pin, check_model_stack  # noqa: E402
+from doctor_checks import (  # noqa: E402
+    METHOD_A_CORE_SKILLS,
+    check_catalog_pin,
+    check_model_stack,
+    check_plugin_installed,
+    check_skills_layout,
+    method_a_core_installed,
+)
 from studio_health import (  # noqa: E402
     count_skills,
     skills_missing_model_compatibility,
@@ -409,3 +418,70 @@ def test_cmd_doctor_delegates_to_shim() -> None:
     assert "grok_doctor.sh" in body
     # No multi-path CLI hunt in cmd_doctor
     assert 'for cli in' not in body
+
+
+def _write_method_a_core(home: Path) -> None:
+    skills = home / ".grok" / "skills"
+    for slug in METHOD_A_CORE_SKILLS:
+        d = skills / slug
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "SKILL.md").write_text(f"# {slug}\n", encoding="utf-8")
+
+
+def test_method_a_core_installed(tmp_path: Path) -> None:
+    home = tmp_path / "home"
+    assert method_a_core_installed(home) is False
+    _write_method_a_core(home)
+    assert method_a_core_installed(home) is True
+
+
+def test_plugin_absent_method_a_is_pass(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home = tmp_path / "home"
+    _write_method_a_core(home)
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    grok = fake_bin / "grok"
+    grok.write_text(
+        "#!/usr/bin/env bash\necho 'No plugins installed.'\n",
+        encoding="utf-8",
+    )
+    grok.chmod(grok.stat().st_mode | stat.S_IXUSR)
+    monkeypatch.setenv("PATH", f"{fake_bin}{os.pathsep}{os.environ.get('PATH', '')}")
+    results = check_plugin_installed(expected_version="3.9.1", home=home)
+    assert results[0].status == "PASS"
+    assert "Method A" in results[0].detail
+
+
+def test_plugin_absent_without_method_a_is_fail(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home = tmp_path / "home"
+    home.mkdir()
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    grok = fake_bin / "grok"
+    grok.write_text(
+        "#!/usr/bin/env bash\necho 'No plugins installed.'\n",
+        encoding="utf-8",
+    )
+    grok.chmod(grok.stat().st_mode | stat.S_IXUSR)
+    monkeypatch.setenv("PATH", f"{fake_bin}{os.pathsep}{os.environ.get('PATH', '')}")
+    results = check_plugin_installed(expected_version="3.9.1", home=home)
+    assert results[0].status == "FAIL"
+    assert "plugin install" in results[0].detail
+
+
+def test_skills_layout_method_a_is_not_high_warn(tmp_path: Path) -> None:
+    home = tmp_path / "home"
+    _write_method_a_core(home)
+    # Extra dirs so count is above the clutter heuristic
+    for i in range(20):
+        (home / ".grok" / "skills" / f"extra-{i}").mkdir(parents=True, exist_ok=True)
+    repo = tmp_path / "not-a-checkout"
+    repo.mkdir()
+    results = check_skills_layout(home=home, repo_root=repo)
+    by_name = {r.name: r for r in results}
+    assert by_name["user ~/.grok/skills"].status == "PASS"
+    assert "Method A" in by_name["user ~/.grok/skills"].detail

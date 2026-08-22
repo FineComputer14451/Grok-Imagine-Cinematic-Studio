@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# Shared library for Grok Imagine Cinematic Studio meta installer (v3.8.9)
+# Shared library for Grok Imagine Cinematic Studio meta installer (v3.9.1)
 #
 
-CINEMATIC_STUDIO_FALLBACK_VERSION="3.8.9"
+CINEMATIC_STUDIO_FALLBACK_VERSION="3.9.1"
 
 CINEMATIC_INSTALLER_SCRIPTS=(
     cinematic_studio.sh
@@ -160,36 +160,81 @@ cinematic_studio_bundle_root() {
     return 1
 }
 
-cinematic_studio_copy_tools_tree() {
-    local tools_src="$1"
-    local dest="$PROJECT_DIR/tools"
-    local pyfile=""
+cinematic_studio_strip_bytecode() {
+    local dest="${1:-}"
+    [[ -n "$dest" && -d "$dest" ]] || return 0
+    find "$dest" -type d -name '__pycache__' -prune -exec rm -rf {} + 2>/dev/null || true
+}
 
-    [[ -d "$tools_src" ]] || return 1
+# Recursive copy of a Python package/tree (merges into dest).
+cinematic_studio_copy_package_tree() {
+    local src="${1:-}"
+    local dest="${2:-}"
 
-    mkdir -p "$dest/cli"
-    shopt -s nullglob
-    for pyfile in "$tools_src"/*.py; do
-        cp "$pyfile" "$dest/"
-    done
-    if [[ -d "$tools_src/cli" ]]; then
-        for pyfile in "$tools_src/cli"/*.py; do
-            cp "$pyfile" "$dest/cli/"
-        done
-    fi
-    shopt -u nullglob
+    [[ -n "$src" && -d "$src" && -n "$dest" ]] || return 1
+    mkdir -p "$dest"
+    cp -r "$src"/. "$dest/"
+    cinematic_studio_strip_bytecode "$dest"
     return 0
 }
 
+cinematic_studio_copy_tools_tree() {
+    local tools_src="$1"
+    local dest="$PROJECT_DIR/tools"
+
+    [[ -d "$tools_src" ]] || return 1
+    # Full tree — includes tools/cli/tui/ (shallow *.py globs dropped that package).
+    cinematic_studio_copy_package_tree "$tools_src" "$dest"
+}
+
+cinematic_studio_copy_studio_core() {
+    local src="${1:-}"
+    [[ -d "$src" ]] || return 1
+    cinematic_studio_copy_package_tree "$src" "$PROJECT_DIR/studio_core"
+}
+
 cinematic_studio_tools_complete() {
-    # Fail closed if Method A PROJECT_DIR is missing Grok Build CLI management
-    # modules (cinematic-studio grok status|ensure|update|install) or Wave A CLI.
+    # Fail closed if Method A PROJECT_DIR cannot import the Python CLI.
+    # Needs Grok Build management modules, Wave A CLI, TUI package, and studio_core.
     [[ -f "$PROJECT_DIR/tools/cinematic_studio_cli.py" \
         && -f "$PROJECT_DIR/tools/models.py" \
         && -f "$PROJECT_DIR/tools/grok_build_cli.py" \
         && -f "$PROJECT_DIR/tools/cli/models_commands.py" \
         && -f "$PROJECT_DIR/tools/cli/grok_cli_commands.py" \
-        && -f "$PROJECT_DIR/tools/cli/wave_a_commands.py" ]]
+        && -f "$PROJECT_DIR/tools/cli/wave_a_commands.py" \
+        && -f "$PROJECT_DIR/tools/cli/tui/__init__.py" \
+        && -f "$PROJECT_DIR/studio_core/services/dashboard.py" ]]
+}
+
+# Same interpreter as scripts/wrappers/cinematic-studio (_python).
+# Override with CINEMATIC_PYTHON for tests / pinned venvs.
+cinematic_studio_resolve_python() {
+    local project="${1:-${PROJECT_DIR:-}}"
+    local repo="${CINEMATIC_REPO_ROOT:-}"
+
+    if [[ -n "${CINEMATIC_PYTHON:-}" ]]; then
+        if [[ -x "${CINEMATIC_PYTHON}" ]] || command -v "${CINEMATIC_PYTHON}" >/dev/null 2>&1; then
+            printf '%s\n' "${CINEMATIC_PYTHON}"
+            return 0
+        fi
+    fi
+    if [[ -n "$project" && -x "$project/.venv/bin/python" ]]; then
+        printf '%s\n' "$project/.venv/bin/python"
+        return 0
+    fi
+    if [[ -n "$repo" && -x "$repo/.venv/bin/python" ]]; then
+        printf '%s\n' "$repo/.venv/bin/python"
+        return 0
+    fi
+    if command -v python3 >/dev/null 2>&1; then
+        command -v python3
+        return 0
+    fi
+    if command -v python >/dev/null 2>&1; then
+        command -v python
+        return 0
+    fi
+    return 1
 }
 
 cinematic_studio_resolve_payload_path() {
@@ -257,6 +302,7 @@ cinematic_studio_fetch_github_main() {
 cinematic_studio_acquire_bundle() {
     local tmp_zip="$1"
     local tmp_extract="$2"
+    local archive_root=""
 
     if cinematic_studio_download_release_zip "$tmp_zip"; then
         cinematic_studio_extract_bundle "$tmp_zip" "$tmp_extract"
@@ -274,8 +320,18 @@ cinematic_studio_acquire_bundle() {
         return 0
     fi
 
+    echo "→ Release zip unavailable; fetching GitHub main archive..." >&2
+    if cinematic_studio_fetch_github_main "$tmp_zip" "$tmp_extract" archive_root \
+        && [[ -n "$archive_root" ]] \
+        && cinematic_studio_bundle_root "$archive_root" >/dev/null; then
+        echo "→ Using GitHub main archive at $archive_root" >&2
+        echo "$archive_root"
+        return 0
+    fi
+
     echo "❌ Failed to download skills bundle from GitHub releases." >&2
     echo "   Expected asset: $CINEMATIC_ZIP_NAME" >&2
+    echo "   Fallback: GitHub main zip also failed (need a local clone)." >&2
     return 1
 }
 
@@ -312,6 +368,11 @@ cinematic_studio_install_tree() {
     if payload="$(cinematic_studio_resolve_payload_path "$root" "tools")"; then
         echo "→ Installing CLI tools to $PROJECT_DIR/tools ..."
         cinematic_studio_copy_tools_tree "$payload"
+    fi
+
+    if payload="$(cinematic_studio_resolve_payload_path "$root" "studio_core")"; then
+        echo "→ Installing studio_core to $PROJECT_DIR/studio_core ..."
+        cinematic_studio_copy_studio_core "$payload"
     fi
 
     if payload="$(cinematic_studio_resolve_payload_path "$root" "config")"; then
@@ -392,6 +453,10 @@ cinematic_studio_reconcile_from_archive() {
             cinematic_studio_copy_tools_tree "$archive_root/tools"
             echo "   ✓ tools/ (GitHub main)"
         fi
+        if [[ -d "$archive_root/studio_core" ]]; then
+            cinematic_studio_copy_studio_core "$archive_root/studio_core"
+            echo "   ✓ studio_core/ (GitHub main)"
+        fi
         if [[ -d "$archive_root/config" ]]; then
             mkdir -p "$PROJECT_DIR/config"
             cp -r "$archive_root/config/"* "$PROJECT_DIR/config/"
@@ -437,8 +502,13 @@ cinematic_studio_reconcile_gaps() {
         still_missing+=("$skill")
     done
 
-    if [[ "$needs_tools" == true && -n "${CINEMATIC_REPO_ROOT:-}" && -d "$CINEMATIC_REPO_ROOT/tools" ]]; then
-        cinematic_studio_copy_tools_tree "$CINEMATIC_REPO_ROOT/tools"
+    if [[ "$needs_tools" == true && -n "${CINEMATIC_REPO_ROOT:-}" ]]; then
+        if [[ -d "$CINEMATIC_REPO_ROOT/tools" ]]; then
+            cinematic_studio_copy_tools_tree "$CINEMATIC_REPO_ROOT/tools"
+        fi
+        if [[ -d "$CINEMATIC_REPO_ROOT/studio_core" ]]; then
+            cinematic_studio_copy_studio_core "$CINEMATIC_REPO_ROOT/studio_core"
+        fi
         if [[ -d "$CINEMATIC_REPO_ROOT/config" ]]; then
             mkdir -p "$PROJECT_DIR/config"
             cp -r "$CINEMATIC_REPO_ROOT/config/"* "$PROJECT_DIR/config/"
@@ -478,19 +548,19 @@ cinematic_studio_apply_release_bundle() {
     local tmp_zip="/tmp/cinematic-studio-v${CINEMATIC_STUDIO_VERSION}-$$.zip"
     local tmp_extract="/tmp/cinematic-extract-$$"
     local staging=""
-    local used_extract=false
 
     staging="$(cinematic_studio_acquire_bundle "$tmp_zip" "$tmp_extract")" || return 1
 
-    if [[ "$staging" == "$tmp_extract" ]]; then
-        used_extract=true
+    local rc=0
+    cinematic_studio_install_tree "$staging" || rc=$?
+
+    # Never delete a local clone; always drop download scratch (incl. main-zip nested root).
+    rm -f "$tmp_zip"
+    if [[ -z "${CINEMATIC_REPO_ROOT:-}" || "$staging" != "$CINEMATIC_REPO_ROOT" ]]; then
+        rm -rf "$tmp_extract"
     fi
 
-    cinematic_studio_install_tree "$staging" || return 1
-
-    if [[ "$used_extract" == true ]]; then
-        rm -rf "$tmp_zip" "$tmp_extract"
-    fi
+    [[ "$rc" -eq 0 ]] || return 1
 
     cinematic_studio_reconcile_gaps
     return 0
@@ -498,8 +568,9 @@ cinematic_studio_apply_release_bundle() {
 
 cinematic_studio_ensure_tools_local() {
     cinematic_studio_tools_complete && return 0
-    [[ -n "${CINEMATIC_REPO_ROOT:-}" && -d "$CINEMATIC_REPO_ROOT/tools" ]] || return 1
-    cinematic_studio_copy_tools_tree "$CINEMATIC_REPO_ROOT/tools"
+    [[ -n "${CINEMATIC_REPO_ROOT:-}" ]] || return 1
+    [[ -d "$CINEMATIC_REPO_ROOT/tools" ]] && cinematic_studio_copy_tools_tree "$CINEMATIC_REPO_ROOT/tools"
+    [[ -d "$CINEMATIC_REPO_ROOT/studio_core" ]] && cinematic_studio_copy_studio_core "$CINEMATIC_REPO_ROOT/studio_core"
     cinematic_studio_tools_complete
 }
 
@@ -573,15 +644,21 @@ cinematic_studio_verify_models() {
         return 0
     fi
 
-    if ! command -v python3 >/dev/null 2>&1; then
+    local py=""
+    if ! py="$(cinematic_studio_resolve_python)"; then
         echo "⚠️  Skipping model check (python3 not found)"
         echo ""
         return 0
     fi
 
-    if python3 "$cli_py" models verify; then
+    if "$py" "$cli_py" models verify; then
         echo ""
         return 0
+    fi
+    echo "   python: $py"
+    if [[ ! -x "${PROJECT_DIR:-}/.venv/bin/python" ]]; then
+        echo "   Hint: create a venv (Kali: uv venv $PROJECT_DIR/.venv && \\"
+        echo "     UV_LINK_MODE=copy uv pip install --python $PROJECT_DIR/.venv/bin/python -r $PROJECT_DIR/requirements.txt)"
     fi
     echo ""
     return 1
@@ -756,19 +833,30 @@ cinematic_studio_print_next_steps() {
     echo "Next steps:"
     echo "1. Refresh the Skills page in Grok"
     echo "2. Start a new chat"
-    echo "3. Type: Activate Grok Imagine Cinematic Studio v${CINEMATIC_STUDIO_VERSION}"
+    echo "3. Type: Activate Grok Imagine Cinematic Studio v${CINEMATIC_STUDIO_VERSION:-$CINEMATIC_STUDIO_FALLBACK_VERSION}"
     if [[ -f "$PROJECT_DIR/tools/cinematic_studio_cli.py" ]]; then
         echo "4. CLI: cinematic-studio models verify"
         echo "   Meta: cinematic-studio verify --plugin | install | update | declutter"
         if [[ -f "$PROJECT_DIR/requirements.txt" ]]; then
-            echo "   Deps (venv recommended on Kali): python3 -m venv $PROJECT_DIR/.venv && \\"
-            echo "     $PROJECT_DIR/.venv/bin/pip install -r $PROJECT_DIR/requirements.txt"
+            if command -v uv >/dev/null 2>&1; then
+                echo "   Deps: uv venv $PROJECT_DIR/.venv && \\"
+                echo "     UV_LINK_MODE=copy uv pip install --python $PROJECT_DIR/.venv/bin/python -r $PROJECT_DIR/requirements.txt"
+            else
+                echo "   Deps: python3 -m venv $PROJECT_DIR/.venv && \\"
+                echo "     $PROJECT_DIR/.venv/bin/pip install -r $PROJECT_DIR/requirements.txt"
+                echo "   Kali without python3-venv: install uv, or apt install python3-venv"
+            fi
             echo "   TUI: cinematic-studio ui  (needs textual from requirements.txt)"
             echo "   Web UI (repo checkout): streamlit run web_ui/app.py"
         fi
     fi
     if [[ -f "$PROJECT_DIR/config/grok-build.example.toml" ]]; then
-        echo "5. Optional Grok Build config: cp $PROJECT_DIR/config/grok-build.example.toml ~/.grok/config.toml"
+        if [[ -f "$HOME/.grok/config.toml" ]]; then
+            echo "5. Config: ~/.grok/config.toml already exists — leave it."
+            echo "   Example: $PROJECT_DIR/config/grok-build.example.toml"
+        else
+            echo "5. Optional Grok Build config: cp $PROJECT_DIR/config/grok-build.example.toml ~/.grok/config.toml"
+        fi
     fi
     echo ""
     echo "Project folder: $PROJECT_DIR"

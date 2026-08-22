@@ -1,6 +1,6 @@
-# Grok Imagine Cinematic Studio v3.8.9 — Installation Guide
+# Grok Imagine Cinematic Studio v3.9.1 — Installation Guide
 
-Two supported install paths. Both can ship the same **62 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
+Two supported install paths. Both can ship the same **64 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
 
 > [!NOTE]
 > **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Installing this suite installs community skills and tooling only — it does not provision xAI models or API access. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
@@ -11,11 +11,11 @@ Two supported install paths. Both can ship the same **62 skills**; choose based 
 |---|-------------------------------------|----------------------------|
 | **Best for** | Grok chat, agent sessions, CLI tools, scripted verify | Grok Build CLI, marketplace updates, slash commands |
 | **Skills location** | `~/.grok/skills/` | `~/.grok/installed-plugins/` (plugin-managed) |
-| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts | Full suite: **62 skills** + 11 slash commands; or modular packs (see matrix) |
+| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/` (incl. `cli/tui`), `studio_core/`, `config/`, scripts | Full suite: **64 skills** + 11 slash commands; or modular packs (see matrix) |
 | **Verify** | `cinematic_studio.sh verify` / `verify --all` | `cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
 | **Update** | `cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` (or reinstall from a local clone — see below) |
 
-You can use **both**, but **do not dual-load the 62 studio skills**:
+You can use **both**, but **do not dual-load the 64 studio skills**:
 
 | Goal | Use |
 |------|-----|
@@ -30,11 +30,11 @@ bash scripts/cinematic_studio.sh declutter --dry-run
 bash scripts/cinematic_studio.sh declutter --apply --keep-backups 1
 ```
 
-That removes Method A copies of the 62 studio skills (plugin keeps them) and prunes old `~/.grok/skills-backup-*` folders. User-global skills (`help`, `create-skill`, `docx`, …) stay in `~/.grok/skills/`.
+That removes Method A copies of the 64 studio skills (plugin keeps them) and prunes old `~/.grok/skills-backup-*` folders. User-global skills (`help`, `create-skill`, `docx`, …) stay in `~/.grok/skills/`.
 
 **Pack overlap (`full_suite_wins`):** if both the **full suite** plugin and one or more **satellite packs** are installed, declutter prefers the full suite and removes satellite skill duplicates (`config/plugin_packs.yaml` → `declutter.policy: full_suite_wins`).
 
-**Skill parity:** `scripts/required_skills.manifest` lists the same **62** skills as `.grok-plugin/plugin.json` / catalog generation.  
+**Skill parity:** `scripts/required_skills.manifest` lists the same **64** skills as `.grok-plugin/plugin.json` / catalog generation.  
 **Taxonomy (browse groups):** `references/SKILLS_TAXONOMY.md` · `cinematic-studio plugin list --grouped` · `cinematic-studio plugin packs`
 
 ### Path overrides (Method A)

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Grok Imagine Cinematic Studio v3.8.9 — meta installer entry point
+# Grok Imagine Cinematic Studio v3.9.1 — meta installer entry point
 # https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio
 #
 # Usage:
@@ -164,14 +164,9 @@ cmd_grok() {
         exit 1
     fi
 
-    if [[ -n "$repo_root" && -x "$repo_root/.venv/bin/python" ]]; then
-        py="$repo_root/.venv/bin/python"
-    elif [[ -n "${PROJECT_DIR:-}" && -x "${PROJECT_DIR}/.venv/bin/python" ]]; then
-        py="${PROJECT_DIR}/.venv/bin/python"
-    elif command -v python3 >/dev/null 2>&1; then
-        py="python3"
-    else
-        py="python"
+    if ! py="$(cinematic_studio_resolve_python)"; then
+        echo "❌ python3 not found (create $PROJECT_DIR/.venv or install Python 3)" >&2
+        exit 1
     fi
 
     exec "$py" "$cli_py" grok "$@"

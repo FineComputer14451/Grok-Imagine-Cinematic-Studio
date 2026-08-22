@@ -33,6 +33,23 @@ from studio_paths import PLUGIN_MARKETPLACE_PATH, STUDIO_ROOT
 # Heuristic: user-skill clutter above this with no studio dupes is still informational.
 _USER_SKILLS_INFO_OK = 15
 
+# Method A core (verify tier) — present in ~/.grok/skills after meta install/update.
+METHOD_A_CORE_SKILLS = (
+    "grok-imagine-cinematic-studio",
+    "ai-video-upscaler",
+    "cinematic-sequence-extender",
+    "studio-director",
+    "quality-assurance-guardian",
+    "identity-lock-specialist",
+    "workflow-quota-optimizer",
+)
+
+
+def method_a_core_installed(home: Path | None = None) -> bool:
+    """True when Method A copied the seven core skills into ~/.grok/skills."""
+    base = (home if home is not None else Path.home()) / ".grok" / "skills"
+    return all((base / slug / "SKILL.md").is_file() for slug in METHOD_A_CORE_SKILLS)
+
 # Catalog errors that are "mid-work pin drift" (WARN) vs hard artifact breakage (FAIL).
 _PIN_DRIFT_MARKERS = (
     "content changed after marketplace pin",
@@ -336,23 +353,57 @@ def check_model_stack() -> list[CheckResult]:
     return results
 
 
-def check_plugin_installed(*, expected_version: str | None) -> list[CheckResult]:
+def check_plugin_installed(
+    *,
+    expected_version: str | None,
+    home: Path | None = None,
+) -> list[CheckResult]:
     section = "5. Cinematic plugin"
+    method_a = method_a_core_installed(home)
+
     if not _which("grok"):
+        if method_a:
+            return [
+                CheckResult(
+                    "PASS",
+                    "plugin installed",
+                    "Method A skills present (plugin optional; grok not on PATH)",
+                    section,
+                )
+            ]
         return [CheckResult("WARN", "plugin", "skipped (no grok)", section)]
 
     try:
         listed = _run(["grok", "plugin", "list"], timeout=30)
     except (OSError, subprocess.TimeoutExpired) as exc:
+        if method_a:
+            return [
+                CheckResult(
+                    "PASS",
+                    "plugin installed",
+                    f"Method A skills present (plugin probe failed: {exc})",
+                    section,
+                )
+            ]
         return [CheckResult("WARN", "plugin installed", f"probe failed: {exc}", section)]
 
     blob = (listed.stdout or "") + (listed.stderr or "")
     if "grok-imagine-cinematic-studio" not in blob.lower():
+        if method_a:
+            return [
+                CheckResult(
+                    "PASS",
+                    "plugin installed",
+                    "Method A skills present (plugin optional)",
+                    section,
+                )
+            ]
         return [
             CheckResult(
                 "FAIL",
                 "plugin installed",
-                "not found — grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust",
+                "not found — grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust "
+                "(or Method A: bash scripts/cinematic_studio.sh install)",
                 section,
             )
         ]
@@ -495,7 +546,9 @@ def check_skills_layout(*, home: Path, repo_root: Path) -> list[CheckResult]:
         )
 
     user_n = len(user_skill_names(home))
-    dupes = user_studio_skill_dupes(home, skills_root if skills_root.is_dir() else None)
+    # None would fall back to the live repo SKILLS_DIR and false-positive "dupes"
+    # on Method A machines whose doctor repo_root is PROJECT_DIR.
+    dupes = user_studio_skill_dupes(home, skills_root) if skills_root.is_dir() else []
     if dupes:
         results.append(
             CheckResult(
@@ -505,6 +558,15 @@ def check_skills_layout(*, home: Path, repo_root: Path) -> list[CheckResult]:
                     f"{user_n} dirs; {len(dupes)} studio skill dupe(s) "
                     f"(run cinematic-studio declutter --apply)"
                 ),
+                section,
+            )
+        )
+    elif method_a_core_installed(home):
+        results.append(
+            CheckResult(
+                "PASS",
+                "user ~/.grok/skills",
+                f"{user_n} dirs (Method A)",
                 section,
             )
         )

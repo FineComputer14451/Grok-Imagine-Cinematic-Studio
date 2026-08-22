@@ -246,3 +246,163 @@ def test_ensure_grok_cli_ok_when_binary_present(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr + result.stdout
     assert "Grok Build CLI OK" in result.stdout
     assert (home / ".local" / "bin" / "grok").is_symlink()
+
+
+def _write(path: Path, text: str = "x\n") -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def test_copy_tools_tree_includes_tui_package(tmp_path: Path) -> None:
+    src = tmp_path / "src_tools"
+    project = tmp_path / "project"
+    _write(src / "cinematic_studio_cli.py")
+    _write(src / "cli" / "tui" / "__init__.py", "run_tui = None\n")
+    _write(src / "cli" / "tui" / "widgets.py")
+
+    env = {**os.environ, "PROJECT_DIR": str(project)}
+    script = textwrap.dedent(
+        f"""\
+        set -euo pipefail
+        source "{COMMON}"
+        PROJECT_DIR="{project}"
+        cinematic_studio_copy_tools_tree "{src}"
+        """
+    )
+    result = _run_bash(script, env)
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert (project / "tools" / "cli" / "tui" / "__init__.py").is_file()
+    assert (project / "tools" / "cli" / "tui" / "widgets.py").is_file()
+    assert (project / "tools" / "cinematic_studio_cli.py").is_file()
+
+
+def test_install_tree_copies_studio_core_and_tui(tmp_path: Path) -> None:
+    bundle = tmp_path / "bundle"
+    project = tmp_path / "project"
+    home = tmp_path / "home"
+    skills_dir = home / ".grok" / "skills"
+
+    _write(bundle / ".grok" / "skills" / "studio-director" / "SKILL.md", "# studio-director\n")
+    for name in (
+        "cinematic_studio_cli.py",
+        "models.py",
+        "grok_build_cli.py",
+    ):
+        _write(bundle / "tools" / name)
+    for name in ("models_commands.py", "grok_cli_commands.py", "wave_a_commands.py"):
+        _write(bundle / "tools" / "cli" / name)
+    _write(bundle / "tools" / "cli" / "tui" / "__init__.py")
+    _write(bundle / "studio_core" / "__init__.py")
+    _write(bundle / "studio_core" / "services" / "dashboard.py", "def build_studio_dashboard():\n    return {}\n")
+    _write(bundle / "VERSION", VERSION + "\n")
+    _write(bundle / "references" / "MODELS.md", "# models\n")
+
+    env = {
+        **os.environ,
+        "HOME": str(home),
+        "PROJECT_DIR": str(project),
+        "CINEMATIC_SKIP_GROK_CLI": "1",
+        "PATH": f"{home / '.grok' / 'bin'}:{home / '.local' / 'bin'}:{os.environ.get('PATH', '')}",
+    }
+    script = textwrap.dedent(
+        f"""\
+        set -euo pipefail
+        source "{COMMON}"
+        source "{WRAPPER_HELPER}"
+        CINEMATIC_SCRIPT_DIR="{ROOT / 'scripts'}"
+        CINEMATIC_REPO_ROOT="{ROOT}"
+        CINEMATIC_STUDIO_VERSION="{VERSION}"
+        PROJECT_DIR="{project}"
+        SKILLS_DIR="{skills_dir}"
+        cinematic_studio_install_tree "{bundle}"
+        cinematic_studio_tools_complete
+        """
+    )
+    result = _run_bash(script, env)
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert (skills_dir / "studio-director" / "SKILL.md").is_file()
+    assert (project / "studio_core" / "services" / "dashboard.py").is_file()
+    assert (project / "tools" / "cli" / "tui" / "__init__.py").is_file()
+    assert (project / "VERSION").read_text(encoding="utf-8").strip() == VERSION
+
+
+def test_tools_complete_fails_without_studio_core(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    for rel in (
+        "tools/cinematic_studio_cli.py",
+        "tools/models.py",
+        "tools/grok_build_cli.py",
+        "tools/cli/models_commands.py",
+        "tools/cli/grok_cli_commands.py",
+        "tools/cli/wave_a_commands.py",
+        "tools/cli/tui/__init__.py",
+    ):
+        _write(project / rel)
+
+    env = {**os.environ, "PROJECT_DIR": str(project)}
+    script = textwrap.dedent(
+        f"""\
+        set -euo pipefail
+        source "{COMMON}"
+        PROJECT_DIR="{project}"
+        cinematic_studio_tools_complete && exit 11
+        mkdir -p "$PROJECT_DIR/studio_core/services"
+        printf 'x\\n' >"$PROJECT_DIR/studio_core/services/dashboard.py"
+        cinematic_studio_tools_complete || exit 12
+        """
+    )
+    result = _run_bash(script, env)
+    assert result.returncode == 0, result.stderr + result.stdout
+
+
+def test_resolve_python_prefers_project_venv(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    venv_py = project / ".venv" / "bin" / "python"
+    _write(venv_py, "#!/usr/bin/env bash\necho venv\n")
+    venv_py.chmod(venv_py.stat().st_mode | stat.S_IXUSR)
+
+    env = {**os.environ, "PROJECT_DIR": str(project)}
+    env.pop("CINEMATIC_PYTHON", None)
+    script = textwrap.dedent(
+        f"""\
+        set -euo pipefail
+        source "{COMMON}"
+        PROJECT_DIR="{project}"
+        unset CINEMATIC_PYTHON || true
+        py="$(cinematic_studio_resolve_python)"
+        [[ "$py" == "{venv_py}" ]]
+        """
+    )
+    result = _run_bash(script, env)
+    assert result.returncode == 0, result.stderr + result.stdout
+
+
+def test_print_next_steps_does_not_clobber_existing_config(tmp_path: Path) -> None:
+    home = tmp_path / "home"
+    project = tmp_path / "project"
+    grok = home / ".grok"
+    grok.mkdir(parents=True)
+    (grok / "config.toml").write_text("keep-me\n", encoding="utf-8")
+    _write(project / "config" / "grok-build.example.toml", "example\n")
+    _write(project / "tools" / "cinematic_studio_cli.py")
+
+    env = {
+        **os.environ,
+        "HOME": str(home),
+        "PROJECT_DIR": str(project),
+    }
+    script = textwrap.dedent(
+        f"""\
+        set -euo pipefail
+        source "{COMMON}"
+        PROJECT_DIR="{project}"
+        HOME="{home}"
+        CINEMATIC_STUDIO_VERSION="{VERSION}"
+        cinematic_studio_print_next_steps
+        """
+    )
+    result = _run_bash(script, env)
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert "already exists" in result.stdout
+    assert "cp " not in result.stdout.split("already exists")[-1]
+    assert (grok / "config.toml").read_text(encoding="utf-8") == "keep-me\n"

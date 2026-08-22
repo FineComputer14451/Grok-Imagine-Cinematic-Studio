@@ -136,7 +136,7 @@ def _run_model_stack(_ctx: DoctorContext) -> list[CheckResult]:
 
 def _run_plugin(ctx: DoctorContext) -> list[CheckResult]:
     expected = ctx.repo_version if ctx.repo_version != "?" else None
-    return check_plugin_installed(expected_version=expected)
+    return check_plugin_installed(expected_version=expected, home=ctx.home)
 
 
 def _run_catalog(ctx: DoctorContext) -> list[CheckResult]:
