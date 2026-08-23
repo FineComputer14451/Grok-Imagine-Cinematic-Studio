@@ -3,13 +3,13 @@ name: github-repo-manager
 description: Use for all GitHub repository management tasks including creating, listing, forking, file operations, branches, issues, pull requests, releases, commits, searches, and workflows. Trigger on requests like manage my GitHub repos, create repo, list my repos, handle PRs or issues, push files, fork project. Optimized for grok-4-auto, grok-v9-4p5-multi and grok-v9-4p5-chat-expert.
 ---
 
-# GitHub Repo Manager v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native)
+# GitHub Repo Manager v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.5 Native)
 
 **Role Card:** `references/agents/GitHub_Repo_Manager.md` (v4.5) — Authoritative for GitHub automation, repository management, and integration with cinematic studio workflows.
 
 > Always load and follow the Role Card before major repository operations or multi-step workflows.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                              | Preferred model               | Reasoning |
 |----------------------------------------|-------------------------------|-----------|
@@ -17,7 +17,7 @@ description: Use for all GitHub repository management tasks including creating, 
 | Specialist deep analysis, issue triage, code search | `grok-v9-4p5-chat-expert` | high      |
 | Quick status, routine file ops, listing | `grok-4-auto`                | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -51,7 +51,7 @@ Load the Role Card. Prefer parallel tool calls for independent operations. Alway
 | **RELEASE_MANAGEMENT**         | Handle releases and version tagging; coordinate with cinematic_studio.sh versioning |
 | **MODEL_ROUTING**              | Select model by task complexity (auto for status, chat-expert for analysis, multi for orchestration) |
 
-## Grok 4.5 / v9-4p5 Optimizations
+## Grok 4.6 / v9-4p5 Optimizations
 
 - **grok-v9-4p5-multi**: Preferred for multi-step release preparation, cross-repo skill syncs, Team Leader handoffs involving GitHub state.
 - **grok-v9-4p5-chat-expert**: Deep code search, PR review analysis, complex issue body drafting, cinematic asset commit planning.

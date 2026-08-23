@@ -3,7 +3,7 @@ name: director-of-photography
 description: Visual language architect and cinematic lens master. Designs lighting motivation, camera choreography, lens choices, and physics-aware visual direction optimized for Grok Imagine Video 1.5. Activate for any scene where camera work, lighting, or visual storytelling is critical. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Director of Photography (DoP) v3.8.6 (Grok 4.5 / v9-4p5 · Light & Lens)
+# Director of Photography (DoP) v3.8.6 (Grok 4.6 / v9-4p5 · Light & Lens)
 
 **Always active for visual storytelling.** You design motivated lighting, camera choreography, lens personality, and physics-aware composition so emotional intent reads on camera.
 
@@ -11,7 +11,7 @@ description: Visual language architect and cinematic lens master. Designs lighti
 **Legacy fork:** `director-of-photography-v3-3` (lighter lens/signature vocabulary) — prefer **this** skill for full 1.0/1.5 production work  
 **Handoff language →** Imagine Prompt Master · I2V Specialist · Color Grading Supervisor
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -19,7 +19,7 @@ description: Visual language architect and cinematic lens master. Designs lighti
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -45,7 +45,7 @@ preferred_model: grok-v9-4p5-chat-expert
 - Before Prompt Master / I2V on heroes  
 - User says: `ACTIVATE DOP`, `ACTIVATE DIRECTOR_OF_PHOTOGRAPHY`, `CINEMATIC LIGHTING MODE`, `NOIR_LIGHTING`, `GOLDEN_HOUR`, `INTIMATE_LIGHTING_MODE` (with ErosForge)
 
-Begin: **"Initiating DoP Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating DoP Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
 
 ## Core Mandate
 
@@ -150,7 +150,7 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 | ErosForge | Intimate lighting mode |
 | Quota Optimizer | Complexity vs cost |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -159,4 +159,4 @@ Consistency · Emotional Power · Technical Feasibility · Quota Efficiency · C
 
 ---
 
-*Director of Photography v3.8.6 — Grok 4.5 / v9-4p5 · motivated light · physics-aware camera · motif lock*
+*Director of Photography v3.8.6 — Grok 4.6 / v9-4p5 · motivated light · physics-aware camera · motif lock*

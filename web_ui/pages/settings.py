@@ -1,4 +1,4 @@
-"""Production defaults, Grok 4.5 Model Layer, and API configuration."""
+"""Production defaults, Grok 4.6 Model Layer, and API configuration."""
 
 from __future__ import annotations
 
@@ -10,11 +10,11 @@ from lib import session as sess
 
 def render() -> None:
     st.header("⚙️ Settings")
-    st.caption("Session defaults for Production, Quota, and Imagine. Orchestration defaults to **Grok 4.5**.")
+    st.caption("Session defaults for Production, Quota, and Imagine. Orchestration defaults to **Grok 4.6**.")
 
     opts = sess.PRODUCTION_OPTIONS
 
-    st.subheader("Model Layer (Grok 4.5 · studio v3.7.1)")
+    st.subheader("Model Layer (Grok 4.6 · studio v3.11.0)")
     st.markdown(rt.stack_banner_markdown())
 
     if rt.MODELS_AVAILABLE:
@@ -26,7 +26,7 @@ def render() -> None:
             chat_models,
             index=sess.select_index(chat_models, st.session_state.chat_model),
             format_func=rt.format_chat_model_label,
-            help="Default: grok-4.5 (cinematic + Build). Use grok-4.3 only for 1M-context Bibles.",
+            help="Default: grok-4.6 (cinematic + Build). Use grok-4.3 only for 1M-context Bibles. grok-4.5 aliases wrap 4.6.",
         )
         st.session_state.image_model = st.selectbox(
             "Imagine Image model",
@@ -43,7 +43,7 @@ def render() -> None:
             help="Cost default is 1.0 (grok-imagine-video). Use 1.5 when native audio is required. Edit/extend is 1.0 only.",
         )
         st.session_state.reasoning_level = st.select_slider(
-            "Preferred reasoning (Grok 4.5)",
+            "Preferred reasoning (Grok 4.6)",
             options=opts["reasoning_levels"],
             value=st.session_state.get("reasoning_level", "high"),
             help="High for Bibles, QA, Identity Lock, Sequence Director. Medium for routine prompts.",

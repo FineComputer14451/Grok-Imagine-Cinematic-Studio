@@ -1,4 +1,4 @@
-"""Shared CLI constants and helpers (Grok 4.5 · studio version from VERSION)."""
+"""Shared CLI constants and helpers (Grok 4.6 · studio version from VERSION)."""
 
 from __future__ import annotations
 
@@ -15,8 +15,8 @@ from studio_paths import AGENTS_DIR, STUDIO_ROOT
 def _read_studio_version() -> str:
     vf = STUDIO_ROOT / "VERSION"
     if vf.is_file():
-        return vf.read_text(encoding="utf-8").strip() or "3.9.0"
-    return "3.9.0"
+        return vf.read_text(encoding="utf-8").strip() or "3.11.0"
+    return "3.11.0"
 
 
 STUDIO_VERSION = _read_studio_version()
@@ -46,6 +46,7 @@ CORE_AGENT_CATEGORIES = frozenset({
     "Post-Production & Delivery",
 })
 
+# Display labels keep heritage Role Card stamps (v3.6.5 / v4.5). Studio pin is VERSION (v3.11.0).
 AGENTS = {
     "Core Leadership": [
         "Studio Director v3.6.5",
@@ -116,6 +117,11 @@ AGENTS = {
         "NSFW Quota Orchestrator v1.0",
         "NSFW Sequence Extender v1.0",
     ],
+    "Meta & Tools": [
+        "GitHub Repo Manager v4.5",
+        "Quota Dashboard v4.5",
+        "Extend Frame to Video v4.5",
+    ],
 }
 
 AGENT_ROLE_CARDS: dict[str, str] = {
@@ -163,6 +169,9 @@ AGENT_ROLE_CARDS: dict[str, str] = {
     "Parallel Brief Dispatcher v4.5": "Parallel_Brief_Dispatcher.md",
     "Grok Doctor v4.5": "Grok_Doctor.md",
     "Multi-Clip Continuity Orchestrator v4.5": "Multi_Clip_Continuity_Orchestrator.md",
+    "GitHub Repo Manager v4.5": "GitHub_Repo_Manager.md",
+    "Quota Dashboard v4.5": "Quota_Dashboard.md",
+    "Extend Frame to Video v4.5": "Extend_Frame_to_Video.md",
 }
 
 ROLE_CARD_INDEX_FILE = "AGENT_INDEX.md"
@@ -179,6 +188,11 @@ ROLE_CARD_SHARED_DOCS = frozenset({
     "IDENTITY_CONTINUITY_PROTOCOL_v3.8.md",
     "Parallel_Brief_Protocol.md",
 })
+# Skill SKILL.md filename aliases → canonical _v3.5 stems. Not mapped agents.
+ROLE_CARD_ALIAS_FILES = frozenset({
+    "Character_DNA_Extractor.md",
+    "Quality_Assurance_Guardian.md",
+})
 EXPECTED_ROLE_CARD_COUNT = len(AGENT_ROLE_CARDS)
 
 
@@ -192,12 +206,11 @@ def total_agent_count() -> int:
 
 
 def list_role_card_files() -> list[Path]:
-    """Return sorted Role Card paths (excludes index + shared model docs)."""
+    """Return sorted Role Card paths (excludes index, shared docs, filename aliases)."""
     if not AGENTS_DIR.exists():
         return []
-    return sorted(
-        p for p in AGENTS_DIR.glob("*.md") if p.name not in ROLE_CARD_SHARED_DOCS
-    )
+    skip = ROLE_CARD_SHARED_DOCS | ROLE_CARD_ALIAS_FILES
+    return sorted(p for p in AGENTS_DIR.glob("*.md") if p.name not in skip)
 
 
 def get_role_card_path(agent_name: str) -> Path | None:
@@ -221,7 +234,7 @@ def get_role_card_path(agent_name: str) -> Path | None:
 
 
 def format_stack_panel(stack: dict[str, Any] | None = None) -> Panel:
-    """Rich panel for the Grok 4.5 model stack (status / activate / stack cmd)."""
+    """Rich panel for the Grok 4.6 model stack (status / activate / stack cmd)."""
     try:
         from models import (
             RECOMMENDED_GROK_BUILD_CLI_VERSION,
@@ -237,12 +250,12 @@ def format_stack_panel(stack: dict[str, Any] | None = None) -> Panel:
 
     s = stack or model_stack_summary()
     body = (
-        f"[bold cyan]Grok 4.5[/bold cyan] cinematic+Build · studio [bold]v{STUDIO_VERSION}[/bold]\n\n"
-        f"  Grok Build CLI: [green]{s.get('grok_build_cli_default', 'grok-4.5')}[/green] "
+        f"[bold cyan]Grok 4.6[/bold cyan] cinematic+Build · studio [bold]v{STUDIO_VERSION}[/bold]\n\n"
+        f"  Grok Build CLI: [green]{s.get('grok_build_cli_default', 'grok-4.6')}[/green] "
         f"(+ fork {s.get('grok_build_cli_fork', 'grok-build')}, "
         f"≥ {s.get('grok_build_cli_min_version', RECOMMENDED_GROK_BUILD_CLI_VERSION)})\n"
-        f"  xAI Chat: [green]{s.get('xai_chat', 'grok-4.5')}[/green] "
-        f"| Build API: [green]{s.get('xai_build', 'grok-4.5')}[/green]\n"
+        f"  xAI Chat: [green]{s.get('xai_chat', 'grok-4.6')}[/green] "
+        f"| Build API: [green]{s.get('xai_build', 'grok-4.6')}[/green]\n"
         f"  Imagine Video: [green]{s.get('imagine_video', 'grok-imagine-video')}[/green] "
         f"| Image: {s.get('imagine_image', 'grok-imagine-image')}\n\n"
         f"[dim]1M opt-in: --chat-model grok-4.3 · "
@@ -252,7 +265,7 @@ def format_stack_panel(stack: dict[str, Any] | None = None) -> Panel:
     )
     return Panel.fit(
         body,
-        title=f"Model Layer (Grok 4.5 · studio v{STUDIO_VERSION})",
+        title=f"Model Layer (Grok 4.6 · studio v{STUDIO_VERSION})",
         border_style="cyan",
     )
 
@@ -269,15 +282,15 @@ def format_stack_table(stack: dict[str, Any] | None = None) -> Table:
         return t
 
     s = stack or model_stack_summary()
-    table = Table(title=f"Model Stack · Grok 4.5 · v{STUDIO_VERSION}", show_header=True)
+    table = Table(title=f"Model Stack · Grok 4.6 · v{STUDIO_VERSION}", show_header=True)
     table.add_column("Layer", style="cyan")
     table.add_column("Slug", style="green")
     rows = [
-        ("Orchestration (default)", s.get("xai_chat", "grok-4.5")),
-        ("Build / coding API", s.get("xai_build", "grok-4.5")),
-        ("Grok Build CLI", s.get("grok_build_cli_default", "grok-4.5")),
+        ("Orchestration (default)", s.get("xai_chat", "grok-4.6")),
+        ("Build / coding API", s.get("xai_build", "grok-4.6")),
+        ("Grok Build CLI", s.get("grok_build_cli_default", "grok-4.6")),
         ("CLI fork", s.get("grok_build_cli_fork", "grok-build")),
-        ("CLI min version", s.get("grok_build_cli_min_version", "0.2.93")),
+        ("CLI min version", s.get("grok_build_cli_min_version", "1.0.5")),
         ("Imagine Video", s.get("imagine_video", "grok-imagine-video")),
         ("Imagine Image", s.get("imagine_image", "grok-imagine-image")),
     ]

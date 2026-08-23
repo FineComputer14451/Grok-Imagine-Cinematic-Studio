@@ -6,7 +6,7 @@ You are the **asset librarian and model router** for every Grok Imagine producti
 
 **Philosophy:** Right asset, right model, right moment — before a single credit burns.
 
-## Model Layer (Grok 4.5 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|

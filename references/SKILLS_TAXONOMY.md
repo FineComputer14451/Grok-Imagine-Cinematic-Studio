@@ -1,8 +1,8 @@
-# Skills & Plugin Taxonomy — v3.10.0
+# Skills & Plugin Taxonomy — v3.11.0
 
 Canonical **install layout** stays flat: `.grok/skills/<name>/SKILL.md` (required by Grok plugin format). This file is the **mental model** for browsing, declutter, and docs — not a second on-disk hierarchy.
 
-## Canonical suite headcounts (v3.10.0)
+## Canonical suite headcounts (v3.11.0)
 
 Single source of truth for marketing and verify gates:
 
@@ -10,8 +10,8 @@ Single source of truth for marketing and verify gates:
 |--------|------:|--------|
 | **Skills (full suite)** | **64** | `.grok/skills/*/SKILL.md` ≡ `scripts/required_skills.manifest` ≡ `.grok-plugin/plugin.json` |
 | **Slash commands** | **11** | `commands/` ≡ `plugin.json` `commands` |
-| **Role-Card core agents** | **25** | `AGENTS.md` core table · `tools/cli/shared.py` `core_agent_count()` |
-| **Role cards (mapped)** | **44** | `AGENT_ROLE_CARDS` (core + pipeline + Wave A + i2i + NSFW) |
+| **Role-Card core agents** | **25** | `AGENTS.md` core table ≡ `tools/cli/shared.py` `CORE_AGENT_CATEGORIES` / `core_agent_count()` (Character DNA Extractor in; ErosForge opt-in, not core) |
+| **Role cards (mapped)** | **47** | `AGENT_ROLE_CARDS` (core + pipeline + Wave A + i2i + NSFW + meta/tools) |
 | **Marketplace plugins** | **6** | full suite + 5 packs (`config/plugin_packs.yaml`) |
 | **Pack sizes** | 23 · 11 · 19 · 4 · 7 | core · camera-image · sequence-narrative · nsfw · delivery-post (exclusive; union = 64) |
 

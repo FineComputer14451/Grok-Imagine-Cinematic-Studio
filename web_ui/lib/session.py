@@ -47,7 +47,7 @@ SESSION_DEFAULTS: dict[str, Any] = {
     "imagine_region": "us-east-1",
     "nsfw_opt_in": False,
     "xai_api_key": "",
-    # Grok 4.5 operating preferences
+    # Grok 4.6 operating preferences
     "reasoning_level": "high",
     "prompt_cache_key": "",
     # Dashboard density (TUI Home 1/2/3 parity)

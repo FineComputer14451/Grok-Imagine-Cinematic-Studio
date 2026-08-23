@@ -54,4 +54,4 @@ Always produce a structured Studio Health Report with:
 
 ## Integration
 
-Coordinates with Multi-Clip Continuity Orchestrator, Quality Assurance Guardian, Continuity Guardian, Sonic Architect, NSFW Prompt Optimizer, and Studio Director.
+Coordinates with Multi-Clip Continuity Orchestrator, Quality Assurance Guardian, Continuity Guardian, Sonic Architect, ErosForge (Explicit path), and Studio Director. NSFW densification is a Parallel Brief *pattern* (`Parallel_Brief_Protocol.md`), not a Role Card.

@@ -4,6 +4,31 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.11.0] - 2026-08-23
+
+### Changed
+- **Stack lock** — registry cinematic / Build / CLI agent default is **`grok-4.6`**. `grok-4.5` and `cinematic` / `build` / `coding` aliases resolve to 4.6. Specialist v9-4p5 / `grok-4-auto` still wrap the stack default. Optional 1M remains `grok-4.3`.
+- **Grok Build CLI min** — **1.0.5** (`RECOMMENDED_GROK_BUILD_CLI_VERSION`, installer `CINEMATIC_MIN_GROK_CLI_DEFAULT`, doctor probe)
+- **Doctor config** — `models.default` PASSes `grok-4.6` and aliases; `fork_secondary_model` PASSes `grok-build` or `grok-4.6`
+- **Studio version** — `VERSION` / `STUDIO_COMPATIBILITY_VERSION` / handoff `PROTOCOL_OK` include **3.11.0**; activation `Activate Grok Imagine Cinematic Studio v3.11.0`
+- **Operator surfaces** — CLI / TUI / Streamlit / NiceGUI / React / FastAPI banners and pickers lock Grok 4.6; plugin catalog + pack manifests regenerated for **3.11.0**
+- **Skill stack defaults** — SKILL.md Model Layer pins and Wave A Role Card stack lines now say **`grok-4.6`** / CLI ≥ **1.0.5** (YAML titles not mass-rewritten; `grok-4.5` remains an alias)
+- **Role Card stack tables** — leftover v3.7.1 orchestration rows (`grok-4.5`) on live cards now pin **`grok-4.6`** and point at `MODEL_LAYER_v4.5.md` (archive `MODEL_LAYER_v3.7.1.md` unchanged)
+- **Model Layer headings** — live SKILL.md / Role Card sections now read **Model Layer (Grok 4.6 / v9-4p5)**; specialist v9-4p5 routing unchanged
+- **Skill H1 / YAML / initiation phrases** — live display language is **Grok 4.6** (`grok-4.5` slug remains an alias); plugin catalog regenerated after YAML description edits
+
+### Fixed
+- **25-core identity** — published lists (`AGENTS.md`, `MASTER_PROMPT.md`, operator cheat sheet) now match `CORE_AGENT_CATEGORIES`: Character DNA Extractor is in the 25; ErosForge NSFW Director stays opt-in
+- **Studio pin stamps** — `AGENT_INDEX.md` header + Full Studio preset, Wave A Role Card Studio lines, and `scripts/required_skills.manifest` header now say **v3.11.0**
+- **Image 2.0 on stills Role Cards** — DNA, Identity Lock, Prompt Master, Key Art, both I2I, and Production Designer now route hero plates to `grok-imagine-image-2.0` and state there is no Video 2.0
+- **Role Card `preferred_model` YAML** — nine table-only cards (I2I both, Localization, Narrative, Color, Production Designer, SFW Batch, Stunt, VFX) now declare `model_compatibility` + `preferred_model` (Localization `grok-4-auto`, SFW Batch `grok-v9-4p5-multi`, rest chat-expert)
+- **Canonical Role Cards for meta/tools** — GitHub Repo Manager, Quota Dashboard, and Extend Frame to Video live in `references/agents/` (mapped 47); DNA/QA `_v3.5` filename aliases so skill pointers resolve
+- **Narrative Arc activation** — primary command is `ACTIVATE NARRATIVE_ARC` (Role Card, skill, index, cheat sheet); `ACTIVATE NARRATIVE_STRATEGIST` kept as alias
+- **Grok Doctor Explicit path** — NSFW Prompt Optimizer is documented as a Parallel Brief pattern, not a Role Card; report + handoff sections added
+- **Role Card template v4.5** — `skill-agent-architect` scaffold pins studio v3.11.0 and `MODEL_LAYER_v4.5.md`
+- **Skill `model_compatibility`** — `grok-imagine-image-tools` and `xai-grok-skill` declare the YAML block
+- **AGENT_INDEX buckets** — Costume in Production Pipeline; Plate + Contact in Wave A (match CLI); DoP v3.3 noted as legacy skill only
+
 ## [3.10.0] - 2026-08-22
 
 ### Added

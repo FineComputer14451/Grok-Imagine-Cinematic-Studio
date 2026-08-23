@@ -68,7 +68,7 @@ def test_bible_happy_argv() -> None:
     answers = {
         "title": "Neon Echo",
         "genre": "Sci-Fi",
-        "chat_model": "grok-4.5",
+        "chat_model": "grok-4.6",
         "video_model": "grok-imagine-video",
         "output": "production_bible.json",
     }
@@ -80,7 +80,7 @@ def test_bible_happy_argv() -> None:
         "--genre",
         "Sci-Fi",
         "--chat-model",
-        "grok-4.5",
+        "grok-4.6",
         "--video-model",
         "grok-imagine-video",
         "-o",
@@ -203,7 +203,7 @@ def test_no_forbidden_tokens_in_any_happy_path() -> None:
         "bible_create": {
             "title": "T",
             "genre": "Cinematic",
-            "chat_model": "grok-4.5",
+            "chat_model": "grok-4.6",
             "video_model": "grok-imagine-video",
             "output": "production_bible.json",
         },
@@ -253,7 +253,7 @@ def test_summarize_includes_label_and_argv() -> None:
         {
             "title": "Neon",
             "genre": "Cinematic",
-            "chat_model": "grok-4.5",
+            "chat_model": "grok-4.6",
             "video_model": "grok-imagine-video",
             "output": "production_bible.json",
         },

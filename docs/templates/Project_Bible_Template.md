@@ -6,9 +6,9 @@
 **Status:** [Pre-Production / Production / Post]
 
 **Model Stack (locked — dual):**
-- Grok Build CLI: `grok-4.5` (fork: `grok-build`; min CLI **0.2.93**)
-- xAI Chat (cinematic): `grok-4.5` (default); `grok-4.3` opt-in for 1M context
-- xAI Build / coding: `grok-4.5` (legacy: `grok-build-0.1`)
+- Grok Build CLI: `grok-4.6` (fork: `grok-build` or `grok-4.6`; min CLI **1.0.5**)
+- xAI Chat (cinematic): `grok-4.6` (default); `grok-4.5` aliases wrap 4.6; `grok-4.3` opt-in for 1M context
+- xAI Build / coding: `grok-4.6` (legacy: `grok-build-0.1`)
 - Imagine Video: `grok-imagine-video` (1.0 default; use `grok-imagine-video-1.5` for native audio)
 - Imagine Image: `grok-imagine-image`
 

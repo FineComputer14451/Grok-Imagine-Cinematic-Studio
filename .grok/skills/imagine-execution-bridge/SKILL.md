@@ -3,7 +3,7 @@ name: imagine-execution-bridge
 description: Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinematic Studio. Emits copy-paste VIDEO_PIPELINE_SPEC reference hints and native audio Sound Layer blocks when API generation is unavailable. Activate with ACTIVATE IMAGINE_BRIDGE or when user needs grok.com/imagine copy-paste packets. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Imagine Execution Bridge v3.8.6 (Grok 4.5 / v9-4p5 · Web Handoff)
+# Imagine Execution Bridge v3.8.6 (Grok 4.6 / v9-4p5 · Web Handoff)
 
 **Web UI subset** of Imagine execution (surface `grok_com_imagine`). Emits copy-paste-ready packets for [grok.com/imagine](https://grok.com/imagine) when API or in-session tools are unavailable.
 
@@ -11,7 +11,7 @@ description: Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinem
 **Canonical:** `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`  
 **CLI:** `imagine bridge` · `imagine agent-handoff` · `imagine verify`
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -19,7 +19,7 @@ description: Grok chat to grok.com/imagine handoff bridge for Grok Imagine Cinem
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -51,7 +51,7 @@ Prefer full protocol when not web-only:
 ACTIVATE IMAGINE_AGENT_MODE_HANDOFF
 ```
 
-Begin: **"Preparing Imagine Bridge packet v3.8.6 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Preparing Imagine Bridge packet v3.8.6 (Grok 4.6 / v9-4p5)…"**
 
 ## Activation Stack
 
@@ -138,7 +138,7 @@ Next: user generate → sfw record → QA
 | Handoff Packet Validator | JSON gate when exporting structured packets |
 | Workflow Quota Optimizer | Cost note in packet |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -148,4 +148,4 @@ Next: user generate → sfw record → QA
 
 ---
 
-*Imagine Execution Bridge v3.8.6 — Grok 4.5 / v9-4p5 · grok.com/imagine subset · registry-locked specs*
+*Imagine Execution Bridge v3.8.6 — Grok 4.6 / v9-4p5 · grok.com/imagine subset · registry-locked specs*

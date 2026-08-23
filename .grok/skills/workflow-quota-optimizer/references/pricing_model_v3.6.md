@@ -1,4 +1,4 @@
-# Pricing Model v3.7.1 — xAI Imagine & Grok Build (Grok 4.5)
+# Pricing Model v3.7.1 — xAI Imagine & Grok Build (Grok 4.6)
 
 Official xAI per-second/per-image pricing for quota planning. Skill: `workflow-quota-optimizer`.  
 Canonical registry: `tools/models.py` and `references/MODELS_v3.6.md`.
@@ -46,7 +46,7 @@ Quota dashboard uses abstract credits for subscription tier compatibility:
 
 ---
 
-## xAI Chat Models (Agent Orchestration — Grok 4.5 default)
+## xAI Chat Models (Agent Orchestration — Grok 4.6 default)
 
 | Model | Input / 1M | Output / 1M | Context | Role |
 |-------|------------|-------------|---------|------|
@@ -60,7 +60,7 @@ Quota dashboard uses abstract credits for subscription tier compatibility:
 
 | Model | Role |
 |-------|------|
-| `grok-4.5` | Default agent + cinematic (recommend CLI ≥ 0.2.93) |
+| `grok-4.6` | Default agent + cinematic (recommend CLI ≥ 1.0.5); `grok-4.5` aliases wrap 4.6 |
 | `grok-build` | Fork secondary (coding) |
 | `grok-composer-2.5-fast` | Creative / multi-agent direction |
 | `grok-4.3` | Optional 1M sessions inside Build |

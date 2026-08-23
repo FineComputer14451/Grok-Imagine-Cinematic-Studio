@@ -1,8 +1,8 @@
 ## 🎬 Grok Imagine Cinematic Studio
 
-> **v3.10.0** — Official Imagine Image 2.0 + Video 1.0/1.5 surface map, Grok 4.5 Build + optional Grok 4.3 1M dual-stack
+> **v3.11.0** — Grok 4.6 cinematic+Build stack lock, Grok Build ≥ 1.0.5, Imagine Image 2.0 + Video 1.0/1.5 (`grok-4.5` aliases wrap 4.6)
 
-**Requires Grok Build ≥ 0.2.93** | **Native Imagine Video 1.5 support with synchronized audio**
+**Requires Grok Build ≥ 1.0.5** | **Grok 4.6 cinematic+Build default** | **Native Imagine Video 1.5 support with synchronized audio**
 
 <p align="center">
   <img src="assets/banner.jpg" alt="Grok Imagine Cinematic Studio - Premium Cinematic Banner" width="100%" style="max-width: 1200px; border-radius: 12px;">
@@ -15,8 +15,8 @@
 
 <p align="center">
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/version-3.10.0-success.svg" alt="v3.10.0">
-  <img src="https://img.shields.io/badge/Grok%20Build-%E2%89%A5%200.2.93-orange.svg" alt="Grok Build ≥ 0.2.93">
+  <img src="https://img.shields.io/badge/version-3.11.0-success.svg" alt="v3.11.0">
+  <img src="https://img.shields.io/badge/Grok%20Build-%E2%89%A5%201.0.5-orange.svg" alt="Grok Build ≥ 1.0.5">
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/stargazers"><img src="https://img.shields.io/github/stars/FineComputer14451/Grok-Imagine-Cinematic-Studio?style=social" alt="GitHub Stars"></a>
 </p>
 
@@ -27,7 +27,7 @@
 
 ## ✨ What is Grok Imagine Cinematic Studio?
 
-**Grok Imagine Cinematic Studio** is a complete, production-grade multi-agent framework that turns creative ideas into locked, emotionally resonant cinematic sequences using Grok 4.5 (primary) + Grok 4.3 (1M context) dual-stack orchestration and xAI’s Imagine models (Image + native Video 1.5 with audio).
+**Grok Imagine Cinematic Studio** is a complete, production-grade multi-agent framework that turns creative ideas into locked, emotionally resonant cinematic sequences using Grok 4.6 (primary; `grok-4.5` aliases wrap 4.6) + Grok 4.3 (1M context) dual-stack orchestration and xAI’s Imagine models (Image + native Video 1.5 with audio).
 
 It combines:
 
@@ -41,6 +41,13 @@ It combines:
 Whether you’re crafting Marvel-style hero reveals, cyberpunk neon sequences, intimate character studies, or epic trailers — the studio gives you director-level control, specialist collaboration, strict QA gates, and quota intelligence in one cohesive system.
 
 ---
+
+## 🚀 What’s New in v3.11.0
+
+- **Grok 4.6 stack lock** — cinematic / Build / CLI agent default is `grok-4.6`. `grok-4.5` and `cinematic` / `build` / `coding` aliases wrap 4.6.
+- **Grok Build CLI ≥ 1.0.5** — installer, doctor, and `models verify` treat 1.0.5 as the minimum binary.
+- **Doctor-friendly host configs** — `models.default = grok-4.6` PASSes; `fork_secondary_model` PASSes `grok-build` or `grok-4.6`.
+- **Activation** — `Activate Grok Imagine Cinematic Studio v3.11.0`
 
 ## 🚀 What’s New in v3.10.0
 
@@ -66,19 +73,19 @@ See full details in [CHANGELOG.md](CHANGELOG.md) and [docs/releases/RELEASE_NOTE
 
 ---
 
-## 🏗️ System Architecture (v3.10.0)
+## 🏗️ System Architecture (v3.11.0)
 
 **Core Philosophy**: A modular "studio" of specialized agents that collaborate under the **Studio Director**, with strong handoff protocols, identity locking, readiness gates, and production discipline. The system bridges high-level creative direction (Grok chat/Build) with low-level execution (Imagine Image/Video 1.5) while maintaining full traceability and quota awareness.
 
-### Updated Architecture Diagrams (v3.10.0)
+### Updated Architecture Diagrams (v3.11.0)
 
-These **Mermaid diagrams** are the current, live representation of the system. They reflect the plugin pack architecture, Imagine Agent Mode Handoff, Identity Continuity Protocol, color-grade → polish pipeline, official Imagine Image 2.0 + Video 1.0/1.5 surfaces, and all readiness gates introduced through v3.10.0.
+These **Mermaid diagrams** are the current, live representation of the system. They reflect the plugin pack architecture, Imagine Agent Mode Handoff, Identity Continuity Protocol, color-grade → polish pipeline, official Imagine Image 2.0 + Video 1.0/1.5 surfaces, and all readiness gates introduced through v3.11.0.
 
 ```mermaid
 flowchart TB
     subgraph UserLayer["👤 User Layer"]
         GrokChat["Grok Chat / Build CLI"]
-        Activate["Activate Studio v3.10.0<br/>or 'start cinematic production'"]
+        Activate["Activate Studio v3.11.0<br/>or 'start cinematic production'"]
     end
 
     subgraph Orchestration["🎬 Orchestration Layer"]
@@ -101,7 +108,7 @@ flowchart TB
         OTHER["Stunt, Performance, Key Art,<br/>Trailer, Production Design..."]
     end
 
-    subgraph Core["⚙️ Core Systems & Protocols (v3.10.0)"]
+    subgraph Core["⚙️ Core Systems & Protocols (v3.11.0)"]
         PB["Production Bible + Guided Wizard<br/>(CLI + Streamlit Web UI)"]
         DNA["Character DNA Pipeline<br/>Extract → Lock → Inject"]
         HANDOFF["Imagine Agent Mode Handoff<br/>+ Packet Validators"]
@@ -154,11 +161,11 @@ flowchart TB
     class HANDOFF,READINESS,PLUGIN accent
 ```
 
-**Orchestration & Production Flow (v3.10.0)**
+**Orchestration & Production Flow (v3.11.0)**
 
 ```mermaid
 flowchart TD
-    Start["Start New Project<br/>(Activate Studio v3.10.0)"] --> Bible["Build & Lock<br/>Production Bible<br/>(VIDEO_PIPELINE_SPEC 1.5)"]
+    Start["Start New Project<br/>(Activate Studio v3.11.0)"] --> Bible["Build & Lock<br/>Production Bible<br/>(VIDEO_PIPELINE_SPEC 1.5)"]
     Bible --> DNA["Character DNA<br/>Extract → Lock → Inject<br/>(Identity Continuity Protocol)"]
     DNA --> PreProd["Pre-Production<br/>Concepts, Mood Boards, DoP Language"]
     PreProd --> Principal["Principal Photography<br/>Sequence Director + Specialists<br/>(Stunts / VFX / Sound / NSFW)"]
@@ -204,15 +211,15 @@ Vector (SVG) and raster (PNG) exports of the same live architecture — dual-sta
 
 </details>
 
-**Updated ASCII Overview (v3.10.0)**
+**Updated ASCII Overview (v3.11.0)**
 
 ``` 
-Grok Imagine Cinematic Studio v3.10.0  (Studio Director + 25+ Agents · Grok 4.5 primary)
+Grok Imagine Cinematic Studio v3.11.0  (Studio Director + 25+ Agents · Grok 4.6 primary)
 ├── .grok-plugin/                 # Marketplace manifests + plugin packs (full suite + 5 satellites)
 ├── references/agents/            # 25+ Role Cards, AGENT_INDEX, MODEL_LAYER, IDENTITY_CONTINUITY_PROTOCOL, IMAGINE_AGENT_MODE_HANDOFF
 ├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, bible_stages, imagine_bridge, handoff_schema, cli/
 ├── tools/cinematic_studio_cli.py   # Unified CLI (create-bible --wizard, dna, sequence, quota, nsfw, imagine, plugin, validate...)
-├── references/MODELS_v3.6.md   # Dual-stack registry (grok-4.5 cinematic default)
+├── references/MODELS_v3.6.md   # Dual-stack registry (grok-4.6 cinematic default)
 ├── studio_core/                  # UI-agnostic services (dashboard, ActionSpec, execute_action)
 ├── web_ui/app.py                 # Streamlit: DNA bank, live batch, NSFW, Community Cloud
 ├── web_nicegui/                  # Optional NiceGUI shell (cinematic-studio web)
@@ -227,10 +234,10 @@ Grok Imagine Cinematic Studio v3.10.0  (Studio Director + 25+ Agents · Grok 4.5
 └── .grok/skills/                 # 64 custom Grok skills (runtime engine)
 ```
 
-**Key v3.10.0 Components**
+**Key v3.11.0 Components**
 - `references/agents/` — Authoritative Role Cards + protocols (Studio Director owns orchestration & handoff decisions)
 - `references/agents/MODEL_LAYER_v4.5.md` + `IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` — Operating rules + drift detection for every skill/agent
-- `MASTER_PROMPT.md` — Activation entrypoint with Grok 4.5 stack + Imagine Agent Mode Handoff
+- `MASTER_PROMPT.md` — Activation entrypoint with Grok 4.6 stack + Imagine Agent Mode Handoff
 - `tools/cli/bible_stages.py` + Web UI — Guided Production Bible wizard (multi-stage TTY or beautiful form UI)
 - `tools/imagine_bridge.py` + handoff validators — Build validated `imagine_agent_mode_handoff` packets
 - `.grok-plugin/` + `config/plugin_packs.yaml` — Full marketplace + pack system with `full_suite_wins` declutter
@@ -267,8 +274,8 @@ Every generation targets:
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
-- Grok Build CLI ≥ **0.2.93**
-- Access to Grok 4.5 (cinematic) and/or Grok 4.3 (1M context)
+- Grok Build CLI ≥ **1.0.5** (`grok-4.6` default)
+- Access to Grok 4.6 (cinematic) and/or Grok 4.3 (1M context)
 - xAI Imagine access (Image + Video 1.0 / 1.5)
 - Python 3.12+ environment (for CLI + Web UI)
 
@@ -277,7 +284,7 @@ Every generation targets:
 In any Grok chat:
 
 ```
-Activate Grok Imagine Cinematic Studio v3.10.0
+Activate Grok Imagine Cinematic Studio v3.11.0
 ```
 
 or the shorter trigger:
@@ -419,7 +426,7 @@ Companion docs: [`docs/academy/`](docs/academy/).
 5. **Marketing Assets**: Key Art Designer + Trailer Director for posters, hero reveals, teasers
 
 **Pro Tip**: Combine steps naturally, e.g.:
-> "Activate Grok Imagine Cinematic Studio v3.10.0, start new project called 'VOIDWALKER', generate the full Production Bible with 1.5 video pipeline, lock the lead character DNA, and create the hero reveal key art."
+> "Activate Grok Imagine Cinematic Studio v3.11.0, start new project called 'VOIDWALKER', generate the full Production Bible with 1.5 video pipeline, lock the lead character DNA, and create the hero reveal key art."
 
 ---
 
@@ -521,11 +528,11 @@ This project is licensed under the **MIT License** — see [LICENSE](LICENSE) fo
 
 <p align="center">
   <strong>Built for creators who want cinematic AI that feels directed, not just generated.</strong><br>
-  <em>Grok Imagine Cinematic Studio v3.10.0 — August 2026 · Independent community project · Not affiliated with xAI</em>
+  <em>Grok Imagine Cinematic Studio v3.11.0 — August 2026 · Independent community project · Not affiliated with xAI</em>
 </p>
 
 ---
 
 **Ready to direct your next masterpiece?**
 
-Just say: **"Activate Grok Imagine Cinematic Studio v3.10.0"** and begin.
+Just say: **"Activate Grok Imagine Cinematic Studio v3.11.0"** and begin.

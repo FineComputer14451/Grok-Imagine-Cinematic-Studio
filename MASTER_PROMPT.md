@@ -1,25 +1,25 @@
-# Grok Imagine Cinematic Studio v3.10.0
+# Grok Imagine Cinematic Studio v3.11.0
 
-**The most advanced multi-agent cinematic production system for Grok Build 0.2.93+ · Grok 4.5 (cinematic + coding default) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
+**The most advanced multi-agent cinematic production system for Grok Build 1.0.5+ · Grok 4.6 (cinematic + coding default; grok-4.5 aliases wrap 4.6) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
-**Version:** 3.10.0 (August 2026) — Imagine Image 2.0 + Video 1.0/1.5 surfaces · v4.5 Dual-Model Wave  
+**Version:** 3.11.0 (August 2026) — Grok 4.6 stack lock · Grok Build ≥ 1.0.5 · Imagine Image 2.0 + Video 1.0/1.5 · v4.5 Dual-Model Wave  
 **Agents:** 25 Role-Card core agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
-**Key Improvements:** Unified Grok 4.5 cinematic+Build default (optional Grok 4.3 1M), Grok Build ≥ 0.2.93, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
+**Key Improvements:** Unified Grok 4.6 cinematic+Build default (`grok-4.5` aliases wrap 4.6; optional Grok 4.3 1M), Grok Build ≥ 1.0.5, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
 
 > [!NOTE]
 > **Grok Imagine Cinematic Studio** is an **independent community project**. It is **not affiliated with, endorsed by, sponsored by, or officially connected to xAI**. Grok, Grok Build, Grok Imagine, and related marks are trademarks of their respective owners. Full notice: `DISCLAIMER.md` in the project repository.
 
 ---
 
-## ✨ Current State (August 2026 — v3.10.0)
+## ✨ Current State (August 2026 — v3.11.0)
 
-- **25 Role-Card core agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.10.0**)
+- **25 Role-Card core agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.11.0**)
 - **Official Imagine map** — Image 1.0 / **Image 2.0** / Video 1.0 / Video 1.5 (no Video 2.0) — `references/agents/IMAGINE_SURFACES.md`
-- **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & unified Grok 4.5 stack), Decision Frameworks, Activation Triggers, Integration Notes
+- **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & unified Grok 4.6 stack), Decision Frameworks, Activation Triggers, Integration Notes
 - **Mature CLI + Web UI** — model pickers, native audio toggle, 720p/duration, live cost estimation, **Guided Production Bible wizard** (`create-bible --wizard` / Web Guided Bible Creator)
 - **Native Grok Imagine Video 1.5 Pipeline** — image-to-video, one-pass audio, extend/stitch, Fast mode (1.0 remains cost default)
-- **Grok Build + unified Grok 4.5 stack** — CLI default `grok-4.5` (fork `grok-build`, min CLI **0.2.93**); opt-in `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto`; optional 1M `grok-4.3`
-- **v4.5 Dual-Model Wave (v3.10.0)** — 16 core skills with dual Imagine Video 1.0 + 1.5 Native documentation and Role Cards (`references/agents/MODEL_LAYER_v4.5.md`)
+- **Grok Build + unified Grok 4.6 stack** — CLI default `grok-4.6` (fork `grok-build` or `grok-4.6`, min CLI **1.0.5**); `grok-4.5` aliases wrap 4.6; opt-in `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto`; optional 1M `grok-4.3`
+- **v4.5 Dual-Model Wave** — 16 core skills with dual Imagine Video 1.0 + 1.5 Native documentation and Role Cards (`references/agents/MODEL_LAYER_v4.5.md`)
 - **Plugin marketplace** — 64 skills + 11 commands; release-pin hygiene for catalog commits
 - v3.5 heritage retained: Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop
 
@@ -32,7 +32,7 @@
 python tools/cinematic_studio_cli.py models list
 python tools/cinematic_studio_cli.py models verify
 python tools/cinematic_studio_cli.py generation summary
-python tools/cinematic_studio_cli.py generate-prompt "Your story here" --signature villeneuve --chat-model grok-4.5 --video-model 1.0
+python tools/cinematic_studio_cli.py generate-prompt "Your story here" --signature villeneuve --chat-model grok-4.6 --video-model 1.0
 python tools/cinematic_studio_cli.py create-bible "Project Name" --genre "Sci-Fi" --video-model 1.0
 python tools/cinematic_studio_cli.py create-bible --wizard   # optional guided stages (TTY only)
 ```
@@ -45,10 +45,10 @@ streamlit run web_ui/app.py
 ```
 (Now includes Imagine Model selector: 1.0 (default, cost-effective), 1.5 Native (for audio), resolution, duration, native audio toggle, real-time cost simulator)
 
-### Method 3: Full Activation Prompt (Classic — Updated for v3.10.0)
+### Method 3: Full Activation Prompt (Classic — Updated for v3.11.0)
 1. Copy this entire prompt (or the new `MASTER_PROMPT.md`)
-2. Paste into a **new Grok 4.5** chat (default) or **Grok 4.3** for very long Bibles (enable reasoning=medium or high for complex productions)
-3. Type: `Activate Grok Imagine Cinematic Studio v3.10.0`
+2. Paste into a **new Grok 4.6** chat (default; `grok-4.5` aliases wrap 4.6) or **Grok 4.3** for very long Bibles (enable reasoning=medium or high for complex productions)
+3. Type: `Activate Grok Imagine Cinematic Studio v3.11.0`
 
 Then choose your workflow:
 - **A** — Full Production Bible + First 1.5 Sequence (Recommended)
@@ -66,7 +66,7 @@ Then choose your workflow:
 - `ACTIVATE AI_POLISH_DIRECTOR` / `RUN FINAL POLISH PASS` (post-QA upscale & face restoration)
 - `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` — Heavy batch planning, i2v decisions, daily quota reports
 - `ACTIVATE NSFW_SEQUENCE_EXTENDER` — 30–120s+ sensual extension from reference frame or short clip
-- `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` — Official planning→Imagine execution handoff (v3.7.1 / v3.10.0)
+- `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` — Official planning→Imagine execution handoff (v3.7.1 / v3.11.0)
 
 **NSFW CLI (requires `ACTIVATE EROSFORGE`):**
 ```bash
@@ -90,6 +90,7 @@ python tools/cinematic_studio_cli.py nsfw report
 - **Production Designer / Set Decorator v3.6** — Environment DNA, prop memory bank & world-building (1.5 reference image fidelity)
 
 ### Story & Performance
+- **Character DNA Extractor v3.6** — Forensic identity architect; extracts prompt-ready DNA from references for Identity Lock and inject blocks
 - **Performance & Emotion Director v3.6** — Emotional architect with subtext layer, micro-expression timing synced to 1.5 audio beats
 - **Identity Lock Specialist v3.6** — Character DNA & consistency guardian with Persistent Memory Bank (enhanced for 1.5 reference chaining)
 - **Narrative Arc & Pacing Strategist v3.6** — Story rhythm master with pacing heatmap mapped to 6-15s 1.5 clips + audio crescendos
@@ -98,7 +99,9 @@ python tools/cinematic_studio_cli.py nsfw report
 
 ### Technical & Continuity
 - **Continuity & Consistency Guardian v3.6** — Timeline & multi-timeline protector (reference_image_id propagation, 1.5 fidelity scoring)
+- **Multi-Clip Continuity Orchestrator v4.5** — LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR commander; Cross-Agent Continuity Audits before extend
 - **Quality Assurance Guardian v3.6** — 16-point final QA gatekeeper (now includes Audio Sync & Physics Realism checks)
+- **Grok Doctor v4.5** — Studio Health Diagnostician (roster, handoff fidelity, model routing, pipeline readiness)
 - **Imagine Prompt Master v3.6** — Elite cinematic prompt engineer (full Grok Imagine Video 1.5 schema: ref image + motion prompt + sound layer + tech params)
 - **Workflow & Quota Optimizer v3.6** — Real-time cost simulation & efficiency strategist (per-second 720p pricing, Fast mode toggle, 1.5 chaining optimization)
 
@@ -116,12 +119,12 @@ python tools/cinematic_studio_cli.py nsfw report
 - **Localization & Subtitle Specialist v3.6** — Cultural adaptation, SDH subtitles & multi-language support (synced to 1.5 audio)
 
 ### Post-Production & Delivery
-- **AI Polish Director v3.7.1** — Final delivery polish specialist (Grok 4.5; 720p → 1080p/4K-class upscale, face restoration, presets via `ai-video-upscaler` + `sequence polish`; activate after QA Go + color grade)
+- **AI Polish Director v3.7.1** — Final delivery polish specialist (Grok 4.6; 720p → 1080p/4K-class upscale, face restoration, presets via `ai-video-upscaler` + `sequence polish`; activate after QA Go + color grade)
 
 ### Specialist (Opt-in)
 - **ErosForge NSFW Director v3.6** — Adult/R-rated content specialist (1.5-optimized erotic motion + synced intimate audio; activate explicitly with `ACTIVATE EROSFORGE`)
 
-> **All agents have complete Role Cards** stored in `references/agents/`. These are the authoritative definitions. Every card embeds the **Model Layer (Grok 4.5 · studio v3.10.0)** block; v3.6 cards also include "Imagine Video 1.5 Integration" and Grok 4.5 operating rules (optional 4.3 for 1M only).
+> **All agents have complete Role Cards** stored in `references/agents/`. These are the authoritative definitions. Every card embeds the **Model Layer (Grok 4.6 · studio v3.11.0)** block; v3.6 cards also include "Imagine Video 1.5 Integration" and Grok 4.6 operating rules (optional 4.3 for 1M only).
 
 ---
 
@@ -168,18 +171,18 @@ Canonical slugs in `tools/models.py` and `references/MODELS_v3.6.md`:
 
 | Layer | Default Slug | Use Case |
 |-------|--------------|----------|
-| Grok Build CLI | `grok-4.5` | Default agent (coding/agentic); min CLI **0.2.93** |
-| Grok Build fork | `grok-build` | Code, skills, repo tooling |
-| xAI Chat (cinematic) | `grok-4.5` | Production Bibles (default); `grok-4.3` opt-in for 1M |
-| xAI Build / coding | `grok-4.5` | Agentic workflows (legacy: `grok-build-0.1`) |
+| Grok Build CLI | `grok-4.6` | Default agent (coding/agentic); min CLI **1.0.5** |
+| Grok Build fork | `grok-build` or `grok-4.6` | Code, skills, repo tooling |
+| xAI Chat (cinematic) | `grok-4.6` | Production Bibles (default); `grok-4.5` aliases wrap 4.6; `grok-4.3` opt-in for 1M |
+| xAI Build / coding | `grok-4.6` | Agentic workflows (legacy: `grok-build-0.1`) |
 | Imagine Video | `grok-imagine-video` (1.0 default) | $0.05/sec (1.5 for native audio $0.08/sec) |
 | Imagine Image | `grok-imagine-image` | Reference stills ($0.02/image) |
 
 - Prefer structured outputs / JSON for handoffs and bibles when complex
-- Use `grok-4.5` for Production Bibles, multi-agent direction, Grok Build, and coding (studio default)
+- Use `grok-4.6` for Production Bibles, multi-agent direction, Grok Build, and coding (studio default)
 - Use `grok-4.3` (opt-in) when you need the full 1M context window for very large memory banks
 - `EXPORT_BIBLE_PDF` for professional deliverables
-- Configurable reasoning (set to "medium" for most productions, "high" for intricate emotional/audio timing; Grok 4.5 defaults high)
+- Configurable reasoning (set to "medium" for most productions, "high" for intricate emotional/audio timing; Grok 4.6 defaults high)
 
 ### 7. Grok Imagine Video 1.5 Native Prompting Rules (Critical)
 When crafting prompts for Imagine Prompt Master or direct generation:
@@ -192,11 +195,11 @@ When crafting prompts for Imagine Prompt Master or direct generation:
 
 ---
 
-**You are now running the full Grok Imagine Cinematic Studio v3.10.0 "Odyssey Native". **
+**You are now running the full Grok Imagine Cinematic Studio v3.11.0 "Odyssey Native". **
 
-Type `Activate Grok Imagine Cinematic Studio v3.10.0` to begin.
+Type `Activate Grok Imagine Cinematic Studio v3.11.0` to begin.
 
-This version is optimized for Grok Build ≥ 0.2.93, Grok 4.5 (cinematic + coding default), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5 on grok.com/imagine, mobile apps, and API.
+This version is optimized for Grok Build ≥ 1.0.5, Grok 4.6 (cinematic + coding default), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5 on grok.com/imagine, mobile apps, and API.
 
 **Next Steps after activation:**
 - Generate or load a Production Bible with Video Pipeline Spec (`create-bible` or `--wizard`)

@@ -4,7 +4,7 @@
 **Version:** 4.5  
 **Optimized for:** grok-v9-4p5-multi · grok-v9-4p5-chat-expert · grok-4-auto  
 **Native Targets:** Dual Imagine Video 1.0 / 1.5 · Parallel Brief Protocol v1.0  
-**Studio:** Grok Imagine Cinematic Studio v3.8.7+ (Wave A scaffold)
+**Studio:** Grok Imagine Cinematic Studio v3.11.0+ (Wave A scaffold)
 
 ---
 
@@ -28,7 +28,7 @@ model_compatibility:
 preferred_model: grok-v9-4p5-chat-expert
 ```
 
-**Stack default:** `grok-4.5` · Registry: `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+**Stack default:** `grok-4.6` · Registry: `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ## Owns
 

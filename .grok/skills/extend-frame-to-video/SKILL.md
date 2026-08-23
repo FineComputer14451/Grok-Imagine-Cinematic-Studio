@@ -3,13 +3,13 @@ name: extend-frame-to-video
 description: Create cinematic rough-cut animatics and storyboards from Grok Imagine still sequences using Extend from Frame prompting + advanced FFmpeg assembly (v2.0+). Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Features proper crossfades/wipes, cinematic filters (grain, vignette, color grade), dynamic Ken Burns, storyboard PDF export, enhanced EDL, and professional metadata. Perfect for client previews and pre-viz before full cinematic studio.
 ---
 
-# Extend Frame to Video v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Extend Frame to Video v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Extend_Frame_to_Video.md` (v4.5) — Authoritative source for extend-from-frame protocols, dual-model (1.0/1.5) support, project.json integration, Handoff Packet generation, and FFmpeg assembly standards.
 
 > Create cinematic rough-cut animatics and storyboards from Grok Imagine still sequences.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
@@ -17,7 +17,7 @@ description: Create cinematic rough-cut animatics and storyboards from Grok Imag
 | Single-sequence extend planning, prompt crafting, Ken Burns design | `grok-v9-4p5-chat-expert`   | high      |
 | Quick status / simple assembly checks          | `grok-4-auto`               | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -80,4 +80,4 @@ Fully compatible with Grok Build CLI, scripts/assemble-rough.sh, generate-handof
 
 ---
 
-*Enhanced for Grok 4.5 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

@@ -7,6 +7,14 @@ metadata:
 
 # xAI Grok Skill
 
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-4-auto
+```
+
 When `XAI_API_KEY` is present in the environment, this app has **real xAI API access**. Use it for all AI features. Never mock responses and never reach for another provider.
 
 **The key belongs to the app owner.** Every call spends their personal quota and credits. Be deliberate — see Spend responsibly before adding any automatic or visitor-facing AI call.

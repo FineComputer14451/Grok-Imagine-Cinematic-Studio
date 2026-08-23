@@ -1,10 +1,10 @@
 ---
-description: Activate Grok Imagine Cinematic Studio v3.10.0 with the full 25-agent core production suite (64 skills), Grok 4.5 model stack, Imagine Agent Mode Handoff, multi-surface control plane, and native Imagine Video 1.0/1.5 pipeline.
+description: Activate Grok Imagine Cinematic Studio v3.11.0 with the full 25-agent core production suite (64 skills), Grok 4.6 model stack, Imagine Agent Mode Handoff, multi-surface control plane, and native Imagine Video 1.0/1.5 pipeline.
 ---
 
 # Activate Cinematic Studio
 
-Start a full multi-agent cinematic production session with unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), Character DNA, sequence extension, quota-aware orchestration, Imagine Agent Mode Handoff, multi-surface control plane, and optional guided Production Bible wizard.
+Start a full multi-agent cinematic production session with unified Grok 4.6 cinematic+Build stack (optional 4.3 1M; grok-4.5 aliases wrap 4.6), Character DNA, sequence extension, quota-aware orchestration, Imagine Agent Mode Handoff, multi-surface control plane, and optional guided Production Bible wizard.
 
 ## Preflight
 
@@ -27,7 +27,7 @@ Start a full multi-agent cinematic production session with unified Grok 4.5 cine
 
 State the activation phrase explicitly:
 
-> **Activate Grok Imagine Cinematic Studio v3.10.0**
+> **Activate Grok Imagine Cinematic Studio v3.11.0**
 
 ## Commands
 
@@ -49,7 +49,7 @@ python tools/cinematic_studio_cli.py create-bible --wizard   # guided TTY only
 
 ```bash
 python tools/cinematic_studio_cli.py generate-prompt "$ARGUMENTS" \
-  --chat-model grok-4.5 --video-model grok-imagine-video
+  --chat-model grok-4.6 --video-model grok-imagine-video
 ```
 
 ### Specialist activations (use as needed)
@@ -66,19 +66,19 @@ Confirm the session is in studio mode:
 
 - Studio Director acknowledges the project brief and names the active agent roster.
 - `VIDEO_PIPELINE_SPEC` is stated (model, resolution, clip length, native_audio).
-- Model stack noted: cinematic+Build `grok-4.5` (optional 1M `grok-4.3`), CLI ≥ 0.2.93.
+- Model stack noted: cinematic+Build `grok-4.6` (optional 1M `grok-4.3`), CLI ≥ 1.0.5.
 - Next concrete action is proposed (Bible, DNA, or first clip plan).
 
 ## Summary
 
 ```
 ## Result
-- **Action**: Cinematic Studio v3.10.0 activated
+- **Action**: Cinematic Studio v3.11.0 activated
 - **Status**: success
 - **Project**: <title or brief from $ARGUMENTS>
 - **Pipeline**: Imagine Video 1.0 default / 1.5 when native audio
 - **Handoff**: Imagine Agent Mode Handoff ready (Studio Director owns surface routing)
-- **Stack**: grok-4.5 cinematic+Build (opt-in grok-4.3 for 1M)
+- **Stack**: grok-4.6 cinematic+Build (opt-in grok-4.3 for 1M; grok-4.5 aliases wrap 4.6)
 - **Agents**: 25 Role-Card core (+ Wave A / specialists; ErosForge opt-in)
 - **Skills**: 64-skill suite
 ```

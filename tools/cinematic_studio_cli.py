@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grok Imagine Cinematic Studio CLI v3.9.0 — Grok 4.5 stack (wiring only)."""
+"""Grok Imagine Cinematic Studio CLI — Grok 4.6 stack (wiring only)."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ app = typer.Typer(
     name="cinematic-studio",
     help=(
         f"🎥 Grok Imagine Cinematic Studio v{STUDIO_VERSION} — "
-        "Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5 · 25-agent core CLI"
+        "Grok 4.6 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5 · 25-agent core CLI"
     ),
     add_completion=False,
     rich_markup_mode="rich",

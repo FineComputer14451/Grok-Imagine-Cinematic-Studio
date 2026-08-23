@@ -84,4 +84,4 @@ def test_run_action_validate_and_stack_succeed() -> None:
     s = run_action("stack", timeout=30.0)
     assert s.returncode == 0
     assert s.argv == ["stack"]
-    assert "grok-4.5" in s.stdout or "VIDEO_PIPELINE" in s.stdout or "Model" in s.stdout
+    assert "grok-4.6" in s.stdout or "VIDEO_PIPELINE" in s.stdout or "Model" in s.stdout

@@ -3,7 +3,7 @@ name: arc-replan-copilot
 description: Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the Production Bible. Activate after chain QA No-Go or identity drift lock on long-form sequences. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Arc Replan Co-pilot v3.8.6 (Grok 4.5 / v9-4p5 · Arc Replan)
+# Arc Replan Co-pilot v3.8.6 (Grok 4.6 / v9-4p5 · Arc Replan)
 
 **Mid-sequence recovery without touching the Production Bible.** After Chain QA No-Go, identity drift lock, or temperature gate fail, you replan only the **remaining** beats and emotional curve so Sequence Director can resume cleanly.
 
@@ -11,7 +11,7 @@ description: Replan remaining sequence beats and emotional temperature after mid
 **CLI:** `sequence replan plan|apply`  
 **Pairs with:** Sequence Director · Chain QA · Identity Lock · Performance Emotion · Continuity
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -19,7 +19,7 @@ description: Replan remaining sequence beats and emotional temperature after mid
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -44,7 +44,7 @@ preferred_model: grok-v9-4p5-multi
 
 **Do not activate** for first-clip planning — use Sequence Director `sequence init`.
 
-Begin: **"Initiating Arc Replan v3.8.6 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating Arc Replan v3.8.6 (Grok 4.6 / v9-4p5)…"**
 
 ## Principles
 
@@ -135,7 +135,7 @@ Next: sequence show | regen | Chain QA | Studio Director
 | Continuity Guardian | Prop/env state still valid after soft reset |
 | Studio Director | Authorizes Bible-level changes only |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -145,4 +145,4 @@ Next: sequence show | regen | Chain QA | Studio Director
 
 ---
 
-*Arc Replan Co-pilot v3.8.6 — Grok 4.5 / v9-4p5 · Bible sacred · frozen prefix · plan then apply*
+*Arc Replan Co-pilot v3.8.6 — Grok 4.6 / v9-4p5 · Bible sacred · frozen prefix · plan then apply*

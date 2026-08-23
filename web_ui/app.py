@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Grok Imagine Cinematic Studio — Streamlit Web UI (multi-page, Grok 4.5).
+Grok Imagine Cinematic Studio — Streamlit Web UI (multi-page, Grok 4.6).
 """
 
 from __future__ import annotations

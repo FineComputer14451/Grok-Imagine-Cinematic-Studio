@@ -1,12 +1,12 @@
-# Cinematic Studio Meta Installer — Paths Reference v3.9.1 (Grok 4.5 · 64-skill suite + packs)
+# Cinematic Studio Meta Installer — Paths Reference v3.9.1 (Grok 4.6 · 64-skill suite + packs)
 
 ## Model stack (post-install)
 
 | Layer | Slug |
 |-------|------|
-| Orchestration + Build default | `grok-4.5` |
+| Orchestration + Build default | `grok-4.6` (`grok-4.5` aliases wrap 4.6) |
 | 1M opt-in | `grok-4.3` |
-| Grok Build CLI | ≥ **0.2.93** · default `grok-4.5` · fork `grok-build` |
+| Grok Build CLI | ≥ **1.0.5** · default `grok-4.6` · fork `grok-build` or `grok-4.6` |
 | Imagine Video | `grok-imagine-video` (1.0) / `1.5` native audio |
 | Imagine Image | `grok-imagine-image` / quality |
 
@@ -82,7 +82,7 @@ bash scripts/cinematic_studio.sh declutter --apply --keep-backups 1
 
 ### Grok Build CLI binary
 
-Method A ensures `grok` ≥ **0.2.93**:
+Method A ensures `grok` ≥ **1.0.5**:
 
 ```bash
 cinematic-studio grok status
@@ -95,7 +95,7 @@ cinematic-studio grok update
 |----------|---------|---------|
 | `CINEMATIC_SKIP_GROK_CLI` | unset | `1` = skip binary ensure |
 | `CINEMATIC_FORCE_GROK_CLI` | unset | `1` = reinstall/refresh even if OK |
-| `CINEMATIC_MIN_GROK_CLI` | `0.2.93` | Min Grok Build binary version |
+| `CINEMATIC_MIN_GROK_CLI` | `1.0.5` | Min Grok Build binary version |
 | `CINEMATIC_GROK_INSTALL_URL` | `https://x.ai/cli/install.sh` | Override installer URL |
 
 ## Release assets
@@ -113,10 +113,10 @@ If a versioned zip is not published yet, use `latest` or install from a local cl
 | Path | Purpose |
 |------|---------|
 | `~/.grok/skills/` | Installed skills (64 from manifest) |
-| `~/.grok/bin/grok` | Grok Build CLI binary (≥ 0.2.93) |
+| `~/.grok/bin/grok` | Grok Build CLI binary (≥ 1.0.5) |
 | `~/.grok/bin/cinematic-studio` | Studio CLI wrapper |
 | `~/.grok/bin/grok-doctor` | Doctor entrypoint |
-| `~/.grok/config.toml` | Grok Build models (`grok-4.5` default) |
+| `~/.grok/config.toml` | Grok Build models (`grok-4.6` default) |
 | `~/Grok-Cinematic-Projects/` | CLI tools, references, config templates |
 | `~/Grok-Cinematic-Projects/tools/models.py` | Canonical model registry |
 
@@ -153,7 +153,7 @@ CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install
 ## Activation
 
 ```
-Activate Grok Imagine Cinematic Studio v3.9.1
+Activate Grok Imagine Cinematic Studio v3.11.0
 ```
 
 Or slash command `/cinematic` after plugin install.
@@ -180,4 +180,4 @@ bash .grok/skills/cinematic-studio-meta-installer/scripts/install.sh meta-versio
 
 ---
 
-*Paths reference v3.9.1 — Grok 4.5 / v9-4p5 · 64 skills · plugin packs · declutter full_suite_wins · Odyssey Native*
+*Paths reference v3.9.1 — Grok 4.6 / v9-4p5 · 64 skills · plugin packs · declutter full_suite_wins · Odyssey Native*

@@ -4,8 +4,8 @@
 > Independent community project — **not affiliated with or endorsed by xAI**. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
 
 **Enhanced for:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` + **Imagine Video 1.0 & 1.5 Native**  
-**Version:** 3.9.0 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.9.0 · Full v4.5 dual-model wave  
-**Date:** 2026-08-01  
+**Version:** 3.11.0 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.11.0 · Grok 4.6 stack · Full v4.5 dual-model wave  
+**Date:** 2026-08-23  
 **Canonical Model Layer:** `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1)
 
 > All agents below now reference the enhanced Model Layer. Prefer the three explicit v9-4p5 identifiers. Video work must declare `VIDEO_PIPELINE_SPEC` (1.0 default, 1.5 when native audio / physics / intimacy required).
@@ -44,6 +44,8 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 | Agent | Role Card | Preferred Model | Activation |
 |-------|-----------|-----------------|------------|
 | Director of Photography | `Director_of_Photography_DoP_v3.5.md` | chat-expert | `ACTIVATE DOP` · `CINEMATIC LIGHTING MODE` |
+
+Legacy skill `director-of-photography-v3-3` is not a second Role Card — prefer `director-of-photography` for new work.
 | Color Grading Supervisor | `Post_Production_Color_Grading_Supervisor_v3.5.md` | chat-expert | `ACTIVATE COLOR_GRADING` |
 | Production Designer | `Production_Designer_Set_Decorator_v3.5.md` | chat-expert | `ACTIVATE PRODUCTION_DESIGNER` |
 
@@ -54,7 +56,7 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 | Character DNA Extractor | `Character_DNA_Extractor_v3.5.md` | chat-expert | `ACTIVATE CHARACTER_DNA_EXTRACTOR` |
 | Performance & Emotion Director | `Performance_Emotion_Director.md` | chat-expert | `ACTIVATE PERFORMANCE_EMOTION` |
 | Identity Lock Specialist | `Identity_Lock_Specialist.md` | chat-expert | `ACTIVATE IDENTITY_LOCK` |
-| Narrative Arc Strategist | `Narrative_Arc_Pacing_Strategist_v3.5.md` | chat-expert | `ACTIVATE NARRATIVE_ARC` |
+| Narrative Arc Strategist | `Narrative_Arc_Pacing_Strategist_v3.5.md` | chat-expert | `ACTIVATE NARRATIVE_ARC` · `ACTIVATE NARRATIVE_STRATEGIST` |
 | Sequence Director | `Sequence_Director.md` | multi | `ACTIVATE SEQUENCE_DIRECTOR` |
 | Cinematic Sequence Extender | `Cinematic_Sequence_Extender.md` | multi | `ACTIVATE SEQUENCE_EXTENDER` |
 
@@ -64,7 +66,6 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 |-------|-----------|-----------------|------------|
 | Continuity Guardian | `Continuity_Consistency_Guardian.md` | multi | `ACTIVATE CONTINUITY_GUARDIAN` |
 | Multi-Clip Continuity Orchestrator | `Multi_Clip_Continuity_Orchestrator.md` | multi | `ACTIVATE MULTI_CLIP_CONTINUITY_ORCHESTRATOR` · `RUN MULTI_CLIP_CONTINUITY_AUDIT` |
-| Costume & Wardrobe Continuity | `Costume_Wardrobe_Continuity.md` | chat-expert | `ACTIVATE COSTUME_WARDROBE` · `LOCK WARDROBE` |
 | QA Guardian | `Quality_Assurance_Guardian_v3.5.md` | chat-expert | `ACTIVATE QA_GUARDIAN` · `RUN QA REVIEW` |
 | Grok Doctor | `Grok_Doctor.md` | multi | `ACTIVATE GROK_DOCTOR` · `RUN STUDIO_HEALTH_CHECK` · `DIAGNOSE STUDIO` |
 | Imagine Prompt Master | `Imagine_Prompt_Master.md` | chat-expert | `ACTIVATE IMAGINE_PROMPT_MASTER` |
@@ -100,21 +101,22 @@ Every Production Bible must lock `model_stack` + a `VIDEO_PIPELINE_SPEC`.
 | Agent | Role Card | Preferred Model | Activation |
 |-------|-----------|-----------------|------------|
 | Reference & Asset Curator | `Reference_Asset_Curator.md` | auto / chat-expert | `ACTIVATE REFERENCE_CURATOR` |
-| Plate & Motion Readiness Lead | `Plate_Motion_Readiness_Lead.md` | chat-expert | `ACTIVATE PLATE_MOTION_READINESS` · `LOCK PLATES` |
 | Image-to-Video Specialist | `Image_to_Video_Specialist.md` | chat-expert | `ACTIVATE I2V_SPECIALIST` |
-| Contact & Micro-Physics Specialist | `Contact_Micro_Physics_Specialist.md` | chat-expert | `ACTIVATE CONTACT_MICRO_PHYSICS` |
 | SFW Batch Orchestrator | `SFW_Batch_Orchestrator.md` | multi | `ACTIVATE SFW_BATCH_ORCHESTRATOR` |
 | Assembly Editor | `Assembly_Editor.md` | multi | `ACTIVATE ASSEMBLY_EDITOR` |
 | Multi-Character Identity Arbiter | `Multi_Character_Identity_Arbiter.md` | chat-expert | `ACTIVATE MULTI_CHARACTER_ARBITER` |
+| Costume & Wardrobe Continuity | `Costume_Wardrobe_Continuity.md` | chat-expert | `ACTIVATE COSTUME_WARDROBE` · `LOCK WARDROBE` |
 
 **Order of operations:** Animatic (optional) → Reference Curator → Plate & Motion Readiness → (i2i if needed) → Contact physics (when needed) → I2V Specialist → generation/QA → Assembly Editor → color → polish.
 
 ---
 
-## Wave A Specialists (P0 scaffold · v3.8.8+)
+## Wave A Specialists (P0 scaffold · landed v3.8.8 · studio v3.11.0)
 
 | Agent | Role Card | Preferred Model | Activation |
 |-------|-----------|-----------------|------------|
+| Plate & Motion Readiness Lead | `Plate_Motion_Readiness_Lead.md` | chat-expert | `ACTIVATE PLATE_MOTION_READINESS` · `LOCK PLATES` |
+| Contact & Micro-Physics Specialist | `Contact_Micro_Physics_Specialist.md` | chat-expert | `ACTIVATE CONTACT_MICRO_PHYSICS` |
 | Parallel Brief Dispatcher | `Parallel_Brief_Dispatcher.md` | multi | `ACTIVATE PARALLEL_BRIEF_DISPATCHER` · `DISPATCH PARALLEL BRIEFS` |
 | Hair & Makeup Continuity | `Hair_Makeup_Continuity.md` | chat-expert | `ACTIVATE HAIR_MAKEUP_CONTINUITY` · `LOCK HMU` |
 | Dialogue & ADR Director | `Dialogue_ADR_Director.md` | chat-expert | `ACTIVATE DIALOGUE_ADR` |
@@ -152,7 +154,7 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 
 | # | Preset | Command |
 |---|--------|---------|
-| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.9.0` |
+| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.11.0` |
 | 2 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | 4 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
@@ -189,6 +191,20 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 
 **Identity Continuity Protocol:** `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md` (required for Lock / Extender / Continuity / QA on long-form).
 
+## Meta & Tools (supporting Role Cards)
+
+Not in the 25-core. Canonical cards live in `references/agents/` (skills must not be the only copy).
+
+| Agent | Role Card | Preferred Model | Activation |
+|-------|-----------|-----------------|------------|
+| GitHub Repo Manager | `GitHub_Repo_Manager.md` | chat-expert | `ACTIVATE GITHUB_REPO_MANAGER` |
+| Quota Dashboard | `Quota_Dashboard.md` | chat-expert | `ACTIVATE QUOTA_DASHBOARD` |
+| Extend Frame to Video | `Extend_Frame_to_Video.md` | multi | `ACTIVATE EXTEND_FRAME_TO_VIDEO` |
+
+DNA / QA skill filenames `Character_DNA_Extractor.md` and `Quality_Assurance_Guardian.md` are **aliases** of the `_v3.5.md` canonical cards.
+
+---
+
 ## Supporting Skills (Tier 1)
 
 | Skill | Type | Activation |
@@ -213,4 +229,4 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 
 ---
 
-*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-08-01 · 64 skills (Wave A P0)*
+*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-08-23 · studio v3.11.0 · 64 skills (Wave A P0)*

@@ -1,13 +1,13 @@
 ---
 name: director-of-photography-v3-3
-description: Visual language architect and cinematic lens master. Defines camera moves, framing, lens choices, and translates emotional intent into lighting, color, and composition. Activate on any cinematic, visual storytelling, or photography-related task. Uses Grok 4.5 orchestration. Prefer primary director-of-photography for new productions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Visual language architect and cinematic lens master. Defines camera moves, framing, lens choices, and translates emotional intent into lighting, color, and composition. Activate on any cinematic, visual storytelling, or photography-related task. Uses Grok 4.6 orchestration. Prefer primary director-of-photography for new productions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Director of Photography (DoP) Legacy v3.8.6 (Grok 4.5 / v9-4p5 · Legacy DoP)
+# Director of Photography (DoP) Legacy v3.8.6 (Grok 4.6 / v9-4p5 · Legacy DoP)
 
 **Legacy skill** retained for older activation paths and Role Card v3.3 protocols. For **new** productions prefer **`director-of-photography`** (primary DoP skill under studio v3.8.6).
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -15,7 +15,7 @@ description: Visual language architect and cinematic lens master. Defines camera
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -48,9 +48,9 @@ Define camera moves, framing, lens choices, and translate emotional intent into 
 
 Prefer: `ACTIVATE DIRECTOR OF PHOTOGRAPHY` (primary skill).
 
-Begin: **"DoP Legacy online — Grok 4.5 · v3.7.1 (prefer primary DoP)…"**
+Begin: **"DoP Legacy online — Grok 4.6 · v3.7.1 (prefer primary DoP)…"**
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -59,4 +59,4 @@ Begin: **"DoP Legacy online — Grok 4.5 · v3.7.1 (prefer primary DoP)…"**
 
 ---
 
-*DoP Legacy v3.8.6 — Grok 4.5 / v9-4p5 · prefer director-of-photography for new work*
+*DoP Legacy v3.8.6 — Grok 4.6 / v9-4p5 · prefer director-of-photography for new work*

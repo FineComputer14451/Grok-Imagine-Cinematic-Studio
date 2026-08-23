@@ -16,7 +16,7 @@ def test_main_help() -> None:
     assert "dashboard" in result.stdout
     assert "memory" in result.stdout
     assert "ui" in result.stdout
-    assert "Grok 4.5" in result.stdout or "4.5" in result.stdout
+    assert "Grok 4.6" in result.stdout or "4.6" in result.stdout
     ver = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     assert ver in result.stdout
 
@@ -37,22 +37,22 @@ def test_main_help_lists_ui() -> None:
     assert "ui" in result.stdout
 
 
-def test_status_and_stack_show_grok_45() -> None:
+def test_status_and_stack_show_grok_46() -> None:
     status = run_cli("status")
     assert status.returncode == 0
     ver = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     assert ver in status.stdout
-    assert "grok-4.5" in status.stdout
+    assert "grok-4.6" in status.stdout
     stack = run_cli("stack")
     assert stack.returncode == 0
-    assert "grok-4.5" in stack.stdout
+    assert "grok-4.6" in stack.stdout
     assert "VIDEO_PIPELINE_SPEC" in stack.stdout or "video" in stack.stdout.lower()
     ver = run_cli("version")
     assert ver.returncode == 0
-    assert "4.5" in ver.stdout
+    assert "4.6" in ver.stdout
     models_stack = run_cli("models", "stack")
     assert models_stack.returncode == 0
-    assert "grok-4.5" in models_stack.stdout
+    assert "grok-4.6" in models_stack.stdout
 
 def test_subcommand_groups() -> None:
     for group in ("dna", "sequence", "quota", "models", "nsfw", "sfw", "imagine", "animatic", "memory", "plugin"):

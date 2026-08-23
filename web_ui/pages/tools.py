@@ -12,7 +12,7 @@ from lib import runtime as rt
 
 def render() -> None:
     st.header("🛠️ Tools")
-    st.caption(f"Studio v{rt.STUDIO_VERSION} · Grok 4.5 stack · CLI helpers")
+    st.caption(f"Studio v{rt.STUDIO_VERSION} · Grok 4.6 stack · CLI helpers")
 
     st.subheader("🤖 Models verify")
     col_m1, col_m2 = st.columns([1, 2])
@@ -25,7 +25,7 @@ def render() -> None:
             rt.cached_models_verify() if rt.MODELS_AVAILABLE else {}
         )
         if result.get("ok"):
-            st.success("Grok 4.5 cinematic+Build stack compatible")
+            st.success("Grok 4.6 cinematic+Build stack compatible")
         elif result:
             st.warning("Compatibility issues — see details")
             for issue in result.get("issues") or []:

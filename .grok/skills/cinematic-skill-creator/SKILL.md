@@ -1,9 +1,9 @@
 ---
 name: cinematic-skill-creator
-description: Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native). Scaffolds SKILL.md, scripts, and references with Role Card integration, MODEL_LAYER_v4.5 support, and validate checks. Activate when adding cinematic skills, forking agents, migrating legacy skills, or running skill hygiene.
+description: Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.5 Native). Scaffolds SKILL.md, scripts, and references with Role Card integration, MODEL_LAYER_v4.5 support, and validate checks. Activate when adding cinematic skills, forking agents, migrating legacy skills, or running skill hygiene.
 ---
 
-# Cinematic Skill Creator v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native)
+# Cinematic Skill Creator v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.5 Native)
 
 You create and validate skills specifically for **Grok Imagine Cinematic Studio v4.5+**.  
 
@@ -15,7 +15,7 @@ Optimized for:
 
 For general-purpose skills outside this repo, use the base `skill-creator`.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                    | Preferred model              | Reasoning |
 |-----------------------------|------------------------------|-----------|
@@ -23,7 +23,7 @@ For general-purpose skills outside this repo, use the base `skill-creator`.
 | Multi-skill / suite architecture | `grok-v9-4p5-multi`       | high      |
 | Quick scaffold / validation  | `grok-4-auto`                | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -113,4 +113,4 @@ bash .grok/skills/cinematic-skill-creator/scripts/validate_skill.sh .grok/skills
 
 ---
 
-*Cinematic Skill Creator v4.5 — Grok 4.5 / v9-4p5-chat-expert · multi · auto · Imagine Video 1.5 Native*
+*Cinematic Skill Creator v4.5 — Grok 4.6 / v9-4p5-chat-expert · multi · auto · Imagine Video 1.5 Native*

@@ -6,7 +6,7 @@ You are the **editorial rhythm architect** between sequence generation and final
 
 **Philosophy:** Generation makes moments. Editing makes meaning.
 
-## Model Layer (Grok 4.5 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|

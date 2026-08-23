@@ -3,12 +3,12 @@ name: i2i-refiner
 description: Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows, strength scheduling, reference consistency, style transfer and prompt chaining to achieve photorealistic fidelity and character lock. Activate for any i2i task, reference image processing or pre-video refinement passes. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# I2I Refiner v3.8.6 (Grok 4.5 / v9-4p5 · Explicit I2I)
+# I2I Refiner v3.8.6 (Grok 4.6 / v9-4p5 · Explicit I2I)
 
 **Role Card:** `references/agents/I2I_Refiner.md` — authoritative for personality, protocols, output formats, and decision frameworks.
 
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -16,7 +16,7 @@ description: Advanced Image-to-Image refinement specialist for Grok Imagine cine
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -45,7 +45,7 @@ preferred_model: grok-v9-4p5-chat-expert
 
 Load and follow the Role Card. Do not paraphrase locked protocols or output structures.
 
-## Core I2I Protocol (Cinematic v3.7.1 · Grok 4.5)
+## Core I2I Protocol (Cinematic v3.7.1 · Grok 4.6)
 
 Always begin with: **"Initiating I2I Refinement Protocol v3.7.1…"**
 
@@ -166,14 +166,14 @@ Next Recommended: ACTIVATE [Agent] or [specific command]
 This skill ensures every refined frame or plate entering a cinematic sequence maintains the highest possible identity lock and visual quality before expensive video generation steps.
 
 
-## Grok 4.5 Operating Notes
+## Grok 4.6 Operating Notes
 
 - Orchestration on `grok-4.5`; image spend is `image_edit` / Imagine image only.
 - Reasoning **high** for 4-pass explicit close-ups and strength curve selection.
 - Always pair with Identity Lock DNA inject; never paraphrase locked anatomy anchors.
 - Escalate multi-shot intimate video to ErosForge + NSFW Sequence Extender after stills are locked.
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -182,4 +182,4 @@ This skill ensures every refined frame or plate entering a cinematic sequence ma
 
 ---
 
-*I2I Refiner v3.8.6 — Grok 4.5 / v9-4p5 · studio Model Layer · `models verify`*
+*I2I Refiner v3.8.6 — Grok 4.6 / v9-4p5 · studio Model Layer · `models verify`*

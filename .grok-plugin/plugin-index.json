@@ -6,7 +6,7 @@
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.10.0 Odyssey Native powered by a 25-agent core suite plus i2i and NS…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.11.0 Odyssey Native powered by a 25-agent core suite plus i2i and NS…"
           },
           {
             "name": "studio-director",
@@ -22,7 +22,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.10.0. Installs updates and verifies the full 64-skill suite plus CL…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.11.0. Installs updates and verifies the full 64-skill suite plus CL…"
           },
           {
             "name": "skill-agent-architect",
@@ -86,7 +86,7 @@
           },
           {
             "name": "cinematic-skill-creator",
-            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
+            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
           },
           {
             "name": "grok-doctor",
@@ -264,7 +264,7 @@
         "commands": [
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.10.0 with the full 25-agent core production suite (64 skills), Grok 4.5 model…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.11.0 with the full 25-agent core production suite (64 skills), Grok 4.6 model…"
           },
           {
             "name": "dna",
@@ -315,7 +315,7 @@
         "skills": [
           {
             "name": "grok-imagine-cinematic-studio",
-            "description": "Activate the full Grok Imagine Cinematic Studio v3.10.0 Odyssey Native powered by a 25-agent core suite plus i2i and NS…"
+            "description": "Activate the full Grok Imagine Cinematic Studio v3.11.0 Odyssey Native powered by a 25-agent core suite plus i2i and NS…"
           },
           {
             "name": "studio-director",
@@ -331,7 +331,7 @@
           },
           {
             "name": "cinematic-studio-meta-installer",
-            "description": "Meta installer for Grok Imagine Cinematic Studio v3.10.0. Installs updates and verifies the full 64-skill suite plus CL…"
+            "description": "Meta installer for Grok Imagine Cinematic Studio v3.11.0. Installs updates and verifies the full 64-skill suite plus CL…"
           },
           {
             "name": "skill-agent-architect",
@@ -395,7 +395,7 @@
           },
           {
             "name": "cinematic-skill-creator",
-            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
+            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
           },
           {
             "name": "grok-doctor",
@@ -409,7 +409,7 @@
         "commands": [
           {
             "name": "cinematic",
-            "description": "Activate Grok Imagine Cinematic Studio v3.10.0 with the full 25-agent core production suite (64 skills), Grok 4.5 model…"
+            "description": "Activate Grok Imagine Cinematic Studio v3.11.0 with the full 25-agent core production suite (64 skills), Grok 4.6 model…"
           },
           {
             "name": "dna",

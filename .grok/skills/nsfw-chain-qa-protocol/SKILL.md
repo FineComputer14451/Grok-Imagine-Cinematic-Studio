@@ -3,7 +3,7 @@ name: nsfw-chain-qa-protocol
 description: NSFW extend and stitch chain QA protocol for intimate Grok Imagine Video 1.5 sequences. Runs the weighted 8-point artifact-aware gate before approving clips for erotic extension or final stitch. Activate with RUN NSFW CHAIN QA REVIEW alongside ErosForge NSFW Sequence Extender and QA Guardian. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# NSFW Chain QA Protocol v3.8.6 (Grok 4.5 / v9-4p5 · Intimate Chain Gate)
+# NSFW Chain QA Protocol v3.8.6 (Grok 4.6 / v9-4p5 · Intimate Chain Gate)
 
 **Pipeline skill** — weighted 8-point artifact-aware gate for explicit/intimate extend and stitch. Complements QA Guardian’s per-clip 16-point review; does **not** replace it.
 
@@ -11,7 +11,7 @@ description: NSFW extend and stitch chain QA protocol for intimate Grok Imagine 
 **Implementation:** `tools/nsfw_sequence_extender.py` (`NSFW_CHAIN_QA_CHECKS`)  
 **Script:** `.grok/skills/nsfw-chain-qa-protocol/scripts/nsfw_chain_qa.py`
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -19,7 +19,7 @@ description: NSFW extend and stitch chain QA protocol for intimate Grok Imagine 
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -48,7 +48,7 @@ ACTIVATE EROSFORGE
 RUN NSFW CHAIN QA REVIEW
 ```
 
-Begin: **"Running NSFW Chain QA Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Running NSFW Chain QA Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
 
 ## Philosophy
 
@@ -147,7 +147,7 @@ Next: extend | regen | Arc Replan | stitch blocked
 | QA Guardian | Final 16-point delivery gate |
 | Arc Replan | Residual arc after No-Go |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -157,4 +157,4 @@ Next: extend | regen | Arc Replan | stitch blocked
 
 ---
 
-*NSFW Chain QA Protocol v3.8.6 — Grok 4.5 / v9-4p5 · fail closed on criticals · no extend on No-Go*
+*NSFW Chain QA Protocol v3.8.6 — Grok 4.6 / v9-4p5 · fail closed on criticals · no extend on No-Go*

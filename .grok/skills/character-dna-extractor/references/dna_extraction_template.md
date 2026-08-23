@@ -1,4 +1,4 @@
-# Character DNA Extraction Template v3.7.1 (Grok 4.5)
+# Character DNA Extraction Template v3.7.1 (Grok 4.6)
 
 Use this template when building a DNA profile from reference images. Persist as `characters/{slug}/dna.json` via `dna save` after filling.
 

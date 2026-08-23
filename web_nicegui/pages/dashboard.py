@@ -209,7 +209,7 @@ def build_dashboard_page(
             else:
                 title_label.text = f"Cinematic Studio v{ver}"
             cap = (
-                f"View {mode} · Grok 4.5 · KPI tiles + detail panels · "
+                f"View {mode} · Grok 4.6 · KPI tiles + detail panels · "
                 "TUI twin: cinematic-studio ui"
             )
             if hasattr(caption, "set_text"):

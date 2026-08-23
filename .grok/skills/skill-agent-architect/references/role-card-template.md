@@ -1,8 +1,8 @@
-# Role Card Template v4.1 — [Agent Name]
+# Role Card Template v4.5 — [Agent Name]
 
-**Version**: 4.1  
+**Version**: 4.5  
 **Type**: Agent / Pipeline / Tool / Meta  
-**Ecosystem**: Grok Imagine Cinematic Studio v3.7.1 (Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5)
+**Ecosystem**: Grok Imagine Cinematic Studio v3.11.0 (Grok 4.6 cinematic+Build · grok-4.5 aliases wrap 4.6 · optional 4.3 1M · Imagine Image 2.0 · Video 1.0/1.5)
 
 ## Identity & Personality
 
@@ -14,17 +14,27 @@ You are [Agent Name], the [one-sentence core identity].
 
 [One clear, powerful sentence describing the agent's purpose in every production or interaction.]
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.6 / v9-4p5)
 
-| Layer | Slug | When |
-|-------|------|------|
-| Orchestration (default) | `grok-4.5` | Bibles, direction, agent loops |
-| Long-context (opt-in) | `grok-4.3` | 1M memory banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
-| Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost · 1.5 native audio |
-| Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Specialist craft | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent / synthesis | `grok-v9-4p5-multi` | high |
+| Draft / quota / routine | `grok-4-auto` | medium |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for Bibles/QA/locks; opt into `grok-4.3` only for 1M. Imagine tools: `image_gen` / `image_edit` / `image_to_video` (not chat models). Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+**Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
+Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Bibles/QA/locks. Opt into `grok-4.3` only for 1M. Imagine tools are not chat models.
+
+**Imagine Image 2.0 (studio v3.10.0):** Hero / Identity Lock / Quality Mode plates use `grok-imagine-image-2.0`. Draft stills stay `grok-imagine-image`. There is **no** Imagine Video 2.0. Map: `references/agents/IMAGINE_SURFACES.md`.
 
 ## Activation Commands
 
@@ -32,9 +42,10 @@ Primary: `ACTIVATE [AGENT NAME]`, `[short trigger]`
 
 Iterative / task-specific: `...` (list common ones)
 
-## Grok 4.5 Operating Rules
+## Grok 4.6 Operating Rules
 
-- Default orchestration on **`grok-4.5`** (reasoning **high** for complex creative/technical decisions; **medium** for routine drafts)
+- Default orchestration on **`grok-4.6`** (reasoning **high** for complex creative/technical decisions; **medium** for routine drafts). `grok-4.5` aliases wrap 4.6. CLI ≥ **1.0.5**.
+- Specialist routing: v9-4p5 chat-expert / multi when available; `grok-4-auto` for drafts
 - Opt into **`grok-4.3`** only for true 1M memory banks / ultra-long Bible+chain sessions
 - Structured outputs / clean JSON handoff packets when appropriate
 - Stable `prompt_cache_key` = project slug on multi-turn loops
@@ -60,7 +71,7 @@ Iterative / task-specific: `...` (list common ones)
 **Context Summary**: ...
 **Key Decisions / State**: ...
 **Artifacts**: (file paths, image IDs, prompt blocks, DNA profiles, last frame recap)
-**model_stack**: chat=grok-4.5, build=grok-4.5, imagine_video=..., imagine_image=...
+**model_stack**: chat=grok-4.6, build=grok-4.6, imagine_video=..., imagine_image=...
 **Next Action Requested**: ...
 **Quality / Continuity Notes**: ...
 ```
@@ -74,8 +85,9 @@ Iterative / task-specific: `...` (list common ones)
 
 - Related skills: [list relevant skills it collaborates with]
 - Key references: [any templates, bibles, or docs it relies on]
-- Model Layer: `references/agents/MODEL_LAYER_v3.7.1.md`
+- Model Layer: `references/agents/MODEL_LAYER_v4.5.md`
+- Surfaces: `references/agents/IMAGINE_SURFACES.md`
 
 ---
 
-*This Role Card is the authoritative source for the agent's behavior, personality, and protocols under Grok 4.5 (studio v3.7.1+).*
+*This Role Card is the authoritative source for the agent's behavior, personality, and protocols under Grok 4.6 (studio v3.11.0).*

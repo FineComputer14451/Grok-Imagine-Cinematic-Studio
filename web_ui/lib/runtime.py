@@ -17,11 +17,11 @@ sys.path.insert(0, str(ROOT / "tools"))
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-STUDIO_VERSION = "3.7.1"
+STUDIO_VERSION = "3.11.0"
 ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
 AGENTS_DIR = ROOT / "references" / "agents"
 ROLE_CARD_PREVIEW_CHARS = 4000
-MIN_GROK_BUILD_CLI = "0.2.93"
+MIN_GROK_BUILD_CLI = "1.0.5"
 DOCS_MODELS = "references/MODELS.md"
 DOCS_MODEL_LAYER = "references/agents/MODEL_LAYER_v4.5.md"
 
@@ -146,13 +146,13 @@ except ImportError:
     DEFAULT_IMAGINE_IMAGE_MODEL = "grok-imagine-image"
     HERO_IMAGINE_IMAGE_MODEL = "grok-imagine-image-2.0"
     IMAGINE_IMAGE_MODELS = {}
-    DEFAULT_XAI_CHAT_MODEL = "grok-4.5"
-    DEFAULT_XAI_BUILD_MODEL = "grok-4.5"
+    DEFAULT_XAI_CHAT_MODEL = "grok-4.6"
+    DEFAULT_XAI_BUILD_MODEL = "grok-4.6"
     IMAGINE_VIDEO_MODELS = {}
     XAI_CHAT_MODELS = {}
-    STACK_CONTRACT = {"cinematic": "grok-4.5", "build": "grok-4.5", "cli": "grok-4.5"}
+    STACK_CONTRACT = {"cinematic": "grok-4.6", "build": "grok-4.6", "cli": "grok-4.6"}
     ROLE_DEFAULTS = dict(STACK_CONTRACT)
-    MIN_GROK_BUILD_CLI = "0.2.93"
+    MIN_GROK_BUILD_CLI = "1.0.5"
 
     def model_stack_summary(**kwargs):  # type: ignore[misc]
         return {
@@ -185,7 +185,7 @@ def core_agent_count() -> int:
 
 
 def ordered_chat_model_slugs() -> list[str]:
-    """Prefer grok-4.5 first (cinematic default); 4.3 is opt-in 1M."""
+    """Prefer grok-4.6 first (cinematic default); 4.3 is opt-in 1M."""
     if not XAI_CHAT_MODELS:
         return [DEFAULT_XAI_CHAT_MODEL]
     keys = list(XAI_CHAT_MODELS.keys())
@@ -292,7 +292,7 @@ def stack_banner_markdown() -> str:
     reason = st.session_state.get("reasoning_level", "high")
     cache = st.session_state.get("prompt_cache_key") or "—"
     return (
-        f"**Grok 4.5 stack** · studio **v{STUDIO_VERSION}**  \n"
+        f"**Grok 4.6 stack** · studio **v{STUDIO_VERSION}**  \n"
         f"Chat: `{chat}` · Video: `{video}` · Reasoning: **{reason}** · "
         f"`prompt_cache_key`: `{cache}`  \n"
         f"Build/coding: `{DEFAULT_XAI_BUILD_MODEL}` · CLI ≥ **{MIN_GROK_BUILD_CLI}** · "
@@ -467,7 +467,7 @@ def cached_plugin_details() -> str:
 def render_sidebar_stack() -> None:
     """Compact Model Layer strip for the sidebar."""
     st.markdown(
-        f'<div class="stack-badge">Grok 4.5 · v{STUDIO_VERSION}</div>',
+        f'<div class="stack-badge">Grok 4.6 · v{STUDIO_VERSION}</div>',
         unsafe_allow_html=True,
     )
     st.caption(
@@ -489,7 +489,7 @@ def render_footer() -> None:
     st.divider()
     st.caption(
         f"Grok Imagine Cinematic Studio **v{STUDIO_VERSION}** · "
-        f"**Grok 4.5** cinematic+Build · optional **4.3** (1M) · Imagine **1.0** cost / **1.5** audio · "
+        f"**Grok 4.6** cinematic+Build · optional **4.3** (1M) · Imagine **1.0** cost / **1.5** audio · "
         f"CLI ≥ {MIN_GROK_BUILD_CLI} · "
         f"`{DOCS_MODEL_LAYER}` · `{DOCS_MODELS}` · "
         f"Install: `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`"

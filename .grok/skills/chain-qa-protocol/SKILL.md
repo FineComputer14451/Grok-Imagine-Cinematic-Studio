@@ -3,7 +3,7 @@ name: chain-qa-protocol
 description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approving clips for extension or final stitch. Activate with RUN CHAIN QA REVIEW alongside Sequence Director and Cinematic Sequence Extender. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Chain QA Protocol v3.8.6 (Grok 4.5 / v9-4p5 · Extend/Stitch Gate)
+# Chain QA Protocol v3.8.6 (Grok 4.6 / v9-4p5 · Extend/Stitch Gate)
 
 **Pipeline skill** — boundary continuity gate for multi-clip sequences. Complements QA Guardian’s **per-clip 16-point** review; does **not** replace it.
 
@@ -12,7 +12,7 @@ description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequ
 **Assist:** `tools/chain_qa_assist.py` · CLI `sequence qa` / `sequence qa-assist`  
 **NSFW variant:** `nsfw-chain-qa-protocol` (8-point artifact-aware)
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -20,7 +20,7 @@ description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequ
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -48,7 +48,7 @@ ACTIVATE ONLY Sequence Director, Cinematic Sequence Extender, Continuity Guardia
 RUN CHAIN QA REVIEW
 ```
 
-Begin: **"Initiating Chain QA Protocol v3.8.6 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Initiating Chain QA Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
 
 ## When NOT Alone
 
@@ -183,7 +183,7 @@ Next: extend | fix handoff | regen plan | Assembly Editor (if final Go)
 | Arc Replan Co-pilot | Mid-sequence replan after No-Go |
 | NSFW Chain QA | Intimate sequences only |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -193,4 +193,4 @@ Next: extend | fix handoff | regen plan | Assembly Editor (if final Go)
 
 ---
 
-*Chain QA Protocol v3.8.6 — Grok 4.5 / v9-4p5 · weighted 10-point stitch gate · critical floor 7.0*
+*Chain QA Protocol v3.8.6 — Grok 4.6 / v9-4p5 · weighted 10-point stitch gate · critical floor 7.0*

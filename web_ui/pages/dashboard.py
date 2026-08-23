@@ -1,4 +1,4 @@
-"""Project dashboard — dense ops board shared with CLI TUI signals (Grok 4.5)."""
+"""Project dashboard — dense ops board shared with CLI TUI signals (Grok 4.6)."""
 
 from __future__ import annotations
 
@@ -285,7 +285,7 @@ def render() -> None:
             if rt.MODELS_AVAILABLE:
                 vr = rt.cached_models_verify()
                 if vr.get("ok") or vr.get("compatible"):
-                    st.caption("Live `models verify`: OK (Grok 4.5 stack)")
+                    st.caption("Live `models verify`: OK (Grok 4.6 stack)")
                 else:
                     for issue in vr.get("issues") or []:
                         st.caption(f"verify: {issue}")
@@ -319,7 +319,7 @@ def render() -> None:
             st.caption("CLI: `cinematic-studio quota sync` · TUI Home: **s**")
 
     if _show(mode, "stack"):
-        st.subheader("🤖 Session Model Stack (Grok 4.5)")
+        st.subheader("🤖 Session Model Stack (Grok 4.6)")
         stack = rt.session_model_stack()
         s1, s2, s3, s4 = st.columns(4)
         s1.metric("Chat", str(stack.get("cinematic") or stack.get("xai_chat") or "—"))

@@ -119,7 +119,7 @@ export function SettingsView() {
         <h1>Settings</h1>
         <p className="muted">
           Session defaults for Production / Quota / Imagine (browser localStorage). Orchestration
-          defaults to <strong>Grok 4.5</strong>. Does not replace Streamlit secrets for cloud
+          defaults to <strong>Grok 4.6</strong>. Does not replace Streamlit secrets for cloud
           deploy.
         </p>
       </header>

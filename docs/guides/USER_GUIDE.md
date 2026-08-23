@@ -1,5 +1,5 @@
 # User Guide
-## Grok Imagine Cinematic Studio v3.10.0
+## Grok Imagine Cinematic Studio v3.11.0
 
 Complete end-to-end guide for creators — from first Activate through delivery.
 
@@ -17,7 +17,7 @@ Complete end-to-end guide for creators — from first Activate through delivery.
 ### Primary (any Grok chat)
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.10.0
+Activate Grok Imagine Cinematic Studio v3.11.0
 ```
 
 Alternative triggers:
@@ -34,7 +34,7 @@ On **grok.com** or mobile: paste [`MASTER_PROMPT.md`](../../MASTER_PROMPT.md) fi
 | **grok.com chat** | Activate / MASTER_PROMPT — no binary required |
 | **grok.com/imagine** | Paste Execution Bridge packets from shell |
 | **Grok mobile app** | Chat + in-app Imagine |
-| **Desktop / Android shell** | Full CLI, TUI, Method A install, Grok Build ≥ 0.2.93 |
+| **Desktop / Android shell** | Full CLI, TUI, Method A install, Grok Build ≥ 1.0.5 |
 
 ### Exit
 
@@ -48,7 +48,7 @@ Exit cinematic studio
 
 ### Phase 1 — Project Setup
 
-1. Activate the Studio (**v3.10.0**).
+1. Activate the Studio (**v3.11.0**).
 2. Create / lock the **Production Bible**  
    (`cinematic-studio create-bible --wizard` or ask Studio Director / Guided Bible in Streamlit).
 3. Declare **`model_stack`** + **`VIDEO_PIPELINE_SPEC`**:
@@ -110,7 +110,7 @@ Orient → Health → Produce → Gate → Converge & Deliver
 | **Gate** | Identity · plate/motion · chain QA · `handoff validate` |
 | **Deliver** | Convergence checklist · Wave A briefs · polish/deliver readiness · bridge preview |
 
-**TUI density (v3.10.0):** `1` compact · `2` ops · `3` full · `Tab` cycle · `p` pause refresh.
+**TUI density (v3.11.0):** `1` compact · `2` ops · `3` full · `Tab` cycle · `p` pause refresh.
 
 **Deep dive:** [OPERATOR_CONTROL_PLANE.md](OPERATOR_CONTROL_PLANE.md).
 
@@ -170,7 +170,7 @@ cinematic-studio wave-a validate
 
 | Intent | Command |
 |--------|---------|
-| Start Studio | `Activate Grok Imagine Cinematic Studio v3.10.0` |
+| Start Studio | `Activate Grok Imagine Cinematic Studio v3.11.0` |
 | New project / Bible | Ask Studio Director or CLI wizard |
 | Lock character | `ACTIVATE IDENTITY_LOCK` / DNA tools |
 | Wardrobe lock | `ACTIVATE COSTUME_WARDROBE` |
@@ -261,4 +261,4 @@ See [CLI_REFERENCE.md](../CLI_REFERENCE.md) for the full command set (including 
 
 *You are the director. The Studio exists to execute your vision with professional discipline.*
 
-*Grok Imagine Cinematic Studio v3.10.0 — User Guide · Independent community project · Not affiliated with xAI*
+*Grok Imagine Cinematic Studio v3.11.0 — User Guide · Independent community project · Not affiliated with xAI*

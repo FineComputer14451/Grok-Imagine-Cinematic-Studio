@@ -8,7 +8,7 @@
 #
 # Registers every Model Layer alias as a Grok Build [model.*] picker so
 #   /model chat-expert · /model multi · /model grok-v9 · /model auto
-# never return "unknown model id". All wrap grok-4.5 via cli-chat-proxy.
+# never return "unknown model id". All wrap grok-4.6 via cli-chat-proxy.
 #
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -126,7 +126,7 @@ else
   {
     echo ""
     echo "${MARKER_BEGIN} (Model Layer v4.5 · full alias surface) ---"
-    echo "# Session-auth via cli-chat-proxy (SuperGrok). Base model: grok-4.5."
+    echo "# Session-auth via cli-chat-proxy (SuperGrok). Base model: grok-4.6."
     echo "# Native API IDs grok-v9-4p5-* / grok-4-auto are not public product slugs."
     echo "# Family shorts + chat-expert / multi / auto aliases all registered as pickers."
     echo "# Registry: tools/models.py → GROK_BUILD_V9_MODELS"
@@ -144,5 +144,5 @@ echo "              /model chat-expert"
 echo "              /model multi"
 echo "              /model auto"
 echo "              /model grok-v9-4p5-chat-expert"
-echo "Stack default for Bibles/coding remains grok-4.5 (set [models] default separately)."
+echo "Stack default for Bibles/coding remains grok-4.6 (set [models] default separately)."
 echo "Imagine:      stills/video still use grok-imagine-* (not these chat aliases)"

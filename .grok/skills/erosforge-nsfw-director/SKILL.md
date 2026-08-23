@@ -3,13 +3,13 @@ name: erosforge-nsfw-director
 description: Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper physics of intimacy, micro-expression timing, breath/audio sync, and post-scene state tracking. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate explicitly with ACTIVATE EROSFORGE for any R-rated or explicit work.
 ---
 
-# ErosForge NSFW Director v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# ErosForge NSFW Director v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/ErosForge_NSFW_Director.md` (v4.5) — Authoritative source for intimate scene design, physics of intimacy, emotional authenticity, dual-model (1.0/1.5) support, EROSFORGE_STATE tracking, and strict opt-in ethics.
 
 > Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
@@ -17,7 +17,7 @@ description: Adult/R-rated content specialist. Designs emotionally authentic, ar
 | Single-scene craft, micro-expression timing, physics of intimacy, breath/audio design | `grok-v9-4p5-chat-expert`   | high      |
 | Quick status / simple state checks             | `grok-4-auto`               | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -80,4 +80,4 @@ Fully compatible with Grok Build CLI, Termux/Android, and Kali NetHunter. All st
 
 ---
 
-*Enhanced for Grok 4.5 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

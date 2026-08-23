@@ -1,6 +1,6 @@
 {
   "name": "finecomputer14451-cinematic-studio",
-  "description": "Grok Imagine Cinematic Studio v3.10.0 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post).",
+  "description": "Grok Imagine Cinematic Studio v3.11.0 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post).",
   "owner": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -8,9 +8,9 @@
   "plugins": [
     {
       "name": "grok-imagine-cinematic-studio",
-      "description": "Full cinematic suite v3.10.0 — 25 Role-Card core agents, 64 skills, slash commands (catalog pin SHA matches tree after pin). Wave A P0 specialists included. Recommended one-click install.",
+      "description": "Full cinematic suite v3.11.0 — 25 Role-Card core agents, 64 skills, slash commands (catalog pin SHA matches tree after pin). Wave A P0 specialists included. Recommended one-click install.",
       "category": "creative",
-      "version": "3.10.0",
+      "version": "3.11.0",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
@@ -27,7 +27,7 @@
       "name": "grok-imagine-cinematic-core",
       "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.",
       "category": "creative",
-      "version": "3.10.0",
+      "version": "3.11.0",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
@@ -45,7 +45,7 @@
       "name": "grok-imagine-camera-image",
       "description": "DoP, production design, i2i, key art, reference curator, and i2v specialist.",
       "category": "creative",
-      "version": "3.10.0",
+      "version": "3.11.0",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
@@ -65,7 +65,7 @@
       "name": "grok-imagine-sequence-narrative",
       "description": "Long-form sequence, continuity, performance, audio, action/VFX, and SFW batches.",
       "category": "creative",
-      "version": "3.10.0",
+      "version": "3.11.0",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
@@ -85,7 +85,7 @@
       "name": "grok-imagine-nsfw",
       "description": "Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.",
       "category": "creative",
-      "version": "3.10.0",
+      "version": "3.11.0",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
@@ -105,7 +105,7 @@
       "name": "grok-imagine-delivery-post",
       "description": "Assembly EDL, color grade, AI polish, upscale, and cinematic ffmpeg delivery.",
       "category": "creative",
-      "version": "3.10.0",
+      "version": "3.11.0",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",

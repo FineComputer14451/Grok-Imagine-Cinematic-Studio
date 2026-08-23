@@ -3,13 +3,13 @@ name: reference-asset-curator
 description: Reference and asset curator for Grok Imagine productions. Assigns hero, standard or draft tiers, routes grok-imagine-image vs Image 2.0 hero plates and video 1.5 vs 1.0 per shot, maintains ASSET_MANIFEST and approved plate sets. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate with ACTIVATE REFERENCE_CURATOR before batch or i2v spend.
 ---
 
-# Reference & Asset Curator v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Reference & Asset Curator v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Reference_Asset_Curator.md` (v4.5) — Authoritative source for tier assignment, model stack routing, reference weights, ASSET_MANIFEST discipline, dual-model (1.0/1.5) decisions, and pre-spend gating.
 
 > You are the **model router and reference librarian**. No major generation runs until you assign **tier + model stack + reference weights** and publish an `ASSET_MANIFEST` row (or equivalent handoff).
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
@@ -17,7 +17,7 @@ description: Reference and asset curator for Grok Imagine productions. Assigns h
 | Multi-asset / suite manifests / batch planning | `grok-v9-4p5-multi`         | high      |
 | Standard / draft tier assignment               | `grok-4-auto`               | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -89,4 +89,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py` asset workflows,
 
 ---
 
-*Enhanced for Grok 4.5 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

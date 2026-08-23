@@ -23,7 +23,7 @@ from models import RECOMMENDED_GROK_BUILD_CLI_VERSION as MIN_VER  # noqa: E402
 
 def test_min_version_aligned() -> None:
     assert RECOMMENDED_GROK_BUILD_CLI_VERSION == MIN_VER
-    assert MIN_VER == "0.2.93"
+    assert MIN_VER == "1.0.5"
 
 
 def test_probe_preferred_shape() -> None:
@@ -32,7 +32,7 @@ def test_probe_preferred_shape() -> None:
     assert "version" in p
     assert "min_version" in p
     assert "meets_min" in p
-    assert p["min_version"] == "0.2.93"
+    assert p["min_version"] == "1.0.5"
 
 
 def test_find_grok_binary_type() -> None:
@@ -62,7 +62,7 @@ def test_cli_grok_status() -> None:
     )
     assert r.returncode == 0, r.stderr
     out = r.stdout + r.stderr
-    assert "0.2.93" in out or "min" in out.lower() or "version" in out.lower()
+    assert "1.0.5" in out or "min" in out.lower() or "version" in out.lower()
 
 
 def test_cli_grok_help() -> None:

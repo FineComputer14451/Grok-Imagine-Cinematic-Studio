@@ -66,7 +66,7 @@ def test_static_allowlist_is_fieldless_only() -> None:
         {
             "title": "T",
             "genre": "Cinematic",
-            "chat_model": "grok-4.5",
+            "chat_model": "grok-4.6",
             "video_model": "grok-imagine-video",
             "output": "production_bible.json",
         },
@@ -91,7 +91,7 @@ def test_no_action_emits_forbidden_tokens() -> None:
         "bible_create": {
             "title": "T",
             "genre": "Cinematic",
-            "chat_model": "grok-4.5",
+            "chat_model": "grok-4.6",
             "video_model": "grok-imagine-video",
             "output": "production_bible.json",
         },

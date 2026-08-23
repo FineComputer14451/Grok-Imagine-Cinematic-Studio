@@ -1,6 +1,6 @@
-# AI Image Recreation Prompt Library (v3.7.1 · Grok 4.5)
+# AI Image Recreation Prompt Library (v3.7.1 · Grok 4.6)
 
-Reusable templates for the `ai-image-recreation` skill. Craft prompts for **`image_edit`** (primary) or **`image_gen`** (no pixel reference). Orchestration default: **Grok 4.5**. Do not treat Imagine models as chat models.
+Reusable templates for the `ai-image-recreation` skill. Craft prompts for **`image_edit`** (primary) or **`image_gen`** (no pixel reference). Orchestration default: **Grok 4.6**. Do not treat Imagine models as chat models.
 
 ## 1. Fidelity Anchors (Always Include)
 Use these phrases to lock in the original image's core elements:
@@ -200,7 +200,7 @@ These are complete, ready-to-use prompts. Pass the uploaded image path or attach
 **Negative prompt ideas (when supported):**
 "blurry, lowres, deformed, ugly, bad anatomy, extra limbs, watermark, text, signature, artifacts, noise, grainy, overexposed, underexposed, cartoonish (unless requested), unrealistic proportions"
 
-## 10. Chaining & Advanced Techniques (Grok 4.5)
+## 10. Chaining & Advanced Techniques (Grok 4.6)
 - **Multi-step recreation:** Pass 1 style/structure via `image_edit` → Pass 2 polish on the **output path** (not the original upload).
 - **Consistent character recreation:** "Exact same character design, face, and proportions as the reference image but in [new scene/style]" — reuse the same 3–7 consistency anchors every call.
 - **Strength language (no numeric API):** `image_edit` has no strength slider. Encode intent in prose:
@@ -279,7 +279,7 @@ Base formula: "Recreate this exact image as a cinematic storyboard keyframe [or 
 - **"Dream-Reality Fusion":** "hyper-realistic yet dreamlike fusion, soft ethereal glow on edges, impossible yet believable lighting, emotional surreal atmosphere, 32K ultra-detailed"
 - **"Neural Photogrammetry":** "photorealistic with subtle 3D depth-mapped aesthetic, precise geometric accuracy, rich material response, next-gen rendering quality"
 
-## 13. Pro Prompt Construction Formula (Grok 4.5)
+## 13. Pro Prompt Construction Formula (Grok 4.6)
 **Construct prompts in this order:**
 1. Intent lead (recreate / restyle / enhance / vary)
 2. Fidelity anchors (1–2 strongest phrases) or explicit change list
@@ -291,6 +291,6 @@ Base formula: "Recreate this exact image as a cinematic storyboard keyframe [or 
 **Example master structure:**
 "[INTENT]. [FIDELITY OR PRESERVE LIST]. [CORE TRANSFORMATION]. [SPECIFICS]. [QUALITY / CONSTRAINTS]."
 
-**Grok 4.5 notes:** Prefer natural prose (2–6 sentences). For multi-pass, each pass should name what must not change. Use stable project `prompt_cache_key` when planning long series in chat. After hero plate lock, hand off to `image_to_video` or Studio rather than over-editing stills.
+**Grok 4.6 notes:** Prefer natural prose (2–6 sentences). For multi-pass, each pass should name what must not change. Use stable project `prompt_cache_key` when planning long series in chat. After hero plate lock, hand off to `image_to_video` or Studio rather than over-editing stills.
 
 Library coverage: 30+ styles · restore · variations · storyboard · product · design sheets · environmental immersion · adult intensity tiers · NSFW categories (explicit user request only). Load sections on demand; keep SKILL.md protocols as the execution authority.

@@ -52,15 +52,15 @@ Reference the canonical docs:
 - Must reference authoritative Role Card in `references/agents/` (v4.5 preferred)
 - Declare activation command matching AGENT_INDEX
 - Use **v4.5** in skill body title where possible
-- Include Grok 4.5 / v9-4p5 Model Layer + Video 1.5 Native sections for relevant agents
+- Include Grok 4.6 / v9-4p5 Model Layer + Video 1.5 Native sections for relevant agents
 
 ## Versioning
 - New skills: target **v4.5**
 - Migration path: v3.6 → v4.0 → v4.5 (add Model Layer + update preferred models)
-- Title pattern: `# <Name> v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native)`
+- Title pattern: `# <Name> v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.5 Native)`
 
 ## v4.5 Migration Notes
-- Replace hard-coded “Grok 4.3” or generic “Grok 4.5” language with explicit v9-4p5 identifiers.
+- Replace hard-coded “Grok 4.3” or generic “Grok 4.6” language with explicit v9-4p5 identifiers.
 - Team Leader / multi-agent skills → prefer `grok-v9-4p5-multi`
 - Prompt / DNA / QA / single-agent creative → prefer `grok-v9-4p5-chat-expert`
 - Draft / Animatic / routine → `grok-4-auto` is acceptable

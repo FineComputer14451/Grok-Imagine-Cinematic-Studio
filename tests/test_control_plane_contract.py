@@ -26,7 +26,7 @@ def _snap(**overrides: object) -> dict:
             "skills": 62,
             "models_compatible": True,
             "model_issues": [],
-            "model_stack": {"xai_chat": "grok-4.5", "imagine_video": "grok-imagine-video"},
+            "model_stack": {"xai_chat": "grok-4.6", "imagine_video": "grok-imagine-video"},
         },
         "quota": {
             "tier_label": "Pro",

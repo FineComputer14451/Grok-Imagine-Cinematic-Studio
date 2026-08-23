@@ -47,7 +47,7 @@ def _render_phase_outline(story: str) -> None:
     )
     st.markdown(
         """
-**Phase 1 — Pre-Production (Grok 4.5)**
+**Phase 1 — Pre-Production (Grok 4.6)**
 - Mega Production Architect → Production Bible + `model_stack` + `VIDEO_PIPELINE_SPEC`
 - Character DNA → Identity Lock · Reference Curator (tiers)
 - Optional Animatic Director (≤20% budget)

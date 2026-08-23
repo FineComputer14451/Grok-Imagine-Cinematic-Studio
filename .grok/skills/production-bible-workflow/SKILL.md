@@ -3,14 +3,14 @@ name: production-bible-workflow
 description: End-to-end Production Bible onboarding workflow for Grok Imagine Cinematic Studio. Guides create-bible DNA init sequence planning quota setup and validate through the CLI. Activate when starting a new project bootstrapping the studio or onboarding a production from zero. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Production Bible Workflow v3.8.6 (Grok 4.5 / v9-4p5 · Bible Onboarding)
+# Production Bible Workflow v3.8.6 (Grok 4.6 / v9-4p5 · Bible Onboarding)
 
 **New project bootstrap** — guided path from zero to a locked Production Bible, DNA, sequence, quota, and generation-ready handoff. Studio Director maintains the Bible after bootstrap.
 
 **CLI:** `create-bible` · `dna` · `sequence` · `quota` · `validate` · `models verify`  
 **Companions:** Mega Production Architect · Studio Director · production wizard (Web)
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -18,7 +18,7 @@ description: End-to-end Production Bible onboarding workflow for Grok Imagine Ci
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -39,7 +39,7 @@ preferred_model: grok-v9-4p5-multi
 - Onboarding a production from zero  
 - User says: `START PRODUCTION BIBLE WORKFLOW`, `BOOTSTRAP NEW PROJECT`, `CREATE BIBLE WIZARD`
 
-Begin: **"Starting Production Bible Workflow v3.8.6 (Grok 4.5 / v9-4p5)…"**
+Begin: **"Starting Production Bible Workflow v3.8.6 (Grok 4.6 / v9-4p5)…"**
 
 ## Project Bible Must Lock
 
@@ -177,7 +177,7 @@ Next: Studio Director | Animatic | Batch | Agent Mode Handoff
 | Quota Optimizer | Session envelope |
 | Imagine Agent Mode Handoff | First generation surface |
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -187,4 +187,4 @@ Next: Studio Director | Animatic | Batch | Agent Mode Handoff
 
 ---
 
-*Production Bible Workflow v3.8.6 — Grok 4.5 / v9-4p5 · zero to locked Bible · still before video*
+*Production Bible Workflow v3.8.6 — Grok 4.6 / v9-4p5 · zero to locked Bible · still before video*

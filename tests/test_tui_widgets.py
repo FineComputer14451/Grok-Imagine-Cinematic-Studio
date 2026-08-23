@@ -43,7 +43,7 @@ def _sample_snap(**overrides: object) -> dict:
             "models_compatible": True,
             "model_issues": [],
             "model_stack": {
-                "xai_chat": "grok-4.5",
+                "xai_chat": "grok-4.6",
                 "imagine_video": "grok-imagine-video",
             },
         },
@@ -161,7 +161,7 @@ def test_format_quota_panel_alignment() -> None:
 def test_format_studio_panel() -> None:
     text = format_studio_panel(_sample_snap())
     assert "STUDIO" in text
-    assert "grok-4.5" in text
+    assert "grok-4.6" in text
     assert "compatible" in text
 
 

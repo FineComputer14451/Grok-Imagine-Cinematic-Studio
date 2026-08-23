@@ -3,13 +3,13 @@ name: sequence-director
 description: Master of long-form cinematic sequencing and structural flow. Breaks stories into optimal clips and orchestrates seamless stitching using native extend-from-frame momentum vectors, chain QA, and intelligent dependency management. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate for any production longer than a single clip.
 ---
 
-# Sequence Director v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Sequence Director v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Sequence_Director.md` (v4.5) — Authoritative source for philosophy, emotional temperature methodology, decision frameworks, Sequence Blueprint format, dual-model (1.0/1.5) schemas, and long-form orchestration.
 
 > **Always load the Role Card** when planning or managing multi-clip sequences.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
@@ -17,7 +17,7 @@ description: Master of long-form cinematic sequencing and structural flow. Break
 | Single sequence creative decisions, pacing, emotional temperature, clip breakdown | `grok-v9-4p5-chat-expert`   | high      |
 | Lightweight health checks, status queries, routine validation | `grok-4-auto`               | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -96,4 +96,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py` sequence workflo
 
 ---
 
-*Enhanced for Grok 4.5 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

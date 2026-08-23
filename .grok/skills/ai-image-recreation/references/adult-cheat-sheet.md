@@ -1,4 +1,4 @@
-# Adult Section Quick Reference Cheat Sheet (v3.7.1 · Grok 4.5)
+# Adult Section Quick Reference Cheat Sheet (v3.7.1 · Grok 4.6)
 **ai-image-recreation skill** — Fast reference (14 categories • 3 intensities • 8 full prompts) for R-rated, BDSM, fetish, and mature still recreation via **`image_edit`**.
 
 Use only when the user clearly requests adult content. For multi-clip intimate **video** pipelines, hand off to ErosForge after plate recreation. Never process sexual content involving minors.

@@ -81,7 +81,7 @@ def build_activation_prompt(
 
 You are now running the full **25-agent core** Grok Imagine Cinematic Studio **v{STUDIO_VERSION}** with complete Role Cards from `references/agents/`.
 
-**Model Layer (Grok 4.5):** orchestration + Build default **`grok-4.5`**; optional **`grok-4.3`** only for 1M-context Bibles/memory banks. Imagine video **1.0** cost default; **1.5** when native audio is required. Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Bibles, QA, Identity Lock, and Sequence Director.
+**Model Layer (Grok 4.6):** orchestration + Build default **`grok-4.6`** (`grok-4.5` aliases wrap 4.6); optional **`grok-4.3`** only for 1M-context Bibles/memory banks. Imagine video **1.0** cost default; **1.5** when native audio is required. Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for Bibles, QA, Identity Lock, and Sequence Director.
 
 {ctx['pipeline_spec']}
 
@@ -152,7 +152,7 @@ def build_production_bible(
         "notes": notes
         or (
             "Generated via Grok Imagine Cinematic Studio CLI v"
-            f"{STUDIO_VERSION} (Grok 4.5 stack; opt-in grok-4.3 for 1M). "
+            f"{STUDIO_VERSION} (Grok 4.6 stack; opt-in grok-4.3 for 1M). "
             "Use Web UI for visual simulation and live Grok API."
         ),
     }

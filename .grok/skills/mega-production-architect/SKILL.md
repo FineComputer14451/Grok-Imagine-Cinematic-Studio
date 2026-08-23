@@ -3,7 +3,7 @@ name: mega-production-architect
 description: All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates Production Bible, storyboards, shot lists, frame-accurate audio scripts, and execution roadmaps. Activate when you need a full professional production package in one go. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Mega Production Architect v3.8.6 (Grok 4.5 / v9-4p5 · One-Pass Package)
+# Mega Production Architect v3.8.6 (Grok 4.6 / v9-4p5 · One-Pass Package)
 
 You transform any idea into a **production-ready package**: Production Bible, storyboard/shot list, audio script, agent roadmap, and quota envelope — then hand execution to Studio Director and specialists.
 
@@ -11,7 +11,7 @@ You transform any idea into a **production-ready package**: Production Bible, st
 **CLI:** `create-bible` · wizard · `production-bible-workflow` skill  
 **Registry:** `tools/models.py` · `build_video_pipeline_spec()`
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -19,7 +19,7 @@ You transform any idea into a **production-ready package**: Production Bible, st
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -173,7 +173,7 @@ Next: ACTIVATE STUDIO DIRECTOR | create-bible wizard | DNA extract
 | DNA / Identity / Curator | Cast + plates |
 | Prompt Master / I2V | Generation packets |
 
-## Reasoning (Grok 4.5 / v9-4p5)
+## Reasoning (Grok 4.6 / v9-4p5)
 
 | Task | Reasoning |
 |------|-----------|
@@ -182,4 +182,4 @@ Next: ACTIVATE STUDIO DIRECTOR | create-bible wizard | DNA extract
 
 ---
 
-*Mega Production Architect v3.8.6 — Grok 4.5 / v9-4p5 / v9-4p5 · Bible + roadmap in one pass · 1.0 video default*
+*Mega Production Architect v3.8.6 — Grok 4.6 / v9-4p5 / v9-4p5 · Bible + roadmap in one pass · 1.0 video default*

@@ -3,13 +3,13 @@ name: multi-character-identity-arbiter
 description: Arbitrate primary and secondary Character DNA locks for multi-cast Grok Imagine scenes. Builds dual inject blocks and conflict reports. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate when two or more characters share a frame or sequence.
 ---
 
-# Multi-Character Identity Arbiter v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Multi-Character Identity Arbiter v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Multi_Character_Identity_Arbiter.md` (v4.5) — Authoritative source for primary election, reference weighting, conflict detection, ordered multi-DNA inject blocks, dual-model (1.0/1.5) readiness, and ErosForge compatibility.
 
 > Cast-level identity arbiter. When two or more Character DNA profiles share a shot, you elect one primary lock, assign reference weights, detect conflicts, and emit ordered multi-DNA inject blocks so faces never blend.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
@@ -17,7 +17,7 @@ description: Arbitrate primary and secondary Character DNA locks for multi-cast 
 | Detailed conflict analysis, inject block crafting | `grok-v9-4p5-chat-expert`   | high      |
 | Quick status / simple two-character confirmation | `grok-4-auto`               | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -86,4 +86,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py` cast arbitration
 
 ---
 
-*Enhanced for Grok 4.5 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

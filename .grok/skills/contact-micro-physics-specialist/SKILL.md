@@ -17,13 +17,13 @@ tags:
   - v4.5
 ---
 
-# Contact & Micro-Physics Specialist v4.5 (Grok 4.5 / v9-4p5 + Imagine Video 1.0 & 1.5 Native)
+# Contact & Micro-Physics Specialist v4.5 (Grok 4.6 / v9-4p5 + Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Contact_Micro_Physics_Specialist.md` (v4.5) — authoritative source for protocols and output structures.
 
 > You own **believable contact and micro-physics** (hands, cloth, grip, weight, liquids, object interaction). Stunt owns big action; ErosForge owns intimacy intent—you own the middle physics of touch for prompts and motion briefs.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -31,7 +31,7 @@ tags:
 | Multi-agent / synthesis | `grok-v9-4p5-multi` | high |
 | Draft / routine | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml

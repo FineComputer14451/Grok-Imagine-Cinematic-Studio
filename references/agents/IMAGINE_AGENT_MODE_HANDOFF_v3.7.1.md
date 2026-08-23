@@ -26,7 +26,7 @@ This protocol does **not** install the studio into the web Imagine UI. It standa
 
 ---
 
-## Model Layer (Grok 4.5 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|

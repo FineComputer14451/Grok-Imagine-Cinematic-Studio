@@ -49,7 +49,7 @@ def test_execute_action_validation_failure() -> None:
 def test_execute_action_stack_inprocess() -> None:
     result = execute_action("stack", mode="inprocess", timeout=60.0)
     assert result.returncode == 0
-    assert "grok-4.5" in result.stdout or "VIDEO_PIPELINE" in result.stdout or "Model" in result.stdout
+    assert "grok-4.6" in result.stdout or "VIDEO_PIPELINE" in result.stdout or "Model" in result.stdout
 
 
 def test_execute_argv_static_allowlist_rejects_freeform() -> None:

@@ -1,4 +1,4 @@
-"""Tests for xAI chat model registry (Grok 4.5 cinematic+build default; 4.3 opt-in 1M)."""
+"""Tests for xAI chat model registry (Grok 4.6 cinematic+build default; 4.3 opt-in 1M)."""
 
 from __future__ import annotations
 
@@ -39,16 +39,16 @@ from models import (  # noqa: E402
 def test_role_defaults_are_single_source() -> None:
     # Literals live only in STACK_CONTRACT; ROLE_DEFAULTS embeds them
     assert STACK_CONTRACT == {
-        "cinematic": "grok-4.5",
-        "build": "grok-4.5",
-        "cli": "grok-4.5",
+        "cinematic": "grok-4.6",
+        "build": "grok-4.6",
+        "cli": "grok-4.6",
     }
     for role, slug in STACK_CONTRACT.items():
         assert ROLE_DEFAULTS[role] == slug
-    assert ROLE_DEFAULTS["cinematic"] == DEFAULT_XAI_CHAT_MODEL == "grok-4.5"
-    assert ROLE_DEFAULTS["build"] == DEFAULT_XAI_BUILD_MODEL == "grok-4.5"
-    assert ROLE_DEFAULTS["cli"] == DEFAULT_GROK_BUILD_MODEL == "grok-4.5"
-    assert RECOMMENDED_GROK_BUILD_CLI_VERSION == "0.2.93"
+    assert ROLE_DEFAULTS["cinematic"] == DEFAULT_XAI_CHAT_MODEL == "grok-4.6"
+    assert ROLE_DEFAULTS["build"] == DEFAULT_XAI_BUILD_MODEL == "grok-4.6"
+    assert ROLE_DEFAULTS["cli"] == DEFAULT_GROK_BUILD_MODEL == "grok-4.6"
+    assert RECOMMENDED_GROK_BUILD_CLI_VERSION == "1.0.5"
 
 
 def test_no_per_model_default_flags() -> None:
@@ -56,20 +56,21 @@ def test_no_per_model_default_flags() -> None:
     for slug, info in XAI_CHAT_MODELS.items():
         assert "default" not in info, slug
         assert "build_default" not in info, slug
-    # Unified stack: cinematic and build both pin grok-4.5
-    assert is_cinematic_default("grok-4.5")
-    assert is_build_default("grok-4.5")
+    # Unified stack: cinematic and build both pin grok-4.6
+    assert is_cinematic_default("grok-4.6")
+    assert is_build_default("grok-4.6")
     assert not is_cinematic_default("grok-4.3")
     assert not is_build_default("grok-4.3")
 
 
 def test_registry_contains_both_generations() -> None:
     assert "grok-4.3" in XAI_CHAT_MODELS
-    assert "grok-4.5" in XAI_CHAT_MODELS
+    assert "grok-4.6" in XAI_CHAT_MODELS
+    assert "grok-4.5" not in XAI_CHAT_MODELS  # alias of grok-4.6
     assert XAI_CHAT_MODELS["grok-4.3"]["context_tokens"] == 1_000_000
-    assert XAI_CHAT_MODELS["grok-4.5"]["context_tokens"] == 500_000
-    assert XAI_CHAT_MODELS["grok-4.5"]["input_usd_per_1m"] == 2.00
-    assert XAI_CHAT_MODELS["grok-4.5"]["output_usd_per_1m"] == 6.00
+    assert XAI_CHAT_MODELS["grok-4.6"]["context_tokens"] == 500_000
+    assert XAI_CHAT_MODELS["grok-4.6"]["input_usd_per_1m"] == 2.00
+    assert XAI_CHAT_MODELS["grok-4.6"]["output_usd_per_1m"] == 6.00
 
 
 def test_long_context_aliases() -> None:
@@ -89,14 +90,16 @@ def test_build_and_cinematic_aliases() -> None:
         "coding",
         "cinematic",
     ):
-        assert resolve_chat_model(alias) == "grok-4.5", alias
+        assert resolve_chat_model(alias) == "grok-4.6", alias
         assert known_chat_model(alias), alias
+    assert resolve_chat_model("4.6") == "grok-4.6"
+    assert resolve_chat_model("grok-4.6-latest") == "grok-4.6"
 
 
 def test_default_resolve_is_cinematic() -> None:
-    assert resolve_chat_model(None) == "grok-4.5"
-    assert resolve_chat_model("") == "grok-4.5"
-    assert resolve_chat_model() == "grok-4.5"
+    assert resolve_chat_model(None) == "grok-4.6"
+    assert resolve_chat_model("") == "grok-4.6"
+    assert resolve_chat_model() == "grok-4.6"
     assert not known_chat_model(None)
     assert not known_chat_model("")
 
@@ -111,7 +114,7 @@ def test_unknown_slug_falls_back_but_is_not_known() -> None:
     assert resolved == DEFAULT_XAI_CHAT_MODEL
     assert known is True
     resolved, known = normalize_chat_model("4.5")
-    assert resolved == "grok-4.5"
+    assert resolved == "grok-4.6"
     assert known is True
 
 
@@ -124,24 +127,24 @@ def test_required_roles_have_unique_slugs() -> None:
         "imagine_video",
         "imagine_image",
     }
-    # Unified 4.5 collapses cinematic + build + cli to one entry in unique tuple
+    # Unified 4.6 collapses cinematic + build + cli to one entry in unique tuple
     assert REQUIRED_MODEL_SLUGS == tuple(dict.fromkeys(REQUIRED_MODEL_ROLES.values()))
-    assert REQUIRED_MODEL_SLUGS.count("grok-4.5") == 1
+    assert REQUIRED_MODEL_SLUGS.count("grok-4.6") == 1
 
 
 def test_model_stack_summary_unified() -> None:
     stack = model_stack_summary()
-    assert stack["xai_chat"] == "grok-4.5"
-    assert stack["xai_build"] == "grok-4.5"
-    assert stack["grok_build_cli_default"] == "grok-4.5"
-    assert stack["grok_build_cli_min_version"] == "0.2.93"
+    assert stack["xai_chat"] == "grok-4.6"
+    assert stack["xai_build"] == "grok-4.6"
+    assert stack["grok_build_cli_default"] == "grok-4.6"
+    assert stack["grok_build_cli_min_version"] == "1.0.5"
 
 
 def test_model_compatibility() -> None:
     result = verify_model_compatibility()
     assert result["compatible"], result["issues"]
     assert result["studio_version"] == (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-    assert result["min_grok_build_cli_version"] == "0.2.93"
+    assert result["min_grok_build_cli_version"] == "1.0.5"
     assert "required_roles" in result
     assert isinstance(result.get("warnings"), list)
     assert isinstance(result.get("notes"), list)
@@ -164,7 +167,7 @@ def test_v9_specialist_aliases_and_constants() -> None:
         assert known_chat_model(slug)
         assert known_v9_build_model(slug)
         assert resolve_v9_build_model(slug) == slug
-        assert v9_build_base_model(slug) == "grok-4.5"
+        assert v9_build_base_model(slug) == "grok-4.6"
     for alias, canonical in (
         ("chat-expert", "grok-v9-4p5-chat-expert"),
         ("v9-4p5-chat-expert", "grok-v9-4p5-chat-expert"),

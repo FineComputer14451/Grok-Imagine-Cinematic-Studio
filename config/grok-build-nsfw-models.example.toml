@@ -1,7 +1,7 @@
 # Grok Build custom NSFW model presets — Grok Imagine Cinematic Studio
 #
 # These are picker aliases for NSFW / ErosForge *orchestration* sessions.
-# They wrap official xAI chat models (grok-4.5 / grok-4.3) with role-tuned
+# They wrap official xAI chat models (grok-4.6 / grok-4.3) with role-tuned
 # sampling. They do NOT replace Imagine generation models:
 #   stills  → grok-imagine-image / grok-imagine-image-quality
 #   video   → grok-imagine-video / grok-imagine-video-1.5
@@ -20,7 +20,7 @@
 # High creativity for emotion, consent framing, and 1.5 intimacy physics.
 # ---------------------------------------------------------------------------
 [model.erosforge-director]
-model = "grok-4.5"
+model = "grok-4.6"
 base_url = "https://cli-chat-proxy.grok.com/v1"
 name = "ErosForge Director"
 description = "NSFW cinematic director — intimate scene design, emotion, consent, 1.5 physics"
@@ -35,7 +35,7 @@ api_backend = "responses"
 # Slightly cooler than director; prioritizes precision and DNA inject blocks.
 # ---------------------------------------------------------------------------
 [model.nsfw-prompt-master]
-model = "grok-4.5"
+model = "grok-4.6"
 base_url = "https://cli-chat-proxy.grok.com/v1"
 name = "NSFW Prompt Master"
 description = "Erotic prompt engineer — Ultimate Template, DNA inject, negative prompts"
@@ -50,7 +50,7 @@ api_backend = "responses"
 # Low temperature for deterministic budget / tier / retry planning.
 # ---------------------------------------------------------------------------
 [model.nsfw-quota-planner]
-model = "grok-4.5"
+model = "grok-4.6"
 base_url = "https://cli-chat-proxy.grok.com/v1"
 name = "NSFW Quota Planner"
 description = "NSFW batch economist — hero-first tiers, i2v decisions, Heavy daily caps"
@@ -65,7 +65,7 @@ api_backend = "responses"
 # Balanced creativity for tension curves and extend-from-frame packets.
 # ---------------------------------------------------------------------------
 [model.nsfw-sequence-extend]
-model = "grok-4.5"
+model = "grok-4.6"
 base_url = "https://cli-chat-proxy.grok.com/v1"
 name = "NSFW Sequence Extend"
 description = "Sensual sequence extender — tension curves, stitch plans, chain handoffs"
@@ -80,7 +80,7 @@ api_backend = "responses"
 # Strict / low temperature for Go/No-Go decisions.
 # ---------------------------------------------------------------------------
 [model.nsfw-chain-qa]
-model = "grok-4.5"
+model = "grok-4.6"
 base_url = "https://cli-chat-proxy.grok.com/v1"
 name = "NSFW Chain QA"
 description = "NSFW chain QA guardian — hands, skin, fabric, intimacy physics, stitch seams"
@@ -94,7 +94,7 @@ api_backend = "responses"
 # NSFW Identity Lock — multi-scene body/face consistency under intimacy
 # ---------------------------------------------------------------------------
 [model.nsfw-identity-lock]
-model = "grok-4.5"
+model = "grok-4.6"
 base_url = "https://cli-chat-proxy.grok.com/v1"
 name = "NSFW Identity Lock"
 description = "Intimate identity lock — Character DNA, drift watch, multi-cast intimacy"

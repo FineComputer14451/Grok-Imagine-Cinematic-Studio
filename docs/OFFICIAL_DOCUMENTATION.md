@@ -86,7 +86,7 @@ Canonical text: **[DISCLAIMER.md](../DISCLAIMER.md)**.
 
 | Requirement | Notes |
 |-------------|-------|
-| **Grok Build CLI ≥ 0.2.93** | `cinematic-studio grok ensure` can install/upgrade |
+| **Grok Build CLI ≥ 1.0.5** | `cinematic-studio grok ensure` can install/upgrade |
 | **Grok 4.5 access** | Cinematic default; optional Grok 4.3 for 1M context |
 | **xAI Imagine** | Image + Video 1.0 / 1.5 |
 | **Python 3.12+** | CLI + Streamlit Web UI |
@@ -147,7 +147,7 @@ pip install -r requirements-streamlit.txt
 ### Primary (any Grok chat)
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.10.0
+Activate Grok Imagine Cinematic Studio v3.11.0
 ```
 
 or
@@ -167,7 +167,7 @@ Start new project
 or combine steps:
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.10.0, start new project called 'VOIDWALKER',
+Activate Grok Imagine Cinematic Studio v3.11.0, start new project called 'VOIDWALKER',
 generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5,
 lock the lead character DNA, and create the hero reveal key art.
 ```
@@ -184,7 +184,7 @@ Exit cinematic studio
 
 ### Phase 1 — Activation & Planning
 
-1. Activate the studio (v3.10.0).
+1. Activate the studio (v3.11.0).
 2. Start a new project (title, logline, genre, tone, length, cast).
 3. **Build & lock the Production Bible** with:
    - `model_stack`
@@ -306,7 +306,7 @@ North-star design: `docs/development/superpowers/specs/2026-07-26-operator-ux-no
 
 | Preset | Command |
 |--------|---------|
-| Full Studio | `Activate Grok Imagine Cinematic Studio v3.10.0` |
+| Full Studio | `Activate Grok Imagine Cinematic Studio v3.11.0` |
 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
@@ -543,7 +543,7 @@ Packets live in `tools/wave_a_packets.py`. Design notes: Parallel Brief Protocol
 ## 16. Repository Map
 
 ```text
-Grok Imagine Cinematic Studio v3.10.0
+Grok Imagine Cinematic Studio v3.11.0
 ├── .grok-plugin/              # Marketplace manifests + packs
 ├── .grok/skills/              # Skill runtime (64 SKILL.md trees)
 ├── references/agents/         # Role Cards, AGENT_INDEX, protocols, MODEL_LAYER
@@ -591,14 +591,14 @@ cinematic-studio doctor --quick
 Activation after upgrade:
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.10.0
+Activate Grok Imagine Cinematic Studio v3.11.0
 ```
 
 **Migration notes:** [guides/UPGRADE_GUIDE.md](guides/UPGRADE_GUIDE.md)  
-**Release notes:** [releases/RELEASE_NOTES_v3.10.0.md](releases/RELEASE_NOTES_v3.10.0.md)  
+**Release notes:** [releases/RELEASE_NOTES_v3.11.0.md](releases/RELEASE_NOTES_v3.11.0.md)  
 **Changelog:** [CHANGELOG.md](../CHANGELOG.md)
 
-### v3.10.0 highlight
+### v3.11.0 highlight
 
 Official Imagine **Image 2.0** + Video **1.0 / 1.5** surface map (there is **no Video 2.0**). Hero stills / Quality Mode route to `grok-imagine-image-2.0`. Agent Mode surface **E** is `xai_responses_tool`. REST `imagine submit` covers `video_edit` / `video_extend` / `reference_to_video`. Canonical: [../references/agents/IMAGINE_SURFACES.md](../references/agents/IMAGINE_SURFACES.md).
 
@@ -636,7 +636,7 @@ Software and documentation are provided **as is**, without warranty. Generated m
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System architecture |
 | [CLI_REFERENCE.md](CLI_REFERENCE.md) | CLI command reference |
 | [guides/Quick_Start_Guide.md](guides/Quick_Start_Guide.md) | Onboarding + operator loop |
-| [guides/USER_GUIDE.md](guides/USER_GUIDE.md) | Creator end-to-end guide (v3.10.0) |
+| [guides/USER_GUIDE.md](guides/USER_GUIDE.md) | Creator end-to-end guide (v3.11.0) |
 | [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.md) | Orient → Health → Produce → Gate → Deliver |
 | [guides/installation_guide.md](guides/installation_guide.md) | Install Method A / B |
 | [guides/UPGRADE_GUIDE.md](guides/UPGRADE_GUIDE.md) | Version migration |
@@ -651,9 +651,9 @@ Software and documentation are provided **as is**, without warranty. Generated m
 **Ready to direct your next production?**
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.10.0
+Activate Grok Imagine Cinematic Studio v3.11.0
 ```
 
 ---
 
-*Grok Imagine Cinematic Studio v3.10.0 — Official Documentation · Independent community project · Not affiliated with xAI · MIT License*
+*Grok Imagine Cinematic Studio v3.11.0 — Official Documentation · Independent community project · Not affiliated with xAI · MIT License*

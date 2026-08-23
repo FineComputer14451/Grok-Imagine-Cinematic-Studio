@@ -14,6 +14,14 @@ Guidance for the two image tool calls in Grok Build (these hit **Imagine Image 2
 
 Hero plates and Quality Mode should lock `grok-imagine-image-2.0`. There is no Video 2.0. Full map: `references/agents/IMAGINE_SURFACES.md`.
 
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
 Apply this whenever you're considering or about to call either tool.
 
 ## Build accurate visuals with code, not the image tools

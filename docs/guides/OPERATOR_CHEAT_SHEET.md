@@ -1,16 +1,16 @@
-# Operator Cheat Sheet — Grok Imagine Cinematic Studio v3.10.0
+# Operator Cheat Sheet — Grok Imagine Cinematic Studio v3.11.0
 
 **One-pager for activation, agents, skills, packs, and CLI.**  
 Community project — not affiliated with xAI. Canonical detail: `AGENTS.md` · `references/agents/AGENT_INDEX.md` · `references/SKILLS_TAXONOMY.md`.
 
 | Stamp | Value |
 |-------|--------|
-| Studio | **v3.10.0** |
+| Studio | **v3.11.0** |
 | Skills | **64** |
 | Role-Card core agents | **25** |
 | Wave A (P0) | **8** specialists |
 | Marketplace | Full suite + 5 packs |
-| Registry default | `grok-4.5` (+ specialist v9-4p5 / `grok-4-auto` when available) |
+| Registry default | `grok-4.6` (+ specialist v9-4p5 / `grok-4-auto` when available) |
 | Imagine | **1.0** default · **1.5** native audio / physics / intimacy |
 
 ---
@@ -18,7 +18,7 @@ Community project — not affiliated with xAI. Canonical detail: `AGENTS.md` · 
 ## 60-second activate
 
 ```text
-Activate Grok Imagine Cinematic Studio v3.10.0
+Activate Grok Imagine Cinematic Studio v3.11.0
 ```
 
 | Surface | How |
@@ -40,7 +40,7 @@ Activate Grok Imagine Cinematic Studio v3.10.0
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration / Build | `grok-4.5` | Bibles, multi-agent direction, CLI |
+| Orchestration / Build | `grok-4.6` | Bibles, multi-agent direction, CLI |
 | Multi-agent specialist | `grok-v9-4p5-multi` | Handoffs, sequences, synthesis |
 | Craft specialist | `grok-v9-4p5-chat-expert` | DNA, prompts, QA, DoP, Sonic |
 | Draft / quota | `grok-4-auto` | Animatic, routine routing |
@@ -60,7 +60,7 @@ Every Production Bible locks `model_stack` + `VIDEO_PIPELINE_SPEC`.
 
 | Command | Purpose |
 |---------|---------|
-| `/cinematic` | Full studio activate v3.10.0 |
+| `/cinematic` | Full studio activate v3.11.0 |
 | `/dna` | Character DNA extract / lock / inject |
 | `/imagine` | Preflight → plan → generate → QA / bridge |
 | `/dashboard` | Health, quota, sequences, DNA |
@@ -83,28 +83,30 @@ Display name → **skill slug** → primary activation.
 | 1 | Studio Director | `studio-director` | `ACTIVATE STUDIO DIRECTOR` · `ACTIVATE IMAGINE_AGENT_MODE_HANDOFF` |
 | 2 | Mega Production Architect | `mega-production-architect` | `ACTIVATE MEGA_PRODUCTION_ARCHITECT` |
 | 3 | Director of Photography | `director-of-photography` | `ACTIVATE DOP` |
-| 4 | Production Designer | `production-designer-set-decorator` | `ACTIVATE PRODUCTION_DESIGNER` |
-| 5 | Color Grading Supervisor | `post-production-color-grading-supervisor` | `ACTIVATE COLOR_GRADING` |
-| 6 | Performance & Emotion Director | `performance-emotion-director` | `ACTIVATE PERFORMANCE_EMOTION` |
-| 7 | Identity Lock Specialist | `identity-lock-specialist` | `ACTIVATE IDENTITY_LOCK` |
-| 8 | Narrative Arc Pacing Strategist | `narrative-arc-pacing-strategist` | `ACTIVATE NARRATIVE_ARC` |
-| 9 | Sequence Director | `sequence-director` | `ACTIVATE SEQUENCE_DIRECTOR` |
-| 10 | Cinematic Sequence Extender | `cinematic-sequence-extender` | `ACTIVATE SEQUENCE_EXTENDER` |
-| 11 | Continuity Guardian | `continuity-consistency-guardian` | `ACTIVATE CONTINUITY_GUARDIAN` |
-| 12 | Multi-Clip Continuity Orchestrator | `multi-clip-continuity-orchestrator` | `ACTIVATE MULTI_CLIP_CONTINUITY_ORCHESTRATOR` |
-| 13 | Imagine Prompt Master | `imagine-prompt-master` | `ACTIVATE IMAGINE_PROMPT_MASTER` |
-| 14 | Quality Assurance Guardian | `quality-assurance-guardian` | `ACTIVATE QA_GUARDIAN` · `RUN QA REVIEW` |
-| 15 | Grok Doctor | `grok-doctor` | `ACTIVATE GROK_DOCTOR` · `RUN STUDIO_HEALTH_CHECK` |
-| 16 | Workflow Quota Optimizer | `workflow-quota-optimizer` | `ACTIVATE WORKFLOW_OPTIMIZER` |
-| 17 | Sonic Architect | `sonic-architect-native-audio-virtuoso` | `ACTIVATE SONIC_ARCHITECT` |
-| 18 | Foley Specialist | `foley-sound-design-specialist` | `ACTIVATE FOLEY_SPECIALIST` |
-| 19 | Stunt Action Choreographer | `stunt-action-choreographer` | `ACTIVATE STUNT_CHOREOGRAPHER` |
-| 20 | VFX & SFX Supervisor | `vfx-sfx-supervisor` | `ACTIVATE VFX_SFX_SUPERVISOR` |
-| 21 | Key Art Designer | `key-art-poster-designer` | `ACTIVATE KEY_ART_DESIGNER` |
-| 22 | Trailer Director | `trailer-teaser-director` | `ACTIVATE TRAILER_DIRECTOR` |
-| 23 | Localization Specialist | `localization-subtitle-specialist` | `ACTIVATE LOCALIZATION_SPECIALIST` |
-| 24 | AI Polish Director | `ai-polish-director` | `ACTIVATE AI_POLISH_DIRECTOR` · `RUN FINAL POLISH PASS` |
-| 25 | ErosForge NSFW Director | `erosforge-nsfw-director` | `ACTIVATE EROSFORGE` (**explicit opt-in only**) |
+| 4 | Color Grading Supervisor | `post-production-color-grading-supervisor` | `ACTIVATE COLOR_GRADING` |
+| 5 | Production Designer | `production-designer-set-decorator` | `ACTIVATE PRODUCTION_DESIGNER` |
+| 6 | Character DNA Extractor | `character-dna-extractor` | `ACTIVATE CHARACTER_DNA_EXTRACTOR` |
+| 7 | Performance & Emotion Director | `performance-emotion-director` | `ACTIVATE PERFORMANCE_EMOTION` |
+| 8 | Identity Lock Specialist | `identity-lock-specialist` | `ACTIVATE IDENTITY_LOCK` |
+| 9 | Narrative Arc Pacing Strategist | `narrative-arc-pacing-strategist` | `ACTIVATE NARRATIVE_ARC` · `ACTIVATE NARRATIVE_STRATEGIST` |
+| 10 | Sequence Director | `sequence-director` | `ACTIVATE SEQUENCE_DIRECTOR` |
+| 11 | Cinematic Sequence Extender | `cinematic-sequence-extender` | `ACTIVATE SEQUENCE_EXTENDER` |
+| 12 | Continuity Guardian | `continuity-consistency-guardian` | `ACTIVATE CONTINUITY_GUARDIAN` |
+| 13 | Multi-Clip Continuity Orchestrator | `multi-clip-continuity-orchestrator` | `ACTIVATE MULTI_CLIP_CONTINUITY_ORCHESTRATOR` |
+| 14 | Imagine Prompt Master | `imagine-prompt-master` | `ACTIVATE IMAGINE_PROMPT_MASTER` |
+| 15 | Quality Assurance Guardian | `quality-assurance-guardian` | `ACTIVATE QA_GUARDIAN` · `RUN QA REVIEW` |
+| 16 | Grok Doctor | `grok-doctor` | `ACTIVATE GROK_DOCTOR` · `RUN STUDIO_HEALTH_CHECK` |
+| 17 | Workflow Quota Optimizer | `workflow-quota-optimizer` | `ACTIVATE WORKFLOW_OPTIMIZER` |
+| 18 | Sonic Architect | `sonic-architect-native-audio-virtuoso` | `ACTIVATE SONIC_ARCHITECT` |
+| 19 | Foley Specialist | `foley-sound-design-specialist` | `ACTIVATE FOLEY_SPECIALIST` |
+| 20 | Stunt Action Choreographer | `stunt-action-choreographer` | `ACTIVATE STUNT_CHOREOGRAPHER` |
+| 21 | VFX & SFX Supervisor | `vfx-sfx-supervisor` | `ACTIVATE VFX_SFX_SUPERVISOR` |
+| 22 | Key Art Designer | `key-art-poster-designer` | `ACTIVATE KEY_ART_DESIGNER` |
+| 23 | Trailer Director | `trailer-teaser-director` | `ACTIVATE TRAILER_DIRECTOR` |
+| 24 | Localization Specialist | `localization-subtitle-specialist` | `ACTIVATE LOCALIZATION_SPECIALIST` |
+| 25 | AI Polish Director | `ai-polish-director` | `ACTIVATE AI_POLISH_DIRECTOR` · `RUN FINAL POLISH PASS` |
+
+Matches `tools/cli/shared.py` `CORE_AGENT_CATEGORIES`. **ErosForge NSFW Director** is opt-in (not in the 25) — `ACTIVATE EROSFORGE` / `/nsfw`.
 
 Role Cards: `references/agents/`. Index: `references/agents/AGENT_INDEX.md`.
 
@@ -129,7 +131,7 @@ Role Cards: `references/agents/`. Index: `references/agents/AGENT_INDEX.md`.
 
 | Skill slug | Role |
 |------------|------|
-| `character-dna-extractor` | DNA from refs → Identity Lock handoff |
+| `erosforge-nsfw-director` | Opt-in R-rated / intimate direction (`ACTIVATE EROSFORGE`) |
 | `costume-wardrobe-continuity` | Wardrobe lock / inject |
 | `multi-character-identity-arbiter` | Multi-cast DNA arbitration |
 | `reference-asset-curator` | Hero/standard/draft tiers + model routing |
@@ -221,7 +223,7 @@ Activate studio
 
 | Intent | Phrase |
 |--------|--------|
-| Full studio | `Activate Grok Imagine Cinematic Studio v3.10.0` |
+| Full studio | `Activate Grok Imagine Cinematic Studio v3.11.0` |
 | 1.5 native | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | Long-form | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | Character onboard | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
@@ -288,5 +290,5 @@ grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
 
 ---
 
-*Operator cheat sheet · studio **v3.10.0** · 25 core · Wave A 8 · **64 skills** · multi-surface (TUI · Streamlit · NiceGUI · React · API)*  
+*Operator cheat sheet · studio **v3.11.0** · 25 core · Wave A 8 · **64 skills** · multi-surface (TUI · Streamlit · NiceGUI · React · API)*  
 *Regenerate after roster/pack changes: update from AGENT_INDEX + plugin_packs.yaml + required_skills.manifest.*

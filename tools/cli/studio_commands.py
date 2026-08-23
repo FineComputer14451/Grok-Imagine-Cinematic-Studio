@@ -1,4 +1,4 @@
-"""Core studio status, agents, role cards, and Grok 4.5 stack CLI commands."""
+"""Core studio status, agents, role cards, and Grok 4.6 stack CLI commands."""
 
 from __future__ import annotations
 
@@ -70,12 +70,12 @@ def register(app: typer.Typer) -> None:
 
     @app.command()
     def status():
-        """Show studio status and Grok 4.5 model stack."""
+        """Show studio status and Grok 4.6 model stack."""
         stack = model_stack_summary()
         console.print(
             Panel.fit(
                 f"[bold cyan]🎥 Grok Imagine Cinematic Studio v{STUDIO_VERSION}[/bold cyan]\n"
-                "[green]Status:[/green] Enhanced CLI Active · Grok 4.5 orchestration\n"
+                "[green]Status:[/green] Enhanced CLI Active · Grok 4.6 orchestration\n"
                 f"[green]Agents:[/green] {core_agent_count()} core + "
                 f"{total_agent_count() - core_agent_count()} specialists\n"
                 "[green]Role Cards:[/green] Loaded from references/agents/\n"
@@ -93,10 +93,10 @@ def register(app: typer.Typer) -> None:
         stack = model_stack_summary()
         console.print(
             f"[bold]cinematic-studio[/bold] v{STUDIO_VERSION} · "
-            f"Grok [bold]4.5[/bold] cinematic+Build · "
+            f"Grok [bold]4.6[/bold] cinematic+Build · "
             f"chat [green]{stack.get('xai_chat')}[/green] · "
             f"video [green]{stack.get('imagine_video')}[/green] · "
-            f"CLI ≥ {stack.get('grok_build_cli_min_version', '0.2.93')} · July 2026"
+            f"CLI ≥ {stack.get('grok_build_cli_min_version', '1.0.5')} · August 2026"
         )
 
     @app.command("doctor")
@@ -122,7 +122,7 @@ def register(app: typer.Typer) -> None:
     def stack_cmd(
         json_output: bool = typer.Option(False, "--json", help="Emit model_stack JSON"),
     ):
-        """Print the locked Grok 4.5 model stack and VIDEO_PIPELINE_SPEC."""
+        """Print the locked Grok 4.6 model stack and VIDEO_PIPELINE_SPEC."""
         stack = model_stack_summary()
         if json_output:
             import json
@@ -150,7 +150,7 @@ def register(app: typer.Typer) -> None:
         table = Table(
             title=(
                 f"🎬 Grok Imagine Cinematic Studio v{STUDIO_VERSION} — "
-                f"{core_agent_count()} Core Agents · Grok 4.5"
+                f"{core_agent_count()} Core Agents · Grok 4.6"
             ),
             box=box.ROUNDED,
         )
@@ -166,7 +166,7 @@ def register(app: typer.Typer) -> None:
             f"\n[italic dim]Core: {core_agent_count()} · "
             f"Total roster: {total_agent_count()} (incl. i2i + opt-in NSFW) · "
             f"Role Card labels may show v3.6.5; studio release is v{STUDIO_VERSION} · "
-            f"orchestration default grok-4.5[/italic dim]"
+            f"orchestration default grok-4.6[/italic dim]"
         )
 
     @app.command(name="list-role-cards")
@@ -214,11 +214,11 @@ def register(app: typer.Typer) -> None:
 
     @app.command()
     def activate():
-        """Print the official Grok 4.5 activation command and stack."""
+        """Print the official Grok 4.6 activation command and stack."""
         console.print(
             Panel(
                 f"[bold]{ACTIVATION_PHRASE}[/bold]\n\n"
-                f"1. Paste [cyan]{MASTER_PROMPT_DOC}[/cyan] into a Grok 4.5 chat\n"
+                f"1. Paste [cyan]{MASTER_PROMPT_DOC}[/cyan] into a Grok 4.6 chat\n"
                 "2. Run the activation phrase above\n"
                 "3. Lock Bible with [cyan]create-bible[/cyan] / "
                 "[cyan]create-bible --wizard[/cyan]\n"
@@ -226,7 +226,7 @@ def register(app: typer.Typer) -> None:
                 "[green]1.5[/green] for native audio\n"
                 f"5. Verify stack: [cyan]models verify[/cyan] · [cyan]stack[/cyan]\n\n"
                 f"[dim]{MODEL_LAYER_DOC} · optional 1M: --chat-model grok-4.3[/dim]",
-                title="🚀 Activation · Grok 4.5",
+                title="🚀 Activation · Grok 4.6",
                 border_style="magenta",
             )
         )

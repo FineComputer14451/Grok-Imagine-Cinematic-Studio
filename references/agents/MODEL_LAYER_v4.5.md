@@ -10,6 +10,8 @@
 
 This document is the single source of truth for how Cinematic Studio skills and agents should select, prefer, and declare compatibility with Grok models **and** Grok Imagine Video versions. All Role Cards and skills must reference this layer.
 
+**Registry stack (studio v3.11.0):** cinematic + Build default is **`grok-4.6`**. Identifiers `grok-4.5`, `4.5`, `cinematic`, `build`, and `coding` resolve to `grok-4.6`. Specialist pickers (`grok-v9-4p5-*`, `grok-4-auto`) wrap **4.6**. Grok Build CLI min **1.0.5**. Optional 1M remains `grok-4.3`.
+
 It provides first-class support for:
 
 | Identifier                    | Short Name     | Primary Role                                      |
@@ -108,7 +110,7 @@ Every video-related Role Card and handoff **must** declare a `VIDEO_PIPELINE_SPE
 Every skill SKILL.md and every Role Card that performs non-trivial reasoning **must** contain a short **Model Layer** section:
 
 ```markdown
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                    | Preferred model              | Reasoning |
 |-----------------------------|------------------------------|-----------|
@@ -149,7 +151,7 @@ imagine_video_support:
 from tools.models import (
     resolve_chat_model,
     recommended_model_for_role,
-    DEFAULT_XAI_CHAT_MODEL,          # → grok-4.5 (registry / Bible / Build stack lock)
+    DEFAULT_XAI_CHAT_MODEL,          # → grok-4.6 (registry / Bible / Build stack lock)
     DEFAULT_XAI_CHAT_EXPERT_MODEL,   # → grok-v9-4p5-chat-expert (specialist craft)
     DEFAULT_XAI_MULTI_MODEL,         # → grok-v9-4p5-multi
     DEFAULT_XAI_AUTO_MODEL,          # → grok-4-auto
@@ -164,7 +166,7 @@ from tools.models import (
 
 ### Grok Build picker install (when native product IDs are unavailable)
 
-Public `api.x.ai` may return **Model not found** for `grok-v9-4p5-*` / `grok-4-auto`. Install session-auth specialist pickers that wrap `grok-4.5` with role-tuned sampling:
+Public `api.x.ai` may return **Model not found** for `grok-v9-4p5-*` / `grok-4-auto`. Install session-auth specialist pickers that wrap `grok-4.6` with role-tuned sampling:
 
 ```bash
 bash scripts/install_v9_grok_models.sh          # first install / upgrade bare stubs
@@ -180,7 +182,7 @@ Config source: `config/grok-build-v9-models.example.toml` · registry: `GROK_BUI
 ## Migration & Validation Notes
 
 - All Role Cards in `references/agents/` have been enhanced (or are being enhanced) to this standard as of 2026-07-21.
-- Previous hard-coded “Grok 4.5” language should now use the explicit v9-4p5 identifiers for **specialist routing**; stack lock / Bibles remain **`grok-4.5`**.
+- Previous hard-coded “Grok 4.5” language should now use the explicit v9-4p5 identifiers for **specialist routing**; stack lock / Bibles remain **`grok-4.6`** (`grok-4.5` aliases wrap 4.6).
 - Team Leader / Full Studio Mode orchestration **defaults to grok-v9-4p5-multi**.
 - Run after changes:
 

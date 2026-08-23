@@ -1,4 +1,4 @@
-# Grok Imagine Cinematic Studio v3.10.0 — Quick Start Guide
+# Grok Imagine Cinematic Studio v3.11.0 — Quick Start Guide
 
 **Version:** 3.10.0 | **Last Updated:** August 22, 2026  
 **Suite:** 25+ Role-Card core agents · **64 skills** · marketplace full suite + 5 packs
@@ -8,18 +8,18 @@
 
 ---
 
-## 0. Model Stack (Unified Grok 4.5 cinematic+Build · optional 4.3 1M · Imagine)
+## 0. Model Stack (Unified Grok 4.6 cinematic+Build · optional 4.3 1M · Imagine)
 
 | Where | Model | Purpose |
 |-------|-------|---------|
-| Grok chat / API (cinematic) | `grok-4.5` | Production Bibles, multi-agent direction (default); `grok-4.3` for **1M** opt-in |
-| Grok Build CLI (default) | `grok-4.5` | Coding, agentic sessions (min CLI **0.2.93**) |
+| Grok chat / API (cinematic) | `grok-4.6` | Production Bibles, multi-agent direction (default); `grok-4.3` for **1M** opt-in |
+| Grok Build CLI (default) | `grok-4.6` | Coding, agentic sessions (min CLI **1.0.5**) |
 | Grok Build fork | `grok-build` | Code, skills, repo tooling |
 | Specialist routing (when available) | `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` · `grok-4-auto` | Multi-agent / craft / draft — see `references/agents/MODEL_LAYER_v4.5.md` |
 | Imagine Video | `grok-imagine-video` (1.0) / `1.5` | $0.05/sec default; 1.5 native audio $0.08/sec |
 | Imagine Image | `grok-imagine-image` | Reference stills |
 
-Every studio skill locks **Stack default** `grok-4.5` (opt-in 1M: `grok-4.3`) plus a specialist `preferred_model`.
+Every studio skill locks **Stack default** `grok-4.6` (opt-in 1M: `grok-4.3`) plus a specialist `preferred_model`.
 
 Verify compatibility: `cinematic-studio models verify` (or `python tools/cinematic_studio_cli.py models verify`)  
 Full reference: `references/MODELS_v3.6.md` · Model Layer: `references/agents/MODEL_LAYER_v4.5.md`
@@ -27,13 +27,13 @@ Full reference: `references/MODELS_v3.6.md` · Model Layer: `references/agents/M
 Grok Build config (`~/.grok/config.toml`):
 ```toml
 [models]
-default = "grok-4.5"
+default = "grok-4.6"
 
 [ui]
 fork_secondary_model = "grok-build"
 ```
 
-Check CLI version: `grok --version` (recommend ≥ 0.2.93).
+Check CLI version: `grok --version` (recommend ≥ 1.0.5).
 
 ---
 
@@ -57,7 +57,7 @@ Check CLI version: `grok --version` (recommend ≥ 0.2.93).
 **On grok.com or mobile chat** — new conversation:
 
 ```
-Activate Grok Imagine Cinematic Studio v3.10.0
+Activate Grok Imagine Cinematic Studio v3.11.0
 ```
 
 or
@@ -68,7 +68,7 @@ start cinematic production
 
 For a full lock-in on the web, paste `MASTER_PROMPT.md` first, then Activate.
 
-This loads the complete **v3.10.0** system: unified Grok 4.5 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **64-skill** suite.
+This loads the complete **v3.11.0** system: unified Grok 4.6 cinematic+Build stack (optional 4.3 1M), dual Imagine Video 1.0/1.5, guided Bible wizard, Imagine Agent Mode Handoff, Identity Continuity, and the **64-skill** suite.
 
 ### Start a New Project
 
@@ -122,11 +122,11 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 
 ---
 
-## 3. Recommended Production Workflow (v3.10.0)
+## 3. Recommended Production Workflow (v3.11.0)
 
 ### Phase 1: Activation & Planning
 1. **Activate the Full Studio**  
-   `Activate Grok Imagine Cinematic Studio v3.10.0`
+   `Activate Grok Imagine Cinematic Studio v3.11.0`
 
 2. **Start a New Project**  
    Provide title, logline, genre, tone, target length, and key characters.
@@ -176,7 +176,7 @@ Full activation table: `references/agents/AGENT_INDEX.md`
 ---
 
 **Pro Tip:** You can combine steps in one message:  
-> `"Activate Grok Imagine Cinematic Studio v3.10.0, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
+> `"Activate Grok Imagine Cinematic Studio v3.11.0, start new project called 'Neon Eclipse Heist', generate the full Production Bible with VIDEO_PIPELINE_SPEC for 1.5, and create the first sequence."`
 
 ---
 
@@ -199,7 +199,7 @@ North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-sta
 
 ---
 
-## 5. Pro Tips for Best Results (v3.10.0)
+## 5. Pro Tips for Best Results (v3.11.0)
 
 - **Be specific** — Include genre, tone, emotional goals, character details, and references.
 - **Use the Project Bible** — Lock `model_stack` + `VIDEO_PIPELINE_SPEC` (1.0 cost default; 1.5 when audio/physics need it).
@@ -217,7 +217,7 @@ North-star: `docs/development/superpowers/specs/2026-07-26-operator-ux-north-sta
 
 | Command                                           | Result                                      |
 |---------------------------------------------------|---------------------------------------------|
-| `Activate Grok Imagine Cinematic Studio v3.10.0`   | Load full v3.10.0 studio (Grok 4.5 + 1.0/1.5) |
+| `Activate Grok Imagine Cinematic Studio v3.11.0`   | Load full v3.11.0 studio (Grok 4.6 + 1.0/1.5) |
 | `create-bible --wizard`                           | Guided Production Bible (TTY interactive)   |
 | `Start new project`                               | Begin fresh production                      |
 | `GENERATE DIRECTOR'S CUT`                         | Refined version with notes                  |
@@ -272,8 +272,8 @@ You can also run it manually: **Actions → Auto re-pin plugin catalog → Run w
 
 **You are now ready to create professional cinematic productions with Grok 4.5 orchestration + Imagine Video 1.0/1.5 support.**
 
-Just say **"Activate Grok Imagine Cinematic Studio v3.10.0"** and begin.
+Just say **"Activate Grok Imagine Cinematic Studio v3.11.0"** and begin.
 
 ---
 
-*Grok Imagine Cinematic Studio v3.10.0 — Grok 4.5 / Model Layer v4.5 · 64 skills · August 2026*
+*Grok Imagine Cinematic Studio v3.11.0 — Grok 4.6 / Model Layer v4.5 · 64 skills · August 2026*

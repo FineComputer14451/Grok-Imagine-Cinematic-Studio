@@ -74,7 +74,7 @@ Never treat ACP as a free-form generation path that bypasses prompt craft, refer
 
 ---
 
-## 3. Model Layer (Grok 4.5 / v9-4p5)
+## 3. Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -323,4 +323,4 @@ Official packet protocols: `handoff-packet-validator/references/HANDOFF_PACKET_P
 
 ---
 
-*Official Imagine Agent Mode Handoff Protocol — Grok Imagine Cinematic Studio · Grok 4.5 / v9-4p5 · Extend-from-Frame Priority default · August 2026*
+*Official Imagine Agent Mode Handoff Protocol — Grok Imagine Cinematic Studio · Grok 4.6 / v9-4p5 · Extend-from-Frame Priority default · August 2026*

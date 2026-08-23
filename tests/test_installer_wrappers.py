@@ -216,7 +216,7 @@ def test_ensure_grok_cli_ok_when_binary_present(tmp_path: Path) -> None:
             """\
             #!/usr/bin/env bash
             if [[ "${1:-}" == "--version" ]]; then
-              echo "grok 0.2.112 (deadbeef) [stable]"
+              echo "grok 1.0.5 (deadbeef) [stable]"
               exit 0
             fi
             echo "unexpected: $*" >&2
@@ -233,7 +233,7 @@ def test_ensure_grok_cli_ok_when_binary_present(tmp_path: Path) -> None:
         "PATH": f"{bin_dir}:{os.environ.get('PATH', '')}",
         # Explicitly allow ensure; fake binary prevents network path
         "CINEMATIC_SKIP_GROK_CLI": "0",
-        "CINEMATIC_MIN_GROK_CLI": "0.2.93",
+        "CINEMATIC_MIN_GROK_CLI": "1.0.5",
     }
     script = textwrap.dedent(
         f"""\

@@ -15,7 +15,7 @@ For all other surfaces (A/B/D) use the full **Imagine Agent Mode Handoff**.
 
 ---
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|

@@ -1,10 +1,10 @@
-# <Skill Name> v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.5 Native)
+# <Skill Name> v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.5 Native)
 
 **Role Card (if agent):** `references/agents/<Card_Name>.md` (v4.5 preferred)
 
 > Always load and follow the Role Card before major decisions when this is an agent skill.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                         | Preferred model               | Reasoning   |
 |-----------------------------------|-------------------------------|-------------|

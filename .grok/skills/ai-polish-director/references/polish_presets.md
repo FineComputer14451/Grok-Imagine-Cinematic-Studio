@@ -1,6 +1,6 @@
 # AI Polish Delivery Presets v3.7.1
 
-Use with **AI Polish Director**. Orchestration: Grok 4.5. Execution: `ai-video-upscaler` / `sequence polish`.
+Use with **AI Polish Director**. Orchestration: Grok 4.6. Execution: `ai-video-upscaler` / `sequence polish`.
 
 Native Imagine masters are typically **720p**. Presets target delivery class without re-grading.
 

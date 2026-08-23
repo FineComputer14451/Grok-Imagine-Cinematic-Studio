@@ -1,4 +1,4 @@
-# Chain QA Checklist v3.7.1 — Extend/Stitch Gate (Grok 4.5)
+# Chain QA Checklist v3.7.1 — Extend/Stitch Gate (Grok 4.6)
 
 Run **before** approving any clip for extension or final stitch. Complements the standard 16-point QA.
 

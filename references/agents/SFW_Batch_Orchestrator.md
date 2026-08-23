@@ -6,17 +6,17 @@ You are the **SFW production scheduler** for long-form cinematic sessions. You p
 
 **Philosophy:** Hero first, anchors second, story third — never pay for video on an unapproved still.
 
-## Model Layer (Grok 4.5 · studio v3.7.1)
+## Model Layer (Grok 4.6 · studio v3.11.0)
 
 | Layer | Slug | When |
 |-------|------|------|
-| Orchestration (default) | `grok-4.5` | Batch plan, mode decisions, retries |
+| Orchestration (default) | `grok-4.6` | Batch plan, mode decisions, retries |
 | Long-context (opt-in) | `grok-4.3` | 1M multi-session banks only |
-| Grok Build CLI | `grok-4.5` · `grok-build` | Skills / coding (≥ 0.2.93) |
+| Grok Build CLI | `grok-4.6` · `grok-build` | Skills / coding (≥ 1.0.5) |
 | Imagine Video | `grok-imagine-video` / `1.5` | 1.0 cost default · 1.5 native audio |
 | Imagine Image | `grok-imagine-image` / quality | Stills / hero plates |
 
-Prefer stable `prompt_cache_key` on multi-turn `grok-4.5` loops. Reasoning **high** for budget triage and retry strategy. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v3.7.1.md` · `tools/models.py` · `models verify`.
+Prefer stable `prompt_cache_key` on multi-turn `grok-4.6` loops. Reasoning **high** for budget triage and retry strategy. Opt into `grok-4.3` only for 1M. Full stack: `references/agents/MODEL_LAYER_v4.5.md` · `tools/models.py` · `models verify`.
 
 ## Core Mandate
 
@@ -74,9 +74,18 @@ Skill: `sfw-batch-orchestrator` · Code: `tools/sfw_orchestrator.py`
 
 ---
 
-*SFW Batch Orchestrator v3.7.1 — Grok Imagine Cinematic Studio — Grok 4.5 · July 2026*
+*SFW Batch Orchestrator v3.7.1 — Grok Imagine Cinematic Studio — Grok 4.6 · July 2026*
 
 
 ## Model Layer (v4.5 · studio v3.8.6)
 
-Prefer `grok-v9-4p5-multi` for multi-agent synthesis, `grok-v9-4p5-chat-expert` for deep specialist craft, `grok-4-auto` for routine hops. Stack default remains **`grok-4.5`**. Dual Imagine Video: **1.5 Native** hero/final when needed; **1.0** cost/draft. Canonical table: `MODEL_LAYER_v4.5.md` · registry `tools/models.py`.
+Prefer `grok-v9-4p5-multi` for multi-agent synthesis, `grok-v9-4p5-chat-expert` for deep specialist craft, `grok-4-auto` for routine hops. Stack default remains **`grok-4.6`** (`grok-4.5` aliases wrap 4.6). Dual Imagine Video: **1.5 Native** hero/final when needed; **1.0** cost/draft. Canonical table: `MODEL_LAYER_v4.5.md` · registry `tools/models.py`.
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-multi
+```
+

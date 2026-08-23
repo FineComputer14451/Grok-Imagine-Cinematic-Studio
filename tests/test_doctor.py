@@ -92,6 +92,22 @@ def test_format_human_includes_summary() -> None:
     assert "auth.json" in text
 
 
+def test_auth_config_passes_grok_46_default_and_fork(tmp_path: Path) -> None:
+    home = tmp_path / "home"
+    grok = home / ".grok"
+    grok.mkdir(parents=True)
+    (grok / "auth.json").write_text("{}", encoding="utf-8")
+    (grok / "config.toml").write_text(
+        '[models]\ndefault = "grok-4.6"\n\n[ui]\nfork_secondary_model = "grok-4.6"\n',
+        encoding="utf-8",
+    )
+    results = check_auth_and_config(home=home)
+    by_name = {r.name: r for r in results}
+    assert by_name["auth.json"].status == "PASS"
+    assert by_name["models.default"].status == "PASS"
+    assert by_name["fork_secondary_model"].status == "PASS"
+
+
 def test_auth_config_reads_toml(tmp_path: Path) -> None:
     home = tmp_path / "home"
     grok = home / ".grok"
@@ -392,8 +408,8 @@ def test_model_stack_no_free_pass_on_fail(monkeypatch: pytest.MonkeyPatch) -> No
             "studio_version": "3.8.7",
             "installed_grok_cli_version": "0.2.111",
             "model_stack": {
-                "xai_chat": "grok-4.5",
-                "xai_build": "grok-4.5",
+                "xai_chat": "grok-4.6",
+                "xai_build": "grok-4.6",
                 "imagine_video": "grok-imagine-video",
                 "imagine_image": "grok-imagine-image",
             },

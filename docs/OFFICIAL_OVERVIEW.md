@@ -1,5 +1,5 @@
 # Grok Imagine Cinematic Studio
-## Official Overview — v3.10.0
+## Official Overview — v3.11.0
 
 **Production-grade multi-agent cinematic production for Grok 4.5 Build + Grok 4.3 dual-stack · Imagine Video 1.0 / 1.5 Native**
 
@@ -21,7 +21,7 @@ It is not a simple prompt wrapper. It is a full **virtual film studio** with spe
 
 ---
 
-## Key Capabilities (v3.10.0)
+## Key Capabilities (v3.11.0)
 
 | Capability | Description |
 |------------|-------------|
@@ -33,7 +33,7 @@ It is not a simple prompt wrapper. It is a full **virtual film studio** with spe
 | **Dual Video Pipeline** | Imagine Video **1.0** (cost default) + **1.5 Native** (preferred for audio, physics, intimacy) |
 | **Long-form Sequencing** | Native extend/stitch with memory bank, momentum vectors, Chain QA, arc replan, re-gen loop |
 | **Operator Control Plane** | Readiness · convergence · delivery · handoff validate · Wave A packaging (v3.8.8+) |
-| **TUI + Streamlit Density** | Compact / ops / full view modes (v3.10.0) on `cinematic-studio ui` and Dashboard |
+| **TUI + Streamlit Density** | Compact / ops / full view modes (v3.11.0) on `cinematic-studio ui` and Dashboard |
 | **Wave A Multi-Agent** | Plate/motion, micro-physics, HMU, ADR, score, titles, crops, parallel briefs |
 | **NSFW / R-rated Pipeline** | Explicit opt-in ErosForge + NSFW Sequence Extender + dedicated quota orchestration |
 | **Post-Production** | Color grade handoff → AI Polish Director (upscale + face restoration) → Delivery |
@@ -68,7 +68,7 @@ It is not a simple prompt wrapper. It is a full **virtual film studio** with spe
 In any Grok conversation (grok.com, mobile app, or Grok Build chat):
 
 ```
-Activate Grok Imagine Cinematic Studio v3.10.0
+Activate Grok Imagine Cinematic Studio v3.11.0
 ```
 
 or simply:
@@ -88,7 +88,7 @@ cinematic-studio ui                    # TUI: 1 compact · 2 ops · 3 full · p 
 streamlit run web_ui/app.py            # Guided Bible · DNA · Dashboard · cost
 ```
 
-Requires **Grok Build CLI ≥ 0.2.93** and Python 3.12+ for CLI / Web UI paths.
+Requires **Grok Build CLI ≥ 1.0.5** and Python 3.12+ for CLI / Web UI paths.
 
 ---
 
@@ -108,16 +108,16 @@ Requires **Grok Build CLI ≥ 0.2.93** and Python 3.12+ for CLI / Web UI paths.
 
 ---
 
-## What’s New in v3.10.0
+## What’s New in v3.11.0
 
 - **TUI Home view modes** — `1` compact · `2` ops · `3` full · Tab cycle · `p` pause auto-refresh · list filter
 - **Streamlit Dashboard view modes** — matching compact / ops / full density (session-persisted)
 - Builds on **v3.8.8** Operator UX control plane (readiness · convergence · delivery · handoff validate · Wave A)
 
-Details: [RELEASE_NOTES_v3.10.0.md](releases/RELEASE_NOTES_v3.10.0.md) · [CHANGELOG.md](../CHANGELOG.md)
+Details: [RELEASE_NOTES_v3.11.0.md](releases/RELEASE_NOTES_v3.11.0.md) · [CHANGELOG.md](../CHANGELOG.md)
 
 ---
 
 **Built for creators who want cinematic AI that feels directed, not just generated.**
 
-*Grok Imagine Cinematic Studio v3.10.0 — Independent community project · Not affiliated with xAI · [DISCLAIMER.md](../DISCLAIMER.md)*
+*Grok Imagine Cinematic Studio v3.11.0 — Independent community project · Not affiliated with xAI · [DISCLAIMER.md](../DISCLAIMER.md)*

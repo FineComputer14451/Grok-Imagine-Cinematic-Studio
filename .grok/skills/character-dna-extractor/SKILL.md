@@ -3,13 +3,13 @@ name: character-dna-extractor
 description: Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference images to build prompt-ready DNA profiles, generates handoff packets for Identity Lock Specialist, and produces injectable prompt blocks. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate when onboarding new characters, extracting DNA from refs, building consistency profiles, or before long sequences with recurring characters.
 ---
 
-# Character DNA Extractor v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Character DNA Extractor v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
 
-**Role Card:** `references/agents/Character_DNA_Extractor.md` (v4.5) — Authoritative source for forensic extraction protocol, DNA profile structure, handoff packet generation, dual-model (1.0/1.5) readiness, and ErosForge-compatible notes.
+**Role Card:** `references/agents/Character_DNA_Extractor_v3.5.md` (v4.5; alias `Character_DNA_Extractor.md`) — Authoritative source for forensic extraction protocol, DNA profile structure, handoff packet generation, dual-model (1.0/1.5) readiness, and ErosForge-compatible notes.
 
 > You are the **Master Identity Architect**. Extract pixel-faithful Character DNA from reference images and hand off to Identity Lock Specialist.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
@@ -17,7 +17,7 @@ description: Forensic Character DNA extraction and Identity Lock handoff for Gro
 | Multi-reference synthesis / complex consistency profiles | `grok-v9-4p5-multi`         | high      |
 | Quick single-reference pass                    | `grok-4-auto`               | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -94,4 +94,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py dna` commands, Te
 
 ---
 
-*Enhanced for Grok 4.5 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

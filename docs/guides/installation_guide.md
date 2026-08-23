@@ -1,4 +1,4 @@
-# Grok Imagine Cinematic Studio v3.10.0 — Installation Guide
+# Grok Imagine Cinematic Studio v3.11.0 — Installation Guide
 
 Two supported install paths. Both can ship the same **64 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
 
@@ -50,11 +50,11 @@ SKILLS_DIR=~/.grok/skills PROJECT_DIR=~/my-projects bash scripts/cinematic_studi
 | `CINEMATIC_RAW_BASE` | GitHub `main` raw | Fallback downloads during install/reconcile |
 | `CINEMATIC_SKIP_GROK_CLI` | unset | Set `1` to skip Grok Build binary ensure during install |
 | `CINEMATIC_FORCE_GROK_CLI` | unset | Set `1` to reinstall/refresh Grok Build even if version OK |
-| `CINEMATIC_MIN_GROK_CLI` | `0.2.93` | Minimum Grok Build CLI binary version (matches `tools/models.py`) |
+| `CINEMATIC_MIN_GROK_CLI` | `1.0.5` | Minimum Grok Build CLI binary version (matches `tools/models.py`) |
 
 ### Grok Build CLI binary (automatic on Method A)
 
-Method A install also **ensures the Grok Build CLI binary** (`grok`) is on PATH and ≥ **0.2.93**:
+Method A install also **ensures the Grok Build CLI binary** (`grok`) is on PATH and ≥ **1.0.5**:
 
 1. Detects `~/.grok/bin/grok` / `~/.local/bin/grok` / `grok` on PATH  
 2. If missing or below min → runs `grok update --stable` when possible, else official installer:  
@@ -75,7 +75,7 @@ CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install
 **Studio CLI (no full reinstall):**
 
 ```bash
-cinematic-studio grok status              # path + version vs min 0.2.93
+cinematic-studio grok status              # path + version vs min 1.0.5
 cinematic-studio grok ensure              # install/upgrade if below min
 cinematic-studio grok ensure --force      # refresh even when version OK
 cinematic-studio grok update              # grok update --stable
@@ -109,7 +109,7 @@ Method A `tools_complete` requires `tools/grok_build_cli.py` and `tools/cli/grok
 
 2. **New chat on [grok.com](https://grok.com):**
    ```
-   Activate Grok Imagine Cinematic Studio v3.10.0
+   Activate Grok Imagine Cinematic Studio v3.11.0
    ```
    For a full lock-in, paste `MASTER_PROMPT.md` first (repo or GitHub raw), then Activate.
 
@@ -128,7 +128,7 @@ Method A `tools_complete` requires `tools/grok_build_cli.py` and `tools/cli/grok
 export PATH="$HOME/.grok/bin:$HOME/.local/bin:$PATH"
 bash scripts/cinematic_studio.sh install
 cinematic-studio grok ensure
-grok --version    # expect ≥ 0.2.93
+grok --version    # expect ≥ 1.0.5
 ```
 
 ---
@@ -179,7 +179,7 @@ Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
 
 ### Manual zip (Method A)
 
-1. Download the latest `.zip` from GitHub Releases (`grok-imagine-cinematic-studio-skills-install-v3.10.0.zip` or current release)
+1. Download the latest `.zip` from GitHub Releases (`grok-imagine-cinematic-studio-skills-install-v3.11.0.zip` or current release)
 2. Extract it (release zips may use a nested root folder — the meta installer handles this automatically)
 3. Copy `.grok/skills/*` → `~/.grok/skills/`
 4. Copy `references/`, `tools/`, `config/`, and prompt files to `~/Grok-Cinematic-Projects/` (or your `PROJECT_DIR`)
@@ -269,7 +269,7 @@ Refresh the Skills page in Grok and confirm slash commands are available.
 
 1. Refresh the Skills page in Grok
 2. Start a new chat
-3. Type: `Activate Grok Imagine Cinematic Studio v3.10.0` (or use `/cinematic` with Method B)
+3. Type: `Activate Grok Imagine Cinematic Studio v3.11.0` (or use `/cinematic` with Method B)
 
 Optional Grok Build config:
 

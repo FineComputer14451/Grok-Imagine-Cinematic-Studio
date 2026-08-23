@@ -7,7 +7,7 @@
 # Env:
 #   CINEMATIC_SKIP_GROK_CLI=1       — skip Grok Build binary ensure/install
 #   CINEMATIC_FORCE_GROK_CLI=1      — reinstall/refresh even if min version is met
-#   CINEMATIC_MIN_GROK_CLI=0.2.93   — minimum Grok Build binary version
+#   CINEMATIC_MIN_GROK_CLI=1.0.5    — minimum Grok Build binary version
 #   CINEMATIC_GROK_INSTALL_URL=…    — override official install script URL
 #
 
@@ -20,7 +20,7 @@ fi
 # Official xAI Grok Build CLI installer (stable channel by default).
 CINEMATIC_GROK_INSTALL_URL_DEFAULT="https://x.ai/cli/install.sh"
 # Keep in sync with tools/models.py → RECOMMENDED_GROK_BUILD_CLI_VERSION
-CINEMATIC_MIN_GROK_CLI_DEFAULT="0.2.93"
+CINEMATIC_MIN_GROK_CLI_DEFAULT="1.0.5"
 
 cinematic_studio_resolve_wrapper_template() {
     local candidate=""

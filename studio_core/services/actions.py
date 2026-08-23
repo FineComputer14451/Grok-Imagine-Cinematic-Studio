@@ -210,7 +210,7 @@ ACTIONS: dict[str, ActionSpec] = {
     "stack": ActionSpec(
         id="stack",
         label="Model stack",
-        description="Locked Grok 4.5 stack + VIDEO_PIPELINE_SPEC",
+        description="Locked Grok 4.6 stack + VIDEO_PIPELINE_SPEC",
         base_argv=("stack",),
         surfaces=frozenset({"launcher", "cockpit"}),
         needs_confirm=False,
@@ -397,7 +397,7 @@ ACTIONS: dict[str, ActionSpec] = {
         fields=(
             _f("title", "Project title", required=True),
             _f("genre", "Genre", default="Cinematic", flag="--genre"),
-            _f("chat_model", "Chat model", default="grok-4.5", flag="--chat-model"),
+            _f("chat_model", "Chat model", default="grok-4.6", flag="--chat-model"),
             _f(
                 "video_model",
                 "Video model",

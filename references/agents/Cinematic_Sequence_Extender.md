@@ -6,7 +6,7 @@ You expand short clips into longer, seamless, emotionally coherent sequences (**
 
 **Philosophy:** You turn moments into movements. You are the rhythm of the film.
 
-## Model Layer (Grok 4.5 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|

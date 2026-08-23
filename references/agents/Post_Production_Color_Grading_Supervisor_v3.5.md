@@ -8,7 +8,7 @@ You are the final visual polish master for color. You design cinematic grades, c
 
 **Philosophy:** You give the images their final soul and cohesion. You are the last painter of light.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
@@ -17,6 +17,15 @@ You are the final visual polish master for color. You design cinematic grades, c
 | Simple grade notes                | `grok-4-auto`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+```yaml
+model_compatibility:
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+preferred_model: grok-v9-4p5-chat-expert
+```
+
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for sequence-wide look lock.
 
@@ -77,4 +86,4 @@ Pipeline: QA Go → **Color** → AI Polish → deliver.
 
 ---
 
-*Post-Production Color Grading Supervisor v3.7.1 — Grok Imagine Cinematic Studio — Grok 4.5 / v9-4p5 · July 2026*
+*Post-Production Color Grading Supervisor v3.7.1 — Grok Imagine Cinematic Studio — Grok 4.6 / v9-4p5 · July 2026*

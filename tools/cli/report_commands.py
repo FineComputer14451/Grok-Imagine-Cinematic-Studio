@@ -52,7 +52,7 @@ def register(app: typer.Typer) -> None:
         pdf.cell(
             0,
             8,
-            f"Status: Production in progress — studio v{STUDIO_VERSION} · Grok 4.5 · 25-agent core",
+            f"Status: Production in progress — studio v{STUDIO_VERSION} · Grok 4.6 · 25-agent core",
             ln=True,
         )
 
@@ -122,7 +122,7 @@ def register(app: typer.Typer) -> None:
                 "[green]✅ Model stack compatible[/green] "
                 f"(chat [bold]{stack.get('xai_chat', 'grok-4.5')}[/bold] · "
                 f"video {stack.get('imagine_video', 'grok-imagine-video')} · "
-                f"Grok 4.5 · v{STUDIO_VERSION})"
+                f"Grok 4.6 · v{STUDIO_VERSION})"
             )
             for warn in model_result.get("warnings") or []:
                 console.print(f"  [yellow]• {warn}[/yellow]")
@@ -134,7 +134,7 @@ def register(app: typer.Typer) -> None:
 
         if issues == 0:
             console.print(
-                f"\n[bold green]✅ Validation passed (v{STUDIO_VERSION} · Grok 4.5)[/bold green]"
+                f"\n[bold green]✅ Validation passed (v{STUDIO_VERSION} · Grok 4.6)[/bold green]"
             )
         else:
             console.print(f"\n[yellow]Validation completed with {issues} issue(s)[/yellow]")

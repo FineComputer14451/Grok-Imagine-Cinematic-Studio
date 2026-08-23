@@ -62,18 +62,18 @@ def _header_panel(snapshot: dict[str, Any]) -> Panel:
     title = project["title"]
     genre = project.get("genre") or "—"
     stack = snapshot.get("studio", {}).get("model_stack") or {}
-    chat = stack.get("xai_chat", "grok-4.5")
+    chat = stack.get("xai_chat", "grok-4.6")
     video = stack.get("imagine_video", "grok-imagine-video")
     lines = [
         f"[bold cyan]🎥 Grok Imagine Cinematic Studio v{snapshot['studio_version']}[/bold cyan]",
-        f"[dim]{snapshot['generated_at']} · Grok 4.5 orchestration[/dim]",
+        f"[dim]{snapshot['generated_at']} · Grok 4.6 orchestration[/dim]",
         "",
         f"[bold]Project:[/bold] {title}",
         f"[bold]Genre:[/bold] {genre}",
         f"[bold]Bible:[/bold] {'loaded' if project['has_bible'] else 'not started'}",
         f"[bold]Stack:[/bold] chat [green]{chat}[/green] · video [green]{video}[/green]",
     ]
-    return Panel("\n".join(lines), title="Studio Dashboard · Grok 4.5", border_style="cyan", box=box.ROUNDED)
+    return Panel("\n".join(lines), title="Studio Dashboard · Grok 4.6", border_style="cyan", box=box.ROUNDED)
 
 
 def _studio_health_table(snapshot: dict[str, Any]) -> Table:

@@ -3,7 +3,7 @@ name: handoff-packet-validator
 description: Validates JSON handoff packets between Cinematic Studio agents including identity lock sequence extend asset manifest intimacy state and Imagine Agent Mode Handoff. Run before activating downstream agents or extend generation. Use when validating handoff.json packets or debugging chain QA failures. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Handoff Packet Validator v3.8.6 (Grok 4.5 / v9-4p5 · Schema Gate)
+# Handoff Packet Validator v3.8.6 (Grok 4.6 / v9-4p5 · Schema Gate)
 
 **Tool skill** — data-driven schema checks for agent handoff JSON. Blocks broken packets before Identity Lock, extend/stitch, i2v, or Imagine spend.
 
@@ -11,7 +11,7 @@ description: Validates JSON handoff packets between Cinematic Studio agents incl
 **Canonical Imagine Agent Mode schema:** `tools/handoff_schema.py`  
 **Field cheat sheet:** `references/packet_types.md`
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -19,7 +19,7 @@ description: Validates JSON handoff packets between Cinematic Studio agents incl
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -196,7 +196,7 @@ Next: <activate consumer | fix producer | block spend>
 Imagine Agent Mode (surfaces, modes, required fields):  
 `references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -205,4 +205,4 @@ Imagine Agent Mode (surfaces, modes, required fields):
 
 ---
 
-*Handoff Packet Validator v3.8.6 — Grok 4.5 / v9-4p5 schema gate · data-driven PACKET_TYPES · block broken handoffs before spend*
+*Handoff Packet Validator v3.8.6 — Grok 4.6 / v9-4p5 schema gate · data-driven PACKET_TYPES · block broken handoffs before spend*

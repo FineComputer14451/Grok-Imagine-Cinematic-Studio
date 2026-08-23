@@ -16,8 +16,10 @@ from models import (
     GROK_BUILD_FORK_MODEL,
     RECOMMENDED_GROK_BUILD_CLI_VERSION,
     cli_version_at_least,
+    known_chat_model,
     model_stack_summary,
     probe_grok_cli,
+    resolve_chat_model,
     verify_model_compatibility,
 )
 from plugin_catalog import check_plugin_artifacts, validate_release_pin
@@ -215,7 +217,16 @@ def check_auth_and_config(
     default = models.get("default")
     fork = ui.get("fork_secondary_model")
 
-    if default == expected_default:
+    default_ok = default == expected_default
+    if not default_ok and default:
+        try:
+            default_ok = (
+                known_chat_model(str(default))
+                and resolve_chat_model(str(default)) == expected_default
+            )
+        except Exception:
+            default_ok = False
+    if default_ok:
         results.append(CheckResult("PASS", "models.default", str(default), section))
     elif default is None:
         results.append(
@@ -236,7 +247,8 @@ def check_auth_and_config(
             )
         )
 
-    if fork == expected_fork:
+    acceptable_forks = {expected_fork, expected_default, "grok-4.6", "grok-build"}
+    if fork in acceptable_forks:
         results.append(CheckResult("PASS", "fork_secondary_model", str(fork), section))
     elif fork is None:
         results.append(

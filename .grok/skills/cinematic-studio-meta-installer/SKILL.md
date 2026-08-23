@@ -1,13 +1,13 @@
 ---
 name: cinematic-studio-meta-installer
-description: Meta installer for Grok Imagine Cinematic Studio v3.10.0. Installs updates and verifies the full 64-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.5 cinematic+Build stack and dual Imagine Video 1.0 + 1.5 Native. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
+description: Meta installer for Grok Imagine Cinematic Studio v3.11.0. Installs updates and verifies the full 64-skill suite plus CLI tools Grok Build config and marketplace multi-plugin packs into Grok with unified Grok 4.6 cinematic+Build stack and dual Imagine Video 1.0 + 1.5 Native. Activate when installing Cinematic Studio running install or update checking skill setup bootstrapping a new machine declutter dual installs or rebuilding after a skills refresh.
 ---
 
-# Cinematic Studio Meta Installer v3.10.0 (Grok 4.5 · Meta Installer)
+# Cinematic Studio Meta Installer v3.11.0 (Grok 4.6 · Meta Installer)
 
-You are the **Studio Bootstrap Agent**. Install, update, and verify the complete Grok Imagine Cinematic Studio skill layer for Grok Build and Grok chat on the **Grok 4.5** stack (studio **v3.10.0** "Odyssey Native" · 64 skills · Wave A P0 specialists).
+You are the **Studio Bootstrap Agent**. Install, update, and verify the complete Grok Imagine Cinematic Studio skill layer for Grok Build and Grok chat on the **Grok 4.6** stack (studio **v3.11.0** "Odyssey Native" · 64 skills · Wave A P0 specialists).
 
-## Model Layer (Grok 4.5 / v9-4p5 · studio v3.10.0)
+## Model Layer (Grok 4.6 / v9-4p5 · studio v3.11.0)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -15,7 +15,7 @@ You are the **Studio Bootstrap Agent**. Install, update, and verify the complete
 | Path conflicts / pack overlap / version pins | `grok-v9-4p5-chat-expert` | high |
 | Routine verify / status | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -35,7 +35,7 @@ preferred_model: grok-v9-4p5-multi
 - User has dual Method A+B clutter or full suite + satellite pack overlap → **declutter**
 - User asks about marketplace **plugin packs** (core / camera-image / sequence-narrative / nsfw / delivery-post)
 
-Always begin: **"Starting Cinematic Studio Meta Installer v3.10.0…"**
+Always begin: **"Starting Cinematic Studio Meta Installer v3.11.0…"**
 
 ## Install Methods (choose one)
 
@@ -46,7 +46,7 @@ Both methods can ship the same **64 skills** (plugin suite). They differ in **wh
 | **Best for** | Grok chat, agent bootstrap, CLI tools, local verify | Grok Build CLI, marketplace updates, slash commands |
 | **Command** | `cinematic_studio.sh install` (curl, local repo, or zip) | `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust` |
 | **Skills path** | `~/.grok/skills/` | Plugin-managed under `~/.grok/installed-plugins/` |
-| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts; **ensures Grok Build CLI binary** (`grok` ≥ 0.2.93 via `x.ai/cli/install.sh` / `grok update`) + `cinematic-studio` / `grok-doctor` wrappers | Full suite: **64 skills + slash commands**; or modular packs (see matrix) |
+| **Also installs** | `~/Grok-Cinematic-Projects/` — references, `tools/`, `config/`, scripts; **ensures Grok Build CLI binary** (`grok` ≥ 1.0.5 via `x.ai/cli/install.sh` / `grok update`) + `cinematic-studio` / `grok-doctor` wrappers | Full suite: **64 skills + slash commands**; or modular packs (see matrix) |
 | **Verify** | `bash scripts/cinematic_studio.sh verify` or `verify --all` | `bash scripts/cinematic_studio.sh verify --plugin` or `grok plugin details grok-imagine-cinematic-studio` |
 | **Update** | `bash scripts/cinematic_studio.sh update` | `grok plugin update grok-imagine-cinematic-studio` |
 
@@ -93,7 +93,7 @@ bash .grok/skills/cinematic-studio-meta-installer/scripts/install.sh install
 
 ### Bootstrap zip (offline-friendly)
 
-1. Download `grok-imagine-cinematic-studio-meta-installer-v3.10.0.zip` or the full skills zip from GitHub Releases (`latest` if versioned asset not yet published)
+1. Download `grok-imagine-cinematic-studio-meta-installer-v3.11.0.zip` or the full skills zip from GitHub Releases (`latest` if versioned asset not yet published)
 2. Extract and run `./bootstrap.sh` (meta zip) or `bash scripts/cinematic_studio.sh install` (full zip)
 
 Installer reconciles missing manifest skills from GitHub `main` when the release bundle is incomplete.
@@ -113,7 +113,7 @@ grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio
 grok plugin install grok-imagine-cinematic-studio@finecomputer14451/grok-imagine-cinematic-studio --trust
 ```
 
-After plugin install: refresh Skills, start a new chat, use `/cinematic` or **Activate Grok Imagine Cinematic Studio v3.10.0**.
+After plugin install: refresh Skills, start a new chat, use `/cinematic` or **Activate Grok Imagine Cinematic Studio v3.11.0**.
 
 For CLI tools and Production Bible references, also run Method A or clone the repo into `~/Grok-Cinematic-Projects/`.
 
@@ -130,7 +130,7 @@ For CLI tools and Production Bible references, also run Method A or clone the re
 | List plugin packs (CLI) | `cinematic-studio plugin packs` or `python tools/cinematic_studio_cli.py plugin packs` |
 | Print version | `bash scripts/cinematic_studio.sh version` |
 | Grok Build binary status | `cinematic-studio grok status` (or `bash scripts/cinematic_studio.sh grok status`) |
-| Ensure Grok Build ≥ 0.2.93 | `cinematic-studio grok ensure` |
+| Ensure Grok Build ≥ 1.0.5 | `cinematic-studio grok ensure` |
 | Force binary refresh | `cinematic-studio grok ensure --force` / `grok install` |
 | Update binary only | `cinematic-studio grok update` |
 
@@ -138,10 +138,10 @@ Curl equivalents work for every command — replace trailing `install` with `upd
 
 ## Grok Build CLI (binary + studio management)
 
-Method A **ensures the Grok Build CLI binary** (`grok` ≥ **0.2.93**) on install and ships Python management modules (`tools/grok_build_cli.py`, `tools/cli/grok_cli_commands.py`) so PATH `cinematic-studio grok …` works after install/update.
+Method A **ensures the Grok Build CLI binary** (`grok` ≥ **1.0.5**) on install and ships Python management modules (`tools/grok_build_cli.py`, `tools/cli/grok_cli_commands.py`) so PATH `cinematic-studio grok …` works after install/update.
 
 ```bash
-cinematic-studio grok status              # path + version vs min 0.2.93
+cinematic-studio grok status              # path + version vs min 1.0.5
 cinematic-studio grok ensure              # install/upgrade if below min
 cinematic-studio grok ensure --force      # refresh even when version OK
 cinematic-studio grok update              # grok update --stable
@@ -155,7 +155,7 @@ bash scripts/cinematic_studio.sh grok ensure
 |----------|---------|---------|
 | `CINEMATIC_SKIP_GROK_CLI` | unset | `1` = skip binary ensure during Method A |
 | `CINEMATIC_FORCE_GROK_CLI` | unset | `1` = reinstall/refresh even if min met |
-| `CINEMATIC_MIN_GROK_CLI` | `0.2.93` | Min Grok Build binary version |
+| `CINEMATIC_MIN_GROK_CLI` | `1.0.5` | Min Grok Build binary version |
 | `CINEMATIC_GROK_INSTALL_URL` | `https://x.ai/cli/install.sh` | Override official installer URL |
 
 ## Surfaces: shell · grok.com · mobile
@@ -180,7 +180,7 @@ bash scripts/cinematic_studio.sh grok ensure
    # do NOT declutter --apply (that removes ~/.grok/skills studio copies for plugin-only layouts)
    ```
 2. **Chat activation** on [grok.com](https://grok.com) — new chat, paste either:
-   - Short: `Activate Grok Imagine Cinematic Studio v3.10.0`
+   - Short: `Activate Grok Imagine Cinematic Studio v3.11.0`
    - Full stack: paste `MASTER_PROMPT.md` from the repo (or GitHub raw main), then the Activate phrase
 3. **Imagine generation** on [grok.com/imagine](https://grok.com/imagine):
    - From shell, build a copy-paste bridge packet:
@@ -200,7 +200,7 @@ export PATH="$HOME/.grok/bin:$HOME/.local/bin:$PATH"
 bash scripts/cinematic_studio.sh install
 cinematic-studio grok ensure
 curl -fsSL https://x.ai/cli/install.sh | bash   # if binary missing
-grok --version   # expect ≥ 0.2.93
+grok --version   # expect ≥ 1.0.5
 ```
 
 Auth: export `XAI_API_KEY` or first-run login. TUI/headless: **`grok-build-runner`**.
@@ -235,9 +235,9 @@ Studio Role Card protocols (Ultimate Template, DNA inject, delivery ffmpeg) **ov
 |--------|------|----------|
 | Skills | `~/.grok/skills/` | Skills from `scripts/required_skills.manifest` (matches Grok plugin suite) |
 | Project workspace | `~/Grok-Cinematic-Projects/` | `references/`, `tools/`, `config/`, `scripts/`, docs |
-| **Grok Build CLI binary** | `~/.grok/bin/grok` (+ `~/.local/bin/grok`) | Ensured ≥ **0.2.93** (`grok update` or `https://x.ai/cli/install.sh`); manage via `cinematic-studio grok` |
+| **Grok Build CLI binary** | `~/.grok/bin/grok` (+ `~/.local/bin/grok`) | Ensured ≥ **1.0.5** (`grok update` or `https://x.ai/cli/install.sh`); manage via `cinematic-studio grok` |
 | Studio wrappers | `~/.grok/bin/cinematic-studio`, `grok-doctor` | PATH entrypoints for install/verify/doctor/`grok` |
-| Grok Build config (optional) | `~/.grok/config.toml` | Copy from `config/grok-build.example.toml` — default `grok-4.5` |
+| Grok Build config (optional) | `~/.grok/config.toml` | Copy from `config/grok-build.example.toml` — default `grok-4.6` |
 | Plugin (Method B) | `~/.grok/installed-plugins/` | Full suite and/or satellite pack skill trees + `commands/` |
 
 Override paths with environment variables:
@@ -256,7 +256,7 @@ CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install
 | `CINEMATIC_RAW_BASE` | GitHub `main` raw | Fallback downloads during install/reconcile |
 | `CINEMATIC_SKIP_GROK_CLI` | unset | `1` = skip Grok Build binary ensure |
 | `CINEMATIC_FORCE_GROK_CLI` | unset | `1` = reinstall/refresh even if version OK |
-| `CINEMATIC_MIN_GROK_CLI` | `0.2.93` | Min Grok Build binary version |
+| `CINEMATIC_MIN_GROK_CLI` | `1.0.5` | Min Grok Build binary version |
 | `CINEMATIC_GROK_INSTALL_URL` | `https://x.ai/cli/install.sh` | Override official Grok Build installer |
 
 ## Post-Install Checklist
@@ -264,11 +264,11 @@ CINEMATIC_FORCE_GROK_CLI=1 bash scripts/cinematic_studio.sh install
 After a successful install, confirm all of the following:
 
 1. **Run verify** — Method A: `verify` or `verify --all`; Method B: `verify --plugin`
-2. **Grok binary** — `cinematic-studio grok status` shows version ≥ **0.2.93** and meets min
-3. **Model registry** — verify output shows **Grok 4.5** stack (cinematic+Build · optional 4.3 1M + Imagine 1.0/1.5); CLI ≥ **0.2.93**
-4. **Config** — `~/.grok/config.toml` has `[models] default = "grok-4.5"` and `[ui] fork_secondary_model = "grok-build"`
+2. **Grok binary** — `cinematic-studio grok status` shows version ≥ **1.0.5** and meets min
+3. **Model registry** — verify output shows **Grok 4.6** stack (cinematic+Build · optional 4.3 1M + Imagine 1.0/1.5); CLI ≥ **1.0.5**
+4. **Config** — `~/.grok/config.toml` has `[models] default = "grok-4.6"` (aliases `grok-4.5` also PASS) and `[ui] fork_secondary_model = "grok-build"` (or `grok-4.6`)
 5. **Tell the user** to refresh Skills (Build) / open a new **grok.com** chat; shell: confirm `PATH` includes `~/.grok/bin`
-6. **Activation** — grok.com or chat: `Activate Grok Imagine Cinematic Studio v3.10.0` (or paste `MASTER_PROMPT.md` first)
+6. **Activation** — grok.com or chat: `Activate Grok Imagine Cinematic Studio v3.11.0` (or paste `MASTER_PROMPT.md` first)
 7. **Imagine on web** — show `grok.com/imagine` + Execution Bridge packet path when they generate
 8. **Optional CLI** — `pip install -r ~/Grok-Cinematic-Projects/requirements.txt` then `models verify`
 9. **Dual install?** — Build-only: declutter; **if grok.com chat needs Method A skills**, keep dual and skip declutter
@@ -300,7 +300,7 @@ After a successful install, confirm all of the following:
 
 If network install fails, use the release zip:
 
-1. Download `grok-imagine-cinematic-studio-skills-install-v3.10.0.zip` (or `latest`) from GitHub Releases
+1. Download `grok-imagine-cinematic-studio-skills-install-v3.11.0.zip` (or `latest`) from GitHub Releases
 2. Extract and copy `.grok/skills/*` → `~/.grok/skills/`
 3. Copy `references/`, `tools/`, `config/` → `~/Grok-Cinematic-Projects/`
 4. Run verify
@@ -321,11 +321,11 @@ Full list: `scripts/required_skills.manifest` (64 skills; same set as `.grok-plu
 
 When verify passes, tell the user:
 
-> Cinematic Studio **v3.10.0** is installed (Grok **4.5** stack). Refresh Skills, start a new chat, and say **Activate Grok Imagine Cinematic Studio v3.10.0** to begin production.
+> Cinematic Studio **v3.11.0** is installed (Grok **4.6** stack). Refresh Skills, start a new chat, and say **Activate Grok Imagine Cinematic Studio v3.11.0** to begin production.
 
 Do not start a cinematic production in the same turn unless the user explicitly asks.
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -334,4 +334,4 @@ Do not start a cinematic production in the same turn unless the user explicitly 
 
 ---
 
-*Cinematic Studio Meta Installer v3.10.0 Odyssey Native — Grok 4.5 / v9-4p5 · 64 skills · plugin packs · declutter full_suite_wins · `cinematic-studio grok` · Android shell · grok.com chat/Imagine · `models verify`*
+*Cinematic Studio Meta Installer v3.11.0 Odyssey Native — Grok 4.6 / v9-4p5 · 64 skills · plugin packs · declutter full_suite_wins · `cinematic-studio grok` · Android shell · grok.com chat/Imagine · `models verify`*

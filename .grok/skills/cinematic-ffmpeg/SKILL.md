@@ -3,11 +3,11 @@ name: cinematic-ffmpeg
 description: Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Assembly Editor and AI Polish Director. Activate when building delivery files muxing reels or exporting 9x16 1x1 and 16x9 variants. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Cinematic FFmpeg v3.8.6 (Grok 4.5 / v9-4p5 · Delivery Toolkit)
+# Cinematic FFmpeg v3.8.6 (Grok 4.6 / v9-4p5 · Delivery Toolkit)
 
-**Tool skill** — post-polish technical assembly and platform export. Requires **`ffmpeg`** (and ideally **`ffprobe`**) on PATH. Orchestration is **Grok 4.5**; this skill does not spend Imagine API credits.
+**Tool skill** — post-polish technical assembly and platform export. Requires **`ffmpeg`** (and ideally **`ffprobe`**) on PATH. Orchestration is **Grok 4.6**; this skill does not spend Imagine API credits.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
@@ -15,7 +15,7 @@ description: Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concaten
 | Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -180,7 +180,7 @@ Next: Studio Director sign-off | Localization | upload
 - Spot-check first/last frames and audio after every mux  
 - Save under `artifacts/delivery/` — not inside skill directories  
 
-## Reasoning (Grok 4.5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -189,4 +189,4 @@ Next: Studio Director sign-off | Localization | upload
 
 ---
 
-*Cinematic FFmpeg v3.8.6 — Grok 4.5 / v9-4p5 delivery toolkit · post-polish concat trim crop · sequence deliver*
+*Cinematic FFmpeg v3.8.6 — Grok 4.6 / v9-4p5 delivery toolkit · post-polish concat trim crop · sequence deliver*

@@ -3,13 +3,13 @@ name: quota-dashboard
 description: Mobile-optimized Quota Dashboard for Grok Imagine with full Weekly SuperGrok Heavy Limit support. Tracks session usage + weekly quota from app screenshots (%, reset date/time, Imagine/Chat/Build breakdown). Delivers beautiful at-a-glance visual reports + cinematic key-art style visual dashboard posters. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5. Complements workflow-quota-optimizer and nsfw-quota-orchestrator. Activate with SHOW QUOTA DASHBOARD, SHOW VISUAL DASHBOARD, or ACTIVATE QUOTA_DASHBOARD.
 ---
 
-# Quota Dashboard v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5)
+# Quota Dashboard v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5)
 
 **Role Card:** `references/agents/Quota_Dashboard.md` (v4.5) — Authoritative source for quota tracking, visual reporting, dual-model (1.0/1.5) awareness, and cinematic dashboard poster generation.
 
 > Mobile-optimized Quota Dashboard for Grok Imagine with full Weekly SuperGrok Heavy Limit support.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
@@ -17,7 +17,7 @@ description: Mobile-optimized Quota Dashboard for Grok Imagine with full Weekly 
 | Single screenshot analysis, status report, key-art style poster | `grok-v9-4p5-chat-expert`   | high      |
 | Quick status / simple checks                   | `grok-4-auto`               | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -75,4 +75,4 @@ Fully compatible with Grok Build CLI, Termux/Android, and Kali NetHunter. All re
 
 ---
 
-*Enhanced for Grok 4.5 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

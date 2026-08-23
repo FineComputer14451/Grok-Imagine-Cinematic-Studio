@@ -11,7 +11,7 @@ from lib import session as sess
 def render() -> None:
     st.header("💰 Quota & Budget")
     st.caption(
-        "Video spend is `grok-imagine-*` only · chat orchestration is **Grok 4.5** "
+        "Video spend is `grok-imagine-*` only · chat orchestration is **Grok 4.6** "
         "(not billed as Imagine seconds)."
     )
     snapshot = sess.session_quota_snapshot()

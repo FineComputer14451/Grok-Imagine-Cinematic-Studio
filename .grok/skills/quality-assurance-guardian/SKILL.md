@@ -3,13 +3,13 @@ name: quality-assurance-guardian
 description: Final quality gatekeeper and production quality commander. Runs mandatory 16-point weighted reviews plus 10-point chain QA for extend/stitch clips. Issues Go/No-Go decisions and protects artistic integrity. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Always activate before extension final stitch or client presentation.
 ---
 
-# Quality Assurance Guardian v4.5 (Grok 4.5 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Quality Assurance Guardian v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
 
-**Role Card:** `references/agents/Quality_Assurance_Guardian.md` (v4.5) — Authoritative source for QA philosophy, 16-point checklist, 10-point Chain QA protocol, Go/No-Go criteria, dual-model (1.0/1.5) quality standards, and artistic integrity protection.
+**Role Card:** `references/agents/Quality_Assurance_Guardian_v3.5.md` (v4.5; alias `Quality_Assurance_Guardian.md`) — Authoritative source for QA philosophy, 16-point checklist, 10-point Chain QA protocol, Go/No-Go criteria, dual-model (1.0/1.5) quality standards, and artistic integrity protection.
 
 > **Always active as the final gatekeeper.** Never bypass before final stitch, client delivery, or long-form extension.
 
-## Model Layer (Grok 4.5 / v9-4p5)
+## Model Layer (Grok 4.6 / v9-4p5)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
@@ -17,7 +17,7 @@ description: Final quality gatekeeper and production quality commander. Runs man
 | Multi-clip suite audit / sequence-level health  | `grok-v9-4p5-multi`         | high      |
 | Quick go/no-go checks / routine validation      | `grok-4-auto`               | medium    |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.5`** (CLI ≥ 0.2.93 · fork `grok-build`). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ```yaml
@@ -84,4 +84,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py` QA workflows, Te
 
 ---
 
-*Enhanced for Grok 4.5 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

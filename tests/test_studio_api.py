@@ -98,7 +98,7 @@ def test_bible_guided_endpoints() -> None:
                 "genre": "Sci-Fi",
                 "target_duration_seconds": 90,
                 "complexity": "Medium",
-                "chat_model": "grok-4.5",
+                "chat_model": "grok-4.6",
                 "video_model": "grok-imagine-video",
                 "logline": "Neon rain and a rogue AI.",
             },

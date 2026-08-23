@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
-Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.10.0 · Grok 4.5 + v9-4p5).
+Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.11.0 · Grok 4.6 + v9-4p5).
 
 Single source of truth for CLI, Web UI, quota optimizer, and documentation.
 Imagine family: Image 1.0 / Quality / 2.0 + Video 1.0 / 1.5 (there is no video 2.0).
 
-Unified chat stack (v3.6.7+):
-  - Cinematic orchestration (Production Bibles, multi-agent): grok-4.5
-  - Grok Build / coding / agentic: grok-4.5
+Unified chat stack:
+  - Cinematic orchestration (Production Bibles, multi-agent): grok-4.6
+  - Grok Build / coding / agentic: grok-4.6
+  - grok-4.5 and cinematic/build/coding aliases resolve to grok-4.6
   - Optional long-context (1M): grok-4.3 via --chat-model grok-4.3
-  - Recommended CLI binary: Grok Build ≥ 0.2.93 (not an API slug)
+  - Recommended CLI binary: Grok Build ≥ 1.0.5 (not an API slug)
 """
 
 from __future__ import annotations
@@ -27,9 +28,9 @@ SCHEMA_VERSION = "1.5"
 
 # Change only with a deliberate studio upgrade (also asserted in tests)
 STACK_CONTRACT: dict[str, str] = {
-    "cinematic": "grok-4.5",
-    "build": "grok-4.5",
-    "cli": "grok-4.5",
+    "cinematic": "grok-4.6",
+    "build": "grok-4.6",
+    "cli": "grok-4.6",
 }
 
 # Single source of truth for “which model for which job”
@@ -41,7 +42,7 @@ ROLE_DEFAULTS: dict[str, str] = {
 }
 
 # Recommended Grok Build binary version (not an API model slug)
-RECOMMENDED_GROK_BUILD_CLI_VERSION = "0.2.93"
+RECOMMENDED_GROK_BUILD_CLI_VERSION = "1.0.5"
 # Back-compat alias used by stack summary / older imports
 MIN_GROK_BUILD_CLI_VERSION = RECOMMENDED_GROK_BUILD_CLI_VERSION
 
@@ -64,10 +65,15 @@ EDIT_EXTEND_VIDEO_MODEL = "grok-imagine-video"
 # ---------------------------------------------------------------------------
 
 GROK_BUILD_CLI_MODELS: dict[str, dict[str, Any]] = {
-    "grok-4.5": {
-        "label": "Grok 4.5",
+    "grok-4.6": {
+        "label": "Grok 4.6",
         "role": "default",
         "description": "Default agent — cinematic orchestration, coding, agentic tasks",
+    },
+    "grok-4.5": {
+        "label": "Grok 4.5",
+        "role": "legacy_default",
+        "description": "Legacy picker id — wraps grok-4.6 (alias, not a second stack default)",
     },
     "grok-composer-2.5-fast": {
         "label": "Grok Composer 2.5 Fast",
@@ -77,7 +83,7 @@ GROK_BUILD_CLI_MODELS: dict[str, dict[str, Any]] = {
     "grok-build": {
         "label": "Grok Build",
         "role": "coding",
-        "description": "Fork secondary / coding alias (Grok 4.5 stack)",
+        "description": "Fork secondary / coding alias (Grok 4.6 stack)",
     },
     "grok-4.3": {
         "label": "Grok 4.3",
@@ -97,7 +103,7 @@ GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
     "erosforge-director": {
         "label": "ErosForge Director",
         "role": "nsfw_director",
-        "base_model": "grok-4.5",
+        "base_model": "grok-4.6",
         "temperature": 0.92,
         "description": "Intimate scene design, consent framing, 1.5 intimacy physics",
         "aliases": ["erosforge", "nsfw-director"],
@@ -105,7 +111,7 @@ GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
     "nsfw-prompt-master": {
         "label": "NSFW Prompt Master",
         "role": "nsfw_prompt",
-        "base_model": "grok-4.5",
+        "base_model": "grok-4.6",
         "temperature": 0.78,
         "description": "Erotic prompt craft — DNA inject, Ultimate Template, negatives",
         "aliases": ["nsfw-prompt", "erotic-prompt"],
@@ -113,7 +119,7 @@ GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
     "nsfw-quota-planner": {
         "label": "NSFW Quota Planner",
         "role": "nsfw_quota",
-        "base_model": "grok-4.5",
+        "base_model": "grok-4.6",
         "temperature": 0.35,
         "description": "Hero-first NSFW batch economics under Heavy caps",
         "aliases": ["nsfw-quota", "nsfw-batch-planner"],
@@ -121,7 +127,7 @@ GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
     "nsfw-sequence-extend": {
         "label": "NSFW Sequence Extend",
         "role": "nsfw_extend",
-        "base_model": "grok-4.5",
+        "base_model": "grok-4.6",
         "temperature": 0.72,
         "description": "Sensual 30–120s+ tension curves and extend handoffs",
         "aliases": ["nsfw-extend", "nsfw-sequence"],
@@ -129,7 +135,7 @@ GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
     "nsfw-chain-qa": {
         "label": "NSFW Chain QA",
         "role": "nsfw_qa",
-        "base_model": "grok-4.5",
+        "base_model": "grok-4.6",
         "temperature": 0.25,
         "description": "8-point intimate artifact gate before extend/stitch",
         "aliases": ["nsfw-qa"],
@@ -137,7 +143,7 @@ GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
     "nsfw-identity-lock": {
         "label": "NSFW Identity Lock",
         "role": "nsfw_identity",
-        "base_model": "grok-4.5",
+        "base_model": "grok-4.6",
         "temperature": 0.40,
         "description": "Intimate multi-scene body/face consistency",
         "aliases": ["nsfw-identity", "nsfw-dna"],
@@ -162,7 +168,7 @@ GROK_BUILD_NSFW_MODELS: dict[str, dict[str, Any]] = {
 
 # ---------------------------------------------------------------------------
 # Grok Build v9-4p5 / Auto specialist picker aliases (Model Layer v4.5)
-# Native product IDs are not always on the public xAI API; these wrap grok-4.5
+# Native product IDs are not always on the public xAI API; these wrap grok-4.6
 # with role-tuned sampling via cli-chat-proxy. Install:
 #   bash scripts/install_v9_grok_models.sh
 # ---------------------------------------------------------------------------
@@ -171,7 +177,7 @@ GROK_BUILD_V9_MODELS: dict[str, dict[str, Any]] = {
     "grok-v9-4p5-chat-expert": {
         "label": "Grok v9 4.5 Chat Expert",
         "role": "specialist_craft",
-        "base_model": "grok-4.5",
+        "base_model": "grok-4.6",
         "temperature": 0.55,
         "description": "Specialist craft — DNA, hero prompts, DoP, QA (high reasoning)",
         "aliases": [
@@ -189,7 +195,7 @@ GROK_BUILD_V9_MODELS: dict[str, dict[str, Any]] = {
     "grok-v9-4p5-multi": {
         "label": "Grok v9 4.5 Multi",
         "role": "multi_agent",
-        "base_model": "grok-4.5",
+        "base_model": "grok-4.6",
         "temperature": 0.65,
         "description": "Multi-agent orchestration — handoffs, sequences, Team Leader",
         "aliases": ["v9-4p5-multi", "4p5-multi", "multi", "grok-4.5-multi"],
@@ -197,7 +203,7 @@ GROK_BUILD_V9_MODELS: dict[str, dict[str, Any]] = {
     "grok-4-auto": {
         "label": "Grok 4 Auto",
         "role": "auto_route",
-        "base_model": "grok-4.5",
+        "base_model": "grok-4.6",
         "temperature": 0.50,
         "description": "Draft / quota / automatic routing (medium reasoning)",
         "aliases": ["4-auto", "auto", "grok-auto"],
@@ -205,7 +211,7 @@ GROK_BUILD_V9_MODELS: dict[str, dict[str, Any]] = {
 }
 
 # Role display name / skill slug → preferred specialist chat model
-# (registry stack default remains grok-4.5; this is Model Layer routing only)
+# (registry stack default remains grok-4.6; this is Model Layer routing only)
 ROLE_MODEL_PREFERENCES: dict[str, str] = {
     # Multi-agent / orchestration
     "team leader": DEFAULT_XAI_MULTI_MODEL,
@@ -243,9 +249,9 @@ ROLE_MODEL_PREFERENCES: dict[str, str] = {
 # ---------------------------------------------------------------------------
 
 XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
-    # --- v3.8.6 v9-4p5 surface family (opt-in aliases; grok-4.5 remains default) ---
+    # --- v9-4p5 surface family (opt-in aliases; grok-4.6 is stack default) ---
     # Note: public api.x.ai may not list these product IDs; Grok Build pickers
-    # install via scripts/install_v9_grok_models.sh (base_model grok-4.5).
+    # install via scripts/install_v9_grok_models.sh (base_model grok-4.6).
     "grok-v9-4p5-chat-expert": {
         "label": "Grok v9 4.5 Chat Expert",
         "context_tokens": 1_000_000,
@@ -299,8 +305,8 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
         "role": "long_context",
         "aliases": ["4.3", "long-context", "grok-4"],
     },
-    "grok-4.5": {
-        "label": "Grok 4.5",
+    "grok-4.6": {
+        "label": "Grok 4.6",
         "context_tokens": 500_000,
         "input_usd_per_1m": 2.00,
         "cached_input_usd_per_1m": 0.50,
@@ -309,6 +315,9 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
         "role": "default",
         "reasoning": "low|medium|high (default high)",
         "aliases": [
+            "4.6",
+            "grok-4.6-latest",
+            "grok-4.5",
             "4.5",
             "grok-4.5-latest",
             "grok-build-latest",
@@ -323,7 +332,7 @@ XAI_CHAT_MODELS: dict[str, dict[str, Any]] = {
         "context_tokens": 256_000,
         "input_usd_per_1m": 1.00,
         "output_usd_per_1m": 2.00,
-        "use_case": "legacy coding API — prefer grok-4.5",
+        "use_case": "legacy coding API — prefer grok-4.6",
         "role": "legacy_build",
         "deprecated": True,
         "aliases": [],
@@ -493,7 +502,7 @@ IMAGINE_REST_ENDPOINTS: tuple[dict[str, str], ...] = (
     {"mode": "video_extend", "method": "POST", "path": "/v1/videos/extensions"},
 )
 
-STUDIO_COMPATIBILITY_VERSION = "3.10.0"
+STUDIO_COMPATIBILITY_VERSION = "3.11.0"
 
 # Role → slug (unique by construction; no duplicate bag)
 REQUIRED_MODEL_ROLES: dict[str, str] = {
@@ -564,7 +573,7 @@ def resolve_image_model(slug: str | None = None) -> str:
 
 
 def resolve_chat_model(slug: str | None = None) -> str:
-    """Resolve chat model slug; empty/None → cinematic default (grok-4.5)."""
+    """Resolve chat model slug; empty/None → cinematic default (grok-4.6)."""
     return _resolve_from_alias_map(slug, _CHAT_ALIAS_MAP, DEFAULT_XAI_CHAT_MODEL)
 
 
@@ -879,7 +888,7 @@ def verify_model_compatibility() -> dict[str, Any]:
                 f"(got {ROLE_DEFAULTS.get(role)!r}, expected {expected!r})"
             )
 
-    # Unified cinematic+build on 4.5 is intentional; note opt-in 1M path
+    # Unified cinematic+build on 4.6 is intentional; note opt-in 1M path
     if DEFAULT_XAI_CHAT_MODEL == DEFAULT_XAI_BUILD_MODEL:
         notes.append(
             f"cinematic and build defaults are unified ({DEFAULT_XAI_CHAT_MODEL}); "
@@ -1166,7 +1175,7 @@ def list_all_models() -> dict[str, Any]:
             "config_example": "config/grok-build-v9-models.example.toml",
             "note": (
                 "Picker aliases for Model Layer v4.5 (chat-expert / multi / auto). "
-                "Wrap grok-4.5 when native product IDs are unavailable on the team/API. "
+                "Wrap grok-4.6 when native product IDs are unavailable on the team/API. "
                 "Not Imagine generators. Prefer cli-chat-proxy session auth."
             ),
             "chat_expert": DEFAULT_XAI_CHAT_EXPERT_MODEL,

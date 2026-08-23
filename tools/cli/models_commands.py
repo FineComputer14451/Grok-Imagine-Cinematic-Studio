@@ -1,4 +1,4 @@
-"""Grok Build / xAI model registry CLI commands (Grok 4.5 default)."""
+"""Grok Build / xAI model registry CLI commands (Grok 4.6 default)."""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ from models import (
 from cli.shared import MODELS_DOC, MODEL_LAYER_DOC, STUDIO_VERSION, console, format_stack_panel
 
 models_app = typer.Typer(
-    help="Grok Build and xAI model registry (Grok 4.5 cinematic+Build default)"
+    help="Grok Build and xAI model registry (Grok 4.6 cinematic+Build default)"
 )
 
 
@@ -71,7 +71,7 @@ def _ordered_video_slugs() -> list[str]:
 def models_list():
     """List Grok Build CLI, xAI chat, and Imagine model slugs (4.5 / 1.0 first)."""
     table = Table(
-        title=f"🤖 Model Registry · Grok 4.5 · studio v{STUDIO_VERSION}",
+        title=f"🤖 Model Registry · Grok 4.6 · studio v{STUDIO_VERSION}",
         box=box.ROUNDED,
     )
     table.add_column("Category", style="bold cyan", no_wrap=True)
@@ -157,7 +157,7 @@ def models_list():
     console.print(table)
     console.print(
         f"\n[dim]Docs: {MODELS_DOC} · {MODEL_LAYER_DOC} · "
-        f"opt-in 1M: --chat-model grok-4.3 · never treat CLI 0.2.93 as a model slug · "
+        f"opt-in 1M: --chat-model grok-4.3 · never treat CLI 1.0.5 as a model slug · "
         f"v9 specialist pickers: bash scripts/install_v9_grok_models.sh · "
         f"NSFW Build aliases: bash scripts/install_nsfw_grok_models.sh · "
         f"not Imagine generators[/dim]"
@@ -168,7 +168,7 @@ def models_list():
 def models_stack(
     json_output: bool = typer.Option(False, "--json", help="Emit JSON"),
 ):
-    """Show resolved model_stack + VIDEO_PIPELINE_SPEC (Grok 4.5 defaults)."""
+    """Show resolved model_stack + VIDEO_PIPELINE_SPEC (Grok 4.6 defaults)."""
     stack = model_stack_summary()
     if json_output:
         import json
@@ -191,7 +191,7 @@ def models_stack(
 
 @models_app.command("verify")
 def models_verify():
-    """Verify stack: Grok 4.5 cinematic+Build + optional 4.3 1M + Imagine 1.0/1.5."""
+    """Verify stack: Grok 4.6 cinematic+Build + optional 4.3 1M + Imagine 1.0/1.5."""
     result = verify_model_compatibility()
     stack = result["model_stack"]
     warn_block = ""
@@ -217,7 +217,7 @@ def models_verify():
                 f"Imagine Video: {stack['imagine_video']} | Image: {stack['imagine_image']}\n\n"
                 f"{result['video_pipeline_spec']}"
                 f"{warn_block}",
-                title="Grok 4.5 Cinematic+Build · Optional 4.3 1M · Imagine",
+                title="Grok 4.6 Cinematic+Build · Optional 4.3 1M · Imagine",
                 border_style="green",
             )
         )

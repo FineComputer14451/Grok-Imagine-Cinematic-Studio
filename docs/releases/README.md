@@ -2,7 +2,9 @@
 
 | File | Studio version |
 |------|----------------|
-| [RELEASE_NOTES_v3.10.0.md](RELEASE_NOTES_v3.10.0.md) | **Current** (Imagine Image 2.0 + Video 1.0/1.5 surfaces) |
+| [RELEASE_NOTES_v3.11.0.md](RELEASE_NOTES_v3.11.0.md) | **Current** (Grok 4.6 stack lock · Grok Build ≥ 1.0.5) |
+| [../CHANGELOG.md](../../CHANGELOG.md) | Full history |
+| [RELEASE_NOTES_v3.10.0.md](RELEASE_NOTES_v3.10.0.md) | Imagine Image 2.0 + Video 1.0/1.5 surfaces |
 | [RELEASE_NOTES_v3.9.1.md](RELEASE_NOTES_v3.9.1.md) | React/TanStack cockpit · API meta/bible |
 | [RELEASE_NOTES_v3.9.0.md](RELEASE_NOTES_v3.9.0.md) | Multi-surface control plane (TUI · Streamlit · NiceGUI · FastAPI) |
 | [RELEASE_NOTES_v3.8.8.md](RELEASE_NOTES_v3.8.8.md) | Operator UX control plane · Wave A packaging |
