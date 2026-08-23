@@ -17,6 +17,7 @@
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/version-3.11.0-success.svg" alt="v3.11.0">
   <img src="https://img.shields.io/badge/Grok%20Build-%E2%89%A5%201.0.5-orange.svg" alt="Grok Build ≥ 1.0.5">
+  <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/actions/workflows/hol-plugin-scanner.yml"><img src="https://img.shields.io/badge/HOL%20Guard-passing-00a67e" alt="HOL Guard Scanner passing"></a>
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/stargazers"><img src="https://img.shields.io/github/stars/FineComputer14451/Grok-Imagine-Cinematic-Studio?style=social" alt="GitHub Stars"></a>
 </p>
 
