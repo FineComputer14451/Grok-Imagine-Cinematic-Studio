@@ -1,0 +1,23 @@
+# Local / generated paths the HOL Codex scanner should not treat as plugin surface.
+.env
+.env.*
+*.local
+.streamlit/secrets.toml
+artifacts/
+characters/
+sequences/
+sfw_batches/*/
+nsfw_batches/*/
+.venv/
+__pycache__/
+.pytest_cache/
+node_modules/
+web_react/dist/
+web_react/node_modules/
+web_marketplace/dist/
+web_marketplace/node_modules/
+web_marketplace/.vercel/
+web_academy/dist/
+web_academy/node_modules/
+.superpowers/
+.worktrees/
