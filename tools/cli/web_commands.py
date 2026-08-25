@@ -38,7 +38,7 @@ def register(app: typer.Typer) -> None:
             help="Open a browser tab on start",
         ),
     ) -> None:
-        """Launch the NiceGUI web shell (PR6: full shell (dashboard/production/DNA/sequences/imagine/quota)).
+        """Launch the NiceGUI web shell (dashboard, production, DNA, sequences, imagine, quota).
 
         Requires: pip install -r requirements-nicegui.txt
 

@@ -147,7 +147,7 @@ def register(app: typer.Typer) -> None:
 
     @app.command(name="list-agents")
     def list_agents():
-        """List all agents grouped by category (Role Card labels · studio v3.7.1)."""
+        """List all agents grouped by category (Role Card labels · studio pin)."""
         table = Table(
             title=(
                 f"🎬 Grok Imagine Cinematic Studio v{STUDIO_VERSION} — "

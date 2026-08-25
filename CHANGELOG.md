@@ -9,6 +9,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **SFW / NSFW help panels** — `sfw --help` and `nsfw --help` group Plan / Readiness / Spend / Quality (NSFW adds Extend).
 - **Wave A help panels** — `wave-a --help` groups Packets vs Gate (`validate` / `attach`).
 
+### Fixed
+- **Stale CLI help** — `list-agents` no longer says studio v3.7.1; `models list` says 4.6 / 1.0 first; `web` drops the PR6 label.
+
 ### Changed
 - **CLI help IA** — `cinematic-studio --help` groups commands into journey panels (Orient, Health, Produce, Spend, Gate, Deliver, Surfaces, Meta) with one example each. Nested `--help` on `dna`, `sequence`, `plugin`, `imagine`, and `quota` uses the same map (`tools/cli/help_ia.py`). Production argv is unchanged.
 - **CLI ghost aliases** — hidden `plugin check` forwards to `plugin catalog check`; `dna extract` and `sequence extend` print the real verbs and exit 2.

@@ -154,6 +154,21 @@ def test_commands_search() -> None:
     assert "Orient" in root.stdout
 
 
+def test_stale_help_strings_gone() -> None:
+    agents = run_cli("list-agents", "--help")
+    assert agents.returncode == 0
+    assert "v3.7.1" not in agents.stdout
+
+    models = run_cli("models", "list", "--help")
+    assert models.returncode == 0
+    assert "4.5 / 1.0 first" not in models.stdout
+    assert "4.6" in models.stdout
+
+    web = run_cli("web", "--help")
+    assert web.returncode == 0
+    assert "PR6" not in web.stdout
+
+
 def test_actionspec_frozen() -> None:
     import sys
     from pathlib import Path

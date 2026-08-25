@@ -69,7 +69,7 @@ def _ordered_video_slugs() -> list[str]:
 
 @models_app.command("list")
 def models_list():
-    """List Grok Build CLI, xAI chat, and Imagine model slugs (4.5 / 1.0 first)."""
+    """List Grok Build CLI, xAI chat, and Imagine model slugs (4.6 / 1.0 first)."""
     table = Table(
         title=f"🤖 Model Registry · Grok 4.6 · studio v{STUDIO_VERSION}",
         box=box.ROUNDED,
