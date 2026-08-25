@@ -79,6 +79,21 @@ def test_nested_help_panels() -> None:
     assert "Health" in quota.stdout
     assert "Spend" in quota.stdout
 
+    sfw = run_cli("sfw", "--help")
+    assert sfw.returncode == 0
+    assert "Plan" in sfw.stdout
+    assert "Readiness" in sfw.stdout
+    assert "Spend" in sfw.stdout
+    assert "Quality" in sfw.stdout
+
+    nsfw = run_cli("nsfw", "--help")
+    assert nsfw.returncode == 0
+    assert "Plan" in nsfw.stdout
+    assert "Readiness" in nsfw.stdout
+    assert "Spend" in nsfw.stdout
+    assert "Quality" in nsfw.stdout
+    assert "Extend" in nsfw.stdout
+
 
 def test_dna_extract_ghost() -> None:
     result = run_cli("dna", "extract")

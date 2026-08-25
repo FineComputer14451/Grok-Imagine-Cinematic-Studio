@@ -33,6 +33,8 @@ NESTED_PANEL_ORDER: dict[str, tuple[str, ...]] = {
     "plugin": ("Catalog", "Inspect", "Hygiene"),
     "imagine": ("Jobs", "Handoff", "Artifacts"),
     "quota": ("Health", "Spend"),
+    "sfw": ("Plan", "Readiness", "Spend", "Quality"),
+    "nsfw": ("Plan", "Readiness", "Spend", "Quality", "Extend"),
 }
 
 ROOT_MAP: dict[str, str] = {
@@ -139,6 +141,36 @@ NESTED_MAPS: dict[str, dict[str, str]] = {
         "clip": "Spend",
         "sequence": "Spend",
         "record": "Spend",
+    },
+    "sfw": {
+        "plan": "Plan",
+        "list": "Plan",
+        "next": "Plan",
+        "decide": "Plan",
+        "plate": "Readiness",
+        "motion": "Readiness",
+        "run": "Spend",
+        "session": "Spend",
+        "record": "Spend",
+        "promote": "Quality",
+        "quality-pending": "Quality",
+        "retry": "Quality",
+    },
+    "nsfw": {
+        "plan": "Plan",
+        "list": "Plan",
+        "next": "Plan",
+        "decide": "Plan",
+        "plate": "Readiness",
+        "motion": "Readiness",
+        "run": "Spend",
+        "session": "Spend",
+        "record": "Spend",
+        "promote": "Quality",
+        "quality-pending": "Quality",
+        "retry": "Quality",
+        "report": "Quality",
+        "extend": "Extend",
     },
 }
 

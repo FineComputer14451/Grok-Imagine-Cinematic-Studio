@@ -196,9 +196,13 @@ cinematic-studio web-react --install       # force npm install
 
 Multi-shell matrix: [guides/WEB_SHELLS.md](guides/WEB_SHELLS.md) · React README: `web_react/README.md`.
 
-### NSFW (requires prior ErosForge activation in chat)
+### SFW / NSFW batches
+
+`sfw --help` and `nsfw --help` group Plan / Readiness / Spend / Quality. NSFW adds Extend.
 
 ```bash
+cinematic-studio sfw --help
+cinematic-studio sfw plan "Hero stills"
 cinematic-studio nsfw --help
 cinematic-studio nsfw extend plan
 ```
