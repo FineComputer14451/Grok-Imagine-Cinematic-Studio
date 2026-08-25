@@ -11,6 +11,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Fixed
 - **Stale CLI help** — `list-agents` no longer says studio v3.7.1; `models list` says 4.6 / 1.0 first; `web` drops the PR6 label.
+- **Doctor Method A skills** — `~/.grok/skills` overlap with the repo is PASS (Method A), not a declutter WARN, unless `grok plugin list` includes the studio plugin.
 
 ### Changed
 - **CLI help IA** — `cinematic-studio --help` groups commands into journey panels (Orient, Health, Produce, Spend, Gate, Deliver, Surfaces, Meta) with one example each. Nested `--help` on `dna`, `sequence`, `plugin`, `imagine`, and `quota` uses the same map (`tools/cli/help_ia.py`). Production argv is unchanged.

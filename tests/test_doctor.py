@@ -489,6 +489,43 @@ def test_plugin_absent_without_method_a_is_fail(
     assert "plugin install" in results[0].detail
 
 
+def test_skills_layout_method_a_with_repo_skills_is_not_dupe_warn(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home = tmp_path / "home"
+    _write_method_a_core(home)
+    repo = tmp_path / "repo"
+    skills = repo / ".grok" / "skills"
+    for slug in METHOD_A_CORE_SKILLS:
+        d = skills / slug
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text("# x\n", encoding="utf-8")
+    monkeypatch.setattr("doctor_checks.cinematic_plugin_listed", lambda: False)
+    results = check_skills_layout(home=home, repo_root=repo)
+    by_name = {r.name: r for r in results}
+    assert by_name["user ~/.grok/skills"].status == "PASS"
+    assert "Method A" in by_name["user ~/.grok/skills"].detail
+    assert "dupe" not in by_name["user ~/.grok/skills"].detail
+
+
+def test_skills_layout_warns_dupes_when_plugin_listed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home = tmp_path / "home"
+    _write_method_a_core(home)
+    repo = tmp_path / "repo"
+    skills = repo / ".grok" / "skills"
+    for slug in METHOD_A_CORE_SKILLS:
+        d = skills / slug
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text("# x\n", encoding="utf-8")
+    monkeypatch.setattr("doctor_checks.cinematic_plugin_listed", lambda: True)
+    results = check_skills_layout(home=home, repo_root=repo)
+    by_name = {r.name: r for r in results}
+    assert by_name["user ~/.grok/skills"].status == "WARN"
+    assert "dupe" in by_name["user ~/.grok/skills"].detail
+
+
 def test_skills_layout_method_a_is_not_high_warn(tmp_path: Path) -> None:
     home = tmp_path / "home"
     _write_method_a_core(home)

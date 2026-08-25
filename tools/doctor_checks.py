@@ -52,6 +52,18 @@ def method_a_core_installed(home: Path | None = None) -> bool:
     base = (home if home is not None else Path.home()) / ".grok" / "skills"
     return all((base / slug / "SKILL.md").is_file() for slug in METHOD_A_CORE_SKILLS)
 
+
+def cinematic_plugin_listed() -> bool:
+    """True when `grok plugin list` includes grok-imagine-cinematic-studio."""
+    if not _which("grok"):
+        return False
+    try:
+        listed = _run(["grok", "plugin", "list"], timeout=30)
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+    blob = f"{listed.stdout or ''}{listed.stderr or ''}".lower()
+    return "grok-imagine-cinematic-studio" in blob
+
 # Catalog errors that are "mid-work pin drift" (WARN) vs hard artifact breakage (FAIL).
 _PIN_DRIFT_MARKERS = (
     "content changed after marketplace pin",
@@ -558,17 +570,17 @@ def check_skills_layout(*, home: Path, repo_root: Path) -> list[CheckResult]:
         )
 
     user_n = len(user_skill_names(home))
-    # None would fall back to the live repo SKILLS_DIR and false-positive "dupes"
-    # on Method A machines whose doctor repo_root is PROJECT_DIR.
+    # Overlap with the repo skill tree is Method A, not dual-install debt, unless
+    # the marketplace plugin is also listed (declutter target).
     dupes = user_studio_skill_dupes(home, skills_root) if skills_root.is_dir() else []
-    if dupes:
+    if dupes and cinematic_plugin_listed():
         results.append(
             CheckResult(
                 "WARN",
                 "user ~/.grok/skills",
                 (
                     f"{user_n} dirs; {len(dupes)} studio skill dupe(s) "
-                    f"(run cinematic-studio declutter --apply)"
+                    f"(run cinematic-studio plugin declutter --apply)"
                 ),
                 section,
             )
