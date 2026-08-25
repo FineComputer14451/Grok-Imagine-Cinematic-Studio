@@ -35,6 +35,7 @@ NESTED_PANEL_ORDER: dict[str, tuple[str, ...]] = {
     "quota": ("Health", "Spend"),
     "sfw": ("Plan", "Readiness", "Spend", "Quality"),
     "nsfw": ("Plan", "Readiness", "Spend", "Quality", "Extend"),
+    "wave-a": ("Packets", "Gate"),
 }
 
 ROOT_MAP: dict[str, str] = {
@@ -171,6 +172,18 @@ NESTED_MAPS: dict[str, dict[str, str]] = {
         "retry": "Quality",
         "report": "Quality",
         "extend": "Extend",
+    },
+    "wave-a": {
+        "plate-motion": "Packets",
+        "contact": "Packets",
+        "hmu": "Packets",
+        "dialogue": "Packets",
+        "score": "Packets",
+        "title": "Packets",
+        "crop": "Packets",
+        "briefs": "Packets",
+        "validate": "Gate",
+        "attach": "Gate",
     },
 }
 

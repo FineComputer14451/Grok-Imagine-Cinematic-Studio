@@ -94,6 +94,13 @@ def test_nested_help_panels() -> None:
     assert "Quality" in nsfw.stdout
     assert "Extend" in nsfw.stdout
 
+    wave = run_cli("wave-a", "--help")
+    assert wave.returncode == 0
+    assert "Packets" in wave.stdout
+    assert "Gate" in wave.stdout
+    assert "plate-motion" in wave.stdout
+    assert "validate" in wave.stdout
+
 
 def test_dna_extract_ghost() -> None:
     result = run_cli("dna", "extract")

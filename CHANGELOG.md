@@ -7,6 +7,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Added
 - **`commands` search** — `cinematic-studio commands [query]` lists visible command paths and one-line help; substring match on path + summary (Orient panel). Hidden ghosts stay hidden.
 - **SFW / NSFW help panels** — `sfw --help` and `nsfw --help` group Plan / Readiness / Spend / Quality (NSFW adds Extend).
+- **Wave A help panels** — `wave-a --help` groups Packets vs Gate (`validate` / `attach`).
 
 ### Changed
 - **CLI help IA** — `cinematic-studio --help` groups commands into journey panels (Orient, Health, Produce, Spend, Gate, Deliver, Surfaces, Meta) with one example each. Nested `--help` on `dna`, `sequence`, `plugin`, `imagine`, and `quota` uses the same map (`tools/cli/help_ia.py`). Production argv is unchanged.

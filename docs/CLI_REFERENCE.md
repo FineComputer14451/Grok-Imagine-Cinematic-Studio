@@ -211,6 +211,8 @@ cinematic-studio nsfw extend plan
 
 Eight specialist packet builders for plate/motion, micro-physics, hair/makeup, dialogue/ADR, score/temp music, titles, distribution crops, and parallel briefs.
 
+`wave-a --help` groups Packets vs Gate (`validate` / `attach`).
+
 ```bash
 cinematic-studio wave-a --help
 cinematic-studio wave-a plate-motion ...
