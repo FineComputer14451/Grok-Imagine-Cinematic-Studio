@@ -26,20 +26,20 @@ from cli.quota_commands import register as register_quota_commands  # noqa: E402
 from cli.report_commands import register as register_report_commands  # noqa: E402
 from cli.sequence_commands import register as register_sequence_commands  # noqa: E402
 from cli.sfw_commands import register as register_sfw_commands  # noqa: E402
-from cli.shared import STUDIO_VERSION  # noqa: E402
 from cli.studio_commands import register as register_studio_commands  # noqa: E402
 from cli.tui_commands import register as register_tui_commands  # noqa: E402
 from cli.wave_a_commands import register as register_wave_a_commands  # noqa: E402
 from cli.web_commands import register as register_web_commands  # noqa: E402
 from cli.web_react_commands import register as register_web_react_commands  # noqa: E402
 from cli.api_commands import register as register_api_commands  # noqa: E402
+from cli.ghost_aliases import register_ghost_aliases  # noqa: E402
+from cli.help_ia import ROOT_EPILOG, ROOT_HELP, StudioGroup, apply_help_ia  # noqa: E402
 
 app = typer.Typer(
     name="cinematic-studio",
-    help=(
-        f"🎥 Grok Imagine Cinematic Studio v{STUDIO_VERSION} — "
-        "Grok 4.6 cinematic+Build · optional 4.3 1M · Imagine 1.0/1.5 · 25-agent core CLI"
-    ),
+    help=ROOT_HELP,
+    epilog=ROOT_EPILOG,
+    cls=StudioGroup,
     add_completion=False,
     rich_markup_mode="rich",
     no_args_is_help=True,
@@ -85,6 +85,8 @@ register_api_commands(app)
 register_generation_commands(app)
 register_wave_a_commands(app)
 register_grok_cli_commands(app)
+register_ghost_aliases(app)
+apply_help_ia(app)
 
 if __name__ == "__main__":
     app()

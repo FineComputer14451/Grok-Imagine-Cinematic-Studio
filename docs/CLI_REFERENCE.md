@@ -1,26 +1,43 @@
 # CLI Reference
-## cinematic-studio (Grok Imagine Cinematic Studio v3.10.0)
+## cinematic-studio (Grok Imagine Cinematic Studio v3.11.0)
 
 Primary entry points:
 
 - `cinematic-studio` (installed wrapper)
-- `python tools/cinematic_studio_cli.py`
-- `bash scripts/cinematic_studio.sh` (meta installer: install / update / verify / doctor / **grok**)
+- `python tools/cinematic_studio_cli.py` (in-repo / tests / catalog pin)
+- `bash scripts/cinematic_studio.sh` (meta installer: **install / update / verify / declutter / doctor / grok**)
+
+`cinematic-studio install|update|verify|declutter` is handled by the **PATH wrapper**, not the Typer tree. `python tools/cinematic_studio_cli.py install` is not a Typer command.
+
+PATH `cinematic-studio` often roots at `~/Grok-Cinematic-Projects`. Prefer in-repo `python tools/cinematic_studio_cli.py` when pinning the plugin catalog from this clone.
 
 ---
 
 ## Global
 
 ```bash
-cinematic-studio --help
-cinematic-studio <command> --help
+python tools/cinematic_studio_cli.py --help
+python tools/cinematic_studio_cli.py <command> --help
 ```
+
+Bare invoke is `--help`. Commands are grouped into journey panels:
+
+| Panel | Examples |
+|-------|----------|
+| Orient | `dashboard` `status` `version` `activate` |
+| Health | `doctor` `validate` `models` `stack` `quota` `grok` |
+| Produce | `create-bible` `dna` `sequence` `animatic` `wave-a` `memory` |
+| Spend | `sfw` `nsfw` `imagine` `generation` `cost-simulate` |
+| Gate | `handoff` |
+| Deliver | `report` |
+| Surfaces | `ui` `web` `web-react` `api` |
+| Meta | `plugin` |
 
 ---
 
 ## Grok Build CLI binary
 
-Manage the official **Grok Build** binary (min **0.2.93**). Method A install also ensures this automatically.
+Manage the official **Grok Build** binary (min **1.0.5**). Method A install also ensures this automatically.
 
 ```bash
 cinematic-studio grok status              # path + version vs min
@@ -54,11 +71,13 @@ cinematic-studio create-bible "Project Title"   # Non-interactive
 
 ```bash
 cinematic-studio dna init --name "Character Name"
-cinematic-studio dna extract
+cinematic-studio dna save --file characters/<slug>/dna.json
 cinematic-studio dna lock
 cinematic-studio dna handoff
 cinematic-studio dna inject
 ```
+
+There is **no** `dna extract` CLI verb. Extraction is the `character-dna-extractor` chat skill; the hidden `dna extract` alias prints this hint and exits 2.
 
 ### Sequences
 
@@ -66,12 +85,14 @@ cinematic-studio dna inject
 cinematic-studio sequence init <name>
 cinematic-studio sequence add-clip ...
 cinematic-studio sequence handoff
-cinematic-studio sequence extend
+cinematic-studio sequence extend-prompt
 cinematic-studio sequence qa
 cinematic-studio sequence color-grade
 cinematic-studio sequence polish
 cinematic-studio sequence deliver
 ```
+
+There is **no** `sequence extend` CLI verb. Use `sequence extend-prompt` (plan) or `sequence run` (Imagine spend). The hidden `sequence extend` alias prints this hint and exits 2.
 
 ### Imagine / Handoff
 
@@ -82,15 +103,17 @@ cinematic-studio imagine agent-handoff \
   --format json|markdown
 
 cinematic-studio imagine bridge                 # Classic Surface C bridge
+cinematic-studio handoff validate <packet.json> --strict-handoff
 ```
 
 ### Quota & Cost
 
 ```bash
-cinematic-studio quota estimate --video-seconds 45 --tier heavy
+cinematic-studio quota estimate -d 45
 cinematic-studio quota dashboard
 cinematic-studio quota optimize
 cinematic-studio quota sync
+cinematic-studio cost-simulate --duration 30    # compact alias of quota estimate
 ```
 
 ### Models & Validation
@@ -99,17 +122,21 @@ cinematic-studio quota sync
 cinematic-studio models verify
 cinematic-studio models stack
 cinematic-studio validate
-cinematic-studio validate --strict-handoff
+cinematic-studio handoff validate <path> --strict-handoff
 ```
+
+`--strict-handoff` is a flag on `handoff validate` / `imagine agent-handoff`, not on `validate`.
 
 ### Plugins
 
 ```bash
-cinematic-studio plugin catalog
+cinematic-studio plugin catalog --help          # group: check | pin
 cinematic-studio plugin packs
 cinematic-studio plugin catalog pin
-cinematic-studio plugin check --release
+cinematic-studio plugin catalog check --release
 ```
+
+`plugin check` is a **hidden alias** of `plugin catalog check` (same `--release` / `--json`). Canonical verb is `plugin catalog check`.
 
 ### Interactive TUI
 
@@ -138,13 +165,12 @@ Live studio dashboard + safe launcher + production cockpit. **No Imagine spend**
 | `k` | Models stack |
 | `c` | Cockpit (Bible / DNA / sequence scaffold; dry-run polish/deliver) |
 | `l` | Launcher (status, lists, validate, stack, show DNA/sequence) |
-
-Operator loop: [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.md).
-
 | `/` or `Ctrl+P` | Command palette (allowlisted action search) |
 | KPI bar | Under status strip |
 | `y` | Save orient brief → `artifacts/tui_orient_brief.txt` |
 | `ui --print` | Non-TTY / CI: print orient dashboard instead of hard-fail |
+
+Operator loop: [guides/OPERATOR_CONTROL_PLANE.md](guides/OPERATOR_CONTROL_PLANE.md).
 
 ### Browser shells & API
 
@@ -161,7 +187,7 @@ pip install -r requirements-api.txt
 cinematic-studio api --host 127.0.0.1 --port 8090
 # OpenAPI → http://127.0.0.1:8090/docs
 
-# React / TanStack SPA (v3.10.0 · needs API + Node 20+)
+# React / TanStack SPA (needs API + Node 20+)
 cinematic-studio web-react                 # dev :5173, proxies /v1 → :8090
 cinematic-studio web-react --preview       # production build serve
 cinematic-studio web-react --install       # force npm install
@@ -172,18 +198,11 @@ Multi-shell matrix: [guides/WEB_SHELLS.md](guides/WEB_SHELLS.md) · React README
 ### NSFW (requires prior ErosForge activation in chat)
 
 ```bash
-cinematic-studio nsfw ...
+cinematic-studio nsfw --help
+cinematic-studio nsfw extend plan
 ```
 
-### Handoff validation
-
-```bash
-cinematic-studio handoff validate <path-to-packet.json|markdown>
-cinematic-studio handoff validate <path> --strict-handoff
-cinematic-studio handoff validate <path> --strict-wave-a
-```
-
-### Wave A multi-agent packets (v3.8.8+)
+### Wave A multi-agent packets
 
 Eight specialist packet builders for plate/motion, micro-physics, hair/makeup, dialogue/ADR, score/temp music, titles, distribution crops, and parallel briefs.
 
@@ -230,8 +249,8 @@ cinematic-studio doctor --quick      # fast preflight
 
 | Flag | Purpose |
 |------|---------|
-| `--strict-handoff` | Enforce full packet + specialist checklist |
-| `--strict-plate` | Require plate lock |
+| `--strict-handoff` | Enforce full packet + specialist checklist (`handoff validate`, `imagine agent-handoff`) |
+| `--strict-plate` | Require plate lock (`sfw`/`nsfw` run/session) |
 | `--strict-motion` | Require motion vector / I2V readiness |
 | `--strict-identity` | Hard-fail identity gate on extend path |
 | `--strict-wave-a` | Enforce Wave A packet completeness |
@@ -255,19 +274,19 @@ cinematic-studio doctor --quick      # fast preflight
 ## Quick operator sequence
 
 ```bash
-cinematic-studio doctor --quick
-cinematic-studio models verify
-cinematic-studio quota sync
-cinematic-studio create-bible --wizard
-cinematic-studio dna init --name "Lead" && cinematic-studio dna lock
-cinematic-studio sequence init hero-open
-cinematic-studio imagine agent-handoff --surface grok_build_tools --format markdown
-cinematic-studio handoff validate ./handoff.json --strict-handoff
-cinematic-studio ui
+python tools/cinematic_studio_cli.py doctor --quick
+python tools/cinematic_studio_cli.py models verify
+python tools/cinematic_studio_cli.py quota sync
+python tools/cinematic_studio_cli.py create-bible --wizard
+python tools/cinematic_studio_cli.py dna init --name "Lead" && python tools/cinematic_studio_cli.py dna lock
+python tools/cinematic_studio_cli.py sequence init hero-open
+python tools/cinematic_studio_cli.py imagine agent-handoff --surface grok_build_tools --format markdown
+python tools/cinematic_studio_cli.py handoff validate ./handoff.json --strict-handoff
+python tools/cinematic_studio_cli.py ui
 ```
 
 ---
 
 *Run any command with `--help` for full options. The CLI is the automation backbone of the Studio.*
 
-*Grok Imagine Cinematic Studio v3.10.0 — CLI Reference · Independent community project · Not affiliated with xAI*
+*Grok Imagine Cinematic Studio v3.11.0 — CLI Reference · Independent community project · Not affiliated with xAI*

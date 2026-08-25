@@ -4,6 +4,12 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Changed
+- **CLI help IA** — `cinematic-studio --help` groups commands into journey panels (Orient, Health, Produce, Spend, Gate, Deliver, Surfaces, Meta) with one example each. Nested `--help` on `dna`, `sequence`, `plugin`, `imagine`, and `quota` uses the same map (`tools/cli/help_ia.py`). Production argv is unchanged.
+- **CLI ghost aliases** — hidden `plugin check` forwards to `plugin catalog check`; `dna extract` and `sequence extend` print the real verbs and exit 2.
+- **CLI reference** — `docs/CLI_REFERENCE.md` matches live `--help` (studio v3.11.0, Grok Build ≥ 1.0.5, no fake `dna extract` / `sequence extend` / `validate --strict-handoff`).
+- **Typer floor** — `requirements.txt` pins `typer>=0.12.0` (Rich help panels).
+
 ## [3.11.0] - 2026-08-23
 
 ### Changed

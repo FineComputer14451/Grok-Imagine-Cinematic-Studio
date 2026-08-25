@@ -16,6 +16,7 @@ def test_main_help() -> None:
     assert "dashboard" in result.stdout
     assert "memory" in result.stdout
     assert "ui" in result.stdout
+    assert "Orient" in result.stdout
     assert "Grok 4.6" in result.stdout or "4.6" in result.stdout
     ver = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     assert ver in result.stdout

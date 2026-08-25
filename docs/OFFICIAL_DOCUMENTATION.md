@@ -349,7 +349,7 @@ cinematic-studio dna lock|handoff|inject
 
 # Sequences
 cinematic-studio sequence init <name>
-cinematic-studio sequence add-clip|handoff|extend|qa|color-grade|polish|deliver
+cinematic-studio sequence add-clip|handoff|extend-prompt|qa|color-grade|polish|deliver
 
 # Imagine / handoff
 cinematic-studio imagine agent-handoff --surface grok_build_tools --format json|markdown
@@ -357,7 +357,7 @@ cinematic-studio imagine bridge
 cinematic-studio handoff validate <path>
 
 # Quota
-cinematic-studio quota estimate --video-seconds 45 --tier heavy
+cinematic-studio quota estimate -d 45
 cinematic-studio quota dashboard|optimize|sync
 
 # Generation ledger
@@ -370,13 +370,14 @@ cinematic-studio wave-a validate
 
 # Models & health
 cinematic-studio models verify|stack
-cinematic-studio validate [--strict-handoff]
+cinematic-studio validate
+cinematic-studio handoff validate <path> --strict-handoff
 cinematic-studio doctor [--quick]
 
 # Plugins
 cinematic-studio plugin catalog|packs
 cinematic-studio plugin catalog pin
-cinematic-studio plugin check --release
+cinematic-studio plugin catalog check --release
 
 # TUI
 cinematic-studio ui

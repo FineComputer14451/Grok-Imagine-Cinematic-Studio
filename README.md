@@ -317,10 +317,10 @@ cinematic-studio sequence init my-sequence
 cinematic-studio sequence add-clip ...
 
 # Quota intelligence & cost simulation
-cinematic-studio quota estimate --video-seconds 45 --tier heavy
+cinematic-studio quota estimate -d 45
 
 # Plugin marketplace
-cinematic-studio plugin catalog
+cinematic-studio plugin catalog check
 cinematic-studio plugin packs
 
 # Interactive terminal UI (dashboard + launcher + cockpit)
@@ -457,12 +457,12 @@ Companion docs: [`docs/academy/`](docs/academy/).
 
 - `cinematic-studio create-bible --wizard` — Interactive guided Production Bible
 - `cinematic-studio ui` — Interactive terminal TUI (live dashboard + cascade/alignment, launcher, cockpit: Bible/DNA/sequence scaffold, **quota sync** (`s` on home), validate/stack; no Imagine spend)
-- `cinematic-studio dna ...` — Full character DNA lifecycle (init, extract, lock, handoff, inject)
-- `cinematic-studio sequence ...` — Init, add clips, handoff, extend, qa, color-grade, polish, deliver
+- `cinematic-studio dna ...` — Full character DNA lifecycle (init, save, lock, handoff, inject)
+- `cinematic-studio sequence ...` — Init, add clips, handoff, extend-prompt, qa, color-grade, polish, deliver
 - `cinematic-studio quota ...` — Estimate, dashboard, optimize, record spend
 - `cinematic-studio nsfw ...` — Dedicated NSFW batch planning, quota orchestration, physics QA
 - `cinematic-studio imagine agent-handoff` — Emit validated handoff packets for native Imagine execution
-- `cinematic-studio plugin catalog pin` / `check --release` — Release hygiene for the Grok plugin marketplace
+- `cinematic-studio plugin catalog pin` / `plugin catalog check --release` — Release hygiene for the Grok plugin marketplace
 - `cinematic-studio validate` — Project health & strict gate checks
 
 All commands support `--help` and rich output. Many also have direct Python entrypoints under `tools/cli/`.
