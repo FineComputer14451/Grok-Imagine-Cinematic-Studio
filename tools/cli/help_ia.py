@@ -7,6 +7,7 @@ so Rich first-seen panel order matches ``ROOT_PANEL_ORDER`` / nested maps.
 
 from __future__ import annotations
 
+import inspect
 from typing import Any
 
 import typer
@@ -36,6 +37,7 @@ NESTED_PANEL_ORDER: dict[str, tuple[str, ...]] = {
 
 ROOT_MAP: dict[str, str] = {
     "dashboard": "Orient",
+    "commands": "Orient",
     "status": "Orient",
     "version": "Orient",
     "activate": "Orient",
@@ -242,3 +244,71 @@ def _is_hidden(info: Any) -> bool:
     if isinstance(hidden, DefaultPlaceholder):
         return bool(hidden.value)
     return bool(hidden)
+
+
+def collect_catalog(
+    typer_app: typer.Typer, prefix: tuple[str, ...] = ()
+) -> list[tuple[str, str]]:
+    """Visible command paths and one-line summaries (hidden ghosts omitted)."""
+    rows: list[tuple[str, str]] = []
+    for command_info in typer_app.registered_commands:
+        if command_info.hidden:
+            continue
+        name = _info_name(command_info)
+        if not name:
+            continue
+        rows.append((" ".join((*prefix, name)), _help_text(command_info)))
+    for group_info in typer_app.registered_groups:
+        if _is_hidden(group_info):
+            continue
+        name = _info_name(group_info)
+        if not name:
+            continue
+        path = " ".join((*prefix, name))
+        rows.append((path, _help_text(group_info)))
+        inst = getattr(group_info, "typer_instance", None)
+        if inst is None or isinstance(inst, DefaultPlaceholder):
+            continue
+        rows.extend(collect_catalog(inst, (*prefix, name)))
+    return rows
+
+
+def filter_catalog(rows: list[tuple[str, str]], query: str) -> list[tuple[str, str]]:
+    tokens = query.strip().lower().split()
+    if not tokens:
+        return rows
+    hits: list[tuple[str, str]] = []
+    for path, summary in rows:
+        blob = f"{path} {summary}".lower()
+        if all(token in blob for token in tokens):
+            hits.append((path, summary))
+    return hits
+
+
+def _unwrap(value: Any) -> Any:
+    if isinstance(value, DefaultPlaceholder):
+        return value.value
+    return value
+
+
+def _first_line(text: str) -> str:
+    return text.strip().split("\n", 1)[0]
+
+
+def _help_text(info: Any) -> str:
+    raw = _unwrap(getattr(info, "help", None))
+    if isinstance(raw, str) and raw.strip():
+        return _first_line(raw)
+    callback = _unwrap(getattr(info, "callback", None))
+    if callable(callback):
+        doc = inspect.getdoc(callback) or ""
+        if doc.strip() and "You shouldn't use this class directly" not in doc:
+            return _first_line(doc)
+    inst = _unwrap(getattr(info, "typer_instance", None))
+    if inst is None:
+        return ""
+    inst_info = getattr(inst, "info", None)
+    inner = _unwrap(getattr(inst_info, "help", None) if inst_info is not None else None)
+    if isinstance(inner, str) and inner.strip():
+        return _first_line(inner)
+    return ""

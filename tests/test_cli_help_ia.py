@@ -110,6 +110,28 @@ def test_plugin_check_forwards() -> None:
     assert check_rel.returncode == catalog_rel.returncode
 
 
+def test_commands_search() -> None:
+    listing = run_cli("commands")
+    assert listing.returncode == 0
+    assert "doctor" in listing.stdout
+    assert "dna init" in listing.stdout
+    assert "extend-prompt" in listing.stdout
+
+    hits = run_cli("commands", "extend")
+    assert hits.returncode == 0
+    assert "extend-prompt" in hits.stdout
+    assert "dna extract" not in hits.stdout
+    assert "You shouldn't use this class directly" not in hits.stdout
+
+    miss = run_cli("commands", "xyzzy-not-a-command")
+    assert miss.returncode == 1
+    assert "No commands matching" in miss.stdout
+
+    root = run_cli("--help")
+    assert "commands" in root.stdout
+    assert "Orient" in root.stdout
+
+
 def test_actionspec_frozen() -> None:
     import sys
     from pathlib import Path

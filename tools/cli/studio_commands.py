@@ -12,6 +12,7 @@ from rich.table import Table
 
 from models import model_stack_summary
 
+from cli.help_ia import collect_catalog, filter_catalog
 from cli.dashboard import (
     build_studio_dashboard,
     dashboard_renderables,
@@ -231,3 +232,22 @@ def register(app: typer.Typer) -> None:
             )
         )
         console.print(format_stack_table())
+
+    @app.command("commands")
+    def commands_search(
+        query: str = typer.Argument(
+            "", help="Substring to match in command path or help text"
+        ),
+    ):
+        """Search CLI command names and help text."""
+        hits = filter_catalog(collect_catalog(app), query)
+        if query.strip() and not hits:
+            console.print(f"[yellow]No commands matching[/yellow] {query!r}")
+            raise typer.Exit(1)
+        table = Table(box=box.SIMPLE, show_header=True, header_style="bold")
+        table.add_column("Command", style="cyan", overflow="fold")
+        table.add_column("Summary", overflow="fold")
+        for path, summary in hits:
+            table.add_row(path, summary)
+        console.print(table)
+        console.print(f"[dim]{len(hits)} command(s)[/dim]")

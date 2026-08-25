@@ -18,13 +18,14 @@ PATH `cinematic-studio` often roots at `~/Grok-Cinematic-Projects`. Prefer in-re
 ```bash
 python tools/cinematic_studio_cli.py --help
 python tools/cinematic_studio_cli.py <command> --help
+python tools/cinematic_studio_cli.py commands extend
 ```
 
-Bare invoke is `--help`. Commands are grouped into journey panels:
+Bare invoke is `--help`. Commands are grouped into journey panels. `commands [query]` searches names and help text.
 
 | Panel | Examples |
 |-------|----------|
-| Orient | `dashboard` `status` `version` `activate` |
+| Orient | `dashboard` `commands` `status` `version` `activate` |
 | Health | `doctor` `validate` `models` `stack` `quota` `grok` |
 | Produce | `create-bible` `dna` `sequence` `animatic` `wave-a` `memory` |
 | Spend | `sfw` `nsfw` `imagine` `generation` `cost-simulate` |
