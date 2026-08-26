@@ -64,11 +64,35 @@ export const REPO_INSTALL_CMD =
 export const FULL_SUITE_UPDATE_CMD =
   "grok plugin update grok-imagine-cinematic-studio";
 
-function normalizePlugin(raw: Partial<Plugin> & { id: string; name: string }): Plugin {
+function normalizePlugin(
+  raw: Partial<Plugin> & { id?: string; name?: string },
+): Plugin | null {
+  const id = raw.id || raw.name;
+  const name = raw.name || raw.id;
+  if (!id || !name) return null;
+
+  const skills = Array.isArray(raw.skills)
+    ? raw.skills
+        .filter((s) => s && typeof s.name === "string")
+        .map((s) => ({
+          name: s.name,
+          description: typeof s.description === "string" ? s.description : "",
+        }))
+    : [];
+  const commands = Array.isArray(raw.commands)
+    ? raw.commands
+        .filter((c) => c && typeof c.name === "string")
+        .map((c) => ({
+          name: c.name,
+          description:
+            typeof c.description === "string" ? c.description : "",
+        }))
+    : [];
+
   return {
-    id: raw.id,
-    name: raw.name,
-    displayName: raw.displayName ?? raw.name,
+    id,
+    name,
+    displayName: raw.displayName ?? name,
     version: raw.version ?? "0.0.0",
     description: raw.description ?? "",
     longDescription: raw.longDescription ?? raw.description ?? "",
@@ -85,7 +109,7 @@ function normalizePlugin(raw: Partial<Plugin> & { id: string; name: string }): P
       raw.updateCommand ||
       (raw.isFullSuite
         ? FULL_SUITE_UPDATE_CMD
-        : `grok plugin update ${raw.name}`),
+        : `grok plugin update ${name}`),
     homepage:
       raw.homepage ||
       "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
@@ -97,10 +121,10 @@ function normalizePlugin(raw: Partial<Plugin> & { id: string; name: string }): P
       url: "https://github.com/FineComputer14451",
     },
     license: raw.license ?? "MIT",
-    skillCount: raw.skillCount ?? (raw.skills?.length ?? 0),
-    commandCount: raw.commandCount ?? (raw.commands?.length ?? 0),
-    skills: Array.isArray(raw.skills) ? raw.skills : [],
-    commands: Array.isArray(raw.commands) ? raw.commands : [],
+    skillCount: raw.skillCount ?? skills.length,
+    commandCount: raw.commandCount ?? commands.length,
+    skills,
+    commands,
   };
 }
 
@@ -111,7 +135,7 @@ export const marketplace: MarketplaceMeta = {
   name: rawMarketplace?.name ?? "finecomputer14451-cinematic-studio",
   title: rawMarketplace?.title ?? "Grok Imagine Cinematic Studio",
   description: rawMarketplace?.description ?? "",
-  version: rawMarketplace?.version ?? "3.9.1",
+  version: rawMarketplace?.version ?? "3.11.0",
   owner: rawMarketplace?.owner ?? {
     name: "FineComputer14451",
     url: "https://github.com/FineComputer14451",
@@ -119,16 +143,17 @@ export const marketplace: MarketplaceMeta = {
   homepage:
     rawMarketplace?.homepage ??
     "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
-  requiresGrokBuild: rawMarketplace?.requiresGrokBuild ?? "≥ 0.2.93",
+  requiresGrokBuild: rawMarketplace?.requiresGrokBuild ?? "≥ 1.0.5",
   pinSha: rawMarketplace?.pinSha ?? "",
 };
 
 export const plugins: Plugin[] = (
   Array.isArray((catalogJson as { plugins?: unknown[] }).plugins)
-    ? ((catalogJson as { plugins: Array<Partial<Plugin> & { id: string; name: string }> })
-        .plugins)
+    ? ((catalogJson as { plugins: Array<Partial<Plugin>> }).plugins)
     : []
-).map(normalizePlugin);
+)
+  .map((p) => normalizePlugin(p))
+  .filter((p): p is Plugin => Boolean(p));
 
 export const filters = (
   Array.isArray((catalogJson as { filters?: unknown }).filters)
