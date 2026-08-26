@@ -64,8 +64,20 @@ function scrubVersion(text: string | undefined, version: string): string {
   if (!text) return "";
   return text
     .replace(/v3\.9\.0/g, `v${version}`)
+    .replace(/v3\.9\.1/g, `v${version}`)
+    .replace(/v3\.10\.0/g, `v${version}`)
+    .replace(/\b3\.10\.0\b/g, version)
+    .replace(/\b3\.9\.1\b/g, version)
     .replace(/\b62 skills\b/g, "64 skills")
-    .replace(/\b54-skill\b/g, "64-skill");
+    .replace(/\b54-skill\b/g, "64-skill")
+    .replace(/≥ 0\.2\.93/g, "≥ 1.0.5")
+    .replace(/>= 0\.2\.93/g, "≥ 1.0.5");
+}
+
+function skillNameFromPath(path: string): string {
+  const cleaned = path.replace(/\\/g, "/").replace(/\/+$/, "");
+  const parts = cleaned.split("/");
+  return parts[parts.length - 1] || cleaned;
 }
 
 export async function fetchRemoteCatalog(): Promise<{
@@ -235,7 +247,33 @@ export function mergeRemoteCatalog(
       url: remote.owner?.url || baseMeta.owner.url,
     },
     pinSha,
+    requiresGrokBuild: baseMeta.requiresGrokBuild || "≥ 1.0.5",
   };
+
+  // Fold newly published plugin.json skills into the full-suite list.
+  const remoteSkillNames = (pluginJson.skills ?? [])
+    .map(skillNameFromPath)
+    .filter(Boolean);
+  if (remoteSkillNames.length) {
+    const fullIdx = plugins.findIndex((p) => p.isFullSuite);
+    if (fullIdx >= 0) {
+      const full = plugins[fullIdx];
+      const nextSkills = [...full.skills];
+      const have = new Set(nextSkills.map((s) => s.name));
+      for (const skillName of remoteSkillNames) {
+        if (have.has(skillName)) continue;
+        nextSkills.push({ name: skillName, description: "" });
+        have.add(skillName);
+      }
+      const total =
+        remoteSkillTotal ?? Math.max(full.skillCount, nextSkills.length);
+      plugins[fullIdx] = {
+        ...full,
+        skills: nextSkills,
+        skillCount: total,
+      };
+    }
+  }
 
   return {
     marketplace,

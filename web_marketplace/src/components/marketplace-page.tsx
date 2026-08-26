@@ -12,6 +12,7 @@ import { DependencyGraph } from "@/components/dependency-graph";
 
 export function MarketplacePage() {
   const plugins = useCatalogLive((s) => s.plugins);
+  const marketplace = useCatalogLive((s) => s.marketplace);
   const getPlugin = useCatalogLive((s) => s.getPlugin);
   const syncFromGitHub = useCatalogLive((s) => s.syncFromGitHub);
   const search = useMarketplace((s) => s.search);
@@ -23,15 +24,25 @@ export function MarketplacePage() {
   const setActivePluginId = useMarketplace((s) => s.setActivePluginId);
 
   useEffect(() => {
-    void syncFromGitHub();
+    void syncFromGitHub().catch(() => {
+      /* keep bundled catalog */
+    });
   }, [syncFromGitHub]);
 
-  const visible = useMemo(
-    () => plugins.filter((p) => matchesFilter(p)),
-    [plugins, matchesFilter, search, filter, installed],
-  );
+  const list = Array.isArray(plugins) ? plugins : [];
+
+  const visible = useMemo(() => {
+    try {
+      return list.filter((p) => p && matchesFilter(p));
+    } catch {
+      return list;
+    }
+  }, [list, matchesFilter, search, filter, installed]);
 
   const active = activePluginId ? getPlugin(activePluginId) : undefined;
+  const skillTotal =
+    list.find((p) => p.isFullSuite)?.skillCount ??
+    list.reduce((n, p) => n + (p.packId ? p.skillCount || 0 : 0), 0);
 
   return (
     <div className="min-h-dvh bg-[var(--color-bg)] text-[var(--color-fg)]">
@@ -62,7 +73,7 @@ export function MarketplacePage() {
 
             {view === "skills" && (
               <SkillBrowser
-                plugins={plugins}
+                plugins={list}
                 onOpenPlugin={setActivePluginId}
                 seedQuery={search}
               />
@@ -70,7 +81,7 @@ export function MarketplacePage() {
 
             {view === "graph" && (
               <DependencyGraph
-                plugins={plugins}
+                plugins={list}
                 onOpenPlugin={setActivePluginId}
               />
             )}
@@ -115,8 +126,9 @@ export function MarketplacePage() {
         </div>
 
         <footer className="mt-14 border-t border-[var(--color-border)] pt-6 text-center text-xs text-[var(--color-fg-subtle)]">
-          Grok Imagine Cinematic Studio marketplace · v3.9.1 · 64 skills · MIT ·
-          Independent community project · Not affiliated with xAI
+          Grok Imagine Cinematic Studio marketplace · v{marketplace.version} ·{" "}
+          {skillTotal} skills · MIT · Independent community project · Not
+          affiliated with xAI
         </footer>
       </main>
 
