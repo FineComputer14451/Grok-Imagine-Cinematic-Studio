@@ -135,7 +135,7 @@ export const marketplace: MarketplaceMeta = {
   name: rawMarketplace?.name ?? "finecomputer14451-cinematic-studio",
   title: rawMarketplace?.title ?? "Grok Imagine Cinematic Studio",
   description: rawMarketplace?.description ?? "",
-  version: rawMarketplace?.version ?? "3.11.0",
+  version: rawMarketplace?.version ?? "3.11.1",
   owner: rawMarketplace?.owner ?? {
     name: "FineComputer14451",
     url: "https://github.com/FineComputer14451",

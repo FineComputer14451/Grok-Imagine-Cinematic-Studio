@@ -2,7 +2,8 @@
 
 | File | Studio version |
 |------|----------------|
-| [RELEASE_NOTES_v3.11.0.md](RELEASE_NOTES_v3.11.0.md) | **Current** (Grok 4.6 stack lock · Grok Build ≥ 1.0.5) |
+| [RELEASE_NOTES_v3.11.1.md](RELEASE_NOTES_v3.11.1.md) | **Current** (SpaceXAI AUP fail-closed gates · CLI help IA) |
+| [RELEASE_NOTES_v3.11.0.md](RELEASE_NOTES_v3.11.0.md) | Grok 4.6 stack lock · Grok Build ≥ 1.0.5 |
 | [../CHANGELOG.md](../../CHANGELOG.md) | Full history |
 | [RELEASE_NOTES_v3.10.0.md](RELEASE_NOTES_v3.10.0.md) | Imagine Image 2.0 + Video 1.0/1.5 surfaces |
 | [RELEASE_NOTES_v3.9.1.md](RELEASE_NOTES_v3.9.1.md) | React/TanStack cockpit · API meta/bible |

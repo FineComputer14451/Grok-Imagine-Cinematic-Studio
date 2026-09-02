@@ -96,7 +96,7 @@ All agents must follow the **v3.1 structure**:
 
 Before submitting a PR:
 1. Copy the updated `MASTER_PROMPT.md` into Grok (Grok 4.5 default)
-2. Activate: `"Activate Grok Imagine Cinematic Studio v3.11.0"`
+2. Activate: `"Activate Grok Imagine Cinematic Studio v3.11.1"`
 3. Test with at least one full project
 4. Confirm the **Quality Assurance Guardian** gives a clean ✅ GO
 

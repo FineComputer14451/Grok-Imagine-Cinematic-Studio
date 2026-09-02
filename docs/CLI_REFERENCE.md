@@ -1,5 +1,5 @@
 # CLI Reference
-## cinematic-studio (Grok Imagine Cinematic Studio v3.11.0)
+## cinematic-studio (Grok Imagine Cinematic Studio v3.11.1)
 
 Primary entry points:
 
@@ -296,4 +296,4 @@ python tools/cinematic_studio_cli.py ui
 
 *Run any command with `--help` for full options. The CLI is the automation backbone of the Studio.*
 
-*Grok Imagine Cinematic Studio v3.11.0 — CLI Reference · Independent community project · Not affiliated with xAI*
+*Grok Imagine Cinematic Studio v3.11.1 — CLI Reference · Independent community project · Not affiliated with xAI*
