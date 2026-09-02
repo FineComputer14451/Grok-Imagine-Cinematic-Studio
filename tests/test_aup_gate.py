@@ -282,6 +282,55 @@ def test_video_extend_attested_intimate_allowed() -> None:
         _cleanup(path)
 
 
+
+def test_video_edit_csam_refused() -> None:
+    from imagine_client import submit_video_edit
+
+    try:
+        submit_video_edit(
+            "underage character study",
+            video_url="https://example.invalid/clip.mp4",
+            dry_run=True,
+        )
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        assert "minor-coded" in str(exc) or "CSAM" in str(exc)
+
+
+def test_video_extend_intimate_requires_attestation() -> None:
+    from imagine_client import submit_video_extension
+
+    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
+    try:
+        try:
+            submit_video_extension(
+                "erotic candlelit two-shot",
+                video_url="https://example.invalid/clip.mp4",
+                dry_run=True,
+            )
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            assert "attest" in str(exc)
+    finally:
+        os.environ.pop(ATTESTATION_ENV, None)
+
+
+def test_video_edit_attested_intimate_allowed() -> None:
+    from imagine_client import submit_video_edit
+
+    path, _ = _attest_env()
+    try:
+        resp = submit_video_edit(
+            "erotic clothing-on R-rated continuation",
+            video_url="https://example.invalid/clip.mp4",
+            dry_run=True,
+        )
+        assert resp.get("dry_run") is True
+        assert resp.get("mode") == "video_edit"
+    finally:
+        _cleanup(path)
+
+
 def test_imagine_edit_intimate_plus_source_image_refused() -> None:
     path, _ = _attest_env()
     try:
@@ -388,6 +437,12 @@ if __name__ == "__main__":
     test_nsfw_batch_allows_r_rated_imaginary()
     test_dna_intimate_requires_imaginary_adult_no_photo()
     test_sfw_dna_with_refs_still_allowed()
+    test_video_extend_csam_refused()
+    test_video_edit_intimate_requires_attestation()
+    test_video_extend_attested_intimate_allowed()
+    test_video_edit_csam_refused()
+    test_video_extend_intimate_requires_attestation()
+    test_video_edit_attested_intimate_allowed()
     test_imagine_edit_intimate_plus_source_image_refused()
     test_403_429_not_in_failover()
     test_execute_nsfw_shot_requires_attestation()
