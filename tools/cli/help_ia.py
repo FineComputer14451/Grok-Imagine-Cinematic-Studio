@@ -158,6 +158,7 @@ NESTED_MAPS: dict[str, dict[str, str]] = {
         "retry": "Quality",
     },
     "nsfw": {
+        "attest": "Plan",
         "plan": "Plan",
         "list": "Plan",
         "next": "Plan",

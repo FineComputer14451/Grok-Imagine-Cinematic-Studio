@@ -30,11 +30,18 @@ def test_hero_tier_routes_image_quality() -> None:
     assert shot["image_quality"] is True
 
 
-def test_key_explicit_matches_hero_routing() -> None:
-    shot = apply_reference_curator_models({"tier": "key_explicit", "description": "Beat"})
-    mapping = NSFW_ASSET_MODEL_MAP["key_explicit"]
+def test_key_intimate_matches_hero_routing() -> None:
+    shot = apply_reference_curator_models({"tier": "key_intimate", "description": "Beat"})
+    mapping = NSFW_ASSET_MODEL_MAP["key_intimate"]
+    assert shot["tier"] == "key_intimate"
     assert shot["image_model"] == mapping["image_model"]
     assert shot["video_model"] == mapping["video_model"]
+
+
+def test_key_explicit_alias_normalizes() -> None:
+    shot = apply_reference_curator_models({"tier": "key_explicit", "description": "Beat"})
+    assert shot["tier"] == "key_intimate"
+    assert shot["image_model"] == NSFW_ASSET_MODEL_MAP["key_intimate"]["image_model"]
 
 
 def test_filler_uses_draft_video() -> None:
@@ -46,7 +53,7 @@ def test_filler_uses_draft_video() -> None:
 
 def test_parse_inline_shot_three_part() -> None:
     parsed = parse_inline_shot("key_explicit:high:Primary beat")
-    assert parsed["tier"] == "key_explicit"
+    assert parsed["tier"] == "key_intimate"
     assert parsed["motion_complexity"] == "high"
     assert parsed["description"] == "Primary beat"
 
@@ -63,11 +70,11 @@ def test_build_shot_context_canonical_fields() -> None:
         tier="key_explicit",
         motion="high",
         has_ref=True,
-        explicit="explicit",
+        explicit="moderate",
         duration=12.0,
     )
     assert shot["shot_id"] == "shot_001"
-    assert shot["tier"] == "key_explicit"
+    assert shot["tier"] == "key_intimate"
     assert shot["motion_complexity"] == "high"
     assert shot["has_reference"] is True
     assert shot["consistency_required"] is True
@@ -119,7 +126,8 @@ def test_plan_batch_applies_routing() -> None:
 
 if __name__ == "__main__":
     test_hero_tier_routes_image_quality()
-    test_key_explicit_matches_hero_routing()
+    test_key_intimate_matches_hero_routing()
+    test_key_explicit_alias_normalizes()
     test_filler_uses_draft_video()
     test_parse_inline_shot_three_part()
     test_create_shot_includes_models()

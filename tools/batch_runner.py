@@ -9,6 +9,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
+from aup_gate import gate_imagine_prompt, gate_nsfw_shot
 from imagine_bridge import build_bridge_packet, bridge_to_markdown
 from imagine_client import (
     ImagineAPIError,
@@ -75,6 +76,9 @@ def execute_shot(
     if not shot:
         raise ValueError(f"Shot not found: {shot_id}")
 
+    if pipeline.name == "nsfw":
+        gate_nsfw_shot(shot, extra_prompt=prompt_override or "")
+
     if shot.get("status") not in ("scheduled", "pending", "qa_fail", "qa_pass"):
         if shot.get("quality_pass_status") == "quality_pass_pending":
             pass
@@ -90,6 +94,11 @@ def execute_shot(
     prompt = _build_shot_prompt(shot, override=prompt_override, prefix=pipeline.prompt_prefix)
     use_dry = is_dry_run() if dry_run is None else dry_run
     ref_url = _resolve_reference_url(shot)
+    gate_imagine_prompt(
+        prompt,
+        nsfw=pipeline.name == "nsfw",
+        has_reference_image=bool(ref_url),
+    )
 
     job_type = "video"
     img_model = shot.get("image_model", "grok-imagine-image")

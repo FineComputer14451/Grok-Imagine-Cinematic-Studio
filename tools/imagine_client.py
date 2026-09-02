@@ -16,8 +16,10 @@ import urllib.request
 import uuid
 from typing import Any
 
+from aup_gate import gate_imagine_prompt
 from imagine_regions import (
     FAILOVER_STATUS_CODES,
+    POLICY_FAIL_CLOSED_CODES,
     get_failover_chain,
     record_region_used,
     region_payload_fields,
@@ -119,6 +121,14 @@ def _request(
                 status=exc.code,
                 body=body,
             )
+            if exc.code in POLICY_FAIL_CLOSED_CODES:
+                last_error = ImagineAPIError(
+                    f"Imagine API {method.upper()} {path} failed ({exc.code}) region={reg} "
+                    "— fail closed (no region hop on 403/429 policy or rate-limit)",
+                    status=exc.code,
+                    body=body,
+                )
+                raise last_error from exc
             if exc.code in FAILOVER_STATUS_CODES and idx < len(regions) - 1:
                 record_region_used(reg, failed=True)
                 continue
@@ -160,6 +170,7 @@ def generate_image(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Generate image(s) from a text prompt."""
+    gate_imagine_prompt(prompt, nsfw=False, has_reference_image=False)
     slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
     payload: dict[str, Any] = {"model": slug, "prompt": prompt, "n": n}
     if aspect_ratio:
@@ -193,6 +204,7 @@ def edit_image(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Edit a source image with a natural-language prompt (up to 3 refs)."""
+    gate_imagine_prompt(prompt, nsfw=False, has_reference_image=True)
     slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
     extras = [u for u in (extra_image_urls or []) if u]
     if len(extras) > 2:
@@ -232,6 +244,11 @@ def submit_video_generation(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Start async text-to-video, image-to-video, or reference-to-video."""
+    gate_imagine_prompt(
+        prompt,
+        nsfw=False,
+        has_reference_image=bool(image_url or image_file_id or reference_image_urls),
+    )
     refs = [u for u in (reference_image_urls or []) if u]
     voices = [v for v in (reference_audios or []) if v]
     has_image = bool((image_url or "").strip() or (image_file_id or "").strip())

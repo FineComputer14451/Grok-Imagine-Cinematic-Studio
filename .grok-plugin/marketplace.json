@@ -83,7 +83,7 @@
     },
     {
       "name": "grok-imagine-nsfw",
-      "description": "Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.",
+      "description": "Optional 18+ pack: R-rated fictional imaginary adults only. Requires nsfw attest (SpaceXAI AUP). Not affiliated with xAI/SpaceXAI.",
       "category": "creative",
       "version": "3.11.0",
       "source": {

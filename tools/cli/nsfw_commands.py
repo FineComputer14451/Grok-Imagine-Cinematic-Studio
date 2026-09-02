@@ -12,6 +12,7 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
+from aup_gate import AUP_URL, AUPGateError, gate_nsfw_batch, require_attestation, write_attestation
 from models import DEFAULT_IMAGINE_VIDEO_MODEL
 from batch_runner import execute_nsfw_shot
 from quality_pass_scheduler import apply_quality_pass_promotion, get_pending_quality_passes
@@ -49,10 +50,45 @@ from cli.shared import AGENTS_DIR, STUDIO_ROOT, console
 from cli.spend_preflight import find_shot, preflight_spend, register_plate_motion_commands
 
 
+def _require_aup() -> None:
+    try:
+        require_attestation()
+    except AUPGateError as exc:
+        console.print(f"[red]{exc}[/red]")
+        raise typer.Exit(1) from exc
+
+
 def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
     register_plate_motion_commands(
         nsfw_app, load_batch=load_batch, save_batch=save_batch
     )
+
+    @nsfw_app.command("attest")
+    def nsfw_attest(
+        i_am_18: bool = typer.Option(False, "--i-am-18", help="Operator is 18 or older"),
+        imaginary_adults: bool = typer.Option(False, "--imaginary-adults", help="Subjects are fictional adults"),
+        not_a_real_person: bool = typer.Option(False, "--not-a-real-person", help="No real-person likenesses"),
+        acknowledge_aup: bool = typer.Option(False, "--acknowledge-aup", help=f"Acknowledge {AUP_URL}"),
+    ):
+        """Write a local 18+ SpaceXAI AUP attestation (required before NSFW plan/run)."""
+        try:
+            payload = write_attestation(
+                age_18_plus=i_am_18,
+                imaginary_adults_only=imaginary_adults,
+                not_a_real_person=not_a_real_person,
+                aup_acknowledged=acknowledge_aup,
+            )
+        except AUPGateError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+        console.print(Panel(
+            f"Attested at {payload['attested_at']}\n"
+            f"Policy: {AUP_URL}\n"
+            "Limited R-rated fictional adult material of imaginary adults only.",
+            title="AUP attestation saved",
+            border_style="green",
+        ))
+
     @nsfw_app.command("plan")
     def nsfw_plan(
         title: str = typer.Argument(..., help="Batch title"),
@@ -65,6 +101,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         output: str = typer.Option(None, "--output", "-o", help="Save markdown plan"),
     ):
         """Plan a prioritized NSFW batch under Heavy subscription limits."""
+        _require_aup()
         shots: list[dict] = []
         if file:
             shots = json.loads(Path(file).read_text())
@@ -74,6 +111,12 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         if not shots:
             console.print("[red]Provide --file or at least one --shot[/red]")
             raise typer.Exit(1)
+
+        try:
+            gate_nsfw_batch(title, shots)
+        except AUPGateError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
 
         batch = plan_batch(title, shots, tier=tier, budget_credits=budget, fast_mode=fast_mode, two_pass=two_pass)
         path = save_batch(batch)
@@ -155,10 +198,11 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         shot_tier: str = typer.Option("support", "--tier", help="Shot tier"),
         motion: str = typer.Option("medium", "--motion", help="low / medium / high"),
         has_ref: bool = typer.Option(False, "--has-ref", help="Approved reference image exists"),
-        explicit: str = typer.Option("moderate", "--explicit", help="suggestive / moderate / explicit"),
+        explicit: str = typer.Option("moderate", "--explicit", help="suggestive / moderate (R-rated cap)"),
         duration: float = typer.Option(10.0, "--duration", "-d"),
     ):
         """Recommend image_prompt vs image_to_video vs video_prompt."""
+        _require_aup()
         shot = build_shot_context(
             shot_id,
             tier=shot_tier,
@@ -190,9 +234,10 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         reason: str = typer.Option("physics_failure", "--reason", "-r", help="Failure reason key"),
         score: float = typer.Option(None, "--score", help="QA score received"),
         attempts: int = typer.Option(0, "--attempts", help="Prior attempt count"),
-        shot_tier: str = typer.Option("key_explicit", "--tier"),
+        shot_tier: str = typer.Option("key_intimate", "--tier"),
     ):
         """Suggest retry strategy after insufficient quality."""
+        _require_aup()
         shot = build_shot_context(
             shot_id,
             tier=shot_tier,
@@ -216,7 +261,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
     def nsfw_run(
         batch_name: str = typer.Argument(..., help="Batch slug or ID"),
         shot_id: str = typer.Argument(..., help="Shot ID to execute"),
-        dry_run: bool = typer.Option(False, "--dry-run"),
+        dry_run: bool = typer.Option(True, "--dry-run/--live", help="Default dry-run. Pass --live only after AUP attestation."),
         prompt: str = typer.Option(None, "--prompt", "-p", help="Override generation prompt"),
         strict_plate: bool = typer.Option(
             False,
@@ -235,6 +280,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         ),
     ):
         """Execute a batch shot via Imagine API (image / i2v / video)."""
+        _require_aup()
         from imagine_client import ImagineAPIError
 
         batch = load_batch(batch_name)
@@ -276,7 +322,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
     def nsfw_session(
         batch_name: str = typer.Argument(..., help="Batch slug or ID"),
         count: int = typer.Option(3, "--count", "-n"),
-        dry_run: bool = typer.Option(False, "--dry-run"),
+        dry_run: bool = typer.Option(True, "--dry-run/--live", help="Default dry-run. Pass --live only after AUP attestation."),
         stop_on_fail: bool = typer.Option(True, "--stop-on-fail/--continue-on-fail"),
         strict_plate: bool = typer.Option(
             False,
@@ -295,6 +341,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         ),
     ):
         """Run automated NSFW session — execute next priority shots."""
+        _require_aup()
         summary = run_batch_session(
             batch_name,
             pipeline="nsfw",

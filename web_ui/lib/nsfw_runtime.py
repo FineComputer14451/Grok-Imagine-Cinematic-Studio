@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from aup_gate import gate_nsfw_batch, gate_nsfw_shot
 from nsfw_orchestrator import (
     EXPLICIT_OPTIONS,
     MOTION_OPTIONS,
@@ -52,7 +53,14 @@ def plan_and_save_batch(
     budget_credits: float | None = None,
     fast_mode: bool = False,
 ) -> tuple[dict[str, Any], str]:
-    batch = plan_batch(title, shots, tier=tier, budget_credits=budget_credits, fast_mode=fast_mode)
+    normalized: list[dict[str, Any]] = []
+    for item in shots:
+        if isinstance(item, str):
+            normalized.append(parse_inline_shot(item))
+        else:
+            normalized.append(item)
+    gate_nsfw_batch(title, normalized)
+    batch = plan_batch(title, normalized, tier=tier, budget_credits=budget_credits, fast_mode=fast_mode)
     path = save_batch(batch)
     return batch, str(path)
 
@@ -80,6 +88,7 @@ def mode_decision(
         explicit=explicit,
         duration=duration,
     )
+    gate_nsfw_shot(shot)
     if budget_remaining is None:
         budget_remaining = load_project_state().get("quota", {}).get("budget_remaining")
     return decide_generation_mode(shot, budget_remaining=budget_remaining)

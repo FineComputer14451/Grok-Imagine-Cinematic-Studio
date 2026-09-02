@@ -201,6 +201,9 @@ artifacts/animatics/
 # Streamlit
 .streamlit/secrets.toml
 
+# Local SpaceXAI AUP attestation (never commit)
+.aup_attestation.json
+
 # React / Vite cockpit (web_react)
 web_react/node_modules/
 web_react/dist/
