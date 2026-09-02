@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Fixed
+- **AUP on video edit/extend** — `submit_video_edit` and `submit_video_extension` now run the same fail-closed Imagine prompt gate as generate/edit/i2v (CSAM always; attestation when intimate). Sequence extend and `imagine submit` video_edit/video_extend can no longer skip AUP.
+
 ## [3.11.1] - 2026-09-02
 
 ### Added
