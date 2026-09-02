@@ -4,6 +4,8 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.11.1] - 2026-09-02
+
 ### Added
 - **SpaceXAI AUP fail-closed gates** — `tools/aup_gate.py`, `nsfw attest`, 18+/imaginary-adult/no-real-person checks, R-rated cap, 403/429 no region hop
 - **`commands` search** — `cinematic-studio commands [query]` lists visible command paths and one-line help; substring match on path + summary (Orient panel). Hidden ghosts stay hidden.
@@ -13,12 +15,14 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Fixed
 - **Stale CLI help** — `list-agents` no longer says studio v3.7.1; `models list` says 4.6 / 1.0 first; `web` drops the PR6 label.
 - **Doctor Method A skills** — `~/.grok/skills` overlap with the repo is PASS (Method A), not a declutter WARN, unless `grok plugin list` includes the studio plugin.
+- **Installer fallback** — curl/one-liner path without a local `VERSION` file now falls back to **3.11.1** (was stuck on **3.10.0**).
 
 ### Changed
 - **CLI help IA** — `cinematic-studio --help` groups commands into journey panels (Orient, Health, Produce, Spend, Gate, Deliver, Surfaces, Meta) with one example each. Nested `--help` on `dna`, `sequence`, `plugin`, `imagine`, and `quota` uses the same map (`tools/cli/help_ia.py`). Production argv is unchanged.
 - **CLI ghost aliases** — hidden `plugin check` forwards to `plugin catalog check`; `dna extract` and `sequence extend` print the real verbs and exit 2.
-- **CLI reference** — `docs/CLI_REFERENCE.md` matches live `--help` (studio v3.11.0, Grok Build ≥ 1.0.5, no fake `dna extract` / `sequence extend` / `validate --strict-handoff`).
+- **CLI reference** — `docs/CLI_REFERENCE.md` matches live `--help` (studio v3.11.1, Grok Build ≥ 1.0.5, no fake `dna extract` / `sequence extend` / `validate --strict-handoff`).
 - **Typer floor** — `requirements.txt` pins `typer>=0.12.0` (Rich help panels).
+- **Studio version** — `VERSION` / `STUDIO_COMPATIBILITY_VERSION` / handoff `PROTOCOL_OK` include **3.11.1**; activation `Activate Grok Imagine Cinematic Studio v3.11.1`
 
 ## [3.11.0] - 2026-08-23
 

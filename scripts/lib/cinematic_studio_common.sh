@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# Shared library for Grok Imagine Cinematic Studio meta installer (v3.10.0)
+# Shared library for Grok Imagine Cinematic Studio meta installer (v3.11.1)
 #
 
-CINEMATIC_STUDIO_FALLBACK_VERSION="3.10.0"
+CINEMATIC_STUDIO_FALLBACK_VERSION="3.11.1"
 
 CINEMATIC_INSTALLER_SCRIPTS=(
     cinematic_studio.sh

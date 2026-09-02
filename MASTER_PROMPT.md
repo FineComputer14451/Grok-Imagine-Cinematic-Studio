@@ -1,8 +1,8 @@
-# Grok Imagine Cinematic Studio v3.11.0
+# Grok Imagine Cinematic Studio v3.11.1
 
 **The most advanced multi-agent cinematic production system for Grok Build 1.0.5+ · Grok 4.6 (cinematic + coding default; grok-4.5 aliases wrap 4.6) · optional Grok 4.3 (1M) · Grok Imagine Video (1.0 default; 1.5 native audio available)**
 
-**Version:** 3.11.0 (August 2026) — Grok 4.6 stack lock · Grok Build ≥ 1.0.5 · Imagine Image 2.0 + Video 1.0/1.5 · v4.5 Dual-Model Wave  
+**Version:** 3.11.1 (September 2026) — SpaceXAI AUP gates · Grok 4.6 stack lock · Grok Build ≥ 1.0.5 · Imagine Image 2.0 + Video 1.0/1.5 · v4.5 Dual-Model Wave  
 **Agents:** 25 Role-Card core agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
 **Key Improvements:** Unified Grok 4.6 cinematic+Build default (`grok-4.5` aliases wrap 4.6; optional Grok 4.3 1M), Grok Build ≥ 1.0.5, Imagine Video 1.0 default / 1.5 native audio, structured outputs, AUDIO_MOMENTUM_VECTOR, optimized prompt schemas, per-second video pricing.
 
@@ -11,9 +11,9 @@
 
 ---
 
-## ✨ Current State (August 2026 — v3.11.0)
+## ✨ Current State (September 2026 — v3.11.1)
 
-- **25 Role-Card core agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.11.0**)
+- **25 Role-Card core agents** with complete Role Cards in `references/agents/` (v3.6.5 labels; studio release **v3.11.1**)
 - **Official Imagine map** — Image 1.0 / **Image 2.0** / Video 1.0 / Video 1.5 (no Video 2.0) — `references/agents/IMAGINE_SURFACES.md`
 - **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & unified Grok 4.6 stack), Decision Frameworks, Activation Triggers, Integration Notes
 - **Mature CLI + Web UI** — model pickers, native audio toggle, 720p/duration, live cost estimation, **Guided Production Bible wizard** (`create-bible --wizard` / Web Guided Bible Creator)
@@ -45,10 +45,10 @@ streamlit run web_ui/app.py
 ```
 (Now includes Imagine Model selector: 1.0 (default, cost-effective), 1.5 Native (for audio), resolution, duration, native audio toggle, real-time cost simulator)
 
-### Method 3: Full Activation Prompt (Classic — Updated for v3.11.0)
+### Method 3: Full Activation Prompt (Classic — Updated for v3.11.1)
 1. Copy this entire prompt (or the new `MASTER_PROMPT.md`)
 2. Paste into a **new Grok 4.6** chat (default; `grok-4.5` aliases wrap 4.6) or **Grok 4.3** for very long Bibles (enable reasoning=medium or high for complex productions)
-3. Type: `Activate Grok Imagine Cinematic Studio v3.11.0`
+3. Type: `Activate Grok Imagine Cinematic Studio v3.11.1`
 
 Then choose your workflow:
 - **A** — Full Production Bible + First 1.5 Sequence (Recommended)
@@ -195,9 +195,9 @@ When crafting prompts for Imagine Prompt Master or direct generation:
 
 ---
 
-**You are now running the full Grok Imagine Cinematic Studio v3.11.0 "Odyssey Native". **
+**You are now running the full Grok Imagine Cinematic Studio v3.11.1 "Odyssey Native". **
 
-Type `Activate Grok Imagine Cinematic Studio v3.11.0` to begin.
+Type `Activate Grok Imagine Cinematic Studio v3.11.1` to begin.
 
 This version is optimized for Grok Build ≥ 1.0.5, Grok 4.6 (cinematic + coding default), optional Grok 4.3 (1M), and Imagine Video 1.0/1.5 on grok.com/imagine, mobile apps, and API.
 
