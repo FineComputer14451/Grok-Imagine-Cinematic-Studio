@@ -1,7 +1,7 @@
 {
   "name": "grok-imagine-cinematic-studio",
   "version": "3.11.1",
-  "description": "Independent community cinematic production suite v3.11.0 — 25 Role-Card core agents, 64 skills, multi-surface control plane (CLI/TUI/Streamlit/NiceGUI/FastAPI). Grok Imagine Video 1.0/1.5, unified Grok 4.6 cinematic+Build stack, Grok Build ≥ 1.0.5. Not affiliated with or endorsed by xAI.",
+  "description": "Independent community cinematic production suite v3.11.1 — 25 Role-Card core agents, 64 skills, multi-surface control plane (CLI/TUI/Streamlit/NiceGUI/FastAPI). Grok Imagine Video 1.0/1.5, unified Grok 4.6 cinematic+Build stack, Grok Build ≥ 1.0.5. Not affiliated with or endorsed by xAI.",
   "author": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
