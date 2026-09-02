@@ -1,7 +1,7 @@
 {
   "name": "grok-imagine-cinematic-studio",
   "version": "3.6.5",
-  "description": "23-agent cinematic production suite for Grok Imagine Video 1.5 with native audio, Character DNA, sequence extension, quota orchestration, and delivery polish.",
+  "description": "Unofficial third-party SFW cinematic production suite for Grok Imagine Video 1.5. Not affiliated with xAI or SpaceXAI.",
   "author": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -32,7 +32,6 @@
     ".grok/skills/continuity-consistency-guardian",
     ".grok/skills/director-of-photography",
     ".grok/skills/director-of-photography-v3-3",
-    ".grok/skills/erosforge-nsfw-director",
     ".grok/skills/foley-sound-design-specialist",
     ".grok/skills/github-repo-manager",
     ".grok/skills/grok-imagine-cinematic-studio",
@@ -47,9 +46,6 @@
     ".grok/skills/localization-subtitle-specialist",
     ".grok/skills/mega-production-architect",
     ".grok/skills/narrative-arc-pacing-strategist",
-    ".grok/skills/nsfw-chain-qa-protocol",
-    ".grok/skills/nsfw-quota-orchestrator",
-    ".grok/skills/nsfw-sequence-extender",
     ".grok/skills/performance-emotion-director",
     ".grok/skills/post-production-color-grading-supervisor",
     ".grok/skills/production-bible-workflow",
@@ -73,7 +69,6 @@
     "commands/dna.md",
     "commands/imagine.md",
     "commands/intelligence.md",
-    "commands/nsfw.md",
     "commands/quota.md",
     "commands/sfw.md",
     "commands/validate.md"

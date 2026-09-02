@@ -1,6 +1,8 @@
 # Kink-Specific Cinematic Template Library v3.3
 
-**For use with ErosForge NSFW Director v3.3**
+**For use with ErosForge NSFW Director after `nsfw attest`.**
+
+AUP: 18+, imaginary adults only, **R-rated implied intimacy** (not pornographic). No real-person likenesses. No hidden-camera of unsuspecting people. Policy: https://x.ai/legal/acceptable-use-policy
 
 This library provides **pre-built, optimized cinematic templates** for common kinks and intimate scenarios. Each template includes:
 
@@ -52,16 +54,18 @@ This library provides **pre-built, optimized cinematic templates** for common ki
 
 ---
 
-## 4. Voyeurism
+## 4. Observed Intimacy (consensual, fictional adults)
 
 **Intensity:** Subtle → Medium  
-**Mood:** Secretive, tense, observational
+**Mood:** Aware, tense, observational — **in-world consent required**
+
+Must be clearly **fictional adults** who know they are on camera. Never hidden-camera of unsuspecting people. Never real persons.
 
 - **Lighting:** Low light, practical sources (streetlights, moonlight through windows, phone glow).
-- **Framing:** Through doorways, windows, mirrors, or from a hidden vantage point. Slightly obscured views.
+- **Framing:** Through an in-world doorway or mirror the characters know about. Slightly obscured views.
 - **Motion:** Still camera with very subtle movements. Heavy use of negative space.
-- **Color Grading:** Cool, desaturated, slightly grainy, surveillance aesthetic.
-- **Prompt Keywords:** `voyeuristic perspective, hidden camera, through window, secretive observation, low light, tense atmosphere`
+- **Color Grading:** Cool, desaturated, slightly grainy.
+- **Prompt Keywords:** `consensual observed intimacy, fictional adults, in-world awareness of camera, doorway frame, R-rated implied, low light`
 
 ---
 

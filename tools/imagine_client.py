@@ -16,8 +16,10 @@ import urllib.request
 import uuid
 from typing import Any
 
+from aup_gate import gate_imagine_prompt
 from imagine_regions import (
     FAILOVER_STATUS_CODES,
+    POLICY_FAIL_CLOSED_CODES,
     get_failover_chain,
     record_region_used,
     region_payload_fields,
@@ -116,6 +118,14 @@ def _request(
                 status=exc.code,
                 body=body,
             )
+            if exc.code in POLICY_FAIL_CLOSED_CODES:
+                last_error = ImagineAPIError(
+                    f"Imagine API {method.upper()} {path} failed ({exc.code}) region={reg} "
+                    "— fail closed (no region hop on 403/429 policy or rate-limit)",
+                    status=exc.code,
+                    body=body,
+                )
+                raise last_error from exc
             if exc.code in FAILOVER_STATUS_CODES and idx < len(regions) - 1:
                 record_region_used(reg, failed=True)
                 continue
@@ -143,6 +153,7 @@ def generate_image(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Generate image(s) from a text prompt."""
+    gate_imagine_prompt(prompt, nsfw=False, has_reference_image=False)
     slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
     if _use_dry_run(dry_run):
         images = [
@@ -170,6 +181,7 @@ def edit_image(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Edit a source image with a natural-language prompt."""
+    gate_imagine_prompt(prompt, nsfw=False, has_reference_image=True)
     slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
     if _use_dry_run(dry_run):
         return {
@@ -198,6 +210,7 @@ def submit_video_generation(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Start async text-to-video or image-to-video generation."""
+    gate_imagine_prompt(prompt, nsfw=False, has_reference_image=bool(image_url))
     slug = resolve_video_model(model or DEFAULT_IMAGINE_VIDEO_MODEL)
     if _use_dry_run(dry_run):
         rid = _mock_request_id("vid")
@@ -232,6 +245,7 @@ def submit_video_extension(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Start async video extension from an existing clip."""
+    gate_imagine_prompt(prompt, nsfw=False, has_reference_image=False)
     slug = resolve_video_model(model or "grok-imagine-video")
     if _use_dry_run(dry_run):
         rid = _mock_request_id("ext")

@@ -1,6 +1,6 @@
 {
   "name": "grok-imagine-cinematic-studio",
-  "description": "Official Grok plugin marketplace for Grok Imagine Cinematic Studio v3.6 — 32 production skills, CLI tools, and 23-agent Role Cards.",
+  "description": "Third-party Grok plugin marketplace for Grok Imagine Cinematic Studio v3.6. Not affiliated with, endorsed by, or originating from xAI or SpaceXAI.",
   "owner": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "grok-imagine-cinematic-studio",
-      "description": "Full 23-agent cinematic studio with native Grok Imagine Video 1.5, Character DNA, long-form sequence extension, quota orchestration, NSFW pipelines, and AI delivery polish.",
+      "description": "SFW 23-agent cinematic studio for Grok Imagine Video 1.5, Character DNA, long-form sequence extension, quota orchestration, and AI delivery polish. Unofficial third-party plugin.",
       "category": "creative",
       "version": "3.6.5",
       "source": "./",
@@ -22,6 +22,20 @@
         "sequence extender",
         "production bible",
         "ai polish director"
+      ]
+    },
+    {
+      "name": "grok-imagine-cinematic-studio-nsfw",
+      "description": "Optional 18+ add-on: limited R-rated fictional adult material of imaginary adults. Requires AUP attestation. Not affiliated with xAI/SpaceXAI.",
+      "category": "creative",
+      "version": "3.6.5",
+      "source": "./.grok-plugin/nsfw-plugin.json",
+      "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
+      "keywords": [
+        "18+",
+        "aup",
+        "r-rated",
+        "imaginary adults"
       ]
     }
   ]

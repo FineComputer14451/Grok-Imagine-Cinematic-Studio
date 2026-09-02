@@ -78,7 +78,7 @@ EROTIC_PHASES: dict[str, dict[str, Any]] = {
         "label": "Peak",
         "tension": 0.95,
         "motion_intensity": "high",
-        "description": "Key explicit narrative beat — hero moment of sequence",
+        "description": "Peak emotional intimacy beat — implied, R-rated, clothing on or tasteful suggestion",
     },
     "afterglow": {
         "label": "Afterglow",

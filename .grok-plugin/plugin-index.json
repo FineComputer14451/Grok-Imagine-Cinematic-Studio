@@ -53,10 +53,6 @@
             "description": "Visual language architect and cinematic lens master. Defines camera moves, framing, lens choices, and translates emotio…"
           },
           {
-            "name": "erosforge-nsfw-director",
-            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper 1.5…"
-          },
-          {
             "name": "foley-sound-design-specialist",
             "description": "Hyper-realistic foley and immersive soundscape specialist. Designs detailed, physically accurate sound effects and envi…"
           },
@@ -111,18 +107,6 @@
           {
             "name": "narrative-arc-pacing-strategist",
             "description": "Story rhythm master and emotional architect. Designs three-act structure, pacing heatmap, tension/release curves, and e…"
-          },
-          {
-            "name": "nsfw-chain-qa-protocol",
-            "description": "NSFW extend and stitch chain QA protocol for intimate Grok Imagine Video 1.5 sequences. Runs the weighted 8-point artif…"
-          },
-          {
-            "name": "nsfw-quota-orchestrator",
-            "description": "Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans and executes batches of erotic image and video gene…"
-          },
-          {
-            "name": "nsfw-sequence-extender",
-            "description": "NSFW sensual sequence extension from reference frame or short clip to 30-120+ seconds. Plans erotic tension curves, Gro…"
           },
           {
             "name": "performance-emotion-director",
@@ -211,10 +195,6 @@
             "description": "Model and quota intelligence — region routing, aspect presets, live quota sync, and two-pass quality scheduling."
           },
           {
-            "name": "nsfw",
-            "description": "Activate ErosForge NSFW pipeline with quota-aware batch planning, model routing, chain QA, and sensual sequence extensi…"
-          },
-          {
             "name": "quota",
             "description": "Estimate production credits, assess budget risk, and get quota optimization recommendations for Imagine Video 1.5."
           },
@@ -225,6 +205,34 @@
           {
             "name": "validate",
             "description": "Run full Cinematic Studio validation — skills, agents, models, DNA, sequences, and project state health checks."
+          }
+        ]
+      }
+    },
+    "grok-imagine-cinematic-studio-nsfw": {
+      "components": {
+        "skills": [
+          {
+            "name": "erosforge-nsfw-director",
+            "description": "Adult/R-rated content specialist. Designs emotionally authentic, artistically justified intimate scenes with proper 1.5…"
+          },
+          {
+            "name": "nsfw-chain-qa-protocol",
+            "description": "NSFW extend and stitch chain QA protocol for intimate Grok Imagine Video 1.5 sequences. Runs the weighted 8-point artif…"
+          },
+          {
+            "name": "nsfw-quota-orchestrator",
+            "description": "Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans and executes batches of erotic image and video gene…"
+          },
+          {
+            "name": "nsfw-sequence-extender",
+            "description": "NSFW sensual sequence extension from reference frame or short clip to 30-120+ seconds. Plans erotic tension curves, Gro…"
+          }
+        ],
+        "commands": [
+          {
+            "name": "nsfw",
+            "description": "Activate ErosForge NSFW pipeline with quota-aware batch planning, model routing, chain QA, and sensual sequence extensi…"
           }
         ]
       }

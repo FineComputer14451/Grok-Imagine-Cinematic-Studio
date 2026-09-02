@@ -1,0 +1,17 @@
+{
+  "name": "grok-imagine-cinematic-studio-nsfw",
+  "version": "3.6.5",
+  "description": "Optional 18+ R-rated fictional-adult add-on. Requires local AUP attestation. Not affiliated with xAI or SpaceXAI. Policy: https://x.ai/legal/acceptable-use-policy",
+  "aup_required": true,
+  "aup_url": "https://x.ai/legal/acceptable-use-policy",
+  "license": "MIT",
+  "skills": [
+    ".grok/skills/erosforge-nsfw-director",
+    ".grok/skills/nsfw-chain-qa-protocol",
+    ".grok/skills/nsfw-quota-orchestrator",
+    ".grok/skills/nsfw-sequence-extender"
+  ],
+  "commands": [
+    "commands/nsfw.md"
+  ]
+}

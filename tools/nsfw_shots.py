@@ -13,7 +13,7 @@ from models import (
 )
 
 from aspect_presets import apply_aspect_to_shot, default_aspect_for_tier, normalize_aspect, parse_aspect_from_spec
-from nsfw_config import NSFW_ASSET_MODEL_MAP, SHOT_TIERS
+from nsfw_config import NSFW_ASSET_MODEL_MAP, SHOT_TIERS, canonical_explicit_level, canonical_tier
 from nsfw_decisions import decide_generation_mode, estimate_shot_cost
 from nsfw_util import now_iso
 
@@ -33,10 +33,10 @@ def build_shot_context(
     """Canonical shot dict for decide/retry flows (CLI + Web UI)."""
     ctx: dict[str, Any] = {
         "shot_id": shot_id,
-        "tier": tier if tier in SHOT_TIERS else "support",
+        "tier": canonical_tier(tier),
         "motion_complexity": motion,
         "has_reference": has_ref,
-        "explicit_level": explicit,
+        "explicit_level": canonical_explicit_level(explicit),
         "duration_seconds": duration,
         "consistency_required": consistency_required,
     }
@@ -60,7 +60,7 @@ def parse_inline_shot(spec: str) -> dict[str, Any]:
     else:
         tier, motion, desc = "support", "medium", spec
     shot = {
-        "tier": tier.strip(),
+        "tier": canonical_tier(tier),
         "description": desc.strip(),
         "motion_complexity": motion.strip(),
     }
@@ -70,7 +70,8 @@ def parse_inline_shot(spec: str) -> dict[str, Any]:
 
 def apply_reference_curator_models(shot: dict[str, Any]) -> dict[str, Any]:
     """Assign image/video model slugs per Reference & Asset Curator NSFW tier map."""
-    tier = shot.get("tier", "support")
+    tier = canonical_tier(shot.get("tier", "support"))
+    shot["tier"] = tier
     mapping = NSFW_ASSET_MODEL_MAP.get(tier, NSFW_ASSET_MODEL_MAP["support"])
     shot["asset_tier"] = mapping["asset_tier"]
     shot["image_model"] = mapping["image_model"]
@@ -102,8 +103,7 @@ def create_shot(
     explicit_level: str = "moderate",
     image_quality: bool = False,
 ) -> dict[str, Any]:
-    if tier not in SHOT_TIERS:
-        tier = "support"
+    tier = canonical_tier(tier)
     sid = shot_id or f"shot_{tier[:3]}_{datetime.now().strftime('%H%M%S')}"
     shot = {
         "shot_id": sid,
@@ -113,7 +113,7 @@ def create_shot(
         "has_reference": has_reference,
         "consistency_required": consistency_required,
         "motion_complexity": motion_complexity,
-        "explicit_level": explicit_level,
+        "explicit_level": canonical_explicit_level(explicit_level),
         "image_quality": image_quality,
         "status": "pending",
         "attempts": [],
@@ -142,7 +142,7 @@ def enrich_shot_for_batch(raw: dict[str, Any], *, fast_mode: bool = False) -> di
             has_reference=raw.get("has_reference", False),
             consistency_required=raw.get("consistency_required", True),
             motion_complexity=raw.get("motion_complexity", "medium"),
-            explicit_level=raw.get("explicit_level", "moderate"),
+            explicit_level=canonical_explicit_level(raw.get("explicit_level", "moderate")),
             image_quality=raw.get("image_quality", False),
         )
     decision = decide_generation_mode(raw)

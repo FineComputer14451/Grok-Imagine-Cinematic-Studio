@@ -17,7 +17,10 @@ def _gate() -> bool:
     if not rt.NSFW_AVAILABLE:
         st.error("NSFW modules unavailable in this environment.")
         return False
-    st.caption("ErosForge planners — explicit `ACTIVATE EROSFORGE` still required in Grok.")
+    st.caption(
+        "R-rated fictional imaginary adults only. "
+        "`ACTIVATE EROSFORGE` still required in Grok. Live generate defaults to dry-run."
+    )
     return True
 
 
@@ -36,7 +39,7 @@ def render() -> None:
             batch_title = st.text_input("Batch title")
             shots = st.text_area(
                 "Shots (one per line)",
-                placeholder="hero:Cover frame, golden hour\nconsistency_anchor:Profile neutral\nkey_explicit:high:Slow reveal",
+                placeholder="hero:Cover frame, golden hour\nconsistency_anchor:Profile neutral\nkey_intimate:high:Slow reveal",
                 help="Format: tier:description or tier:motion:description",
             )
             col1, col2 = st.columns(2)
@@ -166,16 +169,22 @@ def render() -> None:
                 d_motion = st.selectbox("Motion", nr.MOTION_OPTIONS, index=1)
             with c3:
                 d_explicit = st.selectbox("Explicit level", nr.EXPLICIT_OPTIONS, index=1)
-            d_ref = st.checkbox("Has approved reference")
+            d_ref = st.checkbox(
+                "Has approved reference",
+                help="AUP: NSFW/intimate cannot use reference photos of people. Leave unchecked.",
+            )
             if st.form_submit_button("Decide mode"):
-                decision = nr.mode_decision(
-                    d_id,
-                    shot_tier=d_tier,
-                    motion=d_motion,
-                    has_ref=d_ref,
-                    explicit=d_explicit,
-                )
-                st.json(decision)
+                try:
+                    decision = nr.mode_decision(
+                        d_id,
+                        shot_tier=d_tier,
+                        motion=d_motion,
+                        has_ref=d_ref,
+                        explicit=d_explicit,
+                    )
+                    st.json(decision)
+                except Exception as exc:
+                    st.error(str(exc))
 
         st.divider()
         st.subheader("Retry strategy")

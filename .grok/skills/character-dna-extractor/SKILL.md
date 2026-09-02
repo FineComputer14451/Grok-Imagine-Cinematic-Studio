@@ -94,7 +94,7 @@ Handoff packet includes:
 
 ## NSFW Protocol
 
-Only include `nsfw_notes` when erotic/suggestive content is clearly visible in references. Remain clinical and consistency-focused. Compatible with ErosForge when explicitly activated.
+Intimate DNA is **opt-in and AUP-gated**. Require `subject_kind=imaginary_adult`, local 18+ attestation, and **no** reference photos. Refuse CSAM / minor-coded tropes. Do not undress or lock a real person’s likeness. Compatible with ErosForge only after `nsfw attest`. Policy: https://x.ai/legal/acceptable-use-policy
 
 ## Integration Chain
 

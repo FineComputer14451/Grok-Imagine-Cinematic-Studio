@@ -392,7 +392,7 @@ def generate_daily_report(
     if pct_daily > 80:
         recommendations.append("Daily cap nearly exhausted — defer filler/support to tomorrow")
     if pass_rate < 60:
-        recommendations.append("Low pass rate — increase consistency_anchor shots before key_explicit")
+        recommendations.append("Low pass rate — increase consistency_anchor shots before key_intimate")
     if avg_quality < 7:
         recommendations.append("Avg quality below 7 — activate ErosForge + Identity Lock before next batch")
     if efficiency < 0.5:

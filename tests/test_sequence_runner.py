@@ -40,5 +40,8 @@ def test_sequence_run_dry_run(tmp_path) -> None:
 
 
 if __name__ == "__main__":
-    test_sequence_run_dry_run(Path("/tmp"))
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmp:
+        test_sequence_run_dry_run(Path(tmp))
     print("Sequence runner test passed")

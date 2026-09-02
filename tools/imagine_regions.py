@@ -19,7 +19,9 @@ IMAGINE_REGIONS: dict[str, dict[str, Any]] = {
 }
 
 DEFAULT_REGION = "us-east-1"
-FAILOVER_STATUS_CODES = frozenset({403, 429, 500, 502, 503, 504})
+# 403/429 are policy, geo, or rate-limit denies — do not hop regions (AUP).
+POLICY_FAIL_CLOSED_CODES = frozenset({403, 429})
+FAILOVER_STATUS_CODES = frozenset({500, 502, 503, 504})
 
 
 def default_imagine_settings() -> dict[str, Any]:

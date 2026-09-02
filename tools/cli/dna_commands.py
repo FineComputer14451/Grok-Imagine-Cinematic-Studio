@@ -38,6 +38,11 @@ def register(app: typer.Typer) -> None:
         emotion: str = typer.Option("", "--emotion", help="Emotional baseline"),
         motion: str = typer.Option("", "--motion", help="Motion DNA for video"),
         anchor: list[str] = typer.Option(None, "--anchor", help="Key consistency anchor (repeatable)"),
+        subject_kind: str = typer.Option(
+            "unspecified",
+            "--subject-kind",
+            help="unspecified | imaginary_adult | real_person (intimate DNA requires imaginary_adult)",
+        ),
         output: str = typer.Option(None, "--output", "-o", help="Output dna.json path"),
     ):
         """Create a new Character DNA profile scaffold."""
@@ -52,6 +57,7 @@ def register(app: typer.Typer) -> None:
             motion_dna=motion,
             key_anchors=anchor or [],
             source="cli-init",
+            subject_kind=subject_kind,
         )
         if output:
             out_path = Path(output)
@@ -71,7 +77,11 @@ def register(app: typer.Typer) -> None:
     ):
         """Validate and save a Character DNA profile to characters/{slug}/."""
         dna = load_character_dna(file)
-        json_path, md_path = save_character_dna(dna)
+        try:
+            json_path, md_path = save_character_dna(dna)
+        except ValueError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
         console.print(f"[green]✅ DNA saved:[/green] {json_path}")
         console.print(f"[dim]Markdown:[/dim] {md_path}")
 
@@ -128,7 +138,11 @@ def register(app: typer.Typer) -> None:
     ):
         """Import DNA into Identity Lock memory bank."""
         dna = require_character_dna(name)
-        state = lock_to_identity_bank(dna)
+        try:
+            state = lock_to_identity_bank(dna)
+        except ValueError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
         console.print(f"[green]✅ Identity Lock engaged for[/green] {dna['character_name']}")
         console.print(f"[dim]Status: locked | Drift threshold: 2.5 | Anchors: {len(dna.get('key_consistency_anchors', []))}[/dim]")
         console.print(f"[dim]Identity Lock entries: {len(state.get('identity_lock', {}))}[/dim]")

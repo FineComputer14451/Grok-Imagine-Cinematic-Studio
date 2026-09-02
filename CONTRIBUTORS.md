@@ -28,7 +28,7 @@ This section will be updated as new contributors join.
 
 ## Special Thanks
 
-- The xAI team for building Grok 4.3 Beta — the incredible foundation that makes this studio possible.
+- The public Grok / xAI APIs and docs that this **unofficial** studio wraps. This project is not affiliated with, endorsed by, or originating from xAI or SpaceXAI.
 - The entire Grok community for inspiration, feedback, and pushing the boundaries of cinematic AI.
 
 ---

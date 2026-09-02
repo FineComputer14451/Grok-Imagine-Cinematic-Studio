@@ -19,6 +19,7 @@ from nsfw_config import (
     QUALITY_THRESHOLD_HERO,
     QUALITY_THRESHOLD_PASS,
     RETRY_STRATEGIES,
+    canonical_tier,
 )
 
 
@@ -62,7 +63,7 @@ def estimate_shot_cost(
 
 
 def _tier(shot: dict[str, Any]) -> str:
-    return shot.get("tier", "support")
+    return canonical_tier(shot.get("tier", "support"))
 
 
 def _has_ref(shot: dict[str, Any]) -> bool:
@@ -93,7 +94,7 @@ GENERATION_MODE_RULES: tuple[ModeRule, ...] = (
         0.92,
     ),
     (
-        lambda s, _: _tier(s) in ("hero", "key_explicit") and _has_ref(s),
+        lambda s, _: _tier(s) in ("hero", "key_intimate") and _has_ref(s),
         "image_to_video",
         "High-impact shot with reference — i2v for fidelity",
         0.88,

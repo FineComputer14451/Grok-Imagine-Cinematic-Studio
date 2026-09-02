@@ -2,6 +2,8 @@
 
 **The most advanced multi-agent cinematic production system for Grok Build + Grok 4.3 + Grok Imagine Video 1.5 Native**
 
+> Unofficial third-party studio. **Not affiliated with xAI or SpaceXAI.** Follow https://x.ai/legal/acceptable-use-policy. Intimate work is 18+, imaginary adults only, R-rated (not pornographic), no real-person undress. Run `nsfw attest` before ErosForge. Default plugin is SFW-only.
+
 **Version:** 3.6.4 "Odyssey Native" (June 2026)  
 **Agents:** 23 Specialized Agents with full v4.0 personalities (v3.6 upgrades for Imagine Video 1.5)  
 **Key Improvements:** Full native integration with Grok Imagine Video 1.5 (image-to-video, one-pass native audio, improved physics/consistency/stitching), Grok 4.3 Full exploitation (1M token context, structured outputs, configurable reasoning, native PDF export, cross-chat memory), enhanced Video Pipeline protocols, AUDIO_MOMENTUM_VECTOR, 1.5-optimized prompt schemas, updated cost simulation for per-second video pricing.

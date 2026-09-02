@@ -6,6 +6,8 @@
 
 **The most advanced multi-agent cinematic production system for Grok Build + Grok 4.3 + Grok Imagine Video 1.5**
 
+> **Unofficial third-party project.** Not affiliated with, endorsed by, or originating from xAI or SpaceXAI. Operators must follow the [SpaceXAI Acceptable Use Policy](https://x.ai/legal/acceptable-use-policy). Intimate pipelines are **18+**, **imaginary adults only**, **R-rated (not pornographic)**, and require `nsfw attest`. Real-person undress/nudify is forbidden. The default Grok plugin is **SFW-only**.
+
 Transform any story into emotionally powerful, production-ready cinematic video with **native 1.5 image-to-video**, one-pass synchronized audio (lip-sync + SFX + ambience + music), perfect character consistency, persistent memory, and a full **23-agent** professional film crew.
 
 [![Version](https://img.shields.io/badge/version-3.6.5-blue)](https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio)
@@ -75,8 +77,9 @@ python tools/cinematic_studio_cli.py models list
 python tools/cinematic_studio_cli.py models verify
 python tools/cinematic_studio_cli.py quota estimate --duration 90 --clips 9 --fast-mode
 python tools/cinematic_studio_cli.py generate-prompt "Your story" --chat-model grok-4.3 --video-model 1.5
-python tools/cinematic_studio_cli.py nsfw extend plan "Intimate Sequence" --duration 90 --profile passionate --reference "..."
-python tools/cinematic_studio_cli.py nsfw plan "Hero Session" --shot "hero:Cover frame" --budget 800
+python tools/cinematic_studio_cli.py nsfw attest --i-am-18 --imaginary-adults --not-a-real-person --acknowledge-aup
+python tools/cinematic_studio_cli.py nsfw extend plan "Intimate Sequence" --duration 90 --profile passionate
+python tools/cinematic_studio_cli.py nsfw plan "Hero Session" --shot "hero:Cover frame candlelit embrace" --budget 800
 ```
 
 ### 3. Grok Build Plugin Marketplace (Recommended for Grok CLI)

@@ -196,3 +196,6 @@ artifacts/animatics/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local SpaceXAI AUP attestation (never commit)
+.aup_attestation.json

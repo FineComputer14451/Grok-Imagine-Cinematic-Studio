@@ -32,7 +32,11 @@ Community leaders have the right and responsibility to remove, edit, or reject c
 
 ## Scope
 
-This Code of Conduct applies within all community spaces, and also applies when an individual is officially representing the community in public spaces. Examples of representing our community include using an official e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event.
+This Code of Conduct applies within all **community spaces** (issues, PRs, discussions, chats). It does not describe product output. Optional 18+ R-rated **fictional** pipelines are gated by `tools/aup_gate.py` and the [SpaceXAI AUP](https://x.ai/legal/acceptable-use-policy); they are not license to harass people in this community.
+
+This Code of Conduct also applies when an individual is representing the community in public spaces. Examples of representing our community include using a project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event.
+
+This project is **not affiliated with xAI or SpaceXAI**.
 
 ## Enforcement
 

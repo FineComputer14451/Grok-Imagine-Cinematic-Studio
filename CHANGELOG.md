@@ -5,14 +5,18 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **SpaceXAI AUP fail-closed gates** — `tools/aup_gate.py`, `nsfw attest`, 18+ / imaginary-adult / no-real-person checks; CSAM-stub refuse; R-rated cap; DNA intimate lock refuses photo refs
+- **Optional 18+ plugin** — `.grok-plugin/nsfw-plugin.json`; default marketplace plugin is SFW-only
 - **Grok plugin marketplace** — `.grok-plugin/marketplace.json`, `plugin.json`, and `scripts/generate_plugin_index.py` for `grok plugin marketplace add FineComputer14451/Grok-Imagine-Cinematic-Studio`
 
-### Removed
-- **Deprecated `agents/`** — legacy v3.4/v3.5 stubs; canonical Role Cards remain in `references/agents/`
-- **Stale skill mirrors** — duplicate Role Cards and v3.5 prompts under `grok-imagine-cinematic-studio/references/`
-- **Duplicate `references/agents/MASTER_PROMPT_v3.6.md`** — root `MASTER_PROMPT_v3.6.md` is canonical
-
 ### Changed
+- Imagine region failover **no longer hops 403/429** (policy / rate-limit fail closed)
+- Default `nsfw run` / `nsfw session` is **dry-run** (`--live` to generate)
+- Marketplace copy: third-party, **not affiliated** with xAI / SpaceXAI
+- ErosForge / I2I NSFW / kink templates capped at R-rated fictional imaginary adults
+- Shot tier `key_explicit` renamed to `key_intimate` (old name still accepted as an alias); `explicit` intensity removed from planner options
+- `nsfw decide` / `retry` require AUP attestation; `canonical_explicit_level()` refuses full-explicit intensity at shot build time
+- Sequence runner unit test no longer writes under `/tmp` (Termux-safe tempfile)
 - Moved `REPOSITORY_STRUCTURE.md` and `Example_Production_Bible_Example.md` into `docs/archive/` and `examples/`
 - **CI workflow** — removed deprecated `agents/**` path filters and validation scan
 - **README.md** — comprehensive update for v3.6.5 (plugin marketplace, 44-skill suite, model stack everywhere, updated architecture/project structure, agent crew to v3.6.5, CLI/Web UI examples, links)

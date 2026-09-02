@@ -6,18 +6,25 @@ description: Activate ErosForge NSFW pipeline with quota-aware batch planning, m
 
 Start an explicit opt-in NSFW session with ErosForge, NSFW Quota Orchestrator, Reference Curator model routing, and NSFW Sequence Extender.
 
-**Requires explicit user consent.** Do not activate without clear opt-in.
+**Requires explicit user consent and a local SpaceXAI AUP attestation.** Do not activate without clear 18+ opt-in.
+
+Limited **R-rated fictional adult** material of **imaginary adults** only. No real-person photos, no CSAM, no pornographic-beyond-R generation. Policy: https://x.ai/legal/acceptable-use-policy
 
 ## Preflight
 
-1. **Confirm opt-in** — User must explicitly request NSFW/erotic production.
-2. **CLI available?**
+1. **Confirm opt-in** — User must explicitly request NSFW/erotic production and be 18+.
+2. **Attest**
+   ```bash
+   python tools/cinematic_studio_cli.py nsfw attest \
+     --i-am-18 --imaginary-adults --not-a-real-person --acknowledge-aup
+   ```
+3. **CLI available?**
    ```bash
    python tools/cinematic_studio_cli.py nsfw --help
    python tools/cinematic_studio_cli.py nsfw extend --help
    ```
-3. **Parameters** — Parse "$ARGUMENTS" for optional batch title or sequence name.
-4. **Activate skills:** `erosforge-nsfw-director`, `nsfw-quota-orchestrator`, `nsfw-sequence-extender`, `nsfw-chain-qa-protocol`.
+4. **Parameters** — Parse "$ARGUMENTS" for optional batch title or sequence name.
+5. **Activate skills:** `erosforge-nsfw-director`, `nsfw-quota-orchestrator`, `nsfw-sequence-extender`, `nsfw-chain-qa-protocol`.
 
 State the activation phrase:
 
@@ -26,7 +33,7 @@ State the activation phrase:
 ## Plan
 
 1. Engage **ErosForge NSFW Director** for scene design and intimacy physics.
-2. Run **Reference Curator** NSFW tier routing (hero/anchor/key_explicit → image-quality + 1.5).
+2. Run **Reference Curator** NSFW tier routing (hero/anchor/key_intimate → image-quality + 1.5).
 3. Plan batch under Heavy daily cap with 15% retry reserve.
 4. If "$ARGUMENTS" includes a sequence name, scaffold NSFW extension with tension profile.
 
@@ -38,7 +45,7 @@ State the activation phrase:
 python tools/cinematic_studio_cli.py nsfw plan "Session Title" \
   --shot "hero:Cover frame candlelit embrace" \
   --shot "consistency_anchor:Identity lock close-up" \
-  --shot "key_explicit:high:Primary intimate beat" \
+  --shot "hero:Primary intimate beat" \
   --budget 800
 ```
 

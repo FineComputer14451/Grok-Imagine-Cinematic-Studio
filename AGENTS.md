@@ -30,7 +30,7 @@ This is a persistent Linux sandbox environment (`/home/workdir/`) designed for a
 │       │   ├── scripts/         # Optional: executable helpers
 │       │   ├── references/      # Optional: long-form docs, production bibles, agent defs
 │       │   └── assets/          # Optional: templates, reference images, etc.
-├── .grok-plugin/                # Grok plugin manifests (marketplace.json, plugin.json, plugin-index.json for 44 skills + commands)
+├── .grok-plugin/                # Grok plugin manifests (SFW default + optional 18+ nsfw-plugin.json)
 ├── artifacts/                   # All outputs go here (images, docs, videos, code, etc.)
 ├── scripts/                     # Install/verify/update helpers + generate_plugin_index.py
 ├── web_ui/                      # Streamlit dashboard (model pickers, quota sim, DNA/sequence tools)
@@ -167,8 +167,8 @@ The **AI Polish Director** is the final post-production agent, activated after Q
 | **Sequence Extension**      | `cinematic-sequence-extender`, `extend-frame-to-video` | Extending stills into video, rough-cut animatics, or continuing clips |
 | **Custom Agents**           | `custom-grok-cinematic-agent`              | Drafting or customizing bespoke cinematic production agents / role cards |
 | **Quota & Efficiency**      | `workflow-quota-optimizer`                 | Long-form generation sessions, cost/quota management, production planning |
-| **NSFW Batch Orchestration**| `nsfw-quota-orchestrator`                    | Quota-aware erotic image+video batches on Heavy, i2v decisions, daily reports (with ErosForge) |
-| **NSFW Sequence Extension** | `nsfw-sequence-extender`                     | Sensual 30–120s+ extension from reference/clip, prompt chains, erotic pacing, artifact QA (with ErosForge) |
+| **NSFW Batch Orchestration**| `nsfw-quota-orchestrator`                    | Optional 18+ add-on. R-rated fictional imaginary adults only after `nsfw attest` (with ErosForge). Not in the default plugin. |
+| **NSFW Sequence Extension** | `nsfw-sequence-extender`                     | Optional 18+ add-on. R-rated implied intimacy extend after AUP attestation. |
 | **GitHub Management**       | `github-repo-manager`                      | Create repo, push, PRs, issues, file operations on GitHub |
 | **Video / Audio**           | `ffmpeg`                                   | Trimming, merging, subtitles, compression, GIFs, storyboards |
 | **Documents**               | `pdf`, `docx`, `pptx`, `xlsx`              | Professional document or presentation creation |
@@ -204,8 +204,9 @@ Local config: `~/.grok/config.toml` sets `fork_secondary_model = "grok-build"`.
 - Primary ongoing project: **Grok Imagine Cinematic Studio** (v3.6.5 "Odyssey Native") and related custom skills.
 - All generated artifacts **must** be saved to `/home/workdir/artifacts/`.
 - Persistent state and custom skills live in `/home/workdir/.grok/skills/`.
-- Grok plugin marketplace lives in `.grok-plugin/` (marketplace.json, plugin.json, plugin-index.json with 44 skills + 11 commands). Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
-- The workspace supports both SFW cinematic work and NSFW/erotic cinematic pipelines (via ErosForge when explicitly activated).
+- Grok plugin marketplace lives in `.grok-plugin/`. **Default plugin is SFW-only.** Optional 18+ add-on: `.grok-plugin/nsfw-plugin.json`. Install via `grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust`.
+- This repo is an **unofficial third-party** studio. Not affiliated with xAI or SpaceXAI. Follow https://x.ai/legal/acceptable-use-policy.
+- Intimate / ErosForge work is **AUP-gated** (`tools/aup_gate.py`): 18+ attestation (`nsfw attest`), imaginary adults only, no real-person refs, R-rated cap. Default plugin does not ship NSFW skills.
 - Model stack (grok-4.3 / grok-build-0.1 / grok-imagine-video-1.5) and `VIDEO_PIPELINE_SPEC` are now wired everywhere (CLI, Web UI, handoffs, Production Bibles, Role Cards).
 - Recent 3.6.5 work: plugin support, CLI refactor + `models verify`, Web UI Streamlit modernization (`width="stretch"`), repo hygiene (deprecated `agents/` removed), docs refresh (README, CHANGELOG, RELEASE_NOTES_v3.6.md, AGENTS.md).
 - Keep this `AGENTS.md` in sync with the GitHub repository and other canonical docs (README, CHANGELOG, RELEASE_NOTES_v3.6.md).

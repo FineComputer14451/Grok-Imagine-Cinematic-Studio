@@ -14,9 +14,18 @@ COMMANDS_ROOT = REPO_ROOT / "commands"
 PLUGIN_DIR = REPO_ROOT / ".grok-plugin"
 INDEX_PATH = PLUGIN_DIR / "plugin-index.json"
 MANIFEST_PATH = PLUGIN_DIR / "plugin.json"
+NSFW_MANIFEST_PATH = PLUGIN_DIR / "nsfw-plugin.json"
 MARKETPLACE_PATH = PLUGIN_DIR / "marketplace.json"
 
 MAX_DESCRIPTION_LEN = 120
+
+NSFW_SKILL_DIR_NAMES = {
+    "erosforge-nsfw-director",
+    "nsfw-quota-orchestrator",
+    "nsfw-sequence-extender",
+    "nsfw-chain-qa-protocol",
+}
+NSFW_COMMAND_NAMES = {"nsfw"}
 
 
 def parse_frontmatter(path: Path) -> dict[str, str]:
@@ -43,12 +52,26 @@ def clean(text: str) -> str:
     return text
 
 
-def discover_commands() -> list[dict[str, str]]:
+def _is_nsfw_skill(name: str) -> bool:
+    return name in NSFW_SKILL_DIR_NAMES
+
+
+def _is_nsfw_command(name: str) -> bool:
+    return name in NSFW_COMMAND_NAMES
+
+
+def _nsfw_plugin_name(name: str) -> bool:
+    return "nsfw" in (name or "").lower()
+
+
+def discover_commands(*, nsfw: bool = False) -> list[dict[str, str]]:
     if not COMMANDS_ROOT.is_dir():
         return []
     items: list[dict[str, str]] = []
     for path in sorted(COMMANDS_ROOT.glob("*.md")):
         if path.stem.startswith("_"):
+            continue
+        if _is_nsfw_command(path.stem) != nsfw:
             continue
         frontmatter = parse_frontmatter(path)
         items.append(
@@ -60,11 +83,13 @@ def discover_commands() -> list[dict[str, str]]:
     return items
 
 
-def discover_skills() -> list[dict[str, str]]:
+def discover_skills(*, nsfw: bool = False) -> list[dict[str, str]]:
     items: list[dict[str, str]] = []
     for skill_dir in sorted(SKILLS_ROOT.iterdir()):
         skill_md = skill_dir / "SKILL.md"
         if not skill_md.is_file():
+            continue
+        if _is_nsfw_skill(skill_dir.name) != nsfw:
             continue
         frontmatter = parse_frontmatter(skill_md)
         items.append(
@@ -76,21 +101,21 @@ def discover_skills() -> list[dict[str, str]]:
     return items
 
 
-def skill_paths() -> list[str]:
+def skill_paths(*, nsfw: bool = False) -> list[str]:
     return [
         f".grok/skills/{skill_dir.name}"
         for skill_dir in sorted(SKILLS_ROOT.iterdir())
-        if (skill_dir / "SKILL.md").is_file()
+        if (skill_dir / "SKILL.md").is_file() and _is_nsfw_skill(skill_dir.name) == nsfw
     ]
 
 
-def command_paths() -> list[str]:
+def command_paths(*, nsfw: bool = False) -> list[str]:
     if not COMMANDS_ROOT.is_dir():
         return []
     return [
         f"commands/{path.name}"
         for path in sorted(COMMANDS_ROOT.glob("*.md"))
-        if not path.stem.startswith("_")
+        if not path.stem.startswith("_") and _is_nsfw_command(path.stem) == nsfw
     ]
 
 
@@ -103,8 +128,8 @@ def load_plugin_manifest() -> dict:
 
 
 def write_plugin_manifest(manifest: dict) -> None:
-    manifest["skills"] = skill_paths()
-    commands = command_paths()
+    manifest["skills"] = skill_paths(nsfw=False)
+    commands = command_paths(nsfw=False)
     if commands:
         manifest["commands"] = commands
     elif "commands" in manifest:
@@ -112,18 +137,36 @@ def write_plugin_manifest(manifest: dict) -> None:
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def write_nsfw_plugin_manifest() -> None:
+    payload = {
+        "name": "grok-imagine-cinematic-studio-nsfw",
+        "version": load_plugin_manifest().get("version", "3.6.5"),
+        "description": (
+            "Optional 18+ R-rated fictional-adult add-on. Requires local AUP attestation. "
+            "Not affiliated with xAI or SpaceXAI. Policy: https://x.ai/legal/acceptable-use-policy"
+        ),
+        "aup_required": True,
+        "aup_url": "https://x.ai/legal/acceptable-use-policy",
+        "license": "MIT",
+        "skills": skill_paths(nsfw=True),
+        "commands": command_paths(nsfw=True),
+    }
+    NSFW_MANIFEST_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
 def build_index() -> dict:
     marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
     plugins = marketplace.get("plugins", [])
     records: dict[str, dict] = {}
-    skills = discover_skills()
-    commands = discover_commands()
     for entry in plugins:
         if not isinstance(entry, dict):
             continue
         plugin_name = entry.get("name")
         if not isinstance(plugin_name, str) or not plugin_name:
             continue
+        nsfw = _nsfw_plugin_name(plugin_name)
+        skills = discover_skills(nsfw=nsfw)
+        commands = discover_commands(nsfw=nsfw)
         components: dict[str, list] = {"skills": skills}
         if commands:
             components["commands"] = commands
@@ -138,6 +181,7 @@ def main() -> int:
 
     manifest = load_plugin_manifest()
     write_plugin_manifest(manifest)
+    write_nsfw_plugin_manifest()
 
     index = build_index()
     rendered = json.dumps(index, indent=2, ensure_ascii=False) + "\n"
@@ -156,7 +200,10 @@ def main() -> int:
     INDEX_PATH.write_text(rendered, encoding="utf-8")
     skills = discover_skills()
     commands = discover_commands()
-    print(f"Wrote {INDEX_PATH} ({len(skills)} skills, {len(commands)} commands)")
+    print(
+        f"Wrote {INDEX_PATH} ({len(skills)} SFW skills, {len(commands)} SFW commands); "
+        f"NSFW add-on → {NSFW_MANIFEST_PATH}"
+    )
     return 0
 
 

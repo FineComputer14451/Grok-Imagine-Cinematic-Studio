@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from aup_gate import gate_dna
 from models import build_video_pipeline_spec
 from project_state import load_project_state, save_project_state
 from studio_paths import CHARACTERS_DIR
@@ -49,6 +50,7 @@ def create_dna_scaffold(
     reference_image_ids: list[str] | None = None,
     nsfw_notes: str | None = None,
     source: str = "manual",
+    subject_kind: str = "unspecified",
 ) -> dict[str, Any]:
     """Create a v1.0 Character DNA profile scaffold."""
     anchors = key_anchors or []
@@ -74,6 +76,7 @@ def create_dna_scaffold(
         },
         "cinematic_viability_score": None,
         "nsfw_notes": nsfw_notes,
+        "subject_kind": subject_kind or "unspecified",
         "identity_lock_status": "pending",
         "studio_agent_version": STUDIO_AGENT_VERSION,
         "video_pipeline_spec": build_video_pipeline_spec(),
@@ -249,6 +252,7 @@ def character_dir(slug: str) -> Path:
 
 def save_character_dna(dna: dict[str, Any], *, characters_root: Path | None = None) -> tuple[Path, Path]:
     """Persist dna.json and dna.md under characters/{slug}/."""
+    gate_dna(dna)
     root = characters_root or CHARACTERS_DIR
     out_dir = root / dna["slug"]
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -296,6 +300,7 @@ def lock_to_identity_bank(
     if state is None:
         state = load_project_state(state_file)
 
+    gate_dna(dna)
     prompts = build_prompt_blocks(dna)
     handoff = build_handoff_packet(dna)
     name = dna["character_name"]
@@ -367,6 +372,7 @@ def inject_into_prompt(
         raise FileNotFoundError(f"No DNA profile found for: {character_name}")
 
     dna = load_character_dna(dna_path)
+    gate_dna(dna)
     blocks = build_prompt_blocks(dna)
     injection = blocks[mode]
     return f"{injection}\n\n---\n\n{base_prompt.strip()}"
