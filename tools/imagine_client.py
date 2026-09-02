@@ -159,6 +159,11 @@ def _media_object(*, url: str | None = None, file_id: str | None = None) -> dict
     raise ImagineAPIError("url or file_id required")
 
 
+def _gate_spend(prompt: str, *, has_reference_image: bool = False) -> None:
+    """Fail-closed AUP on every Imagine spend path (CSAM always; attest if intimate)."""
+    gate_imagine_prompt(prompt, nsfw=False, has_reference_image=has_reference_image)
+
+
 def generate_image(
     prompt: str,
     *,
@@ -170,7 +175,7 @@ def generate_image(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Generate image(s) from a text prompt."""
-    gate_imagine_prompt(prompt, nsfw=False, has_reference_image=False)
+    _gate_spend(prompt, has_reference_image=False)
     slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
     payload: dict[str, Any] = {"model": slug, "prompt": prompt, "n": n}
     if aspect_ratio:
@@ -204,7 +209,7 @@ def edit_image(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Edit a source image with a natural-language prompt (up to 3 refs)."""
-    gate_imagine_prompt(prompt, nsfw=False, has_reference_image=True)
+    _gate_spend(prompt, has_reference_image=True)
     slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
     extras = [u for u in (extra_image_urls or []) if u]
     if len(extras) > 2:
@@ -244,9 +249,8 @@ def submit_video_generation(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Start async text-to-video, image-to-video, or reference-to-video."""
-    gate_imagine_prompt(
+    _gate_spend(
         prompt,
-        nsfw=False,
         has_reference_image=bool(image_url or image_file_id or reference_image_urls),
     )
     refs = [u for u in (reference_image_urls or []) if u]
@@ -312,6 +316,8 @@ def submit_video_edit(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Edit an existing clip (Video 1.0 only — 1.5 returns failed_precondition)."""
+    # Source clip is studio media, not a still-ref nudify path.
+    _gate_spend(prompt, has_reference_image=False)
     slug = resolve_video_model(model or EDIT_EXTEND_VIDEO_MODEL)
     if not video_supports_mode(slug, "edit"):
         slug = resolve_video_model(EDIT_EXTEND_VIDEO_MODEL)
@@ -347,6 +353,8 @@ def submit_video_extension(
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Start async video extension from an existing clip (Video 1.0)."""
+    # Sequence extend must still refuse CSAM / unattested intimate prompts.
+    _gate_spend(prompt, has_reference_image=False)
     slug = resolve_video_model(model or EDIT_EXTEND_VIDEO_MODEL)
     if not video_supports_mode(slug, "extend"):
         slug = resolve_video_model(EDIT_EXTEND_VIDEO_MODEL)
