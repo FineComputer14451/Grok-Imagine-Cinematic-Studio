@@ -14,7 +14,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "a3cc2f914f8a0b088d6c9f3de6c185972fa0127b"
+        "sha": "19200b2d4b67402502369c37fa0e783fba8d4ca4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -31,7 +31,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "a3cc2f914f8a0b088d6c9f3de6c185972fa0127b"
+        "sha": "19200b2d4b67402502369c37fa0e783fba8d4ca4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -49,7 +49,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "a3cc2f914f8a0b088d6c9f3de6c185972fa0127b"
+        "sha": "19200b2d4b67402502369c37fa0e783fba8d4ca4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -69,7 +69,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "a3cc2f914f8a0b088d6c9f3de6c185972fa0127b"
+        "sha": "19200b2d4b67402502369c37fa0e783fba8d4ca4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -83,13 +83,13 @@
     },
     {
       "name": "grok-imagine-nsfw",
-      "description": "Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.",
+      "description": "Optional 18+ pack (SpaceXAI AUP). R-rated fictional imaginary adults only. Requires nsfw attest. Not affiliated with xAI/SpaceXAI.",
       "category": "creative",
       "version": "3.11.0",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "a3cc2f914f8a0b088d6c9f3de6c185972fa0127b"
+        "sha": "19200b2d4b67402502369c37fa0e783fba8d4ca4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -109,7 +109,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "a3cc2f914f8a0b088d6c9f3de6c185972fa0127b"
+        "sha": "19200b2d4b67402502369c37fa0e783fba8d4ca4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
