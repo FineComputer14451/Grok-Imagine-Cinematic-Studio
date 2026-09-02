@@ -1,6 +1,8 @@
 ## 🎬 Grok Imagine Cinematic Studio
 
 > **v3.11.0** — Grok 4.6 cinematic+Build stack lock, Grok Build ≥ 1.0.5, Imagine Image 2.0 + Video 1.0/1.5 (`grok-4.5` aliases wrap 4.6)
+>
+> **Unofficial third-party project.** Not affiliated with, endorsed by, or originating from xAI or SpaceXAI. Operators must follow the [SpaceXAI Acceptable Use Policy](https://x.ai/legal/acceptable-use-policy). Intimate pipelines are **18+**, **imaginary adults only**, **R-rated**, and require `nsfw attest`.
 
 **Requires Grok Build ≥ 1.0.5** | **Grok 4.6 cinematic+Build default** | **Native Imagine Video 1.5 support with synchronized audio**
 

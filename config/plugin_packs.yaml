@@ -96,7 +96,7 @@ packs:
   nsfw:
     name: grok-imagine-nsfw
     display_name: Cinematic Studio NSFW (Opt-in)
-    description: Explicit opt-in ErosForge + NSFW quota/sequence/chain QA. Requires user consent.
+    description: Optional 18+ pack (SpaceXAI AUP). R-rated fictional imaginary adults only. Requires nsfw attest. Not affiliated with xAI/SpaceXAI.
     requires:
     - core
     skills:

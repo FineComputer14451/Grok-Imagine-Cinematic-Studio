@@ -150,11 +150,38 @@ def render() -> None:
     )
 
     st.divider()
-    st.subheader("🔞 NSFW pipelines")
-    st.session_state.nsfw_opt_in = st.checkbox(
-        "Enable NSFW planning tools",
-        value=st.session_state.nsfw_opt_in,
-        help="Unlocks the NSFW page. Explicit ErosForge activation still required in Grok.",
+    st.subheader("🔞 NSFW pipelines (18+ / SpaceXAI AUP)")
+    st.markdown(
+        "Limited **R-rated fictional adult** material of **imaginary adults** only. "
+        "Not affiliated with xAI / SpaceXAI. Policy: "
+        "[Acceptable Use Policy](https://x.ai/legal/acceptable-use-policy)"
     )
-    if st.session_state.nsfw_opt_in:
-        st.caption("Open the **NSFW** page to plan batches and extensions.")
+    age_ok = st.checkbox("I am 18 or older", value=False, key="aup_age")
+    imag_ok = st.checkbox("Subjects are fictional imaginary adults", value=False, key="aup_imaginary")
+    real_ok = st.checkbox("I will not use real-person photos or likenesses", value=False, key="aup_not_real")
+    aup_ok = st.checkbox("I acknowledge the SpaceXAI Acceptable Use Policy", value=False, key="aup_ack")
+    can_enable = age_ok and imag_ok and real_ok and aup_ok
+    if not can_enable:
+        st.session_state.nsfw_opt_in = False
+        st.caption("All four attestations are required. A Settings checkbox alone is not enough.")
+    else:
+        from aup_gate import write_attestation
+
+        try:
+            write_attestation(
+                age_18_plus=True,
+                imaginary_adults_only=True,
+                not_a_real_person=True,
+                aup_acknowledged=True,
+            )
+        except Exception as exc:
+            st.error(str(exc))
+            st.session_state.nsfw_opt_in = False
+        else:
+            st.session_state.nsfw_opt_in = st.checkbox(
+                "Enable NSFW planning tools",
+                value=st.session_state.nsfw_opt_in,
+                help="Unlocks the NSFW page after AUP attestation.",
+            )
+            if st.session_state.nsfw_opt_in:
+                st.caption("Open the **NSFW** page. Live Imagine calls still default to dry-run.")

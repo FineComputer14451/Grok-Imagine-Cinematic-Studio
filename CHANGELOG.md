@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Added
+- **SpaceXAI AUP fail-closed gates** — `tools/aup_gate.py`, `nsfw attest`, 18+/imaginary-adult/no-real-person checks, R-rated cap, 403/429 no region hop
 - **`commands` search** — `cinematic-studio commands [query]` lists visible command paths and one-line help; substring match on path + summary (Orient panel). Hidden ghosts stay hidden.
 - **SFW / NSFW help panels** — `sfw --help` and `nsfw --help` group Plan / Readiness / Spend / Quality (NSFW adds Extend).
 - **Wave A help panels** — `wave-a --help` groups Packets vs Gate (`validate` / `attach`).

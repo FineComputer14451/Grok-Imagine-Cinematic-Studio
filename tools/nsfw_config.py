@@ -22,11 +22,11 @@ SHOT_TIERS: dict[str, dict[str, Any]] = {
         "label": "Consistency Anchor",
         "description": "Identity lock reference frames — generate before dependent shots",
     },
-    "key_explicit": {
+    "key_intimate": {
         "priority": 3,
         "budget_share": 0.35,
-        "label": "Key Explicit Moment",
-        "description": "Narrative-critical intimate beats with explicit intent",
+        "label": "Key Intimate Beat",
+        "description": "Narrative-critical R-rated implied intimacy (not pornographic)",
     },
     "support": {
         "priority": 4,
@@ -123,7 +123,7 @@ NSFW_ASSET_MODEL_MAP: dict[str, dict[str, Any]] = {
         "video_model": DEFAULT_IMAGINE_VIDEO_MODEL,
         "image_quality": True,
     },
-    "key_explicit": {
+    "key_intimate": {
         "asset_tier": "hero",
         "image_model": DEFAULT_IMAGE_QUALITY_MODEL,
         "video_model": DEFAULT_IMAGINE_VIDEO_MODEL,
@@ -149,9 +149,33 @@ NSFW_ASSET_MODEL_MAP: dict[str, dict[str, Any]] = {
     },
 }
 
+TIER_ALIASES: dict[str, str] = {"key_explicit": "key_intimate"}
+NSFW_ASSET_MODEL_MAP["key_explicit"] = NSFW_ASSET_MODEL_MAP["key_intimate"]
+
+
+def canonical_tier(tier: str | None) -> str:
+    """Map deprecated aliases (key_explicit) to canonical R-rated tiers."""
+    raw = (tier or "support").strip()
+    mapped = TIER_ALIASES.get(raw, raw)
+    return mapped if mapped in SHOT_TIERS else "support"
+
+
 SHOT_TIER_OPTIONS: tuple[str, ...] = tuple(
     sorted(SHOT_TIERS.keys(), key=lambda t: SHOT_TIERS[t]["priority"])
 )
 RETRY_REASON_OPTIONS: tuple[str, ...] = tuple(RETRY_STRATEGIES.keys())
 MOTION_OPTIONS: tuple[str, ...] = ("low", "medium", "high")
-EXPLICIT_OPTIONS: tuple[str, ...] = ("suggestive", "moderate", "explicit")
+EXPLICIT_OPTIONS: tuple[str, ...] = ("suggestive", "moderate")
+
+
+def canonical_explicit_level(level: str | None) -> str:
+    """R-rated intensities only. Full explicit is refused."""
+    raw = (level or "moderate").strip().lower()
+    if not raw:
+        return "moderate"
+    if raw in EXPLICIT_OPTIONS:
+        return raw
+    raise ValueError(
+        "explicit_level must be 'suggestive' or 'moderate' (R-rated). "
+        f"Got {raw!r}. Full explicit is not allowed on SpaceXAI Imagine."
+    )
