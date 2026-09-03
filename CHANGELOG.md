@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Changed
+- **Hero batch stills** — `image_quality` shots send `grok-imagine-image-2.0` with `quality=medium` instead of the retired quality slug (which would have redirected to 2.0 `low`). API meta fallback picker no longer lists `grok-imagine-image-quality`.
+
 ### Added
 - **AUP on planning paths** — `nsfw extend plan|chain|prompt`, `generate-prompt`, Imagine Execution Bridge / Agent Mode packets, and `handoff validate` now run the same fail-closed SpaceXAI AUP gate as Imagine spend (CSAM always; attestation when intimate; no intimate+still-ref).
 - **Doctor AUP section** — `cinematic-studio doctor --quick` reports attestation idle/valid/FAIL and 403/429 no-hop.

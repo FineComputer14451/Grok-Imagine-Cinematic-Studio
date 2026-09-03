@@ -31,6 +31,36 @@ def test_execute_shot_dry_run_image() -> None:
     assert result["shot_id"] == shot_id
 
 
+def test_hero_image_quality_sends_2_0_medium() -> None:
+    batch = plan_batch(
+        "Hero Quality",
+        [{"tier": "hero", "description": "Cover plate", "motion_complexity": "low"}],
+        budget_credits=200,
+    )
+    shot_id = batch["shots"][0]["shot_id"]
+    assert batch["shots"][0]["image_quality"] is True
+    assert batch["shots"][0]["recommended_mode"] == "image_prompt"
+    captured: dict = {}
+
+    def fake_generate(prompt, **kwargs):
+        captured.update(kwargs)
+        captured["prompt"] = prompt
+        return {
+            "dry_run": True,
+            "model": kwargs.get("model"),
+            "data": [{"url": "https://dry-run.x.ai/images/hero.png"}],
+        }
+
+    noop = lambda *args, **kwargs: None
+    with patch("batch_runner.generate_image", fake_generate), patch(
+        "quota_optimizer.save_project_state", noop
+    ), patch("project_state.save_project_state", noop):
+        result = execute_sfw_shot(batch, shot_id, dry_run=True, record_quota=False)
+    assert result["job_id"]
+    assert captured["model"] == "grok-imagine-image-2.0"
+    assert captured["quality"] == "medium"
+
+
 def test_execute_shot_not_found() -> None:
     batch = plan_batch("Empty", [{"tier": "filler", "description": "x"}], budget_credits=50)
     try:

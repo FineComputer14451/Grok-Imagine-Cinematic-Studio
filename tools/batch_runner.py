@@ -21,6 +21,7 @@ from imagine_client import (
     submit_video_generation,
 )
 from imagine_jobs import create_job, get_reference_asset, transition_job
+from models import HERO_IMAGINE_IMAGE_MODEL
 from quota_sync import record_generation_spend
 
 
@@ -105,11 +106,13 @@ def execute_shot(
     vid_model = shot.get("video_model", "grok-imagine-video-1.5")
     model = vid_model
 
+    image_quality_pin: str | None = None
     if mode == "image_prompt":
         job_type = "image"
         model = img_model
         if shot.get("image_quality"):
-            model = "grok-imagine-image-quality"
+            model = HERO_IMAGINE_IMAGE_MODEL
+            image_quality_pin = "medium"
     elif mode == "image_to_video":
         job_type = "video"
         model = vid_model
@@ -138,7 +141,12 @@ def execute_shot(
 
     try:
         if mode == "image_prompt":
-            resp = generate_image(prompt, model=model, dry_run=use_dry)
+            resp = generate_image(
+                prompt,
+                model=model,
+                quality=image_quality_pin,
+                dry_run=use_dry,
+            )
             result_url = extract_image_url(resp)
             transition_job(job["job_id"], "qa_pending", result_url=result_url)
             shot["result_url"] = result_url

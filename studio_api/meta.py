@@ -132,7 +132,6 @@ def production_options() -> dict[str, Any]:
         image_models = [
             "grok-imagine-image",
             "grok-imagine-image-2.0",
-            "grok-imagine-image-quality",
         ]
         surfaces = [
             "grok_build_tools",
