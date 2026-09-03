@@ -190,6 +190,76 @@ def gate_planning_packet(
     gate_imagine_prompt(blob, has_reference_image=has_reference_image)
 
 
+_PACKET_TEXT_KEYS = (
+    "prompt",
+    "description",
+    "dna_inject",
+    "nsfw_notes",
+    "last_frame_recap",
+    "sound_layer",
+    "dialogue",
+)
+
+
+def _flatten_planning_value(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, dict):
+        return _join_fields(value.values())
+    if isinstance(value, (list, tuple)):
+        return _join_fields(value)
+    return str(value).strip()
+
+
+def packet_planning_text(data: dict[str, Any]) -> str:
+    """Join paste-facing packet fields (prompt, recap, sound, momentum, notes)."""
+    parts: list[Any] = [data.get(key) for key in _PACKET_TEXT_KEYS]
+    parts.append(data.get("momentum_vector"))
+    parts.append(data.get("audio_momentum_vector"))
+    amv = data.get("audio_momentum_vector")
+    if isinstance(amv, dict):
+        parts.append(amv.get("dialogue_state"))
+    return _join_fields(_flatten_planning_value(item) for item in parts if item)
+
+
+def packet_has_reference(data: dict[str, Any]) -> bool:
+    refs = data.get("reference_hints") or []
+    return bool(
+        refs
+        or data.get("reference_image_id")
+        or data.get("reference_image_url")
+        or data.get("has_reference")
+        or data.get("has_ref")
+    )
+
+
+def packet_is_imagine_bound(data: dict[str, Any]) -> bool:
+    ptype = str(data.get("packet_type") or "").lower()
+    for marker in ("imagine", "agent_mode", "extend", "intimacy"):
+        if marker in ptype:
+            return True
+    if data.get("prompt") or data.get("description"):
+        return True
+    if data.get("last_frame_recap") or data.get("sound_layer"):
+        return True
+    if data.get("video_pipeline_spec") or data.get("grok_imagine_url"):
+        return True
+    return False
+
+
+def gate_planning_subject(
+    data: dict[str, Any],
+    *,
+    has_reference_image: bool | None = None,
+) -> None:
+    """Fail-closed AUP on every Imagine-paste field, not prompt-only."""
+    blob = packet_planning_text(data)
+    ref = packet_has_reference(data) if has_reference_image is None else has_reference_image
+    ptype = str(data.get("packet_type") or "").lower()
+    nsfw = bool(data.get("nsfw_notes")) or "intimacy" in ptype
+    gate_imagine_prompt(blob, nsfw=nsfw, has_reference_image=ref)
+
+
 def _collect_matches(text: str, patterns: Iterable[re.Pattern[str]]) -> list[str]:
     found: list[str] = []
     for pattern in patterns:

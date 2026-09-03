@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from aup_gate import AUPGateError, gate_planning_packet
+from aup_gate import AUPGateError, gate_planning_subject, packet_is_imagine_bound
 from studio_paths import STUDIO_ROOT
 
 
@@ -133,22 +133,11 @@ def validate_handoff_file(
 
 
 def _aup_gate_packet(data: dict[str, Any], result: dict[str, Any]) -> dict[str, Any]:
-    """Fail-closed AUP on Imagine-bound packet prompts (even if schema is OK)."""
-    prompt = str(data.get("prompt") or data.get("description") or "")
-    extra = str(data.get("dna_inject") or data.get("nsfw_notes") or "")
-    refs = data.get("reference_hints") or []
-    has_ref = bool(
-        refs
-        or data.get("reference_image_id")
-        or data.get("reference_image_url")
-        or data.get("has_reference")
-    )
-    ptype = str(data.get("packet_type") or "")
-    imagine_bound = bool(prompt) or "imagine" in ptype.lower() or "agent_mode" in ptype.lower()
-    if not imagine_bound:
+    """Fail-closed AUP on Imagine-paste fields (prompt, recap, sound, notes)."""
+    if not packet_is_imagine_bound(data):
         return result
     try:
-        gate_planning_packet(prompt, extra=extra, has_reference_image=has_ref)
+        gate_planning_subject(data)
     except AUPGateError as exc:
         issues = list(result.get("issues") or [])
         issues.append(str(exc))

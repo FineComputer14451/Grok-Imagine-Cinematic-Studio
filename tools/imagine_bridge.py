@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from aup_gate import gate_planning_packet
+from aup_gate import gate_planning_subject
 from models import (
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
@@ -324,20 +324,8 @@ def _core_content(
         or subject.get("has_reference")
         or subject.get("has_ref")
     )
-    extra = "\n".join(
-        str(v)
-        for v in (
-            subject.get("description"),
-            core.get("dna_inject"),
-            subject.get("nsfw_notes"),
-        )
-        if v
-    )
-    gate_planning_packet(
-        core.get("prompt") or "",
-        extra=extra,
-        has_reference_image=has_ref,
-    )
+    merged = {**subject, **core}
+    gate_planning_subject(merged, has_reference_image=has_ref)
     return core
 
 

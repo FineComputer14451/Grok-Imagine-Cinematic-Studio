@@ -22,6 +22,7 @@ from aup_gate import (  # noqa: E402
     gate_nsfw_batch,
     gate_nsfw_shot,
     gate_planning_packet,
+    gate_planning_subject,
     gate_text,
     require_attestation,
     scan_csam,
@@ -569,6 +570,72 @@ def test_handoff_validate_csam_fail_closed() -> None:
     assert "minor-coded" in blob or "CSAM" in blob
 
 
+def test_bridge_recap_csam_refused() -> None:
+    from imagine_bridge import build_handoff
+
+    try:
+        build_handoff(
+            {
+                "clip_id": "clip_csam",
+                "prompt": "Continue dolly forward",
+                "last_frame_recap": "underage character study",
+            },
+            context="clip",
+            agent_mode=False,
+        )
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        assert "minor-coded" in str(exc) or "CSAM" in str(exc)
+
+
+def test_handoff_validate_extend_recap_csam() -> None:
+    from handoff_validate import validate_handoff_data
+
+    result = validate_handoff_data(
+        {
+            "packet_type": "sequence_extend_handoff",
+            "prompt": "",
+            "last_frame_recap": "underage character study",
+        }
+    )
+    assert result["ok"] is False
+    blob = " ".join(result.get("issues") or [])
+    assert "minor-coded" in blob or "CSAM" in blob
+
+
+def test_handoff_validate_scans_nsfw_notes_with_dna_inject() -> None:
+    from handoff_validate import validate_handoff_data
+
+    path, _ = _attest_env()
+    try:
+        result = validate_handoff_data(
+            {
+                "packet_type": "imagine_agent_mode_handoff",
+                "prompt": "candlelit two-shot",
+                "dna_inject": "[CHARACTER_DNA:MARA]",
+                "nsfw_notes": "creampie close-up",
+            }
+        )
+        assert result["ok"] is False
+        blob = " ".join(result.get("issues") or []).lower()
+        assert "r-rated" in blob or "creampie" in blob
+    finally:
+        _cleanup(path)
+
+
+def test_gate_planning_subject_scans_sound_layer() -> None:
+    try:
+        gate_planning_subject(
+            {
+                "prompt": "Continue dolly forward",
+                "sound_layer": "underage character study",
+            }
+        )
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        assert "minor-coded" in str(exc) or "CSAM" in str(exc)
+
+
 def test_aup_status_hides_flags() -> None:
     path, _ = _attest_env()
     try:
@@ -662,6 +729,10 @@ if __name__ == "__main__":
     test_planning_packet_csam_refused()
     test_bridge_intimate_plus_reference_refused()
     test_handoff_validate_csam_fail_closed()
+    test_bridge_recap_csam_refused()
+    test_handoff_validate_extend_recap_csam()
+    test_handoff_validate_scans_nsfw_notes_with_dna_inject()
+    test_gate_planning_subject_scans_sound_layer()
     test_aup_status_hides_flags()
     test_check_aup_idle_without_batches()
     test_check_aup_fails_when_batch_without_attest()
