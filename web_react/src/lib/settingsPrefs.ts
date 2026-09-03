@@ -15,6 +15,10 @@ export interface SettingsPrefs {
   quota_tier: string
   imagine_region: string
   nsfw_opt_in: boolean
+  aup_age_18: boolean
+  aup_imaginary_adults: boolean
+  aup_not_real_person: boolean
+  aup_acknowledged: boolean
   reasoning_level: string
   prompt_cache_key: string
   dashboard_view_mode: string
@@ -34,6 +38,10 @@ export const FALLBACK_DEFAULTS: SettingsPrefs = {
   quota_tier: 'supergrok_pro',
   imagine_region: 'us-east-1',
   nsfw_opt_in: false,
+  aup_age_18: false,
+  aup_imaginary_adults: false,
+  aup_not_real_person: false,
+  aup_acknowledged: false,
   reasoning_level: 'high',
   prompt_cache_key: '',
   dashboard_view_mode: 'ops',
@@ -73,4 +81,25 @@ export function notifyPrefsUpdated(): void {
 
 export function getNsfwOptIn(): boolean {
   return loadSettingsPrefs().nsfw_opt_in === true
+}
+
+export function fourAupFlags(prefs: Pick<
+  SettingsPrefs,
+  'aup_age_18' | 'aup_imaginary_adults' | 'aup_not_real_person' | 'aup_acknowledged'
+>): boolean {
+  return (
+    prefs.aup_age_18 === true &&
+    prefs.aup_imaginary_adults === true &&
+    prefs.aup_not_real_person === true &&
+    prefs.aup_acknowledged === true
+  )
+}
+
+/** NSFW nav requires four local flags + server attestation + explicit opt-in. */
+export function canEnableNsfwNav(opts: {
+  fourFlags: boolean
+  aupValid: boolean
+  localOptIn: boolean
+}): boolean {
+  return opts.fourFlags === true && opts.aupValid === true && opts.localOptIn === true
 }

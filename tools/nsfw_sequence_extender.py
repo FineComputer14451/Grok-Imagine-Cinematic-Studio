@@ -16,6 +16,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from aup_gate import gate_text, require_attestation
 from nsfw_orchestrator import estimate_shot_cost
 from quota_optimizer import estimate_sequence_cost
 from sequence_chain import create_clip, save_sequence
@@ -69,6 +70,13 @@ __all__ = [
 ]
 
 
+def _gate_nsfw_extension_text(*parts: Any) -> None:
+    """Attestation + R-rated text gate for NSFW extend planning."""
+    require_attestation()
+    blob = "\n".join(str(p).strip() for p in parts if p)
+    gate_text(blob, nsfw=True)
+
+
 def plan_nsfw_extension(
     sequence_name: str,
     *,
@@ -86,6 +94,16 @@ def plan_nsfw_extension(
     Plan full NSFW extension from reference frame or short clip to 30–120+ seconds.
     Returns sequence with pre-built clips, prompt chain, and cost estimate.
     """
+    _gate_nsfw_extension_text(
+        sequence_name,
+        reference_description,
+        tension_profile,
+        color_grade,
+        atmosphere,
+        character_injection,
+        *(custom_beats or []),
+        *(character_names or []),
+    )
     seq = create_nsfw_sequence_scaffold(
         sequence_name,
         target_duration=target_duration,
@@ -176,6 +194,8 @@ def plan_nsfw_extension(
 
     seq["clips"] = clips
     seq["prompt_chain"] = prompt_chain
+    for item in prompt_chain:
+        gate_text(item.get("prompt") or "", nsfw=True)
 
     clip_specs = [
         {"clip_id": c["clip_id"], "index": c["index"], "duration_seconds": c["duration_seconds"]}
@@ -188,7 +208,10 @@ def plan_nsfw_extension(
 
 def build_prompt_chain(seq: dict[str, Any]) -> list[dict[str, Any]]:
     """Return or rebuild ready-to-use prompt chain from sequence."""
+    require_attestation()
     if seq.get("prompt_chain"):
+        for item in seq["prompt_chain"]:
+            gate_text(item.get("prompt") or "", nsfw=True)
         return seq["prompt_chain"]
     chain = []
     clips = seq.get("clips", [])
@@ -208,6 +231,7 @@ def build_prompt_chain(seq: dict[str, Any]) -> list[dict[str, Any]]:
             "camera_pacing": clip.get("camera_pacing") or suggest_camera_pacing(beat),
             "extend_instructions": clip.get("extend_instructions", []),
         })
+        gate_text(prompt or "", nsfw=True)
     return chain
 
 

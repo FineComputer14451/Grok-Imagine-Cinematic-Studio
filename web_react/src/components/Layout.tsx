@@ -1,10 +1,16 @@
 import { Link, Outlet, useRouterState } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { fetchHealth } from '../api/client'
+import { fetchAupStatus, fetchHealth } from '../api/client'
 import { queryKeys } from '../api/queryKeys'
 import { NAV_ITEMS } from '../lib/pageActions'
-import { getNsfwOptIn, NSFW_OPT_IN_EVENT } from '../lib/settingsPrefs'
+import {
+  canEnableNsfwNav,
+  fourAupFlags,
+  getNsfwOptIn,
+  loadSettingsPrefs,
+  NSFW_OPT_IN_EVENT,
+} from '../lib/settingsPrefs'
 
 export function Layout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
@@ -26,8 +32,19 @@ export function Layout() {
     refetchInterval: 60_000,
     retry: false,
   })
+  const aupQ = useQuery({
+    queryKey: queryKeys.metaAup,
+    queryFn: fetchAupStatus,
+    retry: false,
+  })
 
-  const nav = nsfwOn
+  const showNsfw = canEnableNsfwNav({
+    fourFlags: fourAupFlags(loadSettingsPrefs()),
+    aupValid: aupQ.data?.valid === true,
+    localOptIn: nsfwOn,
+  })
+
+  const nav = showNsfw
     ? [...NAV_ITEMS, { to: '/nsfw', label: 'NSFW' }]
     : NAV_ITEMS
 

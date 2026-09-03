@@ -20,6 +20,7 @@ from typing import Callable
 
 from doctor_checks import (
     check_api_keys,
+    check_aup,
     check_auth_and_config,
     check_catalog_pin,
     check_cinematic_studio_path,
@@ -175,6 +176,10 @@ def _run_control_plane(_ctx: DoctorContext) -> list[CheckResult]:
     return check_control_plane()
 
 
+def _run_aup(ctx: DoctorContext) -> list[CheckResult]:
+    return check_aup(repo_root=ctx.repo_root)
+
+
 # ---------------------------------------------------------------------------
 # Declarative registry — add checks here only.
 # ---------------------------------------------------------------------------
@@ -195,6 +200,7 @@ REGISTRY: tuple[CheckSpec, ...] = (
     CheckSpec("pytest", _run_pytest, external=True, full_only=True),
     CheckSpec("control_plane", _run_control_plane),
     CheckSpec("quota_recon", _run_quota_recon),
+    CheckSpec("aup", _run_aup),
 )
 
 

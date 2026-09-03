@@ -28,6 +28,23 @@ def env_status() -> dict[str, Any]:
     }
 
 
+def aup_status() -> dict[str, Any]:
+    """Four-flag attestation presence only — never returns the flag values."""
+    from aup_gate import aup_status as _status
+
+    payload = _status()
+    return {
+        "valid": bool(payload.get("valid")),
+        "present": bool(payload.get("present")),
+        "attested_at": payload.get("attested_at"),
+        "aup_url": payload.get("aup_url"),
+        "note": (
+            "SPA cannot write attestation. Run: cinematic-studio nsfw attest "
+            "--i-am-18 --imaginary-adults --not-a-real-person --acknowledge-aup"
+        ),
+    }
+
+
 def agents_roster() -> dict[str, Any]:
     from cli.shared import AGENTS, core_agent_count, total_agent_count
 

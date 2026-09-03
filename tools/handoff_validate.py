@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from aup_gate import AUPGateError, gate_planning_packet
 from studio_paths import STUDIO_ROOT
 
 
@@ -63,26 +64,28 @@ def validate_handoff_data(
             strict_handoff=strict_handoff,
             strict_wave_a=strict_wave_a,
         )
-        return {
+        result = {
             "ok": not issues,
             "issues": list(issues),
             "warnings": list(warnings),
             "packet_type": data.get("packet_type"),
             "source": "skill_validator",
         }
+        return _aup_gate_packet(data, result)
 
     # Minimal fallback
     issues: list[str] = []
     ptype = data.get("packet_type")
     if not ptype:
         issues.append("missing packet_type")
-    return {
+    result = {
         "ok": not issues,
         "issues": issues,
         "warnings": ["full skill validator unavailable — minimal check only"],
         "packet_type": ptype,
         "source": "fallback",
     }
+    return _aup_gate_packet(data, result)
 
 
 def validate_handoff_file(
@@ -126,6 +129,31 @@ def validate_handoff_file(
         data, strict_handoff=strict_handoff, strict_wave_a=strict_wave_a
     )
     result["path"] = str(p)
+    return result
+
+
+def _aup_gate_packet(data: dict[str, Any], result: dict[str, Any]) -> dict[str, Any]:
+    """Fail-closed AUP on Imagine-bound packet prompts (even if schema is OK)."""
+    prompt = str(data.get("prompt") or data.get("description") or "")
+    extra = str(data.get("dna_inject") or data.get("nsfw_notes") or "")
+    refs = data.get("reference_hints") or []
+    has_ref = bool(
+        refs
+        or data.get("reference_image_id")
+        or data.get("reference_image_url")
+        or data.get("has_reference")
+    )
+    ptype = str(data.get("packet_type") or "")
+    imagine_bound = bool(prompt) or "imagine" in ptype.lower() or "agent_mode" in ptype.lower()
+    if not imagine_bound:
+        return result
+    try:
+        gate_planning_packet(prompt, extra=extra, has_reference_image=has_ref)
+    except AUPGateError as exc:
+        issues = list(result.get("issues") or [])
+        issues.append(str(exc))
+        result["issues"] = issues
+        result["ok"] = False
     return result
 
 

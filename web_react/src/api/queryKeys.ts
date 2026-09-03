@@ -4,6 +4,7 @@ export const queryKeys = {
   actions: ['actions'] as const,
   action: (id: string) => ['actions', id] as const,
   metaEnv: ['meta', 'env'] as const,
+  metaAup: ['meta', 'aup'] as const,
   metaOptions: ['meta', 'production-options'] as const,
   metaAgents: ['meta', 'agents'] as const,
   metaRoleCards: ['meta', 'role-cards'] as const,

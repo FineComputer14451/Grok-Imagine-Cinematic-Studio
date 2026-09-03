@@ -11,6 +11,7 @@ import typer
 from rich.panel import Panel
 from rich.table import Table
 
+from aup_gate import AUPGateError, gate_planning_packet
 from models import DEFAULT_IMAGINE_VIDEO_MODEL, DEFAULT_XAI_CHAT_MODEL, resolve_video_model
 from project_state import load_project_state, save_project_state
 from quota_optimizer import estimate_production
@@ -46,6 +47,11 @@ def register(app: typer.Typer) -> None:
         output: str = typer.Option(None, "--output", "-o", help="Save to file"),
     ):
         """Generate a high-quality ready-to-paste prompt."""
+        try:
+            gate_planning_packet(story)
+        except AUPGateError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
         chat_slug = resolve_chat_model_cli(chat_model)
         prompt = build_activation_prompt(
             story,
@@ -53,6 +59,11 @@ def register(app: typer.Typer) -> None:
             chat_model=chat_slug,
             video_model=video_model,
         )
+        try:
+            gate_planning_packet(prompt)
+        except AUPGateError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
         if output:
             Path(output).write_text(prompt)
             console.print(f"[green]✅ Prompt saved to[/green] {output}")

@@ -6,6 +6,7 @@ import type {
   BibleGuidedResult,
   BibleStagesResponse,
   DashboardSnapshot,
+  AupStatus,
   EnvStatus,
   ExecuteBody,
   HealthResponse,
@@ -79,6 +80,10 @@ export function executeAction(
 
 export function fetchEnvStatus(): Promise<EnvStatus> {
   return request<EnvStatus>('/v1/meta/env')
+}
+
+export function fetchAupStatus(): Promise<AupStatus> {
+  return request<AupStatus>('/v1/meta/aup')
 }
 
 export function fetchProductionOptions(): Promise<ProductionOptions> {

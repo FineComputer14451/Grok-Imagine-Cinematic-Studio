@@ -61,6 +61,14 @@ export interface EnvStatus {
   note: string
 }
 
+export interface AupStatus {
+  valid: boolean
+  present: boolean
+  attested_at: string | null
+  aup_url: string
+  note?: string
+}
+
 export interface ProductionOptions {
   genres: string[]
   directors: string[]

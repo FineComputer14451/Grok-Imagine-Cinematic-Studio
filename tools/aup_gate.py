@@ -162,6 +162,34 @@ def require_attestation(path: Path | None = None) -> dict[str, Any]:
     return data
 
 
+def aup_status(path: Path | None = None) -> dict[str, Any]:
+    """Public attestation status for doctor / API. Never returns flag values."""
+    data = load_attestation(path)
+    valid = attestation_is_valid(data)
+    attested_at = None
+    if valid and data:
+        raw = data.get("attested_at")
+        attested_at = str(raw) if raw else None
+    return {
+        "valid": valid,
+        "present": data is not None,
+        "attested_at": attested_at,
+        "aup_url": AUP_URL,
+        "schema_version": str(data.get("schema_version") or "") if valid and data else None,
+    }
+
+
+def gate_planning_packet(
+    prompt: str,
+    *,
+    extra: str = "",
+    has_reference_image: bool = False,
+) -> None:
+    """Fail-closed on Imagine-bound planning packets (bridge / generate-prompt / handoff)."""
+    blob = _join_fields([prompt, extra])
+    gate_imagine_prompt(blob, has_reference_image=has_reference_image)
+
+
 def _collect_matches(text: str, patterns: Iterable[re.Pattern[str]]) -> list[str]:
     found: list[str] = []
     for pattern in patterns:

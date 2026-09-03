@@ -12,7 +12,7 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
-from aup_gate import AUP_URL, AUPGateError, gate_nsfw_batch, require_attestation, write_attestation
+from aup_gate import AUP_URL, AUPGateError, gate_nsfw_batch, gate_text, require_attestation, write_attestation
 from models import DEFAULT_IMAGINE_VIDEO_MODEL
 from batch_runner import execute_nsfw_shot
 from quality_pass_scheduler import apply_quality_pass_promotion, get_pending_quality_passes
@@ -478,20 +478,25 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         output: str = typer.Option(None, "--output", "-o", help="Save markdown plan"),
     ):
         """Plan NSFW sensual extension with prompt chain and tension curve."""
+        _require_aup()
         if profile not in TENSION_PROFILES:
             console.print(f"[red]Unknown profile. Choose:[/red] {', '.join(TENSION_PROFILES)}")
             raise typer.Exit(1)
 
-        seq = plan_nsfw_extension(
-            title,
-            target_duration=duration,
-            source_type=source,
-            reference_description=reference,
-            tension_profile=profile,
-            custom_beats=beat,
-            color_grade=color_grade,
-            atmosphere=atmosphere,
-        )
+        try:
+            seq = plan_nsfw_extension(
+                title,
+                target_duration=duration,
+                source_type=source,
+                reference_description=reference,
+                tension_profile=profile,
+                custom_beats=beat,
+                color_grade=color_grade,
+                atmosphere=atmosphere,
+            )
+        except AUPGateError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
         path = save_nsfw_sequence(seq)
         md = nsfw_sequence_to_markdown(seq)
         est = seq.get("cost_estimate", {})
@@ -525,8 +530,13 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         output: str = typer.Option(None, "--output", "-o"),
     ):
         """Export ready-to-use Grok Imagine prompt chain."""
+        _require_aup()
         seq = require_sequence(sequence_name)
-        chain = build_prompt_chain(seq)
+        try:
+            chain = build_prompt_chain(seq)
+        except AUPGateError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
         if not chain:
             console.print("[yellow]No prompt chain. Run: nsfw extend plan[/yellow]")
             raise typer.Exit(1)
@@ -551,18 +561,29 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         clip: str = typer.Option(..., "--clip", "-c", help="Clip ID to build/regenerate prompt for"),
     ):
         """Build extend-from-frame prompt for a specific clip."""
+        _require_aup()
         seq = require_sequence(sequence_name)
         target = require_clip(seq, clip)
 
         idx = target.get("index", 0)
         if idx == 0:
             prompt = target.get("prompt", "")
+            try:
+                gate_text(prompt or "", nsfw=True)
+            except AUPGateError as exc:
+                console.print(f"[red]{exc}[/red]")
+                raise typer.Exit(1) from exc
             console.print(Panel(prompt, title=f"{clip} — opening clip", border_style="magenta"))
             return
 
         prev = seq["clips"][idx - 1]
         beat = target.get("nsfw_beat", {"beat_summary": "Continue intimate sequence", "phase": "contact"})
         prompt = build_nsfw_extend_prompt(seq, prev, beat)
+        try:
+            gate_text(prompt or "", nsfw=True)
+        except AUPGateError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
         target["prompt"] = prompt
         save_nsfw_sequence(seq)
         console.print(Panel(prompt, title=f"{clip} — extend from {prev['clip_id']}", border_style="magenta"))
@@ -574,6 +595,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         duration: float = typer.Option(10.0, "--duration", "-d"),
     ):
         """Suggest camera movement and pacing for erotic impact."""
+        _require_aup()
         beat = {"phase": phase, "duration_seconds": duration}
         cam = suggest_camera_pacing(beat)
 
@@ -597,6 +619,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         scores: str = typer.Option(None, "--scores", help='JSON scores e.g. {"hand_finger_integrity":8,...}'),
     ):
         """NSFW chain QA scaffold or evaluation (artifact-aware)."""
+        _require_aup()
         seq = require_sequence(sequence_name)
         target = require_clip(seq, clip)
 

@@ -36,7 +36,7 @@ This document is the **canonical** independence and usage disclaimer for the rep
 ## User responsibility
 
 - You are responsible for complying with **applicable laws**, platform **terms of service**, **content policies**, copyright/licensing of reference assets, and **age restrictions** wherever you generate, store, or distribute media.
-- Optional **NSFW / R-rated** workflows (for example ErosForge and related skills) are **explicit opt-in** tools for adult creative work. You remain solely responsible for lawful, consensual, and ethical use, and for keeping that material out of contexts where it is prohibited.
+- Optional **NSFW / R-rated** workflows (for example ErosForge and related skills) are **explicit opt-in** tools for adult creative work and require `nsfw attest`. You remain solely responsible for lawful, consensual, and ethical use, for following the [SpaceXAI Acceptable Use Policy](https://x.ai/legal/acceptable-use-policy), and for keeping that material out of contexts where it is prohibited.
 - You are responsible for **costs** incurred on third-party APIs, subscriptions (for example SuperGrok / Grok Build plans), compute, and storage.
 - Do not present this project as an official xAI offering in marketing, app stores, or enterprise procurement materials.
 

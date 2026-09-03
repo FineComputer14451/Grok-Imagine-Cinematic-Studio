@@ -204,8 +204,11 @@ Multi-shell matrix: [guides/WEB_SHELLS.md](guides/WEB_SHELLS.md) · React README
 cinematic-studio sfw --help
 cinematic-studio sfw plan "Hero stills"
 cinematic-studio nsfw --help
+cinematic-studio nsfw attest --i-am-18 --imaginary-adults --not-a-real-person --acknowledge-aup
 cinematic-studio nsfw extend plan
 ```
+
+NSFW plan / run / session / **extend** (`plan`, `chain`, `prompt`, `camera`, `qa`) require a local `nsfw attest` (18+ / imaginary adults / not a real person / AUP). Policy: https://x.ai/legal/acceptable-use-policy. `generate-prompt` and Imagine handoff packets are scanned the same way.
 
 ### Wave A multi-agent packets
 

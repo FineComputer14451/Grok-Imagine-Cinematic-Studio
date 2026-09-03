@@ -83,6 +83,7 @@ def create_app() -> Any:
             "meta_agents": "/v1/meta/agents",
             "meta_role_cards": "/v1/meta/role-cards",
             "meta_env": "/v1/meta/env",
+            "meta_aup": "/v1/meta/aup",
             "meta_options": "/v1/meta/production-options",
             "bible_stages": "/v1/bible/stages",
             "bible_guided": "/v1/bible/guided",
@@ -107,6 +108,12 @@ def create_app() -> Any:
         from studio_api.meta import env_status
 
         return env_status()
+
+    @app.get("/v1/meta/aup")
+    def meta_aup() -> dict[str, Any]:
+        from studio_api.meta import aup_status
+
+        return aup_status()
 
     @app.get("/v1/meta/production-options")
     def meta_production_options() -> dict[str, Any]:

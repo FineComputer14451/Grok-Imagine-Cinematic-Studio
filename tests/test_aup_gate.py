@@ -16,10 +16,12 @@ from aup_gate import (  # noqa: E402
     AUPGateError,
     ATTESTATION_ENV,
     attestation_is_valid,
+    aup_status,
     gate_dna,
     gate_imagine_prompt,
     gate_nsfw_batch,
     gate_nsfw_shot,
+    gate_planning_packet,
     gate_text,
     require_attestation,
     scan_csam,
@@ -414,6 +416,103 @@ def test_403_does_not_failover_regions() -> None:
     assert len(calls) == 1
 
 
+def test_planning_packet_csam_refused() -> None:
+    try:
+        gate_planning_packet("underage character study")
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        assert "minor-coded" in str(exc) or "CSAM" in str(exc)
+
+
+def test_bridge_intimate_plus_reference_refused() -> None:
+    from imagine_bridge import build_handoff
+
+    path, _ = _attest_env()
+    try:
+        try:
+            build_handoff(
+                {
+                    "shot_id": "shot_int",
+                    "description": "erotic cinematic close-up",
+                    "reference_image_id": "plate_001",
+                    "recommended_mode": "image_to_video",
+                },
+                context="shot",
+                agent_mode=False,
+            )
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            lowered = str(exc).lower()
+            assert "nudify" in lowered or "source still" in lowered
+    finally:
+        _cleanup(path)
+
+
+def test_handoff_validate_csam_fail_closed() -> None:
+    from handoff_validate import validate_handoff_data
+
+    result = validate_handoff_data(
+        {
+            "packet_type": "imagine_agent_mode_handoff",
+            "prompt": "underage character study",
+        }
+    )
+    assert result["ok"] is False
+    blob = " ".join(result.get("issues") or [])
+    assert "minor-coded" in blob or "CSAM" in blob
+
+
+def test_aup_status_hides_flags() -> None:
+    path, _ = _attest_env()
+    try:
+        status = aup_status()
+        assert status["valid"] is True
+        assert status["present"] is True
+        assert "age_18_plus" not in status
+        assert status["aup_url"] == AUP_URL
+    finally:
+        _cleanup(path)
+
+
+def test_check_aup_idle_without_batches() -> None:
+    from doctor_checks import check_aup
+
+    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "characters").mkdir()
+            (root / "nsfw_batches").mkdir()
+            rows = check_aup(repo_root=root)
+        names = {r.name: r.status for r in rows}
+        assert names.get("AUP idle") == "PASS" or names.get("AUP attestation") == "PASS"
+        assert "FAIL" not in {r.status for r in rows if r.name.startswith("AUP")}
+    finally:
+        os.environ.pop(ATTESTATION_ENV, None)
+
+
+def test_check_aup_fails_when_batch_without_attest() -> None:
+    from doctor_checks import check_aup
+
+    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            batch_dir = root / "nsfw_batches" / "probe"
+            batch_dir.mkdir(parents=True)
+            (batch_dir / "batch.json").write_text(
+                '{"batch_id":"probe","slug":"probe"}\n', encoding="utf-8"
+            )
+            (root / "characters").mkdir()
+            rows = check_aup(repo_root=root)
+        attest = [r for r in rows if r.name == "AUP attestation"]
+        assert attest, rows
+        assert attest[0].status == "FAIL"
+        assert "attest" in attest[0].detail.lower() or "nsfw" in attest[0].detail.lower()
+    finally:
+        os.environ.pop(ATTESTATION_ENV, None)
+
+
 def test_nsfw_pack_is_opt_in_aup() -> None:
     marketplace = json.loads((ROOT / ".grok-plugin" / "marketplace.json").read_text())
     assert "Official Grok plugin marketplace" not in marketplace.get("description", "")
@@ -447,5 +546,11 @@ if __name__ == "__main__":
     test_403_429_not_in_failover()
     test_execute_nsfw_shot_requires_attestation()
     test_403_does_not_failover_regions()
+    test_planning_packet_csam_refused()
+    test_bridge_intimate_plus_reference_refused()
+    test_handoff_validate_csam_fail_closed()
+    test_aup_status_hides_flags()
+    test_check_aup_idle_without_batches()
+    test_check_aup_fails_when_batch_without_attest()
     test_nsfw_pack_is_opt_in_aup()
     print("All AUP gate tests passed")

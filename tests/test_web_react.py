@@ -17,6 +17,13 @@ def test_web_react_package_layout() -> None:
     assert (app / "src" / "components" / "ToolsView.tsx").is_file()
     assert (app / "src" / "components" / "SettingsView.tsx").is_file()
     assert (app / "src" / "components" / "NsfwView.tsx").is_file()
+    settings = (app / "src" / "components" / "SettingsView.tsx").read_text(encoding="utf-8")
+    assert "I am 18 or older" in settings
+    assert "imaginary adults" in settings
+    assert "nsfw attest" in settings
+    assert "canEnableNsfwNav" in (app / "src" / "lib" / "settingsPrefs.ts").read_text(
+        encoding="utf-8"
+    )
     assert (app / "README.md").is_file()
 
 

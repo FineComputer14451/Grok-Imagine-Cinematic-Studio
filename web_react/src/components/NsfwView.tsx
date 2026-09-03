@@ -2,9 +2,14 @@ import { useQuery } from '@tanstack/react-query'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { Link } from '@tanstack/react-router'
-import { fetchDashboard } from '../api/client'
+import { fetchAupStatus, fetchDashboard } from '../api/client'
 import { queryKeys } from '../api/queryKeys'
-import { getNsfwOptIn } from '../lib/settingsPrefs'
+import {
+  canEnableNsfwNav,
+  fourAupFlags,
+  getNsfwOptIn,
+  loadSettingsPrefs,
+} from '../lib/settingsPrefs'
 import { SimpleTable } from './SimpleTable'
 
 const col = createColumnHelper<Record<string, unknown>>()
@@ -20,7 +25,16 @@ function str(v: unknown): string {
  * Batch plan / execute / API generation remain Streamlit or CLI (ActionSpec forbids run/submit).
  */
 export function NsfwView() {
-  const opted = getNsfwOptIn()
+  const aupQ = useQuery({
+    queryKey: queryKeys.metaAup,
+    queryFn: fetchAupStatus,
+    retry: false,
+  })
+  const opted = canEnableNsfwNav({
+    fourFlags: fourAupFlags(loadSettingsPrefs()),
+    aupValid: aupQ.data?.valid === true,
+    localOptIn: getNsfwOptIn(),
+  })
   const dashQ = useQuery({
     queryKey: queryKeys.dashboard,
     queryFn: fetchDashboard,
@@ -54,7 +68,8 @@ export function NsfwView() {
         <div className="card fail-box">
           <p>
             Enable <strong>NSFW planning tools</strong> under{' '}
-            <Link to="/settings">Settings</Link> first.
+            <Link to="/settings">Settings</Link> after all four AUP flags and{' '}
+            <code>nsfw attest</code> on the API host.
           </p>
         </div>
       </div>

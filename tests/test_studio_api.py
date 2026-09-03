@@ -129,6 +129,15 @@ def test_meta_phase2_endpoints() -> None:
     assert env.status_code == 200
     assert "xai_api_key_set" in env.json()
 
+    aup = client.get("/v1/meta/aup")
+    assert aup.status_code == 200
+    aup_body = aup.json()
+    assert "valid" in aup_body
+    assert "present" in aup_body
+    assert "aup_url" in aup_body
+    assert "age_18_plus" not in aup_body
+    assert aup_body.get("valid") in (True, False)
+
     opts = client.get("/v1/meta/production-options")
     assert opts.status_code == 200
     body = opts.json()

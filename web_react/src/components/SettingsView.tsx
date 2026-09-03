@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import {
+  fetchAupStatus,
   fetchDashboard,
   fetchEnvStatus,
   fetchHealth,
@@ -9,6 +10,7 @@ import {
 import { queryKeys } from '../api/queryKeys'
 import {
   FALLBACK_DEFAULTS,
+  fourAupFlags,
   loadSettingsPrefs,
   notifyPrefsUpdated,
   saveSettingsPrefs,
@@ -53,6 +55,11 @@ export function SettingsView() {
     queryKey: queryKeys.metaEnv,
     queryFn: fetchEnvStatus,
   })
+  const aupQ = useQuery({
+    queryKey: queryKeys.metaAup,
+    queryFn: fetchAupStatus,
+    retry: false,
+  })
   const healthQ = useQuery({
     queryKey: queryKeys.health,
     queryFn: fetchHealth,
@@ -83,8 +90,15 @@ export function SettingsView() {
   }
 
   function handleSave() {
-    saveSettingsPrefs(prefs)
-    setNsfwOptIn(prefs.nsfw_opt_in)
+    const flagsOk = fourAupFlags(prefs)
+    const aupValid = aupQ.data?.valid === true
+    const next: SettingsPrefs = {
+      ...prefs,
+      nsfw_opt_in: flagsOk && aupValid && prefs.nsfw_opt_in,
+    }
+    saveSettingsPrefs(next)
+    setPrefs(next)
+    setNsfwOptIn(next.nsfw_opt_in)
     notifyPrefsUpdated()
     setSavedFlash(true)
     window.setTimeout(() => setSavedFlash(false), 2000)
@@ -105,6 +119,10 @@ export function SettingsView() {
       quota_tier: String(next.quota_tier ?? FALLBACK_DEFAULTS.quota_tier),
       imagine_region: String(next.imagine_region ?? FALLBACK_DEFAULTS.imagine_region),
       nsfw_opt_in: false,
+      aup_age_18: false,
+      aup_imaginary_adults: false,
+      aup_not_real_person: false,
+      aup_acknowledged: false,
       reasoning_level: String(next.reasoning_level ?? FALLBACK_DEFAULTS.reasoning_level),
       prompt_cache_key: String(next.prompt_cache_key ?? ''),
       dashboard_view_mode: String(next.dashboard_view_mode ?? 'ops'),
@@ -242,19 +260,66 @@ export function SettingsView() {
       </section>
 
       <section className="card stack">
-        <h2 className="h2">NSFW pipelines</h2>
+        <h2 className="h2">NSFW pipelines (18+ / SpaceXAI AUP)</h2>
+        <p className="muted small">
+          Limited R-rated fictional adult material of imaginary adults only. A Settings checkbox
+          is not attestation. Policy:{' '}
+          <a href="https://x.ai/legal/acceptable-use-policy">Acceptable Use Policy</a>
+        </p>
+        <label className="check-row">
+          <input
+            type="checkbox"
+            checked={prefs.aup_age_18}
+            onChange={(e) => update('aup_age_18', e.target.checked)}
+          />
+          <span>I am 18 or older</span>
+        </label>
+        <label className="check-row">
+          <input
+            type="checkbox"
+            checked={prefs.aup_imaginary_adults}
+            onChange={(e) => update('aup_imaginary_adults', e.target.checked)}
+          />
+          <span>Subjects are fictional imaginary adults</span>
+        </label>
+        <label className="check-row">
+          <input
+            type="checkbox"
+            checked={prefs.aup_not_real_person}
+            onChange={(e) => update('aup_not_real_person', e.target.checked)}
+          />
+          <span>I will not use real-person photos or likenesses</span>
+        </label>
+        <label className="check-row">
+          <input
+            type="checkbox"
+            checked={prefs.aup_acknowledged}
+            onChange={(e) => update('aup_acknowledged', e.target.checked)}
+          />
+          <span>I acknowledge the SpaceXAI Acceptable Use Policy</span>
+        </label>
+        {aupQ.data?.valid ? (
+          <p className="badge ok">
+            Server attestation valid{aupQ.data.attested_at ? ` · ${aupQ.data.attested_at}` : ''}
+          </p>
+        ) : (
+          <p className="muted small">
+            Run <code>cinematic-studio nsfw attest --i-am-18 --imaginary-adults --not-a-real-person
+            --acknowledge-aup</code> on the API host. This SPA cannot write the attestation file.
+          </p>
+        )}
         <label className="check-row">
           <input
             type="checkbox"
             checked={prefs.nsfw_opt_in}
+            disabled={!fourAupFlags(prefs) || aupQ.data?.valid !== true}
             onChange={(e) => update('nsfw_opt_in', e.target.checked)}
           />
           <span>Enable NSFW planning tools (unlocks NSFW nav)</span>
         </label>
         <p className="muted small">
           Explicit ErosForge activation is still required in Grok. Live batch execute remains on
-          Streamlit when an API key is set; this SPA only shows plans/batches from the dashboard
-          snapshot.
+          Streamlit or CLI; this SPA only shows plans/batches from the dashboard snapshot.
         </p>
       </section>
 

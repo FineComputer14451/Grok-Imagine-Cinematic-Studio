@@ -8,7 +8,7 @@ import {
   actionUsesSettingsPrefs,
   FIELD_PREF_MAP,
 } from './prefsToAnswers'
-import type { SettingsPrefs } from './settingsPrefs'
+import { canEnableNsfwNav, fourAupFlags, type SettingsPrefs } from './settingsPrefs'
 import type { FormFieldDto } from '../api/types'
 
 const prefs: SettingsPrefs = {
@@ -23,6 +23,10 @@ const prefs: SettingsPrefs = {
   quota_tier: 'supergrok_heavy',
   imagine_region: 'eu-west-1',
   nsfw_opt_in: false,
+  aup_age_18: false,
+  aup_imaginary_adults: false,
+  aup_not_real_person: false,
+  aup_acknowledged: false,
   reasoning_level: 'high',
   prompt_cache_key: 'neon-run',
   dashboard_view_mode: 'ops',
@@ -102,6 +106,20 @@ const quotaFields: FormFieldDto[] = [
 const q = applyPrefsToFieldDefaults(quotaFields, prefs)
 assert(q.defaults.tier === 'supergrok_heavy', `tier ${q.defaults.tier}`)
 assert(q.defaults.remaining === '', 'remaining unmapped')
+
+assert(!fourAupFlags(prefs), 'default four flags off')
+assert(
+  !canEnableNsfwNav({ fourFlags: true, aupValid: false, localOptIn: true }),
+  'checkbox is not attestation',
+)
+assert(
+  !canEnableNsfwNav({ fourFlags: false, aupValid: true, localOptIn: true }),
+  'need four flags',
+)
+assert(
+  canEnableNsfwNav({ fourFlags: true, aupValid: true, localOptIn: true }),
+  'nav when attested',
+)
 
 // Bible handoff overrides settings when sessionStorage has seeds
 const seqFields: FormFieldDto[] = [

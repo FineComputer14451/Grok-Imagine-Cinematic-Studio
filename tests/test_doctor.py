@@ -28,6 +28,7 @@ from doctor import (  # noqa: E402
 )
 from doctor_checks import (  # noqa: E402
     METHOD_A_CORE_SKILLS,
+    check_aup,
     check_catalog_pin,
     check_model_stack,
     check_plugin_installed,
@@ -39,6 +40,21 @@ from studio_health import (  # noqa: E402
     skills_missing_model_compatibility,
     user_studio_skill_dupes,
 )
+
+
+def test_aup_check_in_quick_registry() -> None:
+    ids = [spec.id for spec in REGISTRY]
+    assert "aup" in ids
+    spec = next(s for s in REGISTRY if s.id == "aup")
+    assert spec.full_only is False
+    assert spec.external is False
+
+
+def test_check_aup_fail_closed_codes() -> None:
+    rows = check_aup(repo_root=ROOT)
+    hop = [r for r in rows if "403" in r.name]
+    assert hop
+    assert all(r.status == "PASS" for r in hop)
 
 
 def test_exit_code_fail_and_strict() -> None:

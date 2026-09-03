@@ -4,6 +4,12 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Added
+- **AUP on planning paths** — `nsfw extend plan|chain|prompt`, `generate-prompt`, Imagine Execution Bridge / Agent Mode packets, and `handoff validate` now run the same fail-closed SpaceXAI AUP gate as Imagine spend (CSAM always; attestation when intimate; no intimate+still-ref).
+- **Doctor AUP section** — `cinematic-studio doctor --quick` reports attestation idle/valid/FAIL and 403/429 no-hop.
+- **API `/v1/meta/aup`** — attestation status (`valid` / `present` / `attested_at` / `aup_url`) for cockpits. Never returns flag values; SPA cannot write attestation.
+- **React NSFW opt-in** — four AUP checkboxes + server attestation required; a single Settings checkbox no longer unlocks the NSFW nav.
+
 ### Fixed
 - **AUP on video edit/extend** — `submit_video_edit` and `submit_video_extension` now run the same fail-closed Imagine prompt gate as generate/edit/i2v (CSAM always; attestation when intimate). Sequence extend and `imagine submit` video_edit/video_extend can no longer skip AUP.
 

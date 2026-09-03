@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from aup_gate import gate_planning_packet
 from models import (
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
@@ -316,6 +317,27 @@ def _core_content(
         core["audio_momentum_vector"] = subject["audio_momentum_vector"]
     if subject.get("dna_inject"):
         core["dna_inject"] = subject["dna_inject"]
+    has_ref = bool(
+        (core.get("reference_hints") or [])
+        or subject.get("reference_image_id")
+        or subject.get("reference_image_url")
+        or subject.get("has_reference")
+        or subject.get("has_ref")
+    )
+    extra = "\n".join(
+        str(v)
+        for v in (
+            subject.get("description"),
+            core.get("dna_inject"),
+            subject.get("nsfw_notes"),
+        )
+        if v
+    )
+    gate_planning_packet(
+        core.get("prompt") or "",
+        extra=extra,
+        has_reference_image=has_ref,
+    )
     return core
 
 
