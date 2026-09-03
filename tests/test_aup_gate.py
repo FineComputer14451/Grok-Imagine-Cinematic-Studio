@@ -556,6 +556,46 @@ def test_bridge_intimate_plus_reference_refused() -> None:
         _cleanup(path)
 
 
+def test_handoff_kwarg_dna_inject_csam_refused() -> None:
+    from imagine_bridge import build_handoff
+
+    try:
+        build_handoff(
+            {
+                "shot_id": "shot_ok",
+                "description": "Cover frame at dusk",
+                "recommended_mode": "image_prompt",
+            },
+            context="shot",
+            agent_mode=True,
+            execution_mode="image_prompt",
+            dna_inject="underage character study",
+        )
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        assert "minor-coded" in str(exc) or "CSAM" in str(exc)
+
+
+def test_markdown_paste_csam_refused() -> None:
+    from imagine_bridge import build_handoff, handoff_to_markdown
+
+    packet = build_handoff(
+        {
+            "shot_id": "shot_ok",
+            "description": "Cover frame at dusk",
+            "recommended_mode": "image_prompt",
+        },
+        context="shot",
+        agent_mode=False,
+    )
+    packet["last_frame_recap"] = "underage character study"
+    try:
+        handoff_to_markdown(packet)
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        assert "minor-coded" in str(exc) or "CSAM" in str(exc)
+
+
 def test_handoff_validate_csam_fail_closed() -> None:
     from handoff_validate import validate_handoff_data
 
@@ -750,6 +790,8 @@ if __name__ == "__main__":
     test_plan_nsfw_short_clip_attested_allowed()
     test_planning_packet_csam_refused()
     test_bridge_intimate_plus_reference_refused()
+    test_handoff_kwarg_dna_inject_csam_refused()
+    test_markdown_paste_csam_refused()
     test_handoff_validate_csam_fail_closed()
     test_bridge_recap_csam_refused()
     test_handoff_validate_extend_recap_csam()

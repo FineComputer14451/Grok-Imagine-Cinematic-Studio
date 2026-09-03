@@ -20,6 +20,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Doctor AUP idle** — WARN when committed `nsfw_batches/*.json` templates exist without attestation (operator `*/batch.json` still FAIL).
 - **CI least privilege** — `cinematic-agent-workflow-ci.yml` sets `permissions: contents: read` and `persist-credentials: false`; `monitor-forks.yml` documents why it needs write.
 - **AUP copy** — NSFW pack description, SECURITY.md, and DISCLAIMER.md name the four `nsfw attest` flags and the AUP URL.
+- **`.env.*` gitignore** — ignore `.env.local` / `.env.production` (keep `**/.env.example`).
+- **Auto-pin main-only** — `auto-repin-plugin-catalog.yml` requires `github.ref == refs/heads/main` before `git push origin HEAD:main`.
+- **Bridge paste re-gate** — `build_handoff` re-runs `gate_planning_subject` after `dna_inject`; markdown/clipboard paste is gated too.
 - **AUP on video edit/extend** — `submit_video_edit` and `submit_video_extension` now run the same fail-closed Imagine prompt gate as generate/edit/i2v (CSAM always; attestation when intimate). Sequence extend and `imagine submit` video_edit/video_extend can no longer skip AUP.
 
 ## [3.11.1] - 2026-09-02

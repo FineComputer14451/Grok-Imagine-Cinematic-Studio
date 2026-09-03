@@ -375,6 +375,7 @@ def build_handoff(
             "mode": mode,
             "handoff_steps": handoff_steps("grok_com_imagine", mode),
         }
+        gate_planning_subject(packet)
         return packet
 
     surface = normalize_target_surface(target_surface or "grok_build_tools")
@@ -433,6 +434,7 @@ def build_handoff(
         val = subject.get(key)
         if val is not None and val != "" and key not in packet:
             packet[key] = val
+    gate_planning_subject(packet)
     return packet
 
 
@@ -505,6 +507,7 @@ def _momentum_lines(mv: dict[str, Any]) -> list[str]:
 
 def handoff_to_markdown(packet: dict[str, Any]) -> str:
     """Render classic or agent-mode packet as markdown."""
+    gate_planning_subject(packet)
     if packet.get("packet_type") == PACKET_TYPE_IMAGINE_AGENT_MODE:
         return _agent_mode_markdown(packet)
     return _classic_bridge_markdown(packet)
@@ -516,6 +519,7 @@ def handoff_to_clipboard(packet: dict[str, Any]) -> str:
 
     Uses the packet itself (pipeline + prompt + sound + refs) — no second rebuild.
     """
+    gate_planning_subject(packet)
     parts: list[str] = []
     pipeline = packet.get("video_pipeline_spec") or ""
     if pipeline:

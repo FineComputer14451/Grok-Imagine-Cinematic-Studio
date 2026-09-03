@@ -27,11 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     # Avoid fighting intentional manual pins / bot pin commits.
     if: >-
-      github.event_name == 'workflow_dispatch' ||
+      github.ref == 'refs/heads/main' &&
       (
-        github.event_name == 'push' &&
-        !contains(github.event.head_commit.message, '[auto-pin]') &&
-        !contains(github.event.head_commit.message, 're-pin catalog to HEAD')
+        github.event_name == 'workflow_dispatch' ||
+        (
+          github.event_name == 'push' &&
+          !contains(github.event.head_commit.message, '[auto-pin]') &&
+          !contains(github.event.head_commit.message, 're-pin catalog to HEAD')
+        )
       )
     steps:
       - name: Checkout
@@ -113,7 +116,7 @@ jobs:
           echo "committed=true" >> "$GITHUB_OUTPUT"
 
       - name: Push pin commit
-        if: steps.commit.outputs.committed == 'true'
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.committed == 'true'
         run: |
           git push origin HEAD:main
 
