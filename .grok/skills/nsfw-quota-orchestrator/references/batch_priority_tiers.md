@@ -28,7 +28,7 @@ Shot tiers ordered by production impact and quota efficiency on SuperGrok Heavy.
 ## Per-Tier Generation Guidance
 
 ### Hero
-- Use `grok-imagine-image-quality` for stills ($0.05)
+- Use `grok-imagine-image-2.0` with `quality=medium` for stills (1K $0.05)
 - Promote to `image_to_video` only after anchor QA ≥8
 - One hero per session minimum before support shots
 
@@ -54,6 +54,6 @@ Applied automatically by `apply_reference_curator_models()` in `tools/nsfw_orche
 
 | Shot Tier | Asset Tier | Image | Video |
 |-----------|------------|-------|-------|
-| `hero`, `key_explicit`, `consistency_anchor` | hero | `grok-imagine-image-quality` | `grok-imagine-video-1.5` |
-| `support` | standard | `grok-imagine-image` | `grok-imagine-video-1.5` |
+| `hero`, `key_intimate` (`key_explicit` alias), `consistency_anchor` | hero | `grok-imagine-image-2.0` (`quality=medium`) | `grok-imagine-video` |
+| `support` | standard | `grok-imagine-image` | `grok-imagine-video` |
 | `filler` | draft | `grok-imagine-image` | `grok-imagine-video` |

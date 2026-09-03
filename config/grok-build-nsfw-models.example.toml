@@ -3,7 +3,7 @@
 # These are picker aliases for NSFW / ErosForge *orchestration* sessions.
 # They wrap official xAI chat models (grok-4.6 / grok-4.3) with role-tuned
 # sampling. They do NOT replace Imagine generation models:
-#   stills  → grok-imagine-image / grok-imagine-image-quality
+#   stills  → grok-imagine-image / grok-imagine-image-2.0 (quality=medium for hero)
 #   video   → grok-imagine-video / grok-imagine-video-1.5
 #
 # Install into user config (models only load from ~/.grok/config.toml):

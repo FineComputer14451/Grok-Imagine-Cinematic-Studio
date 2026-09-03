@@ -52,8 +52,8 @@ Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for go/no-go
 
 | Shot Tier | Image Model | Video Model |
 |-----------|-------------|-------------|
-| `hero`, `key_explicit`, `consistency_anchor` | `grok-imagine-image-quality` | `grok-imagine-video-1.5` |
-| `support` | `grok-imagine-image` | `grok-imagine-video-1.5` |
+| `hero`, `key_intimate` (`key_explicit` alias), `consistency_anchor` | `grok-imagine-image-2.0` (`quality=medium`) | `grok-imagine-video` |
+| `support` | `grok-imagine-image` | `grok-imagine-video` |
 | `filler` | `grok-imagine-image` | `grok-imagine-video` |
 
 Activate `ACTIVATE REFERENCE_CURATOR` before batch spend; routing is applied automatically in the orchestrator.

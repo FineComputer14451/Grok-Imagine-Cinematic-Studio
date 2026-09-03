@@ -7,6 +7,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Changed
 - **Hero batch stills** — `image_quality` shots send `grok-imagine-image-2.0` with `quality=medium` instead of the retired quality slug (which would have redirected to 2.0 `low`). API meta fallback picker no longer lists `grok-imagine-image-quality`.
 - **Operator docs pin** — Quick Start, User Guide, Upgrade Guide, CLI Reference, installation, CONTRIBUTING, and marketplace catalog fallback stamp **v3.11.2**.
+- **Academy + Role Cards** — Imagine image examples and NSFW/quota routing tables use Image 2.0 (`quality=medium` for hero) instead of the retired quality slug.
 
 ### Added
 - **AUP on planning paths** — `nsfw extend plan|chain|prompt`, `generate-prompt`, Imagine Execution Bridge / Agent Mode packets, and `handoff validate` now run the same fail-closed SpaceXAI AUP gate as Imagine spend (CSAM always; attestation when intimate; no intimate+still-ref).

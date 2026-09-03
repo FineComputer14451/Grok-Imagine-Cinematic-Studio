@@ -15,7 +15,8 @@ Override via `.quota_config.json` in project root.
 | `grok-imagine-video-1.5` | **$0.080 / second** |
 | `grok-imagine-video` | $0.050 / second |
 | `grok-imagine-image` | $0.02 / image |
-| `grok-imagine-image-quality` | $0.05 / image |
+| `grok-imagine-image-2.0` | from $0.04 / image (1K medium $0.05) |
+| `grok-imagine-image-quality` | Retired 2026-11-02 — billed as 2.0 `quality=low` |
 
 Native audio is included in 1.5 per-second pricing (no surcharge).
 
@@ -31,7 +32,7 @@ Quota dashboard uses abstract credits for subscription tier compatibility:
 | 1.5 video (10s) | 80 credits ($0.80) |
 | 1.0 video (10s) | 50 credits ($0.50) |
 | Standard image | 2 credits ($0.02) |
-| Quality image | 5 credits ($0.05) |
+| Image 2.0 1K medium | 5 credits ($0.05) |
 
 ---
 
@@ -116,7 +117,7 @@ python tools/cinematic_studio_cli.py quota optimize --duration 90 --clips 9 --fa
   },
   "imagine_image": {
     "grok-imagine-image": {"usd_per_image": 0.02},
-    "grok-imagine-image-quality": {"usd_per_image": 0.05}
+    "grok-imagine-image-2.0": {"usd_per_image": 0.04}
   },
   "default_video_model": "grok-imagine-video-1.5",
   "fast_mode_multiplier": 0.55,

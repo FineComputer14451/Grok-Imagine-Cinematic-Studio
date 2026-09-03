@@ -80,13 +80,13 @@ export const GROK_PRICING: {
       id: "image",
       title: "Imagine — images",
       blurb:
-        "Two product tiers: standard (cheaper iteration) vs quality (hero stills). Prices are official list rates for each model.",
+        "Image 1.0 for cheap iteration; Image 2.0 for hero stills (`quality` low | medium | auto). The `grok-imagine-image-quality` slug retires 2026-11-02.",
       rows: [
         {
           model: "grok-imagine-image",
           unit: "Output / image (1K or 2K)",
           price: "$0.02",
-          note: "Standard model — cheaper iteration path",
+          note: "Image 1.0 — cheaper iteration path",
         },
         {
           model: "grok-imagine-image",
@@ -95,22 +95,22 @@ export const GROK_PRICING: {
           note: "When sending reference images",
         },
         {
-          model: "grok-imagine-image-quality",
-          unit: "Output / image (1K)",
+          model: "grok-imagine-image-2.0",
+          unit: "Output / image (1K, quality=low)",
+          price: "$0.04",
+          note: "List / auto generate. Retired quality slug rewrites here.",
+        },
+        {
+          model: "grok-imagine-image-2.0",
+          unit: "Output / image (1K, quality=medium)",
           price: "$0.05",
-          note: "Quality model — hero / final stills",
+          note: "Hero / Quality Mode plates",
         },
         {
-          model: "grok-imagine-image-quality",
-          unit: "Output / image (2K)",
+          model: "grok-imagine-image-2.0",
+          unit: "Output / image (2K, quality=medium)",
           price: "$0.07",
-          note: "Quality model",
-        },
-        {
-          model: "grok-imagine-image-quality",
-          unit: "Media input / image",
-          price: "$0.01",
-          note: "When sending reference images",
+          note: "Hero 2K",
         },
       ],
     },
@@ -185,9 +185,9 @@ export const GROK_PRICING: {
       kind: "example",
     },
     {
-      label: "Quality still 2K (hero)",
-      estimate: "$0.07",
-      detail: "1× grok-imagine-image-quality @ list $0.07",
+      label: "Hero still 1K (Image 2.0 medium)",
+      estimate: "$0.05",
+      detail: "1× grok-imagine-image-2.0 quality=medium @ 1K $0.05",
       kind: "example",
     },
     {
@@ -345,7 +345,7 @@ export const askGrok = createServerFn({ method: "POST" })
     id: "imagine-image",
     title: "Imagine — images",
     intro:
-      "Standard model for cheap iteration; quality model for hero stills. Dollar amounts are published list prices.",
+      "Image 1.0 for cheap iteration; Image 2.0 for hero stills (`quality` low | medium | auto). Dollar amounts are published list prices.",
     endpoints: [
       {
         id: "images-generations",
@@ -353,18 +353,20 @@ export const askGrok = createServerFn({ method: "POST" })
         path: "/v1/images/generations",
         title: "Generate image",
         summary:
-          "Standard list ~$0.02/img; quality list $0.05 (1K) / $0.07 (2K).",
+          "1.0 list ~$0.02/img; 2.0 1K low $0.04 / medium $0.05. Do not send grok-imagine-image-quality.",
         request: `POST https://api.x.ai/v1/images/generations
 
 {
-  "model": "grok-imagine-image-quality",
+  "model": "grok-imagine-image-2.0",
   "prompt": "Cinematic still, rain-slick neon alley, 35mm, teal amber practicals",
   "n": 1,
   "resolution": "1k",
+  "quality": "medium",
   "response_format": "url"
 }
 
 // Cheaper iteration: "grok-imagine-image" (list ~$0.02)
+// quality (2.0 only): "low" | "medium" | "auto"
 // resolution: "1k" | "2k"
 // n: ≤ 10
 // response_format: "url" | "b64_json"`,
@@ -514,7 +516,7 @@ Authorization: Bearer $XAI_API_KEY`,
 
 {
   "pipeline": ["chat.completions", "images.generations"],
-  "models": ["grok-4.5", "grok-imagine-image-quality"]
+  "models": ["grok-4.6", "grok-imagine-image-2.0"]
 }`,
         notes: [
           "Keep DNA inject text inside the image prompt string.",
