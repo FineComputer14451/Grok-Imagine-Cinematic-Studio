@@ -78,7 +78,6 @@ def role_card_preview(stem: str) -> dict[str, Any]:
     """Return a text preview of one Role Card (path-safe)."""
     if not _SAFE_STEM.match(stem or ""):
         raise ValueError("Invalid role card name")
-    # Disallow traversal fragments even if regex passes
     if ".." in stem or "/" in stem or "\\" in stem:
         raise ValueError("Invalid role card name")
 
@@ -87,7 +86,6 @@ def role_card_preview(stem: str) -> dict[str, Any]:
     agents_dir = AGENTS_DIR.resolve()
     path = (agents_dir / f"{stem}.md").resolve()
     if not str(path).startswith(str(agents_dir)) or not path.is_file():
-        # Allow exact match from listed cards only
         allowed = {p.stem: p for p in list_role_card_files()}
         path = allowed.get(stem)
         if path is None:
@@ -132,7 +130,6 @@ def production_options() -> dict[str, Any]:
         image_models = [
             "grok-imagine-image",
             "grok-imagine-image-2.0",
-            "grok-imagine-image-quality",
         ]
         surfaces = [
             "grok_build_tools",
