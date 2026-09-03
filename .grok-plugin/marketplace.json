@@ -83,7 +83,7 @@
     },
     {
       "name": "grok-imagine-nsfw",
-      "description": "Optional 18+ pack (SpaceXAI AUP). R-rated fictional imaginary adults only. Requires nsfw attest. Not affiliated with xAI/SpaceXAI.",
+      "description": "Optional 18+ pack (SpaceXAI AUP https://x.ai/legal/acceptable-use-policy). R-rated fictional imaginary adults only. Requires nsfw attest (--i-am-18 --imaginary-adults --not-a-real-person --acknowledge-aup). Not affiliated with xAI/SpaceXAI.",
       "category": "creative",
       "version": "3.11.1",
       "source": {

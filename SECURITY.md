@@ -21,4 +21,4 @@ Include a description, affected version, and reproduction steps. We will acknowl
 
 Never commit API keys, tokens, or `.streamlit/secrets.toml`. Use environment variables (`XAI_API_KEY`) or local gitignored secret files. This is an independent community project and is not affiliated with xAI.
 
-Intimate / NSFW pipelines require a local `nsfw attest` (gitignored `.aup_attestation.json`). Operators must follow the [SpaceXAI Acceptable Use Policy](https://x.ai/legal/acceptable-use-policy).
+Intimate / NSFW pipelines require a local `nsfw attest` (gitignored `.aup_attestation.json`) with all four flags: 18+, imaginary adults only, not a real person, and AUP acknowledged. Operators must follow the [SpaceXAI Acceptable Use Policy](https://x.ai/legal/acceptable-use-policy).
