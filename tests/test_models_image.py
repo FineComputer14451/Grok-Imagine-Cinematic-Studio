@@ -57,6 +57,8 @@ def test_hero_image_is_2_0() -> None:
     slugs = ordered_image_model_slugs()
     assert slugs[0] == DEFAULT_IMAGINE_IMAGE_MODEL
     assert HERO_IMAGINE_IMAGE_MODEL in slugs
+    assert LEGACY_QUALITY_IMAGE_MODEL not in slugs
+    assert LEGACY_QUALITY_IMAGE_MODEL in ordered_image_model_slugs(include_deprecated=True)
 
 
 def test_quality_slug_rewrites_to_2_0_low() -> None:

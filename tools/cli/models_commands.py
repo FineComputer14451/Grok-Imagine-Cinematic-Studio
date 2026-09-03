@@ -114,7 +114,7 @@ def models_list():
         if aliases:
             detail += f"\n[dim]aliases: {aliases}[/dim]"
         table.add_row("Imagine Video", slug + default, detail)
-    for slug in ordered_image_model_slugs():
+    for slug in ordered_image_model_slugs(include_deprecated=True):
         info = IMAGINE_IMAGE_MODELS[slug]
         default = " (default)" if slug == DEFAULT_IMAGINE_IMAGE_MODEL else ""
         if slug == HERO_IMAGINE_IMAGE_MODEL:

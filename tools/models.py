@@ -1197,18 +1197,20 @@ def ordered_video_model_slugs() -> list[str]:
     return keys
 
 
-def ordered_image_model_slugs() -> list[str]:
-    """Draft 1.0 first, then 2.0 hero, then remaining quality/legacy slugs."""
-    keys = list(IMAGINE_IMAGE_MODELS.keys())
+def ordered_image_model_slugs(*, include_deprecated: bool = False) -> list[str]:
+    """Draft 1.0 first, then 2.0 hero. Deprecated quality slug is picker-hidden."""
+    keys = [
+        k
+        for k, info in IMAGINE_IMAGE_MODELS.items()
+        if include_deprecated or not info.get("deprecated")
+    ]
     preferred = [
         slug
-        for slug in (
-            DEFAULT_IMAGINE_IMAGE_MODEL,
-            HERO_IMAGINE_IMAGE_MODEL,
-            LEGACY_QUALITY_IMAGE_MODEL,
-        )
+        for slug in (DEFAULT_IMAGINE_IMAGE_MODEL, HERO_IMAGINE_IMAGE_MODEL)
         if slug in keys
     ]
+    if include_deprecated and LEGACY_QUALITY_IMAGE_MODEL in keys:
+        preferred.append(LEGACY_QUALITY_IMAGE_MODEL)
     return preferred + [k for k in keys if k not in preferred]
 
 

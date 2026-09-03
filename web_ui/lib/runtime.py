@@ -220,7 +220,11 @@ def ordered_image_model_slugs() -> list[str]:
             pass
     if not IMAGINE_IMAGE_MODELS:
         return [DEFAULT_IMAGINE_IMAGE_MODEL, HERO_IMAGINE_IMAGE_MODEL]
-    keys = list(IMAGINE_IMAGE_MODELS.keys())
+    keys = [
+        k
+        for k, info in IMAGINE_IMAGE_MODELS.items()
+        if not (info.get("deprecated") if isinstance(info, dict) else False)
+    ]
     preferred = [DEFAULT_IMAGINE_IMAGE_MODEL, HERO_IMAGINE_IMAGE_MODEL]
     return [k for k in preferred if k in keys] + [k for k in keys if k not in preferred]
 
