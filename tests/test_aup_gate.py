@@ -665,6 +665,28 @@ def test_check_aup_idle_without_batches() -> None:
         os.environ.pop(ATTESTATION_ENV, None)
 
 
+def test_check_aup_warns_on_committed_templates() -> None:
+    from doctor_checks import check_aup
+
+    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            batches = root / "nsfw_batches"
+            batches.mkdir()
+            (batches / "outfit_library_shots.json").write_text("[]\n", encoding="utf-8")
+            (root / "characters").mkdir()
+            rows = check_aup(repo_root=root)
+        names = {r.name: r for r in rows}
+        assert names["AUP idle"].status == "PASS"
+        assert names["NSFW templates on disk"].status == "WARN"
+        assert "outfit" in names["NSFW templates on disk"].detail or "json" in names[
+            "NSFW templates on disk"
+        ].detail.lower()
+    finally:
+        os.environ.pop(ATTESTATION_ENV, None)
+
+
 def test_check_aup_fails_when_batch_without_attest() -> None:
     from doctor_checks import check_aup
 
@@ -735,6 +757,7 @@ if __name__ == "__main__":
     test_gate_planning_subject_scans_sound_layer()
     test_aup_status_hides_flags()
     test_check_aup_idle_without_batches()
+    test_check_aup_warns_on_committed_templates()
     test_check_aup_fails_when_batch_without_attest()
     test_nsfw_pack_is_opt_in_aup()
     print("All AUP gate tests passed")

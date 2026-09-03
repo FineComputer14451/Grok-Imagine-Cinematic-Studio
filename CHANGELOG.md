@@ -10,12 +10,15 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **API `/v1/meta/aup`** — attestation status (`valid` / `present` / `attested_at` / `aup_url`) for cockpits. Never returns flag values; SPA cannot write attestation.
 - **React NSFW opt-in** — four AUP checkboxes + server attestation required; a single Settings checkbox no longer unlocks the NSFW nav.
 - **`aup-audit` workflow** — `.grok/workflows/aup-audit.rhai` (read-only spend / planning / attestation scan + adversarial verify). Run `/aup-audit` or `/workflow aup-audit`.
+- **`github-safety-aup` workflow** — `.grok/workflows/github-safety-aup.rhai` (secrets, GitHub Actions, AUP code/docs). Run `/github-safety-aup`.
 
 ### Fixed
 - **AUP on DNA emit** — `load_character_dna`, prompt blocks, markdown, handoff packets, and `inject_into_prompt` run `gate_dna` / `gate_imagine_prompt`. `dna init --output` no longer writes JSON without the gate.
 - **AUP on NSFW still-ref extend** — `plan_nsfw_extension` default is `short_clip`; `reference_frame` / i2v from a source still is fail-closed (`gate_imagine_prompt(..., has_reference_image=True)`).
 - **AUP skill shims** — DNA `--file` inject uses `compose_injected_prompt`; NSFW `plan_extension.py` defaults to `short_clip` and exits 1 on AUP refuse.
 - **AUP on handoff paste fields** — bridge + `handoff validate` scan `last_frame_recap`, `sound_layer` / dialogue, momentum, and `nsfw_notes` (not prompt-only). Sequence-extend / intimacy packets are Imagine-bound.
+- **Doctor AUP idle** — WARN when committed `nsfw_batches/*.json` templates exist without attestation (operator `*/batch.json` still FAIL).
+- **CI least privilege** — `cinematic-agent-workflow-ci.yml` sets `permissions: contents: read` and `persist-credentials: false`; `monitor-forks.yml` documents why it needs write.
 - **AUP on video edit/extend** — `submit_video_edit` and `submit_video_extension` now run the same fail-closed Imagine prompt gate as generate/edit/i2v (CSAM always; attestation when intimate). Sequence extend and `imagine submit` video_edit/video_extend can no longer skip AUP.
 
 ## [3.11.1] - 2026-09-02

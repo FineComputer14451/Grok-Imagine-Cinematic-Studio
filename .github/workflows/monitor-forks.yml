@@ -6,6 +6,8 @@ on:
     - cron: '0 9 * * 1'
   workflow_dispatch:  # Manual trigger
 
+# contents: write — commit .github/fork-monitor/state.json on main
+# issues: write — create/update the fork-monitor tracking issue
 permissions:
   contents: write
   issues: write
@@ -16,6 +18,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # git push of fork-monitor state.json needs the default token
+          persist-credentials: true
 
       - name: Fetch current forks
         id: fetch

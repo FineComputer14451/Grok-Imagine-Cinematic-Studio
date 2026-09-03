@@ -784,9 +784,14 @@ def check_aup(*, repo_root: Path | None = None) -> list[CheckResult]:
 
     root = repo_root or STUDIO_ROOT
     batch_count = 0
+    template_json = 0
     batches_dir = root / "nsfw_batches"
     if batches_dir.is_dir():
         batch_count = len(list(batches_dir.glob("*/batch.json")))
+        for path in batches_dir.glob("*.json"):
+            if path.name.startswith("."):
+                continue
+            template_json += 1
     dna_intimate = 0
     chars = root / "characters"
     if chars.is_dir():
@@ -834,6 +839,16 @@ def check_aup(*, repo_root: Path | None = None) -> list[CheckResult]:
                 "PASS",
                 "AUP idle",
                 f"attest before NSFW · {AUP_URL}",
+                section,
+            )
+        )
+    if template_json and not status["valid"]:
+        results.append(
+            CheckResult(
+                "WARN",
+                "NSFW templates on disk",
+                f"{template_json} committed nsfw_batches/*.json (not operator batch.json); "
+                f"attest before generating from them ({AUP_URL})",
                 section,
             )
         )
