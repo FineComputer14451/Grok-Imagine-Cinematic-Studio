@@ -4,7 +4,7 @@
 > Independent community project — **not affiliated with or endorsed by xAI**. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
 
 **Enhanced for:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` + **Imagine Video 1.0 & 1.5 Native**  
-**Version:** 3.11.2 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.11.2 · Grok 4.6 stack · Full v4.5 dual-model wave  
+**Version:** 3.11.3 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.11.3 · Grok 4.6 stack · Full v4.5 dual-model wave  
 **Date:** 2026-09-02  
 **Canonical Model Layer:** `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1)
 
@@ -154,7 +154,7 @@ Requires explicit opt-in. NSFW agents strongly prefer **Imagine 1.5** for authen
 
 | # | Preset | Command |
 |---|--------|---------|
-| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.11.2` |
+| 1 | Full Studio | `Activate Grok Imagine Cinematic Studio v3.11.3` |
 | 2 | 1.5 Native Video | `ACTIVATE IMAGINE_VIDEO_1.5_FULL` |
 | 3 | Long-Form Sequence | `ACTIVATE SEQUENCE_DIRECTOR` + `ACTIVATE SEQUENCE_EXTENDER` |
 | 4 | Character Onboarding | `ACTIVATE CHARACTER_DNA_EXTRACTOR` + `ACTIVATE IDENTITY_LOCK` |
@@ -229,4 +229,4 @@ DNA / QA skill filenames `Character_DNA_Extractor.md` and `Quality_Assurance_Gua
 
 ---
 
-*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-09-03 · studio v3.11.2 · 64 skills (Wave A P0)*
+*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-09-03 · studio v3.11.3 · 64 skills (Wave A P0)*

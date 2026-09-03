@@ -1,11 +1,21 @@
 # Grok Imagine Cinematic Studio — UPGRADE GUIDE
 
-**Current target:** **v3.11.2** — Imagine Image Quality retirement (`grok-imagine-image-quality` → 2.0 `quality=low`; hero batches pin 2.0 `quality=medium`) · SpaceXAI AUP fail-closed gates · CLI help IA · unified **Grok 4.6** cinematic+Build (`grok-4.5` aliases wrap 4.6) · Grok Build ≥ **1.0.5** · Model Layer v4.5 (v9-4p5 / `grok-4-auto`) · optional **Grok 4.3** 1M · Imagine Agent Mode Handoff · Identity Continuity · **64 skills** · packs + `full_suite_wins`
+**Current target:** **v3.11.3** — official Image 2.0 multi-edit `images[]` + preserve served `model` · Quality leftovers pin 2.0 `quality=medium` · Imagine Image Quality retirement (`grok-imagine-image-quality` → 2.0 `quality=low`) · SpaceXAI AUP fail-closed gates · CLI help IA · unified **Grok 4.6** cinematic+Build (`grok-4.5` aliases wrap 4.6) · Grok Build ≥ **1.0.5** · Model Layer v4.5 (v9-4p5 / `grok-4-auto`) · optional **Grok 4.3** 1M · Imagine Agent Mode Handoff · Identity Continuity · **64 skills** · packs + `full_suite_wins`
 
-**Quick path to current:** pull `main` → `models verify` → reinstall plugin if local clone is stale → activate `Activate Grok Imagine Cinematic Studio v3.11.2`  
+**Quick path to current:** pull `main` → `models verify` → reinstall plugin if local clone is stale → activate `Activate Grok Imagine Cinematic Studio v3.11.3`  
 **Day-to-day docs:** `docs/guides/Quick_Start_Guide.md` · `docs/guides/installation_guide.md` · `references/agents/MODEL_LAYER_v4.5.md`
 
-**Date:** September 3, 2026 (header); sections below retain historical upgrade notes from earlier 3.7.x / 3.8.x / 3.9.x / 3.11.0 / 3.11.1 waves.
+**Date:** September 3, 2026 (header); sections below retain historical upgrade notes from earlier 3.7.x / 3.8.x / 3.9.x / 3.11.0 / 3.11.1 / 3.11.2 waves.
+
+---
+
+## Upgrade to v3.11.3 (from 3.11.2)
+
+1. Pull / reinstall: `git pull` or `bash scripts/cinematic_studio.sh update` / `grok plugin update grok-imagine-cinematic-studio`
+2. Confirm `VERSION` is **3.11.3** and `python tools/cinematic_studio_cli.py models verify` still shows Grok **4.6** cinematic+Build and CLI min **1.0.5**
+3. Image edits with extra stills now send official `images[]` (not `extra_images`). Use `--extra-image-url` (or `--reference-image-url`) on `imagine submit image_edit`.
+4. Live image responses keep xAI’s `model` field (`request_model` is the slug we sent).
+5. Activation: `Activate Grok Imagine Cinematic Studio v3.11.3`
 
 ---
 
@@ -23,7 +33,7 @@
 1. Pull / reinstall: `git pull` or `bash scripts/cinematic_studio.sh update` / `grok plugin update grok-imagine-cinematic-studio`
 2. Confirm `VERSION` is **3.11.1** and `python tools/cinematic_studio_cli.py models verify` still shows Grok **4.6** cinematic+Build and CLI min **1.0.5**
 3. NSFW spend requires `cinematic-studio nsfw attest` (18+ / imaginary adults / R-rated / AUP)
-4. Activation: `Activate Grok Imagine Cinematic Studio v3.11.2`
+4. Activation: `Activate Grok Imagine Cinematic Studio v3.11.3`
 
 ---
 

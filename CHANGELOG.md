@@ -4,16 +4,22 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.11.3] - 2026-09-03
+
 ### Changed
+- **Official image-edit payload** — multi-ref edits send `images[]` with `type: image_url` (single-ref stays `image`). The unofficial `extra_images` field is no longer sent.
+- **Served `model`** — live `/images/generations` and `/images/edits` keep xAI’s response `model` and record `request_model` so logs can confirm the Nov 2 Quality → 2.0 `low` redirect.
 - **Agent-facing Quality leftovers** — animatic, SFW batch, NSFW command, ErosForge/NSFW-prompt personas, and the `xai_api` bridge example pin **Image 2.0** (`quality=medium` for hero) instead of sending `grok-imagine-image-quality` (xAI retires that slug 2026-11-02 → 2.0 `quality=low`).
 - **Hero batch stills** — `image_quality` shots send `grok-imagine-image-2.0` with `quality=medium` instead of the retired quality slug (which would have redirected to 2.0 `low`). API meta fallback picker no longer lists `grok-imagine-image-quality`.
-- **Operator docs pin** — Quick Start, User Guide, Upgrade Guide, CLI Reference, installation, CONTRIBUTING, and marketplace catalog fallback stamp **v3.11.2**.
+- **Operator docs pin** — Quick Start, User Guide, Upgrade Guide, CLI Reference, installation, CONTRIBUTING, and marketplace catalog fallback stamp **v3.11.3**.
 - **Academy + Role Cards** — Imagine image examples and NSFW/quota routing tables use Image 2.0 (`quality=medium` for hero) instead of the retired quality slug.
 - **Imagine bridge packets** — `image_model` quality/pro slugs rewrite to `grok-imagine-image-2.0` (`quality=low`, or `medium` when `image_quality` is set) so grok.com paste no longer names the retired product.
 - **Image model pickers** — `ordered_image_model_slugs()` hides the retired quality slug (Streamlit Settings, API meta). `models list` still shows it tagged retired.
 - **Persisted quality slug** — Streamlit session and React Settings prefs remap `grok-imagine-image-quality` / `pro` to Image 2.0 so hidden picker values do not snap back to draft 1.0.
+- **Studio version** — `VERSION` / `STUDIO_COMPATIBILITY_VERSION` / handoff `PROTOCOL_OK` include **3.11.3**.
 
 ### Added
+- **`--extra-image-url`** — repeatable extra stills for `imagine submit image_edit` (Image 2.0: up to 5 total). `--reference-image-url` still works as a fallback.
 - **Quality-slug copy scan** — `tests/test_image_quality_retirement_copy.py` fails if skills, personas, or slash commands recommend sending `grok-imagine-image-quality` as a live hero model.
 - **AUP on planning paths** — `nsfw extend plan|chain|prompt`, `generate-prompt`, Imagine Execution Bridge / Agent Mode packets, and `handoff validate` now run the same fail-closed SpaceXAI AUP gate as Imagine spend (CSAM always; attestation when intimate; no intimate+still-ref).
 - **Doctor AUP section** — `cinematic-studio doctor --quick` reports attestation idle/valid/FAIL and 403/429 no-hop.

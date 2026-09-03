@@ -142,6 +142,9 @@ def test_edit_image_file_id(monkeypatch) -> None:
     monkeypatch.setattr(ic, "is_dry_run", lambda: True)
     resp = edit_image("Add hat", image_file_id="file_abc", dry_run=True)
     assert resp["payload"]["image"]["file_id"] == "file_abc"
+    assert "images" not in resp["payload"]
+    assert "extra_images" not in resp["payload"]
+    assert resp["request_model"] == resp["model"]
 
 
 def test_quality_slug_dry_run_rewrites_to_2_0_low(monkeypatch) -> None:
@@ -189,7 +192,15 @@ def test_edit_image_2_0_allows_five_refs(monkeypatch) -> None:
         dry_run=True,
     )
     assert resp["model"] == "grok-imagine-image-2.0"
-    assert len(resp["payload"]["extra_images"]) == 4
+    assert "extra_images" not in resp["payload"]
+    assert "image" not in resp["payload"]
+    images = resp["payload"]["images"]
+    assert len(images) == 5
+    assert images[0] == {
+        "type": "image_url",
+        "url": "https://example.com/primary.png",
+    }
+    assert images[1]["type"] == "image_url"
     assert resp["payload"]["quality"] == "medium"
     assert resp["payload"]["aspect_ratio"] == "21:9"
     assert resp["payload"]["resolution"] == "2k"
@@ -204,6 +215,53 @@ def test_edit_image_2_0_allows_five_refs(monkeypatch) -> None:
         raise AssertionError("expected ImagineAPIError")
     except ImagineAPIError as exc:
         assert "at most 5" in str(exc)
+
+
+def test_live_generate_preserves_api_model(monkeypatch) -> None:
+    import imagine_client as ic
+
+    def fake_request(method, path, payload=None, **kwargs):
+        assert method == "POST"
+        assert path == "/images/generations"
+        assert payload["model"] == "grok-imagine-image-2.0"
+        assert payload["quality"] == "low"
+        return {
+            "model": "api-served-image-2.0",
+            "data": [{"url": "https://imgen.x.ai/x.jpeg"}],
+        }
+
+    monkeypatch.setattr(ic, "_use_dry_run", lambda dry_run: False)
+    monkeypatch.setattr(ic, "_request", fake_request)
+    resp = generate_image("Legacy quality still", model="quality", dry_run=False)
+    assert resp["request_model"] == "grok-imagine-image-2.0"
+    assert resp["model"] == "api-served-image-2.0"
+    assert any("retires" in w for w in resp.get("warnings") or [])
+
+
+def test_live_edit_sends_images_array(monkeypatch) -> None:
+    import imagine_client as ic
+
+    captured: dict = {}
+
+    def fake_request(method, path, payload=None, **kwargs):
+        captured["payload"] = payload
+        return {"model": "grok-imagine-image-2.0", "data": [{"url": "https://imgen.x.ai/e.jpeg"}]}
+
+    monkeypatch.setattr(ic, "_use_dry_run", lambda dry_run: False)
+    monkeypatch.setattr(ic, "_request", fake_request)
+    resp = edit_image(
+        "Combine",
+        image_url="https://example.com/primary.png",
+        extra_image_urls=["https://example.com/a.png"],
+        model="grok-imagine-image-2.0",
+        dry_run=False,
+    )
+    payload = captured["payload"]
+    assert "extra_images" not in payload
+    assert payload["images"][0]["type"] == "image_url"
+    assert len(payload["images"]) == 2
+    assert resp["request_model"] == "grok-imagine-image-2.0"
+    assert resp["model"] == "grok-imagine-image-2.0"
 
 
 def test_edit_image_1_0_caps_at_three_refs(monkeypatch) -> None:

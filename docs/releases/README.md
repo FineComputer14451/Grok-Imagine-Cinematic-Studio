@@ -2,7 +2,8 @@
 
 | File | Studio version |
 |------|----------------|
-| [RELEASE_NOTES_v3.11.2.md](RELEASE_NOTES_v3.11.2.md) | **Current** (Imagine Image Quality retirement → 2.0 `quality=low`) |
+| [RELEASE_NOTES_v3.11.3.md](RELEASE_NOTES_v3.11.3.md) | **Current** (official `images[]` edits · served `model`) |
+| [RELEASE_NOTES_v3.11.2.md](RELEASE_NOTES_v3.11.2.md) | Imagine Image Quality retirement → 2.0 `quality=low` |
 | [RELEASE_NOTES_v3.11.1.md](RELEASE_NOTES_v3.11.1.md) | SpaceXAI AUP fail-closed gates · CLI help IA |
 | [RELEASE_NOTES_v3.11.0.md](RELEASE_NOTES_v3.11.0.md) | Grok 4.6 stack lock · Grok Build ≥ 1.0.5 |
 | [../CHANGELOG.md](../../CHANGELOG.md) | Full history |

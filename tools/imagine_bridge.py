@@ -74,7 +74,7 @@ _MODE_BUCKET_V2V = "v2v"
 _WEB_STEPS: dict[str, list[str]] = {
     _MODE_BUCKET_IMAGE: [
         "1. Paste prompt into grok.com/imagine Image — Quality Mode (Imagine Image 2.0)",
-        "2. Attach reference plate if listed (up to 3 refs on edit)",
+        "2. Attach reference plate if listed (up to 5 refs on Image 2.0 edit)",
         "3. On QA ≥7, lock plate and run i2v pass",
     ],
     _MODE_BUCKET_I2V: [

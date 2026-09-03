@@ -3,7 +3,7 @@
 Canonical model slugs for Grok Imagine Cinematic Studio. Implemented in `tools/models.py`.
 
 **Last updated:** August 2026  
-**Studio target:** v3.11.2  
+**Studio target:** v3.11.3  
 **Source:** [xAI Models & Pricing](https://docs.x.ai/developers/models), [Grok 4.6](https://docs.x.ai/docs/models), local `grok models`
 
 **Implementation note:** Defaults live only in `ROLE_DEFAULTS` / `STACK_CONTRACT` (not per-model flags). Aliases live on each model entry. `models verify` is data-driven (alias integrity + stack contract) and soft-probes `grok --version` against recommended **1.0.5**.

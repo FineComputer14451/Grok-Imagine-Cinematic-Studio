@@ -10,6 +10,7 @@ Full Imagine runtime for Grok Imagine Cinematic Studio — closes the planner-to
 
 ```bash
 python tools/cinematic_studio_cli.py imagine submit image --prompt "..." --model grok-imagine-image-2.0 --resolution 2k --quality medium
+python tools/cinematic_studio_cli.py imagine submit image_edit --prompt "..." --image-url https://... --extra-image-url https://... --model grok-imagine-image-2.0 --quality medium
 python tools/cinematic_studio_cli.py imagine submit video_extend --prompt "..." --video-url https://...
 python tools/cinematic_studio_cli.py imagine submit reference_to_video --prompt "..." --reference-image-url https://... --voice-id eve
 python tools/cinematic_studio_cli.py imagine agent-handoff --batch my-batch --shot shot_001 --surface xai_responses_tool

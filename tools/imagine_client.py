@@ -160,6 +160,29 @@ def _media_object(*, url: str | None = None, file_id: str | None = None) -> dict
     raise ImagineAPIError("url or file_id required")
 
 
+def _image_source(*, url: str | None = None, file_id: str | None = None) -> dict[str, Any]:
+    """Imagine /images/edits source object (URL includes type=image_url)."""
+    obj = _media_object(url=url, file_id=file_id)
+    if "url" in obj:
+        return {"type": "image_url", "url": obj["url"]}
+    return obj
+
+
+def _with_request_model(
+    result: dict[str, Any],
+    *,
+    slug: str,
+    warnings: list[str] | None = None,
+) -> dict[str, Any]:
+    """Keep xAI's served ``model``; record the slug we requested separately."""
+    result["request_model"] = slug
+    if not str(result.get("model") or "").strip():
+        result["model"] = slug
+    if warnings:
+        result["warnings"] = warnings
+    return result
+
+
 def generate_image(
     prompt: str,
     *,
@@ -192,20 +215,20 @@ def generate_image(
             }
             for _ in range(max(1, n))
         ]
-        return {
-            "dry_run": True,
-            "model": slug,
-            "mode": "image_prompt",
-            "payload": payload,
-            "warnings": warnings,
-            "data": images,
-        }
+        return _with_request_model(
+            {
+                "dry_run": True,
+                "model": slug,
+                "mode": "image_prompt",
+                "payload": payload,
+                "data": images,
+            },
+            slug=slug,
+            warnings=warnings,
+        )
 
     result = _request("POST", "/images/generations", payload=payload)
-    result["model"] = slug
-    if warnings:
-        result["warnings"] = warnings
-    return result
+    return _with_request_model(result, slug=slug, warnings=warnings)
 
 
 def edit_image(
@@ -227,20 +250,23 @@ def edit_image(
         quality=quality,
         mode="edit",
     )
-    extras = [u for u in (extra_image_urls or []) if u]
+    extras = [_image_source(url=u) for u in (extra_image_urls or []) if u]
     max_refs = image_max_edit_refs(slug)
     if 1 + len(extras) > max_refs:
         raise ImagineAPIError(
             f"Image edit accepts at most {max_refs} reference images "
             f"(1 primary + {max(0, max_refs - 1)} extra)"
         )
+    primary = _image_source(url=image_url, file_id=image_file_id)
     payload: dict[str, Any] = {
         "model": slug,
         "prompt": prompt,
-        "image": _media_object(url=image_url, file_id=image_file_id),
     }
     if extras:
-        payload["extra_images"] = [{"url": u} for u in extras]
+        # Official multi-edit: images[] (not extra_images). Single-ref stays `image`.
+        payload["images"] = [primary, *extras]
+    else:
+        payload["image"] = primary
     if quality_sent:
         payload["quality"] = quality_sent
     if aspect_ratio:
@@ -248,20 +274,20 @@ def edit_image(
     if resolution:
         payload["resolution"] = resolution
     if _use_dry_run(dry_run):
-        return {
-            "dry_run": True,
-            "model": slug,
-            "mode": "image_edit",
-            "payload": payload,
-            "warnings": warnings,
-            "data": [{"url": f"https://dry-run.x.ai/edits/{_mock_request_id('edit')}.png"}],
-        }
+        return _with_request_model(
+            {
+                "dry_run": True,
+                "model": slug,
+                "mode": "image_edit",
+                "payload": payload,
+                "data": [{"url": f"https://dry-run.x.ai/edits/{_mock_request_id('edit')}.png"}],
+            },
+            slug=slug,
+            warnings=warnings,
+        )
 
     result = _request("POST", "/images/edits", payload=payload)
-    result["model"] = slug
-    if warnings:
-        result["warnings"] = warnings
-    return result
+    return _with_request_model(result, slug=slug, warnings=warnings)
 
 
 def submit_video_generation(

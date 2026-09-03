@@ -6,7 +6,7 @@ Full model selection guide for **Grok 4.6** (cinematic + Build default; `grok-4.
 → **Prior stack table:** [`agents/MODEL_LAYER_v3.7.1.md`](agents/MODEL_LAYER_v3.7.1.md)  
 → **Long-form guide:** [`MODELS_v3.6.md`](MODELS_v3.6.md) (filename historical; content tracks studio **v3.8.6**)
 
-Code registry (single source of truth): `tools/models.py` · `STUDIO_COMPATIBILITY_VERSION = 3.11.2`.  
+Code registry (single source of truth): `tools/models.py` · `STUDIO_COMPATIBILITY_VERSION = 3.11.3`.  
 **Imagine surface map:** [`agents/IMAGINE_SURFACES.md`](agents/IMAGINE_SURFACES.md) (Image 1.0 / **2.0** + Video 1.0 / 1.5 — **no video 2.0**. Quality slug retires 2026-11-02).
 
 ```bash

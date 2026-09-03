@@ -93,7 +93,12 @@ def register(app: typer.Typer) -> None:
         reference_image_url: list[str] = typer.Option(
             None,
             "--reference-image-url",
-            help="Repeatable reference image URL for r2v (Video 1.5)",
+            help="Repeatable r2v ref URL; also extra stills for image_edit (prefer --extra-image-url)",
+        ),
+        extra_image_url: list[str] = typer.Option(
+            None,
+            "--extra-image-url",
+            help="Repeatable extra still URL for image_edit (Image 2.0: up to 5 total)",
         ),
         voice_id: list[str] = typer.Option(
             None,
@@ -168,11 +173,14 @@ def register(app: typer.Typer) -> None:
                 if not image_url and not file_id:
                     console.print("[red]--image-url or --file-id required for image_edit[/red]")
                     raise typer.Exit(1)
+                extras = list(
+                    dict.fromkeys([*(extra_image_url or []), *refs])
+                )
                 resp = edit_image(
                     prompt,
                     image_url=image_url,
                     image_file_id=file_id,
-                    extra_image_urls=refs,
+                    extra_image_urls=extras,
                     model=img_model,
                     quality=quality_sent,
                     aspect_ratio=aspect_ratio,
@@ -241,11 +249,17 @@ def register(app: typer.Typer) -> None:
 
             updated = get_job(job["job_id"])
             mode = "[yellow]DRY-RUN[/yellow]" if updated.get("dry_run") else "[green]LIVE[/green]"
+            served = None
+            if job_type in ("image", "image_edit"):
+                served = resp.get("model")
+            model_line = f"Model: {slug}"
+            if served and served != slug:
+                model_line += f"\nServed: {served}"
             console.print(Panel(
                 f"Job: {job['job_id']}\n"
                 f"Type: {job_type}\n"
                 f"Mode: {mode}\n"
-                f"Model: {slug}\n"
+                f"{model_line}\n"
                 f"Status: {updated.get('status')}\n"
                 f"URL: {updated.get('result_url', '—')}",
                 title="Imagine Job Submitted",

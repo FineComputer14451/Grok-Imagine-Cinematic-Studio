@@ -554,3 +554,21 @@ def test_skills_layout_method_a_is_not_high_warn(tmp_path: Path) -> None:
     by_name = {r.name: r for r in results}
     assert by_name["user ~/.grok/skills"].status == "PASS"
     assert "Method A" in by_name["user ~/.grok/skills"].detail
+
+
+def test_model_stack_warns_on_legacy_quality_lock(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import project_state as ps
+
+    state_file = tmp_path / "state.json"
+    monkeypatch.setattr(ps, "PROJECT_STATE_FILE", state_file)
+    state_file.write_text(
+        json.dumps({"model_stack": {"imagine_image": "grok-imagine-image-quality"}}),
+        encoding="utf-8",
+    )
+    rows = check_model_stack()
+    lock = [r for r in rows if r.name == "imagine_image lock"]
+    assert lock and lock[0].status == "WARN"
+    assert "2026-11-02" in lock[0].detail
+    assert "quality=low" in lock[0].detail
