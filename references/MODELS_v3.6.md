@@ -3,7 +3,7 @@
 Canonical model slugs for Grok Imagine Cinematic Studio. Implemented in `tools/models.py`.
 
 **Last updated:** August 2026  
-**Studio target:** v3.11.0  
+**Studio target:** v3.11.2  
 **Source:** [xAI Models & Pricing](https://docs.x.ai/developers/models), [Grok 4.6](https://docs.x.ai/docs/models), local `grok models`
 
 **Implementation note:** Defaults live only in `ROLE_DEFAULTS` / `STACK_CONTRACT` (not per-model flags). Aliases live on each model entry. `models verify` is data-driven (alias integrity + stack contract) and soft-probes `grok --version` against recommended **1.0.5**.
@@ -123,15 +123,18 @@ Activate production with **`ACTIVATE EROSFORGE`**.
 | Slug | Cost | Modalities |
 |------|------|------------|
 | `grok-imagine-image` | $0.02 / image | text, image → image |
-| `grok-imagine-image-quality` | $0.05 / image | text, image → image |
+| `grok-imagine-image-2.0` | from $0.04 / image (`quality` low \| medium \| auto) | text, image → image; up to 5 edit refs |
+| `grok-imagine-image-quality` | **Retired 2026-11-02** — billed as 2.0 `quality=low` (was $0.05) | aliases still resolve; do not send on the wire |
 
 **Standard aliases (xAI API):** `grok-imagine-image-2026-03-02`  
 **Standard aliases (studio shorthand):** `imagine-image`, `image`
 
-**Quality aliases (xAI API):** `grok-imagine-image-quality-20260403`, `grok-imagine-image-quality-latest`, `grok-imagine-image-pro`  
-**Quality aliases (studio shorthand):** `imagine-image-quality`, `image-quality`, `quality`, `pro`
+**2.0 aliases:** `image-2.0`, `2.0`, `imagine-image-2.0`
 
-**Regions:** `us-east-1`, `eu-west-1`, `us-west-2` (both models)
+**Quality aliases (xAI API):** `grok-imagine-image-quality-20260403`, `grok-imagine-image-quality-latest`, `grok-imagine-image-pro`  
+**Quality aliases (studio shorthand):** `imagine-image-quality`, `image-quality`, `quality`, `pro` — rewrite to 2.0 `quality=low`
+
+**Regions:** `us-east-1`, `eu-west-1`, `us-west-2` (1.0); 2.0: `us-east-1`, `us-west-2`
 
 ---
 
@@ -172,5 +175,5 @@ python tools/cinematic_studio_cli.py quota estimate --duration 90 --video-model 
 | Headless agent / API automation | `grok-4.6` |
 | Default video generation (cost-effective) | `grok-imagine-video` (1.0) |
 | Native-audio video (1.5 features) | `grok-imagine-video-1.5` |
-| Hero keyframes | `grok-imagine-image-quality` |
+| Hero keyframes | `grok-imagine-image-2.0` (`quality=medium`) |
 | Reference stills | `grok-imagine-image` |

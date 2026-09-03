@@ -15,8 +15,8 @@ from studio_paths import AGENTS_DIR, STUDIO_ROOT
 def _read_studio_version() -> str:
     vf = STUDIO_ROOT / "VERSION"
     if vf.is_file():
-        return vf.read_text(encoding="utf-8").strip() or "3.11.1"
-    return "3.11.1"
+        return vf.read_text(encoding="utf-8").strip() or "3.11.2"
+    return "3.11.2"
 
 
 STUDIO_VERSION = _read_studio_version()
@@ -46,7 +46,7 @@ CORE_AGENT_CATEGORIES = frozenset({
     "Post-Production & Delivery",
 })
 
-# Display labels keep heritage Role Card stamps (v3.6.5 / v4.5). Studio pin is VERSION (v3.11.1).
+# Display labels keep heritage Role Card stamps (v3.6.5 / v4.5). Studio pin is VERSION (v3.11.2).
 AGENTS = {
     "Core Leadership": [
         "Studio Director v3.6.5",

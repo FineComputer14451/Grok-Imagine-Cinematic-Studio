@@ -15,8 +15,11 @@ from doctor_types import CheckResult
 from models import (
     DEFAULT_XAI_CHAT_MODEL,
     GROK_BUILD_FORK_MODEL,
+    HERO_IMAGINE_IMAGE_MODEL,
+    LEGACY_QUALITY_RETIRED_ON,
     RECOMMENDED_GROK_BUILD_CLI_VERSION,
     cli_version_at_least,
+    is_legacy_quality_image_model,
     known_chat_model,
     model_stack_summary,
     probe_grok_cli,
@@ -374,6 +377,27 @@ def check_model_stack() -> list[CheckResult]:
 
     for warning in (result.get("warnings") or [])[:3]:
         results.append(CheckResult("WARN", "models CLI probe", str(warning), section))
+
+    try:
+        from project_state import load_project_state
+
+        state = load_project_state()
+        locked = (state.get("model_stack") or {}).get("imagine_image")
+        if locked and is_legacy_quality_image_model(str(locked)):
+            results.append(
+                CheckResult(
+                    "WARN",
+                    "imagine_image lock",
+                    (
+                        f"{locked} retires {LEGACY_QUALITY_RETIRED_ON} → "
+                        f"{HERO_IMAGINE_IMAGE_MODEL} quality=low; "
+                        "pin 2.0 + quality=medium for hero plates"
+                    ),
+                    section,
+                )
+            )
+    except Exception:
+        pass
 
     return results
 

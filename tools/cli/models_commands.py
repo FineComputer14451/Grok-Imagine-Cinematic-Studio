@@ -119,10 +119,17 @@ def models_list():
         default = " (default)" if slug == DEFAULT_IMAGINE_IMAGE_MODEL else ""
         if slug == HERO_IMAGINE_IMAGE_MODEL:
             default = " (★ hero / Quality Mode)"
+        if info.get("deprecated"):
+            retired = info.get("retired_on") or "retired"
+            redir = info.get("redirect_model") or HERO_IMAGINE_IMAGE_MODEL
+            rq = info.get("redirect_quality") or "low"
+            default = f" (retired {retired} → {redir} quality={rq})"
         aliases = ", ".join(info.get("aliases", [])[:3])
         if len(info.get("aliases", [])) > 3:
             aliases += ", …"
         detail = f"{info['label']} — ${info['usd_per_image']}/image"
+        if info.get("deprecated") and info.get("legacy_usd_per_image"):
+            detail += f" (was ${info['legacy_usd_per_image']})"
         if aliases:
             detail += f"\n[dim]aliases: {aliases}[/dim]"
         table.add_row("Imagine Image", slug + default, detail)

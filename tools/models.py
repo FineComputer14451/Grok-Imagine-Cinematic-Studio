@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.11.1 · Grok 4.6 + v9-4p5).
+Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.11.2 · Grok 4.6 + v9-4p5).
 
 Single source of truth for CLI, Web UI, quota optimizer, and documentation.
-Imagine family: Image 1.0 / Quality / 2.0 + Video 1.0 / 1.5 (there is no video 2.0).
+Imagine family: Image 1.0 / 2.0 + Video 1.0 / 1.5 (there is no video 2.0).
+``grok-imagine-image-quality`` retires 2026-11-02 → Image 2.0 ``quality=low``.
 
 Unified chat stack:
   - Cinematic orchestration (Production Bibles, multi-agent): grok-4.6
@@ -20,7 +21,7 @@ import shutil
 import subprocess
 from typing import Any
 
-SCHEMA_VERSION = "1.5"
+SCHEMA_VERSION = "1.6"
 
 # ---------------------------------------------------------------------------
 # Dual-stack product pins + full role defaults (literals appear once)
@@ -57,6 +58,9 @@ DEFAULT_IMAGINE_VIDEO_MODEL = ROLE_DEFAULTS["imagine_video"]
 DEFAULT_IMAGINE_IMAGE_MODEL = ROLE_DEFAULTS["imagine_image"]
 HERO_IMAGINE_IMAGE_MODEL = "grok-imagine-image-2.0"
 LEGACY_QUALITY_IMAGE_MODEL = "grok-imagine-image-quality"
+LEGACY_QUALITY_RETIRED_ON = "2026-11-02"
+LEGACY_QUALITY_REDIRECT_QUALITY = "low"
+IMAGE_QUALITY_VALUES = ("low", "medium", "auto")
 NATIVE_AUDIO_VIDEO_MODEL = "grok-imagine-video-1.5"
 EDIT_EXTEND_VIDEO_MODEL = "grok-imagine-video"
 
@@ -409,12 +413,17 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
     "grok-imagine-image-quality": {
         "label": "Imagine Image Quality",
         "version": "quality",
-        "usd_per_image": 0.05,
+        "usd_per_image": 0.04,
+        "legacy_usd_per_image": 0.05,
         "usd_by_resolution_quality": {
-            "1k": {"low": 0.05, "medium": 0.05},
-            "2k": {"low": 0.05, "medium": 0.05},
+            "1k": {"low": 0.04, "medium": 0.05},
+            "2k": {"low": 0.06, "medium": 0.07},
         },
         "quality_param": False,
+        "deprecated": True,
+        "retired_on": LEGACY_QUALITY_RETIRED_ON,
+        "redirect_model": HERO_IMAGINE_IMAGE_MODEL,
+        "redirect_quality": LEGACY_QUALITY_REDIRECT_QUALITY,
         "modalities": "text, image → image",
         "max_edit_refs": 3,
         "version_date": "2026-04-03",
@@ -438,10 +447,10 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
             "2k": {"low": 0.06, "medium": 0.07},
         },
         "quality_param": True,
-        "quality_values": ("low", "medium"),
-        "default_quality": "medium",
+        "quality_values": IMAGE_QUALITY_VALUES,
+        "default_quality": "auto",
         "modalities": "text, image → image",
-        "max_edit_refs": 3,
+        "max_edit_refs": 5,
         "hero": True,
         "version_date": "2026-08-07",
         "regions": ["us-east-1", "us-west-2"],
@@ -502,7 +511,7 @@ IMAGINE_REST_ENDPOINTS: tuple[dict[str, str], ...] = (
     {"mode": "video_extend", "method": "POST", "path": "/v1/videos/extensions"},
 )
 
-STUDIO_COMPATIBILITY_VERSION = "3.11.1"
+STUDIO_COMPATIBILITY_VERSION = "3.11.2"
 
 # Role → slug (unique by construction; no duplicate bag)
 REQUIRED_MODEL_ROLES: dict[str, str] = {
@@ -570,6 +579,72 @@ def resolve_video_model(slug: str | None = None) -> str:
 def resolve_image_model(slug: str | None = None) -> str:
     """Resolve alias or shorthand to canonical Imagine image model slug."""
     return _resolve_from_alias_map(slug, _IMAGE_ALIAS_MAP, DEFAULT_IMAGINE_IMAGE_MODEL)
+
+
+def is_legacy_quality_image_model(slug: str | None) -> bool:
+    """True when slug/alias resolves to the retired quality product (not 2.0)."""
+    if not slug or not str(slug).strip():
+        return False
+    return resolve_image_model(slug) == LEGACY_QUALITY_IMAGE_MODEL
+
+
+def normalize_image_quality(value: str | None, *, strict: bool = False) -> str | None:
+    """Return low|medium|auto, or None when omitted. Unknown non-empty raises if strict."""
+    if value is None or not str(value).strip():
+        return None
+    key = str(value).strip().lower()
+    if key in IMAGE_QUALITY_VALUES:
+        return key
+    if strict:
+        raise ValueError(
+            f"invalid image quality: {value!r}; expected one of {IMAGE_QUALITY_VALUES}"
+        )
+    return None
+
+
+def resolve_image_request(
+    model: str | None = None,
+    *,
+    quality: str | None = None,
+    mode: str = "generate",
+) -> tuple[str, str | None, list[str]]:
+    """Map operator slug + quality to the Imagine wire payload.
+
+    Returns ``(wire_slug, quality_to_send, warnings)``.
+    ``quality_to_send`` is None when the API ``quality`` field must be omitted
+    (Image 1.0, or Image 2.0 auto/default).
+    """
+    warnings: list[str] = []
+    resolved = resolve_image_model(model)
+    q = normalize_image_quality(quality, strict=True)
+    info = IMAGINE_IMAGE_MODELS.get(resolved) or {}
+
+    if resolved == LEGACY_QUALITY_IMAGE_MODEL:
+        wire = str(info.get("redirect_model") or HERO_IMAGINE_IMAGE_MODEL)
+        send = q or str(info.get("redirect_quality") or LEGACY_QUALITY_REDIRECT_QUALITY)
+        warnings.append(
+            f"{LEGACY_QUALITY_IMAGE_MODEL} retires {LEGACY_QUALITY_RETIRED_ON}; "
+            f"studio sends {wire} with quality={send} (xAI redirect). "
+            f"Pin --model {HERO_IMAGINE_IMAGE_MODEL} --quality medium for hero plates."
+        )
+        return wire, send, warnings
+
+    if not info.get("quality_param"):
+        if q is not None:
+            warnings.append(
+                f"{resolved} does not accept the quality parameter; omitting {q!r}"
+            )
+        return resolved, None, warnings
+
+    # Image 2.0: omit quality unless the operator pinned low|medium|auto
+    return resolved, q, warnings
+
+
+def image_max_edit_refs(model: str | None = None) -> int:
+    """Max source images for /images/edits on the resolved *wire* model."""
+    wire, _, _ = resolve_image_request(model, mode="edit")
+    info = IMAGINE_IMAGE_MODELS.get(wire) or {}
+    return int(info.get("max_edit_refs") or 3)
 
 
 def resolve_chat_model(slug: str | None = None) -> str:
@@ -719,16 +794,23 @@ def image_usd_per_image(
     *,
     resolution: str | None = None,
     quality: str | None = None,
+    mode: str | None = None,
 ) -> float:
-    slug = resolve_image_model(model)
-    info = IMAGINE_IMAGE_MODELS[slug]
+    """USD per image after quality-slug rewrite (retired quality → 2.0 low)."""
+    job_mode = (mode or "generate").strip().lower()
+    if job_mode not in ("generate", "edit"):
+        job_mode = "generate"
+    wire, quality_sent, _ = resolve_image_request(model, quality=quality, mode=job_mode)
+    info = IMAGINE_IMAGE_MODELS[wire]
     table = info.get("usd_by_resolution_quality") or {}
-    if resolution is None and quality is None:
+    billed = quality_sent
+    if billed is None or billed == "auto":
+        billed = "medium" if job_mode == "edit" else "low"
+    if resolution is None and quality is None and mode is None and quality_sent is None:
         return float(info["usd_per_image"])
     res = _normalize_image_resolution(resolution)
-    q = (quality or info.get("default_quality") or "medium").strip().lower()
-    if res in table and q in (table.get(res) or {}):
-        return float(table[res][q])
+    if res in table and billed in (table.get(res) or {}):
+        return float(table[res][billed])
     return float(info["usd_per_image"])
 
 
@@ -894,6 +976,11 @@ def verify_model_compatibility() -> dict[str, Any]:
             f"cinematic and build defaults are unified ({DEFAULT_XAI_CHAT_MODEL}); "
             "use --chat-model grok-4.3 (or long-context) for 1M-context Bibles"
         )
+    notes.append(
+        f"{LEGACY_QUALITY_IMAGE_MODEL} retires {LEGACY_QUALITY_RETIRED_ON}; "
+        f"Imagine spend rewrites to {HERO_IMAGINE_IMAGE_MODEL} "
+        f"quality={LEGACY_QUALITY_REDIRECT_QUALITY}"
+    )
 
     # Role defaults must exist in the right registries
     if DEFAULT_XAI_CHAT_MODEL not in XAI_CHAT_MODELS:
@@ -927,6 +1014,34 @@ def verify_model_compatibility() -> dict[str, Any]:
         issues.append(f"hero image {HERO_IMAGINE_IMAGE_MODEL!r} missing from IMAGINE_IMAGE_MODELS")
     if LEGACY_QUALITY_IMAGE_MODEL not in IMAGINE_IMAGE_MODELS:
         issues.append(f"legacy quality image {LEGACY_QUALITY_IMAGE_MODEL!r} missing from IMAGINE_IMAGE_MODELS")
+    quality_info = IMAGINE_IMAGE_MODELS.get(LEGACY_QUALITY_IMAGE_MODEL) or {}
+    if not quality_info.get("deprecated"):
+        issues.append(f"{LEGACY_QUALITY_IMAGE_MODEL} must be marked deprecated")
+    if quality_info.get("retired_on") != LEGACY_QUALITY_RETIRED_ON:
+        issues.append(
+            f"{LEGACY_QUALITY_IMAGE_MODEL} retired_on must be {LEGACY_QUALITY_RETIRED_ON!r}"
+        )
+    if quality_info.get("redirect_model") != HERO_IMAGINE_IMAGE_MODEL:
+        issues.append(
+            f"{LEGACY_QUALITY_IMAGE_MODEL} redirect_model must be {HERO_IMAGINE_IMAGE_MODEL}"
+        )
+    if quality_info.get("redirect_quality") != LEGACY_QUALITY_REDIRECT_QUALITY:
+        issues.append(
+            f"{LEGACY_QUALITY_IMAGE_MODEL} redirect_quality must be {LEGACY_QUALITY_REDIRECT_QUALITY!r}"
+        )
+    hero_info = IMAGINE_IMAGE_MODELS.get(HERO_IMAGINE_IMAGE_MODEL) or {}
+    hero_qvals = tuple(hero_info.get("quality_values") or ())
+    if set(hero_qvals) != set(IMAGE_QUALITY_VALUES):
+        issues.append(
+            f"{HERO_IMAGINE_IMAGE_MODEL} quality_values must be {IMAGE_QUALITY_VALUES}"
+        )
+    if int(hero_info.get("max_edit_refs") or 0) != 5:
+        issues.append(f"{HERO_IMAGINE_IMAGE_MODEL} max_edit_refs must be 5")
+    wire, send_q, _warn = resolve_image_request(LEGACY_QUALITY_IMAGE_MODEL)
+    if wire != HERO_IMAGINE_IMAGE_MODEL or send_q != LEGACY_QUALITY_REDIRECT_QUALITY:
+        issues.append(
+            "resolve_image_request(quality) must rewrite to grok-imagine-image-2.0 quality=low"
+        )
     if resolve_image_model("2.0") != HERO_IMAGINE_IMAGE_MODEL:
         issues.append('resolve_image_model("2.0") must map to grok-imagine-image-2.0')
     if "2.0" in {a.lower() for info in IMAGINE_VIDEO_MODELS.values() for a in info.get("aliases", [])}:
@@ -1102,11 +1217,18 @@ def imagine_surface_catalog() -> dict[str, Any]:
     return {
         "schema_version": SCHEMA_VERSION,
         "studio_version": STUDIO_COMPATIBILITY_VERSION,
-        "note": "There is no grok-imagine-video-2.0; 2.0 is Imagine Image only.",
+        "note": (
+            "There is no grok-imagine-video-2.0; 2.0 is Imagine Image only. "
+            f"{LEGACY_QUALITY_IMAGE_MODEL} retires {LEGACY_QUALITY_RETIRED_ON} → "
+            f"{HERO_IMAGINE_IMAGE_MODEL} quality={LEGACY_QUALITY_REDIRECT_QUALITY}."
+        ),
         "routing": {
             "image_default": DEFAULT_IMAGINE_IMAGE_MODEL,
             "image_hero": HERO_IMAGINE_IMAGE_MODEL,
             "image_legacy_quality": LEGACY_QUALITY_IMAGE_MODEL,
+            "image_legacy_quality_retired_on": LEGACY_QUALITY_RETIRED_ON,
+            "image_legacy_quality_redirect": HERO_IMAGINE_IMAGE_MODEL,
+            "image_legacy_quality_redirect_quality": LEGACY_QUALITY_REDIRECT_QUALITY,
             "video_default": DEFAULT_IMAGINE_VIDEO_MODEL,
             "video_native_audio": NATIVE_AUDIO_VIDEO_MODEL,
             "video_edit_extend": EDIT_EXTEND_VIDEO_MODEL,
@@ -1119,6 +1241,9 @@ def imagine_surface_catalog() -> dict[str, Any]:
                 "usd_per_image": info.get("usd_per_image"),
                 "hero": bool(info.get("hero")),
                 "quality_param": bool(info.get("quality_param")),
+                "deprecated": bool(info.get("deprecated")),
+                "retired_on": info.get("retired_on"),
+                "max_edit_refs": int(info.get("max_edit_refs") or 3),
                 "aliases": list(info.get("aliases") or []),
             }
             for slug, info in IMAGINE_IMAGE_MODELS.items()

@@ -11,13 +11,17 @@ sys.path.insert(0, str(ROOT / "tools"))
 from models import (  # noqa: E402
     DEFAULT_IMAGINE_IMAGE_MODEL,
     HERO_IMAGINE_IMAGE_MODEL,
+    IMAGE_QUALITY_VALUES,
     IMAGINE_IMAGE_MODELS,
     LEGACY_QUALITY_IMAGE_MODEL,
+    LEGACY_QUALITY_RETIRED_ON,
+    image_max_edit_refs,
     image_usd_per_image,
     imagine_image_pricing_table,
     imagine_surface_catalog,
     ordered_image_model_slugs,
     resolve_image_model,
+    resolve_image_request,
     verify_model_compatibility,
 )
 
@@ -44,19 +48,53 @@ def test_hero_image_is_2_0() -> None:
     assert HERO_IMAGINE_IMAGE_MODEL in IMAGINE_IMAGE_MODELS
     assert LEGACY_QUALITY_IMAGE_MODEL in IMAGINE_IMAGE_MODELS
     assert IMAGINE_IMAGE_MODELS[HERO_IMAGINE_IMAGE_MODEL].get("quality_param") is True
+    assert set(IMAGINE_IMAGE_MODELS[HERO_IMAGINE_IMAGE_MODEL]["quality_values"]) == set(
+        IMAGE_QUALITY_VALUES
+    )
+    assert IMAGINE_IMAGE_MODELS[HERO_IMAGINE_IMAGE_MODEL]["max_edit_refs"] == 5
+    assert IMAGINE_IMAGE_MODELS[LEGACY_QUALITY_IMAGE_MODEL].get("deprecated") is True
+    assert IMAGINE_IMAGE_MODELS[LEGACY_QUALITY_IMAGE_MODEL]["retired_on"] == LEGACY_QUALITY_RETIRED_ON
     slugs = ordered_image_model_slugs()
     assert slugs[0] == DEFAULT_IMAGINE_IMAGE_MODEL
     assert HERO_IMAGINE_IMAGE_MODEL in slugs
+
+
+def test_quality_slug_rewrites_to_2_0_low() -> None:
+    assert resolve_image_model("quality") == LEGACY_QUALITY_IMAGE_MODEL
+    assert resolve_image_model("pro") == LEGACY_QUALITY_IMAGE_MODEL
+    wire, sent, warnings = resolve_image_request("quality")
+    assert wire == HERO_IMAGINE_IMAGE_MODEL
+    assert sent == "low"
+    assert any("retires" in w for w in warnings)
+    wire_m, sent_m, _ = resolve_image_request("quality", quality="medium")
+    assert wire_m == HERO_IMAGINE_IMAGE_MODEL
+    assert sent_m == "medium"
+    wire_1, sent_1, _ = resolve_image_request("grok-imagine-image", quality="low")
+    assert wire_1 == DEFAULT_IMAGINE_IMAGE_MODEL
+    assert sent_1 is None
+    wire_2, sent_2, _ = resolve_image_request("2.0")
+    assert wire_2 == HERO_IMAGINE_IMAGE_MODEL
+    assert sent_2 is None
 
 
 def test_image_2_0_pricing_tiers() -> None:
     assert image_usd_per_image("grok-imagine-image-2.0") == 0.04
     assert image_usd_per_image("2.0", resolution="1k", quality="low") == 0.04
     assert image_usd_per_image("2.0", resolution="2k", quality="low") == 0.06
+    assert image_usd_per_image("2.0", quality="auto") == 0.04
+    assert image_usd_per_image("2.0", resolution="1k") == 0.04
+    assert image_usd_per_image("quality") == 0.04
+    assert image_usd_per_image("pro") == image_usd_per_image("2.0", quality="low")
+    assert image_usd_per_image("2.0", quality="auto", mode="edit") == 0.05
+    assert image_max_edit_refs("2.0") == 5
+    assert image_max_edit_refs("grok-imagine-image") == 3
+    assert image_max_edit_refs("quality") == 5
     catalog = imagine_surface_catalog()
     assert catalog["routing"]["image_hero"] == HERO_IMAGINE_IMAGE_MODEL
+    assert catalog["routing"]["image_legacy_quality_retired_on"] == LEGACY_QUALITY_RETIRED_ON
     assert any(s["id"] == "xai_responses_tool" for s in catalog["agent_mode_surfaces"])
     assert "no grok-imagine-video-2.0" in catalog["note"]
+    assert "retires" in catalog["note"]
 
 
 def test_pricing_table_matches_registry() -> None:

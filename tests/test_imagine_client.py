@@ -144,6 +144,89 @@ def test_edit_image_file_id(monkeypatch) -> None:
     assert resp["payload"]["image"]["file_id"] == "file_abc"
 
 
+def test_quality_slug_dry_run_rewrites_to_2_0_low(monkeypatch) -> None:
+    import imagine_client as ic
+
+    monkeypatch.setattr(ic, "is_dry_run", lambda: True)
+    resp = generate_image(
+        "Legacy quality still",
+        model="quality",
+        dry_run=True,
+    )
+    assert resp["model"] == "grok-imagine-image-2.0"
+    assert resp["payload"]["model"] == "grok-imagine-image-2.0"
+    assert resp["payload"]["quality"] == "low"
+    assert any("retires" in w for w in resp.get("warnings") or [])
+
+
+def test_image_1_0_omits_quality(monkeypatch) -> None:
+    import imagine_client as ic
+
+    monkeypatch.setattr(ic, "is_dry_run", lambda: True)
+    resp = generate_image(
+        "Draft still",
+        model="grok-imagine-image",
+        quality="low",
+        dry_run=True,
+    )
+    assert resp["model"] == "grok-imagine-image"
+    assert "quality" not in resp["payload"]
+
+
+def test_edit_image_2_0_allows_five_refs(monkeypatch) -> None:
+    import imagine_client as ic
+
+    monkeypatch.setattr(ic, "is_dry_run", lambda: True)
+    extras = [f"https://example.com/{i}.png" for i in range(4)]
+    resp = edit_image(
+        "Combine",
+        image_url="https://example.com/primary.png",
+        extra_image_urls=extras,
+        model="grok-imagine-image-2.0",
+        quality="medium",
+        aspect_ratio="21:9",
+        resolution="2k",
+        dry_run=True,
+    )
+    assert resp["model"] == "grok-imagine-image-2.0"
+    assert len(resp["payload"]["extra_images"]) == 4
+    assert resp["payload"]["quality"] == "medium"
+    assert resp["payload"]["aspect_ratio"] == "21:9"
+    assert resp["payload"]["resolution"] == "2k"
+    try:
+        edit_image(
+            "Too many",
+            image_url="https://example.com/primary.png",
+            extra_image_urls=[f"https://example.com/{i}.png" for i in range(5)],
+            model="grok-imagine-image-2.0",
+            dry_run=True,
+        )
+        raise AssertionError("expected ImagineAPIError")
+    except ImagineAPIError as exc:
+        assert "at most 5" in str(exc)
+
+
+def test_edit_image_1_0_caps_at_three_refs(monkeypatch) -> None:
+    import imagine_client as ic
+
+    monkeypatch.setattr(ic, "is_dry_run", lambda: True)
+    try:
+        edit_image(
+            "Too many on 1.0",
+            image_url="https://example.com/primary.png",
+            extra_image_urls=[
+                "https://example.com/a.png",
+                "https://example.com/b.png",
+                "https://example.com/c.png",
+            ],
+            model="grok-imagine-image",
+            dry_run=True,
+        )
+        raise AssertionError("expected ImagineAPIError")
+    except ImagineAPIError as exc:
+        assert "at most 3" in str(exc)
+
+
 if __name__ == "__main__":
     test_dry_run_image_generation()
     test_dry_run_video_submit()

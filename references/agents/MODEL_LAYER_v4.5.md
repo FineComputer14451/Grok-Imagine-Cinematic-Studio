@@ -26,7 +26,7 @@ And for Imagine generation (see `IMAGINE_SURFACES.md`):
 |--------------------------|-----------------------------------------------------|-------------------------------------------|
 | **Imagine Image 1.0**    | Draft / volume stills                               | $0.02 / image                             |
 | **Imagine Image 2.0**    | Hero plates, Quality Mode, Agent `image_generation` | Instruction-following, first-class edit, 1K/2K `quality` param |
-| **Imagine Image Quality**| Legacy hero stills                                  | $0.05 / image (prefer 2.0 for new work)   |
+| **Imagine Image Quality**| **Retired 2026-11-02** — do not send on the wire    | Redirects to 2.0 `quality=low` (was $0.05) |
 | **Imagine Video 1.0**    | Default / cost-efficient / **edit + extend**        | t2v / i2v / v2v; 480p/720p                |
 | **Imagine Video 1.5**    | Native audio, physics, intimacy, r2v, 1080p         | Native audio, refs + preset voices; **not** edit/extend |
 

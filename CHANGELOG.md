@@ -26,6 +26,19 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Bridge paste re-gate** — `build_handoff` re-runs `gate_planning_subject` after `dna_inject`; markdown/clipboard paste is gated too.
 - **AUP on video edit/extend** — `submit_video_edit` and `submit_video_extension` now run the same fail-closed Imagine prompt gate as generate/edit/i2v (CSAM always; attestation when intimate). Sequence extend and `imagine submit` video_edit/video_extend can no longer skip AUP.
 
+## [3.11.2] - 2026-09-03
+
+### Changed
+- **Imagine Image Quality retirement** — `grok-imagine-image-quality` (and `pro` aliases) stay in the registry as **deprecated** (`retired_on: 2026-11-02`) but Imagine spend rewrites to **`grok-imagine-image-2.0` with `quality=low`**, matching the [xAI redirect](https://docs.x.ai/developers/migration/imagine-image-quality-nov-2). Hero plates should pin `--model grok-imagine-image-2.0 --quality medium`. Image 1.0 draft default is unchanged.
+- **Image 2.0 `quality`** — allowed values `low | medium | auto` (omit = API auto: low for generate, medium for edit). CLI `--quality` help and quota math follow that split. Quality-slug estimates bill as 2.0 low ($0.04), not the old $0.05 list.
+- **Image 2.0 edits** — up to **five** source images; `imagine submit image_edit` forwards `--quality`, `--aspect-ratio`, and `--resolution`.
+- **Aspect presets** — `21:9` (cinematic ultra-wide) and `5:2` (wide banner) for Image 2.0 stills. Sequence default remains **16:9**.
+- **Studio version** — `VERSION` / `STUDIO_COMPATIBILITY_VERSION` / handoff `PROTOCOL_OK` include **3.11.2**.
+
+### Added
+- `resolve_image_request()` / `normalize_image_quality()` / `image_max_edit_refs()` in `tools/models.py` (schema **1.6**).
+- Doctor WARN when project `model_stack.imagine_image` is still locked to the quality slug.
+
 ## [3.11.1] - 2026-09-02
 
 ### Added

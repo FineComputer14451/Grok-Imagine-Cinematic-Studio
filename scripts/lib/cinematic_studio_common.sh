@@ -3,7 +3,7 @@
 # Shared library for Grok Imagine Cinematic Studio meta installer (v3.11.1)
 #
 
-CINEMATIC_STUDIO_FALLBACK_VERSION="3.11.1"
+CINEMATIC_STUDIO_FALLBACK_VERSION="3.11.2"
 
 CINEMATIC_INSTALLER_SCRIPTS=(
     cinematic_studio.sh

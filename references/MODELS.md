@@ -6,8 +6,8 @@ Full model selection guide for **Grok 4.6** (cinematic + Build default; `grok-4.
 → **Prior stack table:** [`agents/MODEL_LAYER_v3.7.1.md`](agents/MODEL_LAYER_v3.7.1.md)  
 → **Long-form guide:** [`MODELS_v3.6.md`](MODELS_v3.6.md) (filename historical; content tracks studio **v3.8.6**)
 
-Code registry (single source of truth): `tools/models.py` · `STUDIO_COMPATIBILITY_VERSION = 3.11.1`.  
-**Imagine surface map:** [`agents/IMAGINE_SURFACES.md`](agents/IMAGINE_SURFACES.md) (Image 1.0 / Quality / **2.0** + Video 1.0 / 1.5 — **no video 2.0**).
+Code registry (single source of truth): `tools/models.py` · `STUDIO_COMPATIBILITY_VERSION = 3.11.2`.  
+**Imagine surface map:** [`agents/IMAGINE_SURFACES.md`](agents/IMAGINE_SURFACES.md) (Image 1.0 / **2.0** + Video 1.0 / 1.5 — **no video 2.0**. Quality slug retires 2026-11-02).
 
 ```bash
 python tools/cinematic_studio_cli.py models list
@@ -23,4 +23,4 @@ python tools/cinematic_studio_cli.py stack
 | Long-context | `grok-4.3` | 1M memory banks only |
 | Grok Build CLI | `grok-4.6` · fork `grok-build` or `grok-4.6` | ≥ **1.0.5** binary |
 | Imagine Video | `grok-imagine-video` (1.0 cost / edit / extend) / `1.5` native audio + r2v | Dual path — **no video 2.0** |
-| Imagine Image | `grok-imagine-image` (draft) · **`grok-imagine-image-2.0` (hero / Quality Mode)** · quality legacy | Stills |
+| Imagine Image | `grok-imagine-image` (draft) · **`grok-imagine-image-2.0` (hero / Quality Mode)** · `quality` slug retired 2026-11-02 → 2.0 `quality=low` | Stills |

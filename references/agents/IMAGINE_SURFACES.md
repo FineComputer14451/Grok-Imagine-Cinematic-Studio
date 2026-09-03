@@ -1,4 +1,4 @@
-# Official Imagine surfaces (studio v3.10.0)
+# Official Imagine surfaces (studio v3.11.2)
 
 **Status:** Canonical mapping  
 **Code:** `tools/models.py` (`imagine_surface_catalog()`) · `tools/handoff_schema.py`  
@@ -15,12 +15,13 @@ There is **no** `grok-imagine-video-2.0`. **2.0 is Imagine Image only.**
 | Family | Official slug | Studio role | Pricing (docs.x.ai / x.ai/api) | Caps |
 |--------|---------------|-------------|-------------------------------|------|
 | Image 1.0 | `grok-imagine-image` | Draft / volume stills (**default**) | $0.02 / img | 1K / 2K |
-| Image Quality | `grok-imagine-image-quality` | Legacy hero stills | $0.05 / img | 1K / 2K |
-| **Image 2.0** | `grok-imagine-image-2.0` | **Hero plates, Quality Mode, Responses `image_generation` tool** | from $0.04 / img (1K low); `quality` = low \| medium | 1K / 2K; up to 3 edit refs |
+| Image Quality | `grok-imagine-image-quality` | **Retired 2026-11-02** — aliases still resolve; spend rewrites to 2.0 `quality=low` | was $0.05 / img; billed as 2.0 low | 1K / 2K |
+| **Image 2.0** | `grok-imagine-image-2.0` | **Hero plates, Quality Mode, Responses `image_generation` tool** | from $0.04 / img (1K low); `quality` = low \| medium \| auto | 1K / 2K; up to **5** edit refs; `21:9` / `5:2` |
 | Video 1.0 | `grok-imagine-video` | Cost default video; **edit + extend** | from $0.05 / sec (480p); 720p $0.07 | 480p / 720p |
 | Video 1.5 | `grok-imagine-video-1.5` | Native audio, physics, 1080p, reference-to-video | 480p $0.08 · 720p $0.14 · 1080p $0.25 / sec | t2v/i2v to 1080p / 15s; r2v cap 720p |
 
-Aliases: `2.0` / `image-2.0` → Image 2.0. Video slug `2.0` is **not** a product (falls back to Video 1.0).
+Aliases: `2.0` / `image-2.0` → Image 2.0. Video slug `2.0` is **not** a product (falls back to Video 1.0).  
+`quality` / `pro` / `grok-imagine-image-pro` still resolve to the quality slug for display; the Imagine client never sends that slug on the wire after this studio pin. See [xAI migration](https://docs.x.ai/developers/migration/imagine-image-quality-nov-2).
 
 ### Routing
 
@@ -38,8 +39,8 @@ Aliases: `2.0` / `image-2.0` → Image 2.0. Video slug `2.0` is **not** a produc
 
 | Mode | Method / path | Selects with |
 |------|---------------|--------------|
-| Image generate | `POST /images/generations` | `prompt` + `model` (`n`, `aspect_ratio`, `resolution`, `quality` on 2.0) |
-| Image edit | `POST /images/edits` | `prompt` + `image` (url / data URI / `file_id`); up to 3 refs |
+| Image generate | `POST /images/generations` | `prompt` + `model` (`n`, `aspect_ratio`, `resolution`, `quality` on 2.0: low \| medium \| auto) |
+| Image edit | `POST /images/edits` | `prompt` + `image` (url / data URI / `file_id`); up to **5** refs on 2.0 (3 on 1.0) |
 | Text-to-video | `POST /videos/generations` | `prompt` only |
 | Image-to-video | same | `prompt` + `image` |
 | Reference-to-video | same | `prompt` + `reference_images` and/or `reference_audios` |

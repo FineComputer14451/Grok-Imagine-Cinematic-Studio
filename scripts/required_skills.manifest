@@ -1,4 +1,4 @@
-# Grok Imagine Cinematic Studio v3.11.1 — skill manifest (64 skills; matches .grok/skills + plugin.json)
+# Grok Imagine Cinematic Studio v3.11.2 — skill manifest (64 skills; matches .grok/skills + plugin.json)
 # One skill per line. Append " # core" for skills required by verify.
 
 grok-imagine-cinematic-studio # core

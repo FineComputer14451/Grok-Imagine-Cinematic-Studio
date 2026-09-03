@@ -29,6 +29,20 @@ ASPECT_PRESETS: dict[str, dict[str, Any]] = {
         "default_for": (),
         "handoff": {"trailer": "square_hook", "key_art": "instagram_poster"},
     },
+    "21:9": {
+        "label": "Cinematic Ultra-Wide",
+        "orientation": "landscape",
+        "social_crop": "21:9",
+        "default_for": (),
+        "handoff": {"trailer": "ultra_wide", "key_art": "cinematic_banner"},
+    },
+    "5:2": {
+        "label": "Wide Banner",
+        "orientation": "landscape",
+        "social_crop": "5:2",
+        "default_for": (),
+        "handoff": {"trailer": "banner", "key_art": "wide_banner"},
+    },
 }
 
 DEFAULT_ASPECT = "16:9"

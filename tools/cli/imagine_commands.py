@@ -39,6 +39,7 @@ from models import (
     EDIT_EXTEND_VIDEO_MODEL,
     HERO_IMAGINE_IMAGE_MODEL,
     imagine_surface_catalog,
+    resolve_image_request,
     verify_model_compatibility,
 )
 from sequence_chain import get_clip, load_sequence, find_sequence
@@ -101,8 +102,12 @@ def register(app: typer.Typer) -> None:
         ),
         duration: int = typer.Option(10, "--duration", "-d", help="Video duration seconds"),
         resolution: str = typer.Option(None, "--resolution", help="1k|2k for images; 480p|720p|1080p for video"),
-        quality: str = typer.Option(None, "--quality", help="Image 2.0 quality: low | medium"),
-        aspect_ratio: str = typer.Option(None, "--aspect-ratio", help="e.g. 16:9"),
+        quality: str = typer.Option(
+            None, "--quality", help="Image 2.0 quality: low | medium | auto"
+        ),
+        aspect_ratio: str = typer.Option(
+            None, "--aspect-ratio", help="e.g. 16:9, 21:9, 5:2"
+        ),
         sequence: str = typer.Option(None, "--sequence", help="Link to sequence slug"),
         clip: str = typer.Option(None, "--clip", help="Link to clip ID"),
         dry_run: bool = typer.Option(False, "--dry-run", help="Force mock response"),
@@ -122,6 +127,18 @@ def register(app: typer.Typer) -> None:
         vid_model = model or DEFAULT_IMAGINE_VIDEO_MODEL
         if job_type in ("video_edit", "video_extend"):
             vid_model = model or EDIT_EXTEND_VIDEO_MODEL
+        quality_sent = quality
+        if job_type in ("image", "image_edit"):
+            img_mode = "edit" if job_type == "image_edit" else "generate"
+            try:
+                img_model, quality_sent, img_warnings = resolve_image_request(
+                    img_model, quality=quality, mode=img_mode
+                )
+            except ValueError as exc:
+                console.print(f"[red]{exc}[/red]")
+                raise typer.Exit(1) from exc
+            for warning in img_warnings:
+                console.print(f"[yellow]{warning}[/yellow]")
         slug = img_model if job_type in ("image", "image_edit") else vid_model
 
         job = create_job(
@@ -142,7 +159,7 @@ def register(app: typer.Typer) -> None:
                     model=img_model,
                     aspect_ratio=aspect_ratio,
                     resolution=resolution,
-                    quality=quality,
+                    quality=quality_sent,
                     dry_run=force_dry,
                 )
                 url = extract_image_url(resp)
@@ -157,6 +174,9 @@ def register(app: typer.Typer) -> None:
                     image_file_id=file_id,
                     extra_image_urls=refs,
                     model=img_model,
+                    quality=quality_sent,
+                    aspect_ratio=aspect_ratio,
+                    resolution=resolution,
                     dry_run=force_dry,
                 )
                 url = extract_image_url(resp)

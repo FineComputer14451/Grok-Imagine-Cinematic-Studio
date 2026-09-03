@@ -30,7 +30,8 @@ from models import (
     DEFAULT_IMAGINE_VIDEO_MODEL,
     EDIT_EXTEND_VIDEO_MODEL,
     NATIVE_AUDIO_VIDEO_MODEL,
-    resolve_image_model,
+    image_max_edit_refs,
+    resolve_image_request,
     resolve_video_model,
     video_supports_mode,
 )
@@ -171,14 +172,18 @@ def generate_image(
 ) -> dict[str, Any]:
     """Generate image(s) from a text prompt."""
     gate_imagine_prompt(prompt)
-    slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
+    slug, quality_sent, warnings = resolve_image_request(
+        model or DEFAULT_IMAGINE_IMAGE_MODEL,
+        quality=quality,
+        mode="generate",
+    )
     payload: dict[str, Any] = {"model": slug, "prompt": prompt, "n": n}
     if aspect_ratio:
         payload["aspect_ratio"] = aspect_ratio
     if resolution:
         payload["resolution"] = resolution
-    if quality:
-        payload["quality"] = quality
+    if quality_sent:
+        payload["quality"] = quality_sent
     if _use_dry_run(dry_run):
         images = [
             {
@@ -187,10 +192,19 @@ def generate_image(
             }
             for _ in range(max(1, n))
         ]
-        return {"dry_run": True, "model": slug, "mode": "image_prompt", "payload": payload, "data": images}
+        return {
+            "dry_run": True,
+            "model": slug,
+            "mode": "image_prompt",
+            "payload": payload,
+            "warnings": warnings,
+            "data": images,
+        }
 
     result = _request("POST", "/images/generations", payload=payload)
     result["model"] = slug
+    if warnings:
+        result["warnings"] = warnings
     return result
 
 
@@ -201,14 +215,25 @@ def edit_image(
     image_file_id: str | None = None,
     extra_image_urls: list[str] | None = None,
     model: str | None = None,
+    quality: str | None = None,
+    aspect_ratio: str | None = None,
+    resolution: str | None = None,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
-    """Edit a source image with a natural-language prompt (up to 3 refs)."""
+    """Edit a source image with a natural-language prompt (up to 5 refs on Image 2.0)."""
     gate_imagine_prompt(prompt, has_reference_image=True)
-    slug = resolve_image_model(model or DEFAULT_IMAGINE_IMAGE_MODEL)
+    slug, quality_sent, warnings = resolve_image_request(
+        model or DEFAULT_IMAGINE_IMAGE_MODEL,
+        quality=quality,
+        mode="edit",
+    )
     extras = [u for u in (extra_image_urls or []) if u]
-    if len(extras) > 2:
-        raise ImagineAPIError("Image edit accepts at most 3 reference images (1 primary + 2 extra)")
+    max_refs = image_max_edit_refs(slug)
+    if 1 + len(extras) > max_refs:
+        raise ImagineAPIError(
+            f"Image edit accepts at most {max_refs} reference images "
+            f"(1 primary + {max(0, max_refs - 1)} extra)"
+        )
     payload: dict[str, Any] = {
         "model": slug,
         "prompt": prompt,
@@ -216,17 +241,26 @@ def edit_image(
     }
     if extras:
         payload["extra_images"] = [{"url": u} for u in extras]
+    if quality_sent:
+        payload["quality"] = quality_sent
+    if aspect_ratio:
+        payload["aspect_ratio"] = aspect_ratio
+    if resolution:
+        payload["resolution"] = resolution
     if _use_dry_run(dry_run):
         return {
             "dry_run": True,
             "model": slug,
             "mode": "image_edit",
             "payload": payload,
+            "warnings": warnings,
             "data": [{"url": f"https://dry-run.x.ai/edits/{_mock_request_id('edit')}.png"}],
         }
 
     result = _request("POST", "/images/edits", payload=payload)
     result["model"] = slug
+    if warnings:
+        result["warnings"] = warnings
     return result
 
 

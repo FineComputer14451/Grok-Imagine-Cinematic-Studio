@@ -21,6 +21,9 @@ def test_normalize_aspect() -> None:
     assert normalize_aspect("9x16") == "9:16"
     assert normalize_aspect("invalid") == "16:9"
     assert normalize_aspect(None) == "16:9"
+    assert normalize_aspect("21:9") == "21:9"
+    assert normalize_aspect("5:2") == "5:2"
+    assert normalize_aspect("5x2") == "5:2"
 
 
 def test_parse_aspect_prefix() -> None:
