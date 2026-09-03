@@ -308,7 +308,7 @@
           }
         ]
       },
-      "sha": "3a0707f576cba5d0e4175f019a089f84631fdf72"
+      "sha": "8e167ec3aca231fb9ab5244e9c24bdc959b91b13"
     },
     "grok-imagine-cinematic-core": {
       "components": {
@@ -445,7 +445,7 @@
           }
         ]
       },
-      "sha": "3a0707f576cba5d0e4175f019a089f84631fdf72"
+      "sha": "8e167ec3aca231fb9ab5244e9c24bdc959b91b13"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -496,7 +496,7 @@
           }
         ]
       },
-      "sha": "3a0707f576cba5d0e4175f019a089f84631fdf72"
+      "sha": "8e167ec3aca231fb9ab5244e9c24bdc959b91b13"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -579,7 +579,7 @@
           }
         ]
       },
-      "sha": "3a0707f576cba5d0e4175f019a089f84631fdf72"
+      "sha": "8e167ec3aca231fb9ab5244e9c24bdc959b91b13"
     },
     "grok-imagine-nsfw": {
       "components": {
@@ -608,7 +608,7 @@
           }
         ]
       },
-      "sha": "3a0707f576cba5d0e4175f019a089f84631fdf72"
+      "sha": "8e167ec3aca231fb9ab5244e9c24bdc959b91b13"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -649,7 +649,7 @@
           }
         ]
       },
-      "sha": "3a0707f576cba5d0e4175f019a089f84631fdf72"
+      "sha": "8e167ec3aca231fb9ab5244e9c24bdc959b91b13"
     }
   }
 }
