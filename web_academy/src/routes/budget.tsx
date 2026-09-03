@@ -21,8 +21,8 @@ const RATES = {
   chatInPerM: 2,
   chatOutPerM: 6,
   stillStandard: 0.02,
-  stillQuality1k: 0.05,
-  stillQuality2k: 0.07,
+  stillQuality1k: 0.06,
+  stillQuality2k: 0.08,
   video480: 0.05,
   video720: 0.07,
 } as const;
@@ -165,8 +165,8 @@ function BudgetPage() {
                 {(
                   [
                     ["standard", "Standard $0.02"],
-                    ["q1k", "Quality 1K $0.05"],
-                    ["q2k", "Quality 2K $0.07"],
+                    ["q1k", "Quality 1K $0.06"],
+                    ["q2k", "Quality 2K $0.08"],
                   ] as const
                 ).map(([id, label]) => (
                   <button

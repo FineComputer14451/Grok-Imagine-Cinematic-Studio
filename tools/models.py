@@ -394,6 +394,7 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
         "label": "Imagine Image",
         "version": "1.0",
         "usd_per_image": 0.02,
+        "usd_per_input_image": 0.002,
         "usd_by_resolution_quality": {
             "1k": {"low": 0.02, "medium": 0.02},
             "2k": {"low": 0.02, "medium": 0.02},
@@ -415,9 +416,10 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
         "version": "quality",
         "usd_per_image": 0.04,
         "legacy_usd_per_image": 0.05,
+        "usd_per_input_image": 0.01,
         "usd_by_resolution_quality": {
-            "1k": {"low": 0.04, "medium": 0.05},
-            "2k": {"low": 0.06, "medium": 0.07},
+            "1k": {"low": 0.04, "medium": 0.06},
+            "2k": {"low": 0.06, "medium": 0.08},
         },
         "quality_param": False,
         "deprecated": True,
@@ -442,9 +444,10 @@ IMAGINE_IMAGE_MODELS: dict[str, dict[str, Any]] = {
         "label": "Imagine Image 2.0",
         "version": "2.0",
         "usd_per_image": 0.04,
+        "usd_per_input_image": 0.01,
         "usd_by_resolution_quality": {
-            "1k": {"low": 0.04, "medium": 0.05},
-            "2k": {"low": 0.06, "medium": 0.07},
+            "1k": {"low": 0.04, "medium": 0.06},
+            "2k": {"low": 0.06, "medium": 0.08},
         },
         "quality_param": True,
         "quality_values": IMAGE_QUALITY_VALUES,
@@ -789,14 +792,25 @@ def video_usd_per_second(model: str | None = None, *, resolution: str | None = N
     return float(info["usd_per_second"])
 
 
+def image_usd_per_input_image(model: str | None = None) -> float:
+    """USD per source image on /images/edits (and i2i). Quality slug → 2.0 rate."""
+    wire, _, _ = resolve_image_request(model, mode="edit")
+    info = IMAGINE_IMAGE_MODELS.get(wire) or {}
+    return float(info.get("usd_per_input_image") or 0.0)
+
+
 def image_usd_per_image(
     model: str | None = None,
     *,
     resolution: str | None = None,
     quality: str | None = None,
     mode: str | None = None,
+    n_input_images: int = 0,
 ) -> float:
-    """USD per image after quality-slug rewrite (retired quality → 2.0 low)."""
+    """USD per generated image after quality-slug rewrite (retired quality → 2.0 low).
+
+    ``n_input_images`` adds official input-image fees (1.0 $0.002; 2.0 $0.01).
+    """
     job_mode = (mode or "generate").strip().lower()
     if job_mode not in ("generate", "edit"):
         job_mode = "generate"
@@ -807,11 +821,17 @@ def image_usd_per_image(
     if billed is None or billed == "auto":
         billed = "medium" if job_mode == "edit" else "low"
     if resolution is None and quality is None and mode is None and quality_sent is None:
-        return float(info["usd_per_image"])
-    res = _normalize_image_resolution(resolution)
-    if res in table and billed in (table.get(res) or {}):
-        return float(table[res][billed])
-    return float(info["usd_per_image"])
+        out = float(info["usd_per_image"])
+    else:
+        res = _normalize_image_resolution(resolution)
+        if res in table and billed in (table.get(res) or {}):
+            out = float(table[res][billed])
+        else:
+            out = float(info["usd_per_image"])
+    n_in = max(0, int(n_input_images or 0))
+    if n_in:
+        out += n_in * float(info.get("usd_per_input_image") or 0.0)
+    return out
 
 
 def video_supports_mode(model: str | None, mode: str) -> bool:
@@ -1037,6 +1057,13 @@ def verify_model_compatibility() -> dict[str, Any]:
         )
     if int(hero_info.get("max_edit_refs") or 0) != 5:
         issues.append(f"{HERO_IMAGINE_IMAGE_MODEL} max_edit_refs must be 5")
+    hero_rq = hero_info.get("usd_by_resolution_quality") or {}
+    if (hero_rq.get("1k") or {}).get("medium") != 0.06:
+        issues.append(f"{HERO_IMAGINE_IMAGE_MODEL} 1K medium must be $0.06")
+    if (hero_rq.get("2k") or {}).get("medium") != 0.08:
+        issues.append(f"{HERO_IMAGINE_IMAGE_MODEL} 2K medium must be $0.08")
+    if float(hero_info.get("usd_per_input_image") or 0) != 0.01:
+        issues.append(f"{HERO_IMAGINE_IMAGE_MODEL} usd_per_input_image must be $0.01")
     wire, send_q, _warn = resolve_image_request(LEGACY_QUALITY_IMAGE_MODEL)
     if wire != HERO_IMAGINE_IMAGE_MODEL or send_q != LEGACY_QUALITY_REDIRECT_QUALITY:
         issues.append(
@@ -1181,6 +1208,8 @@ def imagine_image_pricing_table() -> dict[str, dict[str, Any]]:
     table: dict[str, dict[str, Any]] = {}
     for slug, info in IMAGINE_IMAGE_MODELS.items():
         row: dict[str, Any] = {"usd_per_image": info["usd_per_image"]}
+        if info.get("usd_per_input_image") is not None:
+            row["usd_per_input_image"] = info["usd_per_input_image"]
         by_rq = info.get("usd_by_resolution_quality")
         if by_rq:
             row["usd_by_resolution_quality"] = {

@@ -4,6 +4,12 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Changed
+- **Image 2.0 quota rows** — 1K medium **$0.06**, 2K medium **$0.08** (was $0.05 / $0.07). 1K/2K low stay $0.04 / $0.06. Auto generate still bills low; auto edit bills medium.
+
+### Added
+- **Input-image fees** — `image_usd_per_input_image()` / `n_input_images` on `image_usd_per_image()`: Image 1.0 **$0.002**, Image 2.0 **$0.01** per source still.
+
 ### Fixed
 - **Release zip staging** — `build_release_bundle.sh` and `build_meta_installer.sh` use `TMPDIR` and fall back to Python `zipfile` when `zip` is missing (Termux).
 

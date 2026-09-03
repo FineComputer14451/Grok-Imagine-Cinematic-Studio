@@ -40,7 +40,7 @@ Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for cri
 | `grok-imagine-video-1.5` | $0.080 / sec |
 | `grok-imagine-video` (1.0) | $0.050 / sec |
 | `grok-imagine-image` | $0.02 / image |
-| `grok-imagine-image-2.0` | from $0.04 / image (`quality` low \| medium \| auto); 1K medium $0.05 |
+| `grok-imagine-image-2.0` | 1K low $0.04 / medium $0.06; 2K low $0.06 / medium $0.08; input $0.01 |
 | `grok-imagine-image-quality` | Retired 2026-11-02 — billed as 2.0 `quality=low` (was $0.05) |
 | `grok-v9-4p5-chat-expert` / `multi` | See tools/models.py |
 | `grok-4-auto` | Balanced / lower cost |

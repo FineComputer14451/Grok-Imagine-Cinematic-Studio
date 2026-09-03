@@ -17,6 +17,7 @@ from models import (  # noqa: E402
     LEGACY_QUALITY_RETIRED_ON,
     image_max_edit_refs,
     image_usd_per_image,
+    image_usd_per_input_image,
     live_image_model,
     imagine_image_pricing_table,
     imagine_surface_catalog,
@@ -92,7 +93,13 @@ def test_image_2_0_pricing_tiers() -> None:
     assert image_usd_per_image("2.0", resolution="1k") == 0.04
     assert image_usd_per_image("quality") == 0.04
     assert image_usd_per_image("pro") == image_usd_per_image("2.0", quality="low")
-    assert image_usd_per_image("2.0", quality="auto", mode="edit") == 0.05
+    assert image_usd_per_image("2.0", quality="medium") == 0.06
+    assert image_usd_per_image("2.0", resolution="2k", quality="medium") == 0.08
+    assert image_usd_per_image("2.0", quality="auto", mode="edit") == 0.06
+    assert image_usd_per_input_image("grok-imagine-image") == 0.002
+    assert image_usd_per_input_image("2.0") == 0.01
+    assert image_usd_per_input_image("quality") == 0.01
+    assert image_usd_per_image("2.0", quality="medium", mode="edit", n_input_images=2) == 0.08
     assert image_max_edit_refs("2.0") == 5
     assert image_max_edit_refs("grok-imagine-image") == 3
     assert image_max_edit_refs("quality") == 5

@@ -15,7 +15,7 @@ Override via `.quota_config.json` in project root.
 | `grok-imagine-video-1.5` | **$0.080 / second** |
 | `grok-imagine-video` | $0.050 / second |
 | `grok-imagine-image` | $0.02 / image |
-| `grok-imagine-image-2.0` | from $0.04 / image (1K medium $0.05) |
+| `grok-imagine-image-2.0` | 1K low $0.04 / medium $0.06; 2K low $0.06 / medium $0.08; input $0.01 |
 | `grok-imagine-image-quality` | Retired 2026-11-02 — billed as 2.0 `quality=low` |
 
 Native audio is included in 1.5 per-second pricing (no surcharge).
@@ -32,7 +32,7 @@ Quota dashboard uses abstract credits for subscription tier compatibility:
 | 1.5 video (10s) | 80 credits ($0.80) |
 | 1.0 video (10s) | 50 credits ($0.50) |
 | Standard image | 2 credits ($0.02) |
-| Image 2.0 1K medium | 5 credits ($0.05) |
+| Image 2.0 1K medium | 6 credits ($0.06) |
 
 ---
 

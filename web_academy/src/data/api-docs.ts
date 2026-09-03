@@ -103,14 +103,20 @@ export const GROK_PRICING: {
         {
           model: "grok-imagine-image-2.0",
           unit: "Output / image (1K, quality=medium)",
-          price: "$0.05",
+          price: "$0.06",
           note: "Hero / Quality Mode plates",
         },
         {
           model: "grok-imagine-image-2.0",
           unit: "Output / image (2K, quality=medium)",
-          price: "$0.07",
+          price: "$0.08",
           note: "Hero 2K",
+        },
+        {
+          model: "grok-imagine-image-2.0",
+          unit: "Media input / image",
+          price: "$0.01",
+          note: "When sending reference images",
         },
       ],
     },
@@ -186,8 +192,8 @@ export const GROK_PRICING: {
     },
     {
       label: "Hero still 1K (Image 2.0 medium)",
-      estimate: "$0.05",
-      detail: "1× grok-imagine-image-2.0 quality=medium @ 1K $0.05",
+      estimate: "$0.06",
+      detail: "1× grok-imagine-image-2.0 quality=medium @ 1K $0.06",
       kind: "example",
     },
     {
@@ -353,7 +359,7 @@ export const askGrok = createServerFn({ method: "POST" })
         path: "/v1/images/generations",
         title: "Generate image",
         summary:
-          "1.0 list ~$0.02/img; 2.0 1K low $0.04 / medium $0.05. Do not send grok-imagine-image-quality.",
+          "1.0 list ~$0.02/img; 2.0 1K low $0.04 / medium $0.06. Do not send grok-imagine-image-quality.",
         request: `POST https://api.x.ai/v1/images/generations
 
 {

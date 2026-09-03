@@ -16,7 +16,7 @@ There is **no** `grok-imagine-video-2.0`. **2.0 is Imagine Image only.**
 |--------|---------------|-------------|-------------------------------|------|
 | Image 1.0 | `grok-imagine-image` | Draft / volume stills (**default**) | $0.02 / img | 1K / 2K |
 | Image Quality | `grok-imagine-image-quality` | **Retired 2026-11-02** — aliases still resolve; spend rewrites to 2.0 `quality=low` | was $0.05 / img; billed as 2.0 low | 1K / 2K |
-| **Image 2.0** | `grok-imagine-image-2.0` | **Hero plates, Quality Mode, Responses `image_generation` tool** | from $0.04 / img (1K low); `quality` = low \| medium \| auto | 1K / 2K; up to **5** edit refs; `21:9` / `5:2` |
+| **Image 2.0** | `grok-imagine-image-2.0` | **Hero plates, Quality Mode, Responses `image_generation` tool** | 1K low $0.04 / medium $0.06; 2K low $0.06 / medium $0.08; input $0.01 | 1K / 2K; up to **5** edit refs; `21:9` / `5:2` |
 | Video 1.0 | `grok-imagine-video` | Cost default video; **edit + extend** | from $0.05 / sec (480p); 720p $0.07 | 480p / 720p |
 | Video 1.5 | `grok-imagine-video-1.5` | Native audio, physics, 1080p, reference-to-video | 480p $0.08 · 720p $0.14 · 1080p $0.25 / sec | t2v/i2v to 1080p / 15s; r2v cap 720p |
 

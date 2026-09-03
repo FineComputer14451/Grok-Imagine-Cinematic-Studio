@@ -122,8 +122,8 @@ Activate production with **`ACTIVATE EROSFORGE`**.
 
 | Slug | Cost | Modalities |
 |------|------|------------|
-| `grok-imagine-image` | $0.02 / image | text, image → image |
-| `grok-imagine-image-2.0` | from $0.04 / image (`quality` low \| medium \| auto) | text, image → image; up to 5 edit refs |
+| `grok-imagine-image` | $0.02 / image (input $0.002) | text, image → image |
+| `grok-imagine-image-2.0` | 1K low $0.04 / medium $0.06; 2K low $0.06 / medium $0.08 (input $0.01) | text, image → image; up to 5 edit refs |
 | `grok-imagine-image-quality` | **Retired 2026-11-02** — billed as 2.0 `quality=low` (was $0.05) | aliases still resolve; do not send on the wire |
 
 **Standard aliases (xAI API):** `grok-imagine-image-2026-03-02`  

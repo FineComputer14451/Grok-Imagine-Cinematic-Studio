@@ -129,7 +129,7 @@ python tools/cinematic_studio_cli.py models verify
 | **xAI Build / coding API** | `grok-4.6` | Agentic automation (legacy: `grok-build-0.1`) |
 | **Creative fast (optional)** | `grok-composer-2.5-fast` | Fast multi-agent cinematic direction in Build picker |
 | **Imagine Video** | `grok-imagine-video` (1.0 default, edit/extend) | $0.05/sec 480p; `grok-imagine-video-1.5` for native audio / r2v / 1080p. **No video 2.0** |
-| **Imagine Image** | `grok-imagine-image` (draft) · **`grok-imagine-image-2.0` (hero / Quality Mode)** | $0.02 draft; from $0.04 Image 2.0 (`quality` low \| medium \| auto); `grok-imagine-image-quality` retires 2026-11-02 → 2.0 `quality=low` |
+| **Imagine Image** | `grok-imagine-image` (draft) · **`grok-imagine-image-2.0` (hero / Quality Mode)** | $0.02 draft; Image 2.0 1K low $0.04 / medium $0.06, 2K low $0.06 / medium $0.08 (input $0.01); `grok-imagine-image-quality` retires 2026-11-02 → 2.0 `quality=low` |
 
 **Aliases:** `cinematic` / `build` / `coding` / `4.5` / `grok-4.5` / `grok-4.5-latest` / `grok-build-latest` / `4.6` → **`grok-4.6`**.  
 **1M aliases:** `long-context` / `4.3` / `grok-4` → **`grok-4.3`**.
