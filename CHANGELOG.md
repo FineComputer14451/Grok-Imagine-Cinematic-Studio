@@ -10,6 +10,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Academy + Role Cards** — Imagine image examples and NSFW/quota routing tables use Image 2.0 (`quality=medium` for hero) instead of the retired quality slug.
 - **Imagine bridge packets** — `image_model` quality/pro slugs rewrite to `grok-imagine-image-2.0` (`quality=low`, or `medium` when `image_quality` is set) so grok.com paste no longer names the retired product.
 - **Image model pickers** — `ordered_image_model_slugs()` hides the retired quality slug (Streamlit Settings, API meta). `models list` still shows it tagged retired.
+- **Persisted quality slug** — Streamlit session and React Settings prefs remap `grok-imagine-image-quality` / `pro` to Image 2.0 so hidden picker values do not snap back to draft 1.0.
 
 ### Added
 - **AUP on planning paths** — `nsfw extend plan|chain|prompt`, `generate-prompt`, Imagine Execution Bridge / Agent Mode packets, and `handoff validate` now run the same fail-closed SpaceXAI AUP gate as Imagine spend (CSAM always; attestation when intimate; no intimate+still-ref).

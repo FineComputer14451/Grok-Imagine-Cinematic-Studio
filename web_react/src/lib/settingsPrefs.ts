@@ -26,6 +26,25 @@ export interface SettingsPrefs {
 
 const STORAGE_KEY = 'cinematic-studio.web-react.settings.v1'
 
+const RETIRED_IMAGE_QUALITY_SLUGS = new Set([
+  'grok-imagine-image-quality',
+  'grok-imagine-image-pro',
+  'grok-imagine-image-quality-latest',
+  'grok-imagine-image-quality-20260403',
+  'imagine-image-quality',
+  'image-quality',
+  'quality',
+  'pro',
+])
+
+/** Deprecated quality slug → Image 2.0 (matches tools/models.py live_image_model). */
+export function liveImageModel(slug: string | undefined | null): string {
+  const raw = (slug || '').trim()
+  if (!raw) return FALLBACK_DEFAULTS.image_model
+  if (RETIRED_IMAGE_QUALITY_SLUGS.has(raw)) return 'grok-imagine-image-2.0'
+  return raw
+}
+
 export const FALLBACK_DEFAULTS: SettingsPrefs = {
   genre: 'Sci-Fi',
   director: 'Denis Villeneuve',
@@ -52,7 +71,9 @@ export function loadSettingsPrefs(): SettingsPrefs {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return { ...FALLBACK_DEFAULTS }
     const parsed = JSON.parse(raw) as Partial<SettingsPrefs>
-    return { ...FALLBACK_DEFAULTS, ...parsed }
+    const merged = { ...FALLBACK_DEFAULTS, ...parsed }
+    merged.image_model = liveImageModel(merged.image_model)
+    return merged
   } catch {
     return { ...FALLBACK_DEFAULTS }
   }

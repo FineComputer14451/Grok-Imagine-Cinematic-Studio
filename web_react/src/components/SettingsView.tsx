@@ -11,6 +11,7 @@ import { queryKeys } from '../api/queryKeys'
 import {
   FALLBACK_DEFAULTS,
   fourAupFlags,
+  liveImageModel,
   loadSettingsPrefs,
   notifyPrefsUpdated,
   saveSettingsPrefs,
@@ -78,6 +79,9 @@ export function SettingsView() {
   const chatModels = opts?.chat_models ?? [prefs.chat_model]
   const videoModels = opts?.video_models ?? [prefs.video_model]
   const imageModels = opts?.image_models ?? [prefs.image_model || 'grok-imagine-image']
+  const imageValue = imageModels.includes(prefs.image_model)
+    ? prefs.image_model
+    : liveImageModel(prefs.image_model)
   const regions = opts?.imagine_regions ?? [prefs.imagine_region]
 
   useEffect(() => {
@@ -157,7 +161,7 @@ export function SettingsView() {
           />
           <FieldSelect
             label="Imagine Image model"
-            value={prefs.image_model}
+            value={imageModels.includes(imageValue) ? imageValue : imageModels[0]}
             options={imageModels}
             onChange={(v) => update('image_model', v)}
           />

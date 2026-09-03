@@ -17,6 +17,7 @@ from models import (  # noqa: E402
     LEGACY_QUALITY_RETIRED_ON,
     image_max_edit_refs,
     image_usd_per_image,
+    live_image_model,
     imagine_image_pricing_table,
     imagine_surface_catalog,
     ordered_image_model_slugs,
@@ -59,6 +60,10 @@ def test_hero_image_is_2_0() -> None:
     assert HERO_IMAGINE_IMAGE_MODEL in slugs
     assert LEGACY_QUALITY_IMAGE_MODEL not in slugs
     assert LEGACY_QUALITY_IMAGE_MODEL in ordered_image_model_slugs(include_deprecated=True)
+    assert live_image_model("quality") == HERO_IMAGINE_IMAGE_MODEL
+    assert live_image_model("grok-imagine-image-pro") == HERO_IMAGINE_IMAGE_MODEL
+    assert live_image_model("grok-imagine-image") == DEFAULT_IMAGINE_IMAGE_MODEL
+    assert live_image_model(None) == DEFAULT_IMAGINE_IMAGE_MODEL
 
 
 def test_quality_slug_rewrites_to_2_0_low() -> None:

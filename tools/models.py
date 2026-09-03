@@ -1197,6 +1197,17 @@ def ordered_video_model_slugs() -> list[str]:
     return keys
 
 
+def live_image_model(slug: str | None = None) -> str:
+    """Session/picker slug: deprecated quality → Image 2.0; empty/unknown → draft default."""
+    if not slug or not str(slug).strip():
+        return DEFAULT_IMAGINE_IMAGE_MODEL
+    resolved = resolve_image_model(slug)
+    info = IMAGINE_IMAGE_MODELS.get(resolved) or {}
+    if info.get("deprecated"):
+        return str(info.get("redirect_model") or HERO_IMAGINE_IMAGE_MODEL)
+    return resolved
+
+
 def ordered_image_model_slugs(*, include_deprecated: bool = False) -> list[str]:
     """Draft 1.0 first, then 2.0 hero. Deprecated quality slug is picker-hidden."""
     keys = [

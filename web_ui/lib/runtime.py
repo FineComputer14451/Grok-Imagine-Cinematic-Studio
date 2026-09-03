@@ -118,6 +118,7 @@ try:
         XAI_CHAT_MODELS,
         build_video_pipeline_spec,
         model_stack_summary,
+        live_image_model as _live_image_model,
         ordered_image_model_slugs as _ordered_image_model_slugs,
         ordered_video_model_slugs as _ordered_video_model_slugs,
         verify_model_compatibility,
@@ -209,6 +210,24 @@ def ordered_video_model_slugs() -> list[str]:
     if preferred in keys:
         return [preferred] + [k for k in keys if k != preferred]
     return keys
+
+
+def live_image_model(slug: str | None = None) -> str:
+    """Deprecated quality slug → Image 2.0; empty/unknown → draft default."""
+    if MODELS_AVAILABLE:
+        try:
+            return _live_image_model(slug)
+        except NameError:
+            pass
+    raw = (slug or "").strip()
+    if raw in (
+        "grok-imagine-image-quality",
+        "grok-imagine-image-pro",
+        "quality",
+        "pro",
+    ):
+        return HERO_IMAGINE_IMAGE_MODEL
+    return raw or DEFAULT_IMAGINE_IMAGE_MODEL
 
 
 def ordered_image_model_slugs() -> list[str]:

@@ -76,8 +76,12 @@ def init_session_defaults() -> None:
             st.session_state.video_model = rt.DEFAULT_IMAGINE_VIDEO_MODEL
     if rt.MODELS_AVAILABLE and rt.IMAGINE_IMAGE_MODELS:
         image = st.session_state.get("image_model")
-        if image not in rt.IMAGINE_IMAGE_MODELS:
+        live = rt.live_image_model(image)
+        picker = rt.ordered_image_model_slugs()
+        if live not in picker:
             st.session_state.image_model = rt.DEFAULT_IMAGINE_IMAGE_MODEL
+        else:
+            st.session_state.image_model = live
     # Streamlit Community Cloud secrets → env for imagine_client / CLI subprocesses
     rt.sync_xai_api_key_to_environ()
 
