@@ -2,14 +2,39 @@
 
 from __future__ import annotations
 
+import os
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
+from aup_gate import ATTESTATION_ENV, AUPGateError, write_attestation  # noqa: E402
 from character_dna import build_handoff_packet, create_dna_scaffold, dna_to_markdown  # noqa: E402
 from wardrobe_lock import create_wardrobe_lock, lock_wardrobe, sync_clothing_style  # noqa: E402
+
+
+def _attest_env() -> str:
+    handle = tempfile.NamedTemporaryFile(prefix="aup-", suffix=".json", delete=False)
+    handle.close()
+    os.environ[ATTESTATION_ENV] = handle.name
+    write_attestation(
+        age_18_plus=True,
+        imaginary_adults_only=True,
+        not_a_real_person=True,
+        aup_acknowledged=True,
+        path=Path(handle.name),
+    )
+    return handle.name
+
+
+def _cleanup(path: str) -> None:
+    os.environ.pop(ATTESTATION_ENV, None)
+    try:
+        os.unlink(path)
+    except OSError:
+        pass
 
 
 def test_handoff_omits_wardrobe_when_absent() -> None:
@@ -105,22 +130,59 @@ def test_markdown_includes_wardrobe_section_when_present() -> None:
 
 
 def test_markdown_serializes_structured_nsfw_notes() -> None:
-    dna = create_dna_scaffold("Mara", core_identity="pi", facial_dna="scar")
-    dna["nsfw_notes"] = {
-        "mode": "r_rated_intimate_opt_in",
-        "forbidden_always": ["minors"],
-    }
-    md = dna_to_markdown(dna)
-    assert "## NSFW Consistency Notes" in md
-    assert "r_rated_intimate_opt_in" in md
-    assert "minors" in md
-    # join-safe: structured notes must not be raw dict repr only
-    assert '"mode"' in md
+    path = _attest_env()
+    try:
+        dna = create_dna_scaffold(
+            "Mara",
+            core_identity="pi",
+            facial_dna="scar",
+            subject_kind="imaginary_adult",
+        )
+        dna["nsfw_notes"] = {
+            "mode": "r_rated_intimate_opt_in",
+            "forbidden_always": ["minors"],
+        }
+        md = dna_to_markdown(dna)
+        assert "## NSFW Consistency Notes" in md
+        assert "r_rated_intimate_opt_in" in md
+        assert "minors" in md
+        # join-safe: structured notes must not be raw dict repr only
+        assert '"mode"' in md
+    finally:
+        _cleanup(path)
 
 
 def test_markdown_keeps_string_nsfw_notes() -> None:
-    dna = create_dna_scaffold("Mara", core_identity="pi", facial_dna="scar")
-    dna["nsfw_notes"] = "clinical note only"
-    md = dna_to_markdown(dna)
-    assert "## NSFW Consistency Notes" in md
-    assert "clinical note only" in md
+    path = _attest_env()
+    try:
+        dna = create_dna_scaffold(
+            "Mara",
+            core_identity="pi",
+            facial_dna="scar",
+            subject_kind="imaginary_adult",
+        )
+        dna["nsfw_notes"] = "clinical note only"
+        md = dna_to_markdown(dna)
+        assert "## NSFW Consistency Notes" in md
+        assert "clinical note only" in md
+    finally:
+        _cleanup(path)
+
+
+def test_markdown_nsfw_notes_requires_attestation() -> None:
+    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
+    try:
+        dna = create_dna_scaffold(
+            "Mara",
+            core_identity="pi",
+            facial_dna="scar",
+            subject_kind="imaginary_adult",
+        )
+        dna["nsfw_notes"] = "clinical note only"
+        try:
+            dna_to_markdown(dna)
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            assert "attest" in str(exc)
+    finally:
+        os.environ.pop(ATTESTATION_ENV, None)
