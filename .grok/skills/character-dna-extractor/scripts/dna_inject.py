@@ -10,7 +10,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "tools"))
 
-from character_dna import PROMPT_MODES, build_prompt_blocks, find_character_dna, inject_into_prompt, load_character_dna  # noqa: E402
+from aup_gate import AUPGateError  # noqa: E402
+from character_dna import (  # noqa: E402
+    PROMPT_MODES,
+    build_prompt_blocks,
+    compose_injected_prompt,
+    inject_into_prompt,
+    load_character_dna,
+)
 
 
 def main() -> None:
@@ -21,18 +28,23 @@ def main() -> None:
     parser.add_argument("--file", "-f", type=Path, help="Path to dna.json (overrides --name lookup)")
     args = parser.parse_args()
 
-    if args.file:
-        dna = load_character_dna(args.file)
-        blocks = build_prompt_blocks(dna)
-        output = blocks[args.mode]
-        if args.base_prompt.strip():
-            output = f"{output}\n\n---\n\n{args.base_prompt.strip()}"
-    else:
-        try:
+    try:
+        if args.file:
+            dna = load_character_dna(args.file)
+            blocks = build_prompt_blocks(dna)
+            output = compose_injected_prompt(
+                blocks[args.mode],
+                args.base_prompt,
+                has_reference_image=bool(dna.get("reference_image_ids")),
+            )
+        else:
             output = inject_into_prompt(args.base_prompt, args.name, args.mode)
-        except FileNotFoundError as exc:
-            print(f"ERROR: {exc}", file=sys.stderr)
-            sys.exit(1)
+    except FileNotFoundError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        sys.exit(1)
+    except (ValueError, AUPGateError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        sys.exit(1)
 
     print(output)
 

@@ -425,6 +425,19 @@ def list_characters(*, characters_root: Path | None = None) -> list[dict[str, An
     return results
 
 
+def compose_injected_prompt(
+    injection: str,
+    base_prompt: str,
+    *,
+    has_reference_image: bool = False,
+) -> str:
+    """Join DNA inject + base prompt and fail-closed AUP-gate the result."""
+    combined = f"{injection}\n\n---\n\n{base_prompt.strip()}"
+    gate_imagine_prompt(base_prompt or "", has_reference_image=has_reference_image)
+    gate_imagine_prompt(combined, has_reference_image=has_reference_image)
+    return combined
+
+
 def inject_into_prompt(
     base_prompt: str,
     character_name: str,
@@ -442,9 +455,8 @@ def inject_into_prompt(
 
     dna = load_character_dna(dna_path)
     blocks = build_prompt_blocks(dna)
-    injection = blocks[mode]
-    combined = f"{injection}\n\n---\n\n{base_prompt.strip()}"
-    has_ref = bool(dna.get("reference_image_ids"))
-    gate_imagine_prompt(base_prompt or "", has_reference_image=has_ref)
-    gate_imagine_prompt(combined, has_reference_image=has_ref)
-    return combined
+    return compose_injected_prompt(
+        blocks[mode],
+        base_prompt,
+        has_reference_image=bool(dna.get("reference_image_ids")),
+    )

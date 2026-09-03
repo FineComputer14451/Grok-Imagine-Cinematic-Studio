@@ -28,6 +28,7 @@ from aup_gate import (  # noqa: E402
     write_attestation,
 )
 from character_dna import (  # noqa: E402
+    compose_injected_prompt,
     create_dna_scaffold,
     inject_into_prompt,
     load_character_dna,
@@ -423,6 +424,14 @@ def test_403_does_not_failover_regions() -> None:
     assert len(calls) == 1
 
 
+def test_compose_injected_prompt_csam_refused() -> None:
+    try:
+        compose_injected_prompt("[CHARACTER_DNA:ELENA]", "underage character study")
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        assert "minor-coded" in str(exc) or "CSAM" in str(exc)
+
+
 def test_inject_into_prompt_csam_refused() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
@@ -644,6 +653,7 @@ if __name__ == "__main__":
     test_403_429_not_in_failover()
     test_execute_nsfw_shot_requires_attestation()
     test_403_does_not_failover_regions()
+    test_compose_injected_prompt_csam_refused()
     test_inject_into_prompt_csam_refused()
     test_load_intimate_dna_requires_attestation()
     test_dna_init_output_gates_intimate()

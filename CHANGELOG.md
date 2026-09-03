@@ -13,6 +13,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ### Fixed
 - **AUP on DNA emit** — `load_character_dna`, prompt blocks, markdown, handoff packets, and `inject_into_prompt` run `gate_dna` / `gate_imagine_prompt`. `dna init --output` no longer writes JSON without the gate.
 - **AUP on NSFW still-ref extend** — `plan_nsfw_extension` default is `short_clip`; `reference_frame` / i2v from a source still is fail-closed (`gate_imagine_prompt(..., has_reference_image=True)`).
+- **AUP skill shims** — DNA `--file` inject uses `compose_injected_prompt`; NSFW `plan_extension.py` defaults to `short_clip` and exits 1 on AUP refuse.
 - **AUP on video edit/extend** — `submit_video_edit` and `submit_video_extension` now run the same fail-closed Imagine prompt gate as generate/edit/i2v (CSAM always; attestation when intimate). Sequence extend and `imagine submit` video_edit/video_extend can no longer skip AUP.
 
 ## [3.11.1] - 2026-09-02

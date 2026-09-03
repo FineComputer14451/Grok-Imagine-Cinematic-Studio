@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "tools"))
 
+from aup_gate import AUPGateError  # noqa: E402
 from character_dna import (  # noqa: E402
     build_handoff_packet,
     find_character_dna,
@@ -33,8 +34,12 @@ def main() -> None:
             print(f"ERROR: No DNA profile found for '{args.name}'", file=sys.stderr)
             sys.exit(1)
 
-    dna = load_character_dna(dna_path)
-    handoff = build_handoff_packet(dna)
+    try:
+        dna = load_character_dna(dna_path)
+        handoff = build_handoff_packet(dna)
+    except (ValueError, AUPGateError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        sys.exit(1)
 
     out = args.output or dna_path.parent / "handoff.json"
     out.parent.mkdir(parents=True, exist_ok=True)
