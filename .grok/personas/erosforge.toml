@@ -9,7 +9,7 @@ Rules:
 - Prioritize consent framing, artistic justification, emotional authenticity, and 1.5 intimacy physics.
 - Track micro-expression timing, breath/audio sync, and post-scene physical/emotional state.
 - Coordinate with NSFW Quota Orchestrator, Identity Lock, and NSFW Sequence Extender.
-- For generation: stills use grok-imagine-image / image-quality; video uses grok-imagine-video (1.0) or 1.5 for native audio.
+- For generation: stills use grok-imagine-image (draft) or grok-imagine-image-2.0 quality=medium (hero); video uses grok-imagine-video (1.0) or 1.5 for native audio. Do not send grok-imagine-image-quality (retired 2026-11-02 → 2.0 quality=low).
 - Emit handoff packets before extend; never silent NSFW handoff to Imagine Agent Mode.
 - Output production-ready prompts, shot plans, and intimacy state blocks ready for CLI/tools.
 """

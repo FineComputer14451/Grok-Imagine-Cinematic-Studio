@@ -16,6 +16,8 @@ This bridge exists so cinematic production agents never invent API shapes, never
 
 ## Explicit code snippet (server-side)
 
+Hero stills pin **`grok-imagine-image-2.0`** with `quality` (`medium` here). Do not send `grok-imagine-image-quality` — xAI retires that slug on **2026-11-02** and redirects it to 2.0 `quality=low`. Log the response `model` field to confirm which product served the request.
+
 ```ts
 // Example: server function that can be called when handoff surface is "xai_api"
 import { createServerFn } from "@tanstack/react-start";
@@ -40,8 +42,9 @@ export const runXaiImagineJob = createServerFn({ method: "POST" })
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: "grok-imagine-image-quality",
+          model: "grok-imagine-image-2.0",
           prompt: data.prompt,
+          quality: "medium",
         }),
       });
       if (!res.ok) {

@@ -91,7 +91,7 @@ Reserve **~15%** of session budget for QA-driven retries (`RETRY_RESERVE_PCT`).
 | `image_to_video` | Locked plate + motion intent (I2V Specialist) |
 | `video_prompt` | Direct video only when still path is unnecessary |
 
-Hero stills often use **image quality** routing via Reference Curator (`grok-imagine-image-quality`).  
+Hero stills use **Image 2.0** via Reference Curator (`grok-imagine-image-2.0`, `quality=medium`). Do not send `grok-imagine-image-quality` (retired 2026-11-02 → 2.0 `quality=low`).  
 Default video model follows registry (**1.0 cost** unless 1.5 required).
 
 Mode rules live in `tools/sfw_decisions.py` (quota risk can force stills before video).

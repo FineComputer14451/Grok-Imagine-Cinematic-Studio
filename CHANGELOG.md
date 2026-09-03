@@ -5,6 +5,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 ## [Unreleased]
 
 ### Changed
+- **Agent-facing Quality leftovers** — animatic, SFW batch, NSFW command, ErosForge/NSFW-prompt personas, and the `xai_api` bridge example pin **Image 2.0** (`quality=medium` for hero) instead of sending `grok-imagine-image-quality` (xAI retires that slug 2026-11-02 → 2.0 `quality=low`).
 - **Hero batch stills** — `image_quality` shots send `grok-imagine-image-2.0` with `quality=medium` instead of the retired quality slug (which would have redirected to 2.0 `low`). API meta fallback picker no longer lists `grok-imagine-image-quality`.
 - **Operator docs pin** — Quick Start, User Guide, Upgrade Guide, CLI Reference, installation, CONTRIBUTING, and marketplace catalog fallback stamp **v3.11.2**.
 - **Academy + Role Cards** — Imagine image examples and NSFW/quota routing tables use Image 2.0 (`quality=medium` for hero) instead of the retired quality slug.
@@ -13,6 +14,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Persisted quality slug** — Streamlit session and React Settings prefs remap `grok-imagine-image-quality` / `pro` to Image 2.0 so hidden picker values do not snap back to draft 1.0.
 
 ### Added
+- **Quality-slug copy scan** — `tests/test_image_quality_retirement_copy.py` fails if skills, personas, or slash commands recommend sending `grok-imagine-image-quality` as a live hero model.
 - **AUP on planning paths** — `nsfw extend plan|chain|prompt`, `generate-prompt`, Imagine Execution Bridge / Agent Mode packets, and `handoff validate` now run the same fail-closed SpaceXAI AUP gate as Imagine spend (CSAM always; attestation when intimate; no intimate+still-ref).
 - **Doctor AUP section** — `cinematic-studio doctor --quick` reports attestation idle/valid/FAIL and 403/429 no-hop.
 - **API `/v1/meta/aup`** — attestation status (`valid` / `present` / `attested_at` / `aup_url`) for cockpits. Never returns flag values; SPA cannot write attestation.

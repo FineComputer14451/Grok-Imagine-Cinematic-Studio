@@ -65,7 +65,7 @@ Begin: **"Initiating Animatic Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
 
 ## Goal
 
-Prove the cut **before** hero `image-quality` plates and long `1.5` / multi-clip video:
+Prove the cut **before** hero Image 2.0 plates and long `1.5` / multi-clip video:
 
 1. Story rhythm holds at draft stills  
 2. Coverage is sufficient (no missing story beats)  
@@ -78,7 +78,7 @@ Prove the cut **before** hero `image-quality` plates and long `1.5` / multi-clip
 |-------|------------|-------------|--------|
 | Storyboard stills | `draft` | `grok-imagine-image` | — |
 | Layout / composition | `standard` | `grok-imagine-image` | — |
-| Hero anchor lock | `hero` | `grok-imagine-image-quality` | — |
+| Hero anchor lock | `hero` | `grok-imagine-image-2.0` (`quality=medium`) | — |
 | Motion probe (optional) | `draft` | — | `grok-imagine-video` short (≈6s) |
 
 Promotion path: **draft → standard → hero** (`animatic promote`).

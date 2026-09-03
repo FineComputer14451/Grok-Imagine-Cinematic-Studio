@@ -26,7 +26,7 @@ State the activation phrase:
 ## Plan
 
 1. Engage **ErosForge NSFW Director** for scene design and intimacy physics.
-2. Run **Reference Curator** NSFW tier routing (hero/anchor/key_explicit → image-quality + 1.5).
+2. Run **Reference Curator** NSFW tier routing (hero/anchor/key_explicit → Image 2.0 `quality=medium` + video 1.5).
 3. Plan batch under Heavy daily cap with 15% retry reserve.
 4. If "$ARGUMENTS" includes a sequence name, scaffold NSFW extension with tension profile.
 
