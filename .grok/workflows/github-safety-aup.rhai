@@ -151,7 +151,7 @@ for f in findings {
     vp += " Use read_file and grep. Set real=true only with a quoted line you independently inspected. ";
     vp += "Match evidence to the claim type — do not require an Imagine emit path for CI, doctor, or docs claims. ";
     vp += "Secrets: a committed token or a missing gitignore rule. ";
-    vp += "CI: missing workflow permissions, persist-credentials left true on a no-push job, or write tokens without a comment. ";
+    vp += "CI: missing workflow permissions, persist-credentials left true on a no-push job, write tokens without a comment, or a scheduled/write job with no github.repository owner guard. ";
     vp += "AUP code: an Imagine emit/submit/paste path without aup_gate. ";
     vp += "Doctor: idle/attest logic that ignores committed NSFW JSON. ";
     vp += "Docs: missing AUP URL or four-flag attest where the file already discusses NSFW. ";
