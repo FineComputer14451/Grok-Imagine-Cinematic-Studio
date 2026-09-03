@@ -9,6 +9,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ### Added
 - **Input-image fees** — `image_usd_per_input_image()` / `n_input_images` on `image_usd_per_image()`: Image 1.0 **$0.002**, Image 2.0 **$0.01** per source still.
+- **`cinematic-studio` workflow** — `.grok/workflows/cinematic-studio.rhai` (Parallel Brief DoP / Prompt Master / Quota / Identity → handoff verify → director packet). Plan-only; no Imagine generation. Run `/cinematic-studio` or `/workflow cinematic-studio` with `args.brief`.
 
 ### Fixed
 - **Release zip staging** — `build_release_bundle.sh` and `build_meta_installer.sh` use `TMPDIR` and fall back to Python `zipfile` when `zip` is missing (Termux).
