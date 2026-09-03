@@ -20,6 +20,7 @@ from models import (
     HERO_IMAGINE_IMAGE_MODEL,
     STUDIO_COMPATIBILITY_VERSION,
     build_video_pipeline_spec,
+    resolve_image_request,
 )
 from handoff_schema import (
     CANONICAL_PROTOCOL_DOC,
@@ -283,7 +284,21 @@ def _core_content(
         or DEFAULT_IMAGINE_VIDEO_MODEL
     )
     img_explicit = bool(subject.get("image_model"))
-    img_model = subject.get("image_model") or DEFAULT_IMAGINE_IMAGE_MODEL
+    raw_quality = subject.get("quality")
+    if isinstance(raw_quality, bool) or raw_quality is None:
+        quality_arg = None
+    else:
+        quality_arg = str(raw_quality)
+    rec_mode = str(subject.get("recommended_mode") or subject.get("execution_mode") or "")
+    req_mode = "edit" if "edit" in rec_mode else "generate"
+    img_model, quality_pin, _warn = resolve_image_request(
+        subject.get("image_model") or DEFAULT_IMAGINE_IMAGE_MODEL,
+        quality=quality_arg,
+        mode=req_mode,
+    )
+    if subject.get("image_quality") is True:
+        img_model = HERO_IMAGINE_IMAGE_MODEL
+        quality_pin = "medium"
     description = prompt or subject.get("prompt") or subject.get("description", "")
     core: dict[str, Any] = {
         "context": context,
@@ -291,6 +306,7 @@ def _core_content(
         "video_model": vid_model,
         "image_model": img_model,
         "image_model_explicit": img_explicit,
+        "image_quality": quality_pin,
         "aspect_ratio": subject.get("aspect_ratio", "16:9"),
         "video_pipeline_spec": build_video_pipeline_spec(vid_model),
         "prompt": description.strip(),
@@ -378,8 +394,10 @@ def build_handoff(
     is_video = is_video_execution_mode(mode)
 
     image_slug = core["image_model"]
+    image_quality = core.get("image_quality")
     if not core.get("image_model_explicit") and mode in ("image_prompt", "image_edit"):
         image_slug = HERO_IMAGINE_IMAGE_MODEL
+        image_quality = image_quality or "medium"
 
     packet: dict[str, Any] = {
         "packet_type": PACKET_TYPE_IMAGINE_AGENT_MODE,
@@ -391,6 +409,7 @@ def build_handoff(
         "subject_id": core["subject_id"],
         "video_model": core["video_model"],
         "image_model": image_slug,
+        "image_quality": image_quality,
         "aspect_ratio": core.get("aspect_ratio", "16:9"),
         "video_pipeline_spec": core["video_pipeline_spec"] if is_video else "",
         "prompt": core["prompt"],
@@ -537,7 +556,9 @@ def _classic_bridge_markdown(packet: dict[str, Any]) -> str:
         f"# Imagine Execution Bridge — {packet['subject_id']}",
         "",
         f"**Context:** {packet['context']} · **Mode:** `{packet.get('mode', packet.get('execution_mode', ''))}`",
-        f"**Models:** `{packet['image_model']}` → `{packet['video_model']}`",
+        f"**Models:** `{packet['image_model']}`"
+        + (f" (`quality={packet['image_quality']}`)" if packet.get("image_quality") else "")
+        + f" → `{packet['video_model']}`",
         f"**Aspect:** {packet.get('aspect_ratio', '16:9')}",
         "",
         "## VIDEO_PIPELINE_SPEC",
@@ -579,7 +600,9 @@ def _agent_mode_markdown(packet: dict[str, Any]) -> str:
         f"**Subject:** `{packet.get('subject_id')}` · **Context:** {packet.get('context')}",
         f"**Target surface:** `{packet.get('target_surface')}`",
         f"**Execution mode:** `{packet.get('execution_mode')}`",
-        f"**Models:** `{packet.get('image_model')}` → `{packet.get('video_model')}`",
+        f"**Models:** `{packet.get('image_model')}`"
+        + (f" (`quality={packet.get('image_quality')}`)" if packet.get("image_quality") else "")
+        + f" → `{packet.get('video_model')}`",
         f"**Aspect:** {packet.get('aspect_ratio', '16:9')}",
         "",
         "## Model stack",

@@ -25,6 +25,7 @@ from imagine_bridge import (  # noqa: E402
 from models import (  # noqa: E402
     DEFAULT_IMAGINE_IMAGE_MODEL,
     DEFAULT_IMAGINE_VIDEO_MODEL,
+    HERO_IMAGINE_IMAGE_MODEL,
 )
 
 
@@ -52,6 +53,8 @@ def test_bridge_packet_shot() -> None:
         "aspect_ratio": "16:9",
     }
     packet = build_bridge_packet(shot, context="shot")
+    assert packet["image_model"] == HERO_IMAGINE_IMAGE_MODEL
+    assert packet["image_quality"] == "low"
     assert "VIDEO_PIPELINE_SPEC" in packet["video_pipeline_spec"]
     assert packet["prompt"] == "Cover frame at dusk"
     assert packet["sound_layer"].startswith("Sound Layer")
@@ -120,6 +123,9 @@ def test_agent_mode_handoff_packet() -> None:
         "aspect_ratio": "16:9",
     }
     packet = build_agent_mode_handoff(shot, target_surface="grok_build_tools", context="shot")
+    assert packet["image_model"] == HERO_IMAGINE_IMAGE_MODEL
+    assert packet["model_stack"]["imagine_image"] == HERO_IMAGINE_IMAGE_MODEL
+    assert packet["image_quality"] == "low"
     assert packet["packet_type"] == "imagine_agent_mode_handoff"
     assert packet["protocol_version"] == PROTOCOL_VERSION
     assert packet["target_surface"] == "grok_build_tools"
@@ -133,6 +139,24 @@ def test_agent_mode_handoff_packet() -> None:
     md = agent_mode_handoff_to_markdown(packet)
     assert "Imagine Agent Mode Handoff" in md
     assert "shot_hero_001" in md
+
+
+def test_bridge_hero_flag_pins_2_0_medium() -> None:
+    packet = build_bridge_packet(
+        {
+            "shot_id": "shot_hero_002",
+            "tier": "hero",
+            "description": "Cover",
+            "recommended_mode": "image_prompt",
+            "image_model": "grok-imagine-image-quality",
+            "image_quality": True,
+        },
+        context="shot",
+    )
+    assert packet["image_model"] == HERO_IMAGINE_IMAGE_MODEL
+    assert packet["image_quality"] == "medium"
+    md = bridge_to_markdown(packet)
+    assert "quality=medium" in md
 
 
 def test_agent_mode_handoff_invalid_surface() -> None:
