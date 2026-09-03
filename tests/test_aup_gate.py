@@ -7,6 +7,7 @@ import os
 import sys
 import tempfile
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
@@ -23,6 +24,7 @@ from aup_gate import (  # noqa: E402
     gate_nsfw_shot,
     gate_planning_packet,
     gate_planning_subject,
+    gate_nsfw_extension_text,
     gate_text,
     require_attestation,
     scan_csam,
@@ -245,99 +247,51 @@ def test_sfw_dna_with_refs_still_allowed() -> None:
     )
 
 
-def test_video_extend_csam_refused() -> None:
-    from imagine_client import submit_video_extension
+def _video_edit_extend_fns() -> tuple[tuple[str, Any], ...]:
+    from imagine_client import submit_video_edit, submit_video_extension
 
-    try:
-        submit_video_extension(
-            "underage character study",
-            video_url="https://example.invalid/clip.mp4",
-            dry_run=True,
-        )
-        raise AssertionError("expected AUPGateError")
-    except AUPGateError as exc:
-        assert "minor-coded" in str(exc) or "CSAM" in str(exc)
+    return (
+        ("video_edit", submit_video_edit),
+        ("video_extend", submit_video_extension),
+    )
 
 
-def test_video_edit_intimate_requires_attestation() -> None:
-    from imagine_client import submit_video_edit
+def test_video_edit_extend_csam_refused() -> None:
+    clip = "https://example.invalid/clip.mp4"
+    for mode, fn in _video_edit_extend_fns():
+        try:
+            fn("underage character study", video_url=clip, dry_run=True)
+            raise AssertionError(f"expected AUPGateError from {mode}")
+        except AUPGateError as exc:
+            assert "minor-coded" in str(exc) or "CSAM" in str(exc)
 
+
+def test_video_edit_extend_intimate_requires_attestation() -> None:
+    clip = "https://example.invalid/clip.mp4"
     os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
     try:
-        try:
-            submit_video_edit(
-                "erotic candlelit two-shot",
-                video_url="https://example.invalid/clip.mp4",
-                dry_run=True,
-            )
-            raise AssertionError("expected AUPGateError")
-        except AUPGateError as exc:
-            assert "attest" in str(exc)
+        for mode, fn in _video_edit_extend_fns():
+            try:
+                fn("erotic candlelit two-shot", video_url=clip, dry_run=True)
+                raise AssertionError(f"expected AUPGateError from {mode}")
+            except AUPGateError as exc:
+                assert "attest" in str(exc)
     finally:
         os.environ.pop(ATTESTATION_ENV, None)
 
 
-def test_video_extend_attested_intimate_allowed() -> None:
-    from imagine_client import submit_video_extension
-
+def test_video_edit_extend_attested_intimate_allowed() -> None:
+    clip = "https://example.invalid/clip.mp4"
     path, _ = _attest_env()
     try:
-        resp = submit_video_extension(
-            "erotic clothing-on R-rated continuation",
-            video_url="https://example.invalid/clip.mp4",
-            dry_run=True,
-        )
-        assert resp.get("dry_run") is True
-        assert resp.get("mode") == "video_extend"
-    finally:
-        _cleanup(path)
-
-
-
-def test_video_edit_csam_refused() -> None:
-    from imagine_client import submit_video_edit
-
-    try:
-        submit_video_edit(
-            "underage character study",
-            video_url="https://example.invalid/clip.mp4",
-            dry_run=True,
-        )
-        raise AssertionError("expected AUPGateError")
-    except AUPGateError as exc:
-        assert "minor-coded" in str(exc) or "CSAM" in str(exc)
-
-
-def test_video_extend_intimate_requires_attestation() -> None:
-    from imagine_client import submit_video_extension
-
-    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
-    try:
-        try:
-            submit_video_extension(
-                "erotic candlelit two-shot",
-                video_url="https://example.invalid/clip.mp4",
+        for mode, fn in _video_edit_extend_fns():
+            resp = fn(
+                "erotic clothing-on R-rated continuation",
+                video_url=clip,
                 dry_run=True,
             )
-            raise AssertionError("expected AUPGateError")
-        except AUPGateError as exc:
-            assert "attest" in str(exc)
-    finally:
-        os.environ.pop(ATTESTATION_ENV, None)
-
-
-def test_video_edit_attested_intimate_allowed() -> None:
-    from imagine_client import submit_video_edit
-
-    path, _ = _attest_env()
-    try:
-        resp = submit_video_edit(
-            "erotic clothing-on R-rated continuation",
-            video_url="https://example.invalid/clip.mp4",
-            dry_run=True,
-        )
-        assert resp.get("dry_run") is True
-        assert resp.get("mode") == "video_edit"
+            assert resp.get("dry_run") is True
+            assert resp.get("mode") == mode
     finally:
         _cleanup(path)
 
@@ -556,6 +510,30 @@ def test_bridge_intimate_plus_reference_refused() -> None:
         _cleanup(path)
 
 
+def test_bridge_has_reference_flag_refused() -> None:
+    from imagine_bridge import build_handoff
+
+    path, _ = _attest_env()
+    try:
+        try:
+            build_handoff(
+                {
+                    "shot_id": "shot_flag",
+                    "description": "erotic cinematic close-up",
+                    "has_reference": True,
+                    "recommended_mode": "image_to_video",
+                },
+                context="shot",
+                agent_mode=False,
+            )
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            lowered = str(exc).lower()
+            assert "nudify" in lowered or "source still" in lowered
+    finally:
+        _cleanup(path)
+
+
 def test_handoff_kwarg_dna_inject_csam_refused() -> None:
     from imagine_bridge import build_handoff
 
@@ -749,6 +727,257 @@ def test_check_aup_fails_when_batch_without_attest() -> None:
         os.environ.pop(ATTESTATION_ENV, None)
 
 
+def test_gate_dna_scans_clothing_style_csam() -> None:
+    try:
+        gate_dna(
+            {
+                "character_name": "Mara",
+                "core_identity": "adult fictional lead",
+                "facial_dna": "sharp cheekbones",
+                "clothing_style": "schoolgirl uniform",
+                "subject_kind": "imaginary_adult",
+                "reference_image_ids": [],
+            }
+        )
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        lowered = str(exc).lower()
+        assert "minor-coded" in lowered or "csam" in lowered or "schoolgirl" in lowered
+
+
+def test_dna_to_markdown_clothing_csam() -> None:
+    from character_dna import dna_to_markdown
+
+    try:
+        dna_to_markdown(
+            {
+                "schema_version": "1.0",
+                "character_name": "Mara",
+                "slug": "mara",
+                "core_identity": "adult fictional lead",
+                "facial_dna": "sharp cheekbones",
+                "clothing_style": "schoolgirl uniform",
+                "subject_kind": "imaginary_adult",
+                "key_consistency_anchors": [],
+                "reference_image_ids": [],
+            }
+        )
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        lowered = str(exc).lower()
+        assert "minor-coded" in lowered or "csam" in lowered or "schoolgirl" in lowered
+
+
+def test_beyond_r_refused_without_nsfw_keyword() -> None:
+    try:
+        gate_planning_packet("creampie close-up")
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        assert "R-rated" in str(exc)
+
+    from imagine_client import generate_image
+
+    try:
+        generate_image("ahegao portrait", dry_run=True)
+        raise AssertionError("expected AUPGateError")
+    except AUPGateError as exc:
+        assert "R-rated" in str(exc)
+
+
+def test_check_aup_fails_when_slug_dna_without_attest() -> None:
+    from doctor_checks import check_aup
+
+    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            dna_dir = root / "characters" / "mara"
+            dna_dir.mkdir(parents=True)
+            (dna_dir / "dna.json").write_text(
+                json.dumps(
+                    {
+                        "character_name": "Mara",
+                        "slug": "mara",
+                        "nsfw_notes": "implied intimacy continuity",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "nsfw_batches").mkdir()
+            rows = check_aup(repo_root=root)
+        attest = [r for r in rows if r.name == "AUP attestation"]
+        assert attest, rows
+        assert attest[0].status == "FAIL"
+        assert "intimate DNA" in attest[0].detail or "attest" in attest[0].detail.lower()
+    finally:
+        os.environ.pop(ATTESTATION_ENV, None)
+
+
+def test_nsfw_markdown_header_csam_refused() -> None:
+    from nsfw_sequence_extender import nsfw_sequence_to_markdown
+
+    path, _ = _attest_env()
+    try:
+        seq = {
+            "sequence_name": "Probe",
+            "slug": "probe",
+            "clips": [],
+            "nsfw_extension": {
+                "source_type": "short_clip",
+                "reference_description": "schoolgirl uniform",
+                "tension_profile": "passionate",
+            },
+        }
+        try:
+            nsfw_sequence_to_markdown(seq)
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            lowered = str(exc).lower()
+            assert "minor-coded" in lowered or "csam" in lowered or "schoolgirl" in lowered
+    finally:
+        _cleanup(path)
+
+
+def test_handoff_prompt_injection_csam_fail_closed() -> None:
+    from handoff_validate import validate_handoff_data
+
+    result = validate_handoff_data(
+        {
+            "packet_type": "identity_lock_handoff",
+            "video_pipeline_spec": {"locked": True},
+            "prompt_injection": {"cinematic": "schoolgirl uniform, candlelit"},
+        }
+    )
+    assert result["ok"] is False
+    blob = " ".join(result.get("issues") or []).lower()
+    assert "minor-coded" in blob or "csam" in blob or "schoolgirl" in blob
+
+
+def test_build_nsfw_clip_prompt_gates_csam() -> None:
+    from nsfw_extension_prompts import build_nsfw_clip_prompt
+
+    path, _ = _attest_env()
+    try:
+        seq = {
+            "nsfw_extension": {"source_type": "short_clip"},
+            "video_pipeline_spec": {},
+        }
+        beat = {
+            "beat_summary": "schoolgirl uniform",
+            "phase": "contact",
+            "phase_label": "contact",
+            "tension_level": 0.5,
+            "duration_seconds": 10,
+        }
+        try:
+            build_nsfw_clip_prompt(seq, beat, is_first_clip=True)
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            lowered = str(exc).lower()
+            assert "minor-coded" in lowered or "csam" in lowered or "schoolgirl" in lowered
+    finally:
+        _cleanup(path)
+
+
+def test_build_nsfw_extend_prompt_gates_csam() -> None:
+    from nsfw_extension_prompts import build_nsfw_extend_prompt
+
+    path, _ = _attest_env()
+    try:
+        seq = {
+            "nsfw_extension": {"source_type": "short_clip"},
+            "video_pipeline_spec": {},
+        }
+        prev = {
+            "clip_id": "clip_001",
+            "last_frame_recap": "two adults pause in a doorway",
+        }
+        beat = {
+            "beat_summary": "schoolgirl uniform",
+            "phase": "contact",
+            "phase_label": "contact",
+            "tension_level": 0.5,
+            "duration_seconds": 10,
+        }
+        try:
+            build_nsfw_extend_prompt(seq, prev, beat)
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            lowered = str(exc).lower()
+            assert "minor-coded" in lowered or "csam" in lowered or "schoolgirl" in lowered
+    finally:
+        _cleanup(path)
+
+
+def test_build_nsfw_clip_prompt_short_clip_not_still_ref() -> None:
+    from nsfw_extension_prompts import build_nsfw_clip_prompt
+
+    path, _ = _attest_env()
+    try:
+        seq = {
+            "nsfw_extension": {"source_type": "short_clip"},
+            "video_pipeline_spec": {},
+        }
+        beat = {
+            "beat_summary": "erotic candlelit two-shot",
+            "phase": "contact",
+            "phase_label": "contact",
+            "tension_level": 0.5,
+            "duration_seconds": 10,
+        }
+        prompt = build_nsfw_clip_prompt(seq, beat, is_first_clip=True)
+        assert "erotic" in prompt.lower()
+    finally:
+        _cleanup(path)
+
+
+def test_gate_nsfw_extension_text_still_ref_refused() -> None:
+    path, _ = _attest_env()
+    try:
+        try:
+            gate_nsfw_extension_text(
+                "erotic candlelit two-shot",
+                source_type="reference_frame",
+            )
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            lowered = str(exc).lower()
+            assert "nudify" in lowered or "source still" in lowered
+    finally:
+        _cleanup(path)
+
+
+def test_list_characters_surfaces_aup_blocked() -> None:
+    from character_dna import list_characters
+
+    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            dna_dir = root / "mara"
+            dna_dir.mkdir()
+            (dna_dir / "dna.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": "1.0",
+                        "character_name": "Mara",
+                        "slug": "mara",
+                        "core_identity": "adult fictional lead",
+                        "facial_dna": "sharp cheekbones",
+                        "nsfw_notes": "implied intimacy continuity",
+                        "subject_kind": "imaginary_adult",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            rows = list_characters(characters_root=root)
+        assert rows, "unattested intimate DNA must still appear in dna list"
+        assert rows[0]["status"] == "aup_blocked"
+        assert rows[0]["slug"] == "mara"
+    finally:
+        os.environ.pop(ATTESTATION_ENV, None)
+
+
 def test_nsfw_pack_is_opt_in_aup() -> None:
     marketplace = json.loads((ROOT / ".grok-plugin" / "marketplace.json").read_text())
     assert "Official Grok plugin marketplace" not in marketplace.get("description", "")
@@ -772,12 +1001,9 @@ if __name__ == "__main__":
     test_nsfw_batch_allows_r_rated_imaginary()
     test_dna_intimate_requires_imaginary_adult_no_photo()
     test_sfw_dna_with_refs_still_allowed()
-    test_video_extend_csam_refused()
-    test_video_edit_intimate_requires_attestation()
-    test_video_extend_attested_intimate_allowed()
-    test_video_edit_csam_refused()
-    test_video_extend_intimate_requires_attestation()
-    test_video_edit_attested_intimate_allowed()
+    test_video_edit_extend_csam_refused()
+    test_video_edit_extend_intimate_requires_attestation()
+    test_video_edit_extend_attested_intimate_allowed()
     test_imagine_edit_intimate_plus_source_image_refused()
     test_403_429_not_in_failover()
     test_execute_nsfw_shot_requires_attestation()
@@ -790,6 +1016,7 @@ if __name__ == "__main__":
     test_plan_nsfw_short_clip_attested_allowed()
     test_planning_packet_csam_refused()
     test_bridge_intimate_plus_reference_refused()
+    test_bridge_has_reference_flag_refused()
     test_handoff_kwarg_dna_inject_csam_refused()
     test_markdown_paste_csam_refused()
     test_handoff_validate_csam_fail_closed()
@@ -801,5 +1028,16 @@ if __name__ == "__main__":
     test_check_aup_idle_without_batches()
     test_check_aup_warns_on_committed_templates()
     test_check_aup_fails_when_batch_without_attest()
+    test_gate_dna_scans_clothing_style_csam()
+    test_dna_to_markdown_clothing_csam()
+    test_beyond_r_refused_without_nsfw_keyword()
+    test_check_aup_fails_when_slug_dna_without_attest()
+    test_nsfw_markdown_header_csam_refused()
+    test_handoff_prompt_injection_csam_fail_closed()
+    test_build_nsfw_clip_prompt_gates_csam()
+    test_build_nsfw_extend_prompt_gates_csam()
+    test_build_nsfw_clip_prompt_short_clip_not_still_ref()
+    test_gate_nsfw_extension_text_still_ref_refused()
+    test_list_characters_surfaces_aup_blocked()
     test_nsfw_pack_is_opt_in_aup()
     print("All AUP gate tests passed")

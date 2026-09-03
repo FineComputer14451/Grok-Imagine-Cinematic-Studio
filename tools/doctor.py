@@ -6,7 +6,8 @@ Single source of truth used by:
   grok-doctor  (thin shell shim)
   python tools/cinematic_studio_cli.py doctor
 
-Check implementations live in doctor_checks.py; types in doctor_types.py.
+Check implementations live in doctor_checks.py (AUP inventory in doctor_aup.py);
+types in doctor_types.py.
 """
 
 from __future__ import annotations

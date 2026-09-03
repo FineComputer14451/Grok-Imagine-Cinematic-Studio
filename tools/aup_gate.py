@@ -194,6 +194,8 @@ _PACKET_TEXT_KEYS = (
     "prompt",
     "description",
     "dna_inject",
+    "prompt_injection",
+    "dna_profile",
     "nsfw_notes",
     "last_frame_recap",
     "sound_layer",
@@ -300,7 +302,7 @@ def _join_fields(values: Iterable[Any]) -> str:
 
 
 def gate_text(text: str, *, nsfw: bool = False) -> None:
-    """Fail closed on CSAM always; on porn/NCII tropes when nsfw/intimate."""
+    """Fail closed on CSAM, beyond-R, and NCII. `nsfw` does not waive those scans."""
     blob = text or ""
     csam = scan_csam(blob)
     if csam:
@@ -308,9 +310,6 @@ def gate_text(text: str, *, nsfw: bool = False) -> None:
             "Blocked: minor-coded or CSAM-adjacent language is forbidden "
             f"({', '.join(csam)}). SpaceXAI reports CSAM to NCMEC."
         )
-    intimate = nsfw or is_intimate_text(blob)
-    if not intimate:
-        return
     beyond_r = scan_explicit_beyond_r(blob)
     if beyond_r:
         raise AUPGateError(
@@ -396,20 +395,58 @@ def gate_imagine_prompt(
         )
 
 
+_STILL_SOURCE_TYPES = frozenset({"reference_frame", "still", "image", "i2v"})
+_STILL_EXTEND_MODES = frozenset({"reference_to_video", "image_to_video", "i2v"})
+
+
+def nsfw_extension_is_still_ref(source_type: str = "", extend_mode: str = "") -> bool:
+    st = str(source_type or "").strip().lower()
+    mode = str(extend_mode or "").strip().lower()
+    return st in _STILL_SOURCE_TYPES or mode in _STILL_EXTEND_MODES
+
+
+def gate_nsfw_extension_text(
+    *parts: Any,
+    source_type: str = "",
+    extend_mode: str = "",
+) -> None:
+    """Attestation + R-rated text gate; fail-closed on intimate still-ref (nudify)."""
+    require_attestation()
+    blob = "\n".join(str(p).strip() for p in parts if p)
+    still = nsfw_extension_is_still_ref(source_type, extend_mode)
+    gate_imagine_prompt(blob, nsfw=True, has_reference_image=still)
+
+
+_DNA_SCAN_KEYS = (
+    "character_name",
+    "core_identity",
+    "facial_dna",
+    "hair_grooming",
+    "clothing_style",
+    "movement_posture",
+    "emotional_baseline",
+    "motion_dna",
+    "nsfw_notes",
+    "subject_kind",
+    "key_consistency_anchors",
+)
+
+
+def _dna_scan_blob(dna: dict[str, Any]) -> str:
+    """Same fields Imagine prompt blocks emit, plus nested inject/wardrobe."""
+    parts: list[Any] = [dna.get(key) for key in _DNA_SCAN_KEYS]
+    parts.append(dna.get("prompt_injection"))
+    parts.append(dna.get("wardrobe_lock"))
+    return _join_fields(
+        _flatten_planning_value(item) for item in parts if item not in (None, "")
+    )
+
+
 def _dna_is_intimate(dna: dict[str, Any]) -> bool:
     notes = str(dna.get("nsfw_notes") or "")
     if notes.strip():
         return True
-    return is_intimate_text(
-        _join_fields(
-            [
-                dna.get("core_identity"),
-                dna.get("clothing_style"),
-                dna.get("nsfw_notes"),
-                dna.get("character_name"),
-            ]
-        )
-    )
+    return is_intimate_text(_dna_scan_blob(dna))
 
 
 def _dna_has_reference(dna: dict[str, Any]) -> bool:
@@ -421,16 +458,7 @@ def _dna_has_reference(dna: dict[str, Any]) -> bool:
 
 
 def gate_dna(dna: dict[str, Any]) -> None:
-    blob = _join_fields(
-        [
-            dna.get("character_name"),
-            dna.get("core_identity"),
-            dna.get("facial_dna"),
-            dna.get("nsfw_notes"),
-            dna.get("subject_kind"),
-            dna.get("key_consistency_anchors"),
-        ]
-    )
+    blob = _dna_scan_blob(dna)
     gate_text(blob, nsfw=_dna_is_intimate(dna))
     kind = str(dna.get("subject_kind") or "unspecified").strip().lower()
     if kind and kind not in ALLOWED_SUBJECT_KINDS:

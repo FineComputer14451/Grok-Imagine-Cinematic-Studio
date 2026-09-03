@@ -317,15 +317,10 @@ def _core_content(
         core["audio_momentum_vector"] = subject["audio_momentum_vector"]
     if subject.get("dna_inject"):
         core["dna_inject"] = subject["dna_inject"]
-    has_ref = bool(
-        (core.get("reference_hints") or [])
-        or subject.get("reference_image_id")
-        or subject.get("reference_image_url")
-        or subject.get("has_reference")
-        or subject.get("has_ref")
-    )
-    merged = {**subject, **core}
-    gate_planning_subject(merged, has_reference_image=has_ref)
+    for key in ("reference_image_id", "reference_image_url", "has_reference", "has_ref"):
+        val = subject.get(key)
+        if val:
+            core[key] = val
     return core
 
 

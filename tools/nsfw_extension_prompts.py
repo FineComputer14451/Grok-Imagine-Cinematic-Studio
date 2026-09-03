@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from aup_gate import gate_nsfw_extension_text
 from sequence_chain import DEFAULT_PIPELINE, build_extend_prompt
 
 from nsfw_extension_config import (
@@ -130,7 +131,12 @@ def build_nsfw_clip_prompt(
             f"Reference anchor: {ext['reference_description']}",
             "reference_image_fidelity=high",
         ]
-    return "\n".join(lines)
+    prompt = "\n".join(lines)
+    gate_nsfw_extension_text(
+        prompt,
+        source_type=str(ext.get("source_type") or ""),
+    )
+    return prompt
 
 
 def build_nsfw_extend_prompt(
@@ -174,7 +180,12 @@ def build_nsfw_extend_prompt(
         "intimacy_physics_state: continue weight transfer and skin deformation from recap",
         "post_scene_state: update clothing displacement and body position for next handoff",
     ]
-    return base + "\n".join(extra)
+    prompt = base + "\n".join(extra)
+    gate_nsfw_extension_text(
+        prompt,
+        source_type=str(ext.get("source_type") or ""),
+    )
+    return prompt
 
 
 def default_recap_for_beat(beat: dict[str, Any], ref: str) -> str:

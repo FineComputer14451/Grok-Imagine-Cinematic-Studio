@@ -16,7 +16,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from aup_gate import gate_imagine_prompt, require_attestation
+from aup_gate import gate_nsfw_extension_text, require_attestation
 from nsfw_orchestrator import estimate_shot_cost
 from quota_optimizer import estimate_sequence_cost
 from sequence_chain import create_clip, save_sequence
@@ -70,26 +70,6 @@ __all__ = [
 ]
 
 
-def _still_ref(source_type: str = "", extend_mode: str = "") -> bool:
-    st = str(source_type or "").strip().lower()
-    mode = str(extend_mode or "").strip().lower()
-    if st in ("reference_frame", "still", "image", "i2v"):
-        return True
-    return mode in ("reference_to_video", "image_to_video", "i2v")
-
-
-def _gate_nsfw_extension_text(
-    *parts: Any,
-    source_type: str = "",
-    extend_mode: str = "",
-) -> None:
-    """Attestation + R-rated text gate; fail-closed on intimate still-ref (nudify)."""
-    require_attestation()
-    blob = "\n".join(str(p).strip() for p in parts if p)
-    still = _still_ref(source_type, extend_mode)
-    gate_imagine_prompt(blob, nsfw=True, has_reference_image=still)
-
-
 def plan_nsfw_extension(
     sequence_name: str,
     *,
@@ -107,7 +87,7 @@ def plan_nsfw_extension(
     Plan full NSFW extension from reference frame or short clip to 30–120+ seconds.
     Returns sequence with pre-built clips, prompt chain, and cost estimate.
     """
-    _gate_nsfw_extension_text(
+    gate_nsfw_extension_text(
         sequence_name,
         reference_description,
         tension_profile,
@@ -209,7 +189,7 @@ def plan_nsfw_extension(
     seq["clips"] = clips
     seq["prompt_chain"] = prompt_chain
     for item in prompt_chain:
-        _gate_nsfw_extension_text(
+        gate_nsfw_extension_text(
             item.get("prompt") or "",
             source_type=source_type,
             extend_mode=str(item.get("extend_mode") or ""),
@@ -230,7 +210,7 @@ def build_prompt_chain(seq: dict[str, Any]) -> list[dict[str, Any]]:
     source_type = str((seq.get("nsfw_extension") or {}).get("source_type") or "")
     if seq.get("prompt_chain"):
         for item in seq["prompt_chain"]:
-            _gate_nsfw_extension_text(
+            gate_nsfw_extension_text(
                 item.get("prompt") or "",
                 source_type=source_type,
                 extend_mode=str(item.get("extend_mode") or ""),
@@ -254,7 +234,7 @@ def build_prompt_chain(seq: dict[str, Any]) -> list[dict[str, Any]]:
             "camera_pacing": clip.get("camera_pacing") or suggest_camera_pacing(beat),
             "extend_instructions": clip.get("extend_instructions", []),
         })
-        _gate_nsfw_extension_text(
+        gate_nsfw_extension_text(
             prompt or "",
             source_type=source_type,
             extend_mode=mode,
@@ -264,7 +244,16 @@ def build_prompt_chain(seq: dict[str, Any]) -> list[dict[str, Any]]:
 
 def nsfw_sequence_to_markdown(seq: dict[str, Any]) -> str:
     """Export full NSFW extension plan with prompt chain."""
-    ext = seq.get("nsfw_extension", {})
+    ext = seq.get("nsfw_extension") or {}
+    gate_nsfw_extension_text(
+        seq.get("sequence_name"),
+        ext.get("reference_description"),
+        ext.get("color_grade"),
+        ext.get("atmosphere"),
+        ext.get("tension_profile"),
+        source_type=str(ext.get("source_type") or ""),
+        extend_mode=str(ext.get("extend_mode") or ""),
+    )
     lines = [
         f"# NSFW Sequence Extension — {seq['sequence_name']}",
         "",

@@ -12,7 +12,14 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
-from aup_gate import AUP_URL, AUPGateError, gate_nsfw_batch, require_attestation, write_attestation
+from aup_gate import (
+    AUP_URL,
+    AUPGateError,
+    gate_nsfw_batch,
+    gate_nsfw_extension_text,
+    require_attestation,
+    write_attestation,
+)
 from models import DEFAULT_IMAGINE_VIDEO_MODEL
 from batch_runner import execute_nsfw_shot
 from quality_pass_scheduler import apply_quality_pass_promotion, get_pending_quality_passes
@@ -33,7 +40,6 @@ from nsfw_orchestrator import (
 )
 from nsfw_sequence_extender import (
     TENSION_PROFILES,
-    _gate_nsfw_extension_text,
     build_nsfw_extend_prompt,
     build_prompt_chain,
     evaluate_nsfw_chain_qa,
@@ -575,7 +581,7 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         if idx == 0:
             prompt = target.get("prompt", "")
             try:
-                _gate_nsfw_extension_text(
+                gate_nsfw_extension_text(
                     prompt or "",
                     source_type=source_type,
                     extend_mode=str(target.get("extend_mode") or ""),
@@ -588,13 +594,8 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
 
         prev = seq["clips"][idx - 1]
         beat = target.get("nsfw_beat", {"beat_summary": "Continue intimate sequence", "phase": "contact"})
-        prompt = build_nsfw_extend_prompt(seq, prev, beat)
         try:
-            _gate_nsfw_extension_text(
-                prompt or "",
-                source_type=source_type,
-                extend_mode=str(target.get("extend_mode") or "extend_from_last_frame"),
-            )
+            prompt = build_nsfw_extend_prompt(seq, prev, beat)
         except AUPGateError as exc:
             console.print(f"[red]{exc}[/red]")
             raise typer.Exit(1) from exc
@@ -669,8 +670,13 @@ def register(nsfw_app: typer.Typer, extend_app: typer.Typer) -> None:
         output: str = typer.Option(None, "--output", "-o"),
     ):
         """Export full extension plan markdown."""
+        _require_aup()
         seq = require_sequence(sequence_name)
-        md = nsfw_sequence_to_markdown(seq)
+        try:
+            md = nsfw_sequence_to_markdown(seq)
+        except AUPGateError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
         out = output or f"sequences/{seq['slug']}/extension_plan.md"
         Path(out).write_text(md)
         console.print(f"[green]Exported:[/green] {out}")

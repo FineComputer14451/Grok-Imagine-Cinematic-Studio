@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from aup_gate import gate_dna, gate_imagine_prompt
+from aup_gate import AUPGateError, gate_dna, gate_imagine_prompt
 from models import build_video_pipeline_spec
 from project_state import load_project_state, save_project_state
 from studio_paths import CHARACTERS_DIR
@@ -418,6 +418,20 @@ def list_characters(*, characters_root: Path | None = None) -> list[dict[str, An
                 "slug": data["slug"],
                 "version": data.get("version", 1),
                 "status": data.get("identity_lock_status", "pending"),
+                "path": str(dna_file),
+            })
+        except AUPGateError:
+            try:
+                raw = json.loads(dna_file.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            if not isinstance(raw, dict):
+                continue
+            results.append({
+                "name": raw.get("character_name") or dna_file.parent.name,
+                "slug": raw.get("slug") or dna_file.parent.name,
+                "version": raw.get("version", 1),
+                "status": "aup_blocked",
                 "path": str(dna_file),
             })
         except (json.JSONDecodeError, ValueError):
