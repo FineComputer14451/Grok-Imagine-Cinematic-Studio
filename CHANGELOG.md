@@ -11,6 +11,8 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **React NSFW opt-in** — four AUP checkboxes + server attestation required; a single Settings checkbox no longer unlocks the NSFW nav.
 
 ### Fixed
+- **AUP on DNA emit** — `load_character_dna`, prompt blocks, markdown, handoff packets, and `inject_into_prompt` run `gate_dna` / `gate_imagine_prompt`. `dna init --output` no longer writes JSON without the gate.
+- **AUP on NSFW still-ref extend** — `plan_nsfw_extension` default is `short_clip`; `reference_frame` / i2v from a source still is fail-closed (`gate_imagine_prompt(..., has_reference_image=True)`).
 - **AUP on video edit/extend** — `submit_video_edit` and `submit_video_extension` now run the same fail-closed Imagine prompt gate as generate/edit/i2v (CSAM always; attestation when intimate). Sequence extend and `imagine submit` video_edit/video_extend can no longer skip AUP.
 
 ## [3.11.1] - 2026-09-02

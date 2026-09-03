@@ -27,6 +27,13 @@ from aup_gate import (  # noqa: E402
     scan_csam,
     write_attestation,
 )
+from character_dna import (  # noqa: E402
+    create_dna_scaffold,
+    inject_into_prompt,
+    load_character_dna,
+    save_character_dna,
+)
+from nsfw_sequence_extender import plan_nsfw_extension  # noqa: E402
 
 
 def _attest_env() -> tuple[str, str]:
@@ -416,6 +423,97 @@ def test_403_does_not_failover_regions() -> None:
     assert len(calls) == 1
 
 
+def test_inject_into_prompt_csam_refused() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        dna = create_dna_scaffold(
+            "Elena Voss",
+            core_identity="detective",
+            facial_dna="grey eyes",
+        )
+        save_character_dna(dna, characters_root=root)
+        try:
+            inject_into_prompt(
+                "underage character study",
+                "Elena Voss",
+                characters_root=root,
+            )
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            assert "minor-coded" in str(exc) or "CSAM" in str(exc)
+
+
+def test_load_intimate_dna_requires_attestation() -> None:
+    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            dna = create_dna_scaffold(
+                "Mara",
+                core_identity="adult fictional lead",
+                facial_dna="sharp cheekbones",
+                nsfw_notes="implied intimacy continuity",
+                subject_kind="imaginary_adult",
+            )
+            path = Path(tmp) / "dna.json"
+            path.write_text(json.dumps(dna), encoding="utf-8")
+            try:
+                load_character_dna(path)
+                raise AssertionError("expected AUPGateError")
+            except AUPGateError as exc:
+                assert "attest" in str(exc)
+    finally:
+        os.environ.pop(ATTESTATION_ENV, None)
+
+
+def test_dna_init_output_gates_intimate() -> None:
+    os.environ[ATTESTATION_ENV] = "/nonexistent-aup-attestation.json"
+    try:
+        dna = create_dna_scaffold(
+            "Mara",
+            core_identity="adult fictional lead",
+            facial_dna="sharp cheekbones",
+            nsfw_notes="implied intimacy continuity",
+            subject_kind="unspecified",
+        )
+        try:
+            gate_dna(dna)
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            assert "imaginary_adult" in str(exc) or "attest" in str(exc)
+    finally:
+        os.environ.pop(ATTESTATION_ENV, None)
+
+
+def test_plan_nsfw_still_ref_refused_when_attested() -> None:
+    path, _ = _attest_env()
+    try:
+        try:
+            plan_nsfw_extension(
+                "Still Ref Probe",
+                target_duration=60,
+                source_type="reference_frame",
+            )
+            raise AssertionError("expected AUPGateError")
+        except AUPGateError as exc:
+            lowered = str(exc).lower()
+            assert "nudify" in lowered or "source still" in lowered
+    finally:
+        _cleanup(path)
+
+
+def test_plan_nsfw_short_clip_attested_allowed() -> None:
+    path, _ = _attest_env()
+    try:
+        seq = plan_nsfw_extension(
+            "Clip Continue",
+            target_duration=60,
+            source_type="short_clip",
+        )
+        assert seq.get("prompt_chain")
+    finally:
+        _cleanup(path)
+
+
 def test_planning_packet_csam_refused() -> None:
     try:
         gate_planning_packet("underage character study")
@@ -546,6 +644,11 @@ if __name__ == "__main__":
     test_403_429_not_in_failover()
     test_execute_nsfw_shot_requires_attestation()
     test_403_does_not_failover_regions()
+    test_inject_into_prompt_csam_refused()
+    test_load_intimate_dna_requires_attestation()
+    test_dna_init_output_gates_intimate()
+    test_plan_nsfw_still_ref_refused_when_attested()
+    test_plan_nsfw_short_clip_attested_allowed()
     test_planning_packet_csam_refused()
     test_bridge_intimate_plus_reference_refused()
     test_handoff_validate_csam_fail_closed()

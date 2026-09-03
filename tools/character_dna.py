@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from aup_gate import gate_dna
+from aup_gate import gate_dna, gate_imagine_prompt
 from models import build_video_pipeline_spec
 from project_state import load_project_state, save_project_state
 from studio_paths import CHARACTERS_DIR
@@ -105,6 +105,7 @@ def validate_dna(dna: dict[str, Any]) -> list[str]:
 
 def build_prompt_blocks(dna: dict[str, Any]) -> dict[str, str]:
     """Build prompt-injection blocks for Imagine Prompt Master."""
+    gate_dna(dna)
     name = dna["character_name"]
     variable = f"[CHARACTER_DNA:{name.upper().replace(' ', '_')}_v{dna.get('version', 1)}]"
 
@@ -181,6 +182,7 @@ def build_prompt_blocks(dna: dict[str, Any]) -> dict[str, str]:
 
 def dna_to_markdown(dna: dict[str, Any], prompts: dict[str, str] | None = None) -> str:
     """Render DNA profile as Markdown."""
+    gate_dna(dna)
     prompts = prompts or build_prompt_blocks(dna)
     anchors = dna.get("key_consistency_anchors", [])
     anchor_lines = "\n".join(f"- {a}" for a in anchors) if anchors else "- (none yet)"
@@ -272,6 +274,7 @@ def dna_to_markdown(dna: dict[str, Any], prompts: dict[str, str] | None = None) 
 
 def build_handoff_packet(dna: dict[str, Any]) -> dict[str, Any]:
     """Build Identity Lock Handoff Packet from Character DNA Extractor output."""
+    gate_dna(dna)
     prompts = build_prompt_blocks(dna)
     packet: dict[str, Any] = {
         "packet_type": "identity_lock_handoff",
@@ -334,6 +337,7 @@ def load_character_dna(path: Path) -> dict[str, Any]:
     issues = validate_dna(data)
     if issues:
         raise ValueError("; ".join(issues))
+    gate_dna(data)
     return data
 
 
@@ -439,4 +443,8 @@ def inject_into_prompt(
     dna = load_character_dna(dna_path)
     blocks = build_prompt_blocks(dna)
     injection = blocks[mode]
-    return f"{injection}\n\n---\n\n{base_prompt.strip()}"
+    combined = f"{injection}\n\n---\n\n{base_prompt.strip()}"
+    has_ref = bool(dna.get("reference_image_ids"))
+    gate_imagine_prompt(base_prompt or "", has_reference_image=has_ref)
+    gate_imagine_prompt(combined, has_reference_image=has_ref)
+    return combined

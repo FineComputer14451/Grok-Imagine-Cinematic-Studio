@@ -205,10 +205,10 @@ cinematic-studio sfw --help
 cinematic-studio sfw plan "Hero stills"
 cinematic-studio nsfw --help
 cinematic-studio nsfw attest --i-am-18 --imaginary-adults --not-a-real-person --acknowledge-aup
-cinematic-studio nsfw extend plan
+cinematic-studio nsfw extend plan "Title" --source short_clip
 ```
 
-NSFW plan / run / session / **extend** (`plan`, `chain`, `prompt`, `camera`, `qa`) require a local `nsfw attest` (18+ / imaginary adults / not a real person / AUP). Policy: https://x.ai/legal/acceptable-use-policy. `generate-prompt` and Imagine handoff packets are scanned the same way.
+NSFW plan / run / session / **extend** (`plan`, `chain`, `prompt`, `camera`, `qa`) require a local `nsfw attest` (18+ / imaginary adults / not a real person / AUP). Intimate extend default is `--source short_clip`; `--source reference_frame` is fail-closed (no still-to-video / nudify). Policy: https://x.ai/legal/acceptable-use-policy. `generate-prompt`, DNA inject/init, and Imagine handoff packets are scanned the same way.
 
 ### Wave A multi-agent packets
 

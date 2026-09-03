@@ -7,6 +7,7 @@ from typing import Any
 
 import typer
 
+from aup_gate import AUPGateError
 from character_dna import find_character_dna, load_character_dna
 from models import normalize_chat_model
 from project_state import load_project_state
@@ -39,7 +40,11 @@ def require_character_dna_path(name: str) -> Path:
 
 
 def require_character_dna(name: str) -> dict[str, Any]:
-    return load_character_dna(require_character_dna_path(name))
+    try:
+        return load_character_dna(require_character_dna_path(name))
+    except AUPGateError as exc:
+        console.print(f"[red]{exc}[/red]")
+        raise typer.Exit(1) from exc
 
 
 def require_sequence_bundle(name: str) -> tuple[dict[str, Any], Path]:

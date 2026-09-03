@@ -50,7 +50,11 @@ def test_tension_profiles_available() -> None:
 def test_plan_nsfw_extension_builds_clips() -> None:
     path = _attest_env()
     try:
-        seq = plan_nsfw_extension("Module Split Test", target_duration=60)
+        seq = plan_nsfw_extension(
+            "Module Split Test",
+            target_duration=60,
+            source_type="short_clip",
+        )
         assert len(seq["clips"]) >= 3
         assert seq["prompt_chain"]
         assert seq["cost_estimate"]

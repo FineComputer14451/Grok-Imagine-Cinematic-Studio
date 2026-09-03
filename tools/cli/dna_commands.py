@@ -11,6 +11,7 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
+from aup_gate import AUPGateError, gate_dna
 from character_dna import (
     PROMPT_MODES,
     build_handoff_packet,
@@ -53,6 +54,11 @@ def register(app: typer.Typer) -> None:
             key_anchors=anchor or [],
             source="cli-init",
         )
+        try:
+            gate_dna(dna)
+        except AUPGateError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
         if output:
             out_path = Path(output)
             out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -146,9 +152,9 @@ def register(app: typer.Typer) -> None:
         except FileNotFoundError:
             console.print(f"[red]No DNA profile found for:[/red] {name}")
             raise typer.Exit(1)
-        except ValueError as exc:
+        except (ValueError, AUPGateError) as exc:
             console.print(f"[red]{exc}[/red]")
-            raise typer.Exit(1)
+            raise typer.Exit(1) from exc
         if output:
             Path(output).write_text(result)
             console.print(f"[green]✅ Injected prompt saved:[/green] {output}")
