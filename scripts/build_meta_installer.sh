@@ -19,7 +19,8 @@ if [[ "$OUTPUT" != /* ]]; then
     mkdir -p "$(dirname "$OUTPUT")"
     OUTPUT="$(cd "$(dirname "$OUTPUT")" && pwd)/$(basename "$OUTPUT")"
 fi
-STAGING="/tmp/cinematic-meta-installer-staging-$$"
+TMPDIR="${TMPDIR:-/tmp}"
+STAGING="$TMPDIR/cinematic-meta-installer-staging-$$"
 
 META_SKILL_SRC="$REPO_ROOT/.grok/skills/$SKILL_NAME"
 META_SKILL_DST="$STAGING/.grok/skills/$SKILL_NAME"
@@ -65,10 +66,7 @@ chmod +x "$STAGING/bootstrap.sh"
 chmod +x "$META_SKILL_DST/scripts/install.sh" 2>/dev/null || true
 
 rm -f "$OUTPUT"
-(
-    cd "$STAGING"
-    zip -qr "$OUTPUT" .
-)
+cinematic_studio_zip_dir "$STAGING" "$OUTPUT"
 
 echo "✅ Built meta-installer bundle: $OUTPUT"
 echo "   Version: v${VERSION}"

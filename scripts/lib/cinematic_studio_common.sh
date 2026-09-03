@@ -1168,3 +1168,25 @@ cinematic_studio_declutter() {
     fi
     echo ""
 }
+
+# Zip a staging directory to $2. Uses `zip` when present, else Python (Termux).
+cinematic_studio_zip_dir() {
+    local staging="$1"
+    local output="$2"
+    if command -v zip >/dev/null 2>&1; then
+        (cd "$staging" && zip -qr "$output" .)
+        return
+    fi
+    python3 - "$staging" "$output" <<'PY'
+import sys
+from pathlib import Path
+from zipfile import ZIP_DEFLATED, ZipFile
+
+staging = Path(sys.argv[1])
+output = Path(sys.argv[2])
+with ZipFile(output, "w", ZIP_DEFLATED) as zf:
+    for path in staging.rglob("*"):
+        if path.is_file():
+            zf.write(path, path.relative_to(staging).as_posix())
+PY
+}

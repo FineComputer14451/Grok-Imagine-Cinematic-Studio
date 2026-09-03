@@ -10,12 +10,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 VERSION="$(tr -d '[:space:]' < "$REPO_ROOT/VERSION")"
 ZIP_NAME="grok-imagine-cinematic-studio-skills-install-v${VERSION}.zip"
-OUTPUT="${1:-/tmp/$ZIP_NAME}"
+TMPDIR="${TMPDIR:-/tmp}"
+OUTPUT="${1:-$TMPDIR/$ZIP_NAME}"
 if [[ "$OUTPUT" != /* ]]; then
     mkdir -p "$(dirname "$OUTPUT")"
     OUTPUT="$(cd "$(dirname "$OUTPUT")" && pwd)/$(basename "$OUTPUT")"
 fi
-STAGING="/tmp/cinematic-bundle-staging-$$"
+STAGING="$TMPDIR/cinematic-bundle-staging-$$"
 
 # shellcheck source=lib/cinematic_studio_common.sh
 source "$SCRIPT_DIR/lib/cinematic_studio_common.sh"
@@ -84,10 +85,7 @@ if [[ ! -f "$STAGING/studio_core/services/dashboard.py" ]]; then
 fi
 
 rm -f "$OUTPUT"
-(
-    cd "$STAGING"
-    zip -qr "$OUTPUT" .
-)
+cinematic_studio_zip_dir "$STAGING" "$OUTPUT"
 
 echo "✅ Built release bundle: $OUTPUT"
 echo "   Version: v${VERSION}"

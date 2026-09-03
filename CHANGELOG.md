@@ -4,6 +4,9 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Fixed
+- **Release zip staging** — `build_release_bundle.sh` and `build_meta_installer.sh` use `TMPDIR` and fall back to Python `zipfile` when `zip` is missing (Termux).
+
 ## [3.11.3] - 2026-09-03
 
 ### Changed
