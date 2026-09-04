@@ -12,7 +12,9 @@ from rich.table import Table
 
 from imagine_client import (
     ImagineAPIError,
+    build_storage_options,
     edit_image,
+    extract_file_id,
     extract_image_url,
     extract_video_url,
     generate_image,
@@ -115,6 +117,21 @@ def register(app: typer.Typer) -> None:
         ),
         sequence: str = typer.Option(None, "--sequence", help="Link to sequence slug"),
         clip: str = typer.Option(None, "--clip", help="Link to clip ID"),
+        store_as: str = typer.Option(
+            None,
+            "--store-as",
+            help="Persist output to Files API (filename required, e.g. plate.png)",
+        ),
+        store_expires_after: int = typer.Option(
+            None,
+            "--store-expires-after",
+            help="Files TTL seconds (3600–2592000). Omit = no expiry.",
+        ),
+        public_url: bool = typer.Option(
+            False,
+            "--public-url",
+            help="Also create a shareable Files public URL",
+        ),
         dry_run: bool = typer.Option(False, "--dry-run", help="Force mock response"),
     ):
         """Submit an Imagine generation job and track it in the job queue."""
@@ -145,6 +162,15 @@ def register(app: typer.Typer) -> None:
             for warning in img_warnings:
                 console.print(f"[yellow]{warning}[/yellow]")
         slug = img_model if job_type in ("image", "image_edit") else vid_model
+        try:
+            storage = build_storage_options(
+                store_as,
+                expires_after=store_expires_after,
+                public_url=True if public_url else None,
+            )
+        except ImagineAPIError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
 
         job = create_job(
             job_type,
@@ -158,6 +184,7 @@ def register(app: typer.Typer) -> None:
         try:
             force_dry = dry_run or is_dry_run()
             request_id = None
+            stored_id = None
             if job_type == "image":
                 resp = generate_image(
                     prompt,
@@ -165,10 +192,14 @@ def register(app: typer.Typer) -> None:
                     aspect_ratio=aspect_ratio,
                     resolution=resolution,
                     quality=quality_sent,
+                    storage_options=storage,
                     dry_run=force_dry,
                 )
                 url = extract_image_url(resp)
-                transition_job(job["job_id"], "approved", result_url=url)
+                stored_id = extract_file_id(resp)
+                transition_job(
+                    job["job_id"], "approved", result_url=url, result_file_id=stored_id
+                )
             elif job_type == "image_edit":
                 if not image_url and not file_id:
                     console.print("[red]--image-url or --file-id required for image_edit[/red]")
@@ -185,10 +216,14 @@ def register(app: typer.Typer) -> None:
                     quality=quality_sent,
                     aspect_ratio=aspect_ratio,
                     resolution=resolution,
+                    storage_options=storage,
                     dry_run=force_dry,
                 )
                 url = extract_image_url(resp)
-                transition_job(job["job_id"], "approved", result_url=url)
+                stored_id = extract_file_id(resp)
+                transition_job(
+                    job["job_id"], "approved", result_url=url, result_file_id=stored_id
+                )
             elif job_type == "video_edit":
                 if not video_url and not file_id:
                     console.print("[red]--video-url or --file-id required for video_edit[/red]")
@@ -198,14 +233,23 @@ def register(app: typer.Typer) -> None:
                     video_url=video_url,
                     video_file_id=file_id,
                     model=vid_model,
+                    storage_options=storage,
                     dry_run=force_dry,
                 )
                 request_id = resp.get("request_id")
                 url = extract_video_url(resp)
+                stored_id = extract_file_id(resp)
                 if resp.get("status") != "done" and not force_dry:
                     result = poll_video_job(request_id)
                     url = extract_video_url(result)
-                transition_job(job["job_id"], "qa_pending", request_id=request_id, result_url=url)
+                    stored_id = extract_file_id(result) or stored_id
+                transition_job(
+                    job["job_id"],
+                    "qa_pending",
+                    request_id=request_id,
+                    result_url=url,
+                    result_file_id=stored_id,
+                )
             elif job_type == "video_extend":
                 if not video_url and not file_id:
                     console.print("[red]--video-url or --file-id required for video_extend[/red]")
@@ -216,14 +260,23 @@ def register(app: typer.Typer) -> None:
                     video_file_id=file_id,
                     model=vid_model,
                     duration=duration,
+                    storage_options=storage,
                     dry_run=force_dry,
                 )
                 request_id = resp.get("request_id")
                 url = extract_video_url(resp)
+                stored_id = extract_file_id(resp)
                 if resp.get("status") != "done" and not force_dry:
                     result = poll_video_job(request_id)
                     url = extract_video_url(result)
-                transition_job(job["job_id"], "qa_pending", request_id=request_id, result_url=url)
+                    stored_id = extract_file_id(result) or stored_id
+                transition_job(
+                    job["job_id"],
+                    "qa_pending",
+                    request_id=request_id,
+                    result_url=url,
+                    result_file_id=stored_id,
+                )
             else:
                 # video (t2v/i2v) or reference_to_video
                 resp = submit_video_generation(
@@ -236,16 +289,31 @@ def register(app: typer.Typer) -> None:
                     reference_audios=voices,
                     aspect_ratio=aspect_ratio,
                     resolution=resolution,
+                    storage_options=storage,
                     dry_run=force_dry,
                 )
                 request_id = resp.get("request_id")
                 if resp.get("status") == "done" or force_dry:
                     url = extract_video_url(resp)
-                    transition_job(job["job_id"], "qa_pending", request_id=request_id, result_url=url)
+                    stored_id = extract_file_id(resp)
+                    transition_job(
+                        job["job_id"],
+                        "qa_pending",
+                        request_id=request_id,
+                        result_url=url,
+                        result_file_id=stored_id,
+                    )
                 else:
                     result = poll_video_job(request_id)
                     url = extract_video_url(result)
-                    transition_job(job["job_id"], "qa_pending", request_id=request_id, result_url=url)
+                    stored_id = extract_file_id(result)
+                    transition_job(
+                        job["job_id"],
+                        "qa_pending",
+                        request_id=request_id,
+                        result_url=url,
+                        result_file_id=stored_id,
+                    )
 
             updated = get_job(job["job_id"])
             mode = "[yellow]DRY-RUN[/yellow]" if updated.get("dry_run") else "[green]LIVE[/green]"
@@ -255,16 +323,23 @@ def register(app: typer.Typer) -> None:
             model_line = f"Model: {slug}"
             if served and served != slug:
                 model_line += f"\nServed: {served}"
+            fid_line = updated.get("result_file_id") or "—"
             console.print(Panel(
                 f"Job: {job['job_id']}\n"
                 f"Type: {job_type}\n"
                 f"Mode: {mode}\n"
                 f"{model_line}\n"
                 f"Status: {updated.get('status')}\n"
-                f"URL: {updated.get('result_url', '—')}",
+                f"URL: {updated.get('result_url', '—')}\n"
+                f"file_id: {fid_line}",
                 title="Imagine Job Submitted",
                 border_style="cyan",
             ))
+            if updated.get("result_file_id"):
+                console.print(
+                    "[dim]Next:[/dim] cinematic-studio imagine submit image_edit "
+                    f'-p "…" --file-id {updated["result_file_id"]}'
+                )
         except ImagineAPIError as exc:
             transition_job(job["job_id"], "failed", error=str(exc))
             console.print(f"[red]Failed:[/red] {exc}")

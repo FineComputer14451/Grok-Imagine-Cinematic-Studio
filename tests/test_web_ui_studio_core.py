@@ -39,6 +39,17 @@ def test_imagine_submit_argv_prefers_file_id() -> None:
     assert "--file-id" in argv and "file_abc" in argv
     assert "--image-url" not in argv
     assert "--dry-run" in argv
+    stored = imagine_submit_argv(
+        "image",
+        "Skyline",
+        store_as="city.png",
+        store_expires_after=86400,
+        public_url=True,
+        dry_run=True,
+    )
+    assert "--store-as" in stored and "city.png" in stored
+    assert "--store-expires-after" in stored and "86400" in stored
+    assert "--public-url" in stored
     video = imagine_submit_argv(
         "video_extend",
         "Continue",

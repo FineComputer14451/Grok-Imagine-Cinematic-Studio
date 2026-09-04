@@ -168,6 +168,48 @@ def _image_source(*, url: str | None = None, file_id: str | None = None) -> dict
     return obj
 
 
+def build_storage_options(
+    filename: str | None,
+    *,
+    expires_after: int | None = None,
+    public_url: bool | dict[str, Any] | None = None,
+) -> dict[str, Any] | None:
+    """Build Imagine ``storage_options``. ``filename`` is required when storing."""
+    name = (filename or "").strip()
+    wants_store = bool(name) or expires_after is not None or bool(public_url)
+    if not wants_store:
+        return None
+    if not name:
+        raise ImagineAPIError(
+            "storage_options.filename is required when persisting Imagine output to Files"
+        )
+    from files_client import validate_expires_after
+
+    opts: dict[str, Any] = {"filename": name}
+    ttl = validate_expires_after(expires_after)
+    if ttl is not None:
+        opts["expires_after"] = ttl
+    if public_url is True:
+        opts["public_url"] = True
+    elif isinstance(public_url, dict) and public_url:
+        opts["public_url"] = public_url
+    return opts
+
+
+def _apply_storage(payload: dict[str, Any], storage_options: dict[str, Any] | None) -> None:
+    if storage_options:
+        payload["storage_options"] = storage_options
+
+
+def _dry_file_output(storage_options: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not storage_options:
+        return None
+    return {
+        "file_id": f"file_dry_{uuid.uuid4().hex[:12]}",
+        "filename": storage_options.get("filename"),
+    }
+
+
 def _with_request_model(
     result: dict[str, Any],
     *,
@@ -191,6 +233,7 @@ def generate_image(
     aspect_ratio: str | None = None,
     resolution: str | None = None,
     quality: str | None = None,
+    storage_options: dict[str, Any] | None = None,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Generate image(s) from a text prompt."""
@@ -207,11 +250,14 @@ def generate_image(
         payload["resolution"] = resolution
     if quality_sent:
         payload["quality"] = quality_sent
+    _apply_storage(payload, storage_options)
     if _use_dry_run(dry_run):
+        fo = _dry_file_output(storage_options)
         images = [
             {
                 "url": f"https://dry-run.x.ai/images/{_mock_request_id('img')}.png",
                 "revised_prompt": prompt,
+                **({"file_output": fo} if fo else {}),
             }
             for _ in range(max(1, n))
         ]
@@ -241,6 +287,7 @@ def edit_image(
     quality: str | None = None,
     aspect_ratio: str | None = None,
     resolution: str | None = None,
+    storage_options: dict[str, Any] | None = None,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Edit a source image with a natural-language prompt (up to 5 refs on Image 2.0)."""
@@ -273,14 +320,19 @@ def edit_image(
         payload["aspect_ratio"] = aspect_ratio
     if resolution:
         payload["resolution"] = resolution
+    _apply_storage(payload, storage_options)
     if _use_dry_run(dry_run):
+        fo = _dry_file_output(storage_options)
+        data = [{"url": f"https://dry-run.x.ai/edits/{_mock_request_id('edit')}.png"}]
+        if fo:
+            data[0]["file_output"] = fo
         return _with_request_model(
             {
                 "dry_run": True,
                 "model": slug,
                 "mode": "image_edit",
                 "payload": payload,
-                "data": [{"url": f"https://dry-run.x.ai/edits/{_mock_request_id('edit')}.png"}],
+                "data": data,
             },
             slug=slug,
             warnings=warnings,
@@ -301,6 +353,7 @@ def submit_video_generation(
     reference_audios: list[str] | None = None,
     aspect_ratio: str | None = None,
     resolution: str | None = None,
+    storage_options: dict[str, Any] | None = None,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Start async text-to-video, image-to-video, or reference-to-video."""
@@ -343,9 +396,14 @@ def submit_video_generation(
         payload["aspect_ratio"] = aspect_ratio
     if resolution:
         payload["resolution"] = resolution
+    _apply_storage(payload, storage_options)
 
     if _use_dry_run(dry_run):
         rid = _mock_request_id("vid")
+        video: dict[str, Any] = {"url": f"https://dry-run.x.ai/videos/{rid}.mp4"}
+        fo = _dry_file_output(storage_options)
+        if fo:
+            video["file_output"] = fo
         return {
             "dry_run": True,
             "request_id": rid,
@@ -353,7 +411,7 @@ def submit_video_generation(
             "mode": mode,
             "status": "done",
             "payload": payload,
-            "video": {"url": f"https://dry-run.x.ai/videos/{rid}.mp4"},
+            "video": video,
         }
 
     result = _request("POST", "/videos/generations", payload=payload)
@@ -368,6 +426,7 @@ def submit_video_edit(
     video_url: str | None = None,
     video_file_id: str | None = None,
     model: str | None = None,
+    storage_options: dict[str, Any] | None = None,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Edit an existing clip (Video 1.0 only — 1.5 returns failed_precondition)."""
@@ -380,8 +439,13 @@ def submit_video_edit(
         "prompt": prompt,
         "video": _media_object(url=video_url, file_id=video_file_id),
     }
+    _apply_storage(payload, storage_options)
     if _use_dry_run(dry_run):
         rid = _mock_request_id("edt")
+        video: dict[str, Any] = {"url": f"https://dry-run.x.ai/videos/{rid}_edit.mp4"}
+        fo = _dry_file_output(storage_options)
+        if fo:
+            video["file_output"] = fo
         return {
             "dry_run": True,
             "request_id": rid,
@@ -389,7 +453,7 @@ def submit_video_edit(
             "mode": "video_edit",
             "status": "done",
             "payload": payload,
-            "video": {"url": f"https://dry-run.x.ai/videos/{rid}_edit.mp4"},
+            "video": video,
         }
     result = _request("POST", "/videos/edits", payload=payload)
     result["model"] = slug
@@ -404,6 +468,7 @@ def submit_video_extension(
     video_file_id: str | None = None,
     model: str | None = None,
     duration: int = 10,
+    storage_options: dict[str, Any] | None = None,
     dry_run: bool | None = None,
 ) -> dict[str, Any]:
     """Start async video extension from an existing clip (Video 1.0)."""
@@ -417,8 +482,13 @@ def submit_video_extension(
         "duration": duration,
         "video": _media_object(url=video_url, file_id=video_file_id),
     }
+    _apply_storage(payload, storage_options)
     if _use_dry_run(dry_run):
         rid = _mock_request_id("ext")
+        video: dict[str, Any] = {"url": f"https://dry-run.x.ai/videos/{rid}_extended.mp4"}
+        fo = _dry_file_output(storage_options)
+        if fo:
+            video["file_output"] = fo
         return {
             "dry_run": True,
             "request_id": rid,
@@ -426,7 +496,7 @@ def submit_video_extension(
             "mode": "video_extend",
             "status": "done",
             "payload": payload,
-            "video": {"url": f"https://dry-run.x.ai/videos/{rid}_extended.mp4"},
+            "video": video,
         }
 
     result = _request("POST", "/videos/extensions", payload=payload)
@@ -484,3 +554,21 @@ def extract_video_url(response: dict[str, Any]) -> str | None:
     if isinstance(video, dict):
         return video.get("url")
     return response.get("url")
+
+
+def extract_file_id(response: dict[str, Any]) -> str | None:
+    """Files API id from Imagine ``file_output`` (stills or completed video)."""
+    data = response.get("data") or []
+    if data and isinstance(data[0], dict):
+        fo = data[0].get("file_output")
+        if isinstance(fo, dict) and fo.get("file_id"):
+            return str(fo["file_id"])
+    video = response.get("video")
+    if isinstance(video, dict):
+        fo = video.get("file_output")
+        if isinstance(fo, dict) and fo.get("file_id"):
+            return str(fo["file_id"])
+    fo = response.get("file_output")
+    if isinstance(fo, dict) and fo.get("file_id"):
+        return str(fo["file_id"])
+    return None

@@ -114,6 +114,9 @@ def imagine_submit_argv(
     duration: int = 10,
     sequence: str | None = None,
     clip: str | None = None,
+    store_as: str | None = None,
+    store_expires_after: int | None = None,
+    public_url: bool = False,
     dry_run: bool = False,
 ) -> list[str]:
     """Build `imagine submit` argv. file_id wins over URL (API mutual exclusion)."""
@@ -134,6 +137,12 @@ def imagine_submit_argv(
         args.extend(["--sequence", sequence])
     if clip:
         args.extend(["--clip", clip])
+    if store_as:
+        args.extend(["--store-as", store_as])
+    if store_expires_after:
+        args.extend(["--store-expires-after", str(int(store_expires_after))])
+    if public_url:
+        args.append("--public-url")
     if dry_run:
         args.append("--dry-run")
     return args
@@ -150,6 +159,9 @@ def submit_imagine_via_cli(
     duration: int = 10,
     sequence: str | None = None,
     clip: str | None = None,
+    store_as: str | None = None,
+    store_expires_after: int | None = None,
+    public_url: bool = False,
     dry_run: bool = False,
 ) -> tuple[int, str]:
     from lib.runtime import run_cli
@@ -164,6 +176,9 @@ def submit_imagine_via_cli(
         duration=duration,
         sequence=sequence,
         clip=clip,
+        store_as=store_as,
+        store_expires_after=store_expires_after,
+        public_url=public_url,
         dry_run=dry_run,
     )
     return run_cli(args, timeout=300)

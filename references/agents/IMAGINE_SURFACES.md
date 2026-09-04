@@ -52,7 +52,7 @@ Aliases: `2.0` / `image-2.0` → Image 2.0. Video slug `2.0` is **not** a produc
 | Files upload | `POST /files` | multipart; `expires_after` **before** `file`; max 50 MB → `file_id` |
 | Files delete | `DELETE /files/{id}` | `{ deleted: true }` |
 
-`image` + `reference_images` in one request is a **400**. Imagine inputs accept public URL, data URI, or `file_id` from Files.
+`image` + `reference_images` in one request is a **400**. Imagine inputs accept public URL, data URI, or `file_id` from Files. Opt-in `storage_options.filename` persists the output as a new `file_id` (`cinematic-studio imagine submit … --store-as NAME`).
 
 CLI: `cinematic-studio imagine submit image|image_edit|video|video_edit|video_extend|reference_to_video`
 

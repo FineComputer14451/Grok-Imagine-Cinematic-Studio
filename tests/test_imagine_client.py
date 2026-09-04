@@ -10,7 +10,9 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from imagine_client import (  # noqa: E402
     ImagineAPIError,
+    build_storage_options,
     edit_image,
+    extract_file_id,
     extract_image_url,
     extract_video_url,
     generate_image,
@@ -134,6 +136,43 @@ def test_dry_run_video_edit_and_extend(monkeypatch) -> None:
     )
     assert ext["mode"] == "video_extend"
     assert ext["model"] == "grok-imagine-video"  # 1.5 cannot extend
+
+
+def test_storage_options_opt_in(monkeypatch) -> None:
+    import imagine_client as ic
+
+    monkeypatch.setattr(ic, "is_dry_run", lambda: True)
+    assert build_storage_options(None) is None
+    opts = build_storage_options("city.png", expires_after=86400)
+    assert opts == {"filename": "city.png", "expires_after": 86400}
+    pub = build_storage_options("hero.png", public_url=True)
+    assert pub["public_url"] is True
+    try:
+        build_storage_options("", expires_after=3600)
+        raise AssertionError("expected ImagineAPIError")
+    except ImagineAPIError as exc:
+        assert "filename" in str(exc)
+
+    resp = generate_image("Skyline", storage_options=opts, dry_run=True)
+    assert resp["payload"]["storage_options"]["filename"] == "city.png"
+    fid = extract_file_id(resp)
+    assert fid and fid.startswith("file_dry_")
+
+    edit = edit_image(
+        "Add neon",
+        image_file_id="file_abc",
+        storage_options=build_storage_options("city-neon.png"),
+        dry_run=True,
+    )
+    assert extract_file_id(edit)
+    vid = submit_video_generation(
+        "Pull back",
+        image_file_id="file_abc",
+        storage_options=build_storage_options("city.mp4"),
+        dry_run=True,
+    )
+    assert vid["payload"]["storage_options"]["filename"] == "city.mp4"
+    assert extract_file_id(vid)
 
 
 def test_edit_image_file_id(monkeypatch) -> None:

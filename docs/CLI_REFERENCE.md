@@ -118,6 +118,10 @@ cinematic-studio files delete file_… --yes
 # Then Imagine:
 cinematic-studio imagine submit image_edit -p "wardrobe lock" --file-id file_…
 cinematic-studio imagine submit video -p "slow push-in" --file-id file_…
+
+# Persist Imagine output back to Files (no re-upload):
+cinematic-studio imagine submit image -p "neon alley" --store-as alley.png --dry-run
+cinematic-studio imagine submit image_edit -p "cooler practicals" --file-id file_… --store-as alley-v2.png
 ```
 
 Upload is multipart (`expires_after` **before** `file`, max 50 MB). `--dry-run` or a missing `XAI_API_KEY` mocks the call. Delete requires `--yes`.

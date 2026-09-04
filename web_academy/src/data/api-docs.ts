@@ -518,6 +518,7 @@ Authorization: Bearer $XAI_API_KEY`,
         notes: [
           "Image 2.0 costs more than Image 1.0 (`grok-imagine-image`).",
           "Cache URLs or persist via Files — do not regenerate per page view.",
+          "Opt-in storage_options.filename persists the still as a Files file_id (CLI: --store-as).",
           "Gate public generation behind sign-in when possible.",
         ],
       },

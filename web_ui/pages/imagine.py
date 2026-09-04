@@ -161,6 +161,7 @@ def render() -> None:
             prompt = st.text_area("Prompt", placeholder="Cinematic wide shot, golden hour...")
             image_url = st.text_input("Image or video URL (edit / i2v / extend)", value="")
             file_id = st.text_input("Files API file_id (preferred over URL when set)", value="")
+            store_as = st.text_input("Store output as (Files filename, optional)", value="")
             duration = st.slider("Video duration (s)", 4, 15, 10)
             force_dry = st.checkbox("Force dry-run", value=dry)
             if st.form_submit_button("Submit job", width="stretch"):
@@ -173,6 +174,7 @@ def render() -> None:
                         ),
                         image_url=image_url or None,
                         file_id=file_id or None,
+                        store_as=store_as or None,
                         duration=duration,
                         dry_run=force_dry,
                     )
