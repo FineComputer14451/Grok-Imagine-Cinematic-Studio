@@ -1,5 +1,10 @@
 # Studio Academy — FAQ
 
+
+## Current studio version
+
+Academy tracks **Grok Imagine Cinematic Studio v3.11.4**: activate with `Activate Grok Imagine Cinematic Studio v3.11.4`. Live coding/cinematic default is **grok-4.6** (`grok-4.5` is an alias). Imagine: **Image 2.0** + **Video 1.0/1.5**. NSFW is opt-in and AUP-gated (https://x.ai/legal/acceptable-use-policy).
+
 Common beginner blockers for **Grok Imagine Cinematic Studio**.  
 Pair with the [Delivery Checklist](./DELIVERY_CHECKLIST.md).
 
