@@ -3,7 +3,7 @@
  * Browser session only; seeds form defaults (never free-form argv).
  */
 
-import { loadSettingsPrefs } from './settingsPrefs'
+import { liveChatModel, loadSettingsPrefs } from './settingsPrefs'
 
 const STORAGE_KEY = 'cinematic-studio.web-react.bible-handoff.v1'
 export const BIBLE_HANDOFF_EVENT = 'cinematic-studio:bible-handoff'
@@ -52,7 +52,7 @@ export function buildBibleHandoff(input: {
   const duration = Number(kwargs?.target_duration_seconds ?? bible.target_duration_seconds ?? 60) || 60
   const complexity = str(kwargs?.complexity ?? bible.complexity, 'Medium')
   const video_model = str(kwargs?.video_model ?? 'grok-imagine-video', 'grok-imagine-video')
-  const chat_model = str(kwargs?.chat_model ?? 'grok-4.5', 'grok-4.5')
+  const chat_model = liveChatModel(str(kwargs?.chat_model ?? 'grok-4.6', 'grok-4.6'))
   const director_signature = str(
     kwargs?.director_signature ?? bible.director_signature,
     '',

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Assembly Editor (studio v3.7.1 / Grok 4.5) — rough-cut EDL export from QA-approved clips.
+Assembly Editor (studio v3.7.1 / Grok 4.6) — rough-cut EDL export from QA-approved clips.
 
-Orchestration defaults to grok-4.5; no Imagine spend. See skill assembly-editor.
+Orchestration defaults to grok-4.6; no Imagine spend. See skill assembly-editor.
 """
 
 from __future__ import annotations

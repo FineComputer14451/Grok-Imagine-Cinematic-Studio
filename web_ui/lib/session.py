@@ -65,7 +65,7 @@ def select_index(options: list, value, default: int = 0) -> int:
 def init_session_defaults() -> None:
     for key, value in SESSION_DEFAULTS.items():
         st.session_state.setdefault(key, value)
-    # Coerce chat default to grok-4.5 if session still holds a removed slug
+    # Coerce unknown/removed chat slugs (including grok-4.5 aliases) to grok-4.6
     if rt.MODELS_AVAILABLE and rt.XAI_CHAT_MODELS:
         chat = st.session_state.get("chat_model")
         if chat not in rt.XAI_CHAT_MODELS:
@@ -98,7 +98,7 @@ def complexity_for_estimate() -> str:
 
 
 def effective_prompt_cache_key(project_slug: str | None = None) -> str | None:
-    """Stable cache key for multi-turn grok-4.5 loops (project slug preferred)."""
+    """Stable cache key for multi-turn grok-4.6 loops (project slug preferred)."""
     key = (st.session_state.get("prompt_cache_key") or "").strip()
     if key:
         return key

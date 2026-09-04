@@ -27,7 +27,7 @@ Console / keys: https://console.x.ai
 - **Base URL**: `https://api.x.ai/v1`
 - **Auth**: `Authorization: Bearer $XAI_API_KEY`
 - **OpenAI-compatible**: yes — change base URL + key and most OpenAI clients work
-- **Flagship model**: `grok-4.5` (default for chat, coding, reasoning, agentic work). Knowledge cutoff February 1, 2026.
+- **Flagship model**: `grok-4.6` (default for chat, coding, reasoning, agentic work). `grok-4.5` aliases wrap 4.6. Knowledge cutoff February 1, 2026.
 - **Preferred chat endpoint**: **Responses API** (`POST /v1/responses`). Chat Completions is legacy.
 - Full surface: Chat / LLM (Responses API preferred), Imagine (image + video), Voice (TTS / STT / real-time agents)
 
@@ -55,7 +55,7 @@ export const askGrok = createServerFn({ method: "POST" })
     if (!apiKey) return { ok: false as const, error: "AI is not available" };
 
     const body: Record<string, unknown> = {
-      model: "grok-4.5",
+      model: "grok-4.6",
       input: data.prompt,
     };
     if (data.previousResponseId) {

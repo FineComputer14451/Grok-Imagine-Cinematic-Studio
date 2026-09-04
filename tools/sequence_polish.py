@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-AI Polish Director hook (studio v3.7.1 / Grok 4.5) — upscale approved sequence clips for delivery.
+AI Polish Director hook (studio v3.7.1 / Grok 4.6) — upscale approved sequence clips for delivery.
 
-Orchestration defaults to grok-4.5; execution is local via ai-video-upscaler (not Imagine API).
+Orchestration defaults to grok-4.6; execution is local via ai-video-upscaler (not Imagine API).
 """
 
 from __future__ import annotations

@@ -2,7 +2,7 @@
 
 Use this template when building a DNA profile from reference images. Persist as `characters/{slug}/dna.json` via `dna save` after filling.
 
-**Orchestration:** `grok-4.5` · reasoning **high** · `prompt_cache_key` = project slug  
+**Orchestration:** `grok-4.6` · reasoning **high** · `prompt_cache_key` = project slug  
 **Video pipeline:** lock `video_pipeline_spec` from registry (1.0 cost default; 1.5 for native audio)
 
 ---

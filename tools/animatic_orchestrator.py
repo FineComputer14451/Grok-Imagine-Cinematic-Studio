@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Animatic Director (studio v3.7.1 / Grok 4.5) — draft stills → motion tests → hero promotion.
+Animatic Director (studio v3.7.1 / Grok 4.6) — draft stills → motion tests → hero promotion.
 
-Orchestration defaults to grok-4.5. Prefer 1.0 video for cheap motion probes.
+Orchestration defaults to grok-4.6. Prefer 1.0 video for cheap motion probes.
 See skill animatic-director.
 """
 

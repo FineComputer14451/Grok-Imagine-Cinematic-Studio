@@ -17,9 +17,9 @@ if str(_TOOLS) not in sys.path:
 def _studio_version() -> str:
     vf = _ROOT / "VERSION"
     try:
-        return vf.read_text(encoding="utf-8").strip() or "3.11.3"
+        return vf.read_text(encoding="utf-8").strip() or "3.11.4"
     except OSError:
-        return "3.11.3"
+        return "3.11.4"
 
 
 def _execute_body_model():

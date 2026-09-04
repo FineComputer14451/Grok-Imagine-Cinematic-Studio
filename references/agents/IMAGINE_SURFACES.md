@@ -1,4 +1,4 @@
-# Official Imagine surfaces (studio v3.11.3)
+# Official Imagine surfaces (studio v3.11.4)
 
 **Status:** Canonical mapping  
 **Code:** `tools/models.py` (`imagine_surface_catalog()`) · `tools/handoff_schema.py`  

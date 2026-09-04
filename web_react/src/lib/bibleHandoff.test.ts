@@ -34,6 +34,7 @@ const handoff = buildBibleHandoff({
   written_path: 'artifacts/bibles/rain-code.json',
 })
 
+assert(handoff.chat_model === 'grok-4.6', `chat remap ${handoff.chat_model}`)
 assert(handoff.title === 'Rain Code', 'title')
 assert(handoff.seeds.dna_init.name === 'Mara', `dna name ${handoff.seeds.dna_init.name}`)
 assert(handoff.seeds.sequence_init.duration === '90', 'seq duration')

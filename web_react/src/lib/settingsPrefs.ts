@@ -37,6 +37,8 @@ const RETIRED_IMAGE_QUALITY_SLUGS = new Set([
   'pro',
 ])
 
+const LEGACY_CHAT_45_SLUGS = new Set(['grok-4.5', '4.5', 'grok-4.5-latest'])
+
 /** Deprecated quality slug → Image 2.0 (matches tools/models.py live_image_model). */
 export function liveImageModel(slug: string | undefined | null): string {
   const raw = (slug || '').trim()
@@ -45,12 +47,20 @@ export function liveImageModel(slug: string | undefined | null): string {
   return raw
 }
 
+/** grok-4.5 aliases wrap grok-4.6 (matches tools/models.py resolve_chat_model). */
+export function liveChatModel(slug: string | undefined | null): string {
+  const raw = (slug || '').trim()
+  if (!raw) return FALLBACK_DEFAULTS.chat_model
+  if (LEGACY_CHAT_45_SLUGS.has(raw)) return 'grok-4.6'
+  return raw
+}
+
 export const FALLBACK_DEFAULTS: SettingsPrefs = {
   genre: 'Sci-Fi',
   director: 'Denis Villeneuve',
   video_model: 'grok-imagine-video',
   image_model: 'grok-imagine-image',
-  chat_model: 'grok-4.5',
+  chat_model: 'grok-4.6',
   duration: 60,
   complexity: 'Medium',
   fast_mode: false,
@@ -73,6 +83,7 @@ export function loadSettingsPrefs(): SettingsPrefs {
     const parsed = JSON.parse(raw) as Partial<SettingsPrefs>
     const merged = { ...FALLBACK_DEFAULTS, ...parsed }
     merged.image_model = liveImageModel(merged.image_model)
+    merged.chat_model = liveChatModel(merged.chat_model)
     return merged
   } catch {
     return { ...FALLBACK_DEFAULTS }

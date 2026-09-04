@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.11.3 · Grok 4.6 + v9-4p5).
+Canonical Grok Build / xAI model registry for Grok Imagine Cinematic Studio (v3.11.4 · Grok 4.6 + v9-4p5).
 
 Single source of truth for CLI, Web UI, quota optimizer, and documentation.
 Imagine family: Image 1.0 / 2.0 + Video 1.0 / 1.5 (there is no video 2.0).
@@ -514,7 +514,7 @@ IMAGINE_REST_ENDPOINTS: tuple[dict[str, str], ...] = (
     {"mode": "video_extend", "method": "POST", "path": "/v1/videos/extensions"},
 )
 
-STUDIO_COMPATIBILITY_VERSION = "3.11.3"
+STUDIO_COMPATIBILITY_VERSION = "3.11.4"
 
 # Role → slug (unique by construction; no duplicate bag)
 REQUIRED_MODEL_ROLES: dict[str, str] = {

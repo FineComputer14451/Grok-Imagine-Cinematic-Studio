@@ -120,7 +120,7 @@ def register(app: typer.Typer) -> None:
             stack = model_result.get("model_stack") or {}
             console.print(
                 "[green]✅ Model stack compatible[/green] "
-                f"(chat [bold]{stack.get('xai_chat', 'grok-4.5')}[/bold] · "
+                f"(chat [bold]{stack.get('xai_chat', 'grok-4.6')}[/bold] · "
                 f"video {stack.get('imagine_video', 'grok-imagine-video')} · "
                 f"Grok 4.6 · v{STUDIO_VERSION})"
             )

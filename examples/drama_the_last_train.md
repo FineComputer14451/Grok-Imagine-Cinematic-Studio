@@ -96,4 +96,4 @@ The arc is internal and quiet. Margaret doesn't need to "change" dramatically â€
 ---
 
 **Status:** Ready for full multi-agent activation.  
-**Primary Activation Command:** `Activate Grok Imagine Cinematic Studio v3.6, start new project "The Last Train", generate full Production Bible with strong emotional intimacy and observational realism focus. Use grok-4.5 + grok-imagine-video-1.5.`
+**Primary Activation Command:** `Activate Grok Imagine Cinematic Studio v3.6, start new project "The Last Train", generate full Production Bible with strong emotional intimacy and observational realism focus. Use grok-4.6 + grok-imagine-video-1.5.`

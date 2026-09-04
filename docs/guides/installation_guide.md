@@ -1,4 +1,4 @@
-# Grok Imagine Cinematic Studio v3.11.3 — Installation Guide
+# Grok Imagine Cinematic Studio v3.11.4 — Installation Guide
 
 Two supported install paths. Both can ship the same **64 skills**; choose based on how you use Grok. As of **v3.8.0**, Method B also exposes **modular packs** (full suite recommended + 5 satellites).
 
@@ -109,7 +109,7 @@ Method A `tools_complete` requires `tools/grok_build_cli.py` and `tools/cli/grok
 
 2. **New chat on [grok.com](https://grok.com):**
    ```
-   Activate Grok Imagine Cinematic Studio v3.11.3
+   Activate Grok Imagine Cinematic Studio v3.11.4
    ```
    For a full lock-in, paste `MASTER_PROMPT.md` first (repo or GitHub raw), then Activate.
 
@@ -179,7 +179,7 @@ Legacy wrapper: `./scripts/verify_cinematic_studio.sh`
 
 ### Manual zip (Method A)
 
-1. Download the latest `.zip` from GitHub Releases (`grok-imagine-cinematic-studio-skills-install-v3.11.3.zip` or current release)
+1. Download the latest `.zip` from GitHub Releases (`grok-imagine-cinematic-studio-skills-install-v3.11.4.zip` or current release)
 2. Extract it (release zips may use a nested root folder — the meta installer handles this automatically)
 3. Copy `.grok/skills/*` → `~/.grok/skills/`
 4. Copy `references/`, `tools/`, `config/`, and prompt files to `~/Grok-Cinematic-Projects/` (or your `PROJECT_DIR`)
@@ -269,7 +269,7 @@ Refresh the Skills page in Grok and confirm slash commands are available.
 
 1. Refresh the Skills page in Grok
 2. Start a new chat
-3. Type: `Activate Grok Imagine Cinematic Studio v3.11.3` (or use `/cinematic` with Method B)
+3. Type: `Activate Grok Imagine Cinematic Studio v3.11.4` (or use `/cinematic` with Method B)
 
 Optional Grok Build config:
 

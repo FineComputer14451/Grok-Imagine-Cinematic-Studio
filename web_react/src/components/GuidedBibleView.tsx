@@ -26,7 +26,7 @@ function seedFromSettings(): Answers {
     complexity: p.complexity || 'Medium',
     target_duration_seconds: p.duration || 60,
     video_model: p.video_model || 'grok-imagine-video',
-    chat_model: p.chat_model || 'grok-4.5',
+    chat_model: p.chat_model || 'grok-4.6',
   }
 }
 
@@ -80,7 +80,7 @@ export function GuidedBibleView() {
       complexity: ['Low', 'Medium', 'High', 'Extreme'],
       video_model: ['grok-imagine-video', 'grok-imagine-video-1.5', '1.0', '1.5'],
       chat_model: [
-        'grok-4.5',
+        'grok-4.6',
         'grok-4.3',
         'grok-v9-4p5-multi',
         'grok-v9-4p5-chat-expert',

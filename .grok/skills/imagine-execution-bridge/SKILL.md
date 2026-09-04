@@ -66,7 +66,7 @@ ACTIVATE IMAGINE_AGENT_MODE_HANDOFF
 
 Every bridge packet MUST include:
 
-1. **`model_stack`** — chat/build `grok-4.5` unless 1M opt-in explicit  
+1. **`model_stack`** — chat/build `grok-4.6` unless 1M opt-in explicit  
 2. **`VIDEO_PIPELINE_SPEC`** — from registry helpers (never invent slugs)  
 3. **Prompt** — Ultimate Template body from Prompt Master  
 4. **Reference hints** — `reference_image_id`, attach path, lock status  
@@ -117,7 +117,7 @@ Formats: `--format clipboard` (single paste) · `markdown` (client docs) · `jso
 ```text
 IMAGINE BRIDGE PACKET · v3.7.1
 Surface: grok_com_imagine
-model_stack: grok-4.5 | VIDEO_PIPELINE_SPEC: 1.0|1.5
+model_stack: grok-4.6 | VIDEO_PIPELINE_SPEC: 1.0|1.5
 Shot/clip: …
 Refs: locked|missing
 Sound Layer: yes|n/a

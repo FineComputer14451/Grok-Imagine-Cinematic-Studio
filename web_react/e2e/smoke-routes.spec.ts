@@ -20,7 +20,7 @@ async function seedNsfwOptIn(page: Page) {
       genre: 'Sci-Fi',
       director: 'Denis Villeneuve',
       video_model: 'grok-imagine-video',
-      chat_model: 'grok-4.5',
+      chat_model: 'grok-4.6',
       duration: 60,
       complexity: 'Medium',
       fast_mode: false,

@@ -5,7 +5,7 @@ description: AI video upscaling and face restoration for cinematic delivery. Ups
 
 # AI Video Upscaler v3.8.6 (Grok 4.6 / v9-4p5 · Local Upscale)
 
-**Local delivery upscale** for Grok Imagine 720p masters. Used by **AI Polish Director** after QA Go and color grade. This is **not** Imagine API spend — orchestration plans on `grok-4.5`; pixels run on GPU/CPU scripts.
+**Local delivery upscale** for Grok Imagine 720p masters. Used by **AI Polish Director** after QA Go and color grade. This is **not** Imagine API spend — orchestration plans on `grok-4.6`; pixels run on GPU/CPU scripts.
 
 **Skill scripts:** `.grok/skills/ai-video-upscaler/scripts/`  
 **Agent:** `ai-polish-director` · CLI: `sequence polish`

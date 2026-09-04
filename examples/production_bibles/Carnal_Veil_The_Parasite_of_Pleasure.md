@@ -18,7 +18,7 @@
 
 | Layer | Slug |
 |-------|------|
-| Orchestration / chat | `grok-4.5` |
+| Orchestration / chat | `grok-4.6` |
 | Build fork | `grok-build` |
 | Multi-agent craft (opt) | `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` |
 | Imagine Video (Level 1 default) | `grok-imagine-video` **1.0** |

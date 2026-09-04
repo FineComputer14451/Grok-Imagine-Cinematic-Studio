@@ -451,7 +451,7 @@ Contributor pin order:
 
 | Layer | Preferred | Use |
 |-------|-----------|-----|
-| Stack default | `grok-4.5` | Production Bibles, multi-agent direction |
+| Stack default | `grok-4.6` | Production Bibles, multi-agent direction |
 | 1M opt-in | `grok-4.3` | Very long context |
 | Multi-agent / leader | `grok-v9-4p5-multi` | Studio Director full mode, synthesis |
 | Specialist craft | `grok-v9-4p5-chat-expert` | DNA, prompts, QA, DoP, Sonic, ErosForge |

@@ -61,4 +61,4 @@ grok plugin install FineComputer14451/Grok-Imagine-Cinematic-Studio --trust
 grok plugin update grok-imagine-cinematic-studio
 ```
 
-Orchestration default remains **`grok-4.5`** (not `grok-4.3`).
+Orchestration default remains **`grok-4.6`** (not `grok-4.3`; `grok-4.5` aliases wrap 4.6).

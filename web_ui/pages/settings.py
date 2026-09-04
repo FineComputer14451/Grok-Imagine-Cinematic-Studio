@@ -52,7 +52,7 @@ def render() -> None:
             "prompt_cache_key (project slug)",
             value=st.session_state.get("prompt_cache_key", ""),
             placeholder="my-film-slug",
-            help="Stable key for multi-turn grok-4.5 agent loops — reduces cost on repeated context.",
+            help="Stable key for multi-turn grok-4.6 agent loops — reduces cost on repeated context.",
         )
         with st.expander("VIDEO_PIPELINE_SPEC (from registry)", expanded=False):
             st.code(
@@ -145,7 +145,7 @@ def render() -> None:
         )
     st.caption(
         "Never treat Imagine image/video slugs as chat models. "
-        "Orchestration = `grok-4.5` · video/image spend = `grok-imagine-*` only. "
+        "Orchestration = `grok-4.6` · video/image spend = `grok-imagine-*` only. "
         "Do not commit secrets; `.streamlit/secrets.toml` is gitignored."
     )
 

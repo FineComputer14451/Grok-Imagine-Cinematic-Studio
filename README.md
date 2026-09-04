@@ -1,6 +1,6 @@
 ## 🎬 Grok Imagine Cinematic Studio
 
-> **v3.11.3** — official Image 2.0 multi-edit `images[]` + preserve served `model`, Quality-slug leftovers pinned to 2.0 `quality=medium`, SpaceXAI AUP fail-closed gates, Grok 4.6 cinematic+Build stack (`grok-4.5` aliases wrap 4.6)
+> **v3.11.4** — leftover grok-4.5 live defaults / pickers pin **grok-4.6** (alias resolution unchanged), official Image 2.0 multi-edit `images[]` + preserve served `model`, Quality-slug leftovers pinned to 2.0 `quality=medium`, SpaceXAI AUP fail-closed gates
 >
 > **Unofficial third-party project.** Not affiliated with, endorsed by, or originating from xAI or SpaceXAI. Operators must follow the [SpaceXAI Acceptable Use Policy](https://x.ai/legal/acceptable-use-policy). Intimate pipelines are **18+**, **imaginary adults only**, **R-rated**, and require `nsfw attest`.
 
@@ -17,7 +17,7 @@
 
 <p align="center">
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/version-3.11.3-success.svg" alt="v3.11.3">
+  <img src="https://img.shields.io/badge/version-3.11.4-success.svg" alt="v3.11.4">
   <img src="https://img.shields.io/badge/Grok%20Build-%E2%89%A5%201.0.5-orange.svg" alt="Grok Build ≥ 1.0.5">
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/actions/workflows/hol-plugin-scanner.yml"><img src="https://img.shields.io/badge/HOL%20Guard-passing-00a67e" alt="HOL Guard Scanner passing"></a>
   <a href="https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/stargazers"><img src="https://img.shields.io/github/stars/FineComputer14451/Grok-Imagine-Cinematic-Studio?style=social" alt="GitHub Stars"></a>
@@ -45,12 +45,17 @@ Whether you’re crafting Marvel-style hero reveals, cyberpunk neon sequences, i
 
 ---
 
+## 🚀 What’s New in v3.11.4
+
+- **Leftover grok-4.5 live defaults** — React Settings/Bible wizard, API pickers, Academy samples, and agent CLI examples pin **`grok-4.6`**. `grok-4.5` still resolves as an alias.
+- **Activation** — `Activate Grok Imagine Cinematic Studio v3.11.4`
+
 ## 🚀 What’s New in v3.11.3
 
 - **Official multi-edit payload** — `imagine submit image_edit` sends `images[]` with `type: image_url` (up to 5 refs). The unofficial `extra_images` field is gone.
 - **Served model** — live Imagine image responses keep xAI’s `model` field and record `request_model` so logs can confirm the Nov 2 Quality → 2.0 `low` redirect.
 - **Hero extras** — leftover skills/personas/commands pin Image 2.0 `quality=medium`; `--extra-image-url` on `image_edit`.
-- **Activation** — `Activate Grok Imagine Cinematic Studio v3.11.3`
+- **Activation** — `Activate Grok Imagine Cinematic Studio v3.11.4`
 
 ## 🚀 What’s New in v3.11.2
 
@@ -70,7 +75,7 @@ Whether you’re crafting Marvel-style hero reveals, cyberpunk neon sequences, i
 - **Grok 4.6 stack lock** — cinematic / Build / CLI agent default is `grok-4.6`. `grok-4.5` and `cinematic` / `build` / `coding` aliases wrap 4.6.
 - **Grok Build CLI ≥ 1.0.5** — installer, doctor, and `models verify` treat 1.0.5 as the minimum binary.
 - **Doctor-friendly host configs** — `models.default = grok-4.6` PASSes; `fork_secondary_model` PASSes `grok-build` or `grok-4.6`.
-- **Activation** — `Activate Grok Imagine Cinematic Studio v3.11.3` (current: **v3.11.3**)
+- **Activation** — `Activate Grok Imagine Cinematic Studio v3.11.4` (current: **v3.11.4**)
 
 ## 🚀 What’s New in v3.10.0
 
@@ -108,7 +113,7 @@ These **Mermaid diagrams** are the current, live representation of the system. T
 flowchart TB
     subgraph UserLayer["👤 User Layer"]
         GrokChat["Grok Chat / Build CLI"]
-        Activate["Activate Studio v3.11.3<br/>or 'start cinematic production'"]
+        Activate["Activate Studio v3.11.4<br/>or 'start cinematic production'"]
     end
 
     subgraph Orchestration["🎬 Orchestration Layer"]
@@ -188,7 +193,7 @@ flowchart TB
 
 ```mermaid
 flowchart TD
-    Start["Start New Project<br/>(Activate Studio v3.11.3)"] --> Bible["Build & Lock<br/>Production Bible<br/>(VIDEO_PIPELINE_SPEC 1.5)"]
+    Start["Start New Project<br/>(Activate Studio v3.11.4)"] --> Bible["Build & Lock<br/>Production Bible<br/>(VIDEO_PIPELINE_SPEC 1.5)"]
     Bible --> DNA["Character DNA<br/>Extract → Lock → Inject<br/>(Identity Continuity Protocol)"]
     DNA --> PreProd["Pre-Production<br/>Concepts, Mood Boards, DoP Language"]
     PreProd --> Principal["Principal Photography<br/>Sequence Director + Specialists<br/>(Stunts / VFX / Sound / NSFW)"]
@@ -237,7 +242,7 @@ Vector (SVG) and raster (PNG) exports of the same live architecture — dual-sta
 **Updated ASCII Overview (v3.11.0)**
 
 ``` 
-Grok Imagine Cinematic Studio v3.11.3  (Studio Director + 25+ Agents · Grok 4.6 primary)
+Grok Imagine Cinematic Studio v3.11.4  (Studio Director + 25+ Agents · Grok 4.6 primary)
 ├── .grok-plugin/                 # Marketplace manifests + plugin packs (full suite + 5 satellites)
 ├── references/agents/            # 25+ Role Cards, AGENT_INDEX, MODEL_LAYER, IDENTITY_CONTINUITY_PROTOCOL, IMAGINE_AGENT_MODE_HANDOFF
 ├── tools/                        # character_dna, sequence_chain, quota_optimizer, nsfw_*, bible_stages, imagine_bridge, handoff_schema, cli/
@@ -307,7 +312,7 @@ Every generation targets:
 In any Grok chat:
 
 ```
-Activate Grok Imagine Cinematic Studio v3.11.3
+Activate Grok Imagine Cinematic Studio v3.11.4
 ```
 
 or the shorter trigger:
@@ -449,7 +454,7 @@ Companion docs: [`docs/academy/`](docs/academy/).
 5. **Marketing Assets**: Key Art Designer + Trailer Director for posters, hero reveals, teasers
 
 **Pro Tip**: Combine steps naturally, e.g.:
-> "Activate Grok Imagine Cinematic Studio v3.11.3, start new project called 'VOIDWALKER', generate the full Production Bible with 1.5 video pipeline, lock the lead character DNA, and create the hero reveal key art."
+> "Activate Grok Imagine Cinematic Studio v3.11.4, start new project called 'VOIDWALKER', generate the full Production Bible with 1.5 video pipeline, lock the lead character DNA, and create the hero reveal key art."
 
 ---
 
@@ -551,11 +556,11 @@ This project is licensed under the **MIT License** — see [LICENSE](LICENSE) fo
 
 <p align="center">
   <strong>Built for creators who want cinematic AI that feels directed, not just generated.</strong><br>
-  <em>Grok Imagine Cinematic Studio v3.11.3 — September 2026 · Independent community project · Not affiliated with xAI</em>
+  <em>Grok Imagine Cinematic Studio v3.11.4 — September 2026 · Independent community project · Not affiliated with xAI</em>
 </p>
 
 ---
 
 **Ready to direct your next masterpiece?**
 
-Just say: **"Activate Grok Imagine Cinematic Studio v3.11.3"** and begin.
+Just say: **"Activate Grok Imagine Cinematic Studio v3.11.4"** and begin.

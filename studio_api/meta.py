@@ -177,7 +177,7 @@ def production_options() -> dict[str, Any]:
         "complexities": ["Low", "Medium", "High", "Extreme"],
         "tiers": ["supergrok_pro", "supergrok_heavy", "custom"],
         "reasoning_levels": ["low", "medium", "high"],
-        "chat_models": ["grok-4.6", "grok-4.5", "grok-4.3", "grok-v9-4p5-multi", "grok-v9-4p5-chat-expert", "grok-4-auto"],
+        "chat_models": ["grok-4.6", "grok-4.3", "grok-v9-4p5-multi", "grok-v9-4p5-chat-expert", "grok-4-auto"],
         "video_models": video_models,
         "image_models": image_models,
         "imagine_surfaces": surfaces,

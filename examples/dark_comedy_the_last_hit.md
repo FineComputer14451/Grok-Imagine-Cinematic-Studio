@@ -81,4 +81,4 @@ Guard the tonal line carefully. Too silly and it loses weight. Too dark and the 
 ---
 
 **Status:** Ready for full multi-agent activation.  
-**Primary Activation Command:** `Activate Grok Imagine Cinematic Studio v3.6, start new project "The Last Hit", generate full Production Bible with strong Narrative Arc and Sequence Director focus. Use grok-4.5 + grok-imagine-video-1.5.`
+**Primary Activation Command:** `Activate Grok Imagine Cinematic Studio v3.6, start new project "The Last Hit", generate full Production Bible with strong Narrative Arc and Sequence Director focus. Use grok-4.6 + grok-imagine-video-1.5.`

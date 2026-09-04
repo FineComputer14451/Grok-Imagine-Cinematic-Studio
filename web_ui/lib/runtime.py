@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-STUDIO_VERSION = "3.11.3"
+STUDIO_VERSION = "3.11.4"
 ACTIVATION_PHRASE = f"Activate Grok Imagine Cinematic Studio v{STUDIO_VERSION}"
 AGENTS_DIR = ROOT / "references" / "agents"
 ROLE_CARD_PREVIEW_CHARS = 4000

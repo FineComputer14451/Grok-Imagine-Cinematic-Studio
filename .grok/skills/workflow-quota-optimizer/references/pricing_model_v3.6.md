@@ -51,11 +51,11 @@ Quota dashboard uses abstract credits for subscription tier compatibility:
 
 | Model | Input / 1M | Output / 1M | Context | Role |
 |-------|------------|-------------|---------|------|
-| `grok-4.5` | $2.00 ($0.50 cached) | $6.00 | 500k | **Cinematic + Build default** |
+| `grok-4.6` | $2.00 ($0.50 cached) | $6.00 | 500k | **Cinematic + Build default** |
 | `grok-4.3` | $1.25 | $2.50 | 1M | **Opt-in** long Bibles / memory banks |
-| `grok-build-0.1` | $1.00 | $2.00 | 256k | Legacy (prefer 4.5) |
+| `grok-build-0.1` | $1.00 | $2.00 | 256k | Legacy (prefer 4.6) |
 
-**4.5 cost tip:** set a stable `prompt_cache_key` (project slug) on multi-turn agent loops — cached input is $0.50/1M.
+**4.6 cost tip:** set a stable `prompt_cache_key` (project slug) on multi-turn agent loops — cached input is $0.50/1M.
 
 ## Grok Build CLI
 

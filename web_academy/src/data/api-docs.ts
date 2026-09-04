@@ -63,13 +63,13 @@ export const GROK_PRICING: {
       blurb: "Published list rates per million tokens.",
       rows: [
         {
-          model: "grok-4.5",
+          model: "grok-4.6",
           unit: "Input / 1M tokens",
           price: "$2.00",
           note: "List price",
         },
         {
-          model: "grok-4.5",
+          model: "grok-4.6",
           unit: "Output / 1M tokens",
           price: "$6.00",
           note: "List price",
@@ -211,7 +211,7 @@ export const GROK_PRICING: {
     {
       label: "Prompt craft (chat)",
       estimate: "≪ $0.01",
-      detail: "Small grok-4.5 call with capped max_tokens — illustrative",
+      detail: "Small grok-4.6 call with capped max_tokens — illustrative",
       kind: "example",
     },
   ],
@@ -282,7 +282,7 @@ export const askGrok = createServerFn({ method: "POST" })
         Authorization: \`Bearer \${apiKey}\`,
       },
       body: JSON.stringify({
-        model: "grok-4.5",
+        model: "grok-4.6",
         messages: [{ role: "user", content: data.prompt }],
       }),
     });
@@ -295,7 +295,7 @@ export const askGrok = createServerFn({ method: "POST" })
     return { ok: true as const, text: body.choices[0]?.message.content ?? "" };
   });`,
         notes: [
-          "Default chat model: grok-4.5 unless the user asks otherwise.",
+          "Default chat model: grok-4.6 unless the user asks otherwise.",
           "OpenAI SDKs work with base_url https://api.x.ai/v1.",
         ],
       },
@@ -313,11 +313,11 @@ export const askGrok = createServerFn({ method: "POST" })
         path: "/v1/chat/completions",
         title: "Chat completions",
         summary:
-          "OpenAI-compatible chat. grok-4.5 list: $2 input / $6 output per 1M tokens.",
+          "OpenAI-compatible chat. grok-4.6 list: $2 input / $6 output per 1M tokens.",
         request: `POST https://api.x.ai/v1/chat/completions
 
 {
-  "model": "grok-4.5",
+  "model": "grok-4.6",
   "messages": [
     { "role": "system", "content": "You are a cinematic production assistant." },
     { "role": "user", "content": "Write a 3-shot neon alley brief." }
@@ -516,7 +516,7 @@ Authorization: Bearer $XAI_API_KEY`,
         path: "chat → images",
         title: "Prompt Master → Imagine still",
         summary: "LLM writes the packet; images API renders the plate.",
-        request: `// 1) Chat: craft cinematic prompt (grok-4.5)
+        request: `// 1) Chat: craft cinematic prompt (grok-4.6)
 // 2) Images: POST /v1/images/generations with that prompt
 // 3) Optional edit: POST /v1/images/edits for plate lock
 

@@ -96,7 +96,7 @@ def _collect_field_widgets(stage: dict[str, Any], answers: dict[str, Any]) -> No
                 label,
                 options,
                 index=idx,
-                help=(help_txt or "") + " · grok-4.5 default; grok-4.3 = 1M opt-in only",
+                help=(help_txt or "") + " · grok-4.6 default; grok-4.3 = 1M opt-in only",
                 key=wkey,
                 format_func=rt.format_chat_model_label,
             )

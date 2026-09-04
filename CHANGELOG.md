@@ -4,12 +4,18 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+## [3.11.4] - 2026-09-04
+
 ### Changed
+- **Leftover grok-4.5 live defaults** — React Settings/Bible wizard, API `/v1/meta` pickers, Streamlit captions, Academy examples, and agent CLI samples pin **`grok-4.6`**. `grok-4.5` remains a resolve alias (old Bibles/handoffs still normalize). Operator pickers hide 4.5 (same pattern as retired Image Quality).
+- **Persisted React chat prefs** — `liveChatModel()` remaps `grok-4.5` / `4.5` / `grok-4.5-latest` → `grok-4.6`.
 - **Image 2.0 quota rows** — 1K medium **$0.06**, 2K medium **$0.08** (was $0.05 / $0.07). 1K/2K low stay $0.04 / $0.06. Auto generate still bills low; auto edit bills medium.
+- **Studio version** — `VERSION` / `STUDIO_COMPATIBILITY_VERSION` / handoff `PROTOCOL_OK` include **3.11.4**.
 
 ### Added
 - **Input-image fees** — `image_usd_per_input_image()` / `n_input_images` on `image_usd_per_image()`: Image 1.0 **$0.002**, Image 2.0 **$0.01** per source still.
 - **`cinematic-studio` workflow** — `.grok/workflows/cinematic-studio.rhai` (Parallel Brief DoP / Prompt Master / Quota / Identity → handoff verify → director packet). Plan-only; no Imagine generation. Run `/cinematic-studio` or `/workflow cinematic-studio` with `args.brief`.
+- **Chat 4.6 copy scan** — `tests/test_chat_46_copy.py` fails if skills/commands recommend sending `grok-4.5` as the live default (alias/wrap/legacy language allowed).
 
 ### Fixed
 - **Release zip staging** — `build_release_bundle.sh` and `build_meta_installer.sh` use `TMPDIR` and fall back to Python `zipfile` when `zip` is missing (Termux).

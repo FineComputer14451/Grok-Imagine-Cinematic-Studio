@@ -168,7 +168,7 @@ This skill ensures every refined frame or plate entering a cinematic sequence ma
 
 ## Grok 4.6 Operating Notes
 
-- Orchestration on `grok-4.5`; image spend is `image_edit` / Imagine image only.
+- Orchestration on `grok-4.6`; image spend is `image_edit` / Imagine image only.
 - Reasoning **high** for 4-pass explicit close-ups and strength curve selection.
 - Always pair with Identity Lock DNA inject; never paraphrase locked anatomy anchors.
 - Escalate multi-shot intimate video to ErosForge + NSFW Sequence Extender after stills are locked.

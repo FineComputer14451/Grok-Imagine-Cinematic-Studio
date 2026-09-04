@@ -1,11 +1,20 @@
 # Grok Imagine Cinematic Studio — UPGRADE GUIDE
 
-**Current target:** **v3.11.3** — official Image 2.0 multi-edit `images[]` + preserve served `model` · Quality leftovers pin 2.0 `quality=medium` · Imagine Image Quality retirement (`grok-imagine-image-quality` → 2.0 `quality=low`) · SpaceXAI AUP fail-closed gates · CLI help IA · unified **Grok 4.6** cinematic+Build (`grok-4.5` aliases wrap 4.6) · Grok Build ≥ **1.0.5** · Model Layer v4.5 (v9-4p5 / `grok-4-auto`) · optional **Grok 4.3** 1M · Imagine Agent Mode Handoff · Identity Continuity · **64 skills** · packs + `full_suite_wins`
+**Current target:** **v3.11.4** — leftover grok-4.5 live defaults / pickers pin **grok-4.6** (alias unchanged) · official Image 2.0 multi-edit `images[]` + preserve served `model` · Quality leftovers pin 2.0 `quality=medium` · Imagine Image Quality retirement (`grok-imagine-image-quality` → 2.0 `quality=low`) · SpaceXAI AUP fail-closed gates · CLI help IA · unified **Grok 4.6** cinematic+Build (`grok-4.5` aliases wrap 4.6) · Grok Build ≥ **1.0.5** · Model Layer v4.5 (v9-4p5 / `grok-4-auto`) · optional **Grok 4.3** 1M · Imagine Agent Mode Handoff · Identity Continuity · **64 skills** · packs + `full_suite_wins`
 
-**Quick path to current:** pull `main` → `models verify` → reinstall plugin if local clone is stale → activate `Activate Grok Imagine Cinematic Studio v3.11.3`  
+**Quick path to current:** pull `main` → `models verify` → reinstall plugin if local clone is stale → activate `Activate Grok Imagine Cinematic Studio v3.11.4`  
 **Day-to-day docs:** `docs/guides/Quick_Start_Guide.md` · `docs/guides/installation_guide.md` · `references/agents/MODEL_LAYER_v4.5.md`
 
-**Date:** September 3, 2026 (header); sections below retain historical upgrade notes from earlier 3.7.x / 3.8.x / 3.9.x / 3.11.0 / 3.11.1 / 3.11.2 waves.
+**Date:** September 4, 2026 (header); sections below retain historical upgrade notes from earlier 3.7.x / 3.8.x / 3.9.x / 3.11.0 / 3.11.1 / 3.11.2 / 3.11.3 waves.
+
+---
+
+## Upgrade to v3.11.4 (from 3.11.3)
+
+1. Pull / reinstall: `git pull` or `bash scripts/cinematic_studio.sh update` / `grok plugin update grok-imagine-cinematic-studio`
+2. Confirm `VERSION` is **3.11.4** and `python tools/cinematic_studio_cli.py models verify` still shows Grok **4.6** cinematic+Build and CLI min **1.0.5**
+3. Operator pickers (React Settings / Guided Bible / API `/v1/meta`) no longer list `grok-4.5`; persisted prefs remap to `grok-4.6`. Alias resolution is unchanged.
+4. Activation: `Activate Grok Imagine Cinematic Studio v3.11.4`
 
 ---
 
@@ -80,11 +89,12 @@
 5. Prefer `references/agents/MODEL_LAYER_v4.5.md` and `IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md` (handoff feature still current under studio 3.8.7)
 6. Re-pin plugin catalog after skill edits: `bash scripts/release_plugin_catalog.sh`
 
-### What changed for Grok 4.5
-- Orchestration default remains **`grok-4.5`** (not dual-stack 4.3 cinematic)
-- All skills/Role Cards embed Model Layer **Grok 4.5 · studio v3.7.1**
-- Imagine Agent Mode Handoff standardizes generation surfaces
+### What changed for Grok 4.5 (historical · v3.7.1)
+- Orchestration default was **`grok-4.5`** (not dual-stack 4.3 cinematic)
+- Skills/Role Cards embedded Model Layer **Grok 4.5 · studio v3.7.1**
+- Imagine Agent Mode Handoff standardized generation surfaces
 - Alias `cinematic` → `grok-4.5`; use `long-context` / `grok-4.3` only for 1M Bibles
+- **Later (v3.11.0+):** cinematic+Build lock **`grok-4.6`**; `grok-4.5` remains a resolve alias
 
 ---
 
@@ -182,12 +192,12 @@ Or simply use the latest `MASTER_PROMPT.md` in a new chat.
 grok --version   # recommend ≥ 1.0.5
 python tools/cinematic_studio_cli.py models verify
 ```
-- **Cinematic / Bible:** `grok-4.5` (default chat); `grok-4.3` for 1M opt-in
-- **Build / coding / agent sessions:** `grok-4.5` (CLI + build API default)
+- **Cinematic / Bible:** `grok-4.6` (default chat); `grok-4.3` for 1M opt-in; `grok-4.5` aliases wrap 4.6
+- **Build / coding / agent sessions:** `grok-4.6` (CLI + build API default)
 - See `references/MODELS_v3.6.md` and `config/grok-build.example.toml`
 
 ### Step 2: Activate the New Studio
-In a new **Grok 4.5** chat (default) or **Grok 4.3** for very long Bibles, paste `MASTER_PROMPT.md` and type:
+In a new **Grok 4.6** chat (default) or **Grok 4.3** for very long Bibles, paste `MASTER_PROMPT.md` and type:
 ```
 Activate Grok Imagine Cinematic Studio v3.11.2
 ```

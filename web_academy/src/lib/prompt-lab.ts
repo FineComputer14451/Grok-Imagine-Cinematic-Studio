@@ -32,7 +32,7 @@ export const enhanceCinematicPrompt = createServerFn({ method: "POST" })
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: "grok-4.5",
+          model: "grok-4.6",
           max_tokens: 280,
           temperature: 0.7,
           messages: [

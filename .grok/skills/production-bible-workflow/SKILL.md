@@ -45,7 +45,7 @@ Begin: **"Starting Production Bible Workflow v3.8.6 (Grok 4.6 / v9-4p5)…"**
 
 | Field | Rule |
 |-------|------|
-| `model_stack` | chat/build **`grok-4.5`**; 1M opt-in `grok-4.3` only |
+| `model_stack` | chat/build **`grok-4.6`**; 1M opt-in `grok-4.3` only |
 | `VIDEO_PIPELINE_SPEC` | 1.0 cost default or 1.5 for native audio |
 | Character DNA | slugs + locked anchors |
 | Sequence | slug(s) + chain QA status |
@@ -64,11 +64,11 @@ Create Bible (script-friendly path):
 
 ```bash
 python tools/cinematic_studio_cli.py create-bible "Project Title" \
-  --genre "Sci-Fi" --chat-model grok-4.5 --video-model 1.0 \
+  --genre "Sci-Fi" --chat-model grok-4.6 --video-model 1.0 \
   --output artifacts/bibles/project_bible.json
 
 python tools/cinematic_studio_cli.py generate-prompt "Opening scene description" \
-  --chat-model grok-4.5 --video-model 1.0 -o artifacts/activation_prompt.txt
+  --chat-model grok-4.6 --video-model 1.0 -o artifacts/activation_prompt.txt
 ```
 
 Guided wizard (interactive TTY) / Web Guided Bible Creator:
@@ -160,7 +160,7 @@ python tools/cinematic_studio_cli.py validate
 
 ```text
 PRODUCTION BIBLE WORKFLOW · v3.7.1
-Project: … | model_stack: grok-4.5 | video: 1.0|1.5
+Project: … | model_stack: grok-4.6 | video: 1.0|1.5
 Bible: artifacts/bibles/…
 DNA locked: […] | Sequence: … | Quota tier: …
 prompt_cache_key: <slug>

@@ -8,7 +8,7 @@ import {
   actionUsesSettingsPrefs,
   FIELD_PREF_MAP,
 } from './prefsToAnswers'
-import { canEnableNsfwNav, fourAupFlags, type SettingsPrefs } from './settingsPrefs'
+import { canEnableNsfwNav, fourAupFlags, liveChatModel, type SettingsPrefs } from './settingsPrefs'
 import type { FormFieldDto } from '../api/types'
 
 const prefs: SettingsPrefs = {
@@ -16,7 +16,7 @@ const prefs: SettingsPrefs = {
   director: 'Denis Villeneuve',
   video_model: 'grok-imagine-video-1.5',
   image_model: 'grok-imagine-image-2.0',
-  chat_model: 'grok-4.5',
+  chat_model: 'grok-4.6',
   duration: 90,
   complexity: 'High',
   fast_mode: true,
@@ -48,7 +48,7 @@ const bibleFields: FormFieldDto[] = [
     required: false,
     coerce: null,
     choices: null,
-    default: 'grok-4.5',
+    default: 'grok-4.6',
   },
   {
     key: 'video_model',
@@ -107,6 +107,9 @@ const q = applyPrefsToFieldDefaults(quotaFields, prefs)
 assert(q.defaults.tier === 'supergrok_heavy', `tier ${q.defaults.tier}`)
 assert(q.defaults.remaining === '', 'remaining unmapped')
 
+assert(liveChatModel('grok-4.5') === 'grok-4.6', 'liveChatModel remaps 4.5')
+assert(liveChatModel('4.5') === 'grok-4.6', 'liveChatModel remaps 4.5 short')
+assert(liveChatModel('grok-4.6') === 'grok-4.6', 'liveChatModel keeps 4.6')
 assert(!fourAupFlags(prefs), 'default four flags off')
 assert(
   !canEnableNsfwNav({ fourFlags: true, aupValid: false, localOptIn: true }),
