@@ -18,6 +18,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **file_id on jobs and plates** — `imagine list` / `status` and Streamlit job table show `result_file_id`. Job summary counts `stored_file_ids`. `--register-plate` on `files upload` and `imagine submit` writes `file_id` into the asset manifest.
 - **Imagine poll** — `cinematic-studio imagine poll REQUEST_ID` is `GET /v1/videos/{request_id}` (optional `--wait`, `--job-id`). ActionSpec `imagine_poll` is one shot (no wait) on TUI / NiceGUI / React / Streamlit.
 - **React Files drop** — `POST /v1/files/inbox` saves a browser plate to `artifacts/files_inbox`. The React `files_upload` form fills the path, then ActionSpec execute uploads to xAI Files.
+- **Files public URLs** — `cinematic-studio files share|unshare FILE_ID` maps to `POST /v1/files/{id}/public-url` and `.../revoke`. ActionSpec `files_share` / `files_unshare` (unshare confirm-gated) on TUI, NiceGUI, React, Streamlit.
 
 ## [3.11.4] - 2026-09-04
 

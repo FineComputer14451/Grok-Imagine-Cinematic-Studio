@@ -62,6 +62,8 @@ export const PAGE_CONFIG: Record<string, PageConfig> = {
       'files_get',
       'files_upload',
       'files_delete',
+      'files_share',
+      'files_unshare',
       'sequence_handoff',
       'dna_handoff',
     ],

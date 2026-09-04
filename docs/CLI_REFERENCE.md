@@ -114,6 +114,8 @@ cinematic-studio files upload locked-plate.png --expires-after 86400 --register-
 cinematic-studio files list --limit 20
 cinematic-studio files get file_…
 cinematic-studio files delete file_… --yes
+cinematic-studio files share file_… --expires-after 86400
+cinematic-studio files unshare file_…
 
 # Then Imagine:
 cinematic-studio imagine poll REQUEST_ID

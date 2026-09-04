@@ -359,8 +359,118 @@ export const askGrok = createServerFn({ method: "POST" })
     return { ok: true as const, text: body.choices[0]?.message.content ?? "" };
   });`,
         notes: [
-          "Default chat model: grok-4.5 unless the user asks otherwise.",
+          "Default chat model: grok-4.6 unless the user asks otherwise.",
           "OpenAI SDKs work with base_url https://api.x.ai/v1.",
+          "Prefer POST /v1/responses for new chat work; /v1/chat/completions remains compatible.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "files",
+    title: "Files",
+    intro:
+      "Private storage for Imagine inputs (and chat attachments). Upload once, then pass file_id instead of re-sending bytes. Max 50 MB. Official: docs.x.ai → Files API.",
+    endpoints: [
+      {
+        id: "files-list",
+        method: "GET",
+        path: "/v1/files",
+        title: "List files",
+        summary:
+          "Paginated list for the authenticated team. Pass pagination_token for the next page.",
+        request: `GET https://api.x.ai/v1/files?limit=20
+Authorization: Bearer $XAI_API_KEY
+
+// Query: limit, order (asc|desc), sort_by (created_at|filename|size),
+//        pagination_token, filter (AIP-160)`,
+        response: `{
+  "data": [
+    {
+      "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
+      "object": "file",
+      "bytes": 12345,
+      "created_at": 1762345678,
+      "expires_at": null,
+      "filename": "plate.png",
+      "purpose": "assistants"
+    }
+  ],
+  "pagination_token": "file_a128090d-f0c9-4873-bd84-e499777e7417"
+}`,
+        notes: [
+          "End of list: data.length < limit.",
+          "purpose is accepted for OpenAI SDK compatibility; xAI does not enforce it.",
+        ],
+      },
+      {
+        id: "files-get",
+        method: "GET",
+        path: "/v1/files/{id}",
+        title: "Get file metadata",
+        summary:
+          "Retrieve one file by id. 404 if missing, deleted, or past expires_at.",
+        request: `GET https://api.x.ai/v1/files/{id}
+Authorization: Bearer $XAI_API_KEY`,
+        response: `{
+  "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
+  "object": "file",
+  "bytes": 12345,
+  "created_at": 1762345678,
+  "expires_at": null,
+  "filename": "plate.png"
+}`,
+      },
+      {
+        id: "files-upload",
+        method: "POST",
+        path: "/v1/files",
+        title: "Upload file",
+        summary:
+          "Multipart upload. Returns id for Imagine image/video inputs. Files persist until delete or expires_after.",
+        request: `POST https://api.x.ai/v1/files
+Authorization: Bearer $XAI_API_KEY
+Content-Type: multipart/form-data
+
+# expires_after MUST appear before the file part (400 if reversed)
+# expires_after: 3600–2592000 seconds (1 hour–30 days); omit = no expiry
+
+curl -X POST https://api.x.ai/v1/files \\
+  -H "Authorization: Bearer $XAI_API_KEY" \\
+  -F expires_after=86400 \\
+  -F purpose=assistants \\
+  -F file="@locked-plate.png"`,
+        response: `{
+  "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
+  "object": "file",
+  "bytes": 12345,
+  "created_at": 1762345678,
+  "expires_at": 1762432078,
+  "filename": "locked-plate.png"
+}`,
+        notes: [
+          "Maximum 50 MB.",
+          "Imagine accepts file_id anywhere a public URL or data URI is allowed (edits, i2v).",
+          "Chunked upload exists (POST /v1/files:initialize + :uploadChunks) for large files — see docs.x.ai.",
+        ],
+      },
+      {
+        id: "files-delete",
+        method: "DELETE",
+        path: "/v1/files/{id}",
+        title: "Delete file",
+        summary:
+          "Remove storage. The id no longer lists, downloads, or attaches.",
+        request: `DELETE https://api.x.ai/v1/files/{id}
+Authorization: Bearer $XAI_API_KEY`,
+        response: `{
+  "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
+  "deleted": true
+}`,
+        notes: [
+          "Use after a production wrap or when a plate is superseded.",
+          "Do not log file bytes or API keys.",
+          "Share without deleting: POST /v1/files/{id}/public-url · revoke: POST /v1/files/{id}/public-url/revoke (CLI: files share|unshare).",
         ],
       },
     ],

@@ -14,10 +14,12 @@ from files_client import (  # noqa: E402
     EXPIRES_AFTER_MAX,
     EXPIRES_AFTER_MIN,
     FilesAPIError,
+    create_public_url,
     delete_file,
     encode_multipart,
     get_file,
     list_files,
+    revoke_public_url,
     upload_file,
     validate_expires_after,
 )
@@ -149,6 +151,39 @@ def test_save_inbox_file(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Non
         fc.save_inbox_file("x.png", b"")
     with pytest.raises(FilesAPIError, match="50 MB"):
         fc.save_inbox_file("big.png", b"x" * (fc.MAX_FILE_BYTES + 1))
+
+
+def test_create_public_url_posts_json(monkeypatch: pytest.MonkeyPatch) -> None:
+    import files_client as fc
+
+    captured: dict = {}
+
+    def fake_http(method, path, **kwargs):
+        captured["method"] = method
+        captured["path"] = path
+        captured["data"] = kwargs.get("data")
+        captured["content_type"] = kwargs.get("content_type")
+        return {"public_url": "https://files-cdn.x.ai/tok/file_live.png"}
+
+    monkeypatch.setattr(fc, "_http", fake_http)
+    monkeypatch.setattr(fc, "_use_dry_run", lambda _dry: False)
+    out = create_public_url("file_live", expires_after=3600, dry_run=False)
+    assert out["public_url"].startswith("https://files-cdn.x.ai/")
+    assert captured["method"] == "POST"
+    assert captured["path"].endswith("/public-url")
+    assert captured["content_type"] == "application/json"
+    assert b"expires_after" in captured["data"]
+
+
+def test_public_url_dry_run() -> None:
+    shared = create_public_url("file_dry_abc", expires_after=86400, dry_run=True)
+    assert shared["dry_run"] is True
+    assert shared["public_url"].startswith("https://dry-run.x.ai/")
+    assert shared["expires_at"]
+    revoked = revoke_public_url("file_dry_abc", dry_run=True)
+    assert revoked["revoked"] is True
+    with pytest.raises(FilesAPIError, match="file_id"):
+        create_public_url("  ", dry_run=True)
 
 
 def test_get_and_delete_require_id() -> None:

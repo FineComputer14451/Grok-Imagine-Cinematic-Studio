@@ -90,6 +90,35 @@ def _render_files_tab(*, dry: bool) -> None:
                 )
             )
 
+    st.markdown("**Share / unshare (public URL)**")
+    share_id = st.text_input("file_id", key="files_share_id")
+    share_ttl = st.number_input(
+        "URL TTL seconds (0 = inherit / never)",
+        min_value=0,
+        max_value=2_592_000,
+        value=0,
+        step=3600,
+        key="files_share_ttl",
+    )
+    c_share, c_unshare = st.columns(2)
+    with c_share:
+        if st.button("Share (public URL)", key="files_share_btn"):
+            if not (share_id or "").strip():
+                st.warning("Enter a file_id")
+            else:
+                answers = {"file_id": share_id.strip()}
+                if int(share_ttl) >= 3600:
+                    answers["expires_after"] = str(int(share_ttl))
+                _show_action_result(rt.execute_registered("files_share", answers))
+    with c_unshare:
+        if st.button("Unshare (revoke)", key="files_unshare_btn"):
+            if not (share_id or "").strip():
+                st.warning("Enter a file_id")
+            else:
+                _show_action_result(
+                    rt.execute_registered("files_unshare", {"file_id": share_id.strip()})
+                )
+
 
 def render() -> None:
     st.header("Imagine Production")

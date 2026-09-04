@@ -30,6 +30,8 @@ export function ToolsView() {
     'files_get',
     'files_upload',
     'files_delete',
+    'files_share',
+    'files_unshare',
     'wave_a_briefs',
     'sequence_polish_dry',
     'sequence_deliver_dry',

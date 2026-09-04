@@ -64,6 +64,18 @@ def test_files_action_argv() -> None:
         assert tok not in upload
     delete = answers_to_argv("files_delete", {"file_id": "file_abc"})
     assert delete == ["files", "delete", "file_abc", "--yes"]
+    share = answers_to_argv(
+        "files_share", {"file_id": "file_abc", "expires_after": "86400"}
+    )
+    assert share[:3] == ["files", "share", "file_abc"]
+    assert "--expires-after" in share and "86400" in share
+    assert answers_to_argv("files_unshare", {"file_id": "file_abc"}) == [
+        "files",
+        "unshare",
+        "file_abc",
+    ]
+    assert ACTIONS["files_share"].needs_confirm is False
+    assert ACTIONS["files_unshare"].needs_confirm is True
     assert validate_answers("files_upload", {"path": ""}) != []
     assert validate_answers("files_get", {}) != []
 

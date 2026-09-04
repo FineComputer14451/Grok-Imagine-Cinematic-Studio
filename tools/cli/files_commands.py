@@ -8,7 +8,15 @@ import typer
 from rich import box
 from rich.table import Table
 
-from files_client import FilesAPIError, delete_file, get_file, list_files, upload_file
+from files_client import (
+    FilesAPIError,
+    create_public_url,
+    delete_file,
+    get_file,
+    list_files,
+    revoke_public_url,
+    upload_file,
+)
 from imagine_client import is_dry_run as imagine_is_dry_run
 from imagine_jobs import plate_id_from_filename, register_reference_asset
 
@@ -192,3 +200,58 @@ def register(app: typer.Typer) -> None:
         if result.get("dry_run"):
             console.print("[yellow]Dry-run[/yellow] — no live delete.")
         console.print(f"[green]Deleted[/green] {result.get('id')}")
+
+    @app.command("share")
+    def files_share(
+        file_id: str = typer.Argument(..., help="Files API id"),
+        expires_after: int = typer.Option(
+            None,
+            "--expires-after",
+            help="Public URL TTL seconds (3600–2592000). Omit = inherit file / never.",
+        ),
+        json_output: bool = typer.Option(False, "--json", help="Machine-readable JSON"),
+        dry_run: bool = typer.Option(False, "--dry-run", help="Force mock response"),
+    ):
+        """POST /v1/files/{id}/public-url — CDN link (idempotent)."""
+        try:
+            result = create_public_url(
+                file_id,
+                expires_after=expires_after,
+                dry_run=_force_dry(dry_run),
+            )
+        except FilesAPIError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+        if json_output:
+            _print_json(result)
+            return
+        if result.get("dry_run"):
+            console.print("[yellow]Dry-run[/yellow] — no live public URL.")
+        url = result.get("public_url") or "—"
+        console.print(f"[bold green]public_url[/bold green]  {url}")
+        if result.get("expires_at"):
+            console.print(f"[dim]expires_at={result['expires_at']}[/dim]")
+
+    @app.command("unshare")
+    def files_unshare(
+        file_id: str = typer.Argument(..., help="Files API id"),
+        json_output: bool = typer.Option(False, "--json", help="Machine-readable JSON"),
+        dry_run: bool = typer.Option(False, "--dry-run", help="Force mock response"),
+    ):
+        """POST /v1/files/{id}/public-url/revoke — file stays; URL dies."""
+        try:
+            result = revoke_public_url(file_id, dry_run=_force_dry(dry_run))
+        except FilesAPIError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+        if json_output:
+            _print_json(result)
+            return
+        if result.get("dry_run"):
+            console.print("[yellow]Dry-run[/yellow] — no live revoke.")
+        revoked = result.get("revoked")
+        console.print(
+            f"[green]Revoked[/green] {result.get('id')}"
+            if revoked
+            else f"[dim]No active public URL on {result.get('id')}[/dim]"
+        )

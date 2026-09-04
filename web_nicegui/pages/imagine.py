@@ -71,6 +71,8 @@ def build_imagine_page(ui: Any) -> None:
             build_action_form(ui, "files_get", force_confirm=False, on_done=lambda _r: refresh_files())
             build_action_form(ui, "files_upload", on_done=lambda _r: refresh_files())
             build_action_form(ui, "files_delete", on_done=lambda _r: refresh_files())
+            build_action_form(ui, "files_share", force_confirm=False, on_done=lambda _r: refresh_files())
+            build_action_form(ui, "files_unshare", on_done=lambda _r: refresh_files())
             ui.timer(0.05, refresh_files, once=True)
         with ui.tab_panel(tab_seq_handoff):
             build_action_form(ui, "sequence_handoff", on_done=lambda _r: refresh())

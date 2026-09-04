@@ -83,6 +83,8 @@ def test_nested_help_panels() -> None:
     assert "list" in files.stdout
     assert "get" in files.stdout
     assert "delete" in files.stdout
+    assert "share" in files.stdout
+    assert "unshare" in files.stdout
 
     quota = run_cli("quota", "--help")
     assert quota.returncode == 0
@@ -188,6 +190,6 @@ def test_actionspec_frozen() -> None:
     sys.path.insert(0, str(root))
     from studio_core.services.actions import ACTIONS
 
-    assert len(ACTIONS) == 34
+    assert len(ACTIONS) == 36
     assert ACTIONS["models_verify"].base_argv == ("models", "verify")
     assert ACTIONS["doctor_quick"].base_argv == ("doctor", "--quick")

@@ -39,6 +39,8 @@ def test_cockpit_order_and_ids() -> None:
         "files_get",
         "files_upload",
         "files_delete",
+        "files_share",
+        "files_unshare",
         "handoff_validate",
         "doctor_quick",
         "models_verify",
@@ -66,6 +68,7 @@ def test_cockpit_order_and_ids() -> None:
         "quota_budget",
         "files_upload",
         "files_delete",
+        "files_unshare",
     ):
         assert COCKPIT_WORKFLOWS[wid].needs_confirm is True
         assert COCKPIT_WORKFLOWS[wid].fields
@@ -255,6 +258,8 @@ def test_no_forbidden_tokens_in_any_happy_path() -> None:
             "dry_run": "--dry-run",
         },
         "files_delete": {"file_id": "file_abc", "yes": "--yes"},
+        "files_share": {"file_id": "file_abc", "expires_after": "86400"},
+        "files_unshare": {"file_id": "file_abc"},
     }
     for wid, ans in samples.items():
         assert validate_answers(wid, ans) == []

@@ -140,6 +140,8 @@ NESTED_MAPS: dict[str, dict[str, str]] = {
         "get": "Inspect",
         "upload": "Store",
         "delete": "Store",
+        "share": "Store",
+        "unshare": "Store",
     },
     "quota": {
         "dashboard": "Health",

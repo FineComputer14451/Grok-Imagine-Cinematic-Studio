@@ -97,6 +97,16 @@ def test_cost_simulate_and_quota_estimate() -> None:
     assert "Credits" in quota.stdout
 
 
+def test_files_share_registered() -> None:
+    help_r = run_cli("files", "--help")
+    assert help_r.returncode == 0
+    assert "share" in help_r.stdout
+    assert "unshare" in help_r.stdout
+    dry = run_cli("files", "share", "file_dry_abc", "--dry-run")
+    assert dry.returncode == 0, dry.stderr
+    assert "public_url" in dry.stdout.lower() or "dry-run" in dry.stdout.lower()
+
+
 def test_imagine_poll_registered() -> None:
     help_r = run_cli("imagine", "poll", "--help")
     assert help_r.returncode == 0

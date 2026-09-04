@@ -301,3 +301,51 @@ def delete_file(file_id: str, *, dry_run: bool | None = None) -> dict[str, Any]:
         }
     encoded = urllib.parse.quote(fid, safe="")
     return _http("DELETE", f"/files/{encoded}")
+
+
+def create_public_url(
+    file_id: str,
+    *,
+    expires_after: int | None = None,
+    dry_run: bool | None = None,
+) -> dict[str, Any]:
+    """POST /v1/files/{id}/public-url — shareable CDN link (idempotent)."""
+    fid = (file_id or "").strip()
+    if not fid:
+        raise FilesAPIError("file_id is required")
+    ttl = validate_expires_after(expires_after)
+    payload: dict[str, Any] = {}
+    if ttl is not None:
+        payload["expires_after"] = ttl
+    if _use_dry_run(dry_run) or fid.startswith("file_dry_"):
+        out: dict[str, Any] = {
+            "dry_run": True,
+            "id": fid,
+            "public_url": f"https://dry-run.x.ai/files/{fid}",
+        }
+        if ttl is not None:
+            out["expires_at"] = int(time.time()) + ttl
+        return out
+    encoded = urllib.parse.quote(fid, safe="")
+    return _http(
+        "POST",
+        f"/files/{encoded}/public-url",
+        data=json.dumps(payload).encode("utf-8"),
+        content_type="application/json",
+    )
+
+
+def revoke_public_url(file_id: str, *, dry_run: bool | None = None) -> dict[str, Any]:
+    """POST /v1/files/{id}/public-url/revoke — file stays; URL dies."""
+    fid = (file_id or "").strip()
+    if not fid:
+        raise FilesAPIError("file_id is required")
+    if _use_dry_run(dry_run) or fid.startswith("file_dry_"):
+        return {
+            "dry_run": True,
+            "id": fid,
+            "revoked": True,
+            "public_url": f"https://dry-run.x.ai/files/{fid}",
+        }
+    encoded = urllib.parse.quote(fid, safe="")
+    return _http("POST", f"/files/{encoded}/public-url/revoke")
