@@ -41,6 +41,8 @@ def test_core_build_studio_dashboard_shape() -> None:
     assert snap["studio_version"]
     assert snap["studio"]["core_agents"] >= 23
     assert snap["imagine"]["image_hero"] == "grok-imagine-image-2.0"
+    assert "stored_file_ids" in snap["production"]
+    assert "plates_with_file_id" in snap["production"]
     assert "xai_responses_tool" in snap["imagine"]["surfaces"]
     recon = snap["quota"].get("reconciliation") or {}
     assert "cascade_source" in recon

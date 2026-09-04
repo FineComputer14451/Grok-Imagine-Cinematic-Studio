@@ -9,6 +9,7 @@ Terminal: failed, cancelled
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -37,6 +38,13 @@ def _now_iso() -> str:
 
 def _job_id() -> str:
     return f"job_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S_%f')}"
+
+
+def plate_id_from_filename(name: str) -> str:
+    """Stable asset_id slug from a Files filename."""
+    stem = Path(name or "plate").stem
+    slug = re.sub(r"[^a-zA-Z0-9_-]+", "_", stem).strip("_").lower()
+    return (slug or "plate")[:64]
 
 
 def _default_jobs_state() -> dict[str, Any]:
@@ -99,6 +107,7 @@ def create_job(
         "reference_image_id": reference_image_id,
         "request_id": None,
         "result_url": None,
+        "result_file_id": None,
         "dry_run": False,
         "error": None,
         "chain_qa": None,
@@ -167,7 +176,8 @@ def cancel_job(job_id: str, *, reason: str = "") -> dict[str, Any]:
 def register_reference_asset(
     asset_id: str,
     *,
-    url: str,
+    url: str = "",
+    file_id: str | None = None,
     tier: str = "standard",
     shot_id: str | None = None,
     reference_image_id: str | None = None,
@@ -175,15 +185,20 @@ def register_reference_asset(
     notes: str = "",
 ) -> dict[str, Any]:
     """Add or update a reference plate in the asset manifest."""
+    url_s = (url or "").strip()
+    fid = (file_id or "").strip() or None
+    if not url_s and not fid:
+        raise ValueError("url or file_id required")
     state = load_project_state()
     manifest = ensure_asset_manifest(state)
     entry = {
         "asset_id": asset_id,
         "type": "reference_plate",
-        "url": url,
+        "url": url_s,
+        "file_id": fid,
         "tier": tier,
         "shot_id": shot_id,
-        "reference_image_id": reference_image_id or asset_id,
+        "reference_image_id": reference_image_id or fid or asset_id,
         "lock_status": lock_status,
         "notes": notes,
         "updated_at": _now_iso(),
@@ -230,13 +245,19 @@ def job_summary() -> dict[str, Any]:
     jobs_state = ensure_imagine_jobs_state(state)
     manifest = ensure_asset_manifest(state)
     counts: dict[str, int] = {s: 0 for s in JOB_STATUSES}
+    stored = 0
     for job in jobs_state["jobs"].values():
         status = job.get("status", "queued")
         counts[status] = counts.get(status, 0) + 1
+        if job.get("result_file_id"):
+            stored += 1
+    plates_with_file = sum(1 for a in manifest["assets"].values() if a.get("file_id"))
     return {
         "total": len(jobs_state["jobs"]),
         "by_status": counts,
         "reference_assets": len(manifest["assets"]),
+        "stored_file_ids": stored,
+        "plates_with_file_id": plates_with_file,
         "updated_at": jobs_state.get("updated_at"),
     }
 

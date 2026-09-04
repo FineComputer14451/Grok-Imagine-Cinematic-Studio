@@ -86,6 +86,8 @@ def build_studio_dashboard() -> dict[str, Any]:
         "sfw_batches": len(sfw_batches),
         "imagine_jobs": imagine_summary["total"],
         "reference_assets": imagine_summary["reference_assets"],
+        "stored_file_ids": imagine_summary.get("stored_file_ids", 0),
+        "plates_with_file_id": imagine_summary.get("plates_with_file_id", 0),
     }
     try:
         from control_plane_readiness import build_readiness_rollup

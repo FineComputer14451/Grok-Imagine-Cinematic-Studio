@@ -21,6 +21,7 @@ def test_imagine_page_source_has_files_tab() -> None:
     src = (ROOT / "web_ui" / "pages" / "imagine.py").read_text(encoding="utf-8")
     assert '"Files"' in src
     assert "files_upload" in src
+    assert "result_file_id" in src
     assert "_render_files_tab" in src
     assert "file_id" in src
 

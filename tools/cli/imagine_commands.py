@@ -24,7 +24,16 @@ from imagine_client import (
     submit_video_extension,
     submit_video_generation,
 )
-from imagine_jobs import cancel_job, create_job, get_job, job_summary, list_jobs, transition_job
+from imagine_jobs import (
+    cancel_job,
+    create_job,
+    get_job,
+    job_summary,
+    list_jobs,
+    plate_id_from_filename,
+    register_reference_asset,
+    transition_job,
+)
 from artifact_pipeline import artifacts_summary, list_artifacts, register_artifact_from_job
 from imagine_bridge import (
     TARGET_SURFACES,
@@ -131,6 +140,16 @@ def register(app: typer.Typer) -> None:
             False,
             "--public-url",
             help="Also create a shareable Files public URL",
+        ),
+        register_plate: bool = typer.Option(
+            False,
+            "--register-plate",
+            help="Register result_file_id as a reference plate when stored",
+        ),
+        plate_id: str = typer.Option(
+            None,
+            "--plate-id",
+            help="Asset id for --register-plate (default: slug from --store-as)",
         ),
         dry_run: bool = typer.Option(False, "--dry-run", help="Force mock response"),
     ):
@@ -340,6 +359,24 @@ def register(app: typer.Typer) -> None:
                     "[dim]Next:[/dim] cinematic-studio imagine submit image_edit "
                     f'-p "…" --file-id {updated["result_file_id"]}'
                 )
+                if register_plate:
+                    aid = (plate_id or "").strip() or plate_id_from_filename(
+                        store_as or updated["result_file_id"]
+                    )
+                    entry = register_reference_asset(
+                        aid,
+                        file_id=updated["result_file_id"],
+                        url=updated.get("result_url") or "",
+                        notes=f"Imagine {job_type} store-as",
+                    )
+                    console.print(
+                        f"[green]Plate[/green] {entry['asset_id']} ← {entry.get('file_id')}"
+                    )
+            elif register_plate:
+                console.print(
+                    "[yellow]--register-plate ignored[/yellow] "
+                    "(no result_file_id — pass --store-as)"
+                )
         except ImagineAPIError as exc:
             transition_job(job["job_id"], "failed", error=str(exc))
             console.print(f"[red]Failed:[/red] {exc}")
@@ -357,7 +394,18 @@ def register(app: typer.Typer) -> None:
         table = Table(title=f"Imagine Job — {job_id}", box=box.ROUNDED)
         table.add_column("Field", style="cyan")
         table.add_column("Value")
-        for key in ("job_type", "status", "model", "sequence_slug", "clip_id", "request_id", "result_url", "dry_run", "error"):
+        for key in (
+            "job_type",
+            "status",
+            "model",
+            "sequence_slug",
+            "clip_id",
+            "request_id",
+            "result_url",
+            "result_file_id",
+            "dry_run",
+            "error",
+        ):
             val = job.get(key)
             if val is not None:
                 table.add_row(key, str(val))
@@ -382,18 +430,22 @@ def register(app: typer.Typer) -> None:
         table.add_column("Status", style="green")
         table.add_column("Sequence", style="dim")
         table.add_column("Clip")
+        table.add_column("file_id", style="cyan")
         for j in jobs:
+            fid = j.get("result_file_id") or "—"
             table.add_row(
                 j["job_id"][:24],
                 j.get("job_type", ""),
                 j.get("status", ""),
                 j.get("sequence_slug") or "—",
                 j.get("clip_id") or "—",
+                fid if len(str(fid)) <= 22 else str(fid)[:19] + "…",
             )
         console.print(table)
         console.print(
             f"[dim]Total: {summary['total']} | "
             f"Refs: {summary['reference_assets']} | "
+            f"file_ids: {summary.get('stored_file_ids', 0)} | "
             f"Queued: {summary['by_status'].get('queued', 0)} | "
             f"Running: {summary['by_status'].get('running', 0)}[/dim]"
         )

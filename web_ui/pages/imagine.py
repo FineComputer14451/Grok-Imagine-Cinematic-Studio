@@ -142,6 +142,7 @@ def render() -> None:
                         "status": j.get("status"),
                         "sequence": j.get("sequence_slug"),
                         "clip": j.get("clip_id"),
+                        "file_id": j.get("result_file_id") or "",
                         "url": (j.get("result_url") or "")[:60],
                     }
                     for j in jobs
@@ -327,6 +328,7 @@ def render() -> None:
                         "tier": a.get("tier"),
                         "lock": a.get("lock_status"),
                         "shot": a.get("shot_id"),
+                        "file_id": a.get("file_id") or "",
                         "url": (a.get("url") or "")[:50],
                     }
                     for a in assets

@@ -110,7 +110,7 @@ cinematic-studio handoff validate <packet.json> --strict-handoff
 ### Files API (plates → file_id)
 
 ```bash
-cinematic-studio files upload locked-plate.png --expires-after 86400
+cinematic-studio files upload locked-plate.png --expires-after 86400 --register-plate
 cinematic-studio files list --limit 20
 cinematic-studio files get file_…
 cinematic-studio files delete file_… --yes
@@ -120,7 +120,7 @@ cinematic-studio imagine submit image_edit -p "wardrobe lock" --file-id file_…
 cinematic-studio imagine submit video -p "slow push-in" --file-id file_…
 
 # Persist Imagine output back to Files (no re-upload):
-cinematic-studio imagine submit image -p "neon alley" --store-as alley.png --dry-run
+cinematic-studio imagine submit image -p "neon alley" --store-as alley.png --register-plate --dry-run
 cinematic-studio imagine submit image_edit -p "cooler practicals" --file-id file_… --store-as alley-v2.png
 ```
 

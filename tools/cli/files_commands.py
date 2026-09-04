@@ -10,6 +10,7 @@ from rich.table import Table
 
 from files_client import FilesAPIError, delete_file, get_file, list_files, upload_file
 from imagine_client import is_dry_run as imagine_is_dry_run
+from imagine_jobs import plate_id_from_filename, register_reference_asset
 
 from cli.shared import console
 
@@ -123,6 +124,16 @@ def register(app: typer.Typer) -> None:
             help="OpenAI-compat purpose label (xAI does not enforce it)",
         ),
         json_output: bool = typer.Option(False, "--json", help="Machine-readable JSON"),
+        register_plate: bool = typer.Option(
+            False,
+            "--register-plate",
+            help="Register the uploaded file_id as a reference plate",
+        ),
+        plate_id: str = typer.Option(
+            None,
+            "--plate-id",
+            help="Asset id for --register-plate (default: slug from filename)",
+        ),
         dry_run: bool = typer.Option(False, "--dry-run", help="Force mock response"),
     ):
         """Upload a file and print file_id for Imagine --file-id."""
@@ -136,16 +147,28 @@ def register(app: typer.Typer) -> None:
         except FilesAPIError as exc:
             console.print(f"[red]{exc}[/red]")
             raise typer.Exit(1) from exc
+        fid = str(result.get("id") or "")
+        if register_plate and fid:
+            aid = (plate_id or "").strip() or plate_id_from_filename(
+                str(result.get("filename") or path.name)
+            )
+            entry = register_reference_asset(
+                aid,
+                file_id=fid,
+                notes="Files API upload",
+            )
+            result["plate_id"] = entry["asset_id"]
         if json_output:
             _print_json(result)
             return
         if result.get("dry_run"):
             console.print("[yellow]Dry-run[/yellow] — no live upload.")
-        fid = str(result.get("id") or "")
         _print_file_id_hint(fid)
         console.print(
             f"[dim]{result.get('filename')} · {result.get('bytes')} bytes[/dim]"
         )
+        if result.get("plate_id"):
+            console.print(f"[green]Plate[/green] {result['plate_id']} ← {fid}")
 
     @app.command("delete")
     def files_delete(

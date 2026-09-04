@@ -21,7 +21,13 @@ from imagine_client import (  # noqa: E402
     submit_video_extension,
     submit_video_generation,
 )
-from imagine_jobs import create_job, job_summary, list_jobs, register_reference_asset  # noqa: E402
+from imagine_jobs import (  # noqa: E402
+    create_job,
+    get_job,
+    job_summary,
+    list_jobs,
+    register_reference_asset,
+)
 
 
 def test_dry_run_image_generation(monkeypatch=None) -> None:
@@ -69,9 +75,24 @@ def test_job_queue_crud(tmp_path, monkeypatch) -> None:
     rows = list_jobs()
     assert any(r["job_id"] == job["job_id"] for r in rows)
 
+    assert job.get("result_file_id") is None
+    from imagine_jobs import transition_job, plate_id_from_filename
+
+    transition_job(job["job_id"], "approved", result_file_id="file_abc")
+    assert get_job(job["job_id"])["result_file_id"] == "file_abc"
+
     register_reference_asset("ref_001", url="https://example.com/plate.png", tier="hero")
+    plate = register_reference_asset(
+        plate_id_from_filename("Locked Plate.png"),
+        file_id="file_abc",
+        notes="Files API",
+    )
+    assert plate["asset_id"] == "locked_plate"
+    assert plate["file_id"] == "file_abc"
     summary = job_summary()
-    assert summary["reference_assets"] >= 1
+    assert summary["reference_assets"] >= 2
+    assert summary["stored_file_ids"] >= 1
+    assert summary["plates_with_file_id"] >= 1
 
 
 def test_dry_run_image_2_0_quality_payload(monkeypatch) -> None:
