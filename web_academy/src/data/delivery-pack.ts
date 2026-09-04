@@ -34,7 +34,7 @@ export type QuizItem = {
 };
 
 export const DELIVERY_PACK_VERSION = "4.5";
-export const ACADEMY_MODULE_VERSION = "3.9.3";
+export const ACADEMY_MODULE_VERSION = "3.11.4";
 
 export const DELIVERY_PACK_TAGLINE =
   "Final ship gate — blockers clear, picture lock, masters, variants, and client package without reopening the cut.";
