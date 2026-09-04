@@ -126,7 +126,7 @@ qa_threshold: identity-weighted Go/No-Go
 }
 
 function buildActivation(bible: string, title: string) {
-  return `Activate Grok Imagine Cinematic Studio v3.9.1
+  return `Activate Grok Imagine Cinematic Studio v3.11.4
 ACTIVATE STUDIO_DIRECTOR
 ACTIVATE MEGA_PRODUCTION_ARCHITECT
 ACTIVATE DOP
