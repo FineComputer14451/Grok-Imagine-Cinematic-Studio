@@ -204,7 +204,7 @@ See Budget calculator for list-rate totals.
 
   if (include.activation) {
     parts.push(`## ACTIVATION PACK
-Activate Grok Imagine Cinematic Studio v3.9.1
+Activate Grok Imagine Cinematic Studio v3.11.4
 ACTIVATE STUDIO_DIRECTOR
 ACTIVATE DOP
 ACTIVATE IDENTITY_LOCK

@@ -52,4 +52,4 @@ Copy from Extend Lab:
 - `/delivery` — final checklist  
 - `/movement` — one-move grammar  
 
-Stills-first · SFW educational path · independent of xAI credentials.
+Stills-first · SFW educational path · Studio v3.11.4 · independent of xAI credentials (not affiliated with xAI/SpaceXAI).

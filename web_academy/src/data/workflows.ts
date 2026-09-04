@@ -148,7 +148,7 @@ Handoff must pass identity gate before any video spend.`,
         handsOff: "Approved shoot packets",
       },
     ],
-    activation: `Activate Grok Imagine Cinematic Studio v3.9.1
+    activation: `Activate Grok Imagine Cinematic Studio v3.11.4
 ACTIVATE STUDIO_DIRECTOR
 ACTIVATE MEGA_PRODUCTION_ARCHITECT
 ACTIVATE DOP

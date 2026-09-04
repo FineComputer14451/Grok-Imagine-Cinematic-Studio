@@ -44,7 +44,7 @@ npm run typecheck
 | `/lenses` · `/movement` · `/color` · `/lighting` · `/composition` · `/aspect` | Cinematography track |
 | `/editing` · `/sound` | Post craft |
 | `/agents` · `/pack` · `/workflows` · `/pipeline` | Studio systems |
-| `/erosforge` | **ErosForge** opt-in NSFW pack module (v3.9.2) |
+| `/erosforge` | **ErosForge** opt-in NSFW pack module (v3.11.4 · AUP-gated) |
 | `/quiz` · `/graduate` · `/recap` | Assessment + certificate |
 
 ## Notes
@@ -55,4 +55,6 @@ npm run typecheck
 
 ---
 
-**Version**: 3.9.2 · ErosForge module · Studio monorepo companion · August 2026
+**Version**: 3.11.4 · ErosForge opt-in (AUP) · Studio monorepo companion · September 2026
+
+> Independent community learning tool — not affiliated with xAI or SpaceXAI. Not official xAI credentials.

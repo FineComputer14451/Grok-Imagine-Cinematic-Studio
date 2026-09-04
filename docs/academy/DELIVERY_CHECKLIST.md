@@ -4,7 +4,7 @@
 Interactive version: Studio Academy **`/delivery`** (checkboxes + copy report).  
 Run before stitch, client handoff, or “done.”
 
-Version: Academy educational companion · stills-first · SFW path  
+Version: Academy educational companion · v3.11.4 · stills-first · SFW path  
 Related: Project pack · Craft hub (01–08) · Chain QA · Graduate
 
 ---

@@ -221,7 +221,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 text-sm text-subtle sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <p>
             Studio Academy v4.0.0 — Continuity · Delivery pack · ErosForge ·
-            Cinematic Studio v3.9.1
+            Cinematic Studio v3.11.4
           </p>
           <p className="font-mono text-xs">
             Independent of xAI · MIT-style learning tool
