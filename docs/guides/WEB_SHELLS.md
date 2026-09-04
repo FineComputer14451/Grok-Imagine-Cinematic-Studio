@@ -89,6 +89,7 @@ cinematic-studio api --port 8090
 | GET | `/v1/dashboard` | Studio snapshot |
 | GET | `/v1/actions[/{id}]` | ActionSpec catalog |
 | POST | `/v1/actions/{id}/execute` | Allowlisted execute |
+| POST | `/v1/files/inbox` | Browser drop → `artifacts/files_inbox` (then `files_upload`) |
 | GET | `/v1/meta/*` | Env, options, agents, role cards |
 | GET/POST | `/v1/bible/*` | Guided Bible stages / validate / generate |
 

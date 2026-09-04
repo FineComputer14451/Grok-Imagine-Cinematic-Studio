@@ -10,6 +10,7 @@ import type {
   EnvStatus,
   ExecuteBody,
   HealthResponse,
+  InboxUploadResponse,
   ProductionOptions,
   RoleCardPreview,
   RoleCardsResponse,
@@ -60,6 +61,30 @@ export function fetchActions(): Promise<ActionsListResponse> {
 
 export function fetchAction(actionId: string): Promise<ActionSpecDto> {
   return request<ActionSpecDto>(`/v1/actions/${encodeURIComponent(actionId)}`)
+}
+
+export async function uploadInboxFile(file: File): Promise<InboxUploadResponse> {
+  const body = new FormData()
+  body.append('file', file)
+  const res = await fetch(`${BASE}/v1/files/inbox`, {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
+    body,
+  })
+  if (!res.ok) {
+    let detail = res.statusText
+    try {
+      const payload = (await res.json()) as { detail?: unknown }
+      if (payload.detail != null) {
+        detail =
+          typeof payload.detail === 'string' ? payload.detail : JSON.stringify(payload.detail)
+      }
+    } catch {
+      /* ignore */
+    }
+    throw new Error(`API ${res.status}: ${detail}`)
+  }
+  return res.json() as Promise<InboxUploadResponse>
 }
 
 export function executeAction(

@@ -230,6 +230,39 @@ def test_execute_validation_failure() -> None:
     assert body["errors"] or body["returncode"] != 0
 
 
+def test_files_inbox_upload(tmp_path, monkeypatch) -> None:
+    try:
+        import fastapi  # noqa: F401
+    except ImportError:
+        return
+    import files_client as fc
+    from fastapi.testclient import TestClient
+    from studio_api.app import create_app
+
+    inbox = tmp_path / "files_inbox"
+    monkeypatch.setattr(fc, "FILES_INBOX_DIR", inbox)
+    client = TestClient(create_app())
+    ok = client.post(
+        "/v1/files/inbox",
+        files={"file": ("hero.png", b"\x89PNG data", "image/png")},
+    )
+    assert ok.status_code == 200, ok.text
+    body = ok.json()
+    assert body["ok"] is True
+    assert body["filename"] == "hero.png"
+    assert body["bytes"] == len(b"\x89PNG data")
+    assert (inbox / "hero.png").read_bytes() == b"\x89PNG data"
+
+    empty = client.post(
+        "/v1/files/inbox",
+        files={"file": ("empty.png", b"", "image/png")},
+    )
+    assert empty.status_code == 400
+
+    root = client.get("/")
+    assert root.json().get("files_inbox") == "/v1/files/inbox"
+
+
 def test_api_cli_help() -> None:
     import subprocess
 

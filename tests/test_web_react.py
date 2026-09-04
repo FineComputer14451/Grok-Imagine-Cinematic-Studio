@@ -14,6 +14,12 @@ def test_web_react_package_layout() -> None:
     assert (app / "src" / "main.tsx").is_file()
     assert (app / "src" / "router.tsx").is_file()
     assert (app / "src" / "api" / "client.ts").is_file()
+    client = (app / "src" / "api" / "client.ts").read_text(encoding="utf-8")
+    assert "uploadInboxFile" in client
+    assert "/v1/files/inbox" in client
+    form = (app / "src" / "components" / "ActionForm.tsx").read_text(encoding="utf-8")
+    assert "files_upload" in form
+    assert "uploadInboxFile" in form
     assert (app / "src" / "components" / "ToolsView.tsx").is_file()
     assert (app / "src" / "components" / "SettingsView.tsx").is_file()
     assert (app / "src" / "components" / "NsfwView.tsx").is_file()

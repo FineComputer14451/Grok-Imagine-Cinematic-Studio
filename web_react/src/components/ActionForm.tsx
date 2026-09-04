@@ -1,7 +1,7 @@
 import { useForm } from '@tanstack/react-form'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo, useState } from 'react'
-import { executeAction, fetchAction } from '../api/client'
+import { executeAction, fetchAction, uploadInboxFile } from '../api/client'
 import { queryKeys } from '../api/queryKeys'
 import type { ActionResultDto, ActionSpecDto } from '../api/types'
 import {
@@ -41,6 +41,10 @@ function ActionFormReady({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spec, prefsEpoch])
 
+  const [inboxNote, setInboxNote] = useState('')
+  const [inboxBusy, setInboxBusy] = useState(false)
+  const [inboxPath, setInboxPath] = useState('')
+
   const mutation = useMutation({
     mutationFn: (answers: Record<string, string>) =>
       executeAction(spec.id, { answers, mode: 'inprocess' }),
@@ -70,6 +74,9 @@ function ActionFormReady({
       const answers: Record<string, string> = {}
       for (const [k, v] of Object.entries(value)) {
         answers[k] = v == null ? '' : String(v)
+      }
+      if (spec.id === 'files_upload' && inboxPath && !answers.path?.trim()) {
+        answers.path = inboxPath
       }
       const needs =
         forceConfirm === false
@@ -109,6 +116,34 @@ function ActionFormReady({
             void form.handleSubmit()
           }}
         >
+          {spec.id === 'files_upload' && (
+            <label className="field">
+              <span>Drop plate (saved to API inbox, then paste path)</span>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/gif,video/mp4"
+                disabled={inboxBusy}
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  e.target.value = ''
+                  if (!file) return
+                  setInboxBusy(true)
+                  setInboxNote('Uploading to inbox…')
+                  void uploadInboxFile(file)
+                    .then((saved) => {
+                      setInboxPath(saved.path)
+                      form.setFieldValue('path', saved.path)
+                      setInboxNote(`Saved ${saved.filename} (${saved.bytes} bytes) — confirm Files upload`)
+                    })
+                    .catch((err: Error) => {
+                      setInboxNote(err.message)
+                    })
+                    .finally(() => setInboxBusy(false))
+                }}
+              />
+              {inboxNote ? <span className="muted small">{inboxNote}</span> : null}
+            </label>
+          )}
           {spec.fields.map((field) => (
             <form.Field
               key={field.key}

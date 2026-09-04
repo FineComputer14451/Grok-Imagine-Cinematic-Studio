@@ -39,7 +39,7 @@ def _execute_body_model():
 def create_app() -> Any:
     """Build FastAPI app (lazy import so core install need not include FastAPI)."""
     try:
-        from fastapi import Body, FastAPI, HTTPException
+        from fastapi import Body, FastAPI, File, HTTPException, UploadFile
         from fastapi.middleware.cors import CORSMiddleware
     except ImportError as exc:  # pragma: no cover
         raise SystemExit(
@@ -87,6 +87,7 @@ def create_app() -> Any:
             "meta_options": "/v1/meta/production-options",
             "bible_stages": "/v1/bible/stages",
             "bible_guided": "/v1/bible/guided",
+            "files_inbox": "/v1/files/inbox",
         }
 
     @app.get("/health")
@@ -308,6 +309,25 @@ def create_app() -> Any:
             "timed_out": result.timed_out,
             "mode": result.mode,
             "output": result.output,
+        }
+
+    @app.post("/v1/files/inbox")
+    async def files_inbox(file: UploadFile = File(...)) -> dict[str, Any]:
+        """Save a browser drop to artifacts/files_inbox; path is for files_upload."""
+        from files_client import FilesAPIError, save_inbox_file
+
+        data = await file.read()
+        try:
+            dest = save_inbox_file(file.filename or "upload.bin", data)
+        except FilesAPIError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        except OSError as exc:
+            raise HTTPException(status_code=500, detail="Failed to save inbox file") from exc
+        return {
+            "ok": True,
+            "path": str(dest),
+            "filename": dest.name,
+            "bytes": int(dest.stat().st_size),
         }
 
     return app

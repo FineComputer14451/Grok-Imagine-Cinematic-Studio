@@ -29,6 +29,13 @@ export interface ActionsListResponse {
   actions: ActionSpecDto[]
 }
 
+export interface InboxUploadResponse {
+  ok: boolean
+  path: string
+  filename: string
+  bytes: number
+}
+
 export interface ExecuteBody {
   answers?: Record<string, string>
   mode?: 'inprocess' | 'subprocess'
