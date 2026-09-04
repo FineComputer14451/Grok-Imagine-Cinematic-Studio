@@ -69,7 +69,7 @@ function HomePage() {
     <div className="space-y-12">
       <section className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
         <div className="space-y-5">
-          <Badge variant="teal">v3.9.1 · Educational companion</Badge>
+          <Badge variant="teal">v3.11.4 · Educational companion</Badge>
           <h1 className="max-w-xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
             Learn the Cinematic Studio without drowning in agents.
           </h1>
