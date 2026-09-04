@@ -71,8 +71,8 @@ export const ALGORITHMS: Algorithm[] = [
     inputs: ["still candidates", "strict_plate flag", "DNA match check"],
     outputs: ["plate_status: locked", "hero plate URL/ref"],
     steps: [
-      "Iterate cheap standard stills with DNA inject.",
-      "Promote one plate to locked (optionally Image 2.0 quality=medium).",
+      "Iterate cheap 1.0 stills with DNA inject.",
+      "Promote one plate to locked (grok-imagine-image-2.0 quality medium).",
       "Handoff sets plate_status=locked and motion_vector.",
       "Video packets rejected while plate is draft.",
     ],

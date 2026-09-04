@@ -26,6 +26,7 @@ import {
   API_SECTIONS,
   API_STATUS_CODES,
   GROK_PRICING,
+  IMAGINE_MIGRATION,
   SPEND_RULES,
   type ApiEndpoint,
 } from "@/data/api-docs";
@@ -38,7 +39,6 @@ export const Route = createFileRoute("/docs")({
 const METHOD_STYLE: Record<ApiEndpoint["method"], string> = {
   GET: "border-teal/40 bg-teal/10 text-teal",
   POST: "border-amber/40 bg-amber/10 text-amber",
-  DELETE: "border-danger/40 bg-danger/10 text-danger",
 };
 
 function DocsPage() {
@@ -127,12 +127,25 @@ function DocsPage() {
         </div>
       </div>
 
+      <Card className="border-amber/40 bg-amber/5">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <AlertTriangle className="h-4 w-4 text-amber" />
+            {IMAGINE_MIGRATION.title}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2 text-sm text-muted leading-relaxed">
+          <p>{IMAGINE_MIGRATION.rule}</p>
+          <p className="text-xs text-subtle">{IMAGINE_MIGRATION.consumerNote}</p>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: "Chat in (list)", value: "$2 / 1M" },
-          { label: "Chat out (list)", value: "$6 / 1M" },
-          { label: "Standard still (list)", value: "$0.02" },
-          { label: "Video 720p (list)", value: "$0.07 / s" },
+          { label: "1.0 still (list)", value: "$0.02" },
+          { label: "2.0 medium 2K", value: "$0.08" },
+          { label: "Video 1.0 720p", value: "$0.07 / s" },
+          { label: "Video 1.5 720p", value: "$0.14 / s" },
         ].map((s) => (
           <div
             key={s.label}

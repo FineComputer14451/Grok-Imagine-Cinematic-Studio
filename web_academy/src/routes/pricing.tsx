@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BadgeCheck, Calculator, DollarSign, ExternalLink } from "lucide-react";
+import { AlertTriangle, BadgeCheck, Calculator, DollarSign, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { GROK_PRICING } from "@/data/api-docs";
+import { GROK_PRICING, IMAGINE_MIGRATION } from "@/data/api-docs";
 
 export const Route = createFileRoute("/pricing")({
   component: PricingPage,
@@ -49,6 +49,26 @@ function PricingPage() {
         </div>
       </div>
 
+      <Card className="border-amber/40 bg-amber/5">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <AlertTriangle className="h-4 w-4 text-amber" />
+            {IMAGINE_MIGRATION.title}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2 text-sm text-muted leading-relaxed">
+          <p>{IMAGINE_MIGRATION.body}</p>
+          <p>
+            <strong className="text-fg">Floor rule.</strong>{" "}
+            {IMAGINE_MIGRATION.rule}
+          </p>
+          <p className="text-xs text-subtle">{IMAGINE_MIGRATION.consumerNote}</p>
+          <p className="font-mono text-xs text-subtle">
+            Notice {IMAGINE_MIGRATION.asOf} · effective {IMAGINE_MIGRATION.effective}
+          </p>
+        </CardContent>
+      </Card>
+
       <Card className="border-teal/30 bg-teal/5">
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2 text-base">
@@ -64,11 +84,14 @@ function PricingPage() {
             cards.
           </p>
           <p>
-            “Standard still” means the cheaper image model (
+            “Standard still” means the cheaper 1.0 image model (
             <span className="font-mono text-fg">grok-imagine-image</span>) for
-            iteration, vs Image 2.0 hero stills (`quality=medium`) —{" "}
-            <strong className="text-fg">not</strong> that the dollars were
-            provisional.
+            iteration. Hero plates use{" "}
+            <span className="font-mono text-fg">grok-imagine-image-2.0</span> with{" "}
+            <span className="font-mono text-fg">quality: "medium"</span> —{" "}
+            <strong className="text-fg">not</strong> the retiring{" "}
+            <span className="font-mono text-fg">image-quality</span> slug, and
+            not that the dollars were provisional.
           </p>
           <p>{GROK_PRICING.status}</p>
         </CardContent>
@@ -164,17 +187,17 @@ function PricingPage() {
         <CardContent className="space-y-2 text-sm text-muted">
           <p>
             Iterate on{" "}
-            <span className="font-mono text-fg">grok-imagine-image</span> (list
-            ~$0.02) before hero{" "}
-            <span className="font-mono text-fg">grok-imagine-image-2.0</span> with{" "}
-            <span className="font-mono text-fg">quality=medium</span>. The retired{" "}
-            <span className="font-mono text-fg">grok-imagine-image-quality</span> slug rewrites to 2.0{" "}
-            <span className="font-mono text-fg">quality=low</span> on 2026-11-02 — do
-            not send it as the live hero.
+            <span className="font-mono text-fg">grok-imagine-image</span> (1.0,
+            list $0.02). Hero plates on{" "}
+            <span className="font-mono text-fg">grok-imagine-image-2.0</span>{" "}
+            with <span className="font-mono text-fg">quality: "medium"</span>.
+            Cost-match the old quality look with 2.0{" "}
+            <span className="font-mono text-fg">low</span> — not the retiring
+            slug.
           </p>
           <p>
-            A 6s 720p clip (~$0.42 at list) costs more than twenty standard
-            stills — lock plates and DNA first.
+            A 6s 1.5 clip at 720p (~$0.84 list) costs more than forty 1.0 stills
+            — lock DNA and plates first. 1.5 1080p is $0.25/s.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link to="/budget" className="text-teal hover:underline">

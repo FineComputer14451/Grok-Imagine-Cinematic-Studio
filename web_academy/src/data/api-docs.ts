@@ -1,6 +1,6 @@
 export type ApiEndpoint = {
   id: string;
-  method: "GET" | "POST" | "DELETE";
+  method: "GET" | "POST";
   path: string;
   title: string;
   summary: string;
@@ -30,10 +30,25 @@ export type PriceGroup = {
   rows: PriceRow[];
 };
 
+export const IMAGINE_MIGRATION = {
+  asOf: "September 2, 2026",
+  effective: "November 2, 2026",
+  retiring: "grok-imagine-image-quality",
+  redirect: 'grok-imagine-image-2.0 with quality: "low"',
+  unaffected: "grok-imagine-image (1.0)",
+  title: "Imagine image-quality slug retires November 2, 2026",
+  body: "The grok-imagine-image-quality slug keeps resolving after November 2, but it is served as grok-imagine-image-2.0 with quality forced to low. Pin 2.0 and quality yourself if you care about look or cost. grok-imagine-image (1.0) is unchanged. grok-imagine-image-pro already follows quality, then follows this redirect.",
+  rule: "Hero stills: grok-imagine-image-2.0 + quality medium. Cheap iterate: grok-imagine-image (1.0) or 2.0 low. Do not ride the retired slug.",
+  consumerNote:
+    "Consumer Quality Mode on grok.com is grok-imagine-image-2.0 — not the retiring API slug grok-imagine-image-quality.",
+  sourceUrl:
+    "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+} as const;
+
 /**
  * Public xAI developer API list prices (not subscription quotas).
  * “Draft still” in studio examples means the cheaper image *model path*
- * (grok-imagine-image), not that the dollar amounts are unofficial drafts.
+ * (grok-imagine-image 1.0), not that the dollar amounts are unofficial drafts.
  */
 export const GROK_PRICING: {
   asOf: string;
@@ -51,11 +66,11 @@ export const GROK_PRICING: {
 } = {
   asOf: "September 2026",
   source: "x.ai/api · docs.x.ai",
-  sourceUrl: "https://docs.x.ai",
+  sourceUrl: "https://docs.x.ai/developers/pricing",
   status:
-    "Published developer API list prices — not “draft” rate cards. Confirm on docs.x.ai before you budget.",
+    "Published developer API list prices — not “draft” rate cards. Confirm on docs.x.ai before you budget. Image-quality slug retires November 2, 2026.",
   disclaimer:
-    "These are published API list prices for metered developer keys (as listed on x.ai/api and docs.x.ai around September 2026). They are not temporary draft figures. SuperGrok / consumer app quotas are separate from API billing. Studio “snapshots” below are worked examples (~) using those list rates, not separate price tiers. Always re-check the official docs before production budgeting.",
+    "These are published API list prices for metered developer keys (as listed on docs.x.ai around September 2026). They are not temporary draft figures. SuperGrok / consumer app quotas are separate from API billing. Studio “snapshots” below are worked examples (~) using those list rates, not separate price tiers. Always re-check the official docs before production budgeting.",
   groups: [
     {
       id: "chat",
@@ -63,13 +78,13 @@ export const GROK_PRICING: {
       blurb: "Published list rates per million tokens.",
       rows: [
         {
-          model: "grok-4.6",
+          model: "grok-4.5",
           unit: "Input / 1M tokens",
           price: "$2.00",
           note: "List price",
         },
         {
-          model: "grok-4.6",
+          model: "grok-4.5",
           unit: "Output / 1M tokens",
           price: "$6.00",
           note: "List price",
@@ -80,13 +95,13 @@ export const GROK_PRICING: {
       id: "image",
       title: "Imagine — images",
       blurb:
-        "Image 1.0 for cheap iteration; Image 2.0 for hero stills (`quality` low | medium | auto). The `grok-imagine-image-quality` slug retires 2026-11-02.",
+        "1.0 for cheap iteration. 2.0 with an explicit quality pin for plates. The old quality slug redirects to 2.0-low on November 2, 2026.",
       rows: [
         {
           model: "grok-imagine-image",
           unit: "Output / image (1K or 2K)",
           price: "$0.02",
-          note: "Image 1.0 — cheaper iteration path",
+          note: "1.0 — draft / explore. Unchanged Nov 2.",
         },
         {
           model: "grok-imagine-image",
@@ -96,33 +111,39 @@ export const GROK_PRICING: {
         },
         {
           model: "grok-imagine-image-2.0",
-          unit: "Output / image (1K, quality=low)",
+          unit: "Output / 1K · quality low",
           price: "$0.04",
-          note: "List / auto generate. Retired quality slug rewrites here.",
+          note: "Cost-match old quality. Redirect target after Nov 2.",
         },
         {
           model: "grok-imagine-image-2.0",
-          unit: "Output / image (1K, quality=medium)",
+          unit: "Output / 2K · quality low",
           price: "$0.06",
-          note: "Hero / Quality Mode plates",
+          note: "2.0 low",
         },
         {
           model: "grok-imagine-image-2.0",
-          unit: "Output / image (2K, quality=low)",
+          unit: "Output / 1K · quality medium",
           price: "$0.06",
-          note: "2K draft / auto generate",
+          note: "Hero stills / Identity / Polish plates",
         },
         {
           model: "grok-imagine-image-2.0",
-          unit: "Output / image (2K, quality=medium)",
+          unit: "Output / 2K · quality medium",
           price: "$0.08",
-          note: "Hero 2K",
+          note: "Highest still fidelity",
         },
         {
           model: "grok-imagine-image-2.0",
           unit: "Media input / image",
           price: "$0.01",
-          note: "When sending reference images",
+          note: "Up to 5 edit sources. Billed per input image.",
+        },
+        {
+          model: "grok-imagine-image-quality",
+          unit: "Output / image (1K / 2K)",
+          price: "$0.05 / $0.07",
+          note: "Retires Nov 2 → 2.0 quality low. Do not leave in templates.",
         },
       ],
     },
@@ -130,25 +151,25 @@ export const GROK_PRICING: {
       id: "video",
       title: "Imagine — video",
       blurb:
-        "Published per-second list rates by resolution. Video is 1.0 / 1.5 only — there is no Imagine Video 2.0 (2.0 is Image only).",
+        "1.0 for cheap 480/720 draft motion. 1.5 for hero clips (1080p, audio in, extend, reference-to-video). Not in the Nov 2 image-quality retirement.",
       rows: [
         {
           model: "grok-imagine-video",
           unit: "Output / second (480p)",
           price: "$0.05",
-          note: "Video 1.0 list",
+          note: "1.0 draft motion",
         },
         {
           model: "grok-imagine-video",
           unit: "Output / second (720p)",
           price: "$0.07",
-          note: "Video 1.0 list",
+          note: "1.0 draft motion",
         },
         {
           model: "grok-imagine-video",
           unit: "Media input / second",
           price: "$0.01",
-          note: "When conditioning on media",
+          note: "Video-to-video conditioning",
         },
         {
           model: "grok-imagine-video",
@@ -160,19 +181,25 @@ export const GROK_PRICING: {
           model: "grok-imagine-video-1.5",
           unit: "Output / second (480p)",
           price: "$0.08",
-          note: "Video 1.5 native audio / physics — no Video 2.0",
+          note: "1.5 hero path",
         },
         {
           model: "grok-imagine-video-1.5",
           unit: "Output / second (720p)",
           price: "$0.14",
-          note: "Video 1.5 native audio / physics — no Video 2.0",
+          note: "1.5 hero path",
         },
         {
           model: "grok-imagine-video-1.5",
           unit: "Output / second (1080p)",
           price: "$0.25",
-          note: "Video 1.5 hero — no Video 2.0",
+          note: "Delivery masters",
+        },
+        {
+          model: "grok-imagine-video-1.5",
+          unit: "Media input / image",
+          price: "$0.01",
+          note: "Still → clip / reference-to-video",
         },
       ],
     },
@@ -210,33 +237,45 @@ export const GROK_PRICING: {
   ],
   studioExamples: [
     {
-      label: "Standard still (iteration)",
+      label: "1.0 still (iteration)",
       estimate: "$0.02",
-      detail: "1× grok-imagine-image @ list $0.02 — not an unofficial “draft rate”",
+      detail: "1× grok-imagine-image @ list $0.02 — draft path, not an unofficial rate",
       kind: "example",
     },
     {
-      label: "Hero still 1K (Image 2.0 medium)",
-      estimate: "$0.06",
-      detail: "1× grok-imagine-image-2.0 quality=medium @ 1K $0.06",
+      label: "2.0 low 1K (cost-match)",
+      estimate: "$0.04",
+      detail: "1× grok-imagine-image-2.0 quality low @ 1K — Nov 2 redirect look",
       kind: "example",
     },
     {
-      label: "6s clip @ 720p",
+      label: "2.0 medium 2K (hero)",
+      estimate: "$0.08",
+      detail: "1× grok-imagine-image-2.0 quality medium @ 2K — Identity / Polish plate",
+      kind: "example",
+    },
+    {
+      label: "6s clip @ 1.0 720p",
       estimate: "~$0.42",
-      detail: "6 × $0.07/s list — worked example",
+      detail: "6 × $0.07/s list — draft motion proof",
       kind: "example",
     },
     {
-      label: "15s hero @ 720p",
-      estimate: "~$1.05",
-      detail: "15 × $0.07/s list — worked example",
+      label: "6s clip @ 1.5 720p",
+      estimate: "~$0.84",
+      detail: "6 × $0.14/s list — hero motion after plate lock",
+      kind: "example",
+    },
+    {
+      label: "6s clip @ 1.5 1080p",
+      estimate: "~$1.50",
+      detail: "6 × $0.25/s list — delivery master",
       kind: "example",
     },
     {
       label: "Prompt craft (chat)",
       estimate: "≪ $0.01",
-      detail: "Small grok-4.6 call with capped max_tokens — illustrative",
+      detail: "Small grok-4.5 call with capped max_tokens — illustrative",
       kind: "example",
     },
   ],
@@ -248,7 +287,7 @@ export const API_OVERVIEW = {
   base: "https://api.x.ai/v1",
   auth: "Authorization: Bearer $XAI_API_KEY",
   description:
-    "Server-side integration reference for Grok chat, Imagine (image & video), and Voice. Keys are server-only — never expose XAI_API_KEY to the browser. Official source of truth: docs.x.ai.",
+    "Server-side integration reference for Grok chat, Imagine (image & video), and Voice. Keys are server-only — never expose XAI_API_KEY to the browser. Official source of truth: docs.x.ai. Pin grok-imagine-image-2.0 + quality; do not leave grok-imagine-image-quality in templates after November 2, 2026.",
 };
 
 export const API_SECTIONS: ApiSection[] = [
@@ -307,7 +346,7 @@ export const askGrok = createServerFn({ method: "POST" })
         Authorization: \`Bearer \${apiKey}\`,
       },
       body: JSON.stringify({
-        model: "grok-4.6",
+        model: "grok-4.5",
         messages: [{ role: "user", content: data.prompt }],
       }),
     });
@@ -320,117 +359,8 @@ export const askGrok = createServerFn({ method: "POST" })
     return { ok: true as const, text: body.choices[0]?.message.content ?? "" };
   });`,
         notes: [
-          "Default chat model: grok-4.6 unless the user asks otherwise.",
+          "Default chat model: grok-4.5 unless the user asks otherwise.",
           "OpenAI SDKs work with base_url https://api.x.ai/v1.",
-          "Prefer POST /v1/responses for new chat work; /v1/chat/completions remains compatible.",
-        ],
-      },
-    ],
-  },
-  {
-    id: "files",
-    title: "Files",
-    intro:
-      "Private storage for Imagine inputs (and chat attachments). Upload once, then pass file_id instead of re-sending bytes. Max 50 MB. Official: docs.x.ai → Files API.",
-    endpoints: [
-      {
-        id: "files-list",
-        method: "GET",
-        path: "/v1/files",
-        title: "List files",
-        summary:
-          "Paginated list for the authenticated team. Pass pagination_token for the next page.",
-        request: `GET https://api.x.ai/v1/files?limit=20
-Authorization: Bearer $XAI_API_KEY
-
-// Query: limit, order (asc|desc), sort_by (created_at|filename|size),
-//        pagination_token, filter (AIP-160)`,
-        response: `{
-  "data": [
-    {
-      "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
-      "object": "file",
-      "bytes": 12345,
-      "created_at": 1762345678,
-      "expires_at": null,
-      "filename": "plate.png",
-      "purpose": "assistants"
-    }
-  ],
-  "pagination_token": "file_a128090d-f0c9-4873-bd84-e499777e7417"
-}`,
-        notes: [
-          "End of list: data.length < limit.",
-          "purpose is accepted for OpenAI SDK compatibility; xAI does not enforce it.",
-        ],
-      },
-      {
-        id: "files-get",
-        method: "GET",
-        path: "/v1/files/{id}",
-        title: "Get file metadata",
-        summary:
-          "Retrieve one file by id. 404 if missing, deleted, or past expires_at.",
-        request: `GET https://api.x.ai/v1/files/{id}
-Authorization: Bearer $XAI_API_KEY`,
-        response: `{
-  "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
-  "object": "file",
-  "bytes": 12345,
-  "created_at": 1762345678,
-  "expires_at": null,
-  "filename": "plate.png"
-}`,
-      },
-      {
-        id: "files-upload",
-        method: "POST",
-        path: "/v1/files",
-        title: "Upload file",
-        summary:
-          "Multipart upload. Returns id for Imagine image/video inputs. Files persist until delete or expires_after.",
-        request: `POST https://api.x.ai/v1/files
-Authorization: Bearer $XAI_API_KEY
-Content-Type: multipart/form-data
-
-# expires_after MUST appear before the file part (400 if reversed)
-# expires_after: 3600–2592000 seconds (1 hour–30 days); omit = no expiry
-
-curl -X POST https://api.x.ai/v1/files \\
-  -H "Authorization: Bearer $XAI_API_KEY" \\
-  -F expires_after=86400 \\
-  -F purpose=assistants \\
-  -F file="@locked-plate.png"`,
-        response: `{
-  "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
-  "object": "file",
-  "bytes": 12345,
-  "created_at": 1762345678,
-  "expires_at": 1762432078,
-  "filename": "locked-plate.png"
-}`,
-        notes: [
-          "Maximum 50 MB.",
-          "Imagine accepts file_id anywhere a public URL or data URI is allowed (edits, i2v).",
-          "Chunked upload exists (POST /v1/files:initialize + :uploadChunks) for large files — see docs.x.ai.",
-        ],
-      },
-      {
-        id: "files-delete",
-        method: "DELETE",
-        path: "/v1/files/{id}",
-        title: "Delete file",
-        summary:
-          "Remove storage. The id no longer lists, downloads, or attaches.",
-        request: `DELETE https://api.x.ai/v1/files/{id}
-Authorization: Bearer $XAI_API_KEY`,
-        response: `{
-  "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
-  "deleted": true
-}`,
-        notes: [
-          "Use after a production wrap or when a plate is superseded.",
-          "Do not log file bytes or API keys.",
         ],
       },
     ],
@@ -447,11 +377,11 @@ Authorization: Bearer $XAI_API_KEY`,
         path: "/v1/chat/completions",
         title: "Chat completions",
         summary:
-          "OpenAI-compatible chat. grok-4.6 list: $2 input / $6 output per 1M tokens.",
+          "OpenAI-compatible chat. grok-4.5 list: $2 input / $6 output per 1M tokens.",
         request: `POST https://api.x.ai/v1/chat/completions
 
 {
-  "model": "grok-4.6",
+  "model": "grok-4.5",
   "messages": [
     { "role": "system", "content": "You are a cinematic production assistant." },
     { "role": "user", "content": "Write a 3-shot neon alley brief." }
@@ -485,7 +415,7 @@ Authorization: Bearer $XAI_API_KEY`,
     id: "imagine-image",
     title: "Imagine — images",
     intro:
-      "Image 1.0 for cheap iteration; Image 2.0 for hero stills (`quality` low | medium | auto). Dollar amounts are published list prices.",
+      "1.0 for cheap iteration. 2.0 with quality low | medium | auto for plates. quality auto currently serves low on generation and medium on edits. Bill at the quality served. After November 2, grok-imagine-image-quality is 2.0-low.",
     endpoints: [
       {
         id: "images-generations",
@@ -493,33 +423,38 @@ Authorization: Bearer $XAI_API_KEY`,
         path: "/v1/images/generations",
         title: "Generate image",
         summary:
-          "1.0 list ~$0.02/img; 2.0 1K low $0.04 / medium $0.06. Do not send grok-imagine-image-quality.",
+          "Pin grok-imagine-image-2.0 + quality. 1.0 stays $0.02 for drafts.",
         request: `POST https://api.x.ai/v1/images/generations
 
 {
   "model": "grok-imagine-image-2.0",
   "prompt": "Cinematic still, rain-slick neon alley, 35mm, teal amber practicals",
   "n": 1,
-  "resolution": "1k",
   "quality": "medium",
+  "aspect_ratio": "21:9",
+  "resolution": "2k",
   "response_format": "url"
 }
 
-// Cheaper iteration: "grok-imagine-image" (list ~$0.02)
-// quality (2.0 only): "low" | "medium" | "auto"
+// Draft iterate: "grok-imagine-image" (list $0.02) — no quality param
+// quality: "low" | "medium" | "auto"  (2.0 only)
+// auto: generation → low, edits → medium
+// aspect_ratio includes 21:9 and 5:2 on 2.0
 // resolution: "1k" | "2k"
 // n: ≤ 10
 // response_format: "url" | "b64_json"`,
         response: `{
   "data": [
     { "url": "https://…" }
-  ]
+  ],
+  "model": "grok-imagine-image-2.0"
 }`,
         notes: [
-          "Image 2.0 costs more than Image 1.0 (`grok-imagine-image`).",
-          "Cache URLs or persist via Files — do not regenerate per page view.",
-          "Opt-in storage_options.filename persists the still as a Files file_id (CLI: --store-as).",
+          "Log the model field on the response — after Nov 2 the retired slug reports 2.0.",
+          "quality exists only on grok-imagine-image-2.0. Omit → auto.",
+          "Cache URLs or persist to storage — do not regenerate per page view.",
           "Gate public generation behind sign-in when possible.",
+          "Do not leave grok-imagine-image-quality in activation templates.",
         ],
       },
       {
@@ -528,34 +463,28 @@ Authorization: Bearer $XAI_API_KEY`,
         path: "/v1/images/edits",
         title: "Edit image",
         summary:
-          "JSON body (not OpenAI multipart). Source: public URL, data URI, or file_id. Image 2.0: up to 5 refs; Image 1.0: 3.",
+          "Natural-language edits with up to 5 reference images on grok-imagine-image-2.0.",
         request: `POST https://api.x.ai/v1/images/edits
-Content-Type: application/json
 
-// Single source
 {
   "model": "grok-imagine-image-2.0",
-  "prompt": "Wardrobe lock: same coat, cooler practicals, identity preserved",
-  "image": {
-    "type": "image_url",
-    "url": "https://…/locked-plate.png"
-  },
-  "quality": "medium"
+  "prompt": "Keep identity lock. Match wardrobe and 35mm rain practicals.",
+  "quality": "medium",
+  "image_urls": ["https://…/plate.png", "https://…/wardrobe-ref.png"]
 }
 
-// Or Files API: { "file_id": "file_…" }  (no type/url)
-// Multi-ref (2.0, up to 5): "images": [ {…}, {…} ]
-// Mix url / data URI / file_id in one images[] request
-// OpenAI SDK images.edit() multipart is NOT supported`,
+// Up to 5 source images on 2.0
+// auto quality currently serves medium for edits`,
         response: `{
   "data": [
     { "url": "https://…" }
-  ]
+  ],
+  "model": "grok-imagine-image-2.0"
 }`,
         notes: [
           "Ideal for plate polish before video spend.",
           "Keep identity locks in the edit prompt when Character DNA is required.",
-          "Do not send grok-imagine-image-quality — pin grok-imagine-image-2.0.",
+          "2.0 adds 21:9 / 5:2 cinematic ratios — prefer native 21:9 over a 16:9 crop.",
         ],
       },
     ],
@@ -564,39 +493,34 @@ Content-Type: application/json
     id: "imagine-video",
     title: "Imagine — video",
     intro:
-      "Async video. POST returns request_id only — poll GET until done. Video 1.0 list ~$0.05–$0.07/s; Video 1.5 720p $0.14/s · 1080p $0.25/s. There is no Imagine Video 2.0 (2.0 is Image only).",
+      "Async video. 1.0 for cheap 480/720 proofs. 1.5 for hero motion (1080p, audio in, extend, reference-to-video). Not affected by the November 2 image-quality retirement.",
     endpoints: [
       {
         id: "video-start",
         method: "POST",
-        path: "/v1/videos/generations",
+        path: "/v1/videos (async start)",
         title: "Start video generation",
         summary:
-          "Text-to-video, image-to-video (image url or file_id), or reference-to-video. Returns request_id for polling.",
-        request: `POST https://api.x.ai/v1/videos/generations
-Content-Type: application/json
+          "Kick off grok-imagine-video-1.5 (hero) or grok-imagine-video (draft); poll the request id.",
+        request: `// Hero: grok-imagine-video-1.5  480p $0.08/s · 720p $0.14/s · 1080p $0.25/s
+// Draft: grok-imagine-video     480p $0.05/s · 720p $0.07/s
+// Duration: up to ~15 seconds on 1.5
+// Flow: POST start → poll status with returned id → download result
 
 {
-  "model": "grok-imagine-video",
+  "model": "grok-imagine-video-1.5",
   "prompt": "Slow push-in on rain-slick neon alley, cinematic motion",
   "duration": 6,
-  "resolution": "720p",
-  "image": {
-    "url": "https://…/locked-plate.png"
-  }
-}
-
-// i2v from Files: "image": { "file_id": "file_…" }
-// t2v: omit image
-// r2v (1.5): reference_images[] and/or reference_audios[] — not with image (400)
-// duration: 1–15 (default 8). Also accepts "seconds" for OpenAI compat.`,
+  "resolution": "720p"
+}`,
         response: `{
-  "request_id": "a3d1008e-4544-40d4-d075-11527e794e4a"
+  "request_id": "req_…",
+  "status": "pending"
 }`,
         notes: [
-          "6s @ 720p Video 1.0 ≈ $0.42 at list rates — far more than a still.",
+          "6s @ 1.5 720p ≈ $0.84 at list — twice 1.0 720p. Lock plates first.",
+          "Never poll in a tight loop from the client with the API key.",
           "Prefer stills + locked plates before hero video spend.",
-          "Studio also has POST /v1/videos/edits and /v1/videos/extensions (Video 1.0 only) — not required for this generate → poll loop.",
         ],
       },
       {
@@ -604,29 +528,16 @@ Content-Type: application/json
         method: "GET",
         path: "/v1/videos/{request_id}",
         title: "Poll video job",
-        summary:
-          "Deferred result. status is pending | done | failed | expired. URL is on video.url when done.",
-        request: `GET https://api.x.ai/v1/videos/{request_id}
+        summary: "Check status until complete; then fetch the clip URL.",
+        request: `GET https://api.x.ai/v1/…/{request_id}
 Authorization: Bearer $XAI_API_KEY`,
         response: `{
-  "status": "done",
-  "progress": 100,
-  "model": "grok-imagine-video",
-  "video": {
-    "url": "https://vidgen.x.ai/…/clip.mp4",
-    "duration": 6,
-    "respect_moderation": true
-  }
-}
-
-// pending: progress 0–99, video omitted
-// failed: error.code + error.message
-// expired: job no longer retrievable`,
+  "status": "completed" | "pending" | "failed",
+  "url": "https://…/clip.mp4"
+}`,
         notes: [
-          "Poll from the server with backoff (studio default ~5s). Never tight-loop from the browser with the API key.",
-          "CLI: cinematic-studio imagine poll REQUEST_ID [--wait] [--job-id JOB]. ActionSpec imagine_poll is one GET (no --wait).",
+          "Exact paths and fields: docs.x.ai → Imagine Video.",
           "Retry failed jobs at most once.",
-          "Terminal statuses: done | failed | expired.",
         ],
       },
     ],
@@ -685,17 +596,19 @@ Authorization: Bearer $XAI_API_KEY`,
         path: "chat → images",
         title: "Prompt Master → Imagine still",
         summary: "LLM writes the packet; images API renders the plate.",
-        request: `// 1) Chat: craft cinematic prompt (grok-4.6)
+        request: `// 1) Chat: craft cinematic prompt (grok-4.5)
 // 2) Images: POST /v1/images/generations with that prompt
 // 3) Optional edit: POST /v1/images/edits for plate lock
 
 {
   "pipeline": ["chat.completions", "images.generations"],
-  "models": ["grok-4.6", "grok-imagine-image-2.0"]
+  "models": ["grok-4.5", "grok-imagine-image-2.0"],
+  "image_quality": "medium"
 }`,
         notes: [
           "Keep DNA inject text inside the image prompt string.",
           "Do not auto-chain video until plate is approved by the user.",
+          "Pin quality on 2.0. Consumer Quality Mode ≠ the retiring image-quality slug.",
         ],
       },
       {
@@ -703,22 +616,19 @@ Authorization: Bearer $XAI_API_KEY`,
         method: "POST",
         path: "images → video",
         title: "Locked plate → video",
-        summary: "After still approval, start async video from prompt (and refs when supported).",
+        summary:
+          "After still approval, start async video from prompt (and refs when supported).",
         request: `{
-  "plate": { "file_id": "file_…" },
+  "plate_url": "https://…/locked-still.png",
   "video": {
-    "model": "grok-imagine-video",
+    "model": "grok-imagine-video-1.5",
     "prompt": "Extend motion: slow push-in, rain continuity",
-    "duration": 6
+    "duration": 6,
+    "resolution": "720p"
   }
-}
-
-// 1) POST /v1/files  → file_id
-// 2) POST /v1/images/edits  (optional plate lock)
-// 3) POST /v1/videos/generations  with image.file_id
-// 4) GET  /v1/videos/{request_id}  until status=done`,
+}`,
         notes: [
-          "Quota: video seconds cost more than stills — hero-first order.",
+          "Quota: 1.5 seconds cost more than 1.0 — hero-first, gates before video.",
           "User button press required for each expensive generation.",
         ],
       },
@@ -733,10 +643,8 @@ export const API_STATUS_CODES = [
   { code: "429", meaning: "Rate limited or quota pressure — back off" },
   { code: "5xx", meaning: "Server error — retry at most once, then surface" },
   { code: "pending", meaning: "Async video job still running — keep polling" },
-  { code: "done", meaning: "Async video ready — read video.url" },
+  { code: "completed", meaning: "Async video ready — fetch URL" },
   { code: "failed", meaning: "Async job failed — show error, optional single retry" },
-  { code: "expired", meaning: "Deferred video job no longer retrievable" },
-  { code: "404", meaning: "File or job missing (deleted, expired, or unknown id)" },
 ];
 
 export const API_ERRORS = [
@@ -757,6 +665,10 @@ export const API_ERRORS = [
     fix: "Generate and approve stills first; then start video jobs.",
   },
   {
+    error: "RETIRED_IMAGE_QUALITY_SLUG",
+    fix: "Replace grok-imagine-image-quality with grok-imagine-image-2.0 and pin quality (low | medium). After Nov 2 the old slug is 2.0-low.",
+  },
+  {
     error: "RETRY_STORM",
     fix: "On error surface message; retry at most once with backoff.",
   },
@@ -769,6 +681,8 @@ export const API_ERRORS = [
 export const SPEND_RULES = [
   "Cap max_tokens; keep prompts small for visitor-facing chat.",
   "Image and especially video cost far more than chat per call.",
+  "Iterate on grok-imagine-image (1.0). Hero plates on grok-imagine-image-2.0 quality medium.",
+  "Pin quality on 2.0. Do not ride grok-imagine-image-quality after November 2.",
   "Never call in a loop, on every keystroke, or on page load.",
   "Cache or persist results instead of regenerating per visitor.",
   "Gate expensive media behind sign-in when the product allows.",

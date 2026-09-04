@@ -16,16 +16,52 @@ export const Route = createFileRoute("/budget")({
   component: BudgetPage,
 });
 
-/** Published list rates — same source as Pricing page */
+/** Published list rates — same source as Pricing page · Sep 2026 */
 const RATES = {
   chatInPerM: 2,
   chatOutPerM: 6,
-  stillStandard: 0.02,
-  stillQuality1k: 0.06,
-  stillQuality2k: 0.08,
-  video480: 0.05,
-  video720: 0.07,
+  still: {
+    standard: 0.02,
+    low1k: 0.04,
+    low2k: 0.06,
+    med1k: 0.06,
+    med2k: 0.08,
+  },
+  video: {
+    v10_480: 0.05,
+    v10_720: 0.07,
+    v15_480: 0.08,
+    v15_720: 0.14,
+    v15_1080: 0.25,
+  },
 } as const;
+
+type StillTier = keyof typeof RATES.still;
+type VideoKey = keyof typeof RATES.video;
+
+const STILL_LABELS: { id: StillTier; label: string }[] = [
+  { id: "standard", label: "1.0 · $0.02" },
+  { id: "low1k", label: "2.0 low 1K · $0.04" },
+  { id: "low2k", label: "2.0 low 2K · $0.06" },
+  { id: "med1k", label: "2.0 med 1K · $0.06" },
+  { id: "med2k", label: "2.0 med 2K · $0.08" },
+];
+
+const VIDEO_LABELS: Record<VideoKey, string> = {
+  v10_480: "1.0 480p",
+  v10_720: "1.0 720p",
+  v15_480: "1.5 480p",
+  v15_720: "1.5 720p",
+  v15_1080: "1.5 1080p",
+};
+
+const VIDEO_BUTTONS: { id: VideoKey; label: string }[] = [
+  { id: "v10_480", label: "1.0 480p $0.05/s" },
+  { id: "v10_720", label: "1.0 720p $0.07/s" },
+  { id: "v15_480", label: "1.5 480p $0.08/s" },
+  { id: "v15_720", label: "1.5 720p $0.14/s" },
+  { id: "v15_1080", label: "1.5 1080p $0.25/s" },
+];
 
 function money(n: number) {
   if (n < 0.01 && n > 0) return `≈$${n.toFixed(4)}`;
@@ -34,25 +70,18 @@ function money(n: number) {
 
 function BudgetPage() {
   const [stillCount, setStillCount] = useState(8);
-  const [stillTier, setStillTier] = useState<"standard" | "q1k" | "q2k">(
-    "standard",
-  );
+  const [stillTier, setStillTier] = useState<StillTier>("standard");
   const [videoSeconds, setVideoSeconds] = useState(12);
-  const [videoRes, setVideoRes] = useState<"480" | "720">("720");
+  const [videoKey, setVideoKey] = useState<VideoKey>("v10_720");
   const [chatInK, setChatInK] = useState(20);
   const [chatOutK, setChatOutK] = useState(8);
   const [bufferPct, setBufferPct] = useState(15);
 
   const breakdown = useMemo(() => {
-    const stillUnit =
-      stillTier === "standard"
-        ? RATES.stillStandard
-        : stillTier === "q1k"
-          ? RATES.stillQuality1k
-          : RATES.stillQuality2k;
+    const stillUnit = RATES.still[stillTier];
     const stills = stillCount * stillUnit;
 
-    const videoUnit = videoRes === "480" ? RATES.video480 : RATES.video720;
+    const videoUnit = RATES.video[videoKey];
     const video = videoSeconds * videoUnit;
 
     const chatIn = (chatInK / 1000) * RATES.chatInPerM;
@@ -83,7 +112,7 @@ function BudgetPage() {
         },
         {
           id: "video",
-          label: `${videoSeconds}s video @ ${videoRes}p × ${money(videoUnit)}/s`,
+          label: `${videoSeconds}s ${VIDEO_LABELS[videoKey]} × ${money(videoUnit)}/s`,
           amount: video,
           share: subtotal > 0 ? video / subtotal : 0,
         },
@@ -99,7 +128,7 @@ function BudgetPage() {
     stillCount,
     stillTier,
     videoSeconds,
-    videoRes,
+    videoKey,
     chatInK,
     chatOutK,
     bufferPct,
@@ -109,7 +138,7 @@ function BudgetPage() {
     setStillCount(8);
     setStillTier("standard");
     setVideoSeconds(12);
-    setVideoRes("720");
+    setVideoKey("v10_720");
     setChatInK(20);
     setChatOutK(8);
     setBufferPct(15);
@@ -128,7 +157,7 @@ function BudgetPage() {
           tool.
         </p>
         <p className="mt-2 text-xs text-subtle">
-          List prices as of Aug 2026 · same source as{" "}
+          List prices as of Sep 2026 · same source as{" "}
           <Link to="/pricing" className="text-teal hover:underline">
             Pricing
           </Link>
@@ -162,28 +191,26 @@ function BudgetPage() {
                 Still model
               </p>
               <div className="mt-2 flex flex-wrap gap-1.5">
-                {(
-                  [
-                    ["standard", "Standard $0.02"],
-                    ["q1k", "Image 2.0 1K medium $0.06"],
-                    ["q2k", "Image 2.0 2K medium $0.08"],
-                  ] as const
-                ).map(([id, label]) => (
+                {STILL_LABELS.map((opt) => (
                   <button
-                    key={id}
+                    key={opt.id}
                     type="button"
-                    onClick={() => setStillTier(id)}
+                    onClick={() => setStillTier(opt.id)}
                     className={cn(
                       "h-9 rounded-md border px-3 text-xs font-medium transition-colors",
-                      stillTier === id
+                      stillTier === opt.id
                         ? "border-teal/40 bg-teal/10 text-teal"
                         : "border-border bg-surface text-muted hover:text-fg",
                     )}
                   >
-                    {label}
+                    {opt.label}
                   </button>
                 ))}
               </div>
+              <p className="mt-2 text-[11px] text-subtle leading-relaxed">
+                1.0 is unchanged Nov 2. Hero plates: 2.0 medium. The retiring
+                image-quality slug redirects to 2.0-low.
+              </p>
             </div>
 
             <Field
@@ -197,27 +224,22 @@ function BudgetPage() {
             />
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-subtle">
-                Video resolution
+                Video model · resolution
               </p>
               <div className="mt-2 flex flex-wrap gap-1.5">
-                {(
-                  [
-                    ["480", "480p $0.05/s"],
-                    ["720", "720p $0.07/s"],
-                  ] as const
-                ).map(([id, label]) => (
+                {VIDEO_BUTTONS.map((opt) => (
                   <button
-                    key={id}
+                    key={opt.id}
                     type="button"
-                    onClick={() => setVideoRes(id)}
+                    onClick={() => setVideoKey(opt.id)}
                     className={cn(
                       "h-9 rounded-md border px-3 text-xs font-medium transition-colors",
-                      videoRes === id
+                      videoKey === opt.id
                         ? "border-teal/40 bg-teal/10 text-teal"
                         : "border-border bg-surface text-muted hover:text-fg",
                     )}
                   >
-                    {label}
+                    {opt.label}
                   </button>
                 ))}
               </div>
@@ -302,7 +324,7 @@ function BudgetPage() {
               ))}
               <p className="text-xs text-subtle pt-1">
                 Video often dominates once you leave stills. Lock plates before
-                long 720p chains.
+                1.5 / 1080p chains. 6s @ 1.5 720p is ~$0.84 list.
               </p>
             </CardContent>
           </Card>
@@ -333,7 +355,7 @@ function BudgetPage() {
                   setStillCount(6);
                   setStillTier("standard");
                   setVideoSeconds(18);
-                  setVideoRes("720");
+                  setVideoKey("v10_720");
                   setChatInK(30);
                   setChatOutK(12);
                   setBufferPct(20);
@@ -346,9 +368,9 @@ function BudgetPage() {
                 className="h-9 rounded-md border border-border bg-surface px-3 text-xs text-muted hover:text-fg"
                 onClick={() => {
                   setStillCount(12);
-                  setStillTier("q1k");
+                  setStillTier("med1k");
                   setVideoSeconds(45);
-                  setVideoRes("720");
+                  setVideoKey("v15_720");
                   setChatInK(80);
                   setChatOutK(40);
                   setBufferPct(25);
