@@ -1,6 +1,6 @@
 {
   "name": "finecomputer14451-cinematic-studio",
-  "description": "Grok Imagine Cinematic Studio v3.11.3 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post).",
+  "description": "Grok Imagine Cinematic Studio v3.11.4 marketplace — full suite + modular packs (core, camera-image, sequence-narrative, nsfw, delivery-post).",
   "owner": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -10,11 +10,11 @@
       "name": "grok-imagine-cinematic-studio",
       "description": "Full cinematic suite v3.11.3 — 25 Role-Card core agents, 64 skills, slash commands (catalog pin SHA matches tree after pin). Wave A P0 specialists included. Recommended one-click install.",
       "category": "creative",
-      "version": "3.11.3",
+      "version": "3.11.4",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "669381d00f81198041588a1865d6938f77e8652b"
+        "sha": "88f448e1a387e0218790e146363456d3f55be4b4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -27,11 +27,11 @@
       "name": "grok-imagine-cinematic-core",
       "description": "Orchestration, DNA, Imagine runtime, QA, quota, and meta tools.",
       "category": "creative",
-      "version": "3.11.3",
+      "version": "3.11.4",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "669381d00f81198041588a1865d6938f77e8652b"
+        "sha": "88f448e1a387e0218790e146363456d3f55be4b4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -45,11 +45,11 @@
       "name": "grok-imagine-camera-image",
       "description": "DoP, production design, i2i, key art, reference curator, and i2v specialist.",
       "category": "creative",
-      "version": "3.11.3",
+      "version": "3.11.4",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "669381d00f81198041588a1865d6938f77e8652b"
+        "sha": "88f448e1a387e0218790e146363456d3f55be4b4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -65,11 +65,11 @@
       "name": "grok-imagine-sequence-narrative",
       "description": "Long-form sequence, continuity, performance, audio, action/VFX, and SFW batches.",
       "category": "creative",
-      "version": "3.11.3",
+      "version": "3.11.4",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "669381d00f81198041588a1865d6938f77e8652b"
+        "sha": "88f448e1a387e0218790e146363456d3f55be4b4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -85,11 +85,11 @@
       "name": "grok-imagine-nsfw",
       "description": "Optional 18+ pack (SpaceXAI AUP https://x.ai/legal/acceptable-use-policy). R-rated fictional imaginary adults only. Requires nsfw attest (--i-am-18 --imaginary-adults --not-a-real-person --acknowledge-aup). Not affiliated with xAI/SpaceXAI.",
       "category": "creative",
-      "version": "3.11.3",
+      "version": "3.11.4",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "669381d00f81198041588a1865d6938f77e8652b"
+        "sha": "88f448e1a387e0218790e146363456d3f55be4b4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
@@ -105,11 +105,11 @@
       "name": "grok-imagine-delivery-post",
       "description": "Assembly EDL, color grade, AI polish, upscale, and cinematic ffmpeg delivery.",
       "category": "creative",
-      "version": "3.11.3",
+      "version": "3.11.4",
       "source": {
         "source": "url",
         "url": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio.git",
-        "sha": "669381d00f81198041588a1865d6938f77e8652b"
+        "sha": "88f448e1a387e0218790e146363456d3f55be4b4"
       },
       "homepage": "https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio",
       "keywords": [
