@@ -1,6 +1,6 @@
 # Studio Academy docs
 
-Educational companion materials for **Grok Imagine Cinematic Studio**.
+Educational companion materials for **Grok Imagine Cinematic Studio v3.11.4** (Grok 4.6 · Image 2.0 · Video 1.0/1.5 · SFW-default / AUP-gated NSFW).
 
 | Doc | Purpose |
 |-----|---------|
@@ -26,3 +26,5 @@ Stills-first · independent learning tools · not official xAI credentials.
 The live Studio Academy companion includes an interactive **Delivery checklist** at `/delivery` (checkboxes, progress, director one-liner, full report copy). It mirrors [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md).
 
 The live app includes **Extend Lab** at `/extend` (chain planner, plate gates, copyable packets).
+
+AUP (intimate paths): https://x.ai/legal/acceptable-use-policy — local `nsfw attest` required; not affiliated with xAI/SpaceXAI.
