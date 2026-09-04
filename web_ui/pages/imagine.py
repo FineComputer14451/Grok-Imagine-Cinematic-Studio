@@ -153,6 +153,18 @@ def render() -> None:
         else:
             st.caption("No jobs yet — submit via CLI or Sequence run tab.")
 
+        st.markdown("**Poll video request_id** (`GET /v1/videos/{request_id}`)")
+        poll_id = st.text_input("request_id", key="imagine_poll_rid")
+        poll_job = st.text_input("Studio job id (optional)", key="imagine_poll_job")
+        if st.button("Poll once", key="imagine_poll_btn"):
+            if not (poll_id or "").strip():
+                st.warning("Enter a request_id")
+            else:
+                answers = {"request_id": poll_id.strip()}
+                if (poll_job or "").strip():
+                    answers["job_id"] = poll_job.strip()
+                _show_action_result(rt.execute_registered("imagine_poll", answers))
+
         with st.form("imagine_submit"):
             st.markdown("**Quick submit** (via CLI subprocess)")
             job_type = st.selectbox(

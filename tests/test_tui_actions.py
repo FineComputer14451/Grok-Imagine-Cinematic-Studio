@@ -54,6 +54,7 @@ def test_single_registry_covers_both_surfaces() -> None:
     assert ACTIONS["handoff_validate"].has_form
     assert "files_list" in launcher and "files_list" in cockpit
     assert ACTIONS["files_list"].base_argv == ("files", "list")
+    assert ACTIONS["imagine_poll"].base_argv == ("imagine", "poll")
     assert ACTIONS["files_upload"].needs_confirm is True
     assert "cockpit" in ACTIONS["files_delete"].surfaces
 

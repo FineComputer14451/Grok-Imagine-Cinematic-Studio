@@ -97,6 +97,16 @@ def test_cost_simulate_and_quota_estimate() -> None:
     assert "Credits" in quota.stdout
 
 
+def test_imagine_poll_registered() -> None:
+    help_r = run_cli("imagine", "poll", "--help")
+    assert help_r.returncode == 0
+    assert "--wait" in help_r.stdout
+    assert "--job-id" in help_r.stdout
+    dry = run_cli("imagine", "poll", "req_dry_test", "--dry-run")
+    assert dry.returncode == 0, dry.stderr
+    assert "done" in dry.stdout.lower() or "req_dry_test" in dry.stdout
+
+
 def test_main_file_is_small() -> None:
     lines = CLI.read_text().splitlines()
     assert len(lines) <= 100, f"cinematic_studio_cli.py should be wiring-only, got {len(lines)} lines"

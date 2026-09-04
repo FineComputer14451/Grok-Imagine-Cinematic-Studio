@@ -34,6 +34,7 @@ def test_cockpit_order_and_ids() -> None:
         "sequence_deliver_dry",
         "wave_a_briefs",
         "imagine_bridge",
+        "imagine_poll",
         "files_list",
         "files_get",
         "files_upload",
@@ -244,6 +245,7 @@ def test_no_forbidden_tokens_in_any_happy_path() -> None:
         "stack": {},
         "dna_show": {"name": "N", "mode": ""},
         "sequence_show": {"name": "S"},
+        "imagine_poll": {"request_id": "req-1", "job_id": ""},
         "files_list": {},
         "files_get": {"file_id": "file_abc"},
         "files_upload": {

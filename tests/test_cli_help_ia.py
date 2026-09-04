@@ -73,6 +73,7 @@ def test_nested_help_panels() -> None:
     assert "Jobs" in imagine.stdout
     assert "Handoff" in imagine.stdout
     assert "Artifacts" in imagine.stdout
+    assert "poll" in imagine.stdout
 
     files = run_cli("files", "--help")
     assert files.returncode == 0
@@ -187,6 +188,6 @@ def test_actionspec_frozen() -> None:
     sys.path.insert(0, str(root))
     from studio_core.services.actions import ACTIONS
 
-    assert len(ACTIONS) == 33
+    assert len(ACTIONS) == 34
     assert ACTIONS["models_verify"].base_argv == ("models", "verify")
     assert ACTIONS["doctor_quick"].base_argv == ("doctor", "--quick")

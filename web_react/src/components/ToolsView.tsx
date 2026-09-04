@@ -26,6 +26,7 @@ export function ToolsView() {
   const formActions = [
     'handoff_validate',
     'imagine_bridge',
+    'imagine_poll',
     'files_get',
     'files_upload',
     'files_delete',
@@ -79,6 +80,7 @@ export function ToolsView() {
           forceConfirm={
             activeForm === 'handoff_validate' ||
             activeForm === 'imagine_bridge' ||
+            activeForm === 'imagine_poll' ||
             activeForm === 'files_get' ||
             activeForm === 'wave_a_briefs' ||
             activeForm.endsWith('_dry')

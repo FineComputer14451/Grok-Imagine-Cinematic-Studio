@@ -34,12 +34,15 @@ def build_imagine_page(ui: Any) -> None:
 
     with ui.tabs().classes("w-full") as tabs:
         tab_bridge = ui.tab("Bridge")
+        tab_poll = ui.tab("Poll")
         tab_files = ui.tab("Files")
         tab_seq_handoff = ui.tab("Sequence handoff")
         tab_dna_handoff = ui.tab("DNA handoff")
     with ui.tab_panels(tabs, value=tab_bridge).classes("w-full"):
         with ui.tab_panel(tab_bridge):
             build_action_form(ui, "imagine_bridge", force_confirm=False, on_done=lambda _r: refresh())
+        with ui.tab_panel(tab_poll):
+            build_action_form(ui, "imagine_poll", force_confirm=False, on_done=lambda _r: refresh())
         with ui.tab_panel(tab_files):
             files_box = ui.markdown("_Loading files list…_")
 

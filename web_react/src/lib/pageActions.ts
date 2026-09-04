@@ -58,6 +58,7 @@ export const PAGE_CONFIG: Record<string, PageConfig> = {
     quickActions: ['imagine_list', 'files_list'],
     formActions: [
       'imagine_bridge',
+      'imagine_poll',
       'files_get',
       'files_upload',
       'files_delete',

@@ -123,6 +123,7 @@ NESTED_MAPS: dict[str, dict[str, str]] = {
     "imagine": {
         "submit": "Jobs",
         "status": "Jobs",
+        "poll": "Jobs",
         "list": "Jobs",
         "cancel": "Jobs",
         "region": "Jobs",

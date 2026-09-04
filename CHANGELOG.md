@@ -16,6 +16,7 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 - **Streamlit Files tab** — Imagine → Files uses the same ActionSpec execute path (uploader → `artifacts/files_inbox` → `files_upload`). Job-queue submit forwards `--file-id` (skips URL when set). Tools quick actions include Files list.
 - **Imagine → Files persist** — opt-in `storage_options` on generate/edit/video (`--store-as FILENAME`, `--store-expires-after`, `--public-url`). Response `file_output.file_id` is printed and stored on the job as `result_file_id` for the next `--file-id` call.
 - **file_id on jobs and plates** — `imagine list` / `status` and Streamlit job table show `result_file_id`. Job summary counts `stored_file_ids`. `--register-plate` on `files upload` and `imagine submit` writes `file_id` into the asset manifest.
+- **Imagine poll** — `cinematic-studio imagine poll REQUEST_ID` is `GET /v1/videos/{request_id}` (optional `--wait`, `--job-id`). ActionSpec `imagine_poll` is one shot (no wait) on TUI / NiceGUI / React / Streamlit.
 
 ## [3.11.4] - 2026-09-04
 

@@ -624,6 +624,7 @@ Authorization: Bearer $XAI_API_KEY`,
 // expired: job no longer retrievable`,
         notes: [
           "Poll from the server with backoff (studio default ~5s). Never tight-loop from the browser with the API key.",
+          "CLI: cinematic-studio imagine poll REQUEST_ID [--wait] [--job-id JOB]. ActionSpec imagine_poll is one GET (no --wait).",
           "Retry failed jobs at most once.",
           "Terminal statuses: done | failed | expired.",
         ],

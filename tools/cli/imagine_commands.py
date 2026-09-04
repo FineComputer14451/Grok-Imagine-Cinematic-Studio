@@ -18,6 +18,7 @@ from imagine_client import (
     extract_image_url,
     extract_video_url,
     generate_image,
+    get_video_job,
     is_dry_run,
     poll_video_job,
     submit_video_edit,
@@ -412,6 +413,73 @@ def register(app: typer.Typer) -> None:
         console.print(table)
         if job.get("chain_qa"):
             console.print(Panel(json.dumps(job["chain_qa"], indent=2)[:2000], title="Chain QA", border_style="yellow"))
+
+
+    @app.command("poll")
+    def imagine_poll(
+        request_id: str = typer.Argument(..., help="Video request_id from POST /v1/videos/generations"),
+        wait: bool = typer.Option(
+            False, "--wait", help="Poll until done|failed|expired (default: one GET)"
+        ),
+        timeout: float = typer.Option(600.0, "--timeout", help="Seconds to wait with --wait"),
+        job_id: str = typer.Option(
+            None, "--job-id", help="Update this studio job with url / file_id when done"
+        ),
+        json_output: bool = typer.Option(False, "--json", help="Machine-readable JSON"),
+        dry_run: bool = typer.Option(False, "--dry-run", help="Force mock done response"),
+    ):
+        """GET /v1/videos/{request_id} — one shot, or --wait until terminal."""
+        rid = (request_id or "").strip()
+        if not rid:
+            console.print("[red]request_id is required[/red]")
+            raise typer.Exit(1)
+        try:
+            if dry_run or is_dry_run():
+                result = {
+                    "dry_run": True,
+                    "request_id": rid,
+                    "status": "done",
+                    "video": {"url": f"https://dry-run.x.ai/videos/{rid}.mp4"},
+                }
+            elif wait:
+                result = poll_video_job(rid, timeout=timeout)
+            else:
+                result = get_video_job(rid)
+        except ImagineAPIError as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+        url = extract_video_url(result)
+        fid = extract_file_id(result)
+        if job_id:
+            st = result.get("status")
+            if st == "done":
+                job_status = "qa_pending"
+            elif st in ("failed", "expired"):
+                job_status = "failed"
+            else:
+                job_status = "running"
+            try:
+                transition_job(
+                    job_id,
+                    job_status,
+                    request_id=rid,
+                    result_url=url,
+                    result_file_id=fid,
+                )
+            except KeyError:
+                console.print(f"[yellow]Job not found:[/yellow] {job_id}")
+        if json_output:
+            console.print_json(data=result)
+            return
+        status = result.get("status") or "—"
+        console.print(Panel(
+            f"request_id: {rid}\n"
+            f"status: {status}\n"
+            f"URL: {url or '—'}\n"
+            f"file_id: {fid or '—'}",
+            title="Imagine video poll",
+            border_style="cyan",
+        ))
 
 
     @app.command("list")

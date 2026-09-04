@@ -37,6 +37,11 @@ def test_core_actions_cover_both_surfaces() -> None:
 
 def test_files_action_argv() -> None:
     assert answers_to_argv("files_list", {}) == ["files", "list"]
+    assert answers_to_argv("imagine_poll", {"request_id": "req-1"}) == [
+        "imagine",
+        "poll",
+        "req-1",
+    ]
     assert answers_to_argv("files_get", {"file_id": "file_abc"}) == [
         "files",
         "get",
