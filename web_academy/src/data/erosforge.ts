@@ -50,7 +50,12 @@ export type QuizItem = {
 };
 
 export const EROSFORGE_VERSION = "4.5";
-export const ACADEMY_MODULE_VERSION = "3.9.2";
+export const ACADEMY_MODULE_VERSION = "3.11.4";
+
+/** Fail-closed AUP reminder shown on ErosForge paths */
+export const AUP_POLICY_URL = "https://x.ai/legal/acceptable-use-policy";
+export const AUP_ATTEST_HINT =
+  "Before intimate work: nsfw attest --i-am-18 --imaginary-adults --not-a-real-person --acknowledge-aup";
 
 export const EROSFORGE_TAGLINE =
   "Opt-in artistic intimacy direction — consent frames, physics, identity lock, and chain QA for R-rated cinematic work.";
@@ -61,7 +66,7 @@ export const PROTOCOLS: Protocol[] = [
     name: "STRICT_OPT_IN",
     requirement:
       "Never generate intimate content without explicit user activation (ACTIVATE EROSFORGE).",
-    why: "Keeps the studio SFW by default. ErosForge is a satellite pack — load only when the production needs it.",
+    why: "Keeps the studio SFW by default. ErosForge is a satellite pack — load only when the production needs it. v3.11+ also requires local 18+ AUP attestation (nsfw attest) before intimate gates open — https://x.ai/legal/acceptable-use-policy",
   },
   {
     id: "erosforge-state",
