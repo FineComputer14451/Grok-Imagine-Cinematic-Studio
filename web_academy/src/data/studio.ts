@@ -5,7 +5,7 @@ export type Agent = {
   activation: string;
   tier: 1 | 2 | 3;
   category: "leadership" | "creative" | "production" | "post" | "special";
-  /** Studio skill surface badges — mapped to the 62-skill suite */
+  /** Studio skill surface badges — mapped to the 64-skill suite */
   skills: string[];
 };
 
@@ -85,7 +85,7 @@ Constraints: Same wardrobe, same face identity, R-rated mood only (no explicit c
     steps: [
       {
         title: "Activate full studio",
-        detail: "Loads 25 agents, 62 skills, dual Grok 4.5 / 4.3 stack.",
+        detail: "Loads 25 agents, 64 skills, Grok 4.6 default (+ optional grok-4.3 1M). grok-4.5 remains an alias of 4.6.",
       },
       {
         title: "Build the Production Bible",
@@ -103,7 +103,7 @@ Constraints: Same wardrobe, same face identity, R-rated mood only (no explicit c
           "Sequence Director + Imagine Agent Mode → AI Polish + QA Guardian.",
       },
     ],
-    prompt: `Activate Grok Imagine Cinematic Studio v3.9.1
+    prompt: `Activate Grok Imagine Cinematic Studio v3.11.4
 
 Full production mode.
 Genre: Erotic horror (fictional adults, R-rated, artistic — no hardcore).
