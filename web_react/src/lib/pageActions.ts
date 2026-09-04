@@ -54,9 +54,16 @@ export const PAGE_CONFIG: Record<string, PageConfig> = {
   imagine: {
     title: 'Imagine',
     blurb:
-      'Job queue + agent-handoff bridge. Live xAI batch spend stays on Streamlit when an API key is set.',
-    quickActions: ['imagine_list'],
-    formActions: ['imagine_bridge', 'sequence_handoff', 'dna_handoff'],
+      'Job queue, Files API (upload → file_id), and agent-handoff bridge. Live xAI batch spend stays on Streamlit when an API key is set.',
+    quickActions: ['imagine_list', 'files_list'],
+    formActions: [
+      'imagine_bridge',
+      'files_get',
+      'files_upload',
+      'files_delete',
+      'sequence_handoff',
+      'dna_handoff',
+    ],
     listAction: 'imagine_list',
   },
   quota: {

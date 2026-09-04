@@ -1,6 +1,6 @@
 export type ApiEndpoint = {
   id: string;
-  method: "GET" | "POST";
+  method: "GET" | "POST" | "DELETE";
   path: string;
   title: string;
   summary: string;
@@ -49,13 +49,13 @@ export const GROK_PRICING: {
     kind: "list" | "example";
   }[];
 } = {
-  asOf: "August 2026",
+  asOf: "September 2026",
   source: "x.ai/api · docs.x.ai",
   sourceUrl: "https://docs.x.ai",
   status:
     "Published developer API list prices — not “draft” rate cards. Confirm on docs.x.ai before you budget.",
   disclaimer:
-    "These are published API list prices for metered developer keys (as listed on x.ai/api and docs.x.ai around August 2026). They are not temporary draft figures. SuperGrok / consumer app quotas are separate from API billing. Studio “snapshots” below are worked examples (~) using those list rates, not separate price tiers. Always re-check the official docs before production budgeting.",
+    "These are published API list prices for metered developer keys (as listed on x.ai/api and docs.x.ai around September 2026). They are not temporary draft figures. SuperGrok / consumer app quotas are separate from API billing. Studio “snapshots” below are worked examples (~) using those list rates, not separate price tiers. Always re-check the official docs before production budgeting.",
   groups: [
     {
       id: "chat",
@@ -108,6 +108,12 @@ export const GROK_PRICING: {
         },
         {
           model: "grok-imagine-image-2.0",
+          unit: "Output / image (2K, quality=low)",
+          price: "$0.06",
+          note: "2K draft / auto generate",
+        },
+        {
+          model: "grok-imagine-image-2.0",
           unit: "Output / image (2K, quality=medium)",
           price: "$0.08",
           note: "Hero 2K",
@@ -123,19 +129,20 @@ export const GROK_PRICING: {
     {
       id: "video",
       title: "Imagine — video",
-      blurb: "Published per-second list rates by resolution.",
+      blurb:
+        "Published per-second list rates by resolution. Video is 1.0 / 1.5 only — there is no Imagine Video 2.0 (2.0 is Image only).",
       rows: [
         {
           model: "grok-imagine-video",
           unit: "Output / second (480p)",
           price: "$0.05",
-          note: "List price",
+          note: "Video 1.0 list",
         },
         {
           model: "grok-imagine-video",
           unit: "Output / second (720p)",
           price: "$0.07",
-          note: "List price",
+          note: "Video 1.0 list",
         },
         {
           model: "grok-imagine-video",
@@ -148,6 +155,24 @@ export const GROK_PRICING: {
           unit: "Media input / image",
           price: "$0.002",
           note: "Image conditioning",
+        },
+        {
+          model: "grok-imagine-video-1.5",
+          unit: "Output / second (480p)",
+          price: "$0.08",
+          note: "Video 1.5 native audio / physics — no Video 2.0",
+        },
+        {
+          model: "grok-imagine-video-1.5",
+          unit: "Output / second (720p)",
+          price: "$0.14",
+          note: "Video 1.5 native audio / physics — no Video 2.0",
+        },
+        {
+          model: "grok-imagine-video-1.5",
+          unit: "Output / second (1080p)",
+          price: "$0.25",
+          note: "Video 1.5 hero — no Video 2.0",
         },
       ],
     },
@@ -297,6 +322,115 @@ export const askGrok = createServerFn({ method: "POST" })
         notes: [
           "Default chat model: grok-4.6 unless the user asks otherwise.",
           "OpenAI SDKs work with base_url https://api.x.ai/v1.",
+          "Prefer POST /v1/responses for new chat work; /v1/chat/completions remains compatible.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "files",
+    title: "Files",
+    intro:
+      "Private storage for Imagine inputs (and chat attachments). Upload once, then pass file_id instead of re-sending bytes. Max 50 MB. Official: docs.x.ai → Files API.",
+    endpoints: [
+      {
+        id: "files-list",
+        method: "GET",
+        path: "/v1/files",
+        title: "List files",
+        summary:
+          "Paginated list for the authenticated team. Pass pagination_token for the next page.",
+        request: `GET https://api.x.ai/v1/files?limit=20
+Authorization: Bearer $XAI_API_KEY
+
+// Query: limit, order (asc|desc), sort_by (created_at|filename|size),
+//        pagination_token, filter (AIP-160)`,
+        response: `{
+  "data": [
+    {
+      "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
+      "object": "file",
+      "bytes": 12345,
+      "created_at": 1762345678,
+      "expires_at": null,
+      "filename": "plate.png",
+      "purpose": "assistants"
+    }
+  ],
+  "pagination_token": "file_a128090d-f0c9-4873-bd84-e499777e7417"
+}`,
+        notes: [
+          "End of list: data.length < limit.",
+          "purpose is accepted for OpenAI SDK compatibility; xAI does not enforce it.",
+        ],
+      },
+      {
+        id: "files-get",
+        method: "GET",
+        path: "/v1/files/{id}",
+        title: "Get file metadata",
+        summary:
+          "Retrieve one file by id. 404 if missing, deleted, or past expires_at.",
+        request: `GET https://api.x.ai/v1/files/{id}
+Authorization: Bearer $XAI_API_KEY`,
+        response: `{
+  "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
+  "object": "file",
+  "bytes": 12345,
+  "created_at": 1762345678,
+  "expires_at": null,
+  "filename": "plate.png"
+}`,
+      },
+      {
+        id: "files-upload",
+        method: "POST",
+        path: "/v1/files",
+        title: "Upload file",
+        summary:
+          "Multipart upload. Returns id for Imagine image/video inputs. Files persist until delete or expires_after.",
+        request: `POST https://api.x.ai/v1/files
+Authorization: Bearer $XAI_API_KEY
+Content-Type: multipart/form-data
+
+# expires_after MUST appear before the file part (400 if reversed)
+# expires_after: 3600–2592000 seconds (1 hour–30 days); omit = no expiry
+
+curl -X POST https://api.x.ai/v1/files \\
+  -H "Authorization: Bearer $XAI_API_KEY" \\
+  -F expires_after=86400 \\
+  -F purpose=assistants \\
+  -F file="@locked-plate.png"`,
+        response: `{
+  "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
+  "object": "file",
+  "bytes": 12345,
+  "created_at": 1762345678,
+  "expires_at": 1762432078,
+  "filename": "locked-plate.png"
+}`,
+        notes: [
+          "Maximum 50 MB.",
+          "Imagine accepts file_id anywhere a public URL or data URI is allowed (edits, i2v).",
+          "Chunked upload exists (POST /v1/files:initialize + :uploadChunks) for large files — see docs.x.ai.",
+        ],
+      },
+      {
+        id: "files-delete",
+        method: "DELETE",
+        path: "/v1/files/{id}",
+        title: "Delete file",
+        summary:
+          "Remove storage. The id no longer lists, downloads, or attaches.",
+        request: `DELETE https://api.x.ai/v1/files/{id}
+Authorization: Bearer $XAI_API_KEY`,
+        response: `{
+  "id": "file_a128090d-f0c9-4873-bd84-e499777e7417",
+  "deleted": true
+}`,
+        notes: [
+          "Use after a production wrap or when a plate is superseded.",
+          "Do not log file bytes or API keys.",
         ],
       },
     ],
@@ -382,8 +516,8 @@ export const askGrok = createServerFn({ method: "POST" })
   ]
 }`,
         notes: [
-          "Quality model costs more than the standard imagine-image model.",
-          "Cache URLs or persist to storage — do not regenerate per page view.",
+          "Image 2.0 costs more than Image 1.0 (`grok-imagine-image`).",
+          "Cache URLs or persist via Files — do not regenerate per page view.",
           "Gate public generation behind sign-in when possible.",
         ],
       },
@@ -392,13 +526,26 @@ export const askGrok = createServerFn({ method: "POST" })
         method: "POST",
         path: "/v1/images/edits",
         title: "Edit image",
-        summary: "Natural-language edits with up to 3 reference images.",
+        summary:
+          "JSON body (not OpenAI multipart). Source: public URL, data URI, or file_id. Image 2.0: up to 5 refs; Image 1.0: 3.",
         request: `POST https://api.x.ai/v1/images/edits
+Content-Type: application/json
 
-// multipart or JSON per docs.x.ai Imagine API
-// - prompt: edit instruction
-// - image / images: up to 3 references
-// Use for wardrobe fix, lighting match, identity-preserving refine`,
+// Single source
+{
+  "model": "grok-imagine-image-2.0",
+  "prompt": "Wardrobe lock: same coat, cooler practicals, identity preserved",
+  "image": {
+    "type": "image_url",
+    "url": "https://…/locked-plate.png"
+  },
+  "quality": "medium"
+}
+
+// Or Files API: { "file_id": "file_…" }  (no type/url)
+// Multi-ref (2.0, up to 5): "images": [ {…}, {…} ]
+// Mix url / data URI / file_id in one images[] request
+// OpenAI SDK images.edit() multipart is NOT supported`,
         response: `{
   "data": [
     { "url": "https://…" }
@@ -407,6 +554,7 @@ export const askGrok = createServerFn({ method: "POST" })
         notes: [
           "Ideal for plate polish before video spend.",
           "Keep identity locks in the edit prompt when Character DNA is required.",
+          "Do not send grok-imagine-image-quality — pin grok-imagine-image-2.0.",
         ],
       },
     ],
@@ -415,32 +563,39 @@ export const askGrok = createServerFn({ method: "POST" })
     id: "imagine-video",
     title: "Imagine — video",
     intro:
-      "Async video. Published list from ~$0.05–$0.07 per second depending on resolution.",
+      "Async video. POST returns request_id only — poll GET until done. Video 1.0 list ~$0.05–$0.07/s; Video 1.5 720p $0.14/s · 1080p $0.25/s. There is no Imagine Video 2.0 (2.0 is Image only).",
     endpoints: [
       {
         id: "video-start",
         method: "POST",
-        path: "/v1/videos (async start)",
+        path: "/v1/videos/generations",
         title: "Start video generation",
-        summary: "Kick off grok-imagine-video; returns a request id to poll.",
-        request: `// Model: grok-imagine-video
-// Resolutions: 480p (list ~$0.05/s) | 720p (list ~$0.07/s) | 1080p (see docs)
-// Duration: up to ~15 seconds
-// Flow: POST start → poll status with returned id → download result
+        summary:
+          "Text-to-video, image-to-video (image url or file_id), or reference-to-video. Returns request_id for polling.",
+        request: `POST https://api.x.ai/v1/videos/generations
+Content-Type: application/json
 
 {
   "model": "grok-imagine-video",
   "prompt": "Slow push-in on rain-slick neon alley, cinematic motion",
-  "duration": 6
-}`,
+  "duration": 6,
+  "resolution": "720p",
+  "image": {
+    "url": "https://…/locked-plate.png"
+  }
+}
+
+// i2v from Files: "image": { "file_id": "file_…" }
+// t2v: omit image
+// r2v (1.5): reference_images[] and/or reference_audios[] — not with image (400)
+// duration: 1–15 (default 8). Also accepts "seconds" for OpenAI compat.`,
         response: `{
-  "request_id": "req_…",
-  "status": "pending"
+  "request_id": "a3d1008e-4544-40d4-d075-11527e794e4a"
 }`,
         notes: [
-          "6s @ 720p ≈ $0.42 at list rates — far more than a still.",
-          "Never poll in a tight loop from the client with the API key.",
+          "6s @ 720p Video 1.0 ≈ $0.42 at list rates — far more than a still.",
           "Prefer stills + locked plates before hero video spend.",
+          "Studio also has POST /v1/videos/edits and /v1/videos/extensions (Video 1.0 only) — not required for this generate → poll loop.",
         ],
       },
       {
@@ -448,16 +603,28 @@ export const askGrok = createServerFn({ method: "POST" })
         method: "GET",
         path: "/v1/videos/{request_id}",
         title: "Poll video job",
-        summary: "Check status until complete; then fetch the clip URL.",
-        request: `GET https://api.x.ai/v1/…/{request_id}
+        summary:
+          "Deferred result. status is pending | done | failed | expired. URL is on video.url when done.",
+        request: `GET https://api.x.ai/v1/videos/{request_id}
 Authorization: Bearer $XAI_API_KEY`,
         response: `{
-  "status": "completed" | "pending" | "failed",
-  "url": "https://…/clip.mp4"
-}`,
+  "status": "done",
+  "progress": 100,
+  "model": "grok-imagine-video",
+  "video": {
+    "url": "https://vidgen.x.ai/…/clip.mp4",
+    "duration": 6,
+    "respect_moderation": true
+  }
+}
+
+// pending: progress 0–99, video omitted
+// failed: error.code + error.message
+// expired: job no longer retrievable`,
         notes: [
-          "Exact paths and fields: docs.x.ai → Imagine Video.",
+          "Poll from the server with backoff (studio default ~5s). Never tight-loop from the browser with the API key.",
           "Retry failed jobs at most once.",
+          "Terminal statuses: done | failed | expired.",
         ],
       },
     ],
@@ -536,13 +703,18 @@ Authorization: Bearer $XAI_API_KEY`,
         title: "Locked plate → video",
         summary: "After still approval, start async video from prompt (and refs when supported).",
         request: `{
-  "plate_url": "https://…/locked-still.png",
+  "plate": { "file_id": "file_…" },
   "video": {
     "model": "grok-imagine-video",
     "prompt": "Extend motion: slow push-in, rain continuity",
     "duration": 6
   }
-}`,
+}
+
+// 1) POST /v1/files  → file_id
+// 2) POST /v1/images/edits  (optional plate lock)
+// 3) POST /v1/videos/generations  with image.file_id
+// 4) GET  /v1/videos/{request_id}  until status=done`,
         notes: [
           "Quota: video seconds cost more than stills — hero-first order.",
           "User button press required for each expensive generation.",
@@ -559,8 +731,10 @@ export const API_STATUS_CODES = [
   { code: "429", meaning: "Rate limited or quota pressure — back off" },
   { code: "5xx", meaning: "Server error — retry at most once, then surface" },
   { code: "pending", meaning: "Async video job still running — keep polling" },
-  { code: "completed", meaning: "Async video ready — fetch URL" },
+  { code: "done", meaning: "Async video ready — read video.url" },
   { code: "failed", meaning: "Async job failed — show error, optional single retry" },
+  { code: "expired", meaning: "Deferred video job no longer retrievable" },
+  { code: "404", meaning: "File or job missing (deleted, expired, or unknown id)" },
 ];
 
 export const API_ERRORS = [

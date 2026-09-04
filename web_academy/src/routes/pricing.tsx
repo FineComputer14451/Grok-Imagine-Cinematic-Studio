@@ -66,7 +66,7 @@ function PricingPage() {
           <p>
             “Standard still” means the cheaper image model (
             <span className="font-mono text-fg">grok-imagine-image</span>) for
-            iteration, vs quality hero stills —{" "}
+            iteration, vs Image 2.0 hero stills (`quality=medium`) —{" "}
             <strong className="text-fg">not</strong> that the dollars were
             provisional.
           </p>
@@ -166,7 +166,11 @@ function PricingPage() {
             Iterate on{" "}
             <span className="font-mono text-fg">grok-imagine-image</span> (list
             ~$0.02) before hero{" "}
-            <span className="font-mono text-fg">image-quality</span> or video.
+            <span className="font-mono text-fg">grok-imagine-image-2.0</span> with{" "}
+            <span className="font-mono text-fg">quality=medium</span>. The retired{" "}
+            <span className="font-mono text-fg">grok-imagine-image-quality</span> slug rewrites to 2.0{" "}
+            <span className="font-mono text-fg">quality=low</span> on 2026-11-02 — do
+            not send it as the live hero.
           </p>
           <p>
             A 6s 720p clip (~$0.42 at list) costs more than twenty standard

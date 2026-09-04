@@ -100,6 +100,7 @@ export function CockpitPage({ pageKey }: Props) {
                 activeForm.endsWith('_show') ||
                 activeForm === 'handoff_validate' ||
                 activeForm === 'imagine_bridge' ||
+                activeForm === 'files_get' ||
                 activeForm === 'quota_sequence_estimate'
                   ? false
                   : null

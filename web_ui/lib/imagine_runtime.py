@@ -103,25 +103,28 @@ def build_clip_bridge(sequence_name: str, clip_id: str) -> dict[str, Any]:
     return build_bridge_packet({**clip, "sequence_slug": seq.get("slug")}, context="clip")
 
 
-def submit_imagine_via_cli(
+def imagine_submit_argv(
     job_type: str,
     prompt: str,
     *,
     model: str | None = None,
     image_url: str | None = None,
     video_url: str | None = None,
+    file_id: str | None = None,
     duration: int = 10,
     sequence: str | None = None,
     clip: str | None = None,
     dry_run: bool = False,
-) -> tuple[int, str]:
-    from lib.runtime import run_cli
-
+) -> list[str]:
+    """Build `imagine submit` argv. file_id wins over URL (API mutual exclusion)."""
     args = ["imagine", "submit", job_type, "--prompt", prompt]
     if model:
         args.extend(["--model", model])
+    fid = (file_id or "").strip() or None
     media = image_url or video_url
-    if job_type in ("video_edit", "video_extend") and media:
+    if fid:
+        args.extend(["--file-id", fid])
+    elif job_type in ("video_edit", "video_extend") and media:
         args.extend(["--video-url", media])
     elif media:
         args.extend(["--image-url", media])
@@ -133,6 +136,36 @@ def submit_imagine_via_cli(
         args.extend(["--clip", clip])
     if dry_run:
         args.append("--dry-run")
+    return args
+
+
+def submit_imagine_via_cli(
+    job_type: str,
+    prompt: str,
+    *,
+    model: str | None = None,
+    image_url: str | None = None,
+    video_url: str | None = None,
+    file_id: str | None = None,
+    duration: int = 10,
+    sequence: str | None = None,
+    clip: str | None = None,
+    dry_run: bool = False,
+) -> tuple[int, str]:
+    from lib.runtime import run_cli
+
+    args = imagine_submit_argv(
+        job_type,
+        prompt,
+        model=model,
+        image_url=image_url,
+        video_url=video_url,
+        file_id=file_id,
+        duration=duration,
+        sequence=sequence,
+        clip=clip,
+        dry_run=dry_run,
+    )
     return run_cli(args, timeout=300)
 
 

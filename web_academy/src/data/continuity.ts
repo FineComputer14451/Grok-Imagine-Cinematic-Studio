@@ -49,7 +49,7 @@ export type QuizItem = {
 };
 
 export const CONTINUITY_VERSION = "4.5";
-export const ACADEMY_MODULE_VERSION = "4.0.0";
+export const ACADEMY_MODULE_VERSION = "3.11.4";
 
 export const CONTINUITY_TAGLINE =
   "Multi-clip memory keeper — LAST_FRAME_RECAP, continuity_state, prop/environment/emotion drift gates before every extend.";

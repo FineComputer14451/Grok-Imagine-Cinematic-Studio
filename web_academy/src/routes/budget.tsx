@@ -165,8 +165,8 @@ function BudgetPage() {
                 {(
                   [
                     ["standard", "Standard $0.02"],
-                    ["q1k", "Quality 1K $0.06"],
-                    ["q2k", "Quality 2K $0.08"],
+                    ["q1k", "Image 2.0 1K medium $0.06"],
+                    ["q2k", "Image 2.0 2K medium $0.08"],
                   ] as const
                 ).map(([id, label]) => (
                   <button

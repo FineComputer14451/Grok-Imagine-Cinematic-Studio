@@ -20,7 +20,7 @@ export const Route = createFileRoute("/graduate")({
   component: GraduatePage,
 });
 
-const QUIZ_PASS = 7;
+const QUIZ_PASS = 9;
 const CARDS_PASS = 8;
 
 function GraduatePage() {

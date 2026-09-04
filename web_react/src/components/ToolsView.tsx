@@ -26,6 +26,9 @@ export function ToolsView() {
   const formActions = [
     'handoff_validate',
     'imagine_bridge',
+    'files_get',
+    'files_upload',
+    'files_delete',
     'wave_a_briefs',
     'sequence_polish_dry',
     'sequence_deliver_dry',
@@ -52,6 +55,7 @@ export function ToolsView() {
             'stack',
             'doctor_quick',
             'plugin_list',
+            'files_list',
           ]}
         />
       </section>
@@ -75,6 +79,7 @@ export function ToolsView() {
           forceConfirm={
             activeForm === 'handoff_validate' ||
             activeForm === 'imagine_bridge' ||
+            activeForm === 'files_get' ||
             activeForm === 'wave_a_briefs' ||
             activeForm.endsWith('_dry')
               ? false

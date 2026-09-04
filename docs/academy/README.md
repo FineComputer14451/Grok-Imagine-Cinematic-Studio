@@ -1,6 +1,6 @@
 # Studio Academy docs
 
-Educational companion materials for **Grok Imagine Cinematic Studio**.
+Educational companion materials for **Grok Imagine Cinematic Studio** **v3.11.4**.
 
 | Doc | Purpose |
 |-----|---------|
@@ -10,7 +10,7 @@ Educational companion materials for **Grok Imagine Cinematic Studio**.
 
 ## Interactive app
 
-The full Studio Academy React app lives in **[`web_academy/`](../../web_academy/)**:
+The full Studio Academy React app lives in **[`web_academy/`](../../web_academy/)** (pinned to studio **v3.11.4**):
 
 ```bash
 cd web_academy && npm install && npm run dev
@@ -18,11 +18,9 @@ cd web_academy && npm install && npm run dev
 
 Curriculum modules: tiers, agents, DNA, lenses, movement, color, lighting, composition, aspect, editing, sound, packs, workflows, quiz, graduate certificate.
 
+Live tools:
+
+- **Delivery checklist** at `/delivery` (checkboxes, progress, director one-liner, full report copy) — mirrors [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md)
+- **Extend Lab** at `/extend` (chain planner, plate gates, copyable packets)
+
 Stills-first · independent learning tools · not official xAI credentials.
-
-
-## Interactive app
-
-The live Studio Academy companion includes an interactive **Delivery checklist** at `/delivery` (checkboxes, progress, director one-liner, full report copy). It mirrors [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md).
-
-The live app includes **Extend Lab** at `/extend` (chain planner, plate gates, copyable packets).

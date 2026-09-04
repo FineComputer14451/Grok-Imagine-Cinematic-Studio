@@ -52,6 +52,7 @@ COCKPIT_GROUP_LABELS: dict[str, str] = {
     "quota": "Quota",
     "delivery": "Delivery",
     "multiagent": "Multi-agent",
+    "files": "Files",
     "health": "Health",
 }
 
@@ -131,10 +132,12 @@ LAUNCHER_ORDER: tuple[str, ...] = (
     "handoff_validate",
     "imagine_bridge",
     "imagine_list",
+    "files_list",
+    "files_get",
     "plugin_list",
 )
 
-# Setup → Quota → DNA → Sequence → Delivery → Multi-agent → Health
+# Setup → Quota → DNA → Sequence → Delivery → Multi-agent → Files → Health
 COCKPIT_ORDER: tuple[str, ...] = (
     "bible_create",
     "quota_budget",
@@ -150,6 +153,10 @@ COCKPIT_ORDER: tuple[str, ...] = (
     "sequence_deliver_dry",
     "wave_a_briefs",
     "imagine_bridge",
+    "files_list",
+    "files_get",
+    "files_upload",
+    "files_delete",
     "handoff_validate",
     "doctor_quick",
     "models_verify",
@@ -252,6 +259,72 @@ ACTIONS: dict[str, ActionSpec] = {
         description="Recent Imagine jobs",
         base_argv=("imagine", "list"),
         surfaces=frozenset({"launcher"}),
+    ),
+    "files_list": ActionSpec(
+        id="files_list",
+        label="Files list",
+        description="List xAI Files API objects (paginated metadata)",
+        base_argv=("files", "list"),
+        surfaces=frozenset({"launcher", "cockpit"}),
+        needs_confirm=False,
+        group="files",
+    ),
+    "files_get": ActionSpec(
+        id="files_get",
+        label="Files get",
+        description="Show metadata for one stored file_id",
+        base_argv=("files", "get"),
+        surfaces=frozenset({"launcher", "cockpit"}),
+        needs_confirm=False,
+        group="files",
+        fields=(_f("file_id", "Files API id (file_…)", required=True),),
+    ),
+    "files_upload": ActionSpec(
+        id="files_upload",
+        label="Files upload",
+        description="Upload a local plate (max 50 MB) and print file_id",
+        base_argv=("files", "upload"),
+        surfaces=frozenset({"cockpit"}),
+        needs_confirm=True,
+        group="files",
+        fields=(
+            _f("path", "Local file path (max 50 MB)", required=True),
+            _f(
+                "expires_after",
+                "TTL seconds (3600–2592000)",
+                flag="--expires-after",
+                coerce="int",
+            ),
+            _f(
+                "purpose",
+                "Purpose label",
+                default="assistants",
+                flag="--purpose",
+            ),
+            _f(
+                "dry_run",
+                "Type --dry-run to mock (empty = live)",
+                omit_if_empty=True,
+            ),
+        ),
+    ),
+    "files_delete": ActionSpec(
+        id="files_delete",
+        label="Files delete",
+        description="Delete a stored file (requires --yes)",
+        base_argv=("files", "delete"),
+        surfaces=frozenset({"cockpit"}),
+        needs_confirm=True,
+        group="files",
+        fields=(
+            _f("file_id", "Files API id to delete", required=True),
+            _f(
+                "yes",
+                "Must be --yes",
+                default="--yes",
+                omit_if_empty=False,
+            ),
+        ),
     ),
     "plugin_list": ActionSpec(
         id="plugin_list",

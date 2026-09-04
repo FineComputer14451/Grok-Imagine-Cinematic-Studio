@@ -149,6 +149,48 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     explain:
       "1.5 is for synchronized audio, improved physics, reference conditioning, and longer chainable motion.",
   },
+  {
+    id: "q11",
+    tier: 3,
+    prompt: "What is the live chat / orchestration default?",
+    options: [
+      "Always send grok-4.5 as the live chat default",
+      "grok-4.6 (grok-4.5 is a resolve alias that wraps 4.6)",
+      "grok-imagine-video-2.0",
+      "grok-4.3 for every short prompt",
+    ],
+    answer: 1,
+    explain:
+      "Registry default is grok-4.6. grok-4.5 remains a resolve alias / wrap — do not send 4.5 as the live default.",
+  },
+  {
+    id: "q12",
+    tier: 3,
+    prompt: "Which model should you use for hero stills?",
+    options: [
+      "Always send grok-imagine-image-quality as the live hero",
+      "grok-imagine-image-2.0 with quality=medium",
+      "grok-imagine-video-2.0",
+      "Always grok-4.3",
+    ],
+    answer: 1,
+    explain:
+      "Hero stills pin grok-imagine-image-2.0 quality=medium. The retired grok-imagine-image-quality slug rewrites to 2.0 quality=low on 2026-11-02.",
+  },
+  {
+    id: "q13",
+    tier: 3,
+    prompt: "Is there an Imagine Video 2.0?",
+    options: [
+      "Yes — use it for all hero clips",
+      "No — 2.0 is Image only; video is 1.0 / 1.5",
+      "Yes — it replaced Video 1.5",
+      "Only on grok.com",
+    ],
+    answer: 1,
+    explain:
+      "Imagine 2.0 is an image model. Video remains 1.0 (default) and 1.5 (native audio / physics). There is no Video 2.0.",
+  },
 ];
 
 export function scoreBand(score: number, total: number) {

@@ -74,6 +74,15 @@ def test_nested_help_panels() -> None:
     assert "Handoff" in imagine.stdout
     assert "Artifacts" in imagine.stdout
 
+    files = run_cli("files", "--help")
+    assert files.returncode == 0
+    assert "Inspect" in files.stdout
+    assert "Store" in files.stdout
+    assert "upload" in files.stdout
+    assert "list" in files.stdout
+    assert "get" in files.stdout
+    assert "delete" in files.stdout
+
     quota = run_cli("quota", "--help")
     assert quota.returncode == 0
     assert "Health" in quota.stdout
@@ -178,6 +187,6 @@ def test_actionspec_frozen() -> None:
     sys.path.insert(0, str(root))
     from studio_core.services.actions import ACTIONS
 
-    assert len(ACTIONS) == 29
+    assert len(ACTIONS) == 33
     assert ACTIONS["models_verify"].base_argv == ("models", "verify")
     assert ACTIONS["doctor_quick"].base_argv == ("doctor", "--quick")

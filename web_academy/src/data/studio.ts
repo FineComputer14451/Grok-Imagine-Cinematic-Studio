@@ -5,7 +5,7 @@ export type Agent = {
   activation: string;
   tier: 1 | 2 | 3;
   category: "leadership" | "creative" | "production" | "post" | "special";
-  /** Studio skill surface badges — mapped to the 62-skill suite */
+  /** Studio skill surface badges — mapped to the 64-skill suite */
   skills: string[];
 };
 
@@ -19,6 +19,13 @@ export type Tier = {
   prompt: string;
   agents: string[];
 };
+
+export const STUDIO_VERSION = "3.11.4";
+export const ACADEMY_VERSION = "3.11.4";
+export const SKILL_SUITE_COUNT = 64;
+export const CORE_AGENT_COUNT = 25;
+/** Paste-ready: Activate Grok Imagine Cinematic Studio v3.11.4 */
+export const STUDIO_ACTIVATION = `Activate Grok Imagine Cinematic Studio v${STUDIO_VERSION}`;
 
 export const TIERS: Tier[] = [
   {
@@ -85,7 +92,8 @@ Constraints: Same wardrobe, same face identity, R-rated mood only (no explicit c
     steps: [
       {
         title: "Activate full studio",
-        detail: "Loads 25 agents, 62 skills, dual Grok 4.5 / 4.3 stack.",
+        detail:
+          "Loads 25 core agents, 64 skills, grok-4.6 stack (optional grok-4.3 1M; specialist v9-4p5 when available).",
       },
       {
         title: "Build the Production Bible",
@@ -103,7 +111,7 @@ Constraints: Same wardrobe, same face identity, R-rated mood only (no explicit c
           "Sequence Director + Imagine Agent Mode → AI Polish + QA Guardian.",
       },
     ],
-    prompt: `Activate Grok Imagine Cinematic Studio v3.9.1
+    prompt: `${STUDIO_ACTIVATION}
 
 Full production mode.
 Genre: Erotic horror (fictional adults, R-rated, artistic — no hardcore).
@@ -118,7 +126,7 @@ Start with the guided Bible wizard.`,
       "Director of Photography",
       "Sequence Director",
       "QA Guardian",
-      "ErosForge",
+      "Character DNA Extractor",
     ],
   },
 ];
@@ -152,6 +160,15 @@ export const AGENTS: Agent[] = [
     skills: ["Character DNA", "Face Continuity", "Wardrobe Lock", "Transform Track"],
   },
   {
+    id: "dna-extractor",
+    name: "Character DNA Extractor",
+    role: "Extracts face, wardrobe, and continuity locks from references.",
+    activation: "ACTIVATE CHARACTER_DNA_EXTRACTOR",
+    tier: 3,
+    category: "creative",
+    skills: ["Character DNA", "Face Lock", "Wardrobe Extract", "Ref Capture"],
+  },
+  {
     id: "prompt-master",
     name: "Imagine Prompt Master",
     role: "Elite prompt engineer. Shot library and failure-based learning.",
@@ -170,6 +187,15 @@ export const AGENTS: Agent[] = [
     skills: ["Lighting", "Lens Grammar", "Camera Move", "Visual Language"],
   },
   {
+    id: "color",
+    name: "Color Grading Supervisor",
+    role: "Look development, LUTs, skin protection, delivery grade.",
+    activation: "ACTIVATE COLOR_GRADING",
+    tier: 3,
+    category: "post",
+    skills: ["Look Dev", "LUT", "Skin Protect", "Delivery Grade"],
+  },
+  {
     id: "sequence",
     name: "Sequence Director",
     role: "Clip chaining, Extend-from-Frame plans, long-form continuity.",
@@ -179,6 +205,15 @@ export const AGENTS: Agent[] = [
     skills: ["Extend-from-Frame", "Clip Chain", "Long-form", "Shot List"],
   },
   {
+    id: "sequence-extender",
+    name: "Cinematic Sequence Extender",
+    role: "Extend-from-Frame chains, last-frame recap, stitch gates.",
+    activation: "ACTIVATE SEQUENCE_EXTENDER",
+    tier: 3,
+    category: "production",
+    skills: ["Extend-from-Frame", "LAST_FRAME", "Clip Chain", "Stitch Gate"],
+  },
+  {
     id: "performance",
     name: "Performance & Emotion Director",
     role: "Performance beats, micro-expressions, emotional arcs.",
@@ -186,6 +221,15 @@ export const AGENTS: Agent[] = [
     tier: 3,
     category: "creative",
     skills: ["Performance Beats", "Micro-expression", "Emotional Arc", "Blocking"],
+  },
+  {
+    id: "narrative",
+    name: "Narrative Arc Pacing Strategist",
+    role: "Act structure, tension curves, and mid-chain replan.",
+    activation: "ACTIVATE NARRATIVE_ARC",
+    tier: 3,
+    category: "creative",
+    skills: ["Arc Pacing", "Act Structure", "Tension Curve", "Replan"],
   },
   {
     id: "vfx",
@@ -199,7 +243,7 @@ export const AGENTS: Agent[] = [
   {
     id: "production-design",
     name: "Production Designer",
-    role: "Environment DNA, prop memory, world-building.",
+    role: "Environment DNA, prop memory, set dressing.",
     activation: "ACTIVATE PRODUCTION_DESIGNER",
     tier: 3,
     category: "production",
@@ -296,6 +340,15 @@ export const AGENTS: Agent[] = [
     skills: ["R-rated Art", "Consent Frame", "Intimacy Physics", "NSFW Batch"],
   },
   {
+    id: "continuity-guardian",
+    name: "Continuity Guardian",
+    role: "Wardrobe, prop, lighting, and identity consistency across shots.",
+    activation: "ACTIVATE CONTINUITY_GUARDIAN",
+    tier: 3,
+    category: "production",
+    skills: ["Continuity Audit", "Wardrobe Match", "Prop Track", "Light Match"],
+  },
+  {
     id: "continuity",
     name: "Multi-Clip Continuity Orchestrator",
     role: "Cross-clip wardrobe, prop, and lighting continuity.",
@@ -319,17 +372,8 @@ export const AGENTS: Agent[] = [
     role: "Rebuild stills from refs while preserving identity DNA.",
     activation: "ACTIVATE AI_IMAGE_RECREATION",
     tier: 3,
-    category: "creative",
+    category: "special",
     skills: ["Ref Rebuild", "Identity Preserve", "Still Recreate", "I2I Refiner"],
-  },
-  {
-    id: "sound-bed",
-    name: "Adaptive Audio Specialist",
-    role: "Scene-reactive audio beds for Video 1.5 native sound.",
-    activation: "ACTIVATE ADAPTIVE_AUDIO",
-    tier: 3,
-    category: "post",
-    skills: ["Video 1.5 Audio", "Scene-reactive", "Adaptive Beds", "Sync Pass"],
   },
   {
     id: "handoff",
@@ -337,17 +381,8 @@ export const AGENTS: Agent[] = [
     role: "Validates generation packets before they hit Imagine.",
     activation: "ACTIVATE IMAGINE_HANDOFF",
     tier: 3,
-    category: "production",
+    category: "special",
     skills: ["Packet Validate", "Surface Bridge", "Handoff Gate", "Imagine Route"],
-  },
-  {
-    id: "set-deco",
-    name: "Set Decorator",
-    role: "Prop density, set dressing memory, practical sources.",
-    activation: "ACTIVATE SET_DECORATOR",
-    tier: 3,
-    category: "production",
-    skills: ["Prop Density", "Set Dressing", "Practical Lights", "Detail Pass"],
   },
 ];
 
@@ -400,8 +435,8 @@ export const PIPELINE = [
 ];
 
 export const STATS = [
-  { label: "Agents", value: "25" },
-  { label: "Skills", value: "62" },
+  { label: "Agents", value: String(CORE_AGENT_COUNT) },
+  { label: "Skills", value: String(SKILL_SUITE_COUNT) },
   { label: "Video models", value: "1.0 + 1.5" },
   { label: "Learning tiers", value: "3" },
 ];

@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AGENTS, type Agent } from "@/data/studio";
+import { AGENTS, CORE_AGENT_COUNT, type Agent } from "@/data/studio";
 import { useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
@@ -67,8 +67,9 @@ function AgentsPage() {
           Agent roster
         </h1>
         <p className="mt-2 max-w-2xl text-muted">
-          {AGENTS.length} specialists with skill badges. Filter by category or
-          skill, search by name, copy activation commands.
+          {CORE_AGENT_COUNT} core plus opt-in/specialist cards ({AGENTS.length}{" "}
+          on this roster) with skill badges. Filter by category or skill, search
+          by name, copy activation commands.
         </p>
       </div>
 

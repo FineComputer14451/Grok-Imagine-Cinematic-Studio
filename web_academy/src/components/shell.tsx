@@ -40,6 +40,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { ACADEMY_VERSION, STUDIO_VERSION } from "@/data/studio";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -220,8 +221,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <footer className="border-t border-border/80 py-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 text-sm text-subtle sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <p>
-            Studio Academy v4.0.0 — Continuity · Delivery pack · ErosForge ·
-            Cinematic Studio v3.9.1
+            Studio Academy v{ACADEMY_VERSION} — Continuity · Delivery pack · ErosForge ·
+            Cinematic Studio v{STUDIO_VERSION}
           </p>
           <p className="font-mono text-xs">
             Independent of xAI · MIT-style learning tool

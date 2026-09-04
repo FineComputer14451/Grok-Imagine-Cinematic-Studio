@@ -509,7 +509,7 @@ function ShotsPage() {
               </p>
               <p>
                 Promote only <strong className="text-fg">hero</strong> plates
-                to quality stills or video after identity gate.
+                to Image 2.0 (`quality=medium`) or video after identity gate.
               </p>
               <p>
                 Estimate cost in Budget: shots × still rate (+ video only for

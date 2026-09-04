@@ -1,16 +1,15 @@
-# ErosForge module (Academy v3.9.2)
+# ErosForge module (Academy v3.11.4)
 
-Opt-in educational module for the NSFW production pack.
+Opt-in educational module for the NSFW production pack. Independent companion — not official xAI credentials.
 
 ## Status
 
-Core integration is landing on `main` via sequential commits:
+Shipped in the Academy app (studio **v3.11.4** pin):
 
-- Progress store + README + shell nav
-- Search index Packs group
-- Data module `src/data/erosforge.ts`
-- Route page `src/routes/erosforge.tsx`
-- Craft / home / glossary / studio / routeTree updates
+- Opt-in `/erosforge` module (progress store, search Packs group, shell nav)
+- Data: `src/data/erosforge.ts` (protocols include SpaceXAI AUP / `nsfw attest`)
+- Route: `src/routes/erosforge.tsx`
+- Education only — Academy does not generate intimate media
 
 ## Local path
 
@@ -21,4 +20,4 @@ npm run dev
 # open /erosforge
 ```
 
-Policy: fictional adults only · strict opt-in · workflow education only (no media generation in Academy).
+Policy: fictional adults only · strict opt-in · SpaceXAI AUP fail-closed (`nsfw attest`: 18+ / imaginary-adult / no-real-person / R-rated cap) · workflow education only (no media generation in Academy).

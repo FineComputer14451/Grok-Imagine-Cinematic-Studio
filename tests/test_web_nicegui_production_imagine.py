@@ -28,6 +28,10 @@ def test_run_status_and_imagine_list() -> None:
     assert jobs.ok is True
     assert jobs.argv == ["imagine", "list"]
 
+    files = run_registered("files_list", timeout=60.0)
+    assert files.ok is True
+    assert files.argv == ["files", "list"]
+
 
 def test_models_verify_and_validate() -> None:
     models = run_registered("models_verify", timeout=90.0)

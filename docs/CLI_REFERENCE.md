@@ -107,6 +107,23 @@ cinematic-studio imagine bridge                 # Classic Surface C bridge
 cinematic-studio handoff validate <packet.json> --strict-handoff
 ```
 
+### Files API (plates → file_id)
+
+```bash
+cinematic-studio files upload locked-plate.png --expires-after 86400
+cinematic-studio files list --limit 20
+cinematic-studio files get file_…
+cinematic-studio files delete file_… --yes
+
+# Then Imagine:
+cinematic-studio imagine submit image_edit -p "wardrobe lock" --file-id file_…
+cinematic-studio imagine submit video -p "slow push-in" --file-id file_…
+```
+
+Upload is multipart (`expires_after` **before** `file`, max 50 MB). `--dry-run` or a missing `XAI_API_KEY` mocks the call. Delete requires `--yes`.
+
+Same verbs as ActionSpec `files_list` / `files_get` / `files_upload` / `files_delete` (TUI cockpit Files group, NiceGUI Imagine → Files tab, React Imagine/Tools). NiceGUI can drop a plate into `artifacts/files_inbox/` then paste that path into Upload.
+
 ### Quota & Cost
 
 ```bash

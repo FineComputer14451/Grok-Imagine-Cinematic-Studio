@@ -35,6 +35,34 @@ def test_core_actions_cover_both_surfaces() -> None:
     assert set(COCKPIT_ORDER) <= set(ACTIONS)
 
 
+def test_files_action_argv() -> None:
+    assert answers_to_argv("files_list", {}) == ["files", "list"]
+    assert answers_to_argv("files_get", {"file_id": "file_abc"}) == [
+        "files",
+        "get",
+        "file_abc",
+    ]
+    upload = answers_to_argv(
+        "files_upload",
+        {
+            "path": "locked-plate.png",
+            "expires_after": "86400",
+            "purpose": "assistants",
+            "dry_run": "--dry-run",
+        },
+    )
+    assert upload[:3] == ["files", "upload", "locked-plate.png"]
+    assert "--expires-after" in upload and "86400" in upload
+    assert "--purpose" in upload and "assistants" in upload
+    assert "--dry-run" in upload
+    for tok in FORBIDDEN_ARGV_TOKENS:
+        assert tok not in upload
+    delete = answers_to_argv("files_delete", {"file_id": "file_abc"})
+    assert delete == ["files", "delete", "file_abc", "--yes"]
+    assert validate_answers("files_upload", {"path": ""}) != []
+    assert validate_answers("files_get", {}) != []
+
+
 def test_core_argv_roundtrip_safe() -> None:
     assert validate_answers("models_verify", {}) == []
     assert answers_to_argv("models_verify", {}) == ["models", "verify"]

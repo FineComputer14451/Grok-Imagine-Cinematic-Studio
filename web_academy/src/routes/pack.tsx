@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { STUDIO_ACTIVATION } from "@/data/studio";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/pack")({
@@ -204,7 +205,7 @@ See Budget calculator for list-rate totals.
 
   if (include.activation) {
     parts.push(`## ACTIVATION PACK
-Activate Grok Imagine Cinematic Studio v3.9.1
+${STUDIO_ACTIVATION}
 ACTIVATE STUDIO_DIRECTOR
 ACTIVATE DOP
 ACTIVATE IDENTITY_LOCK

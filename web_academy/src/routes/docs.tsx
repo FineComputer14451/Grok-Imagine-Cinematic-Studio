@@ -38,6 +38,7 @@ export const Route = createFileRoute("/docs")({
 const METHOD_STYLE: Record<ApiEndpoint["method"], string> = {
   GET: "border-teal/40 bg-teal/10 text-teal",
   POST: "border-amber/40 bg-amber/10 text-amber",
+  DELETE: "border-danger/40 bg-danger/10 text-danger",
 };
 
 function DocsPage() {

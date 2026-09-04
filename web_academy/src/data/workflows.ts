@@ -1,3 +1,5 @@
+import { STUDIO_ACTIVATION } from "./studio";
+
 export type WorkflowStep = {
   agent: string;
   action: string;
@@ -148,7 +150,7 @@ Handoff must pass identity gate before any video spend.`,
         handsOff: "Approved shoot packets",
       },
     ],
-    activation: `Activate Grok Imagine Cinematic Studio v3.9.1
+    activation: `${STUDIO_ACTIVATION}
 ACTIVATE STUDIO_DIRECTOR
 ACTIVATE MEGA_PRODUCTION_ARCHITECT
 ACTIVATE DOP

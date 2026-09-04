@@ -1,7 +1,7 @@
 # Studio Academy — FAQ
 
-Common beginner blockers for **Grok Imagine Cinematic Studio**.  
-Pair with the [Delivery Checklist](./DELIVERY_CHECKLIST.md).
+Common beginner blockers for **Grok Imagine Cinematic Studio v3.11.4** (64 skills · 25 core agents · grok-4.6 stack).  
+Pair with the [Delivery Checklist](./DELIVERY_CHECKLIST.md). Independent educational companion — not official xAI credentials.
 
 ---
 
@@ -72,10 +72,12 @@ Rule: **no i2v / 6s hero clip until `plate_status = locked`.**
 
 ### Why stills-first?
 
-- Cheaper iteration  
+- Cheaper iteration on **Image 1.0** (`grok-imagine-image`, ~$0.02)  
+- Hero plates on **Image 2.0** (`grok-imagine-image-2.0` `quality=medium`) after lock  
 - Identity and lighting debug without burning video seconds  
 - Still montage is a valid teaser delivery  
 - Failed motion loops cost more than a second still pass  
+- There is **no Imagine Video 2.0** — video is 1.0 / 1.5 only (2.0 is Image)  
 
 ### How many stills before video?
 
@@ -164,10 +166,23 @@ One hero sound event at a time. Trait-based music (mood/tempo), not “exactly l
 ### How do I not blow quota?
 
 - Stills before video  
-- Standard stills for exploration; quality/hero only when locked  
+- **Image 1.0** for exploration; **Image 2.0** `quality=medium` for locked hero stills (retired `grok-imagine-image-quality` rewrites to 2.0 `quality=low` on 2026-11-02)  
 - One simple move per short clip  
 - No extends on No-Go plates  
 - Use Budget / Quota tools before batch sessions  
+- Video is **1.0 / 1.5 only** — there is no Video 2.0  
+
+### Which Imagine REST paths should I call?
+
+Official surface (Bearer `$XAI_API_KEY`, base `https://api.x.ai/v1`):
+
+- Files: `GET/POST /v1/files` · `GET/DELETE /v1/files/{id}` (multipart upload: `expires_after` **before** `file`; max 50 MB)
+- Images: `POST /v1/images/generations` · `POST /v1/images/edits` (JSON `image` or `images[]`; URL, data URI, or `file_id` — not OpenAI multipart)
+- Video: `POST /v1/videos/generations` → `GET /v1/videos/{request_id}` until `status` is `done` (not `completed`)
+
+Academy `/docs` mirrors that list. Studio also uses `/v1/videos/edits` and `/v1/videos/extensions` (Video 1.0 only).
+
+CLI: `cinematic-studio files upload PATH` prints a `file_id` for `imagine submit … --file-id`. Delete requires `--yes`.
 
 ### Are pricing numbers in Academy official?
 
@@ -192,6 +207,8 @@ Typical safe order:
 5. Generators / Sequence / QA as needed  
 
 Locks before generators.
+
+Chat / orchestration default is **`grok-4.6`** (`grok-4.5` is a resolve alias). Full studio: `Activate Grok Imagine Cinematic Studio v3.11.4`.
 
 ### What does “activation” actually do?
 
@@ -226,6 +243,14 @@ Run checklist → fix reds → export pack.
 
 ---
 
+## NSFW / ErosForge (opt-in)
+
+ErosForge is **not** in the 25-core roster. Activate it only when you need an R-rated artistic path (fictional adults). Academy never generates intimate media.
+
+Studio spend and planning packets **fail closed** on SpaceXAI AUP without `nsfw attest` (18+ / imaginary-adult / no-real-person / R-rated cap). CSAM is always blocked. No intimate + still-ref. 403/429: no region hop.
+
+---
+
 ## Graduate & learning
 
 ### How do I “graduate” in Academy?
@@ -233,7 +258,7 @@ Run checklist → fix reds → export pack.
 Typical gates (local progress):
 
 - All learn tiers marked complete  
-- Quiz best score at threshold  
+- Quiz pass is **9 of 13**  
 - Enough flashcards mastered  
 
 Certificate is a **learning milestone**, not an official xAI credential.
@@ -265,4 +290,4 @@ Lighting → Framing → Aspect → Lenses → Movement → Color → Editing �
 
 ---
 
-*Studio Academy — educational companion for Cinematic Studio. Independent learning tool; not an official xAI product.*
+*Studio Academy v3.11.4 — educational companion for Cinematic Studio. Independent learning tool; not an official xAI product.*

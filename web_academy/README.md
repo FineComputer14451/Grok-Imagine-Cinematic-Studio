@@ -44,7 +44,7 @@ npm run typecheck
 | `/lenses` · `/movement` · `/color` · `/lighting` · `/composition` · `/aspect` | Cinematography track |
 | `/editing` · `/sound` | Post craft |
 | `/agents` · `/pack` · `/workflows` · `/pipeline` | Studio systems |
-| `/erosforge` | **ErosForge** opt-in NSFW pack module (v3.9.2) |
+| `/erosforge` | **ErosForge** opt-in NSFW pack module |
 | `/quiz` · `/graduate` · `/recap` | Assessment + certificate |
 
 ## Notes
@@ -55,4 +55,4 @@ npm run typecheck
 
 ---
 
-**Version**: 3.9.2 · ErosForge module · Studio monorepo companion · August 2026
+**Version**: 3.11.4 · ErosForge module · Studio monorepo companion · September 2026

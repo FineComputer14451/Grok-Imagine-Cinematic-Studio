@@ -4,6 +4,17 @@ All notable changes to Grok Imagine Cinematic Studio will be documented in this 
 
 ## [Unreleased]
 
+### Changed
+- **Studio Academy** — `web_academy/` + `docs/academy/` pin **v3.11.4**: grok-4.6 stack, 64 skills, 25-core roster (DNA Extractor in, ErosForge opt-in), Image 2.0 hero (`quality=medium`), Video 1.0/1.5 (no Video 2.0), SpaceXAI AUP on ErosForge module.
+- **Academy graduate gate** — quiz pass **9/13** (~70%; was 7 after the quiz grew from 10). Wrong options no longer leak the grok-4.6 / Image 2.0 answers.
+- **Academy Integration API** — `/docs` lists the official Files + Imagine REST surface: `GET/POST /v1/files`, `GET/DELETE /v1/files/{id}`, `POST /v1/images/generations`, `POST /v1/images/edits` (JSON `image` / `images[]` + `file_id`), `POST /v1/videos/generations`, `GET /v1/videos/{request_id}` (status `done`, not `completed`).
+- **Imagine surface catalog** — `imagine_surface_catalog()` REST rows include Files CRUD and `GET /v1/videos/{request_id}` (poll).
+
+### Added
+- **Files CLI** — `cinematic-studio files upload|list|get|delete` talks to `GET/POST /v1/files` and `GET/DELETE /v1/files/{id}`. Multipart upload encodes `expires_after` before `file` (max 50 MB). Dry-run when `XAI_API_KEY` is unset. Delete requires `--yes`. Printed `file_id` plugs into `imagine submit … --file-id`.
+- **Files ActionSpec** — `files_list` / `files_get` / `files_upload` / `files_delete` in `studio_core` (TUI launcher+cockpit, NiceGUI Imagine Files tab with drop-to-`artifacts/files_inbox`, React Imagine/Tools). Upload/delete stay confirm-gated. Same allowlist as other execute_action paths.
+- **Streamlit Files tab** — Imagine → Files uses the same ActionSpec execute path (uploader → `artifacts/files_inbox` → `files_upload`). Job-queue submit forwards `--file-id` (skips URL when set). Tools quick actions include Files list.
+
 ## [3.11.4] - 2026-09-04
 
 ### Changed

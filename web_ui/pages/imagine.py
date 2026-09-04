@@ -6,6 +6,89 @@ import streamlit as st
 
 from lib import imagine_runtime as ir
 from lib import runtime as rt
+from files_client import FilesAPIError, save_inbox_file  # noqa: E402 — after runtime path setup
+
+
+def _show_action_result(result: dict) -> None:
+    argv = " ".join(result.get("argv") or [])
+    if result.get("ok"):
+        st.success(f"OK · `{argv}`")
+    else:
+        st.error(f"Failed · exit {result.get('returncode')} · `{argv}`")
+    st.code(result.get("output") or result.get("stderr") or "(no output)", language="text")
+
+
+def _render_files_tab(*, dry: bool) -> None:
+    st.subheader("xAI Files API")
+    st.caption(
+        "ActionSpec `files_list` / `files_get` / `files_upload` / `files_delete` "
+        "(same catalog as TUI / NiceGUI). Upload prints a file_id for Imagine `--file-id`."
+    )
+    if st.button("Refresh file list", key="files_list_btn"):
+        st.session_state["_files_list"] = rt.execute_registered("files_list")
+    listed = st.session_state.get("_files_list")
+    if listed:
+        _show_action_result(listed)
+
+    st.markdown("**Get metadata**")
+    get_id = st.text_input("file_id", key="files_get_id", placeholder="file_…")
+    if st.button("Get file", key="files_get_btn"):
+        if not (get_id or "").strip():
+            st.warning("Enter a file_id")
+        else:
+            _show_action_result(
+                rt.execute_registered("files_get", {"file_id": get_id.strip()})
+            )
+
+    st.markdown("**Upload plate**")
+    dropped = st.file_uploader(
+        "Drop image or short video (max 50 MB)",
+        type=["png", "jpg", "jpeg", "webp", "gif", "mp4"],
+        key="files_upload_bytes",
+    )
+    expires = st.number_input(
+        "TTL seconds (0 = no expiry)",
+        min_value=0,
+        max_value=2_592_000,
+        value=0,
+        step=3600,
+        key="files_upload_ttl",
+    )
+    force_dry = st.checkbox("Dry-run upload", value=dry, key="files_upload_dry")
+    if st.button("Upload to Files API", width="stretch", key="files_upload_btn"):
+        if dropped is None:
+            st.warning("Choose a file first")
+        else:
+            try:
+                dest = save_inbox_file(dropped.name, dropped.getvalue())
+            except (FilesAPIError, OSError) as exc:
+                st.error(str(exc))
+            else:
+                answers = {"path": str(dest), "purpose": "assistants"}
+                if int(expires) >= 3600:
+                    answers["expires_after"] = str(int(expires))
+                if force_dry:
+                    answers["dry_run"] = "--dry-run"
+                result = rt.execute_registered("files_upload", answers, timeout=180.0)
+                _show_action_result(result)
+                if result.get("ok"):
+                    st.info(f"Local copy: `{dest}` — copy file_id into Job queue submit.")
+
+    st.markdown("**Delete**")
+    del_id = st.text_input("file_id to delete", key="files_del_id")
+    confirm = st.checkbox("I understand this deletes the stored file", key="files_del_yes")
+    if st.button("Delete file", key="files_del_btn"):
+        if not confirm:
+            st.warning("Tick the confirmation box (ActionSpec still sends --yes).")
+        elif not (del_id or "").strip():
+            st.warning("Enter a file_id")
+        else:
+            _show_action_result(
+                rt.execute_registered(
+                    "files_delete",
+                    {"file_id": del_id.strip(), "yes": "--yes"},
+                )
+            )
 
 
 def render() -> None:
@@ -28,8 +111,16 @@ def render() -> None:
             "Set key in **Settings**, or on Streamlit Cloud use **App settings → Secrets**."
         )
 
-    tab_jobs, tab_sfw, tab_execute, tab_refs, tab_run, tab_delivery = st.tabs(
-        ["Job queue", "SFW plan", "Batch execute", "Reference plates", "Sequence run", "Delivery"]
+    tab_jobs, tab_files, tab_sfw, tab_execute, tab_refs, tab_run, tab_delivery = st.tabs(
+        [
+            "Job queue",
+            "Files",
+            "SFW plan",
+            "Batch execute",
+            "Reference plates",
+            "Sequence run",
+            "Delivery",
+        ]
     )
 
     with tab_jobs:
@@ -69,6 +160,7 @@ def render() -> None:
             )
             prompt = st.text_area("Prompt", placeholder="Cinematic wide shot, golden hour...")
             image_url = st.text_input("Image or video URL (edit / i2v / extend)", value="")
+            file_id = st.text_input("Files API file_id (preferred over URL when set)", value="")
             duration = st.slider("Video duration (s)", 4, 15, 10)
             force_dry = st.checkbox("Force dry-run", value=dry)
             if st.form_submit_button("Submit job", width="stretch"):
@@ -80,6 +172,7 @@ def render() -> None:
                             "image_model" if job_type in ("image", "image_edit") else "video_model"
                         ),
                         image_url=image_url or None,
+                        file_id=file_id or None,
                         duration=duration,
                         dry_run=force_dry,
                     )
@@ -90,6 +183,9 @@ def render() -> None:
                     st.code(out or "(no output)")
                 else:
                     st.warning("Prompt required.")
+
+    with tab_files:
+        _render_files_tab(dry=dry)
 
     with tab_sfw:
         st.subheader("SFW batch planner")

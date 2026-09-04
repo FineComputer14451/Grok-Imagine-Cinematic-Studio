@@ -51,7 +51,7 @@ cinematic-studio web-react                            # Terminal B → :5173
 | `/production` | status · validate · stack · doctor · models · bible · handoff |
 | `/dna` | list · init · lock · show · handoff |
 | `/sequences` | list · init · add-clip · show · handoff · quota estimate |
-| `/imagine` | jobs · bridge · handoffs |
+| `/imagine` | jobs · Files API · bridge · handoffs |
 | `/quota` | dashboard · sync · budget · estimate |
 
 ### React (`cinematic-studio web-react`)
@@ -61,7 +61,7 @@ cinematic-studio web-react                            # Terminal B → :5173
 | `/` | Dashboard (compact / ops / full) |
 | `/production` … `/quota` | ActionSpec cockpit (NiceGUI parity) |
 | `/bible` | Guided Production Bible (Streamlit/CLI stages; HTTP, no `--wizard`) |
-| `/tools` | Models/health, handoff, bridge, wave-a, Role Cards, roster |
+| `/tools` | Models/health, Files list, handoff, bridge, wave-a, Role Cards, roster |
 | `/settings` | localStorage prefs · API key presence · NSFW opt-in |
 | `/nsfw` | Opt-in batch inventory only (live plan/spend stays Streamlit/CLI) |
 
@@ -69,7 +69,7 @@ cinematic-studio web-react                            # Terminal B → :5173
 
 | Need | Prefer |
 |------|--------|
-| Live Imagine batch / Streamlit Cloud | **Streamlit** |
+| Live Imagine batch / Streamlit Cloud | **Streamlit** (Imagine → Files tab for `file_id`) |
 | Thin ActionSpec cockpit, Python-only | **NiceGUI** |
 | SPA + guided Bible over HTTP / custom UI fork base | **React** + **API** |
 | SSH / no browser | **TUI** (`cinematic-studio ui`) |

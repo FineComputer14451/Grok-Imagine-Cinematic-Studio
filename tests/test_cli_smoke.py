@@ -13,6 +13,7 @@ def test_main_help() -> None:
     assert "dna" in result.stdout
     assert "sequence" in result.stdout
     assert "quota" in result.stdout
+    assert "files" in result.stdout
     assert "dashboard" in result.stdout
     assert "memory" in result.stdout
     assert "ui" in result.stdout
@@ -56,7 +57,19 @@ def test_status_and_stack_show_grok_46() -> None:
     assert "grok-4.6" in models_stack.stdout
 
 def test_subcommand_groups() -> None:
-    for group in ("dna", "sequence", "quota", "models", "nsfw", "sfw", "imagine", "animatic", "memory", "plugin"):
+    for group in (
+        "dna",
+        "sequence",
+        "quota",
+        "models",
+        "nsfw",
+        "sfw",
+        "imagine",
+        "files",
+        "animatic",
+        "memory",
+        "plugin",
+    ):
         result = run_cli(group, "--help")
         assert result.returncode == 0, result.stderr
 

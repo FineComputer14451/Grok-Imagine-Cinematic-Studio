@@ -47,8 +47,12 @@ Aliases: `2.0` / `image-2.0` → Image 2.0. Video slug `2.0` is **not** a produc
 | Video edit | `POST /videos/edits` | `prompt` + `video`; input ≤ 8.7s |
 | Video extend | `POST /videos/extensions` | `prompt` + `video` |
 | Poll | `GET /videos/{request_id}` | `pending` / `done` / `failed` / `expired` |
+| Files list | `GET /files` | paginated `data` + `pagination_token` |
+| Files get | `GET /files/{id}` | metadata; 404 if deleted/expired |
+| Files upload | `POST /files` | multipart; `expires_after` **before** `file`; max 50 MB → `file_id` |
+| Files delete | `DELETE /files/{id}` | `{ deleted: true }` |
 
-`image` + `reference_images` in one request is a **400**.
+`image` + `reference_images` in one request is a **400**. Imagine inputs accept public URL, data URI, or `file_id` from Files.
 
 CLI: `cinematic-studio imagine submit image|image_edit|video|video_edit|video_extend|reference_to_video`
 

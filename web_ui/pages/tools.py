@@ -39,7 +39,7 @@ def render() -> None:
         "Runs via `studio_core.services.execute` (same catalog as TUI / NiceGUI). "
         "No free-form argv."
     )
-    a1, a2, a3, a4 = st.columns(4)
+    a1, a2, a3, a4, a5 = st.columns(5)
     with a1:
         if st.button("Status", width="stretch", key="tools_core_status"):
             st.session_state["_tools_core_out"] = rt.execute_registered("status")
@@ -52,6 +52,9 @@ def render() -> None:
     with a4:
         if st.button("Doctor quick", width="stretch", key="tools_core_doctor"):
             st.session_state["_tools_core_out"] = rt.execute_registered("doctor_quick")
+    with a5:
+        if st.button("Files list", width="stretch", key="tools_core_files"):
+            st.session_state["_tools_core_out"] = rt.execute_registered("files_list")
     core_out = st.session_state.get("_tools_core_out")
     if core_out:
         if core_out.get("ok"):

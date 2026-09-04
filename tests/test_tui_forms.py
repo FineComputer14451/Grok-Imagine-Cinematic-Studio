@@ -34,6 +34,10 @@ def test_cockpit_order_and_ids() -> None:
         "sequence_deliver_dry",
         "wave_a_briefs",
         "imagine_bridge",
+        "files_list",
+        "files_get",
+        "files_upload",
+        "files_delete",
         "handoff_validate",
         "doctor_quick",
         "models_verify",
@@ -59,6 +63,8 @@ def test_cockpit_order_and_ids() -> None:
         "sequence_add_clip",
         "sequence_handoff",
         "quota_budget",
+        "files_upload",
+        "files_delete",
     ):
         assert COCKPIT_WORKFLOWS[wid].needs_confirm is True
         assert COCKPIT_WORKFLOWS[wid].fields
@@ -238,6 +244,15 @@ def test_no_forbidden_tokens_in_any_happy_path() -> None:
         "stack": {},
         "dna_show": {"name": "N", "mode": ""},
         "sequence_show": {"name": "S"},
+        "files_list": {},
+        "files_get": {"file_id": "file_abc"},
+        "files_upload": {
+            "path": "plate.png",
+            "expires_after": "86400",
+            "purpose": "assistants",
+            "dry_run": "--dry-run",
+        },
+        "files_delete": {"file_id": "file_abc", "yes": "--yes"},
     }
     for wid, ans in samples.items():
         assert validate_answers(wid, ans) == []

@@ -42,6 +42,7 @@ def test_catalog_includes_required_commands() -> None:
         "dna list",
         "sequence list",
         "imagine list",
+        "files list",
         "plugin list",
     ):
         assert required in argvs

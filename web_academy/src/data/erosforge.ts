@@ -50,7 +50,7 @@ export type QuizItem = {
 };
 
 export const EROSFORGE_VERSION = "4.5";
-export const ACADEMY_MODULE_VERSION = "3.9.2";
+export const ACADEMY_MODULE_VERSION = "3.11.4";
 
 export const EROSFORGE_TAGLINE =
   "Opt-in artistic intimacy direction — consent frames, physics, identity lock, and chain QA for R-rated cinematic work.";
@@ -62,6 +62,13 @@ export const PROTOCOLS: Protocol[] = [
     requirement:
       "Never generate intimate content without explicit user activation (ACTIVATE EROSFORGE).",
     why: "Keeps the studio SFW by default. ErosForge is a satellite pack — load only when the production needs it.",
+  },
+  {
+    id: "spacexai-aup",
+    name: "SPACEXAI_AUP",
+    requirement:
+      "Fail-closed SpaceXAI AUP: CSAM always blocked; intimate work needs `nsfw attest` (18+ / imaginary-adult / no-real-person / R-rated cap); no intimate + still-ref; 403/429 no region hop.",
+    why: "Academy never generates intimate media. Planning packets and studio spend both fail closed without attestation.",
   },
   {
     id: "erosforge-state",

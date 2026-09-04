@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { STUDIO_ACTIVATION } from "@/data/studio";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/bible")({
@@ -126,7 +127,7 @@ qa_threshold: identity-weighted Go/No-Go
 }
 
 function buildActivation(bible: string, title: string) {
-  return `Activate Grok Imagine Cinematic Studio v3.9.1
+  return `${STUDIO_ACTIVATION}
 ACTIVATE STUDIO_DIRECTOR
 ACTIVATE MEGA_PRODUCTION_ARCHITECT
 ACTIVATE DOP

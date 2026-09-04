@@ -52,6 +52,10 @@ def test_single_registry_covers_both_surfaces() -> None:
     assert "handoff_validate" in launcher and "handoff_validate" in cockpit
     assert ACTIONS["handoff_validate"].base_argv == ("handoff", "validate")
     assert ACTIONS["handoff_validate"].has_form
+    assert "files_list" in launcher and "files_list" in cockpit
+    assert ACTIONS["files_list"].base_argv == ("files", "list")
+    assert ACTIONS["files_upload"].needs_confirm is True
+    assert "cockpit" in ACTIONS["files_delete"].surfaces
 
 
 def test_static_allowlist_is_fieldless_only() -> None:

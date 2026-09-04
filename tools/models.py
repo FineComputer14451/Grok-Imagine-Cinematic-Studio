@@ -492,7 +492,15 @@ IMAGINE_AGENT_SURFACES: tuple[dict[str, Any], ...] = (
         "id": "xai_api",
         "letter": "D",
         "label": "xAI Imagine REST API",
-        "tools": ("images/generations", "images/edits", "videos/generations", "videos/edits", "videos/extensions"),
+        "tools": (
+            "files",
+            "images/generations",
+            "images/edits",
+            "videos/generations",
+            "videos/{request_id}",
+            "videos/edits",
+            "videos/extensions",
+        ),
     },
     {
         "id": "xai_responses_tool",
@@ -505,11 +513,16 @@ IMAGINE_AGENT_SURFACES: tuple[dict[str, Any], ...] = (
 )
 
 IMAGINE_REST_ENDPOINTS: tuple[dict[str, str], ...] = (
+    {"mode": "files_list", "method": "GET", "path": "/v1/files"},
+    {"mode": "files_get", "method": "GET", "path": "/v1/files/{id}"},
+    {"mode": "files_upload", "method": "POST", "path": "/v1/files"},
+    {"mode": "files_delete", "method": "DELETE", "path": "/v1/files/{id}"},
     {"mode": "image_prompt", "method": "POST", "path": "/v1/images/generations"},
     {"mode": "image_edit", "method": "POST", "path": "/v1/images/edits"},
     {"mode": "video_prompt", "method": "POST", "path": "/v1/videos/generations"},
     {"mode": "image_to_video", "method": "POST", "path": "/v1/videos/generations"},
     {"mode": "reference_to_video", "method": "POST", "path": "/v1/videos/generations"},
+    {"mode": "video_poll", "method": "GET", "path": "/v1/videos/{request_id}"},
     {"mode": "video_edit", "method": "POST", "path": "/v1/videos/edits"},
     {"mode": "video_extend", "method": "POST", "path": "/v1/videos/extensions"},
 )

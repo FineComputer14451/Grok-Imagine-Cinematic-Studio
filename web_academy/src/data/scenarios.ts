@@ -1,3 +1,5 @@
+import { STUDIO_ACTIVATION } from "./studio";
+
 export type Scenario = {
   id: string;
   title: string;
@@ -23,7 +25,7 @@ export const SCENARIOS: Scenario[] = [
     minutes: "5–10 min",
     genre: "Any · stills",
     deliverable: "1 paste-ready Imagine still + negatives",
-    budgetHint: "~$0.02–$0.07 (1 standard or quality still)",
+    budgetHint: "~$0.02 Image 1.0 iteration · Image 2.0 (`quality=medium`) for hero",
     agents: ["Imagine Prompt Master"],
     steps: [
       "Open Prompt lab and pick a preset (or write your own fields).",
@@ -56,7 +58,7 @@ Output format: paste-ready Imagine packet only.`,
       "Load Neon courier DNA (DNA page) and copy inject.",
       "Activate Director → lock tone, wardrobe, 3-shot list.",
       "Prompt Master: one packet per shot with DNA inject on top.",
-      "Generate stills; only promote hero plates to quality model.",
+      "Generate stills; only promote hero plates to Image 2.0 (`quality=medium`).",
     ],
     activation: `ACTIVATE STUDIO_DIRECTOR
 Then: ACTIVATE IMAGINE_PROMPT_MASTER
@@ -121,7 +123,7 @@ Handoff must pass identity gate before any video spend.`,
     dnaPreset: "noir",
     steps: [
       "Generate standard stills with DNA until plate is locked.",
-      "Optional: quality still for hero plate only.",
+      "Optional: Image 2.0 (`quality=medium`) still for hero plate only.",
       "Handoff: plate_status locked + motion vector (slow push-in).",
       "Generate 6s video; QA Go before any extend.",
     ],
@@ -198,7 +200,7 @@ On No-Go: repair plan only — do not rewrite Production Bible.`,
       "Quota Optimizer: hero vs draft still order before any video.",
       "Trailer Director: 15–30s beat sheet using approved plates only.",
     ],
-    activation: `Activate Grok Imagine Cinematic Studio v3.9.1
+    activation: `${STUDIO_ACTIVATION}
 ACTIVATE STUDIO_DIRECTOR
 ACTIVATE MEGA_PRODUCTION_ARCHITECT
 ACTIVATE DOP

@@ -109,6 +109,15 @@ def test_image_2_0_pricing_tiers() -> None:
     assert any(s["id"] == "xai_responses_tool" for s in catalog["agent_mode_surfaces"])
     assert "no grok-imagine-video-2.0" in catalog["note"]
     assert "retires" in catalog["note"]
+    rest_paths = {(row["method"], row["path"]) for row in catalog["rest_endpoints"]}
+    assert ("GET", "/v1/files") in rest_paths
+    assert ("GET", "/v1/files/{id}") in rest_paths
+    assert ("POST", "/v1/files") in rest_paths
+    assert ("DELETE", "/v1/files/{id}") in rest_paths
+    assert ("POST", "/v1/images/generations") in rest_paths
+    assert ("POST", "/v1/images/edits") in rest_paths
+    assert ("POST", "/v1/videos/generations") in rest_paths
+    assert ("GET", "/v1/videos/{request_id}") in rest_paths
 
 
 def test_pricing_table_matches_registry() -> None:

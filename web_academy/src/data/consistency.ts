@@ -72,7 +72,7 @@ export const ALGORITHMS: Algorithm[] = [
     outputs: ["plate_status: locked", "hero plate URL/ref"],
     steps: [
       "Iterate cheap standard stills with DNA inject.",
-      "Promote one plate to locked (optionally quality model).",
+      "Promote one plate to locked (optionally Image 2.0 quality=medium).",
       "Handoff sets plate_status=locked and motion_vector.",
       "Video packets rejected while plate is draft.",
     ],
