@@ -59,6 +59,22 @@ const bibleFields: FormFieldDto[] = [
     default: 'grok-imagine-video',
   },
   {
+    key: 'image_model',
+    label: 'Image',
+    required: false,
+    coerce: null,
+    choices: null,
+    default: 'grok-imagine-image',
+  },
+  {
+    key: 'director',
+    label: 'Director',
+    required: false,
+    coerce: null,
+    choices: null,
+    default: '',
+  },
+  {
     key: 'output',
     label: 'Output',
     required: false,
@@ -78,10 +94,20 @@ assert(
   defaults.video_model === 'grok-imagine-video-1.5',
   `video_model ${defaults.video_model}`,
 )
+assert(
+  defaults.image_model === 'grok-imagine-image-2.0',
+  `image_model ${defaults.image_model}`,
+)
+assert(
+  defaults.director === 'Denis Villeneuve',
+  `director ${defaults.director}`,
+)
 assert(defaults.title === '', 'title must stay empty (required user input)')
 assert(defaults.output === 'production_bible.json', 'output not mapped')
 assert(applied.includes('genre'), 'genre applied')
 assert(applied.includes('video_model'), 'video applied')
+assert(applied.includes('image_model'), 'image applied')
+assert(applied.includes('director'), 'director applied')
 assert(actionUsesSettingsPrefs(bibleFields), 'bible uses prefs')
 assert('tier' in FIELD_PREF_MAP && FIELD_PREF_MAP.tier === 'quota_tier', 'tier map')
 
