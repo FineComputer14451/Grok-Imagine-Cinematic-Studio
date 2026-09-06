@@ -33,7 +33,12 @@ export type PrefsApplyResult = {
 /**
  * Build form defaultValues:
  * ActionSpec default → Settings prefs → Bible handoff seeds (highest priority).
+ * Settings duration is skipped for sequence_add_clip (clip length ≠ production total).
+ * Saving Settings clears overlapping bible handoff seeds (see clearHandoffSettingsSeeds).
  */
+/** ActionSpecs where Settings production duration must not seed the field. */
+export const SKIP_SETTINGS_DURATION_ACTIONS = new Set(['sequence_add_clip'])
+
 export function applyPrefsToFieldDefaults(
   fields: FormFieldDto[],
   prefs: SettingsPrefs = loadSettingsPrefs(),
@@ -42,6 +47,8 @@ export function applyPrefsToFieldDefaults(
   const defaults: Record<string, string> = {}
   const applied: string[] = []
   const handoff = actionId ? handoffSeedsForAction(actionId) : {}
+  const skipDuration =
+    actionId != null && SKIP_SETTINGS_DURATION_ACTIONS.has(actionId)
 
   for (const f of fields) {
     let value = f.default ?? ''
@@ -49,10 +56,13 @@ export function applyPrefsToFieldDefaults(
 
     const prefKey = FIELD_PREF_MAP[f.key]
     if (prefKey != null) {
-      const raw = prefs[prefKey]
-      if (raw !== '' && raw != null && raw !== false) {
-        value = String(raw)
-        source = 'settings'
+      const skipThis = skipDuration && f.key === 'duration'
+      if (!skipThis) {
+        const raw = prefs[prefKey]
+        if (raw !== '' && raw != null && raw !== false) {
+          value = String(raw)
+          source = 'settings'
+        }
       }
     }
 
