@@ -143,4 +143,32 @@ const seq = applyPrefsToFieldDefaults(seqFields, prefs, 'sequence_init')
 assert(seq.defaults.duration === '90', `duration from settings ${seq.defaults.duration}`)
 assert(seq.defaults.genre === 'Cyberpunk', `genre ${seq.defaults.genre}`)
 
+
+// Production duration must not seed clip duration
+const clipFields: FormFieldDto[] = [
+  { key: 'name', label: 'Name', required: true, coerce: null, choices: null, default: '' },
+  {
+    key: 'duration',
+    label: 'Duration',
+    required: false,
+    coerce: 'int',
+    choices: null,
+    default: '10',
+  },
+  {
+    key: 'prompt',
+    label: 'Prompt',
+    required: false,
+    coerce: null,
+    choices: null,
+    default: '',
+  },
+]
+const clip = applyPrefsToFieldDefaults(clipFields, prefs, 'sequence_add_clip')
+assert(clip.defaults.duration === '10', `clip duration must stay 10, got ${clip.defaults.duration}`)
+assert(!clip.applied.includes('duration'), 'clip duration must not be prefs-applied')
+
+const init = applyPrefsToFieldDefaults(seqFields, prefs, 'sequence_init')
+assert(init.defaults.duration === '90', `sequence_init duration from settings ${init.defaults.duration}`)
+
 console.log('prefsToAnswers.test.ts OK')

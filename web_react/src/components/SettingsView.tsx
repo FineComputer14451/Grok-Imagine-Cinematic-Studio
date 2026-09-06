@@ -8,6 +8,7 @@ import {
   fetchProductionOptions,
 } from '../api/client'
 import { queryKeys } from '../api/queryKeys'
+import { clearHandoffSettingsSeeds } from '../lib/bibleHandoff'
 import {
   FALLBACK_DEFAULTS,
   fourAupFlags,
@@ -103,6 +104,7 @@ export function SettingsView() {
     saveSettingsPrefs(next)
     setPrefs(next)
     setNsfwOptIn(next.nsfw_opt_in)
+    clearHandoffSettingsSeeds()
     notifyPrefsUpdated()
     setSavedFlash(true)
     window.setTimeout(() => setSavedFlash(false), 2000)

@@ -162,6 +162,55 @@ export function clearBibleHandoff(): void {
   window.dispatchEvent(new CustomEvent(BIBLE_HANDOFF_EVENT, { detail: null }))
 }
 
+
+/** Settings-mapped field keys that bible handoff may also seed. */
+const HANDOFF_SETTINGS_FIELD_KEYS = new Set([
+  'genre',
+  'chat_model',
+  'video_model',
+  'image_model',
+  'director',
+  'duration',
+  'tier',
+  'complexity',
+  'quota_tier',
+  'reasoning_level',
+  'prompt_cache_key',
+  'region',
+  'imagine_region',
+])
+
+/**
+ * After Settings save/reset, drop overlapping seeds so prefs win.
+ * Keeps action-specific seeds (name, core, prompt, …).
+ */
+export function clearHandoffSettingsSeeds(): boolean {
+  const h = loadBibleHandoff()
+  if (!h) return false
+  let changed = false
+  const nextSeeds: Record<string, Record<string, string>> = {}
+  for (const [actionId, seeds] of Object.entries(h.seeds || {})) {
+    const kept: Record<string, string> = {}
+    for (const [k, v] of Object.entries(seeds)) {
+      if (HANDOFF_SETTINGS_FIELD_KEYS.has(k)) {
+        changed = true
+        continue
+      }
+      kept[k] = v
+    }
+    nextSeeds[actionId] = kept
+  }
+  if (!changed) return false
+  // Also clear top-level genre/duration/models so banners stay honest about prefs owning those.
+  const next: BibleHandoff = {
+    ...h,
+    seeds: nextSeeds,
+  }
+  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+  window.dispatchEvent(new CustomEvent(BIBLE_HANDOFF_EVENT, { detail: next }))
+  return true
+}
+
 /** Field seeds for an ActionSpec from the latest bible handoff (if any). */
 export function handoffSeedsForAction(actionId: string): Record<string, string> {
   const h = loadBibleHandoff()
