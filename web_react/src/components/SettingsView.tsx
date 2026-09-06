@@ -11,6 +11,7 @@ import { queryKeys } from '../api/queryKeys'
 import {
   FALLBACK_DEFAULTS,
   fourAupFlags,
+  liveChatModel,
   liveImageModel,
   loadSettingsPrefs,
   notifyPrefsUpdated,
@@ -110,13 +111,13 @@ export function SettingsView() {
 
   function handleReset() {
     const next = { ...FALLBACK_DEFAULTS, ...(opts?.defaults as Partial<SettingsPrefs>) }
-    setPrefs({
+    const resetPrefs: SettingsPrefs = {
       ...FALLBACK_DEFAULTS,
       genre: String(next.genre ?? FALLBACK_DEFAULTS.genre),
       director: String(next.director ?? FALLBACK_DEFAULTS.director),
       video_model: String(next.video_model ?? FALLBACK_DEFAULTS.video_model),
-      image_model: String(next.image_model ?? FALLBACK_DEFAULTS.image_model),
-      chat_model: String(next.chat_model ?? FALLBACK_DEFAULTS.chat_model),
+      image_model: liveImageModel(String(next.image_model ?? FALLBACK_DEFAULTS.image_model)),
+      chat_model: liveChatModel(String(next.chat_model ?? FALLBACK_DEFAULTS.chat_model)),
       duration: Number(next.duration ?? FALLBACK_DEFAULTS.duration),
       complexity: String(next.complexity ?? FALLBACK_DEFAULTS.complexity),
       fast_mode: Boolean(next.fast_mode),
@@ -130,7 +131,11 @@ export function SettingsView() {
       reasoning_level: String(next.reasoning_level ?? FALLBACK_DEFAULTS.reasoning_level),
       prompt_cache_key: String(next.prompt_cache_key ?? ''),
       dashboard_view_mode: String(next.dashboard_view_mode ?? 'ops'),
-    })
+    }
+    setPrefs(resetPrefs)
+    saveSettingsPrefs(resetPrefs)
+    setNsfwOptIn(false)
+    notifyPrefsUpdated()
   }
 
   const stack = dashQ.data?.studio ?? dashQ.data?.model_stack
@@ -332,7 +337,8 @@ export function SettingsView() {
         <p className="muted small">
           Saved prefs pre-fill matching ActionSpec fields on Production / DNA / Sequences /
           Quota / Tools (e.g. <code>genre</code>, <code>chat_model</code>,{' '}
-          <code>video_model</code>, <code>duration</code>, <code>tier</code>). Re-open a form
+          <code>video_model</code>, <code>image_model</code>, <code>director</code>,{' '}
+          <code>duration</code>, <code>tier</code>). Re-open a form
           tab after save to pick up new defaults. Never invents free-form argv.
         </p>
       </section>
