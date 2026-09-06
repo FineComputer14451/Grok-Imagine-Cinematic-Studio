@@ -18,6 +18,7 @@
     "character-dna"
   ],
   "skills": [
-    ".grok/skills/grok-imagine-cinematic-studio"
+    ".grok/skills/grok-imagine-cinematic-studio",
+    ".grok/skills/imagine-model-overrides"
   ]
 }

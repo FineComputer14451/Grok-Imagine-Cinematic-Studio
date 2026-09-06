@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.11.5] — 2026-09-06
+
+### Added
+- Skill `imagine-model-overrides` — select/pin Imagine image+video models for grok.com/imagine (Quality/Fast, Image 2.0/1.0, Video 1.5/1.0) and emit `model_stack` + paste steps + `VIDEO_PIPELINE_SPEC`. Activate with `ACTIVATE IMAGINE_MODEL_OVERRIDES`.
+
+
 All notable changes to Grok Imagine Cinematic Studio will be documented in this file.
 
 ## [Unreleased]
