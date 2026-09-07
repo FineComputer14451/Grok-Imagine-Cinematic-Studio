@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "project": "onboarding-demo",
+  "sample": true,
+  "model_pin": "hero",
+  "image_model": "grok-imagine-image-2.0",
+  "characters": [
+    {
+      "slug": "mara-chen",
+      "dna": "characters/mara-chen/dna.json",
+      "heroes": [
+        "char_mara_chen_hero_front",
+        "char_mara_chen_hero_three_quarter",
+        "char_mara_chen_hero_full"
+      ]
+    },
+    {
+      "slug": "kai-reed",
+      "dna": "characters/kai-reed/dna.json",
+      "heroes": [
+        "char_kai_reed_hero_front",
+        "char_kai_reed_hero_three_quarter"
+      ]
+    }
+  ],
+  "props": [
+    {
+      "slug": "pulse-compass",
+      "heroes": [
+        "prop_pulse_compass_hero"
+      ],
+      "details": [
+        "prop_pulse_compass_detail_face"
+      ]
+    }
+  ],
+  "locations": [
+    {
+      "slug": "neon-pier",
+      "establish": "loc_neon_pier_establish",
+      "coverage": [
+        "loc_neon_pier_reverse"
+      ]
+    }
+  ]
+}

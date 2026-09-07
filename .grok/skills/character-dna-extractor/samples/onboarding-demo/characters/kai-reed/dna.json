@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "character_name": "Kai Reed",
+  "slug": "kai-reed",
+  "version": 1,
+  "extracted_at": "2026-09-07T09:59:44+00:00",
+  "source": "sample-onboarding-packet",
+  "core_identity": "Mixed heritage man early 30s, lanky mechanic / fixer \u2014 dry humor, grease under nails, loyal to Mara's crew.",
+  "facial_dna": "Long rectangular face, light olive skin, hazel-green eyes, broken-then-healed nose bridge, short stubble, thin scar through right eyebrow.",
+  "hair_grooming": "Close-cropped dark brown hair, slightly longer on top; occasional grease sheen at temples.",
+  "clothing_style": "Olive mechanic coveralls tied at waist over faded navy tee, tool roll on belt, fingerless gloves optional.",
+  "movement_posture": "Long strides; fidgets with tools when thinking; leans on one hip.",
+  "emotional_baseline": "Wry detachment default; protective snap when crew threatened.",
+  "motion_dna": "Shoulders roll before standing; gloves flex; coveralls sway at hips when walking.",
+  "key_consistency_anchors": [
+    "Scar through right eyebrow",
+    "Broken-nose bridge silhouette",
+    "Olive coveralls tied at waist",
+    "Hazel-green eyes + short stubble"
+  ],
+  "reference_image_ids": [
+    "char_kai_reed_hero_front",
+    "char_kai_reed_hero_three_quarter"
+  ],
+  "reference_weights": {
+    "primary_ref_weight": 0.85,
+    "secondary_ref_weight": 0.15
+  },
+  "cinematic_viability_score": 8.5,
+  "nsfw_notes": null,
+  "subject_kind": "human",
+  "identity_lock_status": "pending",
+  "studio_agent_version": "v3.9.0-sample",
+  "video_pipeline_spec": {
+    "primary": "grok-imagine-video-1.5",
+    "fallback": "grok-imagine-video",
+    "note": "sample packet \u2014 replace refs with real Quality/2.0 plates before lock"
+  },
+  "sample": true,
+  "sample_note": "Onboarding demo only \u2014 not production identity."
+}

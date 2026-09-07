@@ -9,12 +9,12 @@ description: >-
 when-to-use: >-
   ACTIVATE CHARACTERS_PROPS_LOCATIONS_REFS; auto-create character prop location
   reference images; generate ref plates; identity lock board; hero stills before i2v
-argument-hint: "[auto|checklist|order|models|board|<project-slug>]"
+argument-hint: "[auto|checklist|order|models|board|check|<project-slug>]"
 user-invocable: true
 metadata:
   author: FineComputer14451
   short-description: Auto-create Characters / Props / Locations reference images
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Characters / Props / Locations — Auto Reference Images
@@ -25,8 +25,8 @@ Canonical skill to **automatically create** reusable Imagine reference plates
 Begin: **"Ref workflow locked — auto-creating plates…"**  
 Default mode: **generate** (not explanation-only).
 
-Args: `auto` (default) · `checklist` · `order` · `models` · `board` · `<project-slug>`  
-`explain` or `checklist-only` = docs only, no generation.
+Args: `auto` (default) · `checklist` · `order` · `models` · `board` · `check` · `<project-slug>`  
+`explain` or `checklist-only` = docs only, no generation. `check` / `board` = post-board cross-ref check.
 
 ## Activation commands
 
@@ -54,6 +54,8 @@ Supporting files:
 - `references/CHECKLIST.md` — day checklist
 - `references/WORKFLOW.md` — prose workflow
 - `references/NAMING.md` — folder + file naming
+- `references/CROSS_REF_CHECK.md` — post-board consistency check
+- `samples/onboarding-demo/` — demo board + DNA for onboarding
 - `README.md` — install
 
 ## Hard rules
@@ -75,7 +77,8 @@ Run in order. If project / asset lists are missing, ask once for names — then 
 2. **Characters** — for each character: `dna init` → 3–6 plates (front, 3/4, profile, full body ± expression/wardrobe) → pick 1–2 heroes.
 3. **Props** — for each prop: hero + reverse (± detail) on Quality.
 4. **Board** — save under `characters/` · `props/` · `locations/` per `references/NAMING.md`.
-5. **Stop before video** unless user asked for motion.
+5. **Cross-ref check** — run `scripts/cross_ref_check.py` (see `references/CROSS_REF_CHECK.md`). Fix failures before lock/motion.
+6. **Stop before video** unless user asked for motion.
 
 Full plate prompts + counts: `references/GENERATE.md`.
 
@@ -85,8 +88,9 @@ Full plate prompts + counts: `references/GENERATE.md`.
 2. Characters (DNA → plates → hero lock)  
 3. Props (hero + reverse ± detail)  
 4. Board review  
-5. Sequence stills (optional)  
-6. Video (only if asked)
+5. Cross-ref check (`check`)  
+6. Sequence stills (optional)  
+7. Video (only if asked)
 
 ## Model layer (Grok 4.6 + Imagine)
 
@@ -105,10 +109,11 @@ DNA / planning text: Chat **Expert** or API `grok-4.6`.
 ## Ref workflow — auto-create
 - Project: <name>
 - Mode: generate (Image 2.0 / Quality)
-- Phase: locations → characters → props → board
+- Phase: locations → characters → props → board → cross-ref check
 - Assets queued: …
 - Plates written: …
-- Next: board review | sequence stills | video (if asked)
+- Cross-ref: pass | fail (list)
+- Next: fix failures | Identity Lock | sequence stills | video (if asked)
 ```
 
 ## Cross-skills
@@ -119,6 +124,8 @@ DNA / planning text: Chat **Expert** or API `grok-4.6`.
 | Chat modes Auto/Fast/Expert/Heavy/Build | `grok-chat-model-map` |
 | Character DNA extract / inject | `character-dna-extractor` |
 | DNA scaffold (`dna init`) | `character-dna-extractor/scripts/dna_init.py` |
+| Sample DNA packets | `character-dna-extractor/samples/onboarding-demo/` |
+| Post-board consistency | `scripts/cross_ref_check.py` |
 
 ## References
 
@@ -126,3 +133,4 @@ DNA / planning text: Chat **Expert** or API `grok-4.6`.
 - Workflow detail: `references/WORKFLOW.md`
 - Day checklist: `references/CHECKLIST.md`
 - Naming: `references/NAMING.md`
+- Cross-ref check: `references/CROSS_REF_CHECK.md`

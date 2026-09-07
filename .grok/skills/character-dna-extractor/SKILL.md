@@ -72,6 +72,8 @@ Writes `characters/{slug}/dna.json` + `DNA.md` (schema 1.0, compatible with Stud
 
 Full flags: `references/DNA_INIT.md`. Studio CLI card: `references/dna_cli_init.md`.
 
+**Sample packets (onboarding):** `samples/onboarding-demo/characters/` — Mara Chen + Kai Reed. Copy into your project, then run `characters-props-locations-refs/scripts/cross_ref_check.py`. See `references/SAMPLE_DNA.md`.
+
  Do not paraphrase locked protocols or output structures.
 
 ## Grok Imagine Video Compatibility

@@ -41,3 +41,7 @@ unzip grok-imagine-skills-pack.zip -d ~/.grok/
 | `scripts/dna_inject.py` | Prompt inject blocks (needs Studio `tools/`) |
 
 See `references/DNA_INIT.md` and `references/dna_cli_init.md`.
+
+## Sample DNA packets
+
+See `samples/README.md` — Mara Chen + Kai Reed schema 1.0 packets for onboarding.

@@ -34,6 +34,13 @@
 - [ ] `characters/` `props/` `locations/`
 - [ ] Hero plate + variants + DNA line each
 - [ ] Heroes on Image 2.0
+- [ ] Optional `board/manifest.json` listing heroes / establish
+
+## Post-board cross-ref
+- [ ] `python scripts/cross_ref_check.py .` (or `ACTIVATE … check`)
+- [ ] Zero failures (warnings ok unless `--strict`)
+- [ ] DNA slugs match folders; every `reference_image_ids` plate exists
+- [ ] Sample packets: clear `"sample": true` before lock
 
 ## Motion
 - [ ] Audio motion → Video 1.5

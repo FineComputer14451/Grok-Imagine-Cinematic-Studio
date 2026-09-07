@@ -39,3 +39,7 @@ Full command card: `dna_cli_init.md`
 
 Hero plates: Quality Mode / `grok-imagine-image-2.0` via `ACTIVATE IMAGINE_MODEL_OVERRIDES hero`.
 Chat extract: **Expert** / API `grok-4.6`.
+
+## Sample packets
+
+Copy filled examples from `samples/onboarding-demo/characters/` (`mara-chen`, `kai-reed`) to speed new-project onboarding. Clear `"sample": true` before Identity Lock. After plates exist, run the post-board cross-ref check in `characters-props-locations-refs`.
