@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "character_name": "Mara Chen",
+  "slug": "mara-chen",
+  "library_slug": "mara_chen",
+  "version": 1,
+  "extracted_at": "2026-09-07T10:53:50+00:00",
+  "source": "template-library-mint",
+  "core_identity": "East-Asian woman mid-20s, compact athletic build, tech courier energy \u2014 calm focus under neon rain.",
+  "facial_dna": "Oval face, high cheekbones, warm medium skin, dark brown almond eyes, thin straight brows, small beauty mark left of mouth.",
+  "hair_grooming": "Shoulder-length black hair, blunt bangs, slight wave when wet; usually half-tied with a matte black cord.",
+  "clothing_style": "Worn charcoal courier jacket (asymmetric zip), charcoal tee, utility strap across chest, dark cargo pants, scuffed black boots.",
+  "movement_posture": "Low center of gravity; economical steps; shoulders slightly forward when scanning crowds.",
+  "emotional_baseline": "Quiet competence; soft half-smile when safe; eyes harden when threat appears.",
+  "motion_dna": "Hair fringe moves first in wind; jacket panels lag a half-beat; boots plant firmly before turns.",
+  "key_consistency_anchors": [
+    "Beauty mark left of mouth (always present)",
+    "Blunt bangs + black cord half-tie",
+    "Asymmetric zip courier jacket charcoal",
+    "Warm medium skin + dark almond eyes",
+    "Low center of gravity / economical stance"
+  ],
+  "reference_image_ids": [
+    "char_mara_chen_front",
+    "char_mara_chen_three_quarter",
+    "char_mara_chen_profile",
+    "char_mara_chen_full"
+  ],
+  "identity_lock_status": "pending",
+  "subject_kind": "human"
+}

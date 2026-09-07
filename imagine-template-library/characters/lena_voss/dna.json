@@ -1,0 +1,19 @@
+{
+  "schema": "1.0",
+  "name": "Agent Lena Voss",
+  "slug": "lena_voss",
+  "version": 1,
+  "status": "dna-ready",
+  "core": "woman ~41, sharp cheekbones, tired eyes, lean athletic build, burned-out profiler recognizability",
+  "facial": "deep-set tired eyes, under-eye hollows, angular cheekbones, tight controlled mouth",
+  "hair": "dark, practical, shoulder-length or shorter, neat but lived-in",
+  "wardrobe_lock": "black turtleneck, dark tailored coat, minimal jewelry",
+  "anchors": [
+    "sharp cheekbones + tired eyes",
+    "black turtleneck default",
+    "emotionally flat/controlled face",
+    "desaturated neo-noir grade",
+    "clinical precise framing energy"
+  ],
+  "source": "examples/production_bibles/02_NeoNoir_Thriller_Shadow_Protocol.md"
+}
