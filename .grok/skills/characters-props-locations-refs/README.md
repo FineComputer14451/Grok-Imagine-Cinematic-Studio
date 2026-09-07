@@ -8,7 +8,8 @@ Grok skill: **Characters / Props / Locations** reference-plate workflow for Imag
 mkdir -p ~/.grok/skills
 cp -R characters-props-locations-refs ~/.grok/skills/
 # or:
-tar -xzf characters-props-locations-refs-skill.tar.gz -C ~/.grok/skills/
+unzip characters-props-locations-refs-skill.zip -d ~/.grok/skills/
+# or: tar -xzf characters-props-locations-refs-skill.tar.gz -C ~/.grok/skills/
 ```
 
 In Grok:
