@@ -62,6 +62,7 @@ Interactive learning app + ship checklist for cinematography track beginners:
 |---------|----------|
 | Role Cards & Agent Index | [`references/agents/AGENT_INDEX.md`](../references/agents/AGENT_INDEX.md) |
 | Model Layer | [`references/agents/MODEL_LAYER_v4.5.md`](../references/agents/MODEL_LAYER_v4.5.md) |
+| Imagine models map (Agent Mode) | [`docs/guides/IMAGINE_MODELS_MAP.md`](guides/IMAGINE_MODELS_MAP.md) |
 | Imagine Agent Mode Handoff | [`references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md`](../references/agents/IMAGINE_AGENT_MODE_HANDOFF_v3.7.1.md) |
 | Identity Continuity Protocol | [`references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`](../references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md) |
 | Parallel Brief Protocol | [`references/agents/Parallel_Brief_Protocol.md`](../references/agents/Parallel_Brief_Protocol.md) |

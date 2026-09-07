@@ -60,6 +60,12 @@ CLI: `cinematic-studio imagine submit image|image_edit|video|video_edit|video_ex
 
 ## Agent Mode / operator surfaces
 
+### Consumer Imagine Agent Mode (grok.com/imagine)
+
+Web beta **infinite canvas** (Create Worlds · Short Film · UGC Product Stories · Brand Identity).
+It is a **workflow UI**, not a separate public Imagine API slug. Still pin generations with
+Image 1.0 / 2.0 and Video 1.0 / 1.5 above. One-pager: [`docs/guides/IMAGINE_MODELS_MAP.md`](../../docs/guides/IMAGINE_MODELS_MAP.md).
+
 Studio `target_surface` values for `imagine_agent_mode_handoff`:
 
 | ID | Surface | How generation runs |
