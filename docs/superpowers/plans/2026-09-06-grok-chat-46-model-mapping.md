@@ -23,13 +23,19 @@
 
 ### A. Chat UI modes (consumer)
 
+**Verified live on grok.com: 2026-09-06 (ET)** — picker shows exactly:
+
+`Auto` · `Fast` · `Expert` · `Heavy` · `Build`
+
 | UI mode | Behavior | Likely routing | Notes |
 |---------|----------|----------------|-------|
 | **Auto** | Default router by query complexity | Chooses Fast-like or Expert-like path | Do not assume a single API slug |
 | **Fast** | Low-latency, light answers | Non-/low-reasoning path | Good for facts, short asks |
 | **Expert** | Forced deeper reasoning | Flagship reasoning stack (4.6-era Expert) | Super / Premium+ often required for full access |
 | **Heavy** | Multi-agent / max depth | Heavy / multi-agent stack | SuperGrok Heavy |
-| **Named pin** (when shown) | Force a generation label | e.g. “Grok 4.6” or older 4.x | Rollout / region / tier dependent |
+| **Build** | Coding agent entry from Chat | Grok Build surface (not a chat reasoning depth) | Distinct from Auto/Fast/Expert/Heavy |
+
+No separate “Grok 4.6” named pin was visible in this picker snapshot — 4.6 is the generation behind Chat/Expert (per docs.x.ai), not a fifth depth mode in this UI.
 
 ### B. API / developer IDs (docs.x.ai — not the Chat dropdown)
 
@@ -65,12 +71,12 @@
 
 **Goal:** Replace third-party mode lists with a dated screenshot-backed inventory from grok.com.
 
-- [ ] Open grok.com while logged into the user’s Grok account (or document auth block)
-- [ ] Open the Chat model/mode picker; list every label exactly
-- [ ] Note tier badges / locked items (Heavy, Expert, etc.)
-- [ ] Capture screenshot(s) into PR assets or attach to the plan PR description
-- [ ] Update the Working map table with **Verified (YYYY-MM-DD)** column
-- [ ] Commit: `docs(chat): verify grok.com Chat mode picker labels`
+- [x] Open grok.com Chat model/mode picker (browser verify 2026-09-06)
+- [x] List every label exactly: Auto, Fast, Expert, Heavy, Build
+- [ ] Note tier badges / locked items (Heavy, Expert, etc.) on the user account
+- [x] Capture screenshot (attached in PR / plan assets)
+- [x] Update the Working map table with **Verified (2026-09-06)**
+- [x] Commit: `docs(chat): verify grok.com Chat mode picker labels`
 
 ---
 
