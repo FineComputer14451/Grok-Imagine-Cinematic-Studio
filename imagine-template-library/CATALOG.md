@@ -43,4 +43,4 @@
 | style-edit | elara_voss | Character Elara Voss |
 | style-edit | eldrath_forest | Location Eldrath Forest |
 | photo-video | nexus9_storm | Location Nexus-9 Storm |
-| edit-then-video | mara_neon | Mara Neon Pier Live |
+| photo-edit-video | mara_neon | Mara Neon Pier Live |

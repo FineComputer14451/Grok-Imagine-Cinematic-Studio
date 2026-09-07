@@ -51,7 +51,7 @@ Do **not** move these without updating `tools/studio_paths.py`:
 
 ## Imagine Template Library (SFW packs)
 
-Committed reference packs live in **`imagine-template-library/`** (not the runtime `characters/` DNA bank). Index: `imagine-template-library/CATALOG.md`. Skill pointer: `.grok/skills/grok-imagine-template-library`. Distinct from NSFW `docs/templates/Kink_Specific_Cinematic_Template_Library.md`.
+Committed reference packs live in **`imagine-template-library/`** (not the runtime `characters/` DNA bank). Index: `imagine-template-library/CATALOG.md`. Distinct from NSFW `docs/templates/Kink_Specific_Cinematic_Template_Library.md`.
 
 ## Documentation tree
 
