@@ -69,9 +69,16 @@
 
 
 ## Worlds
-| Slug | Title | Notes |
+| Slug | Title | Style |
 |------|-------|-------|
-| snow_archer | Snow Archer One World | Official Image 2.0 demo board; refs/image-2.0-one-world/ |
+| snow_archer | Snow Archer | Official One World demo |
+| mara_neon | Mara Neon | rainy tech-noir |
+| clara_house | Clara House | aster folk dread |
+| maya_attic | Maya Attic | gerwig warm pastel |
+| jax_midnight | Jax Midnight | nolan wet-night |
+| mira_signal | Mira Signal | clinical horror |
+| thorne_eldrath | Thorne Eldrath | earth mystic gold |
+
 
 ## Official Image 2.0 templates
 Source extract: grok.com/imagine agent-skills + x.ai news Image 2.0
