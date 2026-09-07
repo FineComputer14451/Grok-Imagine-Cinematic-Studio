@@ -1,7 +1,7 @@
 {
   "name": "grok-imagine-cinematic-studio",
-  "version": "3.11.5",
-  "description": "Independent community cinematic production suite v3.11.1 \u2014 25 Role-Card core agents, 65 skills, multi-surface control plane (CLI/TUI/Streamlit/NiceGUI/FastAPI). Grok Imagine Video 1.0/1.5, unified Grok 4.6 cinematic+Build stack, Grok Build \u2265 1.0.5. Not affiliated with or endorsed by xAI.",
+  "version": "3.11.4",
+  "description": "Independent community cinematic production suite v3.11.1 — 25 Role-Card core agents, 65 skills, multi-surface control plane (CLI/TUI/Streamlit/NiceGUI/FastAPI). Grok Imagine Video 1.0/1.5, unified Grok 4.6 cinematic+Build stack, Grok Build ≥ 1.0.5. Not affiliated with or endorsed by xAI.",
   "author": {
     "name": "FineComputer14451",
     "url": "https://github.com/FineComputer14451"
@@ -33,8 +33,10 @@
     ".grok/skills/multi-character-identity-arbiter",
     ".grok/skills/costume-wardrobe-continuity",
     ".grok/skills/imagine-prompt-master",
-    ".grok/skills/imagine-execution-bridge",
+    ".grok/skills/grok-imagine-template-library",
     ".grok/skills/imagine-model-overrides",
+    ".grok/skills/grok-chat-model-map",
+    ".grok/skills/imagine-execution-bridge",
     ".grok/skills/grok-imagine-image-tools",
     ".grok/skills/xai-grok-skill",
     ".grok/skills/handoff-packet-validator",
@@ -53,6 +55,7 @@
     ".grok/skills/ai-image-recreation",
     ".grok/skills/key-art-poster-designer",
     ".grok/skills/reference-asset-curator",
+    ".grok/skills/characters-props-locations-refs",
     ".grok/skills/image-to-video-specialist",
     ".grok/skills/plate-motion-readiness-lead",
     ".grok/skills/contact-micro-physics-specialist",

@@ -38,8 +38,8 @@ def test_skill_membership_exclusive_and_covers_disk() -> None:
     for pid in PACK_IDS:
         union.extend(cfg["packs"][pid]["skills"])
     assert len(union) == len(set(union))
-    # Full suite skill count (v3.9.1 surface-bridge → 64)
-    assert len(union) == 64
+    # Full suite skill count (template-library + orphans → 68)
+    assert len(union) == 68
 
 
 def test_commands_domain_mapped() -> None:
@@ -109,5 +109,5 @@ def test_index_per_plugin_not_global() -> None:
         "nsfw-chain-qa-protocol",
     }
     full = index["plugins"][FULL_PLUGIN_NAME]["components"]["skills"]
-    # Full suite skill count (v3.9.1 surface-bridge → 64)
-    assert len(full) == 64
+    # Full suite skill count (template-library + orphans → 68)
+    assert len(full) == 68

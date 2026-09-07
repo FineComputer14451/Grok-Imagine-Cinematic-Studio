@@ -34,7 +34,7 @@
           },
           {
             "name": "character-dna-extractor",
-            "description": "Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference…"
+            "description": "Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine. Uses Grok 4.6 (Chat Expert / API grok-4.6…"
           },
           {
             "name": "identity-lock-specialist",
@@ -51,6 +51,18 @@
           {
             "name": "imagine-prompt-master",
             "description": "Master cinematic prompt engineer and Grok Imagine specialist. Crafts precise, high-quality prompts using the Ultimate T…"
+          },
+          {
+            "name": "grok-imagine-template-library",
+            "description": ">-"
+          },
+          {
+            "name": "imagine-model-overrides",
+            "description": ">-"
+          },
+          {
+            "name": "grok-chat-model-map",
+            "description": ">-"
           },
           {
             "name": "imagine-execution-bridge",
@@ -127,6 +139,10 @@
           {
             "name": "reference-asset-curator",
             "description": "Reference and asset curator for Grok Imagine productions. Assigns hero, standard or draft tiers, routes grok-imagine-im…"
+          },
+          {
+            "name": "characters-props-locations-refs",
+            "description": ">-"
           },
           {
             "name": "image-to-video-specialist",
@@ -308,7 +324,7 @@
           }
         ]
       },
-      "sha": "a56ecb9ace663c603f9ca237d231d77d1843211c"
+      "sha": "b7e786ddd75433d34981083e0fd0c8ab678056d5"
     },
     "grok-imagine-cinematic-core": {
       "components": {
@@ -343,7 +359,7 @@
           },
           {
             "name": "character-dna-extractor",
-            "description": "Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference…"
+            "description": "Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine. Uses Grok 4.6 (Chat Expert / API grok-4.6…"
           },
           {
             "name": "identity-lock-specialist",
@@ -360,6 +376,18 @@
           {
             "name": "imagine-prompt-master",
             "description": "Master cinematic prompt engineer and Grok Imagine specialist. Crafts precise, high-quality prompts using the Ultimate T…"
+          },
+          {
+            "name": "grok-imagine-template-library",
+            "description": ">-"
+          },
+          {
+            "name": "imagine-model-overrides",
+            "description": ">-"
+          },
+          {
+            "name": "grok-chat-model-map",
+            "description": ">-"
           },
           {
             "name": "imagine-execution-bridge",
@@ -445,7 +473,7 @@
           }
         ]
       },
-      "sha": "a56ecb9ace663c603f9ca237d231d77d1843211c"
+      "sha": "b7e786ddd75433d34981083e0fd0c8ab678056d5"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -483,6 +511,10 @@
             "description": "Reference and asset curator for Grok Imagine productions. Assigns hero, standard or draft tiers, routes grok-imagine-im…"
           },
           {
+            "name": "characters-props-locations-refs",
+            "description": ">-"
+          },
+          {
             "name": "image-to-video-specialist",
             "description": "Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fideli…"
           },
@@ -496,7 +528,7 @@
           }
         ]
       },
-      "sha": "a56ecb9ace663c603f9ca237d231d77d1843211c"
+      "sha": "b7e786ddd75433d34981083e0fd0c8ab678056d5"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -579,7 +611,7 @@
           }
         ]
       },
-      "sha": "a56ecb9ace663c603f9ca237d231d77d1843211c"
+      "sha": "b7e786ddd75433d34981083e0fd0c8ab678056d5"
     },
     "grok-imagine-nsfw": {
       "components": {
@@ -608,7 +640,7 @@
           }
         ]
       },
-      "sha": "a56ecb9ace663c603f9ca237d231d77d1843211c"
+      "sha": "b7e786ddd75433d34981083e0fd0c8ab678056d5"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -649,7 +681,7 @@
           }
         ]
       },
-      "sha": "a56ecb9ace663c603f9ca237d231d77d1843211c"
+      "sha": "b7e786ddd75433d34981083e0fd0c8ab678056d5"
     }
   }
 }
