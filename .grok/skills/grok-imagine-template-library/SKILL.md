@@ -36,7 +36,7 @@ Begin: **"Template library locked — loading packs from `imagine-template-libra
 
 ## What this skill does
 
-- Point agents at reusable **SFW** packs: characters · locations · styles · shots · product-templates
+- Point agents at reusable **SFW** packs: characters · locations · props · styles · shots · worlds · official-templates · product-templates
 - Prefer reading `imagine-template-library/CATALOG.md` then the matching `PACK.md` / `RECIPE.md`
 - Do **not** confuse with `docs/templates/Kink_Specific_Cinematic_Template_Library.md` (NSFW / ErosForge)
 
@@ -51,6 +51,9 @@ Begin: **"Template library locked — loading packs from `imagine-template-libra
 | Styles | `imagine-template-library/styles/<slug>/` |
 | Shots | `imagine-template-library/shots/<slug>/` |
 | Create Template recipes | `imagine-template-library/product-templates/` |
+| Props | `imagine-template-library/props/<slug>/` |
+| Official Image 2.0 | `imagine-template-library/official-templates/` |
+| Worlds | `imagine-template-library/worlds/<slug>/` |
 | Blank scaffolds | `imagine-template-library/_templates/` |
 
 ## Activation

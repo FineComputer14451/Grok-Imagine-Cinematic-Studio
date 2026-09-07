@@ -49,7 +49,7 @@ Interactive learning app + ship checklist for cinematography track beginners:
 ## Templates
 
 - [Production Bible Template](templates/Project_Bible_Template.md)
-- **[Grok Imagine Template Library (SFW)](../imagine-template-library/)** — characters · locations · styles · shots · Create Template recipes ([catalog](../imagine-template-library/CATALOG.md))
+- **[Grok Imagine Template Library (SFW)](../imagine-template-library/)** — characters · locations · props · styles · shots · worlds · official Image 2.0 templates · Create Template recipes ([catalog](../imagine-template-library/CATALOG.md))
 - [Kink / NSFW Cinematic Template Library](templates/Kink_Specific_Cinematic_Template_Library.md) — separate ErosForge NSFW doc; not the SFW pack library above
 
 ## Releases

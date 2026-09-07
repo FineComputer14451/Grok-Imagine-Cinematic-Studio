@@ -34,7 +34,7 @@ assets/                # banner, logos
 examples/              # sample bibles / pitch docs
 references/            # MODELS, Role Cards, shared lexicon
 docs/                  # human documentation (this tree)
-imagine-template-library/  # SFW Imagine packs (chars/locs/styles/shots + Create Template recipes)
+imagine-template-library/  # SFW Imagine packs (chars/locs/props/styles/shots/worlds/official + Create Template recipes)
 ```
 
 ## Runtime / project state (CLI)
