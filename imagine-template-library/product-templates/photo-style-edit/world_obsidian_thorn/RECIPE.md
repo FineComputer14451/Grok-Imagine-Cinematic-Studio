@@ -1,0 +1,5 @@
+name: World · Obsidian Thorn
+type: style-edit
+world: obsidian_thorn
+desc: Restyle into Obsidian Thorn Empress / ruined cathedral / thorn crown+cloak
+prompt: Restyle as Obsidian Thorn Empress in Ruined Infernal Gothic Cathedral with thorn crown and net cloak of amber, Towering demonic female entity; Cracked metallic-gray obsidian / volcanic glass with glowing orange fissures like molten cracks; Pale cracked porcelain beauty; intense amber/orange glowing eyes; dark full lips; sharp cheekbones; Jagged black thorn crown with molten orange spikes and embers; jagged radiating black thorn halo; Voluptuous, powerful, partially fused with thorny black net-like armor; towering severe gothic demonic form; Tattered flowing black web/cloak with thorny tendrils, amber glowing gems, and embers; lighting: Dramatic orange fire rim-light on cracks and crown; continuity: Preserve exact skin texture, eye glow, thorn geometry, and amber ember placement across all shots; aesthetic: Hyper-realistic dark fantasy, gothic horror, infernal majesty, charcoal and molten orange chiaroscuro, pure photographic realism, keep composition, Image 2.0 Quality

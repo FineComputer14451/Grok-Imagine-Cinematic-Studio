@@ -1,0 +1,11 @@
+{
+  "schema": "1.0",
+  "name": "Sylvan Kin",
+  "slug": "sylvan_kin",
+  "world": "eldergrove",
+  "version": 1,
+  "status": "dna-ready",
+  "locked": true,
+  "anchors": "Bark-textured green-brown skin; leafy hair and moss; flowering living vine clothing; glowing emerald eyes.",
+  "source": "fantasy-worlds-extract"
+}

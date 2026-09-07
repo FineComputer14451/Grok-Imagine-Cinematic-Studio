@@ -1,0 +1,11 @@
+{
+  "schema": "1.0",
+  "name": "Merfolk Luminae",
+  "slug": "merfolk_luminae",
+  "world": "thalassara",
+  "version": 1,
+  "status": "dna-ready",
+  "locked": true,
+  "anchors": "Iridescent teal-cyan skin; bioluminescent fins and hair; coral jewelry; translucent scale armor; luminous cyan eyes.",
+  "source": "fantasy-worlds-extract"
+}
