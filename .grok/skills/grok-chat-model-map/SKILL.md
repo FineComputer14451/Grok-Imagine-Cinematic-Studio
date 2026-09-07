@@ -1,0 +1,87 @@
+---
+name: grok-chat-model-map
+description: >-
+  Map Grok Chat modes (Auto / Fast / Expert / Heavy / Build) to the Grok 4.6
+  generation and keep Chat vs API vs Build vs Imagine surfaces straight. Use
+  when the user asks which Chat mode to pick, confuses modes with API model
+  ids, or mixes Chat with Imagine/Build. Activate with ACTIVATE GROK_CHAT_MODEL_MAP
+  or /grok-chat-model-map.
+when-to-use: >-
+  ACTIVATE GROK_CHAT_MODEL_MAP; Grok Chat mode picker; Auto vs Fast vs Expert;
+  Heavy mode; Build from Chat; grok-4.6 chat mapping; do not send Auto as API model
+argument-hint: "[auto|fast|expert|heavy|build|tree]"
+user-invocable: true
+metadata:
+  author: FineComputer14451
+  short-description: Map Grok Chat modes to Grok 4.6 (not API ids)
+---
+
+# Grok Chat Model Map
+
+Canonical **Chat mode** guide for [grok.com](https://grok.com) Chat (also iOS / Android / X Grok).
+
+Verified picker labels **2026-09-06**: `Auto` · `Fast` · `Expert` · `Heavy` · `Build`.
+
+Begin: **"Grok Chat model map locked…"** then recommend a mode + one-line why.
+
+## Hard rules
+
+1. **Never invent picker labels.** Only: Auto, Fast, Expert, Heavy, Build.
+2. **Never send Chat mode names as API `model` strings.** `Auto` / `Expert` are UI modes, not `grok-4.6`.
+3. **Grok 4.6** is the Chat/Code generation on docs.x.ai (“Chat: Grok 4.6”) — not a fifth depth tile in the Chat picker snapshot.
+4. **Build** in the Chat picker is a **surface hop** to Grok Build, not a reasoning depth.
+5. **Imagine** stills/video live under sidebar Imagine — use `imagine-model-overrides`, not this skill.
+6. **Cinematic Studio** `tools/models.py` is a different map (closed PR #47 wrong-target).
+
+## Mode catalog (Chat UI)
+
+| Mode | Kind | When to use | Relation to Grok 4.6 |
+|------|------|-------------|----------------------|
+| **Auto** | Router | Everyday default | Routes Fast-like vs Expert-like; not an API id |
+| **Fast** | Latency path | Quick facts, short asks | Same Chat product family; lighter route — API id not shown in UI |
+| **Expert** | Deep reasoning | Hard analysis, long reasoning | Best match for flagship Chat on **4.6** generation |
+| **Heavy** | Multi-agent max | Hardest multi-step / team-style depth | Separate Heavy stack (not “slow Expert”) |
+| **Build** | Product switch | Coding agent / repo work | Opens Grok Build; Build default intelligence also **grok-4.6** |
+
+## Quick picks
+
+| You want… | Pick |
+|-----------|------|
+| Default / mixed day | **Auto** |
+| Speed | **Fast** |
+| Depth / hard reasoning | **Expert** |
+| Max multi-agent depth | **Heavy** |
+| Coding agent | **Build** |
+| Stills / video | **Imagine** (other skill) |
+| HTTP API call | API id e.g. `grok-4.6` — not a Chat mode |
+
+## Surface tree
+
+```
+Chat thread          → Auto | Fast | Expert | Heavy
+Chat picker → Build  → Grok Build coding agent
+Sidebar Imagine      → Imagine image/video models
+api.x.ai / SDK       → grok-4.6, grok-4.5, …
+Grok Build TUI       → /model aliases (host config)
+Studio registry      → tools/models.py (separate)
+```
+
+## API ids (reference only — not Chat dropdown)
+
+- `grok-4.6` — recommended Chat + Code on API
+- `grok-4.5`, `grok-4.3`, `grok-4.20-*`, `grok-build-0.1` — see https://docs.x.ai/developers/models
+
+## Output card (always)
+
+```markdown
+## Grok Chat pick
+- Mode: …
+- Why: …
+- Not: API id / Imagine / Studio registry
+```
+
+## References
+
+- Plan PR: https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/pull/48
+- Cheat sheet: `references/CHEAT_SHEET.md`
+- Docs: https://docs.x.ai/developers/models · https://docs.x.ai/developers/grok-4-6
