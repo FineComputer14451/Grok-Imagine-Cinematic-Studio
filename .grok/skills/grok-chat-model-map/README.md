@@ -26,8 +26,6 @@ or `/grok-chat-model-map`
 grok-chat-model-map/
 ├── SKILL.md
 ├── README.md
-├── DISCORD_POST.md
-├── DISCORD_THREAD.md
 └── references/
     ├── CHEAT_SHEET.md
     ├── mode-catalog.md
