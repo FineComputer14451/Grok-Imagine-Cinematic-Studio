@@ -175,9 +175,9 @@ Where are you working?
 
 **Goal:** Paste-ready card for Discord / grok.com skills if the user wants distribution.
 
-- [ ] Only if requested after Tasks 1–4
-- [ ] Mirror the verified table; no Studio registry content
-- [ ] Commit or ship via Selector teammate patterns as needed
+- [x] Skill pack: `.grok/skills/grok-chat-model-map/` (SKILL.md, CHEAT_SHEET, DISCORD_POST, DISCORD_THREAD)
+- [x] Mirror verified Auto/Fast/Expert/Heavy/Build table; no Studio registry content
+- [x] Commit on plan branch / PR #48
 
 ---
 
