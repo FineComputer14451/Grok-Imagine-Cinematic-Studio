@@ -1,0 +1,11 @@
+{
+  "schema": "1.0",
+  "name": "Cogborn Engineer",
+  "slug": "cogborn_engineer",
+  "world": "steamforge",
+  "version": 1,
+  "status": "dna-ready",
+  "locked": true,
+  "anchors": "Brass goggles; leather apron over shirt/waistcoat; mechanical prosthetic hand; copper tools; focused expression.",
+  "source": "fantasy-worlds-extract"
+}

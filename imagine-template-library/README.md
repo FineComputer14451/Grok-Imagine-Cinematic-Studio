@@ -3,14 +3,17 @@
 Reusable packs for Grok Imagine — characters, locations, styles, shots — plus Create Template recipes.
 
 ## Layout
-- `characters/<slug>/` — PACK.md + dna.json
-- `locations/<slug>/` — PACK.md (establish + coverage)
+- `characters/<slug>/` — PACK.md + dna.json (21)
+- `locations/<slug>/` — PACK.md (establish + coverage) (22)
+- `props/<slug>/` — PACK.md (hero / reverse / detail) (22)
 - `styles/<slug>/` — grade/look prompts
 - `shots/<slug>/` — framing add-ons
-- `product-templates/` — paste-ready Create Template recipes
-  - `photo-style-edit/`
+- `worlds/<slug>/` — One World kits (14, incl. fantasy six + Obsidian Thorn); see `worlds/INDEX.md`
+- `official-templates/` — Image 2.0 xAI templates
+- `product-templates/` — paste-ready Create Template recipes (55); see `product-templates/INDEX.md`
+  - `photo-style-edit/` (incl. `world_*`)
   - `photo-video/`
-  - `photo-edit-video/`
+  - `photo-edit-video/` (incl. `world_*` Live)
 - `_templates/` — blank scaffolds
 - `CATALOG.md` — index
 

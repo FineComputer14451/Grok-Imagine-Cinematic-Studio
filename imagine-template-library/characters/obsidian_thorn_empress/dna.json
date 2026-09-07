@@ -1,0 +1,24 @@
+{
+  "schema": "1.0",
+  "name": "Obsidian Thorn Empress",
+  "slug": "obsidian_thorn_empress",
+  "world": "obsidian_thorn",
+  "version": 1,
+  "status": "dna-ready",
+  "locked": true,
+  "aliases": [
+    "Ember-Crowned Matriarch"
+  ],
+  "appearance_locks": {
+    "identity": "Towering demonic female entity",
+    "skin": "Cracked metallic-gray obsidian / volcanic glass with glowing orange fissures like molten cracks",
+    "face": "Pale cracked porcelain beauty; intense amber/orange glowing eyes; dark full lips; sharp cheekbones",
+    "head": "Jagged black thorn crown with molten orange spikes and embers; jagged radiating black thorn halo",
+    "body_silhouette": "Voluptuous, powerful, partially fused with thorny black net-like armor; towering severe gothic demonic form",
+    "outfit": "Tattered flowing black web/cloak with thorny tendrils, amber glowing gems, and embers",
+    "continuity": "Preserve exact skin texture, eye glow, thorn geometry, and amber ember placement across all shots",
+    "lighting": "Dramatic orange fire rim-light on cracks and crown",
+    "aesthetic": "Hyper-realistic dark fantasy, gothic horror, infernal majesty"
+  },
+  "source": "https://grok.com/imagine/agent/e7069b4d-635c-4b90-b5c6-79b6fd8e51a4?conversation=373873ed-b4b9-40a2-9c1d-671322c385f2"
+}

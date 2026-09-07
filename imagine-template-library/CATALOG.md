@@ -16,6 +16,14 @@
 | maya_chen | Maya Chen | dna-ready | Last Letter; ≠ mara/margaret |
 | jax_rivera | Jax Rivera | dna-ready | Midnight Run driver |
 | mira_kane | Dr. Mira Kane | dna-ready | Signal researcher |
+| snow_archer | Snow Archer | dna-ready | Northern saga hero |
+| winged_skyfolk | Winged Skyfolk | dna-ready | Aetheris |
+| merfolk_luminae | Merfolk Luminae | dna-ready | Thalassara |
+| chrome_nomad | Chrome Nomad | dna-ready | Neonexus |
+| sylvan_kin | Sylvan Kin | dna-ready | Eldergrove |
+| cogborn_engineer | Cogborn Engineer | dna-ready | Steamforge |
+| crystalborn_lightweaver | Crystalborn Lightweaver | dna-ready | Crystallis |
+| obsidian_thorn_empress | Obsidian Thorn Empress | dna-ready | Dark fantasy charcoal / molten orange |
 
 ## Locations
 | Slug | Title | Status | Notes |
@@ -32,6 +40,16 @@
 | signal_facility | Signal Facility | establish-ready | Clinical |
 | attic_golden | Grandmother Attic | establish-ready | Warm pastel |
 | time_ops_hangar | Time Ops Hangar | establish-ready | Nolan scale |
+| frozen_harbor | Frozen Harbor | establish-ready | Snow Archer |
+| glacier_tunnel | Glacier Tunnel | establish-ready | Snow Archer |
+| war_camp_snow | War Camp Snow | establish-ready | Snow Archer |
+| sky_city_plaza | Sky City Plaza | establish-ready | Aetheris |
+| biolum_plaza | Biolum Plaza | establish-ready | Thalassara |
+| desert_megacity_market | Desert Megacity Market | establish-ready | Neonexus |
+| living_canopy_city | Living Canopy City | establish-ready | Eldergrove |
+| brass_forge_plaza | Brass Forge Plaza | establish-ready | Steamforge |
+| prism_bridge | Prism Bridge | establish-ready | Crystallis |
+| ruined_infernal_gothic_cathedral | Ruined Infernal Gothic Cathedral | establish-ready | Obsidian Thorn |
 
 
 ## Props
@@ -48,6 +66,17 @@
 | sodium_practical | Sodium Alley Lamp | rain_noir_alley, lena_voss |
 | steamer_trunk | Attic Steamer Trunk | attic_golden |
 | pulse_rifle | Pulse Rifle | jax_harlan, time_ops_hangar |
+| antler_crown | Antler Crown | snow_archer |
+| rune_knife_pouch | Rune Knife Pouch | snow_archer |
+| windweaving_staff | Windweaving Staff | winged_skyfolk, aetheris |
+| biolum_coral_staff | Biolum Coral Staff | merfolk_luminae, thalassara |
+| chrome_hoverbike | Chrome Hoverbike | chrome_nomad, neonexus |
+| living_root_wand | Living Root Wand | sylvan_kin, eldergrove |
+| steam_aether_pistol | Steam Aether Pistol | cogborn_engineer, steamforge |
+| harmonic_prism | Harmonic Prism | crystalborn_lightweaver, crystallis |
+| thorn_crown_of_embers | Thorn Crown of Embers | obsidian_thorn_empress |
+| net_cloak_of_amber | Net Cloak of Amber | obsidian_thorn_empress |
+| thorny_ember_cloak_crown_set | Thorny Ember Cloak + Crown Set | obsidian_thorn_empress |
 
 ## Styles
 | Slug | Notes |
@@ -69,9 +98,25 @@
 
 
 ## Worlds
-| Slug | Title | Notes |
+Official pattern: character + locations + props, one style across plates.
+
+| Slug | Title | Style |
 |------|-------|-------|
-| snow_archer | Snow Archer One World | Official Image 2.0 demo board; refs/image-2.0-one-world/ |
+| snow_archer | Snow Archer | northern saga (official demo) |
+| mara_neon | Mara Neon | rainy tech-noir |
+| clara_house | Clara House | aster folk dread |
+| maya_attic | Maya Attic | gerwig warm pastel |
+| jax_midnight | Jax Midnight | nolan wet-night |
+| mira_signal | Mira Signal | clinical horror |
+| thorne_eldrath | Thorne Eldrath | earth mystic gold |
+| aetheris | Aetheris | Floating Realms / golden hour |
+| thalassara | Thalassara | Abyssal Lumina / biolum deep |
+| neonexus | Neonexus | Wasteland Grid / neon desert |
+| eldergrove | Eldergrove | Living Weave / sentient forest |
+| steamforge | Steamforge | Clockwork Dominion / brass |
+| crystallis | Crystallis | Prismatic Veil / aurora crystal |
+| obsidian_thorn | Obsidian Thorn | dark fantasy charcoal / molten orange |
+
 
 ## Official Image 2.0 templates
 Source extract: grok.com/imagine agent-skills + x.ai news Image 2.0
@@ -127,3 +172,5 @@ Count: 18 live + Merch Maker (news archive)
 | style-edit | eldrath_crown | Prop Crown of Eldrath |
 | style-edit | pulse_rifle | Prop Pulse Rifle |
 | style-edit | signal_tablet | Prop Signal Tablet |
+| style-edit | world_obsidian_thorn | World Obsidian Thorn |
+| style-edit | obsidian_thorn_empress | Character Obsidian Thorn Empress |

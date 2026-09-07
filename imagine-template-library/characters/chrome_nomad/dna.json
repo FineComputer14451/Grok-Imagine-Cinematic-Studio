@@ -1,0 +1,11 @@
+{
+  "schema": "1.0",
+  "name": "Chrome Nomad",
+  "slug": "chrome_nomad",
+  "world": "neonexus",
+  "version": 1,
+  "status": "dna-ready",
+  "locked": true,
+  "anchors": "Chrome cybernetic arm; neon pink-cyan implants; dust goggles on forehead; scrap-metal jacket; desert cloak; weathered rugged face.",
+  "source": "fantasy-worlds-extract"
+}
