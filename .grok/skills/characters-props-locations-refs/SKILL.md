@@ -19,6 +19,14 @@ metadata:
 
 # Characters / Props / Locations — Auto Reference Images
 
+```yaml
+model_compatibility:
+  - grok-4.6
+  - grok-imagine-image-2.0
+  - grok-imagine-image
+preferred_model: grok-imagine-image-2.0
+```
+
 Canonical skill to **automatically create** reusable Imagine reference plates
 (Characters · Props · Locations) before motion.
 

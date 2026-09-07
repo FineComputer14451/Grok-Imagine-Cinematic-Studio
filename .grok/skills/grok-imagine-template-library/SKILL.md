@@ -20,6 +20,16 @@ metadata:
 
 # Grok Imagine Template Library
 
+```yaml
+model_compatibility:
+  - grok-4.6
+  - grok-imagine-image-2.0
+  - grok-imagine-image
+  - grok-imagine-video
+  - grok-imagine-video-1.5
+preferred_model: grok-imagine-image-2.0
+```
+
 **Canonical library path (repo root):** `imagine-template-library/`
 
 Begin: **"Template library locked — loading packs from `imagine-template-library/`…"**

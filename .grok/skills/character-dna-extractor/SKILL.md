@@ -20,6 +20,13 @@ Chat / agent routing for this skill (not Imagine slugs):
 | Quick single-ref pass | **Fast** or **Auto** | `grok-4.6` |
 
 ```yaml
+model_compatibility:
+  - grok-4.6
+  - grok-imagine-image-2.0
+  - grok-imagine-image
+  - grok-imagine-video
+  - grok-imagine-video-1.5
+preferred_model: grok-4.6
 stack_default: grok-4.6
 chat_modes: [Auto, Fast, Expert, Heavy, Build]
 preferred_chat_mode: Expert

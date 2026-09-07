@@ -39,6 +39,13 @@ Begin: **"Imagine model overrides locked…"** then emit the chosen preset.
 | Edit / extend | `grok-imagine-video` |
 
 ```yaml
+model_compatibility:
+  - grok-4.6
+  - grok-imagine-image-2.0
+  - grok-imagine-image
+  - grok-imagine-video
+  - grok-imagine-video-1.5
+preferred_model: grok-imagine-image-2.0
 stack_default_chat: grok-4.6
 hero_image: grok-imagine-image-2.0
 draft_image: grok-imagine-image

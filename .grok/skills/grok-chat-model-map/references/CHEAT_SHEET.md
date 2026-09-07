@@ -41,7 +41,7 @@ Models docs: https://docs.x.ai/developers/models · Grok 4.6: https://docs.x.ai/
 | Surface | What you pick |
 |---------|----------------|
 | grok.com **Chat** | Auto / Fast / Expert / Heavy (/ Build) |
-| **api.x.ai** | `grok-4.6`, `grok-4.5`, … — never send `Auto` or `Expert` as `model` |
+| **api.x.ai** | `grok-4.6` (legacy `grok-4.5` alias wraps 4.6), … — never send `Auto` or `Expert` as `model` |
 | **Grok Build** TUI | Host `/model` aliases; default coding ≈ `grok-4.6` |
 | **Imagine** | Quality = **Image 2.0** (`grok-imagine-image-2.0`) · Fast = 1.0 · Video 1.0/1.5 → `imagine-model-overrides` |
 | Cinematic Studio | `tools/models.py` registry (different map) |

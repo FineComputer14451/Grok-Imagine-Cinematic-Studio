@@ -20,6 +20,12 @@ metadata:
 
 # Grok Chat Model Map
 
+```yaml
+model_compatibility:
+  - grok-4.6
+preferred_model: grok-4.6
+```
+
 Canonical **Chat mode** skill for [grok.com](https://grok.com) Chat (also iOS / Android / X Grok).
 
 **Verified picker (2026-09-06 ET):** `Auto` · `Fast` · `Expert` · `Heavy` · `Build`
@@ -81,7 +87,7 @@ Full tables: `references/mode-catalog.md`.
 Chat thread          → Auto | Fast | Expert | Heavy
 Chat picker → Build  → Grok Build coding agent
 Sidebar Imagine      → Imagine image/video models
-api.x.ai / SDK       → grok-4.6, grok-4.5, …
+api.x.ai / SDK       → grok-4.6 (grok-4.5 is a resolve alias that wraps 4.6), …
 Grok Build TUI       → /model aliases (host config)
 Studio registry      → tools/models.py (separate)
 ```
