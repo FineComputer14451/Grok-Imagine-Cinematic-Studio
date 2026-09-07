@@ -21,26 +21,32 @@ metadata:
 
 Canonical **select + pin** skill for Imagine models on [grok.com/imagine](https://grok.com/imagine) and Studio handoffs to surface `grok_com_imagine`.
 
-Aligned with **Grok Imagine Cinematic Studio** `tools/models.py` (v3.11.4+) and xAI docs pricing table (Sep 2026).
+Aligned with Studio `tools/models.py` (v3.11.4+, stack **grok-4.6**, hero **`grok-imagine-image-2.0`**) and [docs.x.ai/models](https://docs.x.ai/developers/models) (Sep 2026: Chat/Code 4.6 · Images Image 2.0 · Videos 1.5).
 
 Begin: **"Imagine model overrides locked…"** then emit the chosen preset.
 
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6 + Imagine)
 
-| Task type | Preferred model | Reasoning |
-|-----------|-----------------|-----------|
-| Model pin / handoff synthesis | `grok-v9-4p5-chat-expert` | high |
-| Multi-agent routing of presets | `grok-v9-4p5-multi` | high |
-| Quick preset refresh | `grok-4-auto` | medium |
+**xAI docs (Sep 2026):** Chat/Code → **Grok 4.6** · Images → **Grok Imagine Image 2.0** · Videos → **Imagine Video 1.5**.
+
+| Surface | What to use |
+|---------|-------------|
+| Agent writing pins / packets | Chat **Expert** or API `grok-4.6` |
+| Hero stills | `grok-imagine-image-2.0` (Quality Mode) |
+| Draft stills | `grok-imagine-image` (Fast Mode) |
+| Final video + audio | `grok-imagine-video-1.5` |
+| Edit / extend | `grok-imagine-video` |
 
 ```yaml
-model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+stack_default_chat: grok-4.6
+hero_image: grok-imagine-image-2.0
+draft_image: grok-imagine-image
+video_default: grok-imagine-video
+video_audio: grok-imagine-video-1.5
+# Legacy aliases grok-v9-4p5-* / grok-4-auto wrap grok-4.6 — prefer Chat modes + grok-4.6
 ```
+
 
 ## Hard rules
 
