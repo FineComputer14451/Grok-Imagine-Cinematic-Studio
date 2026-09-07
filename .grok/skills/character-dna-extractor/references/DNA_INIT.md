@@ -34,3 +34,8 @@ python tools/cinematic_studio_cli.py dna init "Character Name" \
 Then: `dna show` · `dna lock` · `dna inject` · `dna handoff`
 
 Full command card: `dna_cli_init.md`
+
+## After init
+
+Hero plates: Quality Mode / `grok-imagine-image-2.0` via `ACTIVATE IMAGINE_MODEL_OVERRIDES hero`.
+Chat extract: **Expert** / API `grok-4.6`.
