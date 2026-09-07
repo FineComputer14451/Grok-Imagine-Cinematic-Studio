@@ -76,7 +76,8 @@ Activate overrides separately: `ACTIVATE IMAGINE_MODEL_OVERRIDES hero`
 |------|-------|
 | Model pin Quality/Fast · Video 1.0/1.5 | `imagine-model-overrides` |
 | Chat modes Auto/Fast/Expert/Heavy/Build | `grok-chat-model-map` |
-| Character DNA extract / inject | `character-dna-extractor` (Studio) |
+| Character DNA extract / inject | `character-dna-extractor` (co-bundled in skills pack; `ACTIVATE CHARACTER_DNA_EXTRACTOR`) |
+| DNA scaffold (`dna init`) | Studio CLI — see `character-dna-extractor/references/dna_cli_init.md` |
 
 ## References
 
