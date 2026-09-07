@@ -1,0 +1,11 @@
+{
+  "schema": "1.0",
+  "name": "Crystalborn Lightweaver",
+  "slug": "crystalborn_lightweaver",
+  "world": "crystallis",
+  "version": 1,
+  "status": "dna-ready",
+  "locked": true,
+  "anchors": "Translucent prismatic/refracting skin; pure light-fabric robes; crystal diadem; glowing geometric tattoos.",
+  "source": "fantasy-worlds-extract"
+}

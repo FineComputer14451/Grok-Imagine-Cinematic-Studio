@@ -1,0 +1,11 @@
+{
+  "schema": "1.0",
+  "name": "Winged Skyfolk",
+  "slug": "winged_skyfolk",
+  "world": "aetheris",
+  "version": 1,
+  "status": "dna-ready",
+  "locked": true,
+  "anchors": "Blue-gold gradient wings; golden/amber eyes; long golden-blonde hair; white-gold aether robes with crystal accents; tall elegant build.",
+  "source": "fantasy-worlds-extract"
+}
