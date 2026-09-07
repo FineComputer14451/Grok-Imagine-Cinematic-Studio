@@ -63,6 +63,26 @@ ACTIVATE IMAGINE_MODEL_OVERRIDES hero
 | **Models underneath** | Same Imagine stack: Quality/Fast stills + Video 1.0/1.5; planning uses chat-model quota |
 | **Access** | Web / paid Grok (beta); treat as **orchestration UI**, then pin outputs with the tables above |
 
+### DNA board + cross-ref with Agent Mode
+
+Consumer Agent Mode **does not** run Studio scripts. Use sample DNA + the post-board check **around** the canvas:
+
+1. Copy sample DNA (`character-dna-extractor/samples/onboarding-demo/`) or `dna_init` your cast.
+2. Generate / batch on Imagine Agent Mode (or Quality stills).
+3. Save hero plates into `characters/` · `props/` · `locations/` per `characters-props-locations-refs` naming.
+4. Run `python .grok/skills/characters-props-locations-refs/scripts/cross_ref_check.py .` — DNA ids must match plates before Identity Lock.
+5. Clear `"sample": true` on demo packets; then lock / i2v (Image **2.0** heroes; Video **1.5** vs **1.0** rules above).
+
+**Studio Agent Mode handoff** (A–E) is the tighter fit: DNA + board live in the project, check runs locally, then handoff.
+
+| Asset | Path |
+|-------|------|
+| Cross-ref check | `.grok/skills/characters-props-locations-refs/scripts/cross_ref_check.py` |
+| Cross-ref docs | `.grok/skills/characters-props-locations-refs/references/CROSS_REF_CHECK.md` |
+| Sample DNA | `.grok/skills/character-dna-extractor/samples/onboarding-demo/` |
+| Demo board | `.grok/skills/characters-props-locations-refs/samples/onboarding-demo/` |
+
+
 ### 2) Studio **Agent Mode handoff** (this repo)
 
 Routing from planning agents into execution surfaces:
@@ -88,7 +108,7 @@ python tools/cinematic_studio_cli.py imagine agent-handoff \
 2. Draft spam → Fast / `grok-imagine-image`  
 3. Final + audio → Video **1.5**  
 4. Edit / extend → Video **1.0** only  
-5. Multi-step film / brand pack on web → **Consumer Agent Mode**, then lock plates with 2.0 / 1.0 / 1.5 rules  
+5. Multi-step film / brand pack on web → **Consumer Agent Mode**, then save plates + run **cross-ref check** / DNA lock (2.0 / 1.0 / 1.5 rules)  
 6. Studio pipeline → handoff packet → surfaces A–E (not a new Imagine slug)
 
 Coding / Grok Build chat stays on **`grok-4.6`** — never select `grok-imagine-*` for code.

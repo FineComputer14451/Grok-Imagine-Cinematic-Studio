@@ -58,3 +58,14 @@ python scripts/cross_ref_check.py samples/onboarding-demo
 1. Fix failures (regen plates or fix DNA ids).
 2. `ACTIVATE IDENTITY_LOCK` / Studio `dna lock`.
 3. Sequence stills → video only if asked.
+
+## Imagine Agent Mode
+
+Works **with** consumer Imagine Agent Mode (grok.com/imagine canvas) as a **sidecar**, not inside it:
+
+1. Agent Mode generates / batches stills on the canvas.
+2. Export or save hero plates into this project's `characters/` · `props/` · `locations/`.
+3. Align `reference_image_ids` in DNA (sample packets under `character-dna-extractor/samples/` or the demo board).
+4. Run this check before Identity Lock or motion.
+
+Studio **Agent Mode handoff** (surfaces A–E in `docs/guides/IMAGINE_MODELS_MAP.md`) keeps DNA + board in-repo — preferred when you already use the CLI.

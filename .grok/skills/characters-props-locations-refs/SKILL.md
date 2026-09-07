@@ -14,7 +14,7 @@ user-invocable: true
 metadata:
   author: FineComputer14451
   short-description: Auto-create Characters / Props / Locations reference images
-  version: "1.3.0"
+  version: "1.3.1"
 ---
 
 # Characters / Props / Locations — Auto Reference Images
@@ -126,6 +126,7 @@ DNA / planning text: Chat **Expert** or API `grok-4.6`.
 | DNA scaffold (`dna init`) | `character-dna-extractor/scripts/dna_init.py` |
 | Sample DNA packets | `character-dna-extractor/samples/onboarding-demo/` |
 | Post-board consistency | `scripts/cross_ref_check.py` |
+| Imagine Agent Mode pairing | `docs/guides/IMAGINE_MODELS_MAP.md` + `references/CROSS_REF_CHECK.md` |
 
 ## References
 
