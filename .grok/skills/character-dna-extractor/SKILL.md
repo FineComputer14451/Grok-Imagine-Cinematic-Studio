@@ -40,7 +40,25 @@ preferred_model: grok-v9-4p5-chat-expert
 
 `ACTIVATE CHARACTER_DNA_EXTRACTOR`
 
-Load and follow the Role Card. Do not paraphrase locked protocols or output structures.
+Load and follow the Role Card.
+
+## DNA init (portable)
+
+Scaffold a profile before extract / lock — **no Studio install required**:
+
+```bash
+python scripts/dna_init.py "Character Name" \
+  --core "Core identity traits" \
+  --facial "Facial structure, eyes, skin tone" \
+  --hair "Hair and grooming" \
+  --anchor "Non-negotiable consistency trait"
+```
+
+Writes `characters/{slug}/dna.json` + `DNA.md` (schema 1.0, compatible with Studio `dna init`).
+
+Full flags: `references/DNA_INIT.md`. Studio CLI card: `references/dna_cli_init.md`.
+
+ Do not paraphrase locked protocols or output structures.
 
 ## Grok Imagine Video Compatibility
 
