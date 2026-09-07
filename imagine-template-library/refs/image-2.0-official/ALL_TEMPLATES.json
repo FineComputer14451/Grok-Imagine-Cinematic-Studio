@@ -1,0 +1,569 @@
+[
+  {
+    "id": "imagine-aspect-ratio",
+    "title": "Smart Resize",
+    "description": "Reframe an image to new aspect ratios while keeping its style and key subjects.",
+    "category": "Editing",
+    "cover": "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/aspect_ratio/Thumbnail_cover.jpg?v=4",
+    "medias": [
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/aspect_ratio/Thumbnail_cover.jpg?v=4",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/aspect_ratio/vertical_cover_aspect.png?v=2",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/ADR-12-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/ADR-12-output-16x9.jpg",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/SRZ-79-input.jpg?v=20260723",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/SRZ-79-output.jpg?v=20260723",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/ADR-22-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/ADR-22-output-1x1.jpg",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/ADR-20-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/ADR-20-output-16x9.jpg",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/SRZ-78-input.jpg?v=20260723",
+      "https://imagine-public.x.ai/agent-skills/aspect_ratio/variants/SRZ-78-output.jpg?v=20260723",
+      "https://imagine-public.x.ai/agent-skills/background_removal/background_removal_cover.jpg?v=9",
+      "https://imagine-public.x.ai/agent-skills/background_removal/background_removal_vertical.jpg?v=7",
+      "https://imagine-public.x.ai/agent-skills/background_removal/bg-transparent.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/background_removal/bg-white.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/background_removal/bg-custom.jpg?v=1"
+    ],
+    "presets": [
+      {
+        "label": "Change Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_scene_sq.jpg?v=2",
+        "value": "dress-for-scene",
+        "prompt": "Do not preserve the clothing in the uploaded picture - dress the person in clothing that fits the scene they are in."
+      },
+      {
+        "label": "Keep Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_keep_sq.jpg?v=2",
+        "value": "keep-outfit",
+        "prompt": "Preserve the exact clothing worn in the uploaded picture."
+      }
+    ]
+  },
+  {
+    "id": "imagine-background-removal",
+    "title": "BG Removal & Change",
+    "description": "Isolate the main subject of any photo with high-fidelity cutout quality, then deliver it on the background you choose: genuine transparent alpha, a clean white studio backdrop, or a custom scene you describe.",
+    "category": "Photo Tools",
+    "cover": "https://imagine-public.x.ai/agent-skills/background_removal/background_removal_cover.jpg?v=9",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/background_removal/background_removal_cover.jpg?v=9",
+      "https://imagine-public.x.ai/agent-skills/background_removal/background_removal_vertical.jpg?v=7",
+      "https://imagine-public.x.ai/agent-skills/background_removal/bg-transparent.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/background_removal/bg-white.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/background_removal/bg-custom.jpg?v=1",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/ecommerce_photos/ecommerce_photos_cover.jpg?v=3",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/ecommerce_photos/ecommerce_photos_vertical.jpg?v=2"
+    ],
+    "presets": [
+      {
+        "label": "Change Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_scene_sq.jpg?v=2",
+        "value": "dress-for-scene",
+        "prompt": "Do not preserve the clothing in the uploaded picture - dress the person in clothing that fits the scene they are in."
+      },
+      {
+        "label": "Keep Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_keep_sq.jpg?v=2",
+        "value": "keep-outfit",
+        "prompt": "Preserve the exact clothing worn in the uploaded picture."
+      }
+    ]
+  },
+  {
+    "id": "imagine-collage",
+    "title": "Photo Collage",
+    "description": "Combine 2-16 of your photos into tasteful, shareable collages \u2014 pick one or more styles (one collage per style): pure grid, torn paper, bento cards, travel journal, or photo-booth strip.",
+    "category": "Photo Tools",
+    "cover": "https://imagine-public.x.ai/agent-skills/collage/collage_cover.jpg?v=10",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/collage/style_pure_grid.jpg?v=4",
+      "https://imagine-public.x.ai/agent-skills/collage/style_torn_paper.jpg?v=7",
+      "https://imagine-public.x.ai/agent-skills/collage/style_bento.jpg?v=6",
+      "https://imagine-public.x.ai/agent-skills/collage/style_travel_journal.jpg?v=7",
+      "https://imagine-public.x.ai/agent-skills/collage/style_booth_strip.jpg?v=8",
+      "https://imagine-public.x.ai/agent-skills/collage/collage_cover.jpg?v=10",
+      "https://imagine-public.x.ai/agent-skills/collage/collage_vertical.jpg?v=10",
+      "https://imagine-public.x.ai/agent-skills/collage/variants/designer-bento-2x3.jpg",
+      "https://imagine-public.x.ai/agent-skills/collage/variants/designer-travel-journal-2x3.jpg?v=20260723",
+      "https://imagine-public.x.ai/agent-skills/collage/variants/designer-pure-grid-2x3.jpg?v=20260723",
+      "https://imagine-public.x.ai/agent-skills/collage/variants/designer-photo-booth-2x3.jpg"
+    ],
+    "presets": [
+      {
+        "label": "Change Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_scene_sq.jpg?v=2",
+        "value": "dress-for-scene",
+        "prompt": "Do not preserve the clothing in the uploaded picture - dress the person in clothing that fits the scene they are in."
+      },
+      {
+        "label": "Keep Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_keep_sq.jpg?v=2",
+        "value": "keep-outfit",
+        "prompt": "Preserve the exact clothing worn in the uploaded picture."
+      }
+    ]
+  },
+  {
+    "id": "imagine-ecommerce-listing",
+    "title": "E-Commerce Photos",
+    "description": "Turn one product photo into a complete 6-image e-commerce listing set \u2014 main on white, benefit infographic, lifestyle, in-use, detail close-up, and true-scale in-hand shot.",
+    "category": "Marketing",
+    "cover": "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/ecommerce_photos/ecommerce_photos_cover.jpg?v=3",
+    "medias": [
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/ecommerce_photos/ecommerce_photos_cover.jpg?v=3",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/ecommerce_photos/ecommerce_photos_vertical.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/collage/style_pure_grid.jpg?v=4",
+      "https://imagine-public.x.ai/agent-skills/collage/style_torn_paper.jpg?v=7",
+      "https://imagine-public.x.ai/agent-skills/collage/style_bento.jpg?v=6",
+      "https://imagine-public.x.ai/agent-skills/collage/style_travel_journal.jpg?v=7",
+      "https://imagine-public.x.ai/agent-skills/collage/style_booth_strip.jpg?v=8"
+    ],
+    "presets": [
+      {
+        "label": "Change Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_scene_sq.jpg?v=2",
+        "value": "dress-for-scene",
+        "prompt": "Do not preserve the clothing in the uploaded picture - dress the person in clothing that fits the scene they are in."
+      },
+      {
+        "label": "Keep Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_keep_sq.jpg?v=2",
+        "value": "keep-outfit",
+        "prompt": "Preserve the exact clothing worn in the uploaded picture."
+      }
+    ]
+  },
+  {
+    "id": "imagine-editorial-poster",
+    "title": "Editorial Product Poster",
+    "description": "Turn a single product photo into an art-directed, editorial typographic poster.",
+    "category": "Marketing",
+    "cover": "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/editorial/editorial_cover.jpg?v=2",
+    "medias": [
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/editorial/editorial_cover.jpg?v=2",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/editorial/editorial_veritcal.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/editorial/maximal_editorial.jpg?v=2",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/editorial/minimal_editorial.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/editorial/variants/EDP-01-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/editorial/variants/EDP-01-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/editorial/variants/EDP-44-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/editorial/variants/EDP-44-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/editorial/variants/EDP-16-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/editorial/variants/EDP-16-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/editorial/variants/EDP-13-input.jpg?v=20260723"
+    ],
+    "presets": []
+  },
+  {
+    "id": "imagine-emoji-creator",
+    "title": "Emoji Creator",
+    "description": "Turn a photo of your face, pet, or mascot into a matching pack of Twitch/Discord emotes \u2014 pick an emote pack and an art style; same subject in every emote, readable at chat size.",
+    "category": "Streaming",
+    "cover": "https://imagine-public.x.ai/agent-skills/emoji_creator/emoji_creator_cover.jpg?v=12",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/emoji_creator_cover.jpg?v=12",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/emoji_creator_vertical.jpg?v=12",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/pack_expressions.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/pack_gaming.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/pack_lovehype.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/pack_meme.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/pack_custom.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/style_chibi.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/style_kawaii.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/style_pixel.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/style_sticker.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/style_clay.jpg?v=3"
+    ],
+    "presets": []
+  },
+  {
+    "id": "imagine-hero-product-reveal",
+    "title": "Hero Product Reveal",
+    "description": "Turn one product photo into a cinematic 3-shot reveal video.",
+    "category": "Product",
+    "cover": "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/hero_product_reveal/hero_product_reveal.mp4",
+    "medias": [
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/hero_product_reveal/hero_product_reveal.mp4",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/hero_product_reveal/hero_product_reveal_cover.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/style_flat_minimal.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/style_gradient_glow.jpg?v=2"
+    ],
+    "presets": []
+  },
+  {
+    "id": "imagine-icon-maker",
+    "title": "Icon Maker",
+    "description": "Turn a name and a one-line description \u2014 plus an optional mascot, sketch, or product photo \u2014 into a set of 4 distinct app-icon options: one bold mark per icon, full-bleed square with no baked-in corners, readable at home-screen size, safe under any platform mask.",
+    "category": "Design Tools",
+    "cover": "https://imagine-public.x.ai/agent-skills/icon_maker_v2/icon_maker_cover.jpg?v=5",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/style_flat_minimal.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/style_gradient_glow.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/style_glass.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/style_soft_3d.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/style_pixel.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/style_dark_pro.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/bg_brand_color.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/bg_dark.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/icon_maker_v2/bg_light.jpg?v=1"
+    ],
+    "presets": []
+  },
+  {
+    "id": "imagine-living-sprite",
+    "title": "Character Sprite",
+    "description": "Describe any character and its weapon, pick a motion, and get the full sprite chain in one run: an on-model base render, an image-to-video motion clip, an engine-ready sprite sheet of evenly-aligned frames on a transparent background, and a looping GIF preview - for Unity, Godot, or Phaser. Works across any weapon and body type (bows, staves, axes, guns, wings and more).",
+    "category": "Design Tools",
+    "cover": "https://imagine-public.x.ai/agent-skills/living_sprite/living_sprite_cover.jpg?v=8",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/living_sprite/living_sprite_cover.jpg?v=8",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/living_sprite_vertical.jpg?v=7",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/style_pixel_art.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/style_cel_shaded.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/style_hand_painted.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/style_3d_render.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/motion_idle.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/motion_walk.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/motion_run.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/motion_jump.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/motion_attack.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/motion_hurt.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/bg_none.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/living_sprite/bg_chroma_key.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/emoji_creator_cover.jpg?v=12",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/emoji_creator_vertical.jpg?v=12",
+      "https://imagine-public.x.ai/agent-skills/emoji_creator/pack_expressions.jpg?v=2"
+    ],
+    "presets": []
+  },
+  {
+    "id": "imagine-mascot-maker",
+    "title": "Mascot Maker",
+    "description": "Turn a one-line concept into an original, production-ready game mascot: one full-body character with a strong iconic silhouette, a memorable color identity, and tons of personality \u2014 centered on a keyable (transparent) background, sprite-base ready. Pairs naturally with Character Sprite Maker to animate your mascot into engine-ready sprite sheets.",
+    "category": "Design Tools",
+    "cover": "https://imagine-public.x.ai/agent-skills/mascot_maker/mascot_maker_cover.jpg?v=5",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/mascot_maker_cover.jpg?v=5",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/mascot_maker_vertical.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/style_game_mascot.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/style_chibi.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/style_retro_cartoon.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/style_flat_vector.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/style_painterly.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/style_pixel.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/bg_transparent.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/bg_chroma_magenta.png?v=1",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/variants/MSC-01-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/variants/MSC-11-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/variants/MSC-25-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/variants/MSC-50-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/mascot_maker/variants/MSC-17-output.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/editorial/editorial_cover.jpg?v=2",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/editorial/editorial_veritcal.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/editorial/maximal_editorial.jpg?v=2"
+    ],
+    "presets": []
+  },
+  {
+    "id": "imagine-photo-edit",
+    "title": "Photo Edit",
+    "description": "Upload a photo and pick one precise edit \u2014 enhance, remove an object, professional polish, change the background, isolate a person, black & white, cozy warm, sharpen details, or blur the background.",
+    "category": "Photo Tools",
+    "cover": "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/photo_edit/photo_edit_cover.mp4?v=20260723",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_photo_enhance.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_remove_object.jpg?v=5",
+      "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_professional_polish.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_background_changer.jpg?v=6",
+      "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_isolate_person.jpg?v=5",
+      "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_black_and_white.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_cozy_warm.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_sharpen_details.jpg?v=4",
+      "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_blur_background.jpg?v=1"
+    ],
+    "presets": [
+      {
+        "label": "Photo enhance",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_photo_enhance.jpg?v=3",
+        "value": "Photo enhance",
+        "prompt": "Dramatically improve this photo into a polished, professional-quality portrait while keeping the same person, same pose, same clothing, and same location. Re-light the subject with flattering soft directional key light and gentle fill so the face is bright, dimensional, and clearly separated from the background \u2014 eliminate flat, dull, or overhead lighting. Add depth of field: render the background with natural, creamy optical blur so the subject pops, and clean up background clutter and distracting bright spots. Apply a rich, film-like color grade with deep clean blacks, luminous highlights, and vivid but natural color.\n\nCritical constraints: preserve the person's exact same face, eyes, skin and appearance."
+      },
+      {
+        "label": "Remove Object",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_remove_object.jpg?v=5",
+        "value": "Remove Object",
+        "prompt": "Remove the specific unwanted object or person the user describes. Fill the area naturally so it looks like the object was never there. Preserve the exact appearance of the person that's the main subject of the photo. Do not change anything about them, just remove the object they want to remove."
+      },
+      {
+        "label": "Professional Polish",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_professional_polish.jpg?v=1",
+        "value": "Professional Polish",
+        "prompt": "Transform this casual photo into a polished, professional-quality portrait of the exact same person, clothing, jewelry, and location. Re-light the subject with soft directional key light from a flattering angle plus gentle fill so their face is bright, dimensional, and clearly separated from the background, eliminating flat or overhead lighting. Add natural creamy optical depth of field that renders the background with smooth bokeh blur, cleaning up clutter and distracting bright spots so the subject pops forward. Apply a rich film-like color grade featuring deep clean blacks, luminous highlights, and vivid yet natural colors. The final image must look like the same person captured by a professional photographer with excellent lighting and a fast lens."
+      },
+      {
+        "label": "Background Changer",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_background_changer.jpg?v=6",
+        "value": "Background Changer",
+        "prompt": "Replace the entire background with a new one that the user describes. Keep the main subject sharp and correctly lit for the new background. Make sure that the proportion of the main subject of the picture is logical compared to the background proportions so the main subject does not lok overly big or overly small compared to the new background."
+      },
+      {
+        "label": "Isolate Person",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_isolate_person.jpg?v=5",
+        "value": "Isolate Person",
+        "prompt": "Isolate the person the user describes into a portrait of them in the same setting but by themselves. Remove everyone else just keep the original setting and the close up portrait of the person. If the person is wearing anything on their face, keep it exactly the same. Maintain their facial features precisely."
+      },
+      {
+        "label": "Black & White",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_black_and_white.jpg?v=3",
+        "value": "Black & White",
+        "prompt": "Convert this photograph into a beautiful black and white image with the quality of fine-art film photography. Aim for a balanced, correctly exposed result \u2014 neither dark and heavy nor bright and washed out. Build a full tonal range: rich blacks that hold visible shadow detail, bright highlights that retain full detail and never blow out to pure white, and well-distributed midtones with clear separation between tonal steps.\n\nRender the skin just above middle gray \u2014 luminous and flattering, but with clear tonal modeling and visible gradation across the face. Skin should never approach pure white or lose highlight detail; retain detail in the brightest areas of the forehead, nose, and cheekbones. Light the face with soft diffused light that wraps gently, giving soft-edged shadows and no harsh dark blotches. Keep natural skin texture present but rendered softly \u2014 do not sharpen, crunch, or add micro-contrast to skin.\n\nCarry the image's contrast in the hair, clothing, background, and surrounding scene rather than in the face. Separate the subject from the background through luminance difference. Sharpen and add detail to the eyes, eyelashes, brows, and hair, and give the eyes bright clear catchlights.\n\nRender with fine organic film grain and smooth natural highlight roll-off, in the character of a classic portrait film stock like Ilford Delta 100 \u2014 clean, luminous, medium contrast. No color anywhere, no sepia or split-toning. Avoid a muddy or underexposed look, avoid crushed blacks, and equally avoid an overexposed, blown-out, or hazy washed-out rendering. Protect highlight detail above all."
+      },
+      {
+        "label": "Cozy Warm",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_cozy_warm.jpg?v=3",
+        "value": "Cozy Warm",
+        "prompt": "Grade this photograph with a warm, cozy, inviting atmosphere while keeping it full color and natural. Shift the lighting toward golden-hour warmth: render the light sources and highlights with a soft amber-golden glow, as if lit by late afternoon sun or warm lamplight. Keep the shadows neutral to very slightly cool so the image stays dimensional and never muddy or uniformly orange.\n\nAdd a gentle soft-light bloom around bright areas and light sources, with smooth luminous highlight roll-off. Lift the blacks slightly for a soft, film-like, enveloping feel rather than harsh contrast. Enrich warm tones in wood, fabric, hair, and warm surfaces, and let cool elements in the scene stay cool so the warmth reads as light rather than a color cast. Keep whites recognizably white \u2014 warm-tinted, not yellow.\n\nCritical constraints: preserve the subject's natural skin tone and undertone. Skin should look warmly lit and healthy, never orange, ruddy, sunburned, or jaundiced. Do not lighten, whiten, smooth, or even out skin, and keep natural texture including pores, fine lines, and freckles. Do not reshape faces or alter proportions. This is a full-color image \u2014 absolutely no sepia, no monochrome, no vintage yellow filter, no uniform color overlay. The result should feel like a warmly lit moment captured on film: cozy, soft, and inviting, with natural color intact."
+      },
+      {
+        "label": "Sharpen Details",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_sharpen_details.jpg?v=4",
+        "value": "Sharpen Details",
+        "prompt": "Increase sharpness, texture, and micro-contrast throughout the image for crisper, more defined details. Enhance edge definition and fine detail in the hair, clothing, eyes, and background while keeping the overall look natural and realistic. Do not change colors, tones, lighting, composition, or the subject's appearance beyond the added clarity and sharpness."
+      },
+      {
+        "label": "Blur Background",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/photo_edit/photo_edit_blur_background.jpg?v=1",
+        "value": "Blur Background",
+        "prompt": "Keep the main subject sharp and add natural background blur/bokeh."
+      },
+      {
+        "label": "Chibi",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_chibi.jpg?v=3",
+        "value": "Chibi",
+        "prompt": "Create a cute anime chibi character of the person from the image, rendered as a high-quality glossy 3D blender style figurine: smooth reflective toy-like plastic materials, strong specular highlights, soft reflections, shiny surfaces. Preserve the person's original race, ethnicity, skin tone, hair color, facial likeness, eye color, and clothing colors precisely. Use classic chibi proportions with a very large head, small torso, simplified cute features, and large over-sized expressive sparkling eyes. Frame from the torso up with the upper body and head filling most of the frame. The person looks directly at the camera with an energetic, pose fit for this type of environment and scene. Preserve the environment that the person is in as the background, making it slightly bokeh."
+      },
+      {
+        "label": "Comic Book",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_comic_book.jpg?v=2",
+        "value": "Comic Book",
+        "prompt": "Transform the input image into an original comic-book / graphic-novel illustration style while preserving the subject's recognizable identity, pose, clothing, and everyday setting. Reinterpret the scene as a single panel from a slice-of-life indie comic: an ordinary, mundane 'day in the life' moment (e.g. sipping coffee, commuting, walking the dog, at a desk, cooking) \u2014 calm and relatable, NOT action or heroic. Use bold black ink outlines, clean confident linework, flat cel-shaded color blocks, and halftone / ben-day dot shading with subtle vintage newsprint texture. Keep the face recognizable but lightly stylized. Do NOT add superheroes, capes, costumes, masks, powers, logos, emblems, speech bubbles, sound effects, or any text. Absolutely no copyrighted, trademarked, or franchise characters or styles \u2014 a completely original, generic comic look applied to a real everyday scene."
+      },
+      {
+        "label": "3D Character",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_3d_character.jpg?v=3",
+        "value": "3D Character",
+        "prompt": "Create a charming cartoon character of the person from the image. Frame from the torso up with the upper body and head filling most of the frame. Pose, cute and charismatic personality, polished high-quality 3D cartoon style, highly detailed, professional illustration. Maintain the original face, structure and hair details. Preserve the environment that the person is in as the background, making it slightly bokeh."
+      },
+      {
+        "label": "70's Street Style",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_70s_street.jpg?v=4",
+        "value": "70's Street Style",
+        "prompt": "1970s NYC candid street photograph of the person or people (if there are multiple people in the user-uploaded photo) in typical 70s outfit, close up picture. avoid too much text in the background."
+      },
+      {
+        "label": "80's Anime",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_80s_anime.jpg?v=3",
+        "value": "80's Anime",
+        "prompt": "maintain original composition, facial expressions, and emotion of the original image. completely change the image style into: full illustrated ANIME STYLE: ultra high res video anime illustrated cartoon animated. retro 1980s aesthetic.,very moody lighting. in the style of a low res 1980s anime screengrab. VCR VHS. retro anime screencap. cartoon. CRT scanlines. bloom. halation. heavy film grain. Smooth perfect skin details."
+      },
+      {
+        "label": "Sunday Morning",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_sunday_morning.jpg?v=2",
+        "value": "Sunday Morning",
+        "prompt": "Warm, nostalgic 35mm film still aesthetic with a soft 1970s/early-80s pastoral-cinema vibe. Golden-hour backlight flooding the frame: rich amber/orange highlights, warm skin tones, and honey-colored grasses. Gentle film halation (soft glowing bloom around bright areas and sunlit edges), slightly lifted blacks with a mild matte fade, and smooth highlight roll-off (no harsh clipping). Medium-wide composition with the subject placed left-of-frame and lots of negative space to the right; a calm, observational, \u201cquiet moment\u201d tone. Shallow-to-moderate depth of field: foreground grasses softly blur into the lens, subject readable but not razor sharp, background trees softened. Naturalistic contrast, slightly low micro-contrast, creamy texture. Subtle film grain throughout (fine, organic grain), mild softness and lens character (gentle vignetting, slight flare), and a restrained color palette that leans warm gold + muted greens. Overall look: dreamy, intimate, sun-drenched, painterly realism like a still from an art-house coming-of-age film."
+      }
+    ]
+  },
+  {
+    "id": "imagine-product-color-change",
+    "title": "Product Color Change",
+    "description": "Recolor ONE named part of a product photo \u2014 the seat upholstery, a strap, the lid, the body \u2014 to any target color, while keeping the entire rest of the image completely identical.",
+    "category": "Product visualization",
+    "cover": "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/product_color_change/product_color_change_cover.mp4?v=20260722",
+    "medias": [
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/product_color_change/product_color_change_cover.mp4?v=20260722",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/product_color_change/product_color_change_cover.jpg?v=20260722",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/product_color_change/product_color_change_vertical.jpg?v=20260722",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/product_color_change/product_color_change_vertical.mp4?v=20260722",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/swatch_teal.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/swatch_red.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/swatch_matte_black.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/swatch_copper.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/swatch_forest_green.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/swatch_navy.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/swatch_mustard.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/swatch_blush.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/variants/PCC-26-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/variants/PCC-26-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/variants/PCC-36-input.jpg?v=20260723",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/variants/PCC-36-output.jpg?v=20260724",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/variants/PCC-45-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/variants/PCC-45-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/variants/PCC-44-input.jpg?v=20260723",
+      "https://imagine-public.x.ai/agent-skills/product_color_change/variants/PCC-44-output.jpg"
+    ],
+    "presets": []
+  },
+  {
+    "id": "imagine-professional-headshot",
+    "title": "Professional Headshot",
+    "description": "Turn any casual photo into a LinkedIn-grade professional headshot \u2014 unmistakably the same person, with professionalized attire, backdrop, and lighting.",
+    "category": "Photo Tools",
+    "cover": "https://imagine-public.x.ai/agent-skills/professional_headshot/professional_headshot_cover.jpg?v=9",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/professional_headshot/attire_suit_sq.jpg",
+      "https://imagine-public.x.ai/agent-skills/professional_headshot/attire_bizcasual_sq.jpg",
+      "https://imagine-public.x.ai/agent-skills/professional_headshot/attire_creative_sq.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/professional_headshot/professional_headshot_cover.jpg?v=9",
+      "https://imagine-public.x.ai/agent-skills/professional_headshot/professional_headshot_vertical.jpg?v=9",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Template_Cover_Room%20stating.jpg?v=3",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/room_staging_vertical.jpg?v=1",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20stating_Neutral_Transitional.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20stating_Contemporary.jpg"
+    ],
+    "presets": []
+  },
+  {
+    "id": "imagine-profile-picture",
+    "title": "Profile Picture",
+    "description": "Turn a casual photo into a standout social or dating profile picture \u2014 authentic-looking, like a friend caught you on a great day, never airbrushed or studio-fake.",
+    "category": "Photo Tools",
+    "cover": "https://imagine-public.x.ai/agent-skills/profile_picture/profile_picture_cover.jpg?v=16",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_scene_sq.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_keep_sq.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/profile_picture/profile_picture_cover.jpg?v=16",
+      "https://imagine-public.x.ai/agent-skills/profile_picture/profile_picture_vertical.jpg?v=14",
+      "https://imagine-public.x.ai/agent-skills/profile_picture/variants/PFP-06-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/profile_picture/variants/PFP-06-output.jpg",
+      "https://imagine-public.x.ai/agent-skills/profile_picture/variants/PFP-43-input.jpg",
+      "https://imagine-public.x.ai/agent-skills/profile_picture/variants/PFP-43-output.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/hero_product_reveal/hero_product_reveal.mp4"
+    ],
+    "presets": [
+      {
+        "label": "Change Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_scene_sq.jpg?v=2",
+        "value": "dress-for-scene",
+        "prompt": "Do not preserve the clothing in the uploaded picture - dress the person in clothing that fits the scene they are in."
+      },
+      {
+        "label": "Keep Outfit",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/profile_picture/clothing_keep_sq.jpg?v=2",
+        "value": "keep-outfit",
+        "prompt": "Preserve the exact clothing worn in the uploaded picture."
+      }
+    ]
+  },
+  {
+    "id": "imagine-restyle",
+    "title": "Reimagine",
+    "description": "Reimagine your photo into a chosen look \u2014 chibi, comic, 3D, 70s street, 80s anime, or a warm Sunday-morning film look.",
+    "category": "Photo Tools",
+    "cover": "https://imagine-public.x.ai/agent-skills/restyle/restyle_cover.jpg?v=12",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/restyle/restyle_chibi.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/restyle/restyle_comic_book.jpg?v=2",
+      "https://imagine-public.x.ai/agent-skills/restyle/restyle_3d_character.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/restyle/restyle_70s_street.jpg?v=4",
+      "https://imagine-public.x.ai/agent-skills/restyle/restyle_80s_anime.jpg?v=3",
+      "https://imagine-public.x.ai/agent-skills/restyle/restyle_sunday_morning.jpg?v=2"
+    ],
+    "presets": [
+      {
+        "label": "Chibi",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_chibi.jpg?v=3",
+        "value": "Chibi",
+        "prompt": "Create a cute anime chibi character of the person from the image, rendered as a high-quality glossy 3D blender style figurine: smooth reflective toy-like plastic materials, strong specular highlights, soft reflections, shiny surfaces. Preserve the person's original race, ethnicity, skin tone, hair color, facial likeness, eye color, and clothing colors precisely. Use classic chibi proportions with a very large head, small torso, simplified cute features, and large over-sized expressive sparkling eyes. Frame from the torso up with the upper body and head filling most of the frame. The person looks directly at the camera with an energetic, pose fit for this type of environment and scene. Preserve the environment that the person is in as the background, making it slightly bokeh."
+      },
+      {
+        "label": "Comic Book",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_comic_book.jpg?v=2",
+        "value": "Comic Book",
+        "prompt": "Transform the input image into an original comic-book / graphic-novel illustration style while preserving the subject's recognizable identity, pose, clothing, and everyday setting. Reinterpret the scene as a single panel from a slice-of-life indie comic: an ordinary, mundane 'day in the life' moment (e.g. sipping coffee, commuting, walking the dog, at a desk, cooking) \u2014 calm and relatable, NOT action or heroic. Use bold black ink outlines, clean confident linework, flat cel-shaded color blocks, and halftone / ben-day dot shading with subtle vintage newsprint texture. Keep the face recognizable but lightly stylized. Do NOT add superheroes, capes, costumes, masks, powers, logos, emblems, speech bubbles, sound effects, or any text. Absolutely no copyrighted, trademarked, or franchise characters or styles \u2014 a completely original, generic comic look applied to a real everyday scene."
+      },
+      {
+        "label": "3D Character",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_3d_character.jpg?v=3",
+        "value": "3D Character",
+        "prompt": "Create a charming cartoon character of the person from the image. Frame from the torso up with the upper body and head filling most of the frame. Pose, cute and charismatic personality, polished high-quality 3D cartoon style, highly detailed, professional illustration. Maintain the original face, structure and hair details. Preserve the environment that the person is in as the background, making it slightly bokeh."
+      },
+      {
+        "label": "70's Street Style",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_70s_street.jpg?v=4",
+        "value": "70's Street Style",
+        "prompt": "1970s NYC candid street photograph of the person or people (if there are multiple people in the user-uploaded photo) in typical 70s outfit, close up picture. avoid too much text in the background."
+      },
+      {
+        "label": "80's Anime",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_80s_anime.jpg?v=3",
+        "value": "80's Anime",
+        "prompt": "maintain original composition, facial expressions, and emotion of the original image. completely change the image style into: full illustrated ANIME STYLE: ultra high res video anime illustrated cartoon animated. retro 1980s aesthetic.,very moody lighting. in the style of a low res 1980s anime screengrab. VCR VHS. retro anime screencap. cartoon. CRT scanlines. bloom. halation. heavy film grain. Smooth perfect skin details."
+      },
+      {
+        "label": "Sunday Morning",
+        "imageUrl": "https://imagine-public.x.ai/agent-skills/restyle/restyle_sunday_morning.jpg?v=2",
+        "value": "Sunday Morning",
+        "prompt": "Warm, nostalgic 35mm film still aesthetic with a soft 1970s/early-80s pastoral-cinema vibe. Golden-hour backlight flooding the frame: rich amber/orange highlights, warm skin tones, and honey-colored grasses. Gentle film halation (soft glowing bloom around bright areas and sunlit edges), slightly lifted blacks with a mild matte fade, and smooth highlight roll-off (no harsh clipping). Medium-wide composition with the subject placed left-of-frame and lots of negative space to the right; a calm, observational, \u201cquiet moment\u201d tone. Shallow-to-moderate depth of field: foreground grasses softly blur into the lens, subject readable but not razor sharp, background trees softened. Naturalistic contrast, slightly low micro-contrast, creamy texture. Subtle film grain throughout (fine, organic grain), mild softness and lens character (gentle vignetting, slight flare), and a restrained color palette that leans warm gold + muted greens. Overall look: dreamy, intimate, sun-drenched, painterly realism like a still from an art-house coming-of-age film."
+      }
+    ]
+  },
+  {
+    "id": "imagine-room-staging",
+    "title": "Room staging (empty to furnished)",
+    "description": "Virtually stage an empty room with furniture and decor in a chosen staging style.",
+    "category": "Interior",
+    "cover": "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Template_Cover_Room%20stating.jpg?v=3",
+    "medias": [
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Template_Cover_Room%20stating.jpg?v=3",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/room_staging_vertical.jpg?v=1",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20stating_Neutral_Transitional.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20stating_Contemporary.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20stating_Modern%20farmhouse.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20stating_Scandinavian%20Light%20Minimalist.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20stating_Coastal.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20staging_Mid-century%20modern.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20staging_Modern%20luxe.jpg",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20staging__Industrrial.jpg?v=20260723",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/room_staging/Room%20staging_Rustic%20mountain.jpg?v=20260723"
+    ],
+    "presets": []
+  },
+  {
+    "id": "imagine-ugc-photos",
+    "title": "UGC Photos",
+    "description": "Turn product reference photos into 6 authentic UGC-style phone snapshots, each with a different person and setting.",
+    "category": "Marketing",
+    "cover": "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/ugc_image/Inluencer%201_16x9.png?v=3",
+    "medias": [
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/ugc_image/Inluencer%201_16x9.png?v=3",
+      "https://storage.googleapis.com/imagine-public.x.ai/agent-skills/ugc_image/Influencer%201_2x3.jpg?v=1",
+      "https://imagine-public.x.ai/agent-skills/ugc_photos/ugc-size-1-pocket.png?v=2",
+      "https://imagine-public.x.ai/agent-skills/ugc_photos/ugc-size-2-handheld.png?v=2",
+      "https://imagine-public.x.ai/agent-skills/ugc_photos/ugc-size-3-medium.png?v=2",
+      "https://imagine-public.x.ai/agent-skills/ugc_photos/ugc-size-4-large.png?v=2",
+      "https://imagine-public.x.ai/agent-skills/ugc_photos/ugc-size-5-oversized.png?v=2"
+    ],
+    "presets": []
+  },
+  {
+    "id": "game-props-ui-kit",
+    "title": "Props & UI Kit",
+    "description": "Generate matching game props, item icons, buttons, and panels - one style contract, engine-ready.",
+    "category": "Game Assets",
+    "cover": "https://imagine-public.x.ai/agent-skills/props_ui_kit/props_ui_kit_cover.jpg?v=5",
+    "medias": [
+      "https://imagine-public.x.ai/agent-skills/props_ui_kit/props_ui_kit_cover.jpg?v=5",
+      "https://imagine-public.x.ai/agent-skills/props_ui_kit/props_ui_kit_vertical.jpg?v=3",
+      "https://app-media.x.ai/ios/agent-skills/game-kit-style-pixel.jpg",
+      "https://app-media.x.ai/ios/agent-skills/game-kit-style-cel.jpg",
+      "https://app-media.x.ai/ios/agent-skills/game-kit-style-painted.jpg",
+      "https://app-media.x.ai/ios/agent-skills/game-kit-style-3d.jpg",
+      "https://app-media.x.ai/ios/agent-skills/game-kit-props.jpg",
+      "https://app-media.x.ai/ios/agent-skills/game-kit-icons.jpg",
+      "https://app-media.x.ai/ios/agent-skills/game-kit-buttons.jpg",
+      "https://app-media.x.ai/ios/agent-skills/game-kit-panels.jpg"
+    ],
+    "presets": []
+  }
+]

@@ -1,12 +1,6 @@
 # Grok Imagine Template Library
 
-Reusable **SFW** packs for Grok Imagine — characters, locations, styles, shots — plus Create Template recipes.
-
-**Home in this repo:** `imagine-template-library/` (paths below are relative to this folder).
-
-See [`CATALOG.md`](CATALOG.md) for the full index (7 characters · 7 locations · 3 styles · 2 shots · 6 product recipes).
-
-> **Not the NSFW doc.** Studio also ships `docs/templates/Kink_Specific_Cinematic_Template_Library.md` (ErosForge). That is a separate adult template set — do not mix the two.
+Reusable packs for Grok Imagine — characters, locations, styles, shots — plus Create Template recipes.
 
 ## Layout
 - `characters/<slug>/` — PACK.md + dna.json
@@ -31,7 +25,13 @@ See [`CATALOG.md`](CATALOG.md) for the full index (7 characters · 7 locations �
 - Hero stills: Image 2.0 / Quality
 - Never lock heroes from Fast
 - Slugs: snake_case
-- Skill: `.grok/skills/grok-imagine-template-library` (points here)
+- Skill: grok-imagine-template-library
 
-## Optional agent mirror
-An agent-disk copy may exist for offline authoring; **this repo tree is the source of truth** for Studio clones and PRs.
+## Props
+`props/<slug>/PACK.md` — hero / reverse / detail plates (`prop_<slug>_hero`). Scale notes + pairs-with required.
+Blank: `_templates/prop-pack.md`
+
+## Official Image 2.0
+- `official-templates/` — 15 xAI templates from the Image 2.0 launch
+- `refs/image-2.0-official/` — reference stills + INDEX.md
+- `workflows/image-2.0-capabilities.md` · `workflows/world-kit.md`
