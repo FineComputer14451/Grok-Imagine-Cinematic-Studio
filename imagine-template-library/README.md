@@ -31,6 +31,7 @@ See [`CATALOG.md`](CATALOG.md) for the full index (7 characters Â· 7 locations Â
 - Hero stills: Image 2.0 / Quality
 - Never lock heroes from Fast
 - Slugs: snake_case
+- Skill: `.grok/skills/grok-imagine-template-library` (points here)
 
 ## Optional agent mirror
 An agent-disk copy may exist for offline authoring; **this repo tree is the source of truth** for Studio clones and PRs.

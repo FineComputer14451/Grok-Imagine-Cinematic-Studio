@@ -26,6 +26,9 @@ packs:
     - multi-character-identity-arbiter
     - costume-wardrobe-continuity
     - imagine-prompt-master
+    - grok-imagine-template-library
+    - imagine-model-overrides
+    - grok-chat-model-map
     - imagine-execution-bridge
     - grok-imagine-image-tools
     - xai-grok-skill
@@ -62,6 +65,7 @@ packs:
     - ai-image-recreation
     - key-art-poster-designer
     - reference-asset-curator
+    - characters-props-locations-refs
     - image-to-video-specialist
     - plate-motion-readiness-lead
     - contact-micro-physics-specialist
