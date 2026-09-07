@@ -9,3 +9,7 @@ Contains:
 - Placeholder plate files + `board/manifest.json`
 
 Replace `PLACEHOLDER_PLATE` files with real Quality / Image 2.0 stills before production lock.
+
+## Agent Mode
+
+Consumer Imagine Agent Mode can produce the stills; this pack + `scripts/cross_ref_check.py` verify DNA ↔ plate consistency afterward. Details: `docs/guides/IMAGINE_MODELS_MAP.md`.

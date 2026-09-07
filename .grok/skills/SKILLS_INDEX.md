@@ -18,3 +18,5 @@ Combined: `grok-imagine-skills-pack.zip` → `unzip -d ~/.grok/`
 | Post-board cross-ref check | `characters-props-locations-refs/scripts/cross_ref_check.py` |
 | Sample board + DNA demo | `characters-props-locations-refs/samples/onboarding-demo/` |
 | Sample DNA packets only | `character-dna-extractor/samples/onboarding-demo/` |
+
+Agent Mode note: consumer Imagine Agent Mode is orchestration UI — use sample DNA + `cross_ref_check.py` around the canvas; see `docs/guides/IMAGINE_MODELS_MAP.md`.

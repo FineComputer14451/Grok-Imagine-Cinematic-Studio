@@ -22,3 +22,7 @@ python ../characters-props-locations-refs/scripts/cross_ref_check.py /path/to/pr
 ```
 
 These packets set `"sample": true` — clear that flag (or re-init) before Identity Lock.
+
+## Agent Mode
+
+Safe to pair with grok.com/imagine **Agent Mode**: generate plates there, keep DNA here, then cross-ref check. See `docs/guides/IMAGINE_MODELS_MAP.md`.
