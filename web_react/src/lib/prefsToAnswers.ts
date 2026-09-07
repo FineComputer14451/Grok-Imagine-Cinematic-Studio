@@ -13,6 +13,8 @@ export const FIELD_PREF_MAP: Record<string, keyof SettingsPrefs> = {
   genre: 'genre',
   chat_model: 'chat_model',
   video_model: 'video_model',
+  image_model: 'image_model',
+  director: 'director',
   duration: 'duration',
   tier: 'quota_tier',
   complexity: 'complexity',

@@ -90,7 +90,7 @@ npm run preview  # serve dist (preview proxy still → :8090 unless VITE_STUDIO_
 ### Phase 2 notes
 
 - **Settings** prefs are browser-local (Streamlit `session_state` analogue). They do **not** inject `XAI_API_KEY` into the API process.
-- **Prefs → ActionSpec forms:** saved Settings seed matching field keys (`genre`, `chat_model`, `video_model`, `duration`, `tier` / `quota_tier`, …) via `src/lib/prefsToAnswers.ts`. Forms remount on save (`PREFS_UPDATED_EVENT`).
+- **Prefs → ActionSpec forms:** saved Settings seed matching field keys (`genre`, `chat_model`, `video_model`, `image_model`, `director`, `duration`, `tier` / `quota_tier`, …) via `src/lib/prefsToAnswers.ts`. Forms remount on save (`PREFS_UPDATED_EVENT`).
 - **Tools** uses ActionSpec + `GET /v1/meta/*` (role cards / agents). PDF report download remains Streamlit/CLI.
 - **NSFW** live plan/execute stays Streamlit/CLI; SPA shows dashboard `nsfw_batches` only.
 - **Guided Bible** on `/bible` uses `cli.bible_stages` + `build_production_bible` over HTTP (never ActionSpec `--wizard`). Quick `bible_create` ActionSpec remains on Production.
