@@ -30,9 +30,8 @@ Then emit the pick card (Mode / Why / Not).
 Supporting files:
 - `references/CHEAT_SHEET.md` — paste-ready user card
 - `references/mode-catalog.md` — modes + API ids + aliases
-- `references/PASTE_PACK.md` — Discord / share paste blocks
+- `references/PASTE_PACK.md` — short share paste blocks
 - `README.md` — install into `~/.grok/skills`
-- `DISCORD_POST.md` / `DISCORD_THREAD.md` — community pack
 
 ## Hard rules
 
