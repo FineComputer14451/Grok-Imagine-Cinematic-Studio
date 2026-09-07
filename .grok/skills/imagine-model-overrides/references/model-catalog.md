@@ -27,8 +27,8 @@ Omit on Image 1.0. Hero finals: prefer `quality=medium`.
   → grok-imagine-image
 
 quality, pro, image-quality, imagine-image-quality, grok-imagine-image-pro,
-grok-imagine-image-quality-latest, grok-imagine-image-quality-20260403
-  → grok-imagine-image-quality (then redirect to 2.0 + quality=low)
+grok-imagine-image-quality-latest, grok-imagine-image-quality-20260403 (retired aliases)
+  → grok-imagine-image-quality (retired; then redirect to 2.0 + quality=low)
 ```
 
 ## Video slugs

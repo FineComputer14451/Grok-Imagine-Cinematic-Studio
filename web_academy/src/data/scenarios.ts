@@ -198,7 +198,7 @@ On No-Go: repair plan only — do not rewrite Production Bible.`,
       "Quota Optimizer: hero vs draft still order before any video.",
       "Trailer Director: 15–30s beat sheet using approved plates only.",
     ],
-    activation: `Activate Grok Imagine Cinematic Studio v3.9.1
+    activation: `Activate Grok Imagine Cinematic Studio v3.11.4
 ACTIVATE STUDIO_DIRECTOR
 ACTIVATE MEGA_PRODUCTION_ARCHITECT
 ACTIVATE DOP

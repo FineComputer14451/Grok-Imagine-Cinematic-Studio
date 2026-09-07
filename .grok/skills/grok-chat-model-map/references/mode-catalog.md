@@ -29,7 +29,7 @@ Do **not** invent extra picker tiles (no “Grok 4.6” depth mode in verified s
 | API id | Role vs Chat |
 |--------|----------------|
 | `grok-4.6` | Recommended Chat + Code on API; Expert/Auto sit on this generation |
-| `grok-4.5` | Prior flagship |
+| `grok-4.5` | Resolve alias that wraps grok-4.6 (prior flagship label) |
 | `grok-4.3` | Long-context / alternate |
 | `grok-4.20-0309-reasoning` | Reasoning variant |
 | `grok-4.20-0309-non-reasoning` | Non-reasoning / faster analogue |

@@ -1,6 +1,6 @@
 export type ApiEndpoint = {
   id: string;
-  method: "GET" | "POST";
+  method: "GET" | "POST" | "DELETE";
   path: string;
   title: string;
   summary: string;
@@ -78,16 +78,16 @@ export const GROK_PRICING: {
       blurb: "Published list rates per million tokens.",
       rows: [
         {
-          model: "grok-4.5",
+          model: "grok-4.6",
           unit: "Input / 1M tokens",
           price: "$2.00",
-          note: "List price",
+          note: "Live chat default (grok-4.5 is a resolve alias that wraps 4.6)",
         },
         {
-          model: "grok-4.5",
+          model: "grok-4.6",
           unit: "Output / 1M tokens",
           price: "$6.00",
-          note: "List price",
+          note: "Live chat default (grok-4.5 is a resolve alias that wraps 4.6)",
         },
       ],
     },
@@ -140,7 +140,7 @@ export const GROK_PRICING: {
           note: "Up to 5 edit sources. Billed per input image.",
         },
         {
-          model: "grok-imagine-image-quality",
+          model: "grok-imagine-image-quality (retired)",
           unit: "Output / image (1K / 2K)",
           price: "$0.05 / $0.07",
           note: "Retires Nov 2 → 2.0 quality low. Do not leave in templates.",
@@ -275,7 +275,7 @@ export const GROK_PRICING: {
     {
       label: "Prompt craft (chat)",
       estimate: "≪ $0.01",
-      detail: "Small grok-4.5 call with capped max_tokens — illustrative",
+      detail: "Small grok-4.6 call with capped max_tokens — illustrative",
       kind: "example",
     },
   ],
@@ -346,7 +346,7 @@ export const askGrok = createServerFn({ method: "POST" })
         Authorization: \`Bearer \${apiKey}\`,
       },
       body: JSON.stringify({
-        model: "grok-4.5",
+        model: "grok-4.6",
         messages: [{ role: "user", content: data.prompt }],
       }),
     });
@@ -487,11 +487,11 @@ Authorization: Bearer $XAI_API_KEY`,
         path: "/v1/chat/completions",
         title: "Chat completions",
         summary:
-          "OpenAI-compatible chat. grok-4.5 list: $2 input / $6 output per 1M tokens.",
+          "OpenAI-compatible chat. grok-4.6 list: $2 input / $6 output per 1M tokens (grok-4.5 is a resolve alias that wraps 4.6).",
         request: `POST https://api.x.ai/v1/chat/completions
 
 {
-  "model": "grok-4.5",
+  "model": "grok-4.6",
   "messages": [
     { "role": "system", "content": "You are a cinematic production assistant." },
     { "role": "user", "content": "Write a 3-shot neon alley brief." }
@@ -525,7 +525,7 @@ Authorization: Bearer $XAI_API_KEY`,
     id: "imagine-image",
     title: "Imagine — images",
     intro:
-      "1.0 for cheap iteration. 2.0 with quality low | medium | auto for plates. quality auto currently serves low on generation and medium on edits. Bill at the quality served. After November 2, grok-imagine-image-quality is 2.0-low.",
+      "1.0 for cheap iteration. 2.0 with quality low | medium | auto for plates. quality auto currently serves low on generation and medium on edits. Bill at the quality served. After November 2, retired slug grok-imagine-image-quality is 2.0-low — do not send it as the live hero.",
     endpoints: [
       {
         id: "images-generations",
@@ -587,7 +587,7 @@ Authorization: Bearer $XAI_API_KEY`,
 // auto quality currently serves medium for edits`,
         response: `{
   "data": [
-    { "url": "https://…" }
+    { "url": "https://…", "file_id": "file_…" }
   ],
   "model": "grok-imagine-image-2.0"
 }`,
@@ -595,6 +595,7 @@ Authorization: Bearer $XAI_API_KEY`,
           "Ideal for plate polish before video spend.",
           "Keep identity locks in the edit prompt when Character DNA is required.",
           "2.0 adds 21:9 / 5:2 cinematic ratios — prefer native 21:9 over a 16:9 crop.",
+          "JSON body only — images.edit() multipart is NOT supported (use image / images[] with URL, data URI, or file_id).",
         ],
       },
     ],
@@ -608,14 +609,17 @@ Authorization: Bearer $XAI_API_KEY`,
       {
         id: "video-start",
         method: "POST",
-        path: "/v1/videos (async start)",
+        path: "/v1/videos/generations",
         title: "Start video generation",
         summary:
           "Kick off grok-imagine-video-1.5 (hero) or grok-imagine-video (draft); poll the request id.",
-        request: `// Hero: grok-imagine-video-1.5  480p $0.08/s · 720p $0.14/s · 1080p $0.25/s
+        request: `POST https://api.x.ai/v1/videos/generations
+Authorization: Bearer $XAI_API_KEY
+
+// Hero: grok-imagine-video-1.5  480p $0.08/s · 720p $0.14/s · 1080p $0.25/s
 // Draft: grok-imagine-video     480p $0.05/s · 720p $0.07/s
 // Duration: up to ~15 seconds on 1.5
-// Flow: POST start → poll status with returned id → download result
+// Flow: POST /v1/videos/generations → GET /v1/videos/{request_id} until status done
 
 {
   "model": "grok-imagine-video-1.5",
@@ -638,15 +642,15 @@ Authorization: Bearer $XAI_API_KEY`,
         method: "GET",
         path: "/v1/videos/{request_id}",
         title: "Poll video job",
-        summary: "Check status until complete; then fetch the clip URL.",
-        request: `GET https://api.x.ai/v1/…/{request_id}
+        summary: "Check status until done; then fetch the clip URL.",
+        request: `GET https://api.x.ai/v1/videos/{request_id}
 Authorization: Bearer $XAI_API_KEY`,
         response: `{
-  "status": "completed" | "pending" | "failed",
-  "url": "https://…/clip.mp4"
+  "status": "done",
+  "video": { "url": "https://…/clip.mp4", "file_id": "file_…" }
 }`,
         notes: [
-          "Exact paths and fields: docs.x.ai → Imagine Video.",
+          "Poll until status is done (not completed). Other values: pending | failed | expired.",
           "Retry failed jobs at most once.",
         ],
       },
@@ -706,13 +710,13 @@ Authorization: Bearer $XAI_API_KEY`,
         path: "chat → images",
         title: "Prompt Master → Imagine still",
         summary: "LLM writes the packet; images API renders the plate.",
-        request: `// 1) Chat: craft cinematic prompt (grok-4.5)
+        request: `// 1) Chat: craft cinematic prompt (grok-4.6; grok-4.5 is a resolve alias that wraps 4.6)
 // 2) Images: POST /v1/images/generations with that prompt
 // 3) Optional edit: POST /v1/images/edits for plate lock
 
 {
   "pipeline": ["chat.completions", "images.generations"],
-  "models": ["grok-4.5", "grok-imagine-image-2.0"],
+  "models": ["grok-4.6", "grok-imagine-image-2.0"],
   "image_quality": "medium"
 }`,
         notes: [
@@ -753,7 +757,7 @@ export const API_STATUS_CODES = [
   { code: "429", meaning: "Rate limited or quota pressure — back off" },
   { code: "5xx", meaning: "Server error — retry at most once, then surface" },
   { code: "pending", meaning: "Async video job still running — keep polling" },
-  { code: "completed", meaning: "Async video ready — fetch URL" },
+  { code: "done", meaning: "Async video ready — fetch URL (status done, not completed)" },
   { code: "failed", meaning: "Async job failed — show error, optional single retry" },
 ];
 
@@ -776,7 +780,7 @@ export const API_ERRORS = [
   },
   {
     error: "RETIRED_IMAGE_QUALITY_SLUG",
-    fix: "Replace grok-imagine-image-quality with grok-imagine-image-2.0 and pin quality (low | medium). After Nov 2 the old slug is 2.0-low.",
+    fix: "Do not send grok-imagine-image-quality; replace with grok-imagine-image-2.0 and pin quality (low | medium). After Nov 2 the retired slug is 2.0-low.",
   },
   {
     error: "RETRY_STORM",
