@@ -38,7 +38,7 @@ Supporting files:
 1. **Never invent picker labels.** Only: Auto, Fast, Expert, Heavy, Build.
 2. **Never send Chat mode names as API `model` strings.** `Auto` / `Expert` ≠ `grok-4.6`.
 3. **Grok 4.6** is the Chat/Code generation on [docs.x.ai/models](https://docs.x.ai/developers/models) (“Chat: Grok 4.6”) — **not** a fifth depth tile in the verified Chat picker.
-4. **Build** in the Chat picker is a **surface hop** to Grok Build, not a reasoning depth.
+4. **Build** in the Chat picker opens **Build Mode** (in-chat apps → `*.grok.me`), **not** the terminal Grok Build CLI (`grok`). Distinct products; see [xAI](https://x.ai/news/grok-build-mode).
 5. **Imagine** stills/video → skill `imagine-model-overrides` (sidebar Imagine), not this skill.
 6. **Cinematic Studio** `tools/models.py` is a different registry (do not merge).
 
@@ -50,7 +50,7 @@ Supporting files:
 | **Fast** | Latency path | Quick facts, short asks | Same Chat product family; lighter route — API id not shown in UI |
 | **Expert** | Deep reasoning | Hard analysis, long reasoning | Best match for flagship Chat on **4.6** generation |
 | **Heavy** | Multi-agent max | Hardest multi-step depth | Separate Heavy stack (not “slow Expert”) |
-| **Build** | Product switch | Coding agent / repo work | Opens Grok Build; Build default intelligence also **grok-4.6** |
+| **Build** | Build Mode (product) | Shareable sites/apps/games/dashboards in chat | Opens **Build Mode** → preview / `grok.me` — **not** Termux `grok` CLI |
 
 Full tables: `references/mode-catalog.md`.
 
@@ -71,19 +71,20 @@ Full tables: `references/mode-catalog.md`.
 | Speed | **Fast** |
 | Depth / hard reasoning | **Expert** |
 | Max multi-agent depth | **Heavy** |
-| Coding agent | **Build** |
+| Shareable in-chat app / site | **Build** (Build Mode) |
+| Repo / lab coding (CLI) | Terminal **Grok Build** (`grok`) — not this tile |
 | Stills / video | **Imagine** (other skill) |
 | HTTP API call | API id e.g. `grok-4.6` — not a Chat mode |
 
 ## Surface tree
 
 ```
-Chat thread          → Auto | Fast | Expert | Heavy
-Chat picker → Build  → Grok Build coding agent
-Sidebar Imagine      → Imagine image/video models
-api.x.ai / SDK       → grok-4.6, grok-4.5, …
-Grok Build TUI       → /model aliases (host config)
-Studio registry      → tools/models.py (separate)
+Chat thread               → Auto | Fast | Expert | Heavy
+Chat picker → Build       → Build Mode (in-chat preview → *.grok.me)
+Sidebar Imagine           → Imagine image/video models
+api.x.ai / SDK            → grok-4.6, grok-4.5, …
+Terminal Grok Build CLI   → grok / grokhunter (repo edits; default grok-4.6)
+Studio registry           → tools/models.py (separate)
 ```
 
 ## Output card (always)
@@ -98,6 +99,18 @@ Studio registry      → tools/models.py (separate)
 ## Tier note
 
 Verified session 2026-09-06: all five modes visible with **no lock badges**. Quotas can still differ by plan (Heavy often needs SuperGrok Heavy for full compute).
+
+
+## Build Mode vs Grok Build CLI
+
+| | Chat **Build** (Build Mode) | Terminal **Grok Build** |
+|--|-----------------------------|-------------------------|
+| Where | grok.com / iOS / Android Chat | Termux / desktop `grok` |
+| Output | Live preview + `*.grok.me` (or custom domain) | File edits, shell, agents |
+| Use for | Prototypes you share as a link | Repo / GrokHunter lab work |
+
+Never treat Chat **Build** as “open my phone rootfs.”
+Official: https://x.ai/news/grok-build-mode
 
 ## References
 

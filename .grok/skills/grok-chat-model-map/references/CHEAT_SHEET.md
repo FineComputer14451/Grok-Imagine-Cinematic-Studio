@@ -17,7 +17,8 @@ Models docs: https://docs.x.ai/developers/models · Grok 4.6: https://docs.x.ai/
 | Speed | **Fast** |
 | Hard reasoning / depth | **Expert** |
 | Max multi-agent depth | **Heavy** |
-| Coding agent | **Build** |
+| Shareable in-chat app/site | **Build** (Build Mode) |
+| Repo / lab coding | Terminal `grok` (not Chat Build) |
 | Stills / video | Sidebar **Imagine** (not this picker) |
 
 **Grok 4.6** = current Chat/Code generation (docs). It is **not** a separate fifth depth tile in the verified Chat picker.
@@ -32,7 +33,7 @@ Models docs: https://docs.x.ai/developers/models · Grok 4.6: https://docs.x.ai/
 | Fast | Latency | Light / quick answers |
 | Expert | Deep | Best Chat match for **4.6**-generation flagship reasoning |
 | Heavy | Multi-agent | Separate Heavy path — not “Expert but slower” |
-| Build | Surface hop | Opens **Grok Build** coding agent |
+| Build | Build Mode | In-chat apps → `*.grok.me` — **not** Termux CLI |
 
 ---
 
@@ -42,7 +43,8 @@ Models docs: https://docs.x.ai/developers/models · Grok 4.6: https://docs.x.ai/
 |---------|----------------|
 | grok.com **Chat** | Auto / Fast / Expert / Heavy (/ Build) |
 | **api.x.ai** | `grok-4.6`, `grok-4.5`, … — never send `Auto` or `Expert` as `model` |
-| **Grok Build** TUI | Host `/model` aliases; default coding ≈ `grok-4.6` |
+| **Grok Build** TUI (`grok`) | Repo agent on device; default ≈ `grok-4.6` — **≠** Chat Build Mode |
+| **Build Mode** (Chat → Build) | Preview + publish `*.grok.me` ([news](https://x.ai/news/grok-build-mode)) |
 | **Imagine** | Quality/Fast stills · Video 1.0/1.5 → `imagine-model-overrides` |
 | Cinematic Studio | `tools/models.py` registry (different map) |
 

@@ -10,7 +10,7 @@ Source: live grok.com Chat picker **2026-09-06** + https://docs.x.ai/developers/
 | `Fast` | Latency | Short / simple | API id not exposed in UI |
 | `Expert` | Deep reasoning | Hard tasks | Best Chat match for **Grok 4.6** generation |
 | `Heavy` | Multi-agent | Max depth | Separate Heavy path |
-| `Build` | Surface hop | Coding agent | Opens Grok Build |
+| `Build` | Build Mode | Shareable apps in chat | Opens Build Mode → `*.grok.me` — **not** CLI `grok` |
 
 ### Aliases (spoken → mode)
 
@@ -19,7 +19,8 @@ default, router, automatic     → Auto
 quick, speed, light, low-latency → Fast
 deep, think, reasoning, smart  → Expert
 max, multi-agent, team         → Heavy
-code, coding, agent, cli, tui  → Build
+prototype, website, app, game, grok.me → Build (Build Mode)
+code, coding, agent, cli, tui, repo     → Terminal Grok Build (`grok`) — not Chat Build
 ```
 
 Do **not** invent extra picker tiles (no “Grok 4.6” depth mode in verified snapshot).
@@ -48,7 +49,7 @@ auto, fast, expert, heavy, build
 | Control | Meaning |
 |---------|---------|
 | Chat picker → Auto/Fast/Expert/Heavy | Chat reasoning / routing modes |
-| Chat picker → Build | Leave Chat for Grok Build |
+| Chat picker → Build | **Build Mode** (in-chat create/publish) — not Termux CLI |
 | Sidebar → Imagine | Image/video models (see imagine-model-overrides) |
 
 ## Cross-skill
@@ -58,3 +59,14 @@ auto, fast, expert, heavy, build
 | Chat mode pick | **grok-chat-model-map** (this) |
 | Imagine Quality/Fast · Video 1.0/1.5 | `imagine-model-overrides` |
 | Studio ROLE_DEFAULTS | Cinematic Studio `tools/models.py` |
+
+
+## Build Mode vs Grok Build CLI
+
+| | Chat picker **Build** | Terminal **Grok Build** (`grok`) |
+|--|----------------------|----------------------------------|
+| Product | Build Mode ([news](https://x.ai/news/grok-build-mode)) | Coding agent CLI |
+| Where | grok.com / iOS / Android | Local machine / Termux |
+| Output | Preview + `*.grok.me` | Repo edits / shell / agents |
+
+API id `grok-build-0.1` is a **model id**, not the Chat Build tile.

@@ -25,3 +25,10 @@ ACTIVATE GROK_CHAT_MODEL_MAP
 ```
 
 Optional args: `expert` · `fast` · `heavy` · `build` · `tree` · `api`
+
+
+## Build Mode ≠ Grok Build CLI
+
+Chat picker **Build** = Build Mode (sites/apps in chat → grok.me).
+Terminal **Grok Build** = `grok` / `grokhunter` on your machine (repo edits).
+Same word, two products. https://x.ai/news/grok-build-mode

@@ -33,7 +33,7 @@
 | **Fast** | Low-latency, light answers | Non-/low-reasoning path | Good for facts, short asks |
 | **Expert** | Forced deeper reasoning | Flagship reasoning stack (4.6-era Expert) | Super / Premium+ often required for full access |
 | **Heavy** | Multi-agent / max depth | Heavy / multi-agent stack | SuperGrok Heavy |
-| **Build** | Coding agent entry from Chat | Grok Build surface (not a chat reasoning depth) | Distinct from Auto/Fast/Expert/Heavy |
+| **Build** | Build Mode (in-chat create/publish) | Opens Build Mode → preview / `*.grok.me` ([news](https://x.ai/news/grok-build-mode)) | **Not** the terminal Grok Build CLI; distinct from Auto/Fast/Expert/Heavy |
 
 No separate “Grok 4.6” named pin was visible in this picker snapshot — 4.6 is the generation behind Chat/Expert (per docs.x.ai), not a fifth depth mode in this UI.
 
@@ -47,7 +47,7 @@ Sources: live picker 2026-09-06 · https://docs.x.ai/developers/models (“Chat:
 | **Fast** | Latency / light path | Same Chat product generation family; may use a lighter or non-/low-reasoning route — **exact API id not exposed in UI** |
 | **Expert** | Forced deep reasoning | Best match for flagship Chat intelligence on the **4.6 generation** (docs: Chat → Grok 4.6) |
 | **Heavy** | Multi-agent / max depth | Separate product path (Heavy stack); not “Expert but slower” |
-| **Build** | Product switch | Opens **Grok Build** coding agent — not a Chat reasoning depth. Build’s default API/coding model is also **grok-4.6** (docs / Grok Build), but the Chat picker entry is a surface hop |
+| **Build** | Build Mode product | Opens **Build Mode** (in-chat apps → `*.grok.me`). Not a Chat reasoning depth. Terminal **Grok Build** CLI is a separate product (default coding model **grok-4.6**) |
 
 **Rule of thumb:** In Grok Chat, you pick a **mode**. On the API, you pick an **id** like `grok-4.6`. Do not treat `Auto`/`Fast`/`Expert`/`Heavy` as API model strings.
 
@@ -72,7 +72,7 @@ Where are you working?
 │
 ├─ grok.com / iOS / Android / X → Chat thread
 │     → Use Chat modes: Auto | Fast | Expert | Heavy
-│     → Build in that picker → hop to Grok Build (coding agent)
+│     → Build in that picker → Build Mode (in-chat → *.grok.me; ≠ terminal grok CLI)
 │     → Sidebar Imagine → Imagine image/video models (not Chat modes)
 │
 ├─ api.x.ai / console / SDK
@@ -92,7 +92,8 @@ Where are you working?
 - Need speed → **Fast**
 - Need depth → **Expert** (4.6-generation Chat)
 - Need multi-agent max → **Heavy**
-- Need coding agent → **Build** (or CLI), not Expert
+- Need shareable in-chat app → Chat **Build** (Build Mode)
+- Need repo/lab coding → terminal **Grok Build** CLI (`grok`), not Chat Build / not Expert
 - Need stills/video → **Imagine**, not Chat modes
 
 ### B. API / developer IDs (docs.x.ai — not the Chat dropdown)
@@ -137,6 +138,15 @@ Where are you working?
 - [x] Commit: `docs(chat): verify grok.com Chat mode picker labels`
 
 ---
+
+
+### Build Mode vs Grok Build CLI (naming)
+
+xAI **Build Mode** (Chat picker → Build): create websites/apps/games in chat and publish to `*.grok.me` — Early Beta, [announcement](https://x.ai/news/grok-build-mode).
+
+**Grok Build** CLI (`grok`): terminal coding agent for repos (GrokHunter lab uses this).
+
+Do not document Chat Build as “hop to Termux grok” without this split.
 
 ## Task 2: Mode → Grok 4.6 relationship note
 
