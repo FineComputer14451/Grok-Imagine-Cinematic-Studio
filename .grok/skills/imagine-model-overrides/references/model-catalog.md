@@ -1,19 +1,21 @@
 # Imagine model catalog (overrides)
 
-Source of truth: FineComputer14451/Grok-Imagine-Cinematic-Studio `tools/models.py` + docs.x.ai Models (Sep 2026).
+**Docs recommend (Sep 2026):** Chat/Code → `grok-4.6` · Images → `grok-imagine-image-2.0` · Videos → `grok-imagine-video-1.5`.
+
+Source of truth: FineComputer14451/Grok-Imagine-Cinematic-Studio `tools/models.py` (v3.11.4+) + https://docs.x.ai/developers/models
 
 ## Image slugs
 
 | Canonical | Default role | Deprecated | Redirect |
 |-----------|--------------|------------|----------|
 | `grok-imagine-image` | Draft / Fast Mode | no | — |
-| `grok-imagine-image-2.0` | Hero / Quality Mode | no | — |
+| `grok-imagine-image-2.0` | **Hero / Quality Mode** (docs default for Images) | no | — |
 | `grok-imagine-image-quality` | Legacy Quality | yes (retire 2026-11-02) | → `grok-imagine-image-2.0` + `quality=low` |
 
 ### Image 2.0 quality param
 
 Allowed: `low` | `medium` | `auto`  
-Omit on Image 1.0.
+Omit on Image 1.0. Hero finals: prefer `quality=medium`.
 
 ### Image aliases
 
@@ -34,7 +36,7 @@ grok-imagine-image-quality-latest, grok-imagine-image-quality-20260403
 | Canonical | Default role | Native audio | Edit/extend |
 |-----------|--------------|--------------|-------------|
 | `grok-imagine-video` | Cost default / draft | no | **yes** |
-| `grok-imagine-video-1.5` | Final / audio | yes | **no** |
+| `grok-imagine-video-1.5` | Final / audio (docs default for Videos) | yes | **no** |
 
 ### Video aliases
 
@@ -50,11 +52,12 @@ grok-imagine-video-1.5-preview, grok-imagine-video-1.5-2026-05-30
 ## Studio role defaults (do not invent)
 
 ```
-imagine_image default = grok-imagine-image
-imagine_image hero    = grok-imagine-image-2.0
-imagine_video default = grok-imagine-video
-imagine_video audio   = grok-imagine-video-1.5
-edit/extend video     = grok-imagine-video
+cinematic / build / cli   = grok-4.6
+imagine_image default     = grok-imagine-image
+imagine_image hero        = grok-imagine-image-2.0
+imagine_video default     = grok-imagine-video
+imagine_video audio       = grok-imagine-video-1.5
+edit/extend video         = grok-imagine-video
 ```
 
 ## grok.com/imagine UI mapping
