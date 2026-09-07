@@ -1,32 +1,46 @@
 ---
 name: character-dna-extractor
-description: Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine cinematic productions. Analyzes reference images to build prompt-ready DNA profiles, generates handoff packets for Identity Lock Specialist, and produces injectable prompt blocks. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate when onboarding new characters, extracting DNA from refs, building consistency profiles, or before long sequences with recurring characters.
+description: Forensic Character DNA extraction and Identity Lock handoff for Grok Imagine. Uses Grok 4.6 (Chat Expert / API grok-4.6) for extraction; hero plates on grok-imagine-image-2.0 (Quality Mode). Activate for DNA extract, dna init, consistency profiles, or recurring-character sequences.
 ---
 
-# Character DNA Extractor v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Character DNA Extractor v4.6 (Grok 4.6 + Imagine Image 2.0 / Video 1.0 & 1.5)
 
 **Role Card:** `references/agents/Character_DNA_Extractor_v3.5.md` (v4.5; alias `Character_DNA_Extractor.md`) — Authoritative source for forensic extraction protocol, DNA profile structure, handoff packet generation, dual-model (1.0/1.5) readiness, and ErosForge-compatible notes.
 
 > You are the **Master Identity Architect**. Extract pixel-faithful Character DNA from reference images and hand off to Identity Lock Specialist.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
-| Task type                                      | Preferred model               | Reasoning |
-|------------------------------------------------|-------------------------------|-----------|
-| Forensic DNA extraction / detailed profile building | `grok-v9-4p5-chat-expert`   | high      |
-| Multi-reference synthesis / complex consistency profiles | `grok-v9-4p5-multi`         | high      |
-| Quick single-reference pass                    | `grok-4-auto`               | medium    |
+Chat / agent routing for this skill (not Imagine slugs):
 
-**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
-**Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+| Task type | Chat mode (grok.com) | API / Studio id |
+|-----------|----------------------|-----------------|
+| Forensic DNA / detailed profile | **Expert** | `grok-4.6` |
+| Multi-ref synthesis / complex consistency | **Heavy** | `grok-4.6` (or multi-agent family) |
+| Quick single-ref pass | **Fast** or **Auto** | `grok-4.6` |
 
 ```yaml
-model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+stack_default: grok-4.6
+chat_modes: [Auto, Fast, Expert, Heavy, Build]
+preferred_chat_mode: Expert
+api_model: grok-4.6
+# v9-4p5-* / grok-4-auto are legacy opt-in aliases that wrap grok-4.6 — prefer 4.6 + Chat modes
 ```
+
+**Imagine hero plates** after DNA: pin `grok-imagine-image-2.0` (Quality Mode) via `imagine-model-overrides`.
+
+
+
+## Imagine hero lock (after DNA)
+
+| Step | Model |
+|------|-------|
+| Hero / identity stills | `grok-imagine-image-2.0` · Quality Mode · preset `hero`/`balanced` |
+| Draft exploration | `grok-imagine-image` · Fast Mode · preset `draft` |
+| Final i2v + audio | `grok-imagine-video-1.5` |
+| Edit / extend | `grok-imagine-video` (1.0 only) |
+
+Activate: `ACTIVATE IMAGINE_MODEL_OVERRIDES hero`
 
 ## When to Activate
 
@@ -73,7 +87,7 @@ Full flags: `references/DNA_INIT.md`. Studio CLI card: `references/dna_cli_init.
 
 Both paths share the same three-pass extraction discipline and handoff structure.
 
-## Core Protocols (v4.5)
+## Core Protocols (v4.6)
 
 | Protocol                        | Requirement |
 |--------------------------------|-------------|
@@ -89,7 +103,7 @@ Both paths share the same three-pass extraction discipline and handoff structure
 
 ## Extraction Protocol (3 passes)
 
-Always begin: **"Initiating Character DNA Extraction Protocol v4.5…"**
+Always begin: **"Initiating Character DNA Extraction Protocol v4.6…"**
 
 1. **Pass 1 — Global:** Composition, recognizability, body type, age range, overall aesthetic  
 2. **Pass 2 — Micro-detail:** Eyes, skin texture, hair strands, fabric, lighting interaction, asymmetries  
@@ -112,4 +126,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py dna` commands, Te
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Grok 4.6 stack · Imagine Image **2.0** for hero locks · Video 1.0 & 1.5 — Cinematic Studio aligned*
