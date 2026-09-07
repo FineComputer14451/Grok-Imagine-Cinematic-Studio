@@ -121,7 +121,7 @@ Where are you working?
 |------|----------------|
 | `docs/superpowers/plans/2026-09-06-grok-chat-46-model-mapping.md` | This plan |
 | Optional later: `docs/guides/GROK_CHAT_MODELS.md` or skill pack | User-facing cheat sheet for Chat modes |
-| Optional later: Discord / community cheat sheet | Same map, paste-ready |
+| Optional later: community / share cheat sheet | Same map, paste-ready |
 
 ---
 
@@ -173,9 +173,9 @@ Where are you working?
 
 ## Task 5: Optional cheat sheet skill / community pack
 
-**Goal:** Paste-ready card for Discord / grok.com skills if the user wants distribution.
+**Goal:** Paste-ready card for grok.com skills / sharing if the user wants distribution.
 
-- [x] Skill pack: `.grok/skills/grok-chat-model-map/` (SKILL.md, CHEAT_SHEET, DISCORD_POST, DISCORD_THREAD)
+- [x] Skill pack: `.grok/skills/grok-chat-model-map/` (SKILL.md, README, CHEAT_SHEET, mode-catalog, PASTE_PACK)
 - [x] Mirror verified Auto/Fast/Expert/Heavy/Build table; no Studio registry content
 - [x] Commit on plan branch / PR #48
 
