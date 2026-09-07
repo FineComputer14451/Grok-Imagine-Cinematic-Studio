@@ -28,6 +28,27 @@ Default mode: **generate** (not explanation-only).
 Args: `auto` (default) · `checklist` · `order` · `models` · `board` · `<project-slug>`  
 `explain` or `checklist-only` = docs only, no generation.
 
+## Activation commands
+
+```text
+ACTIVATE CHARACTERS_PROPS_LOCATIONS_REFS
+ACTIVATE CHARACTERS_PROPS_LOCATIONS_REFS auto
+ACTIVATE CHARACTERS_PROPS_LOCATIONS_REFS explain
+/characters-props-locations-refs
+/characters-props-locations-refs <project-slug>
+```
+
+Companions:
+
+```text
+ACTIVATE IMAGINE_MODEL_OVERRIDES hero
+ACTIVATE CHARACTER_DNA_EXTRACTOR
+ACTIVATE GROK_CHAT_MODEL_MAP
+```
+
+Paste card: `references/ACTIVATION.md`.
+
+
 Supporting files:
 - `references/GENERATE.md` — auto-create plate recipe
 - `references/CHECKLIST.md` — day checklist
