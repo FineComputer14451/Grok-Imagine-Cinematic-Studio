@@ -1,11 +1,11 @@
 # Imagine Model Selector Cheat Sheet
-**For https://grok.com/imagine — when Quality looks weak, muddy, or “wrong model”**
+**For https://grok.com/imagine — Image 2.0 (Quality) + Video 1.0/1.5**
+Chat/Code stack elsewhere: **Grok 4.6** (`grok-4.6`). Docs: https://docs.x.ai/developers/models
 
 Quick pin skill: `ACTIVATE IMAGINE_MODEL_OVERRIDES`  
 Studio PR: https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/pull/45  
 Skill folder: https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/tree/feat/imagine-model-overrides-skill/.grok/skills/imagine-model-overrides  
 Official models list: https://docs.x.ai/docs/models  
-Grok Community Discord: https://discord.gg/grok-community
 
 ---
 
