@@ -2,8 +2,11 @@
 
 **Project:** `<project>`  
 **Model pin:** hero / balanced / draft  
+**Mode:** auto-create (Quality / Image 2.0) unless explain-only  
 
 ## Mode first
+- [ ] Auto-create enabled (default)
+- [ ] `ACTIVATE IMAGINE_MODEL_OVERRIDES hero`
 - [ ] Quality / Image 2.0 for locks
 - [ ] Fast / 1.0 only for throwaway exploration
 
