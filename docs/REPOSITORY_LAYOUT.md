@@ -34,6 +34,7 @@ assets/                # banner, logos
 examples/              # sample bibles / pitch docs
 references/            # MODELS, Role Cards, shared lexicon
 docs/                  # human documentation (this tree)
+imagine-template-library/  # SFW Imagine packs (chars/locs/styles/shots + Create Template recipes)
 ```
 
 ## Runtime / project state (CLI)
@@ -47,6 +48,10 @@ Do **not** move these without updating `tools/studio_paths.py`:
 | `sfw_batches/` · `nsfw_batches/` | Batch plans |
 | `artifacts/` | Generated media & delivery (gitignored) |
 | `.cinematic_project_state.json` | Local studio state (gitignored) |
+
+## Imagine Template Library (SFW packs)
+
+Committed reference packs live in **`imagine-template-library/`** (not the runtime `characters/` DNA bank). Index: `imagine-template-library/CATALOG.md`. Skill pointer: `.grok/skills/grok-imagine-template-library`. Distinct from NSFW `docs/templates/Kink_Specific_Cinematic_Template_Library.md`.
 
 ## Documentation tree
 

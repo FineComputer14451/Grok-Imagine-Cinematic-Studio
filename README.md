@@ -256,6 +256,7 @@ Grok Imagine Cinematic Studio v3.11.4  (Studio Director + 25+ Agents · Grok 4.6
 ├── web_marketplace/              # Plugin Marketplace SPA (packs · skills · graph · live GitHub sync)
 ├── docs/academy/                 # Academy checklist + FAQ
 ├── studio_api/                   # Optional FastAPI control plane (cinematic-studio api)
+├── imagine-template-library/     # SFW Imagine packs + Create Template recipes
 ├── examples/                     # Production Bible templates
 ├── MASTER_PROMPT.md              # Primary activation prompt (v3.8+ compatible)
 ├── scripts/                      # Release helpers & verify shims
@@ -509,7 +510,8 @@ All commands support `--help` and rich output. Many also have direct Python entr
 | Agent Index & Role Cards              | `references/agents/AGENT_INDEX.md`                | Every specialist’s capabilities & triggers  |
 | Production Bible Template             | `Project_Bible_Template.md`                       | Professional structured template             |
 | Models Registry                       | `references/MODELS_v3.6.md`                       | Dual-stack model slugs & pricing             |
-| Kink-Specific Cinematic Template      | `Kink_Specific_Cinematic_Template_Library_v3.3.md`| NSFW artistic standards & prompt library     |
+| Grok Imagine Template Library (SFW)   | `imagine-template-library/`                       | Characters · locations · styles · shots · Create Template recipes |
+| Kink-Specific Cinematic Template      | `Kink_Specific_Cinematic_Template_Library_v3.3.md`| NSFW artistic standards & prompt library (≠ SFW pack library) |
 
 ---
 
