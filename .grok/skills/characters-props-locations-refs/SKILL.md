@@ -48,7 +48,7 @@ Supporting files:
 5. Sequence stills  
 6. Video  
 
-## Model layer (overrides)
+## Model layer (Grok 4.6 + Imagine overrides)
 
 | Job | Mode / preset | Wire |
 |-----|---------------|------|
@@ -56,6 +56,8 @@ Supporting files:
 | Throwaway exploration | Fast · `draft` | `grok-imagine-image` |
 | Plate → video + audio | — | `grok-imagine-video-1.5` |
 | Edit / extend clip | — | `grok-imagine-video` |
+
+DNA / planning text: Chat **Expert** or API `grok-4.6`.
 
 Activate overrides separately: `ACTIVATE IMAGINE_MODEL_OVERRIDES hero`
 
