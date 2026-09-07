@@ -36,7 +36,17 @@ Refs are **identity locks**, not one-off pretty frames. Build a reusable plate s
 ## 4. Board
 
 Folders: `characters/` · `props/` · `locations/`  
-Each asset: hero plate + optional variants + DNA one-liner. Hero tiers stay on Image **2.0**.
+Each asset: hero plate + optional variants + DNA one-liner. Hero tiers stay on Image **2.0**.  
+Optional: `board/manifest.json` for automated cross-check.
+
+## 4b. Post-board cross-ref check
+
+```bash
+python scripts/cross_ref_check.py .
+```
+
+Fail on missing DNA, slug mismatches, or plates listed in DNA/manifest that are not on disk.  
+Details: `CROSS_REF_CHECK.md`. Demo pack: `samples/onboarding-demo/`.
 
 ## 5. Motion (after locks — only if asked)
 
@@ -46,4 +56,4 @@ Each asset: hero plate + optional variants + DNA one-liner. Hero tiers stay on I
 
 ## Order that works
 
-**Location establish → character heroes → key props → board review → sequence stills → video.**
+**Location establish → character heroes → key props → board review → cross-ref check → sequence stills → video.**

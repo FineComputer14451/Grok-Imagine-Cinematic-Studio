@@ -31,3 +31,12 @@ unzip characters-props-locations-refs-skill.zip -d ~/.grok/skills/
 ## Default pipeline
 
 Locations → Characters (DNA → plates) → Props → Board. Video only if asked.
+
+## Post-board cross-ref check
+
+```bash
+python scripts/cross_ref_check.py /path/to/project
+python scripts/cross_ref_check.py samples/onboarding-demo
+```
+
+See `references/CROSS_REF_CHECK.md`. Sample DNA + board: `samples/onboarding-demo/`.
