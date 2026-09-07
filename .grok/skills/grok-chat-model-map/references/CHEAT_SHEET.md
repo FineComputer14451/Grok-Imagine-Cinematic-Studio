@@ -4,6 +4,7 @@
 Verified picker **2026-09-06**: Auto · Fast · Expert · Heavy · Build  
 Skill: `ACTIVATE GROK_CHAT_MODEL_MAP`  
 Plan PR: https://github.com/FineComputer14451/Grok-Imagine-Cinematic-Studio/pull/48  
+Install: copy folder → `~/.grok/skills/grok-chat-model-map/`  
 Models docs: https://docs.x.ai/developers/models · Grok 4.6: https://docs.x.ai/developers/grok-4-6
 
 ---
