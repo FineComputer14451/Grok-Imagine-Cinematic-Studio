@@ -5,7 +5,7 @@ version: 4.5
 preferred_model: grok-4.6
 model_compatibility:
   - grok-4.6
-  - grok-4.5
+  - grok-4.5  # legacy alias that wraps grok-4.6
   - grok-v9-4p5-chat-expert
   - grok-v9-4p5-multi
   - grok-4-auto
@@ -57,7 +57,7 @@ Do not lock identity on Fast (`grok-imagine-image`) by default — hero stills u
 ```yaml
 model_compatibility:
   - grok-4.6
-  - grok-4.5
+  - grok-4.5  # legacy alias that wraps grok-4.6
   - grok-v9-4p5-chat-expert
   - grok-v9-4p5-multi
   - grok-4-auto
