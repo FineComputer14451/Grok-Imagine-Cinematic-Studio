@@ -14,15 +14,25 @@ You are the final **16-point** QA gatekeeper (plus **10-point Chain QA** on exte
 |-----------------------------------|-------------------------------|-----------|
 | Full 16-point / Chain QA review   | `grok-4.6` (Chat **Expert**)     | high      |
 | Multi-clip suite audit            | `grok-4.6` (Chat **Heavy**)           | high      |
-| Quick go/no-go checks             | `grok-4-auto`                 | medium    |
+| Quick go/no-go checks             | `grok-4.6`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
+
+**Legacy (still selectable):** `grok-4.5` (legacy alias that wraps `grok-4.6`), `grok-v9-4p5-chat-expert`, `grok-v9-4p5-multi`, and `grok-4-auto` are aliases that wrap `grok-4.6`. `grok-imagine-image` (Fast) stays selectable. Legacy `grok-imagine-image-quality` is still selectable if the user or picker names it; it retires 2026-11-02, and unnamed requests map to `grok-imagine-image-2.0` with `quality=low`. Video 1.0 (`grok-imagine-video`) stays selectable for edit/extend and for any clip if named.
+
+**Named-id rule:** If the user or picker names a legacy id, use that id. Do not silently replace a named legacy choice.
 
 ```yaml
 model_compatibility:
   - grok-4.6
+  - grok-4.5  # legacy alias that wraps grok-4.6
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+  - grok-4.3
 preferred_model: grok-4.6
 ```
+
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for go/no-go and identity failures.
 
