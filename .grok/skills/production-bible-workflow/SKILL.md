@@ -1,21 +1,21 @@
 ---
 name: production-bible-workflow
-description: End-to-end Production Bible onboarding workflow for Grok Imagine Cinematic Studio. Guides create-bible DNA init sequence planning quota setup and validate through the CLI. Activate when starting a new project bootstrapping the studio or onboarding a production from zero. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: End-to-end Production Bible onboarding workflow for Grok Imagine Cinematic Studio. Guides create-bible DNA init sequence planning quota setup and validate through the CLI. Activate when starting a new project bootstrapping the studio or onboarding a production from zero. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Production Bible Workflow v3.8.6 (Grok 4.6 / v9-4p5 · Bible Onboarding)
+# Production Bible Workflow v3.8.6 (Grok 4.6 · Bible Onboarding)
 
 **New project bootstrap** — guided path from zero to a locked Production Bible, DNA, sequence, quota, and generation-ready handoff. Studio Director maintains the Bible after bootstrap.
 
 **CLI:** `create-bible` · `dna` · `sequence` · `quota` · `validate` · `models verify`  
 **Companions:** Mega Production Architect · Studio Director · production wizard (Web)
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -23,10 +23,8 @@ description: End-to-end Production Bible onboarding workflow for Grok Imagine Ci
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -39,7 +37,7 @@ preferred_model: grok-v9-4p5-multi
 - Onboarding a production from zero  
 - User says: `START PRODUCTION BIBLE WORKFLOW`, `BOOTSTRAP NEW PROJECT`, `CREATE BIBLE WIZARD`
 
-Begin: **"Starting Production Bible Workflow v3.8.6 (Grok 4.6 / v9-4p5)…"**
+Begin: **"Starting Production Bible Workflow v3.8.6 (Grok 4.6)…"**
 
 ## Project Bible Must Lock
 
@@ -187,4 +185,4 @@ Next: Studio Director | Animatic | Batch | Agent Mode Handoff
 
 ---
 
-*Production Bible Workflow v3.8.6 — Grok 4.6 / v9-4p5 · zero to locked Bible · still before video*
+*Production Bible Workflow v3.8.6 — Grok 4.6 · zero to locked Bible · still before video*
