@@ -23,6 +23,8 @@ description: Arbitrate primary and secondary Character DNA locks for multi-cast 
 **Legacy (still selectable):** `grok-4.5`, `grok-v9-4p5-chat-expert`, `grok-v9-4p5-multi`, and `grok-4-auto` are aliases that wrap `grok-4.6`. `grok-imagine-image` (Fast) stays selectable. Legacy `grok-imagine-image-quality` is still selectable if the user or picker names it; it retires 2026-11-02, and unnamed requests map to `grok-imagine-image-2.0` with `quality=low`. Video 1.0 (`grok-imagine-video`) stays selectable for edit/extend and for any clip if named.
 
 **Named-id rule:** If the user or picker names a legacy id, use that id. Do not silently replace a named legacy choice.
+**Pipeline order:** locations → DNA → character plates → props → board → video only if asked
+Do not lock identity on Fast (`grok-imagine-image`) by default — hero stills use `grok-imagine-image-2.0` unless a legacy id was named.
 
 ```yaml
 model_compatibility:
@@ -93,4 +95,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py` cast arbitration
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
