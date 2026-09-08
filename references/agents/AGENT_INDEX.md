@@ -3,12 +3,12 @@
 > [!NOTE]
 > Independent community project — **not affiliated with or endorsed by xAI**. Full notice: [DISCLAIMER.md](../../DISCLAIMER.md).
 
-**Enhanced for:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` + **Imagine Video 1.0 & 1.5 Native**  
+**Enhanced for:** `grok-4-auto` · `grok-4.6` (Chat **Heavy**) · `grok-4.6` (Chat **Expert**) + **Imagine Video 1.0 & 1.5 Native**  
 **Version:** 3.11.4 (Role Cards carry v3.6.5–v4.5 labels) · **Studio:** v3.11.4 · Grok 4.6 stack · Full v4.5 dual-model wave  
 **Date:** 2026-09-02  
 **Canonical Model Layer:** `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1)
 
-> All agents below now reference the enhanced Model Layer. Prefer the three explicit v9-4p5 identifiers. Video work must declare `VIDEO_PIPELINE_SPEC` (1.0 default, 1.5 when native audio / physics / intimacy required).
+> All agents below now reference the enhanced Model Layer. Prefer the three explicit 4.6 identifiers. Video work must declare `VIDEO_PIPELINE_SPEC` (1.0 default, 1.5 when native audio / physics / intimacy required).
 
 Authoritative Role Cards: `references/agents/*.md`  
 Shared model rules: `references/agents/MODEL_LAYER_v4.5.md`  
@@ -22,8 +22,8 @@ Identity Continuity: `references/agents/IDENTITY_CONTINUITY_PROTOCOL_v3.8.md`
 
 | Layer | Preferred Identifier | Use |
 |-------|----------------------|-----|
-| Highest quality specialist | `grok-v9-4p5-chat-expert` | DNA, prompts, QA, DoP, Sonic, ErosForge |
-| Multi-agent / Team Leader | `grok-v9-4p5-multi` | Studio Director full mode, Sequence orchestration, synthesis |
+| Highest quality specialist | `grok-4.6` (Chat **Expert**) | DNA, prompts, QA, DoP, Sonic, ErosForge |
+| Multi-agent / Team Leader | `grok-4.6` (Chat **Heavy**) | Studio Director full mode, Sequence orchestration, synthesis |
 | Draft / quota / routine | `grok-4-auto` | Animatic, standard tier, fast iteration |
 | Video default | Imagine **1.0** | Most sequences |
 | Video when audio/physics critical | Imagine **1.5 Native** | Native audio, intimate, complex motion |
@@ -229,4 +229,4 @@ DNA / QA skill filenames `Character_DNA_Extractor.md` and `Quality_Assurance_Gua
 
 ---
 
-*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · 2026-09-03 · studio v3.11.4 · 64 skills (Wave A P0)*
+*Grok Imagine Cinematic Studio — Enhanced Agent Index for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native · 2026-09-03 · studio v3.11.4 · 64 skills (Wave A P0)*
