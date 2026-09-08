@@ -1,31 +1,40 @@
 ---
 name: continuity-consistency-guardian
-description: Sequence memory keeper and multi-timeline guardian. Monitors visual, prop, environmental and emotional continuity across all clips and timelines. Validates LAST_FRAME_RECAP and continuity_state in extend/stitch chains. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate on any project with multiple clips, non-linear storytelling or branching narratives.
+description: Sequence memory keeper and multi-timeline guardian. Monitors visual, prop, environmental and emotional continuity across all clips and timelines. Validates LAST_FRAME_RECAP and continuity_state in extend/stitch chains. Defaults grok-4.6 and Image 2.0 Quality. Video 1.5 audio/final; Video 1.0 edit/extend. Named legacy ids stay selectable. Activate on any project with multiple clips, non-linear storytelling or branching narratives.
 ---
 
-# Continuity & Consistency Guardian v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Continuity & Consistency Guardian v4.5 (Grok 4.6 + Grok Imagine Video 1.5 audio/final · 1.0 edit/extend)
 
 **Role Card:** `references/agents/Continuity_Consistency_Guardian.md` (v4.5) — Authoritative source for continuity protocols, drift detection, multi-timeline memory, LAST_FRAME_RECAP validation, dual-model (1.0/1.5) consistency enforcement, and EROSFORGE_STATE awareness.
 
 > Sequence memory keeper and multi-timeline guardian. Protects every production from visual, prop, environmental, and emotional drift.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
-| Cross-clip / multi-timeline audit, branching narrative tracking | `grok-v9-4p5-multi`         | high      |
-| Single-chain drift analysis, LAST_FRAME_RECAP validation | `grok-v9-4p5-chat-expert`   | high      |
-| Quick continuity checks / status queries       | `grok-4-auto`               | medium    |
+| Cross-clip / multi-timeline audit, branching narrative tracking | `grok-4.6` | high |
+| Single-chain drift analysis, LAST_FRAME_RECAP validation | `grok-4.6` | high |
+| Quick continuity checks / status queries       | `grok-4.6` | medium |
 
-**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`. Hero stills: `grok-imagine-image-2.0` Quality. Video audio/final: `grok-imagine-video-1.5`. Video edit/extend: `grok-imagine-video` (1.0). There is no Video 2.0.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+
+**Legacy (still selectable):** `grok-4.5`, `grok-v9-4p5-chat-expert`, `grok-v9-4p5-multi`, and `grok-4-auto` are aliases that wrap `grok-4.6`. `grok-imagine-image` (Fast) stays selectable. Legacy `grok-imagine-image-quality` is still selectable if the user or picker names it; it retires 2026-11-02, and unnamed requests map to `grok-imagine-image-2.0` with `quality=low`. Video 1.0 (`grok-imagine-video`) stays selectable for edit/extend and for any clip if named.
+
+**Named-id rule:** If the user or picker names a legacy id, use that id. Do not silently replace a named legacy choice.
+**Pipeline order:** locations → DNA → character plates → props → board → video only if asked
+Do not lock identity on Fast (`grok-imagine-image`) by default — hero stills use `grok-imagine-image-2.0` unless a legacy id was named.
 
 ```yaml
 model_compatibility:
+  - grok-4.6
+  - grok-4.5  # legacy alias that wraps grok-4.6
   - grok-v9-4p5-chat-expert
   - grok-v9-4p5-multi
   - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.3
+preferred_model: grok-4.6
 ```
 
 ## When to Activate
@@ -43,12 +52,12 @@ Load and follow the Role Card. Do not paraphrase locked protocols or output stru
 
 ## Grok Imagine Video Compatibility
 
-### Primary Path — Imagine Video 1.5 Native
+### Audio / final — Imagine Video 1.5 Native
 - Full validation of LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR
 - Physics-aware and temporal continuity checks
 - Higher sensitivity to micro-drift in lighting, fabric, skin, and emotional tone
 
-### Secondary / Fallback Path — Imagine Video 1.0
+### Edit / extend — Imagine Video 1.0 (still selectable if named; not fallback-only. No Video 2.0.)
 - Still enforce full continuity_state and prop/environment tracking
 - Adjust expectations for known 1.0 motion and temporal characteristics
 - Clearly note when a chain is being validated under 1.0 criteria
@@ -85,4 +94,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py` continuity workf
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
