@@ -1,21 +1,21 @@
 ---
 name: ai-video-upscaler
-description: AI video upscaling and face restoration for cinematic delivery. Upscale Grok Imagine 720p clips to 1080p or 4K with Real-ESRGAN GPU path or pure-Python fallback. Includes async batch processing and automatic face restoration. Activate for final delivery polish, upscale for festival submission, face restore on close-ups, or when AI Polish Director runs a polish pass. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: AI video upscaling and face restoration for cinematic delivery. Upscale Grok Imagine 720p clips to 1080p or 4K with Real-ESRGAN GPU path or pure-Python fallback. Includes async batch processing and automatic face restoration. Activate for final delivery polish, upscale for festival submission, face restore on close-ups, or when AI Polish Director runs a polish pass. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# AI Video Upscaler v3.8.6 (Grok 4.6 / v9-4p5 · Local Upscale)
+# AI Video Upscaler v3.8.6 (Grok 4.6 · Local Upscale)
 
 **Local delivery upscale** for Grok Imagine 720p masters. Used by **AI Polish Director** after QA Go and color grade. This is **not** Imagine API spend — orchestration plans on `grok-4.6`; pixels run on GPU/CPU scripts.
 
 **Skill scripts:** `.grok/skills/ai-video-upscaler/scripts/`  
 **Agent:** `ai-polish-director` · CLI: `sequence polish`
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -23,10 +23,8 @@ description: AI video upscaling and face restoration for cinematic delivery. Ups
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -40,7 +38,7 @@ preferred_model: grok-v9-4p5-chat-expert
 - Festival / client masters after grade  
 - User says: `UPSCALE FOR DELIVERY`, `FACE RESTORE PASS`, `RUN FINAL POLISH PASS` (via AI Polish Director)
 
-Begin: **"Initiating Local Upscale Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
+Begin: **"Initiating Local Upscale Protocol v3.8.6 (Grok 4.6)…"**
 
 ## Prerequisites
 
@@ -147,4 +145,4 @@ Next: cinematic-ffmpeg | Studio sign-off | re-run without face-restore
 
 ---
 
-*AI Video Upscaler v3.8.6 — Grok 4.6 / v9-4p5 orchestration · local GPU/CPU · not Imagine spend*
+*AI Video Upscaler v3.8.6 — Grok 4.6 orchestration · local GPU/CPU · not Imagine spend*
