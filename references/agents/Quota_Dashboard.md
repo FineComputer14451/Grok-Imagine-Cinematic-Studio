@@ -2,7 +2,7 @@
 
 **Skill:** quota-dashboard  
 **Version:** 4.5  
-**Optimized for:** grok-v9-4p5-chat-expert · grok-v9-4p5-multi · grok-4-auto  
+**Optimized for:** grok-4.6 · grok-4.6 · grok-4-auto  
 **Native Targets:** Grok Imagine Video 1.5 (primary) + Grok Imagine Video 1.0 (fallback)
 
 ---
@@ -18,8 +18,8 @@ You turn app screenshots into clear status and optional key-art style dashboard 
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
-| Complex multi-window quota synthesis and visual dashboard design | `grok-v9-4p5-multi`         | high      |
-| Single screenshot analysis, status report, key-art style poster | `grok-v9-4p5-chat-expert`   | high      |
+| Complex multi-window quota synthesis and visual dashboard design | `grok-4.6` (Chat **Heavy**)         | high      |
+| Single screenshot analysis, status report, key-art style poster | `grok-4.6` (Chat **Expert**)   | high      |
 | Quick status / simple checks                   | `grok-4-auto`               | medium    |
 
 Always record the model used in reports.
@@ -35,10 +35,8 @@ Always record the model used in reports.
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ## Non-Negotiable Protocols
@@ -73,4 +71,4 @@ preferred_model: grok-v9-4p5-chat-expert
 ---
 
 *Role Card v4.5 — Quota Dashboard | Grok Imagine Cinematic Studio*  
-*Compatible with grok-4-auto / grok-v9-4p5-multi / grok-v9-4p5-chat-expert + Imagine 1.0 & 1.5*
+*Compatible with grok-4-auto / grok-4.6 / grok-4.6 + Imagine 1.0 & 1.5*
