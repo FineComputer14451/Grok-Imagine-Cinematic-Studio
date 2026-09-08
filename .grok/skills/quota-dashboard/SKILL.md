@@ -1,20 +1,20 @@
 ---
 name: quota-dashboard
-description: Mobile-optimized Quota Dashboard for Grok Imagine with full Weekly SuperGrok Heavy Limit support. Tracks session usage + weekly quota from app screenshots (%, reset date/time, Imagine/Chat/Build breakdown). Delivers beautiful at-a-glance visual reports + cinematic key-art style visual dashboard posters. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5. Complements workflow-quota-optimizer and nsfw-quota-orchestrator. Activate with SHOW QUOTA DASHBOARD, SHOW VISUAL DASHBOARD, or ACTIVATE QUOTA_DASHBOARD.
+description: Mobile-optimized Quota Dashboard for Grok Imagine with full Weekly SuperGrok Heavy Limit support. Tracks session usage + weekly quota from app screenshots (%, reset date/time, Imagine/Chat/Build breakdown). Delivers beautiful at-a-glance visual reports + cinematic key-art style visual dashboard posters. Optimized for grok-4-auto, grok-4.6, grok-4.6 and both Grok Imagine Video 1.0 + 1.5. Complements workflow-quota-optimizer and nsfw-quota-orchestrator. Activate with SHOW QUOTA DASHBOARD, SHOW VISUAL DASHBOARD, or ACTIVATE QUOTA_DASHBOARD.
 ---
 
-# Quota Dashboard v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5)
+# Quota Dashboard v4.5 (Grok 4.6 + Grok Imagine Video 1.0 & 1.5)
 
 **Role Card:** `references/agents/Quota_Dashboard.md` (v4.5) — Authoritative source for quota tracking, visual reporting, dual-model (1.0/1.5) awareness, and cinematic dashboard poster generation.
 
 > Mobile-optimized Quota Dashboard for Grok Imagine with full Weekly SuperGrok Heavy Limit support.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
-| Complex multi-window quota synthesis and visual dashboard design | `grok-v9-4p5-multi`         | high      |
-| Single screenshot analysis, status report, key-art style poster | `grok-v9-4p5-chat-expert`   | high      |
+| Complex multi-window quota synthesis and visual dashboard design | `grok-4.6` (Chat **Heavy**)         | high      |
+| Single screenshot analysis, status report, key-art style poster | `grok-4.6` (Chat **Expert**)   | high      |
 | Quick status / simple checks                   | `grok-4-auto`               | medium    |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -22,10 +22,8 @@ description: Mobile-optimized Quota Dashboard for Grok Imagine with full Weekly 
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ## When to Activate
@@ -75,4 +73,4 @@ Fully compatible with Grok Build CLI, Termux/Android, and Kali NetHunter. All re
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
