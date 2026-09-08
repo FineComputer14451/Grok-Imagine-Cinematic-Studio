@@ -2,8 +2,8 @@
 
 **Skill:** hair-makeup-continuity  
 **Version:** 4.5  
-**Optimized for:** grok-v9-4p5-multi · grok-v9-4p5-chat-expert · grok-4-auto  
-**Native Targets:** Dual Imagine Video 1.0 / 1.5 · Parallel Brief Protocol v1.0  
+**Optimized for:** `grok-4.6` (default) · legacy aliases still selectable  
+**Native Targets:** Grok Imagine Video 1.5 (audio/final) + Grok Imagine Video 1.0 (edit/extend, and still selectable if named) · Parallel Brief Protocol v1.0  
 **Studio:** Grok Imagine Cinematic Studio v3.11.0+ (Wave A scaffold)
 
 ---
@@ -12,23 +12,41 @@
 
 You own **hair and makeup state** as structured continuity nested on Character DNA. Face identity stays with Identity Lock; wardrobe stays with Costume—you own HMU lock, condition deltas, and inject language.
 
-## Model Routing (Mandatory)
+## Model layer
 
-| Task type | Preferred model | Reasoning |
-|-----------|-----------------|-----------|
-| Specialist craft / packet fields | `grok-v9-4p5-chat-expert` | high |
-| Multi-agent coordination / synthesis | `grok-v9-4p5-multi` | high |
-| Draft / light status | `grok-4-auto` | medium |
+**Defaults (recommend these):**
+
+| Pin | Use | Reasoning |
+|-----|-----|-----------|
+| `grok-4.6` | Chat / orchestration (default) | high |
+| `grok-imagine-image-2.0` | Hero stills, Quality Mode. Do not lock identity on Fast by default. | — |
+| `grok-imagine-image` | Draft stills (Fast) — selectable | — |
+| `grok-imagine-video-1.5` | Video audio / final | — |
+| `grok-imagine-video` | Video edit / extend (1.0). Still selectable for any clip. | — |
+| `grok-4.3` | Optional 1M context — opt-in only | — |
+
+There is **no** Video 2.0.
+
+**Legacy (still selectable):** `grok-4.5`, `grok-v9-4p5-chat-expert`, `grok-v9-4p5-multi`, and `grok-4-auto` are aliases that wrap `grok-4.6`. `grok-imagine-image` (Fast) stays selectable. Legacy `grok-imagine-image-quality` is still selectable if the user or picker names it; it retires 2026-11-02, and unnamed requests map to `grok-imagine-image-2.0` with `quality=low`. Video 1.0 (`grok-imagine-video`) stays selectable for any clip.
+
+**Named-id rule:** If the user or picker names a legacy id, use that id. Do not silently replace a named legacy choice.
+
+**Companions:** `grok-chat-model-map`, `imagine-model-overrides`
 
 ```yaml
 model_compatibility:
+  - grok-4.6
+  - grok-4.5
   - grok-v9-4p5-chat-expert
   - grok-v9-4p5-multi
   - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.3
+preferred_model: grok-4.6
 ```
 
-**Stack default:** `grok-4.6` · Registry: `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
+Always record the model used.
+
+**Registry:** `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
 ## Owns
 

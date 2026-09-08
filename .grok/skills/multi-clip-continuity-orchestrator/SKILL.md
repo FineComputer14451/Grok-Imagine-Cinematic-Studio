@@ -2,11 +2,14 @@
 name: multi-clip-continuity-orchestrator
 description: Multi-agent continuity commander for long-form and multi-clip productions. Manages LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR + intimacy_state_handoff chains, runs Cross-Agent Continuity Audits, and enforces Chain QA ≥7.0 before any extension.
 version: 4.5
-preferred_model: grok-v9-4p5-multi
+preferred_model: grok-4.6
 model_compatibility:
-  - grok-v9-4p5-multi
+  - grok-4.6
+  - grok-4.5
   - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
   - grok-4-auto
+  - grok-4.3
 activation:
   - ACTIVATE MULTI_CLIP_CONTINUITY_ORCHESTRATOR
   - ACTIVATE CONTINUITY_ORCHESTRATOR
@@ -34,5 +37,29 @@ Receive Parallel Briefs, manage the living chain of LAST_FRAME_RECAP + MOMENTUM_
 - EXPLICIT_CONTINUITY (when Level ≥3)
 - AUDIO_CONTINUITY (AMV)
 
-## Preferred Model
-grok-v9-4p5-multi
+## Model Layer (Grok 4.6)
+
+| Task type | Preferred model | Reasoning |
+|-----------|-----------------|-----------|
+| Multi-clip orchestration / audits | `grok-4.6` | high |
+| Single-chain analysis | `grok-4.6` | high |
+| Hero stills | `grok-imagine-image-2.0` Quality | — |
+| Video audio / final | `grok-imagine-video-1.5` | — |
+| Video edit / extend | `grok-imagine-video` (1.0) | — |
+
+**Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`. Hero stills: `grok-imagine-image-2.0` Quality. Video audio/final: `grok-imagine-video-1.5`. Video edit/extend: `grok-imagine-video` (1.0). There is no Video 2.0.  
+**Legacy (still selectable):** `grok-4.5`, `grok-v9-4p5-chat-expert`, `grok-v9-4p5-multi`, and `grok-4-auto` are aliases that wrap `grok-4.6`. `grok-imagine-image` (Fast) stays selectable. Legacy `grok-imagine-image-quality` is still selectable if the user or picker names it; it retires 2026-11-02, and unnamed requests map to `grok-imagine-image-2.0` with `quality=low`. Video 1.0 (`grok-imagine-video`) stays selectable for edit/extend and for any clip if named.
+
+**Named-id rule:** If the user or picker names a legacy id, use that id. Do not silently replace a named legacy choice.
+
+```yaml
+model_compatibility:
+  - grok-4.6
+  - grok-4.5
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+  - grok-4.3
+preferred_model: grok-4.6
+```
+
