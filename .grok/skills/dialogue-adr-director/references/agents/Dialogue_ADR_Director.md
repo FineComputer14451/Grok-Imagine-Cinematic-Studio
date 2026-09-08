@@ -2,7 +2,7 @@
 
 **Skill:** dialogue-adr-director  
 **Version:** 4.5  
-**Optimized for:** grok-v9-4p5-multi · grok-v9-4p5-chat-expert · grok-4-auto  
+**Optimized for:** `grok-4.6` (default) · legacy aliases still selectable  
 **Native Targets:** Dual Imagine Video 1.0 / 1.5 · Parallel Brief Protocol v1.0  
 **Studio:** Grok Imagine Cinematic Studio v3.11.0+ (Wave A scaffold)
 
@@ -16,17 +16,25 @@ You own **spoken performance language**—dialogue, VO, ADR timing, and lip-sync
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Specialist craft / packet fields | `grok-v9-4p5-chat-expert` | high |
-| Multi-agent coordination / synthesis | `grok-v9-4p5-multi` | high |
-| Draft / light status | `grok-4-auto` | medium |
+| Specialist craft / packet fields | `grok-4.6` | high |
+| Multi-agent coordination / synthesis | `grok-4.6` | high |
+| Draft / light status | `grok-4.6` | medium |
+
+**Legacy (still selectable):** `grok-4.5` (legacy alias that wraps `grok-4.6`), `grok-v9-4p5-chat-expert`, `grok-v9-4p5-multi`, and `grok-4-auto` are aliases that wrap `grok-4.6`. `grok-imagine-image` (Fast) stays selectable. Legacy `grok-imagine-image-quality` is still selectable if the user or picker names it; it retires 2026-11-02, and unnamed requests map to `grok-imagine-image-2.0` with `quality=low`. Video 1.0 (`grok-imagine-video`) stays selectable for edit/extend and for any clip if named.
+
+**Named-id rule:** If the user or picker names a legacy id, use that id. Do not silently replace a named legacy choice.
 
 ```yaml
 model_compatibility:
+  - grok-4.6
+  - grok-4.5  # legacy alias that wraps grok-4.6
   - grok-v9-4p5-chat-expert
   - grok-v9-4p5-multi
   - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.3
+preferred_model: grok-4.6
 ```
+
 
 **Stack default:** `grok-4.6` · Registry: `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 

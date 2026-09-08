@@ -15,16 +15,26 @@ description: Final quality gatekeeper and production quality commander. Runs man
 |------------------------------------------------|-------------------------------|-----------|
 | Full 16-point review + nuanced artistic judgment | `grok-4.6` (Chat **Expert**)   | high      |
 | Multi-clip suite audit / sequence-level health  | `grok-4.6` (Chat **Heavy**)         | high      |
-| Quick go/no-go checks / routine validation      | `grok-4-auto`               | medium    |
+| Quick go/no-go checks / routine validation      | `grok-4.6` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
 
+**Legacy (still selectable):** `grok-4.5` (legacy alias that wraps `grok-4.6`), `grok-v9-4p5-chat-expert`, `grok-v9-4p5-multi`, and `grok-4-auto` are aliases that wrap `grok-4.6`. `grok-imagine-image` (Fast) stays selectable. Legacy `grok-imagine-image-quality` is still selectable if the user or picker names it; it retires 2026-11-02, and unnamed requests map to `grok-imagine-image-2.0` with `quality=low`. Video 1.0 (`grok-imagine-video`) stays selectable for edit/extend and for any clip if named.
+
+**Named-id rule:** If the user or picker names a legacy id, use that id. Do not silently replace a named legacy choice.
+
 ```yaml
 model_compatibility:
   - grok-4.6
+  - grok-4.5  # legacy alias that wraps grok-4.6
+  - grok-v9-4p5-chat-expert
+  - grok-v9-4p5-multi
+  - grok-4-auto
+  - grok-4.3
 preferred_model: grok-4.6
 ```
+
 
 ## When to Activate
 
@@ -42,11 +52,11 @@ Load and follow the Role Card. Do not paraphrase locked protocols or output stru
 
 ## Grok Imagine Video Compatibility
 
-### Primary Path — Imagine Video 1.5 Native
+### Audio / final — Imagine Video 1.5 Native
 - Full Chain QA including LAST_FRAME_RECAP, MOMENTUM_VECTOR, AUDIO_MOMENTUM_VECTOR, physics continuity, temporal consistency, and native audio sync
 - Higher thresholds for hero and final deliverables
 
-### Secondary / Fallback Path — Imagine Video 1.0
+### Edit / extend — Imagine Video 1.0 (still selectable if named; not fallback-only. No Video 2.0.)
 - Still enforce full 16-point and 10-point Chain QA
 - Adjust expectations for known 1.0 limitations (no native audio, different motion characteristics)
 - Clearly note when a clip is approved under 1.0 criteria so downstream agents are aware
