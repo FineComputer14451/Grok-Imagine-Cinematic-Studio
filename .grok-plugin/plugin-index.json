@@ -98,7 +98,7 @@
           },
           {
             "name": "cinematic-skill-creator",
-            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
+            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.6 + Grok Imagine Video 1.5 Native). Scaffold…"
           },
           {
             "name": "grok-doctor",
@@ -324,7 +324,7 @@
           }
         ]
       },
-      "sha": "7ac493e762d0e9633f70dd4b6006ea2455cecaf8"
+      "sha": "63792b53234dd8e3a3b9e0f8dfe0d5ea8b1a17db"
     },
     "grok-imagine-cinematic-core": {
       "components": {
@@ -423,7 +423,7 @@
           },
           {
             "name": "cinematic-skill-creator",
-            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.5 Native).…"
+            "description": "Create and validate Grok skills for the Cinematic Studio ecosystem (Grok 4.6 + Grok Imagine Video 1.5 Native). Scaffold…"
           },
           {
             "name": "grok-doctor",
@@ -473,7 +473,7 @@
           }
         ]
       },
-      "sha": "7ac493e762d0e9633f70dd4b6006ea2455cecaf8"
+      "sha": "63792b53234dd8e3a3b9e0f8dfe0d5ea8b1a17db"
     },
     "grok-imagine-camera-image": {
       "components": {
@@ -528,7 +528,7 @@
           }
         ]
       },
-      "sha": "7ac493e762d0e9633f70dd4b6006ea2455cecaf8"
+      "sha": "63792b53234dd8e3a3b9e0f8dfe0d5ea8b1a17db"
     },
     "grok-imagine-sequence-narrative": {
       "components": {
@@ -611,7 +611,7 @@
           }
         ]
       },
-      "sha": "7ac493e762d0e9633f70dd4b6006ea2455cecaf8"
+      "sha": "63792b53234dd8e3a3b9e0f8dfe0d5ea8b1a17db"
     },
     "grok-imagine-nsfw": {
       "components": {
@@ -640,7 +640,7 @@
           }
         ]
       },
-      "sha": "7ac493e762d0e9633f70dd4b6006ea2455cecaf8"
+      "sha": "63792b53234dd8e3a3b9e0f8dfe0d5ea8b1a17db"
     },
     "grok-imagine-delivery-post": {
       "components": {
@@ -681,7 +681,7 @@
           }
         ]
       },
-      "sha": "7ac493e762d0e9633f70dd4b6006ea2455cecaf8"
+      "sha": "63792b53234dd8e3a3b9e0f8dfe0d5ea8b1a17db"
     }
   }
 }
