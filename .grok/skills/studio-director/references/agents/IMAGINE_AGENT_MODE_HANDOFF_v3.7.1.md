@@ -4,14 +4,16 @@
 **Status:** Official  
 **Owner:** Studio Director (routing authority)  
 **Studio:** Grok Imagine Cinematic Studio v3.8.6 / v4.5  
-**Last updated:** August 2026  
+**Last updated:** September 2026  
 
-**Model stack:** `grok-4-auto` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` · Imagine Video 1.0 (default) / 1.5 Native  
+**Model stack:** `grok-4.6` (default) · legacy still selectable: `grok-4.5` · `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` · `grok-4-auto` · Image 2.0 hero / Fast draft · Video 1.5 audio/final · Video 1.0 edit/extend  
 
 **Canonical Model Layer:** `references/agents/MODEL_LAYER_v4.5.md`  
 **Surface index:** `grok-imagine-cinematic-studio/references/SURFACE_BRIDGES_INDEX.md`  
 
 **Pairs with:** `imagine-execution-bridge` · `imagine-prompt-master` · `image-to-video-specialist` · `handoff-packet-validator` · `workflow-quota-optimizer` · `studio-director` · `cinematic-sequence-extender` · `sequence-director` · `grok-imagine-image-tools` · `xai-grok-skill`
+
+**Companions (names only):** `grok-chat-model-map` · `imagine-model-overrides` · `character-dna-extractor` · `characters-props-locations-refs`
 
 ---
 
@@ -74,20 +76,38 @@ Never treat ACP as a free-form generation path that bypasses prompt craft, refer
 
 ---
 
-## 3. Model Layer (Grok 4.6 / v9-4p5)
+## 3. Model layer
 
-| Task type | Preferred model | Reasoning |
-|-----------|-----------------|-----------|
-| Full Studio handoff orchestration / multi-agent synthesis | `grok-v9-4p5-multi` | high |
-| Prompt / DNA / I2V packet assembly & surface decision | `grok-v9-4p5-chat-expert` | high |
-| Quick status / simple packet refresh | `grok-4-auto` | medium |
+**Defaults (recommend these):**
+
+| Pin | Use |
+|-----|-----|
+| `grok-4.6` | Chat / DNA text and handoff orchestration (Chat Expert — `grok-chat-model-map`) |
+| `grok-imagine-image-2.0` | Hero stills, Quality Mode (`imagine-model-overrides` hero). Do not lock identity on Fast by default. |
+| `grok-imagine-image` | Draft stills (Fast) — selectable |
+| `grok-imagine-video-1.5` | Video audio / final |
+| `grok-imagine-video` | Video edit / extend (1.0). Still selectable for any clip. |
+| `grok-4.3` | Optional 1M context — opt-in only |
+
+There is **no** Video 2.0.
+
+**Legacy (still selectable):** `grok-4.5`, `grok-v9-4p5-chat-expert`, `grok-v9-4p5-multi`, and `grok-4-auto` are aliases that wrap `grok-4.6`. `grok-imagine-image` (Fast) stays selectable. Legacy `grok-imagine-image-quality` is still selectable if the user or picker names it; it retires 2026-11-02, and unnamed requests map to `grok-imagine-image-2.0` with `quality=low`.
+
+**Named-id rule:** If the user or picker names a legacy id, use that id. Do not silently replace a named legacy choice. Record the named id on `preferred_chat_model` and `model_stack`.
+
+**Companions:** `grok-chat-model-map`, `imagine-model-overrides`, `character-dna-extractor`, `characters-props-locations-refs`
+
+**Pipeline order:** locations → DNA → character plates → props → board → video only if asked. Do not emit a video packet until that stills order is ready, unless the user asked for video.
 
 ```yaml
 model_compatibility:
+  - grok-4.6
+  - grok-4.5
   - grok-v9-4p5-chat-expert
   - grok-v9-4p5-multi
   - grok-4-auto
-preferred_model: grok-v9-4p5-multi   # Studio Director orchestration of handoffs
+  - grok-4.3
+preferred_model: grok-4.6   # Studio Director orchestration of handoffs
 ```
 
 Prefer a stable `prompt_cache_key` (project slug). Use **high** reasoning for surface selection, incomplete-packet blocks, and multi-specialist synthesis.
@@ -98,11 +118,14 @@ Prefer a stable `prompt_cache_key` (project slug). Use **high** reasoning for su
 
 | Policy | Rule |
 |--------|------|
-| Default | Imagine Video **1.0** for cost and reliability |
-| Escalate to 1.5 | When native synchronized audio, physics fidelity, micro-expression timing, or intimate authenticity is required |
+| Audio / final | Imagine Video **1.5** (`grok-imagine-video-1.5`) |
+| Edit / extend | Imagine Video **1.0** (`grok-imagine-video`). Still selectable for any clip if named. |
+| Named-id rule | If the user or picker names 1.0 or 1.5, use that id. Do not silently replace it. |
+| No Video 2.0 | Do not invent or request a Video 2.0 slug |
 | Required on every video handoff | Complete `VIDEO_PIPELINE_SPEC` |
 | Required on 1.5 | `sound_layer` + prepare / carry `AUDIO_MOMENTUM_VECTOR` (AMV) |
 | Version consistency | Do **not** mix 1.0 and 1.5 inside one continuous chain without Continuity Guardian + Studio Director approval |
+| Stills before video | locations → DNA → character plates → props → board → video only if asked |
 
 **1.0 example:**
 
@@ -206,7 +229,7 @@ When `generation_strategy` is `extend_from_frame_chain`:
 | `chain_control` | recommended (multi-clip) | source_clip_id, max_extensions, dependency_graph, require_chain_qa, min score |
 | `dna_inject` | when cast | Identity Lock inject block or slug |
 | `qa_gate` | recommended | Min score / chain-QA status before spend |
-| `preferred_chat_model` | recommended | `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto` |
+| `preferred_chat_model` | recommended | `grok-4.6` (default). Legacy still selectable if named: `grok-4.5` / `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto` |
 | `bridge_ack` | recommended | `true` when the required surface skill/bridge has been acknowledged |
 
 ---
@@ -276,7 +299,7 @@ Official packet protocols: `handoff-packet-validator/references/HANDOFF_PACKET_P
   "video_pipeline_spec": "[VIDEO_PIPELINE_SPEC: model=\\"grok-imagine-video-1.5\\", version=\\"1.5\\", resolution=\\"720p\\", clip_length=\\"8-12s\\", native_audio=true, reference_image_fidelity=high, extend_protocol=\\"LAST_FRAME + MOTION_VECTOR + AUDIO_CUE\\", stitch_priority=high, audio_momentum=true]",
   "sound_layer": "native rain bed + sparse score swell",
   "model_stack": {
-    "chat": "grok-v9-4p5-multi",
+    "chat": "grok-4.6",
     "imagine_video": "1.5"
   },
   "quota_note": "prefer extend; ~40% savings vs new independent clip; loaded grok-imagine-image-tools",
@@ -289,6 +312,8 @@ Official packet protocols: `handoff-packet-validator/references/HANDOFF_PACKET_P
   ]
 }
 ```
+
+This sample names Video **1.5** because it carries native audio on an extend chain. Unnamed edit/extend uses `grok-imagine-video` (1.0). `grok-4.6` is the chat default; if the picker names `grok-v9-4p5-multi` (or another legacy alias), keep that id. There is **no** Video 2.0.
 
 ---
 
@@ -323,4 +348,4 @@ Official packet protocols: `handoff-packet-validator/references/HANDOFF_PACKET_P
 
 ---
 
-*Official Imagine Agent Mode Handoff Protocol — Grok Imagine Cinematic Studio · Grok 4.6 / v9-4p5 · Extend-from-Frame Priority default · August 2026*
+*Official Imagine Agent Mode Handoff Protocol — Grok Imagine Cinematic Studio · grok-4.6 default; legacy v9-4p5 / grok-4-auto / grok-4.5 still selectable · Image 2.0 + Video 1.0/1.5 · no Video 2.0 · Extend-from-Frame Priority default · September 2026*
