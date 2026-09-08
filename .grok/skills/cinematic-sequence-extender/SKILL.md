@@ -1,20 +1,20 @@
 ---
 name: cinematic-sequence-extender
-description: Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native extend/stitch, chain QA gates, and handoff packets. Plans multi-clip structures and ensures every extension feels like one continuous professionally directed piece. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate for long-form expansion with native chaining.
+description: Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+) with native extend/stitch, chain QA gates, and handoff packets. Plans multi-clip structures and ensures every extension feels like one continuous professionally directed piece. Optimized for grok-4-auto, grok-4.6, grok-4.6 and both Grok Imagine Video 1.0 + 1.5 Native. Activate for long-form expansion with native chaining.
 ---
 
-# Cinematic Sequence Extender v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Cinematic Sequence Extender v4.5 (Grok 4.6 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Cinematic_Sequence_Extender.md` (v4.5) — Authoritative source for multi-clip expansion, native extend/stitch, Chain QA, dual-model (1.0/1.5) support, and Handoff Packet discipline.
 
 > Specialist for expanding short clips into longer seamless cinematic sequences (60-180s+).
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
-| Multi-clip structure planning, dependency + health management | `grok-v9-4p5-multi`         | high      |
-| Single extension craft, momentum design, stitch planning | `grok-v9-4p5-chat-expert`   | high      |
+| Multi-clip structure planning, dependency + health management | `grok-4.6` (Chat **Heavy**)         | high      |
+| Single extension craft, momentum design, stitch planning | `grok-4.6` (Chat **Expert**)   | high      |
 | Quick status / simple extension checks         | `grok-4-auto`               | medium    |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -22,10 +22,8 @@ description: Specialist for expanding short clips into longer seamless cinematic
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ## When to Activate
@@ -78,4 +76,4 @@ Fully compatible with Grok Build CLI, Termux/Android, and Kali NetHunter. All pl
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
