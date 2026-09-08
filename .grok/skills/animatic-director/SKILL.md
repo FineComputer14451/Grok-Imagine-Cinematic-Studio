@@ -1,20 +1,20 @@
 ---
 name: animatic-director
-description: Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers and timing using draft image models and short motion tests to validate pacing under quota. Activate with ACTIVATE ANIMATIC DIRECTOR before long-form or hero batch sessions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Low-cost animatic and previsualization workflow before Grok Imagine Video 1.5 spend. Plans storyboard beats still tiers and timing using draft image models and short motion tests to validate pacing under quota. Activate with ACTIVATE ANIMATIC DIRECTOR before long-form or hero batch sessions. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Animatic Director v3.8.6 (Grok 4.6 / v9-4p5 · Pre-Vis / Cost Gate)
+# Animatic Director v3.8.6 (Grok 4.6 · Pre-Vis / Cost Gate)
 
 **Pipeline skill** — quota-saving previsualization before full video production. Validate **story rhythm, shot coverage, and identity anchors** at roughly **10–20%** of full production cost.
 
 **Engine:** `tools/animatic_orchestrator.py` · CLI `animatic plan|list|show|promote`
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -22,10 +22,8 @@ description: Low-cost animatic and previsualization workflow before Grok Imagine
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -61,7 +59,7 @@ ACTIVATE ANIMATIC DIRECTOR
 ACTIVATE ONLY Animatic Director, Narrative Arc Strategist, Reference Asset Curator, Workflow Quota Optimizer
 ```
 
-Begin: **"Initiating Animatic Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
+Begin: **"Initiating Animatic Protocol v3.8.6 (Grok 4.6)…"**
 
 ## Goal
 
@@ -174,4 +172,4 @@ Artifacts: artifacts/animatics/<slug>.json
 
 ---
 
-*Animatic Director v3.8.6 — Grok 4.6 / v9-4p5 · draft stills → promote heroes → gate video spend*
+*Animatic Director v3.8.6 — Grok 4.6 · draft stills → promote heroes → gate video spend*
