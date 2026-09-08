@@ -1,20 +1,20 @@
 ---
 name: ai-image-recreation
-description: AI recreation editing style transfer enhancement and variation of user-uploaded images via Grok Imagine image_edit and image_gen. Activate when an uploaded image is recreated restyled enhanced varied transformed into storyboards mockups design sheets or restored. Grok 4.6 orchestration with multi-pass refinement Identity Lock handoff and pre-video plate prep for SuperGrokPro and Cinematic Studio. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: AI recreation editing style transfer enhancement and variation of user-uploaded images via Grok Imagine image_edit and image_gen. Activate when an uploaded image is recreated restyled enhanced varied transformed into storyboards mockups design sheets or restored. Grok 4.6 orchestration with multi-pass refinement Identity Lock handoff and pre-video plate prep for SuperGrokPro and Cinematic Studio. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# AI Image Recreation v3.8.6 (Grok 4.6 / v9-4p5 · Imagine Image)
+# AI Image Recreation v3.8.6 (Grok 4.6 · Imagine Image)
 
 **Scope:** User-uploaded (or path-provided) reference images → faithful recreation, style transfer, enhancement, restoration, variation, and production-ready plates.
 
 **Sibling skills:** `generated-image-editor` (session Grok outputs by ID/path) · `i2i-cinematic-refiner` / `i2i-refiner` (multi-pass cinematic / explicit polish) · `imagine` (core tool craft) · `character-dna-extractor` (identity lock from refs)
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -22,10 +22,8 @@ description: AI recreation editing style transfer enhancement and variation of u
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -57,7 +55,7 @@ preferred_model: grok-v9-4p5-chat-expert
 ACTIVATE AI_IMAGE_RECREATION
 ```
 
-Begin work with: **"Initiating AI Image Recreation Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
+Begin work with: **"Initiating AI Image Recreation Protocol v3.8.6 (Grok 4.6)…"**
 
 ## Tool Map (Grok Build Imagine)
 
@@ -293,4 +291,4 @@ Next recommended: <iterate | DNA | i2i | i2v | Studio Director | done>
 
 ---
 
-*AI Image Recreation v3.8.6 — Grok 4.6 / v9-4p5 orchestration · Imagine image_edit / image_gen · SuperGrokPro + Cinematic Studio compatible*
+*AI Image Recreation v3.8.6 — Grok 4.6 orchestration · Imagine image_edit / image_gen · SuperGrokPro + Cinematic Studio compatible*
