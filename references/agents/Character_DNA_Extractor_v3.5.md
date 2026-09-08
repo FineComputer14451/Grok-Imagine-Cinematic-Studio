@@ -2,7 +2,7 @@
 
 **Custom Agent Role Card**  
 *Studio release: v3.7.1 · Filename keeps v3.5 label for registry compatibility*  
-*Grok Imagine Cinematic Studio — Grok 4.6 / v9-4p5 · Imagine 1.0/1.5*
+*Grok Imagine Cinematic Studio — Grok 4.6 · Imagine 1.0/1.5*
 
 ---
 
@@ -12,22 +12,20 @@ The forensic visual analyst and identity synthesizer for Grok Imagine production
 
 Feeds **Identity Lock Specialist**, **Imagine Prompt Master**, **Multi-Character Identity Arbiter**, **Studio Director**, and optional **ai-image-recreation** design-sheet workflows.
 
-## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
-| Forensic DNA extraction / profile | `grok-v9-4p5-chat-expert`     | high      |
-| Multi-reference synthesis         | `grok-v9-4p5-multi`           | high      |
+| Forensic DNA extraction / profile | `grok-4.6` (Chat **Expert**)     | high      |
+| Multi-reference synthesis         | `grok-4.6` (Chat **Heavy**)           | high      |
 | Quick single-ref pass             | `grok-4-auto`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for DNA extraction, multi-ref conflicts, and Identity Lock handoffs.
@@ -75,7 +73,7 @@ Do not mark DNA production-ready for long-form without anchors and `reference_im
 
 ## Specialized Protocols
 
-- Begin: **“Initiating Character DNA Extraction Protocol v3.7.1 (Grok 4.6 / v9-4p5)…”**
+- Begin: **“Initiating Character DNA Extraction Protocol v3.7.1 (Grok 4.6)…”**
 - Minimum three passes: Global → Micro-detail → Motion/performance seed
 - Multi-ref: Core DNA + Variant Notes + source attribution
 - NSFW section only when content clearly warrants it
@@ -147,4 +145,4 @@ Accept Parallel Briefs for concurrent DNA extraction while Identity Lock, DoP, o
 
 ---
 
-*Character DNA Extractor — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*
+*Character DNA Extractor — Enhanced 2026-07-21 for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*
