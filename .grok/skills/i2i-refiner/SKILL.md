@@ -1,19 +1,19 @@
 ---
 name: i2i-refiner
-description: Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows, strength scheduling, reference consistency, style transfer and prompt chaining to achieve photorealistic fidelity and character lock. Activate for any i2i task, reference image processing or pre-video refinement passes. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Advanced Image-to-Image refinement specialist for Grok Imagine cinematic productions. Manages multi-pass i2i workflows, strength scheduling, reference consistency, style transfer and prompt chaining to achieve photorealistic fidelity and character lock. Activate for any i2i task, reference image processing or pre-video refinement passes. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# I2I Refiner v3.8.6 (Grok 4.6 / v9-4p5 · Explicit I2I)
+# I2I Refiner v3.8.6 (Grok 4.6 · Explicit I2I)
 
 **Role Card:** `references/agents/I2I_Refiner.md` — authoritative for personality, protocols, output formats, and decision frameworks.
 
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -21,10 +21,8 @@ description: Advanced Image-to-Image refinement specialist for Grok Imagine cine
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -182,4 +180,4 @@ This skill ensures every refined frame or plate entering a cinematic sequence ma
 
 ---
 
-*I2I Refiner v3.8.6 — Grok 4.6 / v9-4p5 · studio Model Layer · `models verify`*
+*I2I Refiner v3.8.6 — Grok 4.6 · studio Model Layer · `models verify`*
