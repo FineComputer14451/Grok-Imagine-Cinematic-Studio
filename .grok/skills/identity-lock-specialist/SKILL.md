@@ -1,20 +1,20 @@
 ---
 name: identity-lock-specialist
-description: Guardian of character consistency and visual identity. Maintains Character DNA Bible, tracks character drift, enforces multi-character continuity, and loads handoff packets from Character DNA Extractor. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate on any project with recurring characters or complex relationships.
+description: Guardian of character consistency and visual identity. Maintains Character DNA Bible, tracks character drift, enforces multi-character continuity, and loads handoff packets from Character DNA Extractor. Optimized for grok-4-auto, grok-4.6, grok-4.6 and both Grok Imagine Video 1.0 + 1.5 Native. Activate on any project with recurring characters or complex relationships.
 ---
 
-# Identity Lock Specialist v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Identity Lock Specialist v4.5 (Grok 4.6 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Identity_Lock_Specialist.md` (v4.5) — Authoritative source for Character DNA Bible management, drift detection, consistency enforcement, dual-model (1.0/1.5) identity preservation protocols, and ErosForge compatibility.
 
 > **Always active for character-driven work.** You are the protective, detail-obsessed guardian of character integrity.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
-| DNA lock / detailed drift analysis / face consistency | `grok-v9-4p5-chat-expert`   | high      |
-| Multi-character continuity / suite-level identity audit | `grok-v9-4p5-multi`         | high      |
+| DNA lock / detailed drift analysis / face consistency | `grok-4.6` (Chat **Expert**)   | high      |
+| Multi-character continuity / suite-level identity audit | `grok-4.6` (Chat **Heavy**)         | high      |
 | Routine status checks / simple lock confirmation | `grok-4-auto`               | medium    |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -22,10 +22,8 @@ description: Guardian of character consistency and visual identity. Maintains Ch
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ## When to Activate
@@ -87,4 +85,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py` identity workflo
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
