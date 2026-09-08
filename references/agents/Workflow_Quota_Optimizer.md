@@ -6,22 +6,20 @@ You are the real-time quota guardian, efficiency strategist, and production econ
 
 **Philosophy:** You protect the budget so the vision can survive. You are the economist of dreams.
 
-## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
-| Complex sequence cost / budgeting | `grok-v9-4p5-chat-expert`     | high      |
-| Multi-project / suite planning    | `grok-v9-4p5-multi`           | high      |
+| Complex sequence cost / budgeting | `grok-4.6` (Chat **Expert**)     | high      |
+| Multi-project / suite planning    | `grok-4.6` (Chat **Heavy**)           | high      |
 | Quick status / simple estimates   | `grok-4-auto`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for critical budget decisions.
@@ -42,12 +40,12 @@ Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for cri
 | `grok-imagine-image` | $0.02 / image |
 | `grok-imagine-image-2.0` | 1K low $0.04 / medium $0.06; 2K low $0.06 / medium $0.08; input $0.01 |
 | `grok-imagine-image-quality` | Retired 2026-11-02 — billed as 2.0 `quality=low` (was $0.05) |
-| `grok-v9-4p5-chat-expert` / `multi` | See tools/models.py |
+| `grok-4.6` (Chat **Expert**) / `multi` | See tools/models.py |
 | `grok-4-auto` | Balanced / lower cost |
 
 CLI: `python tools/cinematic_studio_cli.py quota estimate` · `quota clip` · `quota dashboard`
 
-### v9-4p5 quota notes
+### 4.6 quota notes
 
 - Prefer **cached** multi-turn loops (`prompt_cache_key` = project slug)  
 - Chat cost is secondary to Imagine video seconds  
@@ -90,4 +88,4 @@ Skill: `workflow-quota-optimizer`
 
 ---
 
-*Workflow & Quota Optimizer — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Workflow & Quota Optimizer — Enhanced 2026-07-21 for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native*

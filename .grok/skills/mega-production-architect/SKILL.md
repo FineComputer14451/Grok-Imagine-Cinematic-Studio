@@ -1,9 +1,9 @@
 ---
 name: mega-production-architect
-description: All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates Production Bible, storyboards, shot lists, frame-accurate audio scripts, and execution roadmaps. Activate when you need a full professional production package in one go. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: All-in-one cinematic super-agent that transforms any idea into a complete production-ready audiovisual package. Creates Production Bible, storyboards, shot lists, frame-accurate audio scripts, and execution roadmaps. Activate when you need a full professional production package in one go. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Mega Production Architect v3.8.6 (Grok 4.6 / v9-4p5 · One-Pass Package)
+# Mega Production Architect v3.8.6 (Grok 4.6 · One-Pass Package)
 
 You transform any idea into a **production-ready package**: Production Bible, storyboard/shot list, audio script, agent roadmap, and quota envelope — then hand execution to Studio Director and specialists.
 
@@ -11,12 +11,12 @@ You transform any idea into a **production-ready package**: Production Bible, st
 **CLI:** `create-bible` · wizard · `production-bible-workflow` skill  
 **Registry:** `tools/models.py` · `build_video_pipeline_spec()`
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -24,10 +24,8 @@ You transform any idea into a **production-ready package**: Production Bible, st
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -55,7 +53,7 @@ preferred_model: grok-v9-4p5-chat-expert
 
 | Layer | Preferred |
 |-------|-----------|
-| Orchestration | `grok-v9-4p5-multi` / `chat-expert` |
+| Orchestration | `grok-4.6` (Chat **Heavy**) / `chat-expert` |
 | Imagine Video | `grok-imagine-video` / `1.5` |
 | Imagine Image | `grok-imagine-image` / quality |
 
@@ -150,7 +148,7 @@ Section: `## i2I Refinement Assignments`
 ```text
 MEGA PRODUCTION ARCHITECT · v3.7.1
 Project: <title> | Runtime: Xs | Genre: …
-model_stack: v9-4p5-multi | video: 1.0|1.5
+model_stack: grok-4.6 | video: 1.0|1.5
 VIDEO_PIPELINE_SPEC: locked
 Artifacts:
   - production_bible.json / .md
@@ -173,7 +171,7 @@ Next: ACTIVATE STUDIO DIRECTOR | create-bible wizard | DNA extract
 | DNA / Identity / Curator | Cast + plates |
 | Prompt Master / I2V | Generation packets |
 
-## Reasoning (Grok 4.6 / v9-4p5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -182,4 +180,4 @@ Next: ACTIVATE STUDIO DIRECTOR | create-bible wizard | DNA extract
 
 ---
 
-*Mega Production Architect v3.8.6 — Grok 4.6 / v9-4p5 / v9-4p5 · Bible + roadmap in one pass · 1.0 video default*
+*Mega Production Architect v3.8.6 — Grok 4.6 / 4.6 · Bible + roadmap in one pass · 1.0 video default*

@@ -2,7 +2,7 @@
 
 **Skill:** plate-motion-readiness-lead  
 **Version:** 4.5  
-**Optimized for:** grok-v9-4p5-multi · grok-v9-4p5-chat-expert · grok-4-auto  
+**Optimized for:** grok-4.6 · grok-4.6 · grok-4-auto  
 **Native Targets:** Dual Imagine Video 1.0 / 1.5 · Parallel Brief Protocol v1.0  
 **Studio:** Grok Imagine Cinematic Studio v3.11.0+ (Wave A scaffold)
 
@@ -16,16 +16,14 @@ You own **plate lock and motion-brief readiness** before any Imagine video spend
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Specialist craft / packet fields | `grok-v9-4p5-chat-expert` | high |
-| Multi-agent coordination / synthesis | `grok-v9-4p5-multi` | high |
+| Specialist craft / packet fields | `grok-4.6` (Chat **Expert**) | high |
+| Multi-agent coordination / synthesis | `grok-4.6` (Chat **Heavy**) | high |
 | Draft / light status | `grok-4-auto` | medium |
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 **Stack default:** `grok-4.6` · Registry: `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
@@ -81,4 +79,4 @@ Reference Asset Curator, I2V Specialist, Imagine Prompt Master, QA Guardian, Stu
 
 ---
 *Role Card v4.5 — Plate & Motion Readiness Lead | Grok Imagine Cinematic Studio Wave A*  
-*Optimized for grok-v9-4p5-chat-expert · Parallel Brief Protocol v1.0*
+*Optimized for grok-4.6 · Parallel Brief Protocol v1.0*

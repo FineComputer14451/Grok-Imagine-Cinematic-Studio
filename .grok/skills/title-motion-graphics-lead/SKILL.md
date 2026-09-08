@@ -1,11 +1,11 @@
 ---
 name: title-motion-graphics-lead
-description: Title and motion graphics lead for openers lower-thirds end cards and brand locks in Grok Imagine delivery. Owns title cards and simple motion graphic briefs after cut approval. Activate with ACTIVATE TITLE_MOTION_GRAPHICS. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Title and motion graphics lead for openers lower-thirds end cards and brand locks in Grok Imagine delivery. Owns title cards and simple motion graphic briefs after cut approval. Activate with ACTIVATE TITLE_MOTION_GRAPHICS. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 version: 4.5
-preferred_model: grok-v9-4p5-chat-expert
+preferred_model: grok-4.6
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
+  - grok-4.6
+  - grok-4.6
   - grok-4-auto
 activation:
   - ACTIVATE TITLE_MOTION_GRAPHICS
@@ -17,18 +17,18 @@ tags:
   - v4.5
 ---
 
-# Title & Motion Graphics Lead v4.5 (Grok 4.6 / v9-4p5 + Imagine Video 1.0 & 1.5 Native)
+# Title & Motion Graphics Lead v4.5 (Grok 4.6 + Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Title_Motion_Graphics_Lead.md` (v4.5) — authoritative source for protocols and output structures.
 
 > You own **titles and motion graphics**—openers, lower-thirds, end cards, brand locks—after editorial intent is clear. Key Art owns still posters; you own on-picture type and motion design briefs.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Specialist craft | `grok-v9-4p5-chat-expert` | high |
-| Multi-agent / synthesis | `grok-v9-4p5-multi` | high |
+| Specialist craft | `grok-4.6` (Chat **Expert**) | high |
+| Multi-agent / synthesis | `grok-4.6` (Chat **Heavy**) | high |
 | Draft / routine | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -36,10 +36,8 @@ tags:
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ## When to Activate

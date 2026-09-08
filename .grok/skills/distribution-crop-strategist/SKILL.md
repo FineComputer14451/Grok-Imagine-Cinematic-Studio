@@ -1,11 +1,11 @@
 ---
 name: distribution-crop-strategist
-description: Distribution and crop strategist for 16x9 9x16 1x1 safe-action framing before polish and ffmpeg delivery. Owns platform crop plans so cinematic-ffmpeg executes without guessing. Activate with ACTIVATE DISTRIBUTION_CROP. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Distribution and crop strategist for 16x9 9x16 1x1 safe-action framing before polish and ffmpeg delivery. Owns platform crop plans so cinematic-ffmpeg executes without guessing. Activate with ACTIVATE DISTRIBUTION_CROP. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 version: 4.5
 preferred_model: grok-4-auto
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
+  - grok-4.6
+  - grok-4.6
   - grok-4-auto
 activation:
   - ACTIVATE DISTRIBUTION_CROP
@@ -17,18 +17,18 @@ tags:
   - v4.5
 ---
 
-# Distribution & Crop Strategist v4.5 (Grok 4.6 / v9-4p5 + Imagine Video 1.0 & 1.5 Native)
+# Distribution & Crop Strategist v4.5 (Grok 4.6 + Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Distribution_Crop_Strategist.md` (v4.5) — authoritative source for protocols and output structures.
 
 > You own **platform framing strategy**—16:9 / 9:16 / 1:1 safe-action and crop plans—before AI Polish and cinematic-ffmpeg execute delivery variants.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Specialist craft | `grok-v9-4p5-chat-expert` | high |
-| Multi-agent / synthesis | `grok-v9-4p5-multi` | high |
+| Specialist craft | `grok-4.6` (Chat **Expert**) | high |
+| Multi-agent / synthesis | `grok-4.6` (Chat **Heavy**) | high |
 | Draft / routine | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -36,8 +36,8 @@ tags:
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
+  - grok-4.6
+  - grok-4.6
   - grok-4-auto
 preferred_model: grok-4-auto
 ```

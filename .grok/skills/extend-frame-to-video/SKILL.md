@@ -1,20 +1,20 @@
 ---
 name: extend-frame-to-video
-description: Create cinematic rough-cut animatics and storyboards from Grok Imagine still sequences using Extend from Frame prompting + advanced FFmpeg assembly (v2.0+). Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Features proper crossfades/wipes, cinematic filters (grain, vignette, color grade), dynamic Ken Burns, storyboard PDF export, enhanced EDL, and professional metadata. Perfect for client previews and pre-viz before full cinematic studio.
+description: Create cinematic rough-cut animatics and storyboards from Grok Imagine still sequences using Extend from Frame prompting + advanced FFmpeg assembly (v2.0+). Optimized for grok-4-auto, grok-4.6, grok-4.6 and both Grok Imagine Video 1.0 + 1.5 Native. Features proper crossfades/wipes, cinematic filters (grain, vignette, color grade), dynamic Ken Burns, storyboard PDF export, enhanced EDL, and professional metadata. Perfect for client previews and pre-viz before full cinematic studio.
 ---
 
-# Extend Frame to Video v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Extend Frame to Video v4.5 (Grok 4.6 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Extend_Frame_to_Video.md` (v4.5) — Authoritative source for extend-from-frame protocols, dual-model (1.0/1.5) support, project.json integration, Handoff Packet generation, and FFmpeg assembly standards.
 
 > Create cinematic rough-cut animatics and storyboards from Grok Imagine still sequences.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
-| Complex multi-clip assembly planning, EDL + storyboard synthesis | `grok-v9-4p5-multi`         | high      |
-| Single-sequence extend planning, prompt crafting, Ken Burns design | `grok-v9-4p5-chat-expert`   | high      |
+| Complex multi-clip assembly planning, EDL + storyboard synthesis | `grok-4.6` (Chat **Heavy**)         | high      |
+| Single-sequence extend planning, prompt crafting, Ken Burns design | `grok-4.6` (Chat **Expert**)   | high      |
 | Quick status / simple assembly checks          | `grok-4-auto`               | medium    |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -22,10 +22,8 @@ description: Create cinematic rough-cut animatics and storyboards from Grok Imag
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ## When to Activate
@@ -80,4 +78,4 @@ Fully compatible with Grok Build CLI, scripts/assemble-rough.sh, generate-handof
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

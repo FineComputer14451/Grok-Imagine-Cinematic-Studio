@@ -1,21 +1,21 @@
 ---
 name: grok-imagine-cinematic-studio
-description: Activate the full Grok Imagine Cinematic Studio v3.11.0 Odyssey Native powered by a 25-agent core suite plus i2i and NSFW specialists with unified Grok 4.6 cinematic+Build stack optional v9-4p5 multi/chat-expert and 4.3 1M guided Production Bible wizard Imagine Agent Mode Handoff and native Grok Imagine Video 1.0/1.5 dual support with one-pass synchronized audio. Includes Studio Director Mega Production Architect DoP ErosForge Sonic Architect Foley Key Art Trailer Stunt VFX Production Designer Localization AI Polish Director Grok Doctor Multi-Clip Continuity I2I refiners and NSFW orchestrators. Trigger on Activate Grok Imagine Cinematic Studio v3.11.0 enter cinematic studio start cinematic production or any full multi-agent cinematic workflow.
+description: Activate the full Grok Imagine Cinematic Studio v3.11.0 Odyssey Native powered by a 25-agent core suite plus i2i and NSFW specialists with unified Grok 4.6 cinematic+Build stack optional 4.6 multi/chat-expert and 4.3 1M guided Production Bible wizard Imagine Agent Mode Handoff and native Grok Imagine Video 1.0/1.5 dual support with one-pass synchronized audio. Includes Studio Director Mega Production Architect DoP ErosForge Sonic Architect Foley Key Art Trailer Stunt VFX Production Designer Localization AI Polish Director Grok Doctor Multi-Clip Continuity I2I refiners and NSFW orchestrators. Trigger on Activate Grok Imagine Cinematic Studio v3.11.0 enter cinematic studio start cinematic production or any full multi-agent cinematic workflow.
 ---
 
-# Grok Imagine Cinematic Studio v3.11.0 "Odyssey Native" (Grok 4.6 · v9-4p5)
+# Grok Imagine Cinematic Studio v3.11.0 "Odyssey Native" (Grok 4.6 · 4.6)
 
-**You are now in full Cinematic Studio v3.11.0 mode** (Grok 4.6 / v9-4p5 stack + guided Bible wizard + Imagine Agent Mode Handoff + Imagine Image 2.0 + Video 1.0/1.5 dual).
+**You are now in full Cinematic Studio v3.11.0 mode** (Grok 4.6 stack + guided Bible wizard + Imagine Agent Mode Handoff + Imagine Image 2.0 + Video 1.0/1.5 dual).
 
 > [!NOTE]
 > **Independent community project** — not affiliated with, endorsed by, sponsored by, or officially connected to xAI. Do not claim official xAI partnership when directing productions. Full notice: repo root `DISCLAIMER.md`.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -23,10 +23,8 @@ description: Activate the full Grok Imagine Cinematic Studio v3.11.0 Odyssey Nat
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -146,9 +144,9 @@ Studio Director **owns** surface selection and must not hand off video without I
 - Multi-reference + `reference_image_id` propagation
 - NSFW via ErosForge + `nsfw-quota-orchestrator` + `nsfw-sequence-extender` (explicit only)
 - Quota-aware production with xAI per-second pricing (`workflow-quota-optimizer`)
-- **Grok 4.6 / v9-4p5 model stack** — CLI `grok-4.6` (min 1.0.5) / fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6; opt-in `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto`; 1M `grok-4.3`; Imagine 1.0 default + 1.5 native audio (`tools/models.py`, `references/agents/MODEL_LAYER_v4.5.md`)
+- **Grok 4.6 model stack** — CLI `grok-4.6` (min 1.0.5) / fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6; opt-in `grok-4.6` (Chat **Heavy**) / `grok-4.6` (Chat **Expert**) / `grok-4-auto`; 1M `grok-4.3`; Imagine 1.0 default + 1.5 native audio (`tools/models.py`, `references/agents/MODEL_LAYER_v4.5.md`)
 - Plugin marketplace (64 skills + 11 commands) with release-pin hygiene
-- Authoritative Role Cards in `references/agents/` (each embeds Model Layer Grok 4.6 / v9-4p5)
+- Authoritative Role Cards in `references/agents/` (each embeds Model Layer Grok 4.6)
 
 ## Quick Commands
 
@@ -179,4 +177,4 @@ This skill gives you access to the complete cinematic production system (Grok 4.
 
 ---
 
-*Grok Imagine Cinematic Studio v3.11.0 — Grok 4.6 / v9-4p5 · Image 2.0 + Video 1.0/1.5 · Grok Build ≥ 1.0.5 · `models verify`*
+*Grok Imagine Cinematic Studio v3.11.0 — Grok 4.6 · Image 2.0 + Video 1.0/1.5 · Grok Build ≥ 1.0.5 · `models verify`*

@@ -1,9 +1,9 @@
 ---
 name: chain-qa-protocol
-description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approving clips for extension or final stitch. Activate with RUN CHAIN QA REVIEW alongside Sequence Director and Cinematic Sequence Extender. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequences. Runs the weighted 10-point gate before approving clips for extension or final stitch. Activate with RUN CHAIN QA REVIEW alongside Sequence Director and Cinematic Sequence Extender. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Chain QA Protocol v3.8.6 (Grok 4.6 / v9-4p5 · Extend/Stitch Gate)
+# Chain QA Protocol v3.8.6 (Grok 4.6 · Extend/Stitch Gate)
 
 **Pipeline skill** — boundary continuity gate for multi-clip sequences. Complements QA Guardian’s **per-clip 16-point** review; does **not** replace it.
 
@@ -12,12 +12,12 @@ description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequ
 **Assist:** `tools/chain_qa_assist.py` · CLI `sequence qa` / `sequence qa-assist`  
 **NSFW variant:** `nsfw-chain-qa-protocol` (8-point artifact-aware)
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -25,10 +25,8 @@ description: Extend and stitch chain QA protocol for Grok Imagine Video 1.5 sequ
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -48,7 +46,7 @@ ACTIVATE ONLY Sequence Director, Cinematic Sequence Extender, Continuity Guardia
 RUN CHAIN QA REVIEW
 ```
 
-Begin: **"Initiating Chain QA Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
+Begin: **"Initiating Chain QA Protocol v3.8.6 (Grok 4.6)…"**
 
 ## When NOT Alone
 
@@ -193,4 +191,4 @@ Next: extend | fix handoff | regen plan | Assembly Editor (if final Go)
 
 ---
 
-*Chain QA Protocol v3.8.6 — Grok 4.6 / v9-4p5 · weighted 10-point stitch gate · critical floor 7.0*
+*Chain QA Protocol v3.8.6 — Grok 4.6 · weighted 10-point stitch gate · critical floor 7.0*

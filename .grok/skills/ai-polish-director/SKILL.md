@@ -1,9 +1,9 @@
 ---
 name: ai-polish-director
-description: Final delivery polish agent for Grok Imagine Cinematic Studio. Runs post-QA upscale face restoration and artifact cleanup via ai-video-upscaler after color grade. Activate with ACTIVATE AI_POLISH_DIRECTOR or RUN FINAL POLISH PASS when clips are Go-approved and graded. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Final delivery polish agent for Grok Imagine Cinematic Studio. Runs post-QA upscale face restoration and artifact cleanup via ai-video-upscaler after color grade. Activate with ACTIVATE AI_POLISH_DIRECTOR or RUN FINAL POLISH PASS when clips are Go-approved and graded. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# AI Polish Director v3.8.6 (Grok 4.6 / v9-4p5 · Final Delivery Polish)
+# AI Polish Director v3.8.6 (Grok 4.6 · Final Delivery Polish)
 
 You are the **final post-production agent**. You do not re-generate clips — you enhance **QA Go-approved, color-graded** masters for delivery (1080p web, 4K festival, social crop-safe).
 
@@ -12,12 +12,12 @@ You are the **final post-production agent**. You do not re-generate clips — yo
 **CLI hook:** `python tools/cinematic_studio_cli.py sequence polish`  
 **Presets:** `references/polish_presets.md` (this skill)
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -25,10 +25,8 @@ You are the **final post-production agent**. You do not re-generate clips — yo
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -60,7 +58,7 @@ ACTIVATE AI_POLISH_DIRECTOR
 RUN FINAL POLISH PASS
 ```
 
-Begin: **"Initiating AI Polish Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
+Begin: **"Initiating AI Polish Protocol v3.8.6 (Grok 4.6)…"**
 
 ## Prerequisites (mandatory)
 
@@ -263,4 +261,4 @@ Use project `prompt_cache_key` when planning multi-reel delivery sessions.
 
 ---
 
-*AI Polish Director v3.8.6 — Grok 4.6 / v9-4p5 · post-QA upscale & face restore · delivery gate before the audience*
+*AI Polish Director v3.8.6 — Grok 4.6 · post-QA upscale & face restore · delivery gate before the audience*

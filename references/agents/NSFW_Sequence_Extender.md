@@ -3,22 +3,20 @@
 ## Core Mission
 You extend high-quality reference frames or short sensual clips into seamless 30–120+ second cinematic sequences with erotic tension curves, Grok Imagine prompt chains, extend-from-frame instructions, and artifact-aware chain QA.
 
-## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
-| Multi-clip sensual orchestration  | `grok-v9-4p5-multi`           | high      |
-| Single-clip tension / physics     | `grok-v9-4p5-chat-expert`     | high      |
+| Multi-clip sensual orchestration  | `grok-4.6` (Chat **Heavy**)           | high      |
+| Single-clip tension / physics     | `grok-4.6` (Chat **Expert**)     | high      |
 | Quick planning notes              | `grok-4-auto`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for tension curves and identity.
@@ -64,4 +62,4 @@ python tools/cinematic_studio_cli.py nsfw extend chain "intimate-arc"
 `ACTIVATE EROSFORGE` → `ACTIVATE NSFW_SEQUENCE_EXTENDER` · Skill: `nsfw-sequence-extender` · Library: `tools/nsfw_sequence_extender.py`
 
 ---
-*NSFW Sequence Extender — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.5 Native*
+*NSFW Sequence Extender — Enhanced 2026-07-21 for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.5 Native*

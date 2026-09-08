@@ -1,6 +1,6 @@
 # Models registry (canonical alias)
 
-Full model selection guide for **Grok 4.6** (cinematic + Build default; `grok-4.5` aliases wrap 4.6), optional **v9-4p5** routing surfaces, optional **Grok 4.3** 1M, and Imagine Video/Image:
+Full model selection guide for **Grok 4.6** (cinematic + Build default; `grok-4.5` aliases wrap 4.6), optional **4.6** routing surfaces, optional **Grok 4.3** 1M, and Imagine Video/Image:
 
 → **Primary agent embed:** [`agents/MODEL_LAYER_v4.5.md`](agents/MODEL_LAYER_v4.5.md)  
 → **Prior stack table:** [`agents/MODEL_LAYER_v3.7.1.md`](agents/MODEL_LAYER_v3.7.1.md)  
@@ -18,7 +18,7 @@ python tools/cinematic_studio_cli.py stack
 | Layer | Default slug | Notes |
 |-------|--------------|-------|
 | Orchestration / cinematic chat | `grok-4.6` | Production Bibles, multi-agent (`grok-4.5` aliases wrap 4.6) |
-| Opt-in multi / expert | `grok-v9-4p5-multi` · `grok-v9-4p5-chat-expert` | Skill Model Layer routing; Build pickers wrap 4.6 |
+| Opt-in multi / expert | `grok-4.6` (Chat **Heavy**) · `grok-4.6` (Chat **Expert**) | Skill Model Layer routing; Build pickers wrap 4.6 |
 | Fast routing | `grok-4-auto` | Routine specialist hops (same install script) |
 | Long-context | `grok-4.3` | 1M memory banks only |
 | Grok Build CLI | `grok-4.6` · fork `grok-build` or `grok-4.6` | ≥ **1.0.5** binary |

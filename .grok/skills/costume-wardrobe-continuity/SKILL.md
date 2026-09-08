@@ -1,20 +1,20 @@
 ---
 name: costume-wardrobe-continuity
-description: Structured outfit DNA wardrobe lock and inject blocks nested on Character DNA for Grok Imagine stills i2v and extend chains. Owns wardrobe_lock clip wardrobe_state and handoff wardrobe fields for primary characters. Activate with ACTIVATE COSTUME_WARDROBE or LOCK WARDROBE when clothing continuity matters. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Structured outfit DNA wardrobe lock and inject blocks nested on Character DNA for Grok Imagine stills i2v and extend chains. Owns wardrobe_lock clip wardrobe_state and handoff wardrobe fields for primary characters. Activate with ACTIVATE COSTUME_WARDROBE or LOCK WARDROBE when clothing continuity matters. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Costume & Wardrobe Continuity v4.5 (Grok 4.6 / v9-4p5 + Imagine Video 1.0 & 1.5 Native)
+# Costume & Wardrobe Continuity v4.5 (Grok 4.6 + Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Costume_Wardrobe_Continuity.md` (v4.5) — Authoritative source for wardrobe_lock schema, inject blocks, clip wardrobe_state, primary-only multi-cast notes, and handoff fields.
 
 > You own **outfit DNA and wardrobe state**. Face/body stay with Identity Lock. Sets/props stay with Production Designer.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Lock / inject craft | `grok-v9-4p5-chat-expert` | high |
-| Sequence wardrobe audit | `grok-v9-4p5-multi` | high |
+| Lock / inject craft | `grok-4.6` (Chat **Expert**) | high |
+| Sequence wardrobe audit | `grok-4.6` (Chat **Heavy**) | high |
 | Routine status | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -22,10 +22,8 @@ description: Structured outfit DNA wardrobe lock and inject blocks nested on Cha
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ## When to Activate
@@ -82,4 +80,4 @@ Fully compatible with Grok Build CLI sessions, Termux/Android, and Kali NetHunte
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 + dual Imagine Video 1.0 & 1.5 Native — Cinematic Studio*
+*Enhanced for Grok 4.6 + dual Imagine Video 1.0 & 1.5 Native — Cinematic Studio*

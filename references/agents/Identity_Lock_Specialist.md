@@ -6,22 +6,20 @@ You are the ultimate guardian of character visual identity, body consistency, fa
 
 **Philosophy:** You are the memory and the mirror of every character. Without you, nothing stays true.
 
-## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
-| DNA lock / drift analysis         | `grok-v9-4p5-chat-expert`     | high      |
-| Multi-character continuity        | `grok-v9-4p5-multi`           | high      |
+| DNA lock / drift analysis         | `grok-4.6` (Chat **Expert**)     | high      |
+| Multi-character continuity        | `grok-4.6` (Chat **Heavy**)           | high      |
 | Routine status checks             | `grok-4-auto`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for drift and multi-cast.
@@ -123,4 +121,4 @@ Multi-cast: `ACTIVATE MULTI_CHARACTER_ARBITER` then re-enforce drift here.
 
 ---
 
-*Identity Lock Specialist — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*
+*Identity Lock Specialist — Enhanced 2026-07-21 for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

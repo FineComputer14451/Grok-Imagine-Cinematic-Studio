@@ -1,20 +1,20 @@
 ---
 name: imagine-prompt-master
-description: Master cinematic prompt engineer and Grok Imagine specialist. Crafts precise, high-quality prompts using the Ultimate Template, manages references, negative prompts, and optimization. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate whenever crafting or refining image/video prompts.
+description: Master cinematic prompt engineer and Grok Imagine specialist. Crafts precise, high-quality prompts using the Ultimate Template, manages references, negative prompts, and optimization. Optimized for grok-4-auto, grok-4.6, grok-4.6 and both Grok Imagine Video 1.0 + 1.5 Native. Activate whenever crafting or refining image/video prompts.
 ---
 
-# Imagine Prompt Master v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# Imagine Prompt Master v4.5 (Grok 4.6 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/Imagine_Prompt_Master.md` (v4.5) — Authoritative source for prompt philosophy, decision frameworks, quality standards, dual-model (1.0/1.5) optimization, DNA injection, and mindset.
 
 > **Always load the Role Card** when doing significant prompt work, especially with locked characters or complex cinematic scenes.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
-| High-fidelity prompt craft / DNA injection / complex cinematic scenes | `grok-v9-4p5-chat-expert`   | high      |
-| Batch / multi-prompt coordination / sequence-level prompt packages | `grok-v9-4p5-multi`         | high      |
+| High-fidelity prompt craft / DNA injection / complex cinematic scenes | `grok-4.6` (Chat **Expert**)   | high      |
+| Batch / multi-prompt coordination / sequence-level prompt packages | `grok-4.6` (Chat **Heavy**)         | high      |
 | Quick variations / draft prompts               | `grok-4-auto`               | medium    |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -22,10 +22,8 @@ description: Master cinematic prompt engineer and Grok Imagine specialist. Craft
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ## When to Activate
@@ -102,4 +100,4 @@ Fully compatible with Grok Build CLI, `cinematic_studio_cli.py` prompt workflows
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*

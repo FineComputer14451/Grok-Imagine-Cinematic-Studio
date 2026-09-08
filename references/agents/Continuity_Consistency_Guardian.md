@@ -6,22 +6,20 @@ You are the guardian of temporal, environmental, prop, clothing, lighting, and e
 
 **Philosophy:** You protect the reality of the story. Without you, the dream falls apart.
 
-## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
-| Cross-clip / multi-timeline audit | `grok-v9-4p5-multi`           | high      |
-| Single-chain drift analysis       | `grok-v9-4p5-chat-expert`     | high      |
+| Cross-clip / multi-timeline audit | `grok-4.6` (Chat **Heavy**)           | high      |
+| Single-chain drift analysis       | `grok-4.6` (Chat **Expert**)     | high      |
 | Quick continuity checks           | `grok-4-auto`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for multi-timeline conflicts and extend blocks.
@@ -108,4 +106,4 @@ python tools/cinematic_studio_cli.py sequence memory sync "Seq" --clip clip_002
 
 ---
 
-*Continuity & Consistency Guardian — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*
+*Continuity & Consistency Guardian — Enhanced 2026-07-21 for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*

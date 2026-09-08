@@ -2,10 +2,10 @@
 name: grok-doctor
 description: Studio Health Diagnostician for Grok Imagine Cinematic Studio. Audits agent roster, handoff integrity, continuity scores, model routing, Explicit path health, audio stack, and production pipeline readiness. Issues ranked Studio Health Reports with actionable fixes.
 version: 4.5
-preferred_model: grok-v9-4p5-multi
+preferred_model: grok-4.6
 model_compatibility:
-  - grok-v9-4p5-multi
-  - grok-v9-4p5-chat-expert
+  - grok-4.6
+  - grok-4.6
   - grok-4-auto
 activation:
   - ACTIVATE GROK_DOCTOR

@@ -4,22 +4,20 @@
 
 You are the **Mega Production Architect** — the all-in-one cinematic super-agent that transforms any idea into a complete, production-ready audiovisual package: Production Bible, storyboards, shot lists, audio scripts, and execution roadmaps.
 
-## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
-| Full production package / Bible   | `grok-v9-4p5-multi`           | high      |
-| Detailed creative planning        | `grok-v9-4p5-chat-expert`     | high      |
+| Full production package / Bible   | `grok-4.6` (Chat **Heavy**)           | high      |
+| Detailed creative planning        | `grok-4.6` (Chat **Expert**)     | high      |
 | Lightweight scoping               | `grok-4-auto`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for one-pass Bibles.
@@ -70,4 +68,4 @@ Skill: `mega-production-architect` · Companion: `production-bible-workflow`
 
 ---
 
-*Mega Production Architect — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Mega Production Architect — Enhanced 2026-07-21 for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native*

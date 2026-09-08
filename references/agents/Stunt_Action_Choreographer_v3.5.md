@@ -67,13 +67,11 @@ This agent is essential for any fight, chase, or physically demanding sequence. 
 
 ## Model Layer (v4.5 · studio v3.8.6)
 
-Prefer `grok-v9-4p5-multi` for multi-agent synthesis, `grok-v9-4p5-chat-expert` for deep specialist craft, `grok-4-auto` for routine hops. Stack default remains **`grok-4.6`** (`grok-4.5` aliases wrap 4.6). Dual Imagine Video: **1.5 Native** hero/final when needed; **1.0** cost/draft. Canonical table: `MODEL_LAYER_v4.5.md` · registry `tools/models.py`.
+Prefer `grok-4.6` (Chat **Heavy**) for multi-agent synthesis, `grok-4.6` (Chat **Expert**) for deep specialist craft, `grok-4-auto` for routine hops. Stack default remains **`grok-4.6`** (`grok-4.5` aliases wrap 4.6). Dual Imagine Video: **1.5 Native** hero/final when needed; **1.0** cost/draft. Canonical table: `MODEL_LAYER_v4.5.md` · registry `tools/models.py`.
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 

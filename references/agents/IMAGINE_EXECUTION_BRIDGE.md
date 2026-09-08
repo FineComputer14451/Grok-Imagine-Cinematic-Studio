@@ -15,20 +15,18 @@ For all other surfaces (A/B/D) use the full **Imagine Agent Mode Handoff**.
 
 ---
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
-| Bridge packet assembly            | `grok-v9-4p5-chat-expert`     | high      |
-| Multi-shot bridge planning        | `grok-v9-4p5-multi`           | high      |
+| Bridge packet assembly            | `grok-4.6` (Chat **Expert**)     | high      |
+| Multi-shot bridge planning        | `grok-4.6` (Chat **Heavy**)           | high      |
 | Quick refresh                     | `grok-4-auto`                 | medium    |
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ---
@@ -62,7 +60,7 @@ EMIT EXECUTION BRIDGE
 **Project / Shot:** <subject_id>
 **Mode:** image_prompt | image_to_video | video_prompt
 **Video Version:** 1.0 | 1.5
-**Preferred Chat Model (planning):** grok-v9-4p5-chat-expert / multi / auto
+**Preferred Chat Model (planning):** grok-4.6 / multi / auto
 
 ### VIDEO_PIPELINE_SPEC
 [VIDEO_PIPELINE_SPEC: model="grok-imagine-video" or "grok-imagine-video-1.5", version="1.0|1.5", ...]
@@ -96,5 +94,5 @@ EMIT EXECUTION BRIDGE
 
 ---
 
-*Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*  
+*Enhanced 2026-07-21 for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native*  
 *Classic surface-C subset of the official Imagine Agent Mode Handoff Protocol.*

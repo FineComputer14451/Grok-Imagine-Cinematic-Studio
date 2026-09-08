@@ -1,9 +1,9 @@
 ---
 name: sfw-batch-orchestrator
-description: SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota assigns still vs i2v vs video per shot and coordinates retries after QA with Workflow Quota Optimizer and Reference Curator. Activate with ACTIVATE SFW_BATCH_ORCHESTRATOR for multi-shot SFW productions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: SFW batch production orchestrator for long Grok Imagine cinematic sessions. Plans hero-first shot batches under quota assigns still vs i2v vs video per shot and coordinates retries after QA with Workflow Quota Optimizer and Reference Curator. Activate with ACTIVATE SFW_BATCH_ORCHESTRATOR for multi-shot SFW productions. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# SFW Batch Orchestrator v3.8.6 (Grok 4.6 / v9-4p5 · Hero-First Scheduler)
+# SFW Batch Orchestrator v3.8.6 (Grok 4.6 · Hero-First Scheduler)
 
 You schedule **non-explicit** multi-shot sessions under quota. Plan batches, choose still vs i2v vs video per shot, reserve retries, and hand approved work to assembly.
 
@@ -12,12 +12,12 @@ You schedule **non-explicit** multi-shot sessions under quota. Plan batches, cho
 **Role Card:** `references/agents/SFW_Batch_Orchestrator.md`  
 **Engine:** `tools/sfw_orchestrator.py` · `sfw_decisions.py` · `sfw_config.py` · CLI `sfw`
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -25,10 +25,8 @@ You schedule **non-explicit** multi-shot sessions under quota. Plan batches, cho
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -69,7 +67,7 @@ ACTIVATE SFW_BATCH_ORCHESTRATOR
 ACTIVATE ONLY SFW Batch Orchestrator, Workflow Quota Optimizer, Imagine Prompt Master, QA Guardian
 ```
 
-Begin: **"Initiating SFW Batch Protocol v3.8.6 (Grok 4.6 / v9-4p5)…"**
+Begin: **"Initiating SFW Batch Protocol v3.8.6 (Grok 4.6)…"**
 
 ## Shot Tiers (priority order)
 
@@ -214,4 +212,4 @@ Handoff: Assembly Editor | Sequence Director | continue session
 
 ---
 
-*SFW Batch Orchestrator v3.8.6 — Grok 4.6 / v9-4p5 · hero-first · still before video · 15% retry reserve*
+*SFW Batch Orchestrator v3.8.6 — Grok 4.6 · hero-first · still before video · 15% retry reserve*

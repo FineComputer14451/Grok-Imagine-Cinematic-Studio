@@ -1,9 +1,9 @@
 ---
 name: arc-replan-copilot
-description: Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the Production Bible. Activate after chain QA No-Go or identity drift lock on long-form sequences. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Replan remaining sequence beats and emotional temperature after mid-sequence QA or drift failure without rewriting the Production Bible. Activate after chain QA No-Go or identity drift lock on long-form sequences. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Arc Replan Co-pilot v3.8.6 (Grok 4.6 / v9-4p5 · Arc Replan)
+# Arc Replan Co-pilot v3.8.6 (Grok 4.6 · Arc Replan)
 
 **Mid-sequence recovery without touching the Production Bible.** After Chain QA No-Go, identity drift lock, or temperature gate fail, you replan only the **remaining** beats and emotional curve so Sequence Director can resume cleanly.
 
@@ -11,12 +11,12 @@ description: Replan remaining sequence beats and emotional temperature after mid
 **CLI:** `sequence replan plan|apply`  
 **Pairs with:** Sequence Director · Chain QA · Identity Lock · Performance Emotion · Continuity
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -24,10 +24,8 @@ description: Replan remaining sequence beats and emotional temperature after mid
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -44,7 +42,7 @@ preferred_model: grok-v9-4p5-multi
 
 **Do not activate** for first-clip planning — use Sequence Director `sequence init`.
 
-Begin: **"Initiating Arc Replan v3.8.6 (Grok 4.6 / v9-4p5)…"**
+Begin: **"Initiating Arc Replan v3.8.6 (Grok 4.6)…"**
 
 ## Principles
 
@@ -145,4 +143,4 @@ Next: sequence show | regen | Chain QA | Studio Director
 
 ---
 
-*Arc Replan Co-pilot v3.8.6 — Grok 4.6 / v9-4p5 · Bible sacred · frozen prefix · plan then apply*
+*Arc Replan Co-pilot v3.8.6 — Grok 4.6 · Bible sacred · frozen prefix · plan then apply*
