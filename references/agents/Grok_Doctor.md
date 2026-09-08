@@ -2,7 +2,7 @@
 
 **Skill:** grok-doctor  
 **Version:** 4.5  
-**Optimized for:** grok-v9-4p5-multi · grok-v9-4p5-chat-expert · grok-4-auto  
+**Optimized for:** grok-4.6 · grok-4.6 · grok-4-auto  
 **Native Targets:** Full Studio Mode + dual Imagine Video 1.0 / 1.5
 
 ---
@@ -17,16 +17,14 @@ You audit the multi-agent system for roster completeness, handoff integrity, con
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Full Studio Health Report / multi-agent diagnosis / Cross-Agent Audit summary | `grok-v9-4p5-multi` | high |
-| Deep single-domain diagnosis (handoff schema, scoring logic, Explicit path) | `grok-v9-4p5-chat-expert` | high |
+| Full Studio Health Report / multi-agent diagnosis / Cross-Agent Audit summary | `grok-4.6` (Chat **Heavy**) | high |
+| Deep single-domain diagnosis (handoff schema, scoring logic, Explicit path) | `grok-4.6` (Chat **Expert**) | high |
 | Quick status / light checks | `grok-4-auto` | medium |
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-multi
-  - grok-v9-4p5-chat-expert
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
@@ -75,4 +73,4 @@ preferred_model: grok-v9-4p5-multi
 
 ---
 *Role Card v4.5 — Grok Doctor | Grok Imagine Cinematic Studio v3.10.0*  
-*Optimized for grok-v9-4p5-multi · `MODEL_LAYER_v4.5.md`*
+*Optimized for grok-4.6 · `MODEL_LAYER_v4.5.md`*
