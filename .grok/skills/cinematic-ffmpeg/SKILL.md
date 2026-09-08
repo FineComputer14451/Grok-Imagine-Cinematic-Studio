@@ -1,18 +1,18 @@
 ---
 name: cinematic-ffmpeg
-description: Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Assembly Editor and AI Polish Director. Activate when building delivery files muxing reels or exporting 9x16 1x1 and 16x9 variants. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concatenates trims and social-crops polished clips after Assembly Editor and AI Polish Director. Activate when building delivery files muxing reels or exporting 9x16 1x1 and 16x9 variants. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Cinematic FFmpeg v3.8.6 (Grok 4.6 / v9-4p5 · Delivery Toolkit)
+# Cinematic FFmpeg v3.8.6 (Grok 4.6 · Delivery Toolkit)
 
 **Tool skill** — post-polish technical assembly and platform export. Requires **`ffmpeg`** (and ideally **`ffprobe`**) on PATH. Orchestration is **Grok 4.6**; this skill does not spend Imagine API credits.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -20,10 +20,8 @@ description: Cinematic ffmpeg delivery toolkit for Grok Imagine Studio. Concaten
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -189,4 +187,4 @@ Next: Studio Director sign-off | Localization | upload
 
 ---
 
-*Cinematic FFmpeg v3.8.6 — Grok 4.6 / v9-4p5 delivery toolkit · post-polish concat trim crop · sequence deliver*
+*Cinematic FFmpeg v3.8.6 — Grok 4.6 delivery toolkit · post-polish concat trim crop · sequence deliver*
