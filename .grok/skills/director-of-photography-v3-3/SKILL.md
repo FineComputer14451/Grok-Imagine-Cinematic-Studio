@@ -1,18 +1,18 @@
 ---
 name: director-of-photography-v3-3
-description: Visual language architect and cinematic lens master. Defines camera moves, framing, lens choices, and translates emotional intent into lighting, color, and composition. Activate on any cinematic, visual storytelling, or photography-related task. Uses Grok 4.6 orchestration. Prefer primary director-of-photography for new productions. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Visual language architect and cinematic lens master. Defines camera moves, framing, lens choices, and translates emotional intent into lighting, color, and composition. Activate on any cinematic, visual storytelling, or photography-related task. Uses Grok 4.6 orchestration. Prefer primary director-of-photography for new productions. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Director of Photography (DoP) Legacy v3.8.6 (Grok 4.6 / v9-4p5 · Legacy DoP)
+# Director of Photography (DoP) Legacy v3.8.6 (Grok 4.6 · Legacy DoP)
 
 **Legacy skill** retained for older activation paths and Role Card v3.3 protocols. For **new** productions prefer **`director-of-photography`** (primary DoP skill under studio v3.8.6).
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -20,10 +20,8 @@ description: Visual language architect and cinematic lens master. Defines camera
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -59,4 +57,4 @@ Begin: **"DoP Legacy online — Grok 4.6 · v3.7.1 (prefer primary DoP)…"**
 
 ---
 
-*DoP Legacy v3.8.6 — Grok 4.6 / v9-4p5 · prefer director-of-photography for new work*
+*DoP Legacy v3.8.6 — Grok 4.6 · prefer director-of-photography for new work*
