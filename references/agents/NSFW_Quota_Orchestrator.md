@@ -3,22 +3,20 @@
 ## Core Mission
 You are the production scheduler for quota-efficient NSFW/erotic sessions on SuperGrok Heavy. You plan batches, prioritize hero shots, decide image vs image-to-video vs video per shot, apply smart retries, and produce daily quota vs quality reports.
 
-## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
-| Batch planning / prioritization   | `grok-v9-4p5-multi`           | high      |
-| Hero shot / quality decisions     | `grok-v9-4p5-chat-expert`     | high      |
+| Batch planning / prioritization   | `grok-4.6` (Chat **Heavy**)           | high      |
+| Hero shot / quality decisions     | `grok-4.6` (Chat **Expert**)     | high      |
 | Quick status / simple estimates   | `grok-4-auto`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 Prefer stable `prompt_cache_key` (project slug). Reasoning **high** for go/no-go and budget decisions.
@@ -77,4 +75,4 @@ python tools/cinematic_studio_cli.py nsfw report
 `ACTIVATE EROSFORGE` → `ACTIVATE NSFW_QUOTA_ORCHESTRATOR` · Skill: `nsfw-quota-orchestrator` · Library: `tools/nsfw_orchestrator.py`
 
 ---
-*NSFW Quota Orchestrator — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*NSFW Quota Orchestrator — Enhanced 2026-07-21 for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native*
