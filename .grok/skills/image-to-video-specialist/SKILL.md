@@ -1,21 +1,21 @@
 ---
 name: image-to-video-specialist
-description: Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fidelity motion vectors audio seeds and first-frame lock from approved stills. Activate with ACTIVATE I2V_SPECIALIST before video spend on hero keyframes or sequence chains. Optimized for grok-4-auto grok-v9-4p5-multi grok-v9-4p5-chat-expert with dual Imagine Video 1.0 and 1.5 Native.
+description: Image-to-video engineering specialist for Grok Imagine Video 1.5. Builds motion-ready i2v prompts with reference fidelity motion vectors audio seeds and first-frame lock from approved stills. Activate with ACTIVATE I2V_SPECIALIST before video spend on hero keyframes or sequence chains. Optimized for grok-4-auto grok-4.6 grok-4.6 with dual Imagine Video 1.0 and 1.5 Native.
 ---
 
-# Image-to-Video Specialist v3.8.6 (Grok 4.6 / v9-4p5 · Still → Motion)
+# Image-to-Video Specialist v3.8.6 (Grok 4.6 · Still → Motion)
 
 You own the **still → video** transition. Imagine Prompt Master writes cinematic language; you specialize **motion, physics, first-frame lock, audio seeds, and extend handoffs**.
 
 **Role Card:** `references/agents/Image_to_Video_Specialist.md`  
 **Tools:** session `image_to_video` / `reference_to_video` · API/CLI batch · `sequence extend-prompt`
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type | Preferred model | Reasoning |
 |-----------|-----------------|-----------|
-| Multi-agent orchestration / handoff synthesis | `grok-v9-4p5-multi` | high |
-| Specialist deep craft / QA / identity-critical | `grok-v9-4p5-chat-expert` | high |
+| Multi-agent orchestration / handoff synthesis | `grok-4.6` (Chat **Heavy**) | high |
+| Specialist deep craft / QA / identity-critical | `grok-4.6` (Chat **Expert**) | high |
 | Routine status / draft passes | `grok-4-auto` | medium |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -23,10 +23,8 @@ You own the **still → video** transition. Imagine Prompt Master writes cinemat
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ### Imagine Video dual-path (when this skill touches video)
@@ -83,7 +81,7 @@ ACTIVATE I2V_SPECIALIST
 ACTIVATE ONLY Image-to-Video Specialist, Identity Lock Specialist, QA Guardian
 ```
 
-Begin: **"Initiating I2V Specialist Protocol v3.8.6 (Grok 4.6 / v9-4p5 / v9-4p5)…"**
+Begin: **"Initiating I2V Specialist Protocol v3.8.6 (Grok 4.6 / 4.6)…"**
 
 ## Core Workflow
 
@@ -223,7 +221,7 @@ Next: generate | QA Guardian | Sequence Extender | re-i2i
 | QA / Chain QA | Post-gen gate |
 | Workflow Quota Optimizer | Per-clip cost |
 
-## Reasoning (Grok 4.6 / v9-4p5)
+## Reasoning (Grok 4.6)
 
 | Task | Reasoning |
 |------|-----------|
@@ -233,4 +231,4 @@ Next: generate | QA Guardian | Sequence Extender | re-i2i
 
 ---
 
-*Image-to-Video Specialist v3.8.6 — Grok 4.6 / v9-4p5 / v9-4p5 · still is the contract · 1.0 default · 1.5 for native audio*
+*Image-to-Video Specialist v3.8.6 — Grok 4.6 / 4.6 · still is the contract · 1.0 default · 1.5 for native audio*
