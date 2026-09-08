@@ -1,20 +1,20 @@
 ---
 name: nsfw-quota-orchestrator
-description: Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans and executes batches of erotic image and video generations with hero-first prioritization, image-to-video decision logic, smart retry strategies, and daily quota vs quality reports. Optimized for grok-4-auto, grok-v9-4p5-multi, grok-v9-4p5-chat-expert and both Grok Imagine Video 1.0 + 1.5 Native. Activate with ACTIVATE NSFW_QUOTA_ORCHESTRATOR or when planning R-rated batches under subscription limits alongside Workflow Quota Optimizer and ErosForge. Requires ACTIVATE EROSFORGE for generation.
+description: Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans and executes batches of erotic image and video generations with hero-first prioritization, image-to-video decision logic, smart retry strategies, and daily quota vs quality reports. Optimized for grok-4-auto, grok-4.6, grok-4.6 and both Grok Imagine Video 1.0 + 1.5 Native. Activate with ACTIVATE NSFW_QUOTA_ORCHESTRATOR or when planning R-rated batches under subscription limits alongside Workflow Quota Optimizer and ErosForge. Requires ACTIVATE EROSFORGE for generation.
 ---
 
-# NSFW Quota Orchestrator v4.5 (Grok 4.6 / v9-4p5 + Grok Imagine Video 1.0 & 1.5 Native)
+# NSFW Quota Orchestrator v4.5 (Grok 4.6 + Grok Imagine Video 1.0 & 1.5 Native)
 
 **Role Card:** `references/agents/NSFW_Quota_Orchestrator.md` (v4.5) — Authoritative source for quota-aware NSFW batch planning, hero-first prioritization, dual-model (1.0/1.5) decision logic, smart retries, and daily quality vs quota reports.
 
 > Quota-aware NSFW production orchestrator for SuperGrok Heavy.
 
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type                                      | Preferred model               | Reasoning |
 |------------------------------------------------|-------------------------------|-----------|
-| Complex multi-shot batch planning, prioritization across quota windows | `grok-v9-4p5-multi`         | high      |
-| Single-batch craft, i2v decision logic, retry strategy design | `grok-v9-4p5-chat-expert`   | high      |
+| Complex multi-shot batch planning, prioritization across quota windows | `grok-4.6` (Chat **Heavy**)         | high      |
+| Single-batch craft, i2v decision logic, retry strategy design | `grok-4.6` (Chat **Expert**)   | high      |
 | Quick status / simple quota checks             | `grok-4-auto`               | medium    |
 
 **Stack default:** cinematic+Build API/chat **`grok-4.6`** (CLI ≥ 1.0.5 · fork `grok-build` or `grok-4.6`; `grok-4.5` aliases wrap 4.6). Opt-in 1M: `grok-4.3`.  
@@ -22,10 +22,8 @@ description: Quota-aware NSFW production orchestrator for SuperGrok Heavy. Plans
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 ## When to Activate
@@ -79,4 +77,4 @@ Fully compatible with Grok Build CLI, Termux/Android, and Kali NetHunter. All pl
 
 ---
 
-*Enhanced for Grok 4.6 / v9-4p5 model layer + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
+*Enhanced for Grok 4.6 + dual Imagine Video 1.0 & 1.5 Native support — Cinematic Studio v4.5*
