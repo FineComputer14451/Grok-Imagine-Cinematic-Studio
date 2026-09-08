@@ -16,10 +16,8 @@ Hero plates and Quality Mode should lock `grok-imagine-image-2.0`. There is no V
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 Apply this whenever you're considering or about to call either tool.
