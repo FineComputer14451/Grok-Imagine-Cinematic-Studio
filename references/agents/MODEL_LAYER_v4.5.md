@@ -1,6 +1,6 @@
 # MODEL_LAYER_v4.5.md
 **Grok Imagine Cinematic Studio — Canonical Model Layer**  
-**Version:** 4.5.1 / v9-4p5 | **Schema:** tools/models.py 1.1+  
+**Version:** 4.6 | **Schema:** tools/models.py 1.1+  
 **Date:** 2026-07-21  
 **Owner:** Studio Director + Skill Agent Architect + Team Leader
 
@@ -10,14 +10,14 @@
 
 This document is the single source of truth for how Cinematic Studio skills and agents should select, prefer, and declare compatibility with Grok models **and** Grok Imagine Video versions. All Role Cards and skills must reference this layer.
 
-**Registry stack (studio v3.11.0):** cinematic + Build default is **`grok-4.6`**. Identifiers `grok-4.5`, `4.5`, `cinematic`, `build`, and `coding` resolve to `grok-4.6`. Specialist pickers (`grok-v9-4p5-*`, `grok-4-auto`) wrap **4.6**. Grok Build CLI min **1.0.5**. Optional 1M remains `grok-4.3`.
+**Registry stack (studio v3.11.0):** cinematic + Build default is **`grok-4.6`**. Identifiers `grok-4.5`, `4.5`, `cinematic`, `build`, and `coding` resolve to `grok-4.6`. Chat modes are Auto / Fast / Expert / Heavy / Build. API and Build default is **`grok-4.6`**. Grok Build CLI min **1.0.5**. Optional 1M remains `grok-4.3`.
 
 It provides first-class support for:
 
 | Identifier                    | Short Name     | Primary Role                                      |
 |-------------------------------|----------------|---------------------------------------------------|
-| `grok-v9-4p5-chat-expert`     | Chat Expert    | Highest-quality single-agent reasoning & craft    |
-| `grok-v9-4p5-multi`           | Multi          | Multi-agent orchestration, synthesis & handoffs   |
+| `grok-4.6` (Chat **Expert**)     | Chat Expert    | Highest-quality single-agent reasoning & craft    |
+| `grok-4.6` (Chat **Heavy**)           | Multi          | Multi-agent orchestration, synthesis & handoffs   |
 | `grok-4-auto`                 | Auto           | Balanced / automatic routing / draft / quota      |
 
 And for Imagine generation (see `IMAGINE_SURFACES.md`):
@@ -36,21 +36,21 @@ There is **no** Imagine Video 2.0. `2.0` aliases resolve to Image 2.0 only.
 
 ## Model Profiles (Chat Layer)
 
-### 1. grok-v9-4p5-chat-expert  (Default for most specialist work)
+### 1. grok-4.6  (Default for most specialist work)
 
 - **Best for**: Deep reasoning, high-fidelity prompt engineering, Character DNA extraction & injection, Identity Lock decisions, QA reviews, narrative architecture, detailed lighting / DoP design, Sonic design, NSFW authenticity.
 - **Strengths**: Reasoning depth, prompt quality, long-context fidelity, character consistency, subtle emotional subtext.
 - **Preferred agents**: Imagine Prompt Master, Character DNA Extractor, Identity Lock Specialist, Quality Assurance Guardian, Narrative Arc & Pacing Strategist, Director of Photography, Sonic Architect (complex layers), ErosForge NSFW Director.
 - **Reasoning recommendation**: **high** for Bibles, locks, QA, DNA, hero prompts, and complex creative judgments.
-- **Aliases**: `v9-4p5-chat-expert`, `chat-expert`, `4p5-expert`, `grok-4.5-expert`, plus family shorts `grok-v9`, `grok-v9-4p5`, `v9`, `v9-4p5`
+- **Use:** Chat **Expert** or API `grok-4.6`. Do not invent a picker id.
 
-### 2. grok-v9-4p5-multi  (Default for Team Leader / Full Studio Mode)
+### 2. grok-4.6  (Default for Team Leader / Full Studio Mode)
 
 - **Best for**: Multi-agent coordination, Team Leader synthesis, parallel specialist briefings, Handoff Packet assembly & Cross-Agent Consistency Audit, Sequence Director orchestration, Mega Production Architect planning, Continuity across clips.
 - **Strengths**: Multi-agent awareness, handoff integrity, parallel reasoning, final synthesis quality, long production memory.
 - **Preferred agents**: Team Leader / Final Synthesizer, Studio Director (Full Studio or MAXIMUM_AGENTIC_MODE), Mega Production Architect, Sequence Director, Continuity & Consistency Guardian (cross-clip), Cinematic Sequence Extender (chain planning).
 - **Reasoning recommendation**: **high** + agentic depth.
-- **Aliases**: `v9-4p5-multi`, `4p5-multi`, `multi`, `grok-4.5-multi`
+- **Use:** Chat **Heavy** or API `grok-4.6`. Do not invent a picker id.
 
 ### 3. grok-4-auto
 
@@ -89,12 +89,12 @@ Every video-related Role Card and handoff **must** declare a `VIDEO_PIPELINE_SPE
 
 | Task                                      | Preferred Chat Model          | Video Version | Notes |
 |-------------------------------------------|-------------------------------|---------------|-------|
-| Hero prompt craft / DNA inject            | grok-v9-4p5-chat-expert       | 1.0 or 1.5    | High reasoning |
-| Sequence planning / multi-clip orchestration | grok-v9-4p5-multi          | 1.0 default   | Use multi for chain |
-| Native audio design + AMV                 | grok-v9-4p5-chat-expert       | **1.5**       | Sonic Architect owns |
+| Hero prompt craft / DNA inject            | grok-4.6       | 1.0 or 1.5    | High reasoning |
+| Sequence planning / multi-clip orchestration | grok-4.6          | 1.0 default   | Use multi for chain |
+| Native audio design + AMV                 | grok-4.6       | **1.5**       | Sonic Architect owns |
 | Draft / animatic / quota-tight            | grok-4-auto                   | 1.0           | Fast path |
-| Extend / stitch chain QA                  | grok-v9-4p5-multi             | Match previous| Continuity Guardian |
-| Intimate / ErosForge sequences            | grok-v9-4p5-chat-expert       | **1.5 preferred** | Physics + audio authenticity |
+| Extend / stitch chain QA                  | grok-4.6             | Match previous| Continuity Guardian |
+| Intimate / ErosForge sequences            | grok-4.6       | **1.5 preferred** | Physics + audio authenticity |
 
 ### Critical Rules
 1. Never claim native audio capabilities on 1.0.
@@ -110,12 +110,12 @@ Every video-related Role Card and handoff **must** declare a `VIDEO_PIPELINE_SPE
 Every skill SKILL.md and every Role Card that performs non-trivial reasoning **must** contain a short **Model Layer** section:
 
 ```markdown
-## Model Layer (Grok 4.6 / v9-4p5)
+## Model Layer (Grok 4.6)
 
 | Task type                    | Preferred model              | Reasoning |
 |-----------------------------|------------------------------|-----------|
-| Standard specialist work    | grok-v9-4p5-chat-expert      | high      |
-| Multi-agent / handoff work  | grok-v9-4p5-multi            | high      |
+| Standard specialist work    | grok-4.6      | high      |
+| Multi-agent / handoff work  | grok-4.6            | high      |
 | Draft / quota-sensitive     | grok-4-auto                  | medium    |
 
 **Registry:** `tools/models.py` · `references/agents/MODEL_LAYER_v4.5.md` · `models verify`
@@ -134,10 +134,8 @@ Plus, when the agent touches video:
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-chat-expert   # or multi / auto
+  - grok-4.6
+preferred_model: grok-4.6   # or multi / auto
 imagine_video_support:
   - "1.0"
   - "1.5"
@@ -152,48 +150,44 @@ from tools.models import (
     resolve_chat_model,
     recommended_model_for_role,
     DEFAULT_XAI_CHAT_MODEL,          # → grok-4.6 (registry / Bible / Build stack lock)
-    DEFAULT_XAI_CHAT_EXPERT_MODEL,   # → grok-v9-4p5-chat-expert (specialist craft)
-    DEFAULT_XAI_MULTI_MODEL,         # → grok-v9-4p5-multi
+    DEFAULT_XAI_CHAT_EXPERT_MODEL,   # → grok-4.6 (specialist craft)
+    DEFAULT_XAI_MULTI_MODEL,         # → grok-4.6
     DEFAULT_XAI_AUTO_MODEL,          # → grok-4-auto
 )
 ```
 
-- `resolve_chat_model("multi")` → `grok-v9-4p5-multi`
-- `resolve_chat_model("chat-expert")` → `grok-v9-4p5-chat-expert`
-- `resolve_chat_model("grok-v9")` / `"grok-v9-4p5"` / `"v9"` → `grok-v9-4p5-chat-expert`
-- `recommended_model_for_role("Team Leader")` → `grok-v9-4p5-multi`
-- `recommended_model_for_role("Imagine Prompt Master")` → `grok-v9-4p5-chat-expert`
+- `resolve_chat_model("multi")` → `grok-4.6` (Chat **Heavy**)
+- `resolve_chat_model("chat-expert")` → `grok-4.6` (Chat **Expert**)
+- `resolve_chat_model` empty or `grok-4.6` → `grok-4.6`. Chat Expert is a grok.com mode, not an API id.
+- `recommended_model_for_role("Team Leader")` → `grok-4.6` (Chat **Heavy**)
+- `recommended_model_for_role("Imagine Prompt Master")` → `grok-4.6` (Chat **Expert**)
 
 ### Grok Build picker install (when native product IDs are unavailable)
 
-Public `api.x.ai` may return **Model not found** for `grok-v9-4p5-*` / `grok-4-auto`. Install session-auth specialist pickers that wrap `grok-4.6` with role-tuned sampling:
+Public `api.x.ai` may return **Model not found** for `grok-4.6` / `grok-4-auto`. Install session-auth specialist pickers that wrap `grok-4.6` with role-tuned sampling:
 
 ```bash
-bash scripts/install_v9_grok_models.sh          # first install / upgrade bare stubs
-bash scripts/install_v9_grok_models.sh --force  # refresh
 grok models
-/model grok-v9-4p5-chat-expert
+/model grok-4.6
 ```
 
-Config source: `config/grok-build-v9-models.example.toml` · registry: `GROK_BUILD_V9_MODELS`.
 
 ---
 
 ## Migration & Validation Notes
 
 - All Role Cards in `references/agents/` have been enhanced (or are being enhanced) to this standard as of 2026-07-21.
-- Previous hard-coded “Grok 4.5” language should now use the explicit v9-4p5 identifiers for **specialist routing**; stack lock / Bibles remain **`grok-4.6`** (`grok-4.5` aliases wrap 4.6).
-- Team Leader / Full Studio Mode orchestration **defaults to grok-v9-4p5-multi**.
+- Previous hard-coded “Grok 4.5” language should now use the explicit 4.6 identifiers for **specialist routing**; stack lock / Bibles remain **`grok-4.6`** (`grok-4.5` aliases wrap 4.6).
+- Team Leader / Full Studio Mode orchestration **defaults to grok-4.6**.
 - Run after changes:
 
 ```bash
 python tools/models.py
 python tools/cinematic_studio_cli.py models verify
-bash scripts/install_v9_grok_models.sh --force
 bash .grok/skills/cinematic-skill-creator/scripts/validate_skill.sh <skill> --v45
 ```
 
 ---
 
 **End of MODEL_LAYER_v4.5.md (v4.5.1)**  
-*Grok Imagine Cinematic Studio — Fully optimized for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native*
+*Grok Imagine Cinematic Studio — Fully optimized for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native*
