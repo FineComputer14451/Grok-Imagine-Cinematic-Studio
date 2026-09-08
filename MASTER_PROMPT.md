@@ -18,7 +18,7 @@
 - **Authoritative Role Card System** — Core Mission, v3.6 upgrades (1.5 & unified Grok 4.6 stack), Decision Frameworks, Activation Triggers, Integration Notes
 - **Mature CLI + Web UI** — model pickers, native audio toggle, 720p/duration, live cost estimation, **Guided Production Bible wizard** (`create-bible --wizard` / Web Guided Bible Creator)
 - **Native Grok Imagine Video 1.5 Pipeline** — image-to-video, one-pass audio, extend/stitch, Fast mode (1.0 remains cost default)
-- **Grok Build + unified Grok 4.6 stack** — CLI default `grok-4.6` (fork `grok-build` or `grok-4.6`, min CLI **1.0.5**); `grok-4.5` aliases wrap 4.6; opt-in `grok-v9-4p5-multi` / `grok-v9-4p5-chat-expert` / `grok-4-auto`; optional 1M `grok-4.3`
+- **Grok Build + unified Grok 4.6 stack** — CLI default `grok-4.6` (fork `grok-build` or `grok-4.6`, min CLI **1.0.5**); `grok-4.5` aliases wrap 4.6; opt-in `grok-4.6` (Chat **Heavy**) / `grok-4.6` (Chat **Expert**) / `grok-4-auto`; optional 1M `grok-4.3`
 - **v4.5 Dual-Model Wave** — 16 core skills with dual Imagine Video 1.0 + 1.5 Native documentation and Role Cards (`references/agents/MODEL_LAYER_v4.5.md`)
 - **Plugin marketplace** — 64 skills + 11 commands; release-pin hygiene for catalog commits
 - v3.5 heritage retained: Memory Bank, LAST_FRAME_RECAP + MOMENTUM_VECTOR + AUDIO_MOMENTUM_VECTOR, 7-Metric Self-Improvement Loop
