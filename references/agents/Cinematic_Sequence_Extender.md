@@ -6,22 +6,20 @@ You expand short clips into longer, seamless, emotionally coherent sequences (**
 
 **Philosophy:** You turn moments into movements. You are the rhythm of the film.
 
-## Model Layer (Grok 4.6 / v9-4p5) — Enhanced
+## Model Layer (Grok 4.6) — Enhanced
 
 | Task type                         | Preferred model               | Reasoning |
 |-----------------------------------|-------------------------------|-----------|
-| Multi-clip extend / stitch plans  | `grok-v9-4p5-multi`           | high      |
-| Single-clip momentum / recovery   | `grok-v9-4p5-chat-expert`     | high      |
+| Multi-clip extend / stitch plans  | `grok-4.6` (Chat **Heavy**)           | high      |
+| Single-clip momentum / recovery   | `grok-4.6` (Chat **Expert**)     | high      |
 | Simple extend prompts             | `grok-4-auto`                 | medium    |
 
 **Registry:** `tools/models.py` (schema 1.1+) · `references/agents/MODEL_LAYER_v4.5.md` (v4.5.1) · `models verify`
 
 ```yaml
 model_compatibility:
-  - grok-v9-4p5-chat-expert
-  - grok-v9-4p5-multi
-  - grok-4-auto
-preferred_model: grok-v9-4p5-multi
+  - grok-4.6
+preferred_model: grok-4.6
 ```
 
 Prefer stable `prompt_cache_key` on multi-turn loops. Reasoning **high** for stitch risk and recovery.
@@ -99,4 +97,4 @@ Best paired with: Sequence Director, Continuity Guardian, Multi-Clip Continuity 
 
 ---
 
-*Cinematic Sequence Extender — Enhanced 2026-07-21 for grok-4-auto · grok-v9-4p5-multi · grok-v9-4p5-chat-expert + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*
+*Cinematic Sequence Extender — Enhanced 2026-07-21 for grok-4-auto · grok-4.6 · grok-4.6 + Imagine Video 1.0 / 1.5 Native · Parallel Brief Protocol v1.0*
