@@ -19,7 +19,7 @@ jobs:
           persist-credentials: false
 
       - name: Scan Grok plugin (HOL AI Plugin Scanner)
-        uses: hashgraph-online/ai-plugin-scanner-action@575e29933351065c43d1b2b0456f9ad415118d60 # v1.2.577
+        uses: hashgraph-online/ai-plugin-scanner-action@9b169fc65d09b24726b66d70b3563ab563158b58 # v1.2.816
         with:
           plugin_dir: "."
           min_score: 80
